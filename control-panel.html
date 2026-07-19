@@ -498,13 +498,15 @@ const AGENTS = [
 const DOC_FILES = ['README.md','AGENTS.md','GROK-SESSION-PROTOCOL.md','SOURCE-OF-TRUTH.md','DILIGENCE.md','EXEC-SUMMARY.md','CHANGELOG.md','CONTRIBUTING.md','MARKETING-ONELINER.md','docs/KIMI-HANDOFF.md'];
 
 const GH_OWNER = 'kitsboy';
-const GH_RAW = repo => `https://raw.githubusercontent.com/${GH_OWNER}/${repo}/main/`;
+/* Known non-main defaults (also auto-detected via API when possible) */
+const BRANCH_DEFAULTS = { openstrata: 'talent' };
 
 const state = {
   projects: {},
   view: 'grid',
   filter: 'all',
   ghRateRemaining: null,
+  branches: {}, // repo -> default branch name
 };
 
 /* =========================================================================
@@ -614,58 +616,157 @@ const fmt = {
 
 let btcUsdPrice = null;
 
+function ghAuthHeader(){
+  if(!Vault.hasGh()) return {};
+  const t = Vault.data.ghToken;
+  // fine-grained PATs (github_pat_*) prefer Bearer; classic ghp_ works with either
+  const scheme = t.startsWith('github_pat_') ? 'Bearer' : 'token';
+  return { Authorization: `${scheme} ${t}` };
+}
+
+function decodeGitHubContent(b64){
+  const clean = (b64 || '').replace(/\n/g, '');
+  const bin = atob(clean);
+  const bytes = new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder('utf-8').decode(bytes);
+}
+
+function encodeGitHubContent(text){
+  // UTF-8 safe base64 for Contents API
+  const bytes = new TextEncoder().encode(text);
+  let bin = '';
+  bytes.forEach(b => bin += String.fromCharCode(b));
+  return btoa(bin);
+}
+
 const GitHubData = {
+  async defaultBranch(repo){
+    if(state.branches[repo]) return state.branches[repo];
+    if(BRANCH_DEFAULTS[repo]) {
+      state.branches[repo] = BRANCH_DEFAULTS[repo];
+      // still try API when we have auth to confirm
+    }
+    try{
+      const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}`, { headers: { Accept:'application/vnd.github+json', ...ghAuthHeader() }});
+      this._trackRate(r);
+      if(r.ok){
+        const j = await r.json();
+        state.branches[repo] = j.default_branch || BRANCH_DEFAULTS[repo] || 'main';
+        return state.branches[repo];
+      }
+    }catch(e){}
+    state.branches[repo] = BRANCH_DEFAULTS[repo] || 'main';
+    return state.branches[repo];
+  },
+
   async branchInfo(repo){
-    const headers = {};
-    if(Vault.hasGh()) headers.Authorization = `token ${Vault.data.ghToken}`;
-    const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}/branches/main`, { headers });
+    const branch = await this.defaultBranch(repo);
+    const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}/branches/${encodeURIComponent(branch)}`, {
+      headers: { Accept:'application/vnd.github+json', ...ghAuthHeader() }
+    });
     this._trackRate(r);
     if(!r.ok) throw new Error('gh '+r.status);
     return r.json();
   },
+
   async lastRun(repo){
     try{
-      const headers = {};
-      if(Vault.hasGh()) headers.Authorization = `token ${Vault.data.ghToken}`;
-      const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}/actions/runs?per_page=1`, { headers });
+      const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}/actions/runs?per_page=1`, {
+        headers: { Accept:'application/vnd.github+json', ...ghAuthHeader() }
+      });
       this._trackRate(r);
       if(!r.ok) return null;
       const j = await r.json();
       return (j.workflow_runs && j.workflow_runs[0]) || null;
     }catch(e){ return null; }
   },
+
+  /**
+   * Read a file via Contents API (works for private repos when Vault PAT is set).
+   * Falls back to raw.githubusercontent for public repos without a token.
+   */
   async readFile(repo, path){
-    const r = await fetch(GH_RAW(repo)+path+`?t=${Date.now()}`);
-    if(!r.ok) throw new Error('404');
+    const branch = await this.defaultBranch(repo);
+    const headers = { Accept:'application/vnd.github+json', ...ghAuthHeader() };
+
+    // Prefer authenticated Contents API — required for private repos (e.g. giveabit)
+    if(Vault.hasGh()){
+      const api = `https://api.github.com/repos/${GH_OWNER}/${repo}/contents/${path.split('/').map(encodeURIComponent).join('/')}?ref=${encodeURIComponent(branch)}`;
+      const r = await fetch(api, { headers });
+      this._trackRate(r);
+      if(r.status === 404) throw new Error(`not found: ${path} on ${branch}`);
+      if(r.status === 401 || r.status === 403) throw new Error('GitHub auth failed — check PAT in Vault (repo scope)');
+      if(!r.ok) throw new Error('gh '+r.status);
+      const j = await r.json();
+      if(Array.isArray(j)) throw new Error('path is a directory');
+      if(j.encoding === 'base64' && j.content) return decodeGitHubContent(j.content);
+      if(j.download_url){
+        const dr = await fetch(j.download_url, { headers: ghAuthHeader() });
+        if(dr.ok) return dr.text();
+      }
+      throw new Error('empty content');
+    }
+
+    // No PAT: public raw only
+    const raw = `https://raw.githubusercontent.com/${GH_OWNER}/${repo}/${branch}/${path}?t=${Date.now()}`;
+    const r = await fetch(raw);
+    if(!r.ok) throw new Error(`not found (add GitHub PAT in Vault for private repos): ${path} on ${branch}`);
     return r.text();
   },
+
   async writeFile(repo, path, content, message){
     if(!Vault.hasGh()) throw new Error('No GitHub token in vault');
-    const api = `https://api.github.com/repos/${GH_OWNER}/${repo}/contents/${path}`;
+    const branch = await this.defaultBranch(repo);
+    const apiPath = path.split('/').map(encodeURIComponent).join('/');
+    const api = `https://api.github.com/repos/${GH_OWNER}/${repo}/contents/${apiPath}`;
+    const headers = { Accept:'application/vnd.github+json', 'Content-Type':'application/json', ...ghAuthHeader() };
     let sha = null;
     try{
-      const cur = await fetch(api, { headers:{ Authorization:`token ${Vault.data.ghToken}` }});
+      const cur = await fetch(`${api}?ref=${encodeURIComponent(branch)}`, { headers });
+      this._trackRate(cur);
       if(cur.ok){ const j = await cur.json(); sha = j.sha; }
     }catch(e){}
-    const body = { message: message || `docs: update ${path} via Sovereign Deck`, content: btoa(unescape(encodeURIComponent(content))) };
+    const body = {
+      message: message || `docs: update ${path} via Give A Bit HQ`,
+      content: encodeGitHubContent(content),
+      branch
+    };
     if(sha) body.sha = sha;
-    const res = await fetch(api, { method:'PUT', headers:{ Authorization:`token ${Vault.data.ghToken}`, 'Content-Type':'application/json' }, body: JSON.stringify(body) });
-    if(!res.ok){ const t = await res.text(); throw new Error('save failed: '+t.substring(0,140)); }
+    const res = await fetch(api, { method:'PUT', headers, body: JSON.stringify(body) });
+    this._trackRate(res);
+    if(!res.ok){ const t = await res.text(); throw new Error('save failed: '+t.substring(0,180)); }
     return res.json();
   },
+
+  async listDocPresence(repo){
+    // which standard DOC_FILES exist on default branch
+    const branch = await this.defaultBranch(repo);
+    const out = {};
+    await Promise.all(DOC_FILES.map(async f=>{
+      try{
+        await this.readFile(repo, f);
+        out[f] = true;
+      }catch(e){ out[f] = false; }
+    }));
+    return { branch, files: out };
+  },
+
   _trackRate(r){
     const rem = r.headers.get('x-ratelimit-remaining');
     if(rem !== null){
       state.ghRateRemaining = rem;
-      document.getElementById('gh-rate').textContent = `(${rem} left)`;
+      const el = document.getElementById('gh-rate');
+      if(el) el.textContent = `(${rem} left)`;
       const ban = document.getElementById('sys-banner');
-      if(Number(rem) < 15){
+      if(!ban) return;
+      if(Number(rem) < 15 && Number(rem) > 0){
         ban.classList.remove('hidden');
-        ban.innerHTML = `<div class="banner-warn mono">GitHub rate limit low (${rem} remaining). Add a PAT in Vault for 5,000/hr.</div>`;
+        ban.innerHTML = `<div class="banner-warn mono">GitHub rate limit low (${rem} remaining).</div>`;
       } else if(Number(rem) === 0){
         ban.classList.remove('hidden');
-        ban.innerHTML = `<div class="banner-err mono">GitHub rate limit exhausted. Wait or add a PAT in Vault.</div>`;
-      } else if(ban && !ban.dataset.sticky){
+        ban.innerHTML = `<div class="banner-err mono">GitHub rate limit exhausted. Wait or check Vault PAT.</div>`;
+      } else if(!ban.dataset.sticky){
         ban.classList.add('hidden');
         ban.innerHTML = '';
       }
@@ -1112,17 +1213,38 @@ const Docs = {
     document.getElementById('doc-loaded').classList.remove('hidden');
     document.getElementById('doc-path').textContent = `${projectName} / ${path}`;
     document.getElementById('doc-meta').textContent = 'loading…';
-    document.getElementById('doc-history').href = `https://github.com/${GH_OWNER}/${repo}/commits/main/${path}`;
     document.getElementById('doc-view').innerHTML = `<div class="space-y-2">${'<div class="skeleton h-4 rounded"></div>'.repeat(6)}</div>`;
     this.setMode('view');
-    GitHubData.readFile(repo, path).then(text=>{
+
+    if(!Vault.hasGh()){
+      document.getElementById('doc-view').innerHTML = `<div class="text-sm text-[var(--ink-dim)] leading-relaxed">
+        <p class="font-semibold text-[var(--ink)] mb-2">GitHub token required for private repos</p>
+        <p class="text-xs mb-3">Docs load through the GitHub API using your Vault PAT. Public raw URLs cannot read private repos (e.g. <span class="mono">giveabit</span>).</p>
+        <button onclick="Vault.openModal()" class="btn-brand rounded px-3 py-1.5 text-xs">Open Vault</button>
+      </div>`;
+      document.getElementById('doc-meta').textContent = 'no PAT';
+      return;
+    }
+
+    GitHubData.defaultBranch(repo).then(branch=>{
+      document.getElementById('doc-history').href = `https://github.com/${GH_OWNER}/${repo}/commits/${branch}/${path}`;
+      document.getElementById('doc-meta').textContent = `loading ${GH_OWNER}/${repo}@${branch}…`;
+      return GitHubData.readFile(repo, path).then(text=>({ text, branch }));
+    }).then(({text, branch})=>{
       this.rawText = text;
+      this.current.branch = branch;
       document.getElementById('doc-view').innerHTML = marked.parse(text);
       document.getElementById('doc-edit').value = text;
-      document.getElementById('doc-meta').textContent = `${text.split('\n').length} lines · ${(text.length/1024).toFixed(1)} KB · ${GH_OWNER}/${repo}`;
-    }).catch(()=>{
-      document.getElementById('doc-view').innerHTML = `<div class="text-[var(--red)] text-sm">Could not load this file — it may not exist yet at <span class="mono">${path}</span> on <span class="mono">main</span>.</div>`;
-      document.getElementById('doc-meta').textContent = 'not found';
+      document.getElementById('doc-meta').textContent = `${text.split('\n').length} lines · ${(text.length/1024).toFixed(1)} KB · ${GH_OWNER}/${repo}@${branch}`;
+    }).catch(err=>{
+      const msg = (err && err.message) || 'unknown error';
+      document.getElementById('doc-view').innerHTML = `<div class="text-[var(--red)] text-sm leading-relaxed">
+        <p class="font-semibold mb-1">Could not load file</p>
+        <p class="mono text-xs text-[var(--ink-dim)] mb-2">${path}</p>
+        <p class="text-xs text-[var(--ink-faint)]">${msg}</p>
+        <p class="text-xs text-[var(--ink-faint)] mt-2">If this is a private repo, confirm the new PAT is saved in Vault and has access to <span class="mono">${GH_OWNER}/${repo}</span>.</p>
+      </div>`;
+      document.getElementById('doc-meta').textContent = 'error';
       this.rawText = '';
       document.getElementById('doc-edit').value = '';
     });
@@ -1233,9 +1355,10 @@ const Drawer = {
           </div>
         </div>
         <div>
-          <h3 class="text-[10px] mono uppercase tracking-[0.12em] text-[var(--ink-faint)] mb-1.5">Files</h3>
+          <h3 class="text-[10px] mono uppercase tracking-[0.12em] text-[var(--ink-faint)] mb-1.5">Editable docs</h3>
+          <p class="text-[10px] text-[var(--ink-faint)] mb-1.5">Opens Docs CMS (preview / edit / save via Vault PAT)</p>
           <div class="grid grid-cols-2 gap-1">
-            ${DOC_FILES.map(f=>`<button onclick="Docs.open('${p.repo}','${f}','${p.name}');Drawer.close({target:{id:'drawer-backdrop'}})" class="btn-ghost rounded px-2 py-1.5 text-[10px] mono truncate text-left">${f}</button>`).join('')}
+            ${DOC_FILES.map(f=>`<button onclick="Docs.open('${p.repo}','${f}','${p.name}');Drawer.close({target:{id:'drawer-backdrop'}})" class="btn-ghost rounded px-2 py-1.5 text-[10px] mono truncate text-left" title="Edit ${f}">${f}</button>`).join('')}
           </div>
         </div>
       </div>`;
