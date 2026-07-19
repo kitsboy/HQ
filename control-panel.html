@@ -354,15 +354,17 @@
             <div id="doc-path" class="mono text-sm font-medium text-[var(--ink)]"></div>
             <div id="doc-meta" class="mono text-[11px] text-[var(--ink-faint)]"></div>
           </div>
-          <div class="flex items-center gap-1.5">
+          <div class="flex items-center gap-1.5 flex-wrap">
             <button id="doc-mode-view" onclick="Docs.setMode('view')" class="chip chip-active rounded px-2.5 py-1 text-xs">Preview</button>
             <button id="doc-mode-edit" onclick="Docs.setMode('edit')" class="chip rounded px-2.5 py-1 text-xs">Edit</button>
-            <a id="doc-history" href="#" target="_blank" class="btn-ghost rounded px-2.5 py-1 text-xs">History</a>
-            <button id="doc-save" onclick="Docs.save()" class="hidden btn-brand rounded px-2.5 py-1 text-xs">Save</button>
+            <a id="doc-history" href="#" target="_blank" rel="noopener" class="btn-ghost rounded px-2.5 py-1 text-xs">History</a>
+            <a id="doc-github" href="#" target="_blank" rel="noopener" class="btn-ghost rounded px-2.5 py-1 text-xs">GitHub</a>
+            <button id="doc-save" onclick="Docs.save()" class="hidden btn-brand rounded px-2.5 py-1 text-xs">Save to GitHub</button>
           </div>
         </div>
+        <div id="doc-dirty" class="hidden text-[10px] mono text-[var(--amber)] mb-2">Unsaved edits · Save writes to the default branch</div>
         <div id="doc-view" class="md-body flex-1 overflow-y-auto scrollbar-thin pr-1"></div>
-        <textarea id="doc-edit" class="hidden flex-1 mono text-sm rounded p-3 resize-none scrollbar-thin" spellcheck="false"></textarea>
+        <textarea id="doc-edit" class="hidden flex-1 mono text-sm rounded p-3 resize-none scrollbar-thin" spellcheck="false" oninput="Docs.onEdit()"></textarea>
       </div>
     </div>
   </div>
@@ -507,6 +509,7 @@ const state = {
   filter: 'all',
   ghRateRemaining: null,
   branches: {}, // repo -> default branch name
+  treeIndex: {}, // repo -> Set of paths (from git tree)
 };
 
 /* =========================================================================
@@ -735,21 +738,46 @@ const GitHubData = {
     if(sha) body.sha = sha;
     const res = await fetch(api, { method:'PUT', headers, body: JSON.stringify(body) });
     this._trackRate(res);
+    if(res.status === 409) throw new Error('conflict — file changed on GitHub; re-open the file and try again');
+    if(res.status === 401 || res.status === 403) throw new Error('auth failed — PAT needs contents:write on '+repo);
     if(!res.ok){ const t = await res.text(); throw new Error('save failed: '+t.substring(0,180)); }
+    // bust tree cache so existence marks update
+    delete state.treeIndex[repo];
     return res.json();
   },
 
-  async listDocPresence(repo){
-    // which standard DOC_FILES exist on default branch
-    const branch = await this.defaultBranch(repo);
-    const out = {};
-    await Promise.all(DOC_FILES.map(async f=>{
-      try{
-        await this.readFile(repo, f);
-        out[f] = true;
-      }catch(e){ out[f] = false; }
-    }));
-    return { branch, files: out };
+  /** One recursive tree fetch per repo — used to mark exists/missing in Docs tree */
+  async treePaths(repo){
+    if(state.treeIndex[repo]) return state.treeIndex[repo];
+    try{
+      const b = await this.branchInfo(repo);
+      const treeSha = b.commit?.commit?.tree?.sha;
+      if(!treeSha) throw new Error('no tree');
+      const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}/git/trees/${treeSha}?recursive=1`, {
+        headers: { Accept:'application/vnd.github+json', ...ghAuthHeader() }
+      });
+      this._trackRate(r);
+      if(!r.ok) throw new Error('tree '+r.status);
+      const j = await r.json();
+      const set = new Set((j.tree||[]).filter(t=>t.type==='blob').map(t=>t.path));
+      state.treeIndex[repo] = set;
+      return set;
+    }catch(e){
+      state.treeIndex[repo] = new Set();
+      return state.treeIndex[repo];
+    }
+  },
+
+  pathExists(repo, path){
+    const set = state.treeIndex[repo];
+    if(!set) return null; // unknown until scanned
+    return set.has(path);
+  },
+
+  /** After create/save, mark path present without full re-scan */
+  markPath(repo, path){
+    if(!state.treeIndex[repo]) state.treeIndex[repo] = new Set();
+    state.treeIndex[repo].add(path);
   },
 
   _trackRate(r){
@@ -1180,46 +1208,91 @@ function renderAgents(){
     </div>`).join('');
 }
 
-function renderFileTreeIcon(){ return 'fa-regular fa-file-lines'; }
+function docStub(projectName, path, agentMeta){
+  if(agentMeta){
+    return `# ${agentMeta.name}\n\n**Role:** ${agentMeta.role}\n\n**Motto:** ${agentMeta.motto}\n\n**NIP-05:** \`${agentMeta.nip05}\`\n\n## Notes\n\n_Persona notes for ${agentMeta.name}. Edit and save from Give A Bit HQ._\n\n---\nSafe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first.\n`;
+  }
+  const base = path.split('/').pop().replace(/\.md$/i,'');
+  return `# ${base}\n\n> **${projectName}** · \`${path}\`\n>\n> Created via Give A Bit HQ\n\n## Summary\n\n_TODO — fill in from the dashboard._\n\n## Details\n\n-\n\n---\nSafe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first.\n`;
+}
+
 function renderDocTree(){
   const el = document.getElementById('file-tree');
-  el.innerHTML = PROJECTS.map(p=>`
+  el.innerHTML = PROJECTS.map(p=>{
+    const agentFiles = p.repo === 'giveabit'
+      ? AGENTS.map(a=>`<button data-doc-path="${a.file}" data-doc-repo="${p.repo}" onclick="Docs.open('${p.repo}','${a.file}','${p.name}',{agent:'${a.name}'})" class="w-full flex items-center gap-2 px-2 py-1 rounded-md hover:bg-[var(--void-2)] text-left text-xs text-[var(--ink-dim)] mono">
+            <span class="w-3 text-center text-[9px] text-[var(--ink-faint)]" id="mark-${p.repo}-${a.file.replace(/[\/.]/g,'_')}">·</span>${a.file}
+          </button>`).join('')
+      : '';
+    return `
     <div class="tree-project">
-      <button onclick="toggleTree('${p.id}')" class="w-full flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-[var(--void-2)] text-sm">
-        <span class="flex items-center gap-2"><i class="fa-solid fa-folder text-[var(--orange-2)] text-xs"></i>${p.name}</span>
+      <button onclick="toggleTree('${p.id}')" class="w-full flex items-center justify-between px-2 py-1.5 rounded hover:bg-[var(--void-2)] text-sm">
+        <span class="flex items-center gap-2"><i class="fa-solid fa-folder text-[var(--ink-dim)] text-xs"></i>${p.name}</span>
         <i class="fa-solid fa-chevron-down text-[9px] text-[var(--ink-faint)] transition-transform" id="chev-${p.id}"></i>
       </button>
-      <div id="tree-${p.id}" class="pl-6 space-y-0.5 hidden">
+      <div id="tree-${p.id}" class="pl-4 space-y-0.5 hidden">
         ${DOC_FILES.map(f=>`
-          <button onclick="Docs.open('${p.repo}','${f}','${p.name}')" class="w-full flex items-center gap-2 px-2 py-1 rounded-md hover:bg-[var(--void-2)] text-left text-xs text-[var(--ink-dim)] mono">
-            <i class="${renderFileTreeIcon()} text-[10px]"></i>${f}
+          <button data-doc-path="${f}" data-doc-repo="${p.repo}" onclick="Docs.open('${p.repo}','${f}','${p.name}')" class="w-full flex items-center gap-2 px-2 py-1 rounded-md hover:bg-[var(--void-2)] text-left text-xs text-[var(--ink-dim)] mono">
+            <span class="w-3 text-center text-[9px]" id="mark-${p.repo}-${f.replace(/[\/.]/g,'_')}">·</span>${f}
           </button>`).join('')}
+        ${agentFiles ? `<div class="text-[9px] mono uppercase text-[var(--ink-faint)] px-2 pt-2">Agents</div>${agentFiles}` : ''}
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
-function toggleTree(id){
+
+async function toggleTree(id){
   const t = document.getElementById('tree-'+id);
   const c = document.getElementById('chev-'+id);
+  const opening = t.classList.contains('hidden');
   t.classList.toggle('hidden');
   c.style.transform = t.classList.contains('hidden') ? '' : 'rotate(180deg)';
+  if(opening){
+    const p = PROJECTS.find(x=>x.id===id);
+    if(p && Vault.hasGh()) await markTreeFiles(p.repo);
+  }
+}
+
+async function markTreeFiles(repo){
+  if(!Vault.hasGh()) return;
+  try{
+    const paths = await GitHubData.treePaths(repo);
+    const marks = document.querySelectorAll(`[id^="mark-${repo}-"]`);
+    marks.forEach(el=>{
+      const btn = el.closest('button');
+      const path = btn?.dataset?.docPath;
+      if(!path) return;
+      const ok = paths.has(path);
+      el.textContent = ok ? '●' : '○';
+      el.style.color = ok ? 'var(--green)' : 'var(--ink-faint)';
+      el.title = ok ? 'exists on GitHub' : 'missing — open to create & save';
+    });
+  }catch(e){ /* non-fatal */ }
 }
 
 const Docs = {
   current: null,
-  open(repo, path, projectName){
+  rawText: '',
+  dirty: false,
+
+  open(repo, path, projectName, opts){
     switchView('docs');
-    this.current = { repo, path, projectName };
+    const agent = opts?.agent ? AGENTS.find(a=>a.name===opts.agent) : (path.startsWith('agents/') ? AGENTS.find(a=>a.file===path) : null);
+    this.current = { repo, path, projectName, isNew:false, agent };
+    this.dirty = false;
+    document.getElementById('doc-dirty').classList.add('hidden');
     document.getElementById('doc-empty').classList.add('hidden');
     document.getElementById('doc-loaded').classList.remove('hidden');
     document.getElementById('doc-path').textContent = `${projectName} / ${path}`;
     document.getElementById('doc-meta').textContent = 'loading…';
     document.getElementById('doc-view').innerHTML = `<div class="space-y-2">${'<div class="skeleton h-4 rounded"></div>'.repeat(6)}</div>`;
+    document.getElementById('doc-edit').value = '';
     this.setMode('view');
 
     if(!Vault.hasGh()){
       document.getElementById('doc-view').innerHTML = `<div class="text-sm text-[var(--ink-dim)] leading-relaxed">
-        <p class="font-semibold text-[var(--ink)] mb-2">GitHub token required for private repos</p>
-        <p class="text-xs mb-3">Docs load through the GitHub API using your Vault PAT. Public raw URLs cannot read private repos (e.g. <span class="mono">giveabit</span>).</p>
+        <p class="font-semibold text-[var(--ink)] mb-2">GitHub token required</p>
+        <p class="text-xs mb-3">Load and save use the GitHub Contents API with your Vault PAT (needed for private repos and writes).</p>
         <button onclick="Vault.openModal()" class="btn-brand rounded px-3 py-1.5 text-xs">Open Vault</button>
       </div>`;
       document.getElementById('doc-meta').textContent = 'no PAT';
@@ -1227,56 +1300,126 @@ const Docs = {
     }
 
     GitHubData.defaultBranch(repo).then(branch=>{
-      document.getElementById('doc-history').href = `https://github.com/${GH_OWNER}/${repo}/commits/${branch}/${path}`;
-      document.getElementById('doc-meta').textContent = `loading ${GH_OWNER}/${repo}@${branch}…`;
-      return GitHubData.readFile(repo, path).then(text=>({ text, branch }));
-    }).then(({text, branch})=>{
-      this.rawText = text;
       this.current.branch = branch;
-      document.getElementById('doc-view').innerHTML = marked.parse(text);
-      document.getElementById('doc-edit').value = text;
-      document.getElementById('doc-meta').textContent = `${text.split('\n').length} lines · ${(text.length/1024).toFixed(1)} KB · ${GH_OWNER}/${repo}@${branch}`;
+      document.getElementById('doc-history').href = `https://github.com/${GH_OWNER}/${repo}/commits/${branch}/${path}`;
+      document.getElementById('doc-github').href = `https://github.com/${GH_OWNER}/${repo}/blob/${branch}/${path}`;
+      document.getElementById('doc-meta').textContent = `loading ${GH_OWNER}/${repo}@${branch}…`;
+      return GitHubData.readFile(repo, path).then(text=>({ text, branch, missing:false }));
+    }).then(({text, branch})=>{
+      this._showLoaded(text, branch, false);
+      GitHubData.markPath(repo, path);
+      markTreeFiles(repo);
     }).catch(err=>{
-      const msg = (err && err.message) || 'unknown error';
-      document.getElementById('doc-view').innerHTML = `<div class="text-[var(--red)] text-sm leading-relaxed">
-        <p class="font-semibold mb-1">Could not load file</p>
-        <p class="mono text-xs text-[var(--ink-dim)] mb-2">${path}</p>
-        <p class="text-xs text-[var(--ink-faint)]">${msg}</p>
-        <p class="text-xs text-[var(--ink-faint)] mt-2">If this is a private repo, confirm the new PAT is saved in Vault and has access to <span class="mono">${GH_OWNER}/${repo}</span>.</p>
-      </div>`;
-      document.getElementById('doc-meta').textContent = 'error';
-      this.rawText = '';
-      document.getElementById('doc-edit').value = '';
+      const msg = (err && err.message) || '';
+      const missing = /not found/i.test(msg) || /404/.test(msg);
+      if(missing){
+        this._showMissing(repo, path, projectName, this.current.branch || 'main', agent);
+      } else {
+        document.getElementById('doc-view').innerHTML = `<div class="text-[var(--red)] text-sm leading-relaxed">
+          <p class="font-semibold mb-1">Could not load file</p>
+          <p class="mono text-xs text-[var(--ink-dim)] mb-2">${path}</p>
+          <p class="text-xs text-[var(--ink-faint)]">${msg}</p>
+          <p class="text-xs text-[var(--ink-faint)] mt-2">Check Vault PAT access to <span class="mono">${GH_OWNER}/${repo}</span>.</p>
+        </div>`;
+        document.getElementById('doc-meta').textContent = 'error';
+        this.rawText = '';
+      }
     });
   },
-  openAgent(repo, file, name){
-    switchView('agents');
-    this.open(repo, file, name);
-    switchView('docs');
+
+  _showLoaded(text, branch, isNew){
+    this.rawText = text;
+    this.current.isNew = !!isNew;
+    this.current.branch = branch;
+    this.dirty = false;
+    document.getElementById('doc-dirty').classList.add('hidden');
+    document.getElementById('doc-view').innerHTML = marked.parse(text);
+    document.getElementById('doc-edit').value = text;
+    const tag = isNew ? 'NEW (not on GitHub yet)' : `${text.split('\n').length} lines · ${(text.length/1024).toFixed(1)} KB`;
+    document.getElementById('doc-meta').textContent = `${tag} · ${GH_OWNER}/${this.current.repo}@${branch}`;
+    document.getElementById('doc-github').href = `https://github.com/${GH_OWNER}/${this.current.repo}/blob/${branch}/${this.current.path}`;
   },
+
+  _showMissing(repo, path, projectName, branch, agent){
+    const stub = docStub(projectName, path, agent || null);
+    this.current.isNew = true;
+    this.current.branch = branch;
+    this.rawText = '';
+    document.getElementById('doc-edit').value = stub;
+    document.getElementById('doc-meta').textContent = `missing on ${branch} · create & save to add`;
+    document.getElementById('doc-view').innerHTML = `<div class="text-sm text-[var(--ink-dim)] leading-relaxed max-w-md">
+      <p class="font-semibold text-[var(--ink)] mb-2">File not on GitHub yet</p>
+      <p class="text-xs mb-1 mono">${GH_OWNER}/${repo}/${path}</p>
+      <p class="text-xs mb-3">Branch: <span class="mono">${branch}</span>. A starter draft is ready — edit if you want, then <strong>Save to GitHub</strong> to create it.</p>
+      <button onclick="Docs.setMode('edit')" class="btn-brand rounded px-3 py-1.5 text-xs mr-2">Edit draft</button>
+      <button onclick="Docs.save()" class="btn-ghost rounded px-3 py-1.5 text-xs">Create on GitHub now</button>
+      <div class="mt-4 p-3 glass-soft rounded text-xs mono whitespace-pre-wrap max-h-48 overflow-auto">${stub.replace(/</g,'&lt;')}</div>
+    </div>`;
+    this.setMode('view');
+  },
+
+  openAgent(repo, file, name){
+    const p = PROJECTS.find(x=>x.repo===repo);
+    this.open(repo, file, p?.name || repo, { agent: name });
+  },
+
   setMode(mode){
     document.getElementById('doc-mode-view').classList.toggle('chip-active', mode==='view');
     document.getElementById('doc-mode-edit').classList.toggle('chip-active', mode==='edit');
     document.getElementById('doc-view').classList.toggle('hidden', mode!=='view');
     document.getElementById('doc-edit').classList.toggle('hidden', mode!=='edit');
-    document.getElementById('doc-save').classList.toggle('hidden', mode!=='edit');
+    const showSave = mode==='edit' || !!this.current?.isNew;
+    document.getElementById('doc-save').classList.toggle('hidden', !showSave);
+    if(mode==='view' && this.current && document.getElementById('doc-edit').value){
+      document.getElementById('doc-view').innerHTML = marked.parse(document.getElementById('doc-edit').value);
+    }
   },
+
+  onEdit(){
+    if(!this.current) return;
+    const v = document.getElementById('doc-edit').value;
+    this.dirty = v !== this.rawText;
+    document.getElementById('doc-dirty').classList.toggle('hidden', !this.dirty && !this.current.isNew);
+  },
+
   async save(){
     if(!this.current) return;
     if(!Vault.hasGh()){ toast('Add a GitHub token in the Vault first','error'); Vault.openModal(); return; }
     const content = document.getElementById('doc-edit').value;
+    if(!content.trim()){ toast('Nothing to save — file is empty','error'); return; }
+
+    const { repo, path, isNew, branch } = this.current;
+    const action = isNew ? 'Create' : 'Update';
+    if(!confirm(`${action} ${path} on ${GH_OWNER}/${repo}@${branch || 'default'}?\n\nThis commits to GitHub immediately.`)) return;
+
     const btn = document.getElementById('doc-save');
     const oldHtml = btn.innerHTML;
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i>Saving…';
+    btn.disabled = true;
+    btn.innerHTML = 'Saving…';
     try{
-      await GitHubData.writeFile(this.current.repo, this.current.path, content, `docs: update ${this.current.path} via Sovereign Deck`);
-      toast(`Saved ${this.current.path} to ${this.current.repo}`,'success');
-      document.getElementById('doc-view').innerHTML = marked.parse(content);
+      const msg = isNew
+        ? `docs: create ${path} via Give A Bit HQ`
+        : `docs: update ${path} via Give A Bit HQ`;
+      const result = await GitHubData.writeFile(repo, path, content, msg);
       this.rawText = content;
+      this.current.isNew = false;
+      this.dirty = false;
+      document.getElementById('doc-dirty').classList.add('hidden');
+      document.getElementById('doc-view').innerHTML = marked.parse(content);
+      document.getElementById('doc-meta').textContent = `saved · ${content.split('\n').length} lines · ${GH_OWNER}/${repo}@${this.current.branch||''}`;
+      GitHubData.markPath(repo, path);
+      // invalidate tree cache so marks refresh with truth
+      delete state.treeIndex[repo];
+      markTreeFiles(repo);
+      const url = result?.content?.html_url || result?.commit?.html_url;
+      toast(url ? `Saved ${path}` : `Saved ${path} to ${repo}`,'success');
+      if(url) document.getElementById('doc-github').href = url;
+      this.setMode('view');
     }catch(e){
       toast('Save failed: '+e.message,'error');
     }
-    btn.innerHTML = oldHtml;
+    btn.disabled = false;
+    btn.innerHTML = oldHtml || 'Save to GitHub';
   }
 };
 
@@ -1483,6 +1626,9 @@ function switchView(view){
   });
   document.querySelectorAll('.view-panel').forEach(p=> p.classList.add('hidden'));
   document.getElementById('view-'+view).classList.remove('hidden');
+  if(view==='docs' && Vault.hasGh()){
+    // warm tree indexes for open folders only; expand any project to scan
+  }
 }
 document.querySelectorAll('.view-tab').forEach(t=> t.addEventListener('click', ()=>switchView(t.dataset.view)));
 document.querySelectorAll('.filter-chip').forEach(c=> c.addEventListener('click', ()=>{
