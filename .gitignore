@@ -1,0 +1,8 @@
+.DS_Store
+*.local.json
+giveabit.local.json
+.env
+.env.*
+*.bak
+.vault*
+node_modules/

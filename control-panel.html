@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Give A Bit HQ</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Ops desk: warm stone, high ink contrast, no neon / no pure white */
+  :root{
+    --void:#b9b4aa;
+    --void-2:#a8a297;
+    --panel:#d4cfc4;
+    --panel-2:#c9c3b7;
+    --panel-raised:#ddd8cd;
+    --line:rgba(18,18,16,.22);
+    --line-hi:rgba(18,18,16,.38);
+    --orange:#c45f00;
+    --orange-2:#9a4a00;
+    --green:#1f6b3a;
+    --green-soft:rgba(31,107,58,.14);
+    --amber:#8a5a00;
+    --amber-soft:rgba(138,90,0,.14);
+    --red:#a32020;
+    --red-soft:rgba(163,32,32,.12);
+    --gray:#5c5a54;
+    --ink:#121210;
+    --ink-dim:#2e2c28;
+    --ink-faint:#5a574f;
+    --shadow:none;
+  }
+  *{box-sizing:border-box}
+  html,body{background:var(--void);color:var(--ink);font-family:'IBM Plex Sans',system-ui,sans-serif;margin:0;}
+  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace;}
+  body{background:var(--void);}
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{background:rgba(18,18,16,.25);border-radius:4px}
+  ::-webkit-scrollbar-thumb:hover{background:rgba(18,18,16,.4)}
+
+  .glass{
+    background:var(--panel);
+    border:1px solid var(--line);
+  }
+  .glass-soft{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+  }
+  .glass-hover:hover{border-color:var(--line-hi); background:var(--panel-raised);}
+  .glass, .glass-hover{transition:border-color .15s ease, background .15s ease;}
+
+  .grad-brand{background:var(--orange);}
+  .grad-text{color:var(--ink); background:none; -webkit-background-clip:unset; background-clip:unset;}
+
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none;border:1px solid rgba(0,0,0,.25);}
+  .dot-green{background:var(--green);}
+  .dot-amber{background:#c48a00;}
+  .dot-red{background:var(--red);}
+  .dot-gray{background:var(--gray);}
+
+  .tab-active{color:#fff;background:var(--ink);border:1px solid var(--ink);}
+  .chip{border:1px solid var(--line);background:var(--panel-2);transition:all .12s ease;color:var(--ink-dim);}
+  .chip:hover{border-color:var(--line-hi);color:var(--ink);}
+  .chip-active{background:var(--ink);border-color:var(--ink);color:#e8e4dc;font-weight:600;}
+
+  input,textarea,select{background:var(--panel-raised); border:1px solid var(--line); color:var(--ink);}
+  input:focus,textarea:focus,select:focus{outline:none; border-color:var(--ink); box-shadow:0 0 0 2px rgba(18,18,16,.12);}
+  input::placeholder,textarea::placeholder{color:var(--ink-faint)}
+  :focus-visible{outline:2px solid var(--orange); outline-offset:2px;}
+
+  .btn-brand{background:var(--ink); color:#e8e4dc; font-weight:600; border:1px solid var(--ink);}
+  .btn-brand:hover{background:#000; color:#fff;}
+  .btn-ghost{border:1px solid var(--line); color:var(--ink-dim); background:var(--panel-2);}
+  .btn-ghost:hover{border-color:var(--line-hi); color:var(--ink); background:var(--panel-raised);}
+  .btn-accent{background:var(--orange); color:#fff; font-weight:600; border:1px solid var(--orange-2);}
+  .btn-accent:hover{filter:brightness(.95);}
+
+  .skeleton{background:var(--panel-2); opacity:.7;}
+
+  .md-body h1{font-size:1.4rem;font-weight:700;margin:1.1em 0 .45em;color:var(--ink)}
+  .md-body h2{font-size:1.15rem;font-weight:700;margin:1em 0 .4em;color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:.3em}
+  .md-body h3{font-size:1rem;font-weight:600;margin:.9em 0 .35em;color:var(--ink-dim)}
+  .md-body p{margin:.55em 0;color:var(--ink-dim);line-height:1.65}
+  .md-body code{background:var(--panel-2);padding:.1em .35em;border-radius:2px;font-family:'IBM Plex Mono',monospace;font-size:.85em;color:var(--ink);border:1px solid var(--line)}
+  .md-body pre{background:#1a1916;border:1px solid #0a0a09;padding:.9em;border-radius:4px;overflow:auto;margin:.7em 0}
+  .md-body pre code{background:none;border:0;padding:0;color:#d4cfc4}
+  .md-body ul,.md-body ol{margin:.5em 0;padding-left:1.3em;color:var(--ink-dim)}
+  .md-body li{margin:.2em 0}
+  .md-body a{color:var(--orange-2);text-decoration:underline;text-underline-offset:2px}
+  .md-body blockquote{border-left:3px solid var(--ink);padding-left:.9em;color:var(--ink-faint);margin:.7em 0}
+  .md-body table{width:100%;border-collapse:collapse;margin:.7em 0;font-size:.9em}
+  .md-body th,.md-body td{border:1px solid var(--line);padding:.35em .5em;text-align:left}
+  .md-body th{background:var(--panel-2);font-weight:600}
+
+  .modal-backdrop{background:rgba(18,18,16,.55);}
+  .slide-in{animation:slideIn .2s ease-out;}
+  @keyframes slideIn{from{transform:translateX(12px);opacity:0}to{transform:translateX(0);opacity:1}}
+  .pop-in{animation:popIn .15s ease-out;}
+  @keyframes popIn{from{opacity:0}to{opacity:1}}
+
+  .toast{animation:toastIn .15s ease, toastOut .2s ease 3.5s forwards;}
+  @keyframes toastIn{from{opacity:0}to{opacity:1}}
+  @keyframes toastOut{to{opacity:0}}
+
+  .scrollbar-thin::-webkit-scrollbar{width:6px}
+  .bar-fill{transition:width .4s ease;}
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important;}
+  }
+
+  [data-tip]{position:relative}
+  [data-tip]:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--ink);color:#e8e4dc;font-size:11px;padding:4px 8px;border-radius:2px;white-space:nowrap;z-index:50;font-family:'IBM Plex Mono',monospace}
+
+  .ticker-track{display:flex;gap:2rem;animation:ticker 40s linear infinite;}
+  @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  .status-pill{
+    display:inline-flex;align-items:center;gap:5px;
+    font-size:10px;font-family:'IBM Plex Mono',monospace;
+    padding:2px 7px;border-radius:2px;border:1px solid var(--line);
+    background:var(--panel-2);color:var(--ink-dim);letter-spacing:.02em;text-transform:uppercase;
+  }
+  .status-pill.green{background:var(--green-soft);border-color:rgba(31,107,58,.35);color:var(--green);}
+  .status-pill.amber{background:var(--amber-soft);border-color:rgba(138,90,0,.35);color:var(--amber);}
+  .status-pill.red{background:var(--red-soft);border-color:rgba(163,32,32,.3);color:var(--red);}
+  .status-pill.gray{background:rgba(92,90,84,.12);color:var(--ink-faint);}
+
+  .metric-tile{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:8px 10px;
+  }
+  .health-ring{
+    width:32px;height:32px;border-radius:2px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-family:'IBM Plex Mono',monospace;font-weight:600;
+    border:1px solid var(--line);
+    background:var(--panel-2);
+  }
+  .row-hover:hover{background:rgba(18,18,16,.04);}
+  .topbar{background:var(--panel); border-bottom:1px solid var(--line);}
+  .divider{width:1px;height:14px;background:var(--line);flex-shrink:0;}
+  .detail-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px;}
+  .detail-row:last-child{border-bottom:0;}
+  .pipe-step-ok{background:var(--green);}
+  .pipe-step-fail{background:rgba(18,18,16,.15);}
+  .pipe-step-amber{background:#c48a00;}
+  .accent-bar{height:3px;background:var(--orange);}
+  .kbd{font-family:'IBM Plex Mono',monospace;font-size:10px;border:1px solid var(--line);padding:1px 5px;border-radius:2px;background:var(--panel-2);color:var(--ink-faint);}
+  .banner-warn{background:var(--amber-soft);border:1px solid rgba(138,90,0,.35);color:var(--amber);padding:8px 12px;font-size:12px;border-radius:4px;}
+  .banner-err{background:var(--red-soft);border:1px solid rgba(163,32,32,.3);color:var(--red);padding:8px 12px;font-size:12px;border-radius:4px;}
+  .site-footer{border-top:1px solid var(--line);color:var(--ink-faint);font-size:11px;padding:16px 0 80px;}
+  .icon-box{width:36px;height:36px;border-radius:4px;background:var(--ink);color:#e8e4dc;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .icon-box.sm{width:28px;height:28px;font-size:11px;}
+  .icon-box.accent{background:var(--orange);color:#fff;}
+  table thead th{position:sticky;top:0;z-index:1;}
+</style>
+</head>
+<body class="min-h-screen pb-28">
+
+<!-- ============ SYSTEM HEALTH BAR ============ -->
+<div class="accent-bar"></div>
+<div class="sticky top-0 z-40 topbar">
+  <div class="max-w-[1600px] mx-auto px-4 py-2 flex items-center gap-4 text-xs mono overflow-x-auto scrollbar-thin">
+    <div class="flex items-center gap-2.5 shrink-0">
+      <div class="icon-box sm accent"><i class="fa-solid fa-bolt"></i></div>
+      <div>
+        <div class="font-semibold text-[13px] leading-none tracking-tight">Give A Bit HQ</div>
+        <div class="text-[10px] text-[var(--ink-faint)] mt-0.5">portfolio · wallets · docs</div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div id="hb-thor" class="flex items-center gap-1.5 shrink-0"><span class="dot dot-gray"></span><span class="text-[var(--ink-dim)]">THOR</span></div>
+    <div id="hb-lnbits" class="flex items-center gap-1.5 shrink-0"><span class="dot dot-gray"></span><span class="text-[var(--ink-dim)]">LNbits</span></div>
+    <div id="hb-lnd" class="flex items-center gap-1.5 shrink-0"><span class="dot dot-gray"></span><span class="text-[var(--ink-dim)]">LND</span></div>
+    <div id="hb-github" class="flex items-center gap-1.5 shrink-0"><span class="dot dot-gray"></span><span class="text-[var(--ink-dim)]">GitHub <span id="gh-rate" class="text-[var(--ink-faint)]"></span></span></div>
+    <div class="divider"></div>
+    <div class="flex items-center gap-1.5 shrink-0 text-[var(--ink-dim)]">
+      <span class="text-[var(--ink-faint)]">BTC</span>
+      <span id="btc-price-top" class="font-medium">$—</span>
+    </div>
+    <div id="vault-status" class="status-pill gray shrink-0">vault 0 keys</div>
+    <div class="ml-auto flex items-center gap-2 shrink-0">
+      <span id="cache-age" class="text-[var(--ink-faint)] hidden sm:inline"></span>
+      <span id="last-refresh" class="text-[var(--ink-faint)]">not synced</span>
+      <button onclick="Dash.refreshAll(true)" class="btn-ghost rounded px-2 py-1 flex items-center gap-1.5" data-tip="Refresh (r)"><i class="fa-solid fa-rotate-right text-[10px]"></i></button>
+      <button onclick="Vault.openModal()" class="btn-ghost rounded px-2 py-1 flex items-center gap-1.5" data-tip="Vault"><i class="fa-solid fa-key text-[10px]"></i> Vault</button>
+    </div>
+  </div>
+</div>
+
+<div id="sys-banner" class="hidden max-w-[1600px] mx-auto px-4 pt-3"></div>
+
+<!-- ============ PORTFOLIO HEADER ============ -->
+<div class="max-w-[1600px] mx-auto px-4 pt-5">
+  <div class="glass rounded p-5">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <div>
+        <div class="text-[10px] mono uppercase tracking-[0.14em] text-[var(--ink-faint)] mb-1.5">Collective balance</div>
+        <div class="flex items-baseline gap-3 flex-wrap">
+          <span id="total-sats" class="text-4xl font-bold mono tracking-tight text-[var(--ink)]">—</span>
+          <span class="text-sm mono text-[var(--ink-faint)]">sats</span>
+          <span id="total-usd" class="text-lg mono text-[var(--ink-dim)] font-medium">$—</span>
+        </div>
+        <div class="mt-3 flex flex-wrap items-center gap-2 text-xs mono">
+          <span id="portfolio-count" class="status-pill">0/9 synced</span>
+          <span id="portfolio-change" class="status-pill">24h —</span>
+          <span id="portfolio-health" class="status-pill">health —</span>
+          <span id="portfolio-live" class="status-pill">live —</span>
+          <span id="visible-count" class="status-pill gray">showing 9</span>
+        </div>
+      </div>
+      <div class="flex-1 min-w-[260px] max-w-md">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-[10px] mono uppercase tracking-[0.12em] text-[var(--ink-faint)]">Allocation</span>
+          <span id="btc-price-label" class="text-[10px] mono text-[var(--ink-faint)]">BTC/USD —</span>
+        </div>
+        <div id="bal-bars" class="space-y-1.5"></div>
+      </div>
+      <div class="grid grid-cols-2 gap-2 text-xs mono min-w-[200px]">
+        <div class="metric-tile">
+          <div class="text-[var(--ink-faint)] text-[10px] uppercase">Projects</div>
+          <div class="text-lg font-semibold mt-0.5" id="stat-projects">9</div>
+        </div>
+        <div class="metric-tile">
+          <div class="text-[var(--ink-faint)] text-[10px] uppercase">Agents</div>
+          <div class="text-lg font-semibold mt-0.5" id="stat-agents">7</div>
+        </div>
+        <div class="metric-tile">
+          <div class="text-[var(--ink-faint)] text-[10px] uppercase">Grok weekly</div>
+          <div class="font-semibold mt-0.5 text-[var(--ink-dim)]">0%</div>
+        </div>
+        <div class="metric-tile">
+          <div class="text-[var(--ink-faint)] text-[10px] uppercase">Nous</div>
+          <div id="nous-credits" class="font-semibold mt-0.5 text-[var(--ink-faint)]">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4 pt-4 border-t border-[var(--line)] grid grid-cols-2 sm:grid-cols-4 gap-3" id="status-breakdown">
+      <div class="flex items-center gap-2.5">
+        <span class="dot dot-green"></span>
+        <div>
+          <div class="text-[10px] mono text-[var(--ink-faint)] uppercase">Live</div>
+          <div class="font-semibold mono text-sm" id="count-green">—</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-2.5">
+        <span class="dot dot-amber"></span>
+        <div>
+          <div class="text-[10px] mono text-[var(--ink-faint)] uppercase">Pending</div>
+          <div class="font-semibold mono text-sm" id="count-amber">—</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-2.5">
+        <span class="dot dot-red"></span>
+        <div>
+          <div class="text-[10px] mono text-[var(--ink-faint)] uppercase">Attention</div>
+          <div class="font-semibold mono text-sm" id="count-red">—</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-2.5">
+        <span class="dot dot-gray"></span>
+        <div>
+          <div class="text-[10px] mono text-[var(--ink-faint)] uppercase">Pre-MVP</div>
+          <div class="font-semibold mono text-sm" id="count-gray">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TICKER ============ -->
+<div class="max-w-[1600px] mx-auto px-4 mt-3">
+  <div class="glass rounded py-2 overflow-hidden">
+    <div id="ticker" class="ticker-track px-3 mono text-xs text-[var(--ink-dim)] whitespace-nowrap"></div>
+  </div>
+</div>
+
+<!-- ============ VIEW TOGGLE + FILTERS ============ -->
+<div class="max-w-[1600px] mx-auto px-4 mt-5 flex flex-wrap items-center gap-3 justify-between">
+  <div class="flex items-center gap-0.5 glass rounded p-0.5">
+    <button class="view-tab tab-active px-3 py-1.5 rounded text-sm font-medium" data-view="grid">Cards</button>
+    <button class="view-tab px-3 py-1.5 rounded text-sm font-medium text-[var(--ink-dim)]" data-view="list">List</button>
+    <button class="view-tab px-3 py-1.5 rounded text-sm font-medium text-[var(--ink-dim)]" data-view="pipeline">Pipeline</button>
+    <button class="view-tab px-3 py-1.5 rounded text-sm font-medium text-[var(--ink-dim)]" data-view="docs">Docs</button>
+    <button class="view-tab px-3 py-1.5 rounded text-sm font-medium text-[var(--ink-dim)]" data-view="agents">Agents</button>
+  </div>
+  <div class="flex items-center gap-2 flex-wrap">
+    <div class="relative">
+      <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--ink-faint)] text-xs"></i>
+      <input id="global-search" placeholder="Filter…  /" class="rounded pl-8 pr-3 py-1.5 text-sm w-52" oninput="Dash.applyFilters()">
+    </div>
+    <button data-filter="all" class="filter-chip chip chip-active rounded px-2.5 py-1.5 text-xs mono">All</button>
+    <button data-filter="attention" class="filter-chip chip rounded px-2.5 py-1.5 text-xs mono">Attention</button>
+    <button data-filter="recent" class="filter-chip chip rounded px-2.5 py-1.5 text-xs mono">Recent</button>
+    <button data-filter="stale" class="filter-chip chip rounded px-2.5 py-1.5 text-xs mono">Stale</button>
+    <select id="sort-select" onchange="Dash.applyFilters()" class="rounded px-2.5 py-1.5 text-xs mono">
+      <option value="balance">Balance ↓</option>
+      <option value="name">Name</option>
+      <option value="updated">Updated</option>
+      <option value="health">Health</option>
+    </select>
+  </div>
+</div>
+
+<!-- ============ MAIN CONTENT ============ -->
+<div class="max-w-[1600px] mx-auto px-4 mt-5">
+
+  <div id="view-grid" class="view-panel grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+
+  <div id="view-list" class="view-panel hidden glass rounded overflow-hidden">
+    <div class="overflow-x-auto max-h-[70vh]">
+      <table class="w-full text-sm min-w-[960px]">
+        <thead class="bg-[var(--panel-2)] text-[var(--ink-faint)] mono text-[10px] uppercase tracking-wider border-b border-[var(--line)]">
+          <tr>
+            <th class="text-left px-3 py-2.5">Project</th>
+            <th class="text-left px-3 py-2.5">Status</th>
+            <th class="text-left px-3 py-2.5">Balance</th>
+            <th class="text-left px-3 py-2.5">USD</th>
+            <th class="text-left px-3 py-2.5">Commit</th>
+            <th class="text-left px-3 py-2.5">CI</th>
+            <th class="text-left px-3 py-2.5">Updated</th>
+            <th class="text-left px-3 py-2.5">Health</th>
+            <th class="text-left px-3 py-2.5">Wallet</th>
+            <th class="text-right px-3 py-2.5">Links</th>
+          </tr>
+        </thead>
+        <tbody id="list-body" class="mono text-xs"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="view-pipeline" class="view-panel hidden space-y-2"></div>
+
+  <div id="view-docs" class="view-panel hidden grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-3">
+    <div class="glass rounded p-2 max-h-[75vh] overflow-y-auto scrollbar-thin">
+      <div class="text-[10px] mono uppercase tracking-[0.12em] text-[var(--ink-faint)] px-2 py-2">Files</div>
+      <div id="file-tree" class="space-y-0.5"></div>
+    </div>
+    <div class="glass rounded p-4 min-h-[75vh] flex flex-col">
+      <div id="doc-empty" class="flex-1 flex flex-col items-center justify-center text-center text-[var(--ink-faint)] gap-2">
+        <p class="text-sm text-[var(--ink-dim)]">Select a file to read or edit.</p>
+        <p class="text-xs max-w-xs">Saves use GitHub Contents API + PAT from Vault (localStorage only).</p>
+      </div>
+      <div id="doc-loaded" class="hidden flex-1 flex flex-col">
+        <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+          <div>
+            <div id="doc-path" class="mono text-sm font-medium text-[var(--ink)]"></div>
+            <div id="doc-meta" class="mono text-[11px] text-[var(--ink-faint)]"></div>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button id="doc-mode-view" onclick="Docs.setMode('view')" class="chip chip-active rounded px-2.5 py-1 text-xs">Preview</button>
+            <button id="doc-mode-edit" onclick="Docs.setMode('edit')" class="chip rounded px-2.5 py-1 text-xs">Edit</button>
+            <a id="doc-history" href="#" target="_blank" class="btn-ghost rounded px-2.5 py-1 text-xs">History</a>
+            <button id="doc-save" onclick="Docs.save()" class="hidden btn-brand rounded px-2.5 py-1 text-xs">Save</button>
+          </div>
+        </div>
+        <div id="doc-view" class="md-body flex-1 overflow-y-auto scrollbar-thin pr-1"></div>
+        <textarea id="doc-edit" class="hidden flex-1 mono text-sm rounded p-3 resize-none scrollbar-thin" spellcheck="false"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div id="view-agents" class="view-panel hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+
+</div>
+
+<div class="max-w-[1600px] mx-auto px-4 site-footer">
+  <div class="flex flex-wrap items-center justify-between gap-2">
+    <span>Give A Bit HQ · v1.1 · credentials never leave localStorage</span>
+    <span class="mono flex items-center gap-3">
+      <span><kbd class="kbd">/</kbd> search</span>
+      <span><kbd class="kbd">g</kbd> cards</span>
+      <span><kbd class="kbd">d</kbd> docs</span>
+      <span><kbd class="kbd">r</kbd> refresh</span>
+      <span><kbd class="kbd">esc</kbd> close</span>
+    </span>
+  </div>
+  <div class="mt-1 text-[var(--ink-faint)]">Safe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first.</div>
+</div>
+
+<!-- ============ BULK ACTIONS FLOATING BAR ============ -->
+<div class="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[min(94vw,720px)]">
+  <div class="glass rounded px-3 py-2 flex items-center gap-1.5 flex-wrap justify-center border border-[var(--line)]">
+    <button onclick="Bulk.open('send')" class="btn-brand rounded px-3 py-2 text-xs flex items-center gap-1.5">Bulk Send</button>
+    <button onclick="Bulk.open('address')" class="btn-ghost rounded px-3 py-2 text-xs">Address</button>
+    <button onclick="Bulk.open('readme')" class="btn-ghost rounded px-3 py-2 text-xs">README</button>
+    <button onclick="Bulk.open('deploy')" class="btn-ghost rounded px-3 py-2 text-xs">Deploy</button>
+    <button onclick="exportReport()" class="btn-ghost rounded px-3 py-2 text-xs">Export</button>
+    <button onclick="Vault.openModal()" class="btn-ghost rounded px-3 py-2 text-xs">Config</button>
+  </div>
+</div>
+
+<!-- ============ TOASTS ============ -->
+<div id="toast-stack" class="fixed top-16 right-4 z-[100] flex flex-col gap-2 items-end"></div>
+
+<!-- ============ PROJECT DETAIL DRAWER ============ -->
+<div id="drawer-backdrop" class="hidden fixed inset-0 z-50 modal-backdrop" onclick="Drawer.close(event)">
+  <div id="drawer" class="slide-in absolute right-0 top-0 h-full w-[min(94vw,640px)] glass rounded-l overflow-y-auto scrollbar-thin p-5 border-l border-[var(--line)]" onclick="event.stopPropagation()"></div>
+</div>
+
+<!-- ============ BULK ACTION MODAL ============ -->
+<div id="bulk-backdrop" class="hidden fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4" onclick="Bulk.close(event)">
+  <div id="bulk-modal" class="pop-in glass rounded w-full max-w-lg p-5" onclick="event.stopPropagation()"></div>
+</div>
+
+<!-- ============ VAULT / SETTINGS MODAL ============ -->
+<div id="vault-backdrop" class="hidden fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4" onclick="Vault.closeModal(event)">
+  <div class="pop-in glass rounded w-full max-w-2xl p-5 max-h-[88vh] overflow-y-auto scrollbar-thin" onclick="event.stopPropagation()">
+    <div class="flex items-center justify-between mb-1">
+      <h2 class="text-base font-semibold">Credential Vault</h2>
+      <button onclick="Vault.closeModal()" class="btn-ghost w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <p class="text-xs text-[var(--ink-faint)] mb-4 leading-relaxed">Browser <span class="mono">localStorage</span> only. Never written to this file or GitHub. Wipe anytime.</p>
+
+    <div class="mb-5">
+      <label class="text-xs mono uppercase tracking-widest text-[var(--ink-faint)] block mb-2">GitHub Personal Access Token <span class="normal-case">(repo scope for .md edits)</span></label>
+      <input id="vault-gh-token" type="password" placeholder="ghp_••••••••••••••••••••" class="w-full rounded-lg px-3 py-2.5 text-sm mono">
+    </div>
+
+    <div class="mb-4">
+      <div class="flex items-center justify-between mb-2">
+        <label class="text-xs mono uppercase tracking-widest text-[var(--ink-faint)]">LNbits Wallet Keys</label>
+        <span class="text-[10px] mono text-[var(--ink-faint)]" id="vault-node-note">Node: https://vmi3446772.tailb672ac.ts.net</span>
+      </div>
+      <div id="vault-wallet-rows" class="space-y-2"></div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3 mb-5">
+      <div>
+        <label class="text-xs mono uppercase tracking-widest text-[var(--ink-faint)] block mb-2">LNbits Node URL</label>
+        <input id="vault-node-url" placeholder="https://your-node.ts.net" class="w-full rounded-lg px-3 py-2.5 text-sm mono">
+      </div>
+      <div>
+        <label class="text-xs mono uppercase tracking-widest text-[var(--ink-faint)] block mb-2">BTC/USD source</label>
+        <select id="vault-fx-source" class="w-full rounded-lg px-3 py-2.5 text-sm mono">
+          <option value="coingecko">CoinGecko (public)</option>
+          <option value="manual">Manual entry</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <button onclick="Vault.save()" class="btn-brand rounded px-4 py-2 text-sm font-semibold flex-1">Save vault</button>
+      <button onclick="Vault.clear()" class="btn-ghost rounded px-4 py-2 text-sm text-[var(--red)]">Wipe</button>
+    </div>
+    <div class="mt-4 pt-3 border-t border-[var(--line)] text-[11px] text-[var(--ink-faint)] leading-relaxed">
+      LNbits from static HTML needs CORS on the node (or same tailnet). Empty balances are usually network/CORS, not a dashboard bug.
+    </div>
+  </div>
+</div>
+
+<!-- ============ SEARCH OVERLAY ============ -->
+<div id="search-overlay" class="hidden fixed inset-0 z-[60] modal-backdrop flex items-start justify-center pt-20 px-4" onclick="Search.close(event)">
+  <div class="pop-in glass rounded w-full max-w-xl p-1" onclick="event.stopPropagation()">
+    <div class="flex items-center gap-2 px-3 py-2 border-b border-[var(--line)]">
+      <i class="fa-solid fa-magnifying-glass text-[var(--ink-faint)] text-sm"></i>
+      <input id="overlay-search-input" placeholder="Jump to project, agent, or file…" class="flex-1 bg-transparent border-0 focus:ring-0 focus:shadow-none py-1" oninput="Search.run(this.value)">
+      <kbd class="kbd">esc</kbd>
+    </div>
+    <div id="overlay-results" class="max-h-80 overflow-y-auto scrollbar-thin p-1"></div>
+  </div>
+</div>
+
+<script>
+/* =========================================================================
+   Give A Bit HQ — single-file command center. Secrets stay in localStorage.
+   ========================================================================= */
+
+const PROJECTS = [
+  { id:'giveabit',    name:'Give A Bit',   repo:'giveabit',    url:'https://giveabit.io',              tagline:'Bitcoin Sovereignty, Education & Tools', wallet:'giveabit_main', deployed:true, icon:'fa-solid fa-seedling', category:'Foundation' },
+  { id:'satohash',    name:'Satohash',     repo:'satohash',    url:'https://satohash.io',              tagline:'Stamp Documents on Bitcoin. Immutable Proof.', wallet:'satohash', deployed:true, icon:'fa-solid fa-stamp', category:'Proof' },
+  { id:'katoa',       name:'Katoa',        repo:'katoa',       url:'https://katoa.org',                tagline:'Zero-Fee Bitcoin Creator Platform · Lightning & Nostr', wallet:'katoa', deployed:true, icon:'fa-solid fa-feather-pointed', category:'Creator' },
+  { id:'stranded',    name:'Stranded',     repo:'stranded',    url:'https://stranded.giveabit.io',     tagline:'Stranded Energy, Bitcoin Access, Stranded Value', wallet:'stranded', deployed:true, icon:'fa-solid fa-bolt-lightning', category:'Energy' },
+  { id:'tadbuy',      name:'Tadbuy',       repo:'tadbuy',      url:'https://tadbuy.giveabit.io',       tagline:'Bitcoin-Native Ad Buying Platform', wallet:'tadbuy', deployed:true, icon:'fa-solid fa-bullhorn', category:'Ads' },
+  { id:'motopass',    name:'MotoPass',     repo:'motopass',    url:'https://motopass.giveabit.io',     tagline:'Bitcoin Sovereign Passports & Residency', wallet:'motopass', deployed:true, icon:'fa-solid fa-passport', category:'Identity' },
+  { id:'sherpacarta', name:'SherpaCarta',  repo:'sherpacarta', url:'https://sherpacarta.org',          tagline:'The Global Digital Magna Carta for the 21st Century', wallet:'sherpacarta', deployed:true, icon:'fa-solid fa-scroll', category:'Governance' },
+  { id:'openstrata',  name:'Hermes Strata',repo:'openstrata',  url:'https://openstrata.giveabit.io',   tagline:'Sovereign Strata Corporation Dashboard', wallet:'openstrata', deployed:true, icon:'fa-solid fa-building-columns', category:'Corp' },
+  { id:'btcminiscript',name:'BTC Miniscript', repo:'btcminiscript', url:null,                          tagline:'Not yet deployed — Miniscript tooling R&D', wallet:'kimi', deployed:false, icon:'fa-solid fa-flask', category:'R&D' },
+];
+
+const AGENTS = [
+  { name:'Andrea', role:'Ops & Diligence', motto:'Trust, but verify on-chain.', nip05:'andrea@giveabit.io', repo:'giveabit', file:'agents/ANDREA.md' },
+  { name:'Kimi',   role:'Lead Orchestrator', motto:'Ship sovereign, ship often.', nip05:'kimi@giveabit.io', repo:'giveabit', file:'agents/KIMI.md' },
+  { name:'Lenny',  role:'Legal & Compliance', motto:'Freedom needs a paper trail.', nip05:'lenny@giveabit.io', repo:'giveabit', file:'agents/LENNY.md' },
+  { name:'Mimi',   role:'Design & Brand', motto:'Clarity is the brand.', nip05:'mimi@giveabit.io', repo:'giveabit', file:'agents/MIMI.md' },
+  { name:'Nova',   role:'Infra & Deploys', motto:'Green means go.', nip05:'nova@giveabit.io', repo:'giveabit', file:'agents/NOVA.md' },
+  { name:'Rosa',   role:'Community & Nostr', motto:'Sovereignty is social.', nip05:'rosa@giveabit.io', repo:'giveabit', file:'agents/ROSA.md' },
+  { name:'Ziggy',  role:'Growth & Marketing', motto:'Every sat tells a story.', nip05:'ziggy@giveabit.io', repo:'giveabit', file:'agents/ZIGGY.md' },
+];
+
+const DOC_FILES = ['README.md','AGENTS.md','GROK-SESSION-PROTOCOL.md','SOURCE-OF-TRUTH.md','DILIGENCE.md','EXEC-SUMMARY.md','CHANGELOG.md','CONTRIBUTING.md','MARKETING-ONELINER.md','docs/KIMI-HANDOFF.md'];
+
+const GH_OWNER = 'kitsboy';
+const GH_RAW = repo => `https://raw.githubusercontent.com/${GH_OWNER}/${repo}/main/`;
+
+const state = {
+  projects: {},
+  view: 'grid',
+  filter: 'all',
+  ghRateRemaining: null,
+};
+
+/* =========================================================================
+   VAULT — local-only credential storage. Nothing here ever gets committed.
+   ========================================================================= */
+const Vault = {
+  KEY: 'sovereign_deck_vault_v1',
+  data: { ghToken:'', nodeUrl:'https://vmi3446772.tailb672ac.ts.net', wallets:{}, fxSource:'coingecko' },
+
+  load(){
+    try{
+      const raw = localStorage.getItem(this.KEY);
+      if(raw) this.data = Object.assign(this.data, JSON.parse(raw));
+    }catch(e){ console.warn('vault load failed', e); }
+  },
+  persist(){
+    localStorage.setItem(this.KEY, JSON.stringify(this.data));
+  },
+  openModal(){
+    document.getElementById('vault-backdrop').classList.remove('hidden');
+    document.getElementById('vault-gh-token').value = this.data.ghToken || '';
+    document.getElementById('vault-node-url').value = this.data.nodeUrl || '';
+    document.getElementById('vault-fx-source').value = this.data.fxSource || 'coingecko';
+    const rows = document.getElementById('vault-wallet-rows');
+    rows.innerHTML = PROJECTS.reduce((seen,p)=>{ if(!seen.includes(p.wallet)) seen.push(p.wallet); return seen; },[])
+      .map(w => `
+        <div class="flex items-center gap-2">
+          <span class="mono text-xs text-[var(--ink-dim)] w-32 shrink-0 truncate" title="${w}">${w}</span>
+          <input type="password" data-wallet-key="${w}" value="${(this.data.wallets[w]||'')}" placeholder="LNbits X-Api-Key (invoice key recommended)" class="flex-1 rounded-lg px-3 py-2 text-xs mono">
+        </div>`).join('');
+  },
+  closeModal(e){
+    if(e && e.target.id !== 'vault-backdrop') return;
+    document.getElementById('vault-backdrop').classList.add('hidden');
+  },
+  save(){
+    this.data.ghToken = document.getElementById('vault-gh-token').value.trim();
+    this.data.nodeUrl = document.getElementById('vault-node-url').value.trim() || this.data.nodeUrl;
+    this.data.fxSource = document.getElementById('vault-fx-source').value;
+    document.querySelectorAll('[data-wallet-key]').forEach(inp=>{
+      this.data.wallets[inp.dataset.walletKey] = inp.value.trim();
+    });
+    this.persist();
+    toast('Vault saved on this browser only', 'success');
+    document.getElementById('vault-backdrop').classList.add('hidden');
+    this.updateStatusChip();
+    Dash.refreshAll();
+  },
+  clear(){
+    if(!confirm('Wipe all locally-stored credentials from this browser?')) return;
+    localStorage.removeItem(this.KEY);
+    this.data = { ghToken:'', nodeUrl:'https://vmi3446772.tailb672ac.ts.net', wallets:{}, fxSource:'coingecko' };
+    toast('Vault wiped', 'error');
+    this.updateStatusChip();
+    this.openModal();
+  },
+  hasWallet(w){ return !!(this.data.wallets[w] && this.data.wallets[w].length>10); },
+  hasGh(){ return !!(this.data.ghToken && this.data.ghToken.length>10); },
+  keyCount(){
+    return Object.values(this.data.wallets||{}).filter(v=>v && v.length>10).length + (this.hasGh()?1:0);
+  },
+  updateStatusChip(){
+    const el = document.getElementById('vault-status');
+    if(!el) return;
+    const n = this.keyCount();
+    el.textContent = n ? `vault ${n} set` : 'vault empty';
+    el.className = 'status-pill shrink-0 ' + (n ? 'green' : 'gray');
+  }
+};
+
+function toast(msg, kind='info'){
+  const colors = { success:'var(--green)', error:'var(--red)', info:'var(--orange-2)' };
+  const icons = { success:'fa-circle-check', error:'fa-circle-exclamation', info:'fa-circle-info' };
+  const el = document.createElement('div');
+  el.className = 'toast glass rounded-xl px-4 py-3 text-sm flex items-center gap-2 max-w-sm';
+  el.style.borderColor = colors[kind];
+  el.innerHTML = `<i class="fa-solid ${icons[kind]}" style="color:${colors[kind]}"></i><span>${msg}</span>`;
+  document.getElementById('toast-stack').appendChild(el);
+  setTimeout(()=>el.remove(), 4200);
+}
+
+const fmt = {
+  sats(n){ return n==null ? '—' : new Intl.NumberFormat('en-US').format(Math.round(n)); },
+  usd(n){ return n==null ? '$—' : '$'+new Intl.NumberFormat('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n); },
+  usdFromSats(sats){
+    if(sats==null || btcUsdPrice==null) return null;
+    return sats/1e8*btcUsdPrice;
+  },
+  timeAgo(iso){
+    if(!iso) return '—';
+    const s = Math.floor((Date.now()-new Date(iso).getTime())/1000);
+    if(s<60) return s+'s ago';
+    if(s<3600) return Math.floor(s/60)+'m ago';
+    if(s<86400) return Math.floor(s/3600)+'h ago';
+    if(s<86400*30) return Math.floor(s/86400)+'d ago';
+    return Math.floor(s/86400/30)+'mo ago';
+  },
+  short(sha){ return sha ? sha.substring(0,7) : '—'; },
+  actions(status){
+    if(!status) return '—';
+    if(status==='success') return '✓ success';
+    if(status==='failure') return '✗ failed';
+    if(status==='in_progress'||status==='queued') return '… '+status;
+    return status;
+  }
+};
+
+let btcUsdPrice = null;
+
+const GitHubData = {
+  async branchInfo(repo){
+    const headers = {};
+    if(Vault.hasGh()) headers.Authorization = `token ${Vault.data.ghToken}`;
+    const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}/branches/main`, { headers });
+    this._trackRate(r);
+    if(!r.ok) throw new Error('gh '+r.status);
+    return r.json();
+  },
+  async lastRun(repo){
+    try{
+      const headers = {};
+      if(Vault.hasGh()) headers.Authorization = `token ${Vault.data.ghToken}`;
+      const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}/actions/runs?per_page=1`, { headers });
+      this._trackRate(r);
+      if(!r.ok) return null;
+      const j = await r.json();
+      return (j.workflow_runs && j.workflow_runs[0]) || null;
+    }catch(e){ return null; }
+  },
+  async readFile(repo, path){
+    const r = await fetch(GH_RAW(repo)+path+`?t=${Date.now()}`);
+    if(!r.ok) throw new Error('404');
+    return r.text();
+  },
+  async writeFile(repo, path, content, message){
+    if(!Vault.hasGh()) throw new Error('No GitHub token in vault');
+    const api = `https://api.github.com/repos/${GH_OWNER}/${repo}/contents/${path}`;
+    let sha = null;
+    try{
+      const cur = await fetch(api, { headers:{ Authorization:`token ${Vault.data.ghToken}` }});
+      if(cur.ok){ const j = await cur.json(); sha = j.sha; }
+    }catch(e){}
+    const body = { message: message || `docs: update ${path} via Sovereign Deck`, content: btoa(unescape(encodeURIComponent(content))) };
+    if(sha) body.sha = sha;
+    const res = await fetch(api, { method:'PUT', headers:{ Authorization:`token ${Vault.data.ghToken}`, 'Content-Type':'application/json' }, body: JSON.stringify(body) });
+    if(!res.ok){ const t = await res.text(); throw new Error('save failed: '+t.substring(0,140)); }
+    return res.json();
+  },
+  _trackRate(r){
+    const rem = r.headers.get('x-ratelimit-remaining');
+    if(rem !== null){
+      state.ghRateRemaining = rem;
+      document.getElementById('gh-rate').textContent = `(${rem} left)`;
+      const ban = document.getElementById('sys-banner');
+      if(Number(rem) < 15){
+        ban.classList.remove('hidden');
+        ban.innerHTML = `<div class="banner-warn mono">GitHub rate limit low (${rem} remaining). Add a PAT in Vault for 5,000/hr.</div>`;
+      } else if(Number(rem) === 0){
+        ban.classList.remove('hidden');
+        ban.innerHTML = `<div class="banner-err mono">GitHub rate limit exhausted. Wait or add a PAT in Vault.</div>`;
+      } else if(ban && !ban.dataset.sticky){
+        ban.classList.add('hidden');
+        ban.innerHTML = '';
+      }
+    }
+  }
+};
+
+const LNbitsData = {
+  async wallet(walletKey){
+    if(!Vault.hasWallet(walletKey)) return null;
+    const url = `${Vault.data.nodeUrl.replace(/\/$/,'')}/api/v1/wallet`;
+    const r = await fetch(url, { headers:{ 'X-Api-Key': Vault.data.wallets[walletKey] }});
+    if(!r.ok) throw new Error('lnbits '+r.status);
+    return r.json();
+  }
+};
+
+async function checkLive(url){
+  if(!url) return { ok:false, status:null };
+  try{
+    await fetch(url, { method:'GET', mode:'no-cors', cache:'no-store' });
+    return { ok:true, status:'opaque' };
+  }catch(e){
+    return { ok:false, status:'unreachable' };
+  }
+}
+
+const Dash = {
+  async refreshAll(manual=false){
+    setHealthDot('hb-github', navigator.onLine ? 'amber' : 'red');
+    if(manual) toast('Refreshing all data sources…','info');
+
+    await this.fetchPrice();
+    await Promise.all(PROJECTS.map(p => this.refreshProject(p)));
+
+    this.render();
+    this.renderPortfolio();
+    this.renderTicker();
+    setHealthDot('hb-github', 'green');
+    setHealthDot('hb-lnbits', Object.values(state.projects).some(p=>p.walletOk) ? 'green' : (Object.keys(Vault.data.wallets||{}).some(k=>Vault.hasWallet(k)) ? 'red':'gray'));
+    setHealthDot('hb-thor', 'amber');
+    setHealthDot('hb-lnd', 'gray');
+    document.getElementById('last-refresh').textContent = 'synced ' + new Date().toLocaleTimeString();
+    this.cache();
+  },
+
+  async fetchPrice(){
+    if(Vault.data.fxSource !== 'coingecko') return;
+    try{
+      const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+      const j = await r.json();
+      btcUsdPrice = j.bitcoin.usd;
+      const priceStr = 'BTC $' + new Intl.NumberFormat('en-US',{maximumFractionDigits:0}).format(btcUsdPrice);
+      document.getElementById('btc-price-top').textContent = priceStr;
+      document.getElementById('btc-price-label').textContent = priceStr + ' · CoinGecko';
+    }catch(e){ /* keep last known */ }
+  },
+
+  async refreshProject(p){
+    const d = state.projects[p.id] || {};
+    d.id = p.id;
+
+    try{
+      const b = await GitHubData.branchInfo(p.repo);
+      d.sha = b.commit.sha;
+      d.commitMsg = b.commit.commit.message.split('\n')[0];
+      d.commitDate = b.commit.commit.committer.date;
+      d.author = b.commit.commit.author?.name || '—';
+      d.ghOk = true;
+    }catch(e){ d.ghOk = false; }
+
+    try{
+      const run = await GitHubData.lastRun(p.repo);
+      d.actionsStatus = run ? run.conclusion || run.status : null;
+      d.actionsName = run ? run.name : null;
+      d.actionsUrl = run ? run.html_url : null;
+    }catch(e){ d.actionsStatus = null; }
+
+    if(p.deployed && p.url){
+      const live = await checkLive(p.url);
+      d.liveReachable = live.ok;
+    } else {
+      d.liveReachable = null;
+    }
+
+    d.walletOk = false;
+    if(Vault.hasWallet(p.wallet)){
+      try{
+        const w = await LNbitsData.wallet(p.wallet);
+        d.balanceMsat = w.balance;
+        d.balanceSats = Math.floor(w.balance/1000);
+        d.walletName = w.name || p.wallet;
+        d.walletOk = true;
+      }catch(e){ d.walletOk = false; d.walletError = true; }
+    }
+
+    d.status = computeStatus(p, d);
+    d.updatedAt = d.commitDate || d.updatedAt;
+    state.projects[p.id] = d;
+  },
+
+  render(){
+    renderGrid();
+    renderList();
+    renderPipeline();
+    renderAgents();
+    renderDocTree();
+    this.applyFilters();
+  },
+
+  renderPortfolio(){
+    let total = 0, synced = 0, healthSum = 0, liveCount = 0;
+    const bars = [];
+    const counts = { green:0, amber:0, red:0, gray:0 };
+
+    PROJECTS.forEach(p=>{
+      const d = state.projects[p.id] || {};
+      if(d.walletOk){ total += d.balanceSats||0; synced++; }
+      if(d.liveReachable) liveCount++;
+      healthSum += healthScore(d);
+      counts[d.status||'gray'] = (counts[d.status||'gray']||0)+1;
+      bars.push({ name:p.name, sats: d.balanceSats||0, ok: !!d.walletOk });
+    });
+
+    document.getElementById('total-sats').textContent = fmt.sats(total);
+    document.getElementById('total-usd').textContent = btcUsdPrice ? fmt.usd(total/1e8*btcUsdPrice) : '$—';
+    document.getElementById('portfolio-count').textContent = `${synced}/${PROJECTS.length} synced`;
+    document.getElementById('portfolio-change').textContent = '24h —';
+    document.getElementById('portfolio-health').textContent = `health ${Math.round(healthSum/PROJECTS.length)}`;
+    document.getElementById('portfolio-live').textContent = `${liveCount} live`;
+    document.getElementById('stat-projects').textContent = PROJECTS.length;
+    document.getElementById('stat-agents').textContent = AGENTS.length;
+    document.getElementById('count-green').textContent = counts.green;
+    document.getElementById('count-amber').textContent = counts.amber;
+    document.getElementById('count-red').textContent = counts.red;
+    document.getElementById('count-gray').textContent = counts.gray;
+    Vault.updateStatusChip();
+
+    const max = Math.max(1, ...bars.map(b=>b.sats));
+    document.getElementById('bal-bars').innerHTML = bars.map(b=>`
+      <div class="flex items-center gap-2 text-[11px] mono">
+        <span class="w-24 truncate text-[var(--ink-faint)]" title="${b.name}">${b.name}</span>
+        <div class="flex-1 h-1.5 rounded-sm bg-[var(--void-2)] overflow-hidden border border-[var(--line)]">
+          <div class="bar-fill h-full ${b.ok?'bg-[var(--ink)]':'bg-[var(--gray)]'}" style="width:${(b.sats/max*100)||0}%; opacity:${b.ok?1:0.4}"></div>
+        </div>
+        <span class="w-16 text-right text-[var(--ink-dim)]">${fmt.sats(b.sats)}</span>
+      </div>`).join('');
+  },
+
+  renderTicker(){
+    const items = PROJECTS.map(p=>{
+      const d = state.projects[p.id]||{};
+      const s = statusMeta(d.status);
+      const bal = d.walletOk ? fmt.sats(d.balanceSats)+' sats' : (Vault.hasWallet(p.wallet)?'err':'no key');
+      const ci = d.actionsStatus ? fmt.actions(d.actionsStatus) : 'no CI';
+      return `<span class="inline-flex items-center gap-1.5"><span class="dot dot-${s.dot}"></span><strong class="text-[var(--ink)]">${p.name}</strong> <span class="text-[var(--ink-faint)]">${bal}</span> <span class="text-[var(--ink-faint)]">· ${ci}</span> <span class="text-[var(--ink-faint)]">· ${fmt.timeAgo(d.commitDate)}</span></span>`;
+    });
+    document.getElementById('ticker').innerHTML = items.concat(items).join('<span class="text-[var(--ink-faint)] mx-1">·</span>');
+  },
+
+  applyFilters(){
+    const q = document.getElementById('global-search').value.toLowerCase().trim();
+    const f = state.filter;
+    const sortBy = document.getElementById('sort-select').value;
+
+    let list = PROJECTS.filter(p=>{
+      const d = state.projects[p.id]||{};
+      if(q && !(p.name.toLowerCase().includes(q) || p.tagline.toLowerCase().includes(q) || (p.category||'').toLowerCase().includes(q) || p.repo.toLowerCase().includes(q))) return false;
+      if(f==='attention') return d.status==='red' || d.status==='amber' || (d.walletOk && d.balanceSats===0);
+      if(f==='recent') return d.commitDate && (Date.now()-new Date(d.commitDate))<7*86400*1000;
+      if(f==='stale') return d.commitDate && (Date.now()-new Date(d.commitDate))>30*86400*1000;
+      return true;
+    });
+
+    list.sort((a,b)=>{
+      const da=state.projects[a.id]||{}, db=state.projects[b.id]||{};
+      if(sortBy==='balance') return (db.balanceSats||0)-(da.balanceSats||0);
+      if(sortBy==='name') return a.name.localeCompare(b.name);
+      if(sortBy==='updated') return new Date(db.commitDate||0)-new Date(da.commitDate||0);
+      if(sortBy==='health') return healthScore(db)-healthScore(da);
+      return 0;
+    });
+
+    const ids = list.map(p=>p.id);
+    document.querySelectorAll('[data-project-card]').forEach(el=> el.style.display = ids.includes(el.dataset.projectCard) ? '' : 'none');
+    document.querySelectorAll('[data-project-row]').forEach(el=> el.style.display = ids.includes(el.dataset.projectRow) ? '' : 'none');
+    document.querySelectorAll('[data-project-pipe]').forEach(el=> el.style.display = ids.includes(el.dataset.projectPipe) ? '' : 'none');
+    const vc = document.getElementById('visible-count');
+    if(vc) vc.textContent = `showing ${ids.length}`;
+  },
+
+  cache(){
+    try{ localStorage.setItem('sovereign_deck_cache', JSON.stringify({ projects:state.projects, price:btcUsdPrice, ts:Date.now() })); }catch(e){}
+  },
+  loadCache(){
+    try{
+      const raw = localStorage.getItem('sovereign_deck_cache');
+      if(raw){
+        const j = JSON.parse(raw);
+        state.projects = j.projects||{};
+        btcUsdPrice = j.price;
+        state.cacheTs = j.ts;
+        const age = document.getElementById('cache-age');
+        if(age && j.ts){
+          age.textContent = 'cache '+fmt.timeAgo(new Date(j.ts).toISOString());
+          age.classList.remove('hidden');
+        }
+      }
+    }catch(e){}
+  }
+};
+
+function copyText(text, label){
+  if(!text || text==='—') return;
+  navigator.clipboard?.writeText(text).then(()=>toast('Copied '+ (label||text), 'success')).catch(()=>{});
+}
+
+function healthScore(d){
+  let s = 50;
+  if(d.status==='green') s+=40; else if(d.status==='amber') s+=10; else if(d.status==='red') s-=40;
+  if(d.walletOk) s+=10;
+  if(d.actionsStatus==='success') s+=10; else if(d.actionsStatus==='failure') s-=20;
+  if(d.liveReachable) s+=5;
+  return Math.max(0, Math.min(100, s));
+}
+
+function computeStatus(p, d){
+  if(!p.deployed) return 'gray';
+  if(d.liveReachable===false) return 'red';
+  if(d.actionsStatus==='failure') return 'red';
+  if(d.actionsStatus==='in_progress' || d.actionsStatus==='queued') return 'amber';
+  if(d.ghOk===false) return 'amber';
+  return 'green';
+}
+
+function statusMeta(status){
+  return { green:{dot:'green',label:'Live'}, amber:{dot:'amber',label:'Pending'}, red:{dot:'red',label:'Down'}, gray:{dot:'gray',label:'Pre-MVP'} }[status] || {dot:'gray',label:'Unknown'};
+}
+
+function setHealthDot(id, color){
+  const el = document.getElementById(id).querySelector('.dot');
+  el.className = `dot dot-${color}`;
+}
+
+function healthColor(score){
+  if(score>=80) return 'var(--green)';
+  if(score>=50) return 'var(--amber)';
+  return 'var(--red)';
+}
+
+function renderGrid(){
+  const el = document.getElementById('view-grid');
+  el.innerHTML = PROJECTS.map(p=>{
+    const d = state.projects[p.id]||{};
+    const s = statusMeta(d.status);
+    const hs = healthScore(d);
+    const usd = d.walletOk ? fmt.usd(fmt.usdFromSats(d.balanceSats)) : '$—';
+    const walletBadge = Vault.hasWallet(p.wallet)
+      ? (d.walletOk ? '<span class="status-pill green">wallet</span>' : '<span class="status-pill red">wallet err</span>')
+      : '<span class="status-pill gray">no key</span>';
+    const liveBadge = d.liveReachable===true ? '<span class="status-pill green">live</span>'
+      : d.liveReachable===false ? '<span class="status-pill red">down</span>'
+      : '<span class="status-pill gray">—</span>';
+    const steps = [
+      { ok: !!d.sha },
+      { ok: d.actionsStatus==='success', amber: d.actionsStatus==='in_progress'||d.actionsStatus==='queued' },
+      { ok: d.status==='green' },
+      { ok: d.liveReachable===true },
+    ];
+    const absDate = d.commitDate ? new Date(d.commitDate).toLocaleString() : '';
+
+    return `
+    <div data-project-card="${p.id}" class="glass glass-hover rounded p-4 cursor-pointer flex flex-col gap-3" onclick="Drawer.open('${p.id}')">
+      <div class="flex items-start justify-between gap-2">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="icon-box sm"><i class="${p.icon}"></i></div>
+          <div class="min-w-0">
+            <h3 class="font-semibold text-[14px] leading-tight">${p.name}</h3>
+            <div class="text-[10px] mono text-[var(--ink-faint)] mt-0.5 truncate">${p.category||'—'} · ${p.repo}</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5 shrink-0">
+          <span class="status-pill ${s.dot}"><span class="dot dot-${s.dot}" style="width:6px;height:6px"></span>${s.label}</span>
+          <div class="health-ring" style="color:${healthColor(hs)};border-color:${healthColor(hs)}" title="Health">${hs}</div>
+        </div>
+      </div>
+
+      <p class="text-xs text-[var(--ink-dim)] leading-snug line-clamp-2">${p.tagline}</p>
+
+      <div class="grid grid-cols-2 gap-1.5">
+        <div class="metric-tile">
+          <div class="text-[9px] mono uppercase text-[var(--ink-faint)]">Balance</div>
+          <div class="mono text-[15px] font-semibold mt-0.5 ${d.walletOk?'text-[var(--ink)]':'text-[var(--ink-faint)]'}">${d.walletOk?fmt.sats(d.balanceSats):'—'} <span class="text-[9px] font-normal text-[var(--ink-faint)]">sats</span></div>
+          <div class="text-[10px] mono text-[var(--ink-faint)]">${usd}</div>
+        </div>
+        <div class="metric-tile">
+          <div class="text-[9px] mono uppercase text-[var(--ink-faint)]">Commit</div>
+          <div class="mono text-sm font-semibold mt-0.5 cursor-copy" title="Click to copy" onclick="event.stopPropagation();copyText('${d.sha||''}','SHA')">${fmt.short(d.sha)}</div>
+          <div class="text-[10px] mono text-[var(--ink-faint)] truncate" title="${(d.commitMsg||'').replace(/"/g,'&quot;')}">${d.commitMsg? d.commitMsg.substring(0,28)+(d.commitMsg.length>28?'…':''):'—'}</div>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-1">
+        ${walletBadge}
+        ${liveBadge}
+        <span class="status-pill ${d.actionsStatus==='success'?'green':d.actionsStatus==='failure'?'red':d.actionsStatus?'amber':'gray'}">ci ${fmt.actions(d.actionsStatus)}</span>
+      </div>
+
+      <div class="flex items-center gap-1">
+        ${steps.map((st,i)=>`
+          <div class="flex-1 h-1 rounded-sm ${st.ok?'pipe-step-ok':st.amber?'pipe-step-amber':'pipe-step-fail'}" title="${['Commit','Actions','Deploy','Live'][i]}"></div>
+        `).join('')}
+      </div>
+
+      <div class="mt-auto pt-2 border-t border-[var(--line)] flex items-center justify-between text-[10px] mono text-[var(--ink-faint)]">
+        <span title="${absDate}">${fmt.timeAgo(d.commitDate)}${d.author? ' · '+d.author:''}</span>
+        ${p.url
+          ? `<a href="${p.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="text-[var(--ink)] underline underline-offset-2">open</a>`
+          : `<span>dev</span>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderList(){
+  const el = document.getElementById('list-body');
+  el.innerHTML = PROJECTS.map(p=>{
+    const d = state.projects[p.id]||{};
+    const s = statusMeta(d.status);
+    const hs = healthScore(d);
+    const usd = d.walletOk && btcUsdPrice ? fmt.usd(fmt.usdFromSats(d.balanceSats)) : '—';
+    return `
+    <tr data-project-row="${p.id}" class="border-t border-[var(--line)] row-hover cursor-pointer" onclick="Drawer.open('${p.id}')">
+      <td class="px-3 py-2.5">
+        <div class="font-medium text-[13px]">${p.name}</div>
+        <div class="text-[10px] text-[var(--ink-faint)] mt-0.5">${p.category||''} · ${p.repo}</div>
+      </td>
+      <td class="px-3 py-2.5"><span class="status-pill ${s.dot}"><span class="dot dot-${s.dot}" style="width:6px;height:6px"></span>${s.label}</span></td>
+      <td class="px-3 py-2.5 font-semibold">${d.walletOk?fmt.sats(d.balanceSats):'—'} <span class="text-[var(--ink-faint)] font-normal">sats</span></td>
+      <td class="px-3 py-2.5 text-[var(--ink-dim)]">${usd}</td>
+      <td class="px-3 py-2.5">
+        <div class="cursor-copy" onclick="event.stopPropagation();copyText('${d.sha||''}','SHA')">${fmt.short(d.sha)}</div>
+        <div class="text-[10px] text-[var(--ink-faint)] truncate max-w-[140px]" title="${(d.commitMsg||'').replace(/"/g,'&quot;')}">${d.commitMsg||'—'}</div>
+      </td>
+      <td class="px-3 py-2.5">${fmt.actions(d.actionsStatus)}</td>
+      <td class="px-3 py-2.5" title="${d.commitDate?new Date(d.commitDate).toLocaleString():''}">${fmt.timeAgo(d.commitDate)}</td>
+      <td class="px-3 py-2.5"><span style="color:${healthColor(hs)};font-weight:600">${hs}</span></td>
+      <td class="px-3 py-2.5">${Vault.hasWallet(p.wallet)?(d.walletOk?'ok':'err'):'—'}</td>
+      <td class="px-3 py-2.5 text-right space-x-2">
+        ${p.url?`<a href="${p.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="underline">site</a>`:''}
+        <a href="https://github.com/${GH_OWNER}/${p.repo}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="text-[var(--ink-faint)] underline">gh</a>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function renderPipeline(){
+  const el = document.getElementById('view-pipeline');
+  el.innerHTML = PROJECTS.map(p=>{
+    const d = state.projects[p.id]||{};
+    const s = statusMeta(d.status);
+    const steps = [
+      { label:'Commit', ok: !!d.sha, detail: fmt.short(d.sha) },
+      { label:'Actions', ok: d.actionsStatus==='success', amber: d.actionsStatus==='in_progress'||d.actionsStatus==='queued', detail: fmt.actions(d.actionsStatus) },
+      { label:'Deployed', ok: d.status==='green', detail: s.label },
+      { label:'Live', ok: d.liveReachable===true, detail: d.liveReachable===true?'reachable':d.liveReachable===false?'down':'n/a' },
+    ];
+    return `
+    <div data-project-pipe="${p.id}" class="glass rounded p-3 flex items-center gap-4 flex-wrap cursor-pointer glass-hover" onclick="Drawer.open('${p.id}')">
+      <div class="w-44 shrink-0">
+        <div class="font-semibold text-sm flex items-center gap-2"><span class="dot dot-${s.dot}"></span>${p.name}</div>
+        <div class="text-[10px] mono text-[var(--ink-faint)] mt-1 line-clamp-1" title="${(d.commitMsg||'').replace(/"/g,'&quot;')}">${d.commitMsg||'—'}</div>
+        <div class="text-[10px] mono text-[var(--ink-faint)] mt-0.5">${fmt.timeAgo(d.commitDate)} · ${healthScore(d)}</div>
+      </div>
+      <div class="flex items-center gap-1.5 flex-1 min-w-[260px]">
+        ${steps.map((st,i)=>`
+          <div class="flex items-center gap-1.5 flex-1">
+            <div class="flex flex-col items-center gap-0.5 flex-1">
+              <div class="w-full h-2 rounded-sm ${st.ok?'pipe-step-ok':st.amber?'pipe-step-amber':'pipe-step-fail'}"></div>
+              <span class="text-[9px] mono text-[var(--ink-dim)]">${st.label}</span>
+              <span class="text-[9px] mono text-[var(--ink-faint)]">${st.detail}</span>
+            </div>
+            ${i<3?'<span class="text-[var(--ink-faint)] text-[10px] -mt-3">›</span>':''}
+          </div>`).join('')}
+      </div>
+      <div class="text-right shrink-0">
+        <div class="mono text-sm font-semibold">${d.walletOk?fmt.sats(d.balanceSats)+' sats':'—'}</div>
+        ${p.url?`<a href="${p.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="text-[10px] underline">open</a>`:'<span class="text-[10px] text-[var(--ink-faint)]">pre-MVP</span>'}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderAgents(){
+  const el = document.getElementById('view-agents');
+  el.innerHTML = AGENTS.map(a=>`
+    <div class="glass glass-hover rounded p-4 cursor-pointer" onclick="Docs.openAgent('${a.repo}','${a.file}','${a.name}')">
+      <div class="flex items-center gap-3 mb-2">
+        <div class="icon-box">${a.name[0]}</div>
+        <div>
+          <div class="font-semibold">${a.name}</div>
+          <div class="text-xs text-[var(--ink-dim)]">${a.role}</div>
+        </div>
+      </div>
+      <p class="text-sm text-[var(--ink-dim)] mb-3 leading-snug">"${a.motto}"</p>
+      <div class="flex items-center justify-between text-[11px] mono pt-2 border-t border-[var(--line)]">
+        <span class="text-[var(--ink-faint)]">${a.nip05}</span>
+        <span class="text-[var(--ink)]">edit →</span>
+      </div>
+      <div class="text-[10px] mono text-[var(--ink-faint)] mt-1.5">${a.file}</div>
+    </div>`).join('');
+}
+
+function renderFileTreeIcon(){ return 'fa-regular fa-file-lines'; }
+function renderDocTree(){
+  const el = document.getElementById('file-tree');
+  el.innerHTML = PROJECTS.map(p=>`
+    <div class="tree-project">
+      <button onclick="toggleTree('${p.id}')" class="w-full flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-[var(--void-2)] text-sm">
+        <span class="flex items-center gap-2"><i class="fa-solid fa-folder text-[var(--orange-2)] text-xs"></i>${p.name}</span>
+        <i class="fa-solid fa-chevron-down text-[9px] text-[var(--ink-faint)] transition-transform" id="chev-${p.id}"></i>
+      </button>
+      <div id="tree-${p.id}" class="pl-6 space-y-0.5 hidden">
+        ${DOC_FILES.map(f=>`
+          <button onclick="Docs.open('${p.repo}','${f}','${p.name}')" class="w-full flex items-center gap-2 px-2 py-1 rounded-md hover:bg-[var(--void-2)] text-left text-xs text-[var(--ink-dim)] mono">
+            <i class="${renderFileTreeIcon()} text-[10px]"></i>${f}
+          </button>`).join('')}
+      </div>
+    </div>`).join('');
+}
+function toggleTree(id){
+  const t = document.getElementById('tree-'+id);
+  const c = document.getElementById('chev-'+id);
+  t.classList.toggle('hidden');
+  c.style.transform = t.classList.contains('hidden') ? '' : 'rotate(180deg)';
+}
+
+const Docs = {
+  current: null,
+  open(repo, path, projectName){
+    switchView('docs');
+    this.current = { repo, path, projectName };
+    document.getElementById('doc-empty').classList.add('hidden');
+    document.getElementById('doc-loaded').classList.remove('hidden');
+    document.getElementById('doc-path').textContent = `${projectName} / ${path}`;
+    document.getElementById('doc-meta').textContent = 'loading…';
+    document.getElementById('doc-history').href = `https://github.com/${GH_OWNER}/${repo}/commits/main/${path}`;
+    document.getElementById('doc-view').innerHTML = `<div class="space-y-2">${'<div class="skeleton h-4 rounded"></div>'.repeat(6)}</div>`;
+    this.setMode('view');
+    GitHubData.readFile(repo, path).then(text=>{
+      this.rawText = text;
+      document.getElementById('doc-view').innerHTML = marked.parse(text);
+      document.getElementById('doc-edit').value = text;
+      document.getElementById('doc-meta').textContent = `${text.split('\n').length} lines · ${(text.length/1024).toFixed(1)} KB · ${GH_OWNER}/${repo}`;
+    }).catch(()=>{
+      document.getElementById('doc-view').innerHTML = `<div class="text-[var(--red)] text-sm">Could not load this file — it may not exist yet at <span class="mono">${path}</span> on <span class="mono">main</span>.</div>`;
+      document.getElementById('doc-meta').textContent = 'not found';
+      this.rawText = '';
+      document.getElementById('doc-edit').value = '';
+    });
+  },
+  openAgent(repo, file, name){
+    switchView('agents');
+    this.open(repo, file, name);
+    switchView('docs');
+  },
+  setMode(mode){
+    document.getElementById('doc-mode-view').classList.toggle('chip-active', mode==='view');
+    document.getElementById('doc-mode-edit').classList.toggle('chip-active', mode==='edit');
+    document.getElementById('doc-view').classList.toggle('hidden', mode!=='view');
+    document.getElementById('doc-edit').classList.toggle('hidden', mode!=='edit');
+    document.getElementById('doc-save').classList.toggle('hidden', mode!=='edit');
+  },
+  async save(){
+    if(!this.current) return;
+    if(!Vault.hasGh()){ toast('Add a GitHub token in the Vault first','error'); Vault.openModal(); return; }
+    const content = document.getElementById('doc-edit').value;
+    const btn = document.getElementById('doc-save');
+    const oldHtml = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i>Saving…';
+    try{
+      await GitHubData.writeFile(this.current.repo, this.current.path, content, `docs: update ${this.current.path} via Sovereign Deck`);
+      toast(`Saved ${this.current.path} to ${this.current.repo}`,'success');
+      document.getElementById('doc-view').innerHTML = marked.parse(content);
+      this.rawText = content;
+    }catch(e){
+      toast('Save failed: '+e.message,'error');
+    }
+    btn.innerHTML = oldHtml;
+  }
+};
+
+const Drawer = {
+  open(id){
+    const p = PROJECTS.find(x=>x.id===id);
+    const d = state.projects[id]||{};
+    const s = statusMeta(d.status);
+    const hs = healthScore(d);
+    const usd = d.walletOk && btcUsdPrice ? fmt.usd(fmt.usdFromSats(d.balanceSats)) : '$—';
+    document.getElementById('drawer').innerHTML = `
+      <div class="flex items-start justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <div class="icon-box"><i class="${p.icon}"></i></div>
+          <div>
+            <h2 class="text-lg font-bold">${p.name}</h2>
+            <div class="flex items-center gap-1.5 text-xs mono text-[var(--ink-faint)] mt-0.5">
+              <span class="status-pill ${s.dot}"><span class="dot dot-${s.dot}" style="width:6px;height:6px"></span>${s.label}</span>
+              <span>${p.category||''}</span>
+            </div>
+          </div>
+        </div>
+        <button onclick="Drawer.close({target:{id:'drawer-backdrop'}})" class="btn-ghost w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <p class="text-sm text-[var(--ink-dim)] mb-4 leading-snug">${p.tagline}</p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 mb-4">
+        <div class="metric-tile text-center">
+          <div class="text-[9px] mono text-[var(--ink-faint)] uppercase">Balance</div>
+          <div class="font-semibold mono mt-1 text-sm">${d.walletOk?fmt.sats(d.balanceSats):'—'}</div>
+          <div class="text-[10px] text-[var(--ink-faint)] mono">${usd}</div>
+        </div>
+        <div class="metric-tile text-center">
+          <div class="text-[9px] mono text-[var(--ink-faint)] uppercase">Health</div>
+          <div class="font-semibold mono mt-1 text-sm" style="color:${healthColor(hs)}">${hs}/100</div>
+        </div>
+        <div class="metric-tile text-center">
+          <div class="text-[9px] mono text-[var(--ink-faint)] uppercase">Commit</div>
+          <div class="font-semibold mono mt-1 text-sm">${fmt.timeAgo(d.commitDate)}</div>
+        </div>
+        <div class="metric-tile text-center">
+          <div class="text-[9px] mono text-[var(--ink-faint)] uppercase">CI</div>
+          <div class="font-semibold mono mt-1 text-sm">${fmt.actions(d.actionsStatus)}</div>
+        </div>
+      </div>
+
+      ${p.url? `<a href="${p.url}" target="_blank" rel="noopener" class="btn-brand rounded px-4 py-2 text-sm font-semibold flex items-center justify-center gap-2 mb-4">Open ${p.url.replace('https://','')}</a>`: '<div class="mb-4 text-center text-xs mono text-[var(--ink-faint)] glass-soft rounded py-2.5">Not deployed</div>'}
+
+      <div class="space-y-3">
+        <div>
+          <h3 class="text-[10px] mono uppercase tracking-[0.12em] text-[var(--ink-faint)] mb-1.5">Wallet</h3>
+          <div class="glass-soft rounded p-3 text-sm">
+            <div class="detail-row"><span class="text-[var(--ink-faint)]">Key slot</span><span class="mono">${p.wallet}</span></div>
+            <div class="detail-row"><span class="text-[var(--ink-faint)]">Vault</span><span class="mono">${Vault.hasWallet(p.wallet)?'set':'empty'}</span></div>
+            <div class="detail-row"><span class="text-[var(--ink-faint)]">Sats</span><span class="mono font-semibold">${d.walletOk?fmt.sats(d.balanceSats):'—'}</span></div>
+            <div class="detail-row"><span class="text-[var(--ink-faint)]">Msats</span><span class="mono">${d.balanceMsat??'—'}</span></div>
+            <div class="detail-row"><span class="text-[var(--ink-faint)]">USD</span><span class="mono">${usd}</span></div>
+            ${d.walletName?`<div class="detail-row"><span class="text-[var(--ink-faint)]">LNbits name</span><span class="mono">${d.walletName}</span></div>`:''}
+            <button onclick="toast('Invoice: POST /api/v1/payments — wire when node is reachable','info')" class="w-full btn-ghost rounded py-1.5 text-xs mt-2">Create invoice (stub)</button>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-[10px] mono uppercase tracking-[0.12em] text-[var(--ink-faint)] mb-1.5">Repo & deploy</h3>
+          <div class="glass-soft rounded p-3 text-sm">
+            <div class="detail-row"><span class="text-[var(--ink-faint)]">Repo</span><span class="mono">${GH_OWNER}/${p.repo}</span></div>
+            <div class="detail-row"><span class="text-[var(--ink-faint)]">SHA</span><span class="mono cursor-copy" onclick="copyText('${d.sha||''}','SHA')">${fmt.short(d.sha)} ⧉</span></div>
+            <div class="detail-row"><span class="text-[var(--ink-faint)]">Message</span><span class="mono truncate max-w-[240px]" title="${(d.commitMsg||'').replace(/"/g,'&quot;')}">${d.commitMsg||'—'}</span></div>
+            <div class="detail-row"><span class="text-[var(--ink-faint)]">Author</span><span class="mono">${d.author||'—'}</span></div>
+            <div class="detail-row"><span class="text-[var(--ink-faint)]">Actions</span><span class="mono">${d.actionsName?d.actionsName+': ':''}${fmt.actions(d.actionsStatus)}</span></div>
+            <div class="detail-row"><span class="text-[var(--ink-faint)]">Live probe</span><span class="mono">${d.liveReachable===true?'reachable (opaque)':d.liveReachable===false?'unreachable':'n/a'}</span></div>
+            <div class="flex gap-1.5 mt-2">
+              <a href="https://github.com/${GH_OWNER}/${p.repo}" target="_blank" rel="noopener" class="flex-1 btn-ghost rounded py-1.5 text-xs text-center">Repo</a>
+              ${d.actionsUrl?`<a href="${d.actionsUrl}" target="_blank" rel="noopener" class="flex-1 btn-ghost rounded py-1.5 text-xs text-center">Last run</a>`:''}
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-[10px] mono uppercase tracking-[0.12em] text-[var(--ink-faint)] mb-1.5">Files</h3>
+          <div class="grid grid-cols-2 gap-1">
+            ${DOC_FILES.map(f=>`<button onclick="Docs.open('${p.repo}','${f}','${p.name}');Drawer.close({target:{id:'drawer-backdrop'}})" class="btn-ghost rounded px-2 py-1.5 text-[10px] mono truncate text-left">${f}</button>`).join('')}
+          </div>
+        </div>
+      </div>`;
+    document.getElementById('drawer-backdrop').classList.remove('hidden');
+  },
+  close(e){
+    if(e.target.id === 'drawer-backdrop') document.getElementById('drawer-backdrop').classList.add('hidden');
+  }
+};
+
+const Bulk = {
+  open(kind){
+    const bodies = {
+      send: `
+        <h2 class="text-lg font-semibold mb-1"><i class="fa-solid fa-bolt text-[var(--orange)] mr-1.5"></i>Bulk Send</h2>
+        <p class="text-xs text-[var(--ink-faint)] mb-4 leading-relaxed">Distribute sats across wallets with a configured key. <strong>Not auto-wired to fire payments</strong> — needs a two-step confirm (type SEND) before real <span class="mono">POST /api/v1/payments</span> calls.</p>
+        <label class="text-xs mono uppercase text-[var(--ink-faint)] block mb-1">Amount per wallet (sats)</label>
+        <input id="bulk-amount" type="number" placeholder="1000" class="w-full rounded-lg px-3 py-2 mb-3 text-sm mono">
+        <button onclick="Bulk.confirm('send')" class="btn-brand rounded-lg px-4 py-2.5 text-sm font-semibold w-full">Review & Confirm</button>`,
+      address: `
+        <h2 class="text-lg font-semibold mb-1"><i class="fa-solid fa-wallet text-[var(--orange)] mr-1.5"></i>Bulk Address Update</h2>
+        <p class="text-xs text-[var(--ink-faint)] mb-4">Replace on-chain payout address across project configs (GitHub write). Scaffolded — confirm before wiring writes.</p>
+        <input id="bulk-addr" placeholder="bc1q…" class="w-full rounded-lg px-3 py-2 mb-3 text-sm mono">
+        <button onclick="Bulk.confirm('address')" class="btn-brand rounded-lg px-4 py-2.5 text-sm font-semibold w-full">Review & Confirm</button>`,
+      readme: `
+        <h2 class="text-lg font-semibold mb-1"><i class="fa-solid fa-file-pen text-[var(--orange)] mr-1.5"></i>Bulk README Update</h2>
+        <p class="text-xs text-[var(--ink-faint)] mb-4">Append a footer to every project's README.md using your GitHub token from the Vault.</p>
+        <textarea id="bulk-footer" rows="4" placeholder="---&#10;Safe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first." class="w-full rounded-lg px-3 py-2 mb-3 text-xs mono"></textarea>
+        <button onclick="Bulk.confirm('readme')" class="btn-brand rounded-lg px-4 py-2.5 text-sm font-semibold w-full">Apply to ${PROJECTS.length} repos</button>`,
+      deploy: `
+        <h2 class="text-lg font-semibold mb-1"><i class="fa-solid fa-rocket text-[var(--orange)] mr-1.5"></i>Deploy All</h2>
+        <p class="text-xs text-[var(--ink-faint)] mb-4">Triggers <span class="mono">repository_dispatch</span> / workflow_dispatch per repo once workflows listen for it.</p>
+        <button onclick="Bulk.confirm('deploy')" class="btn-brand rounded-lg px-4 py-2.5 text-sm font-semibold w-full">Trigger Deploy Workflows</button>`
+    };
+    document.getElementById('bulk-modal').innerHTML = bodies[kind] + `<div id="bulk-progress" class="mt-4"></div>`;
+    document.getElementById('bulk-backdrop').classList.remove('hidden');
+    this.kind = kind;
+  },
+  close(e){
+    if(!e || e.target.id==='bulk-backdrop') document.getElementById('bulk-backdrop').classList.add('hidden');
+  },
+  async confirm(kind){
+    if(kind==='send' || kind==='address' || kind==='deploy'){
+      toast(kind==='send'
+        ? 'Bulk Send is intentionally not wired for real payments yet — see Claude notes'
+        : kind==='address'
+          ? 'Bulk Address write path is scaffolded, not auto-applied'
+          : 'Deploy triggers need workflows listening for dispatch',
+        'info');
+      return;
+    }
+    if(!confirm(`This will apply to all ${PROJECTS.length} projects. Continue?`)) return;
+    const progress = document.getElementById('bulk-progress');
+    let done = 0;
+    const total = PROJECTS.length;
+    function bar(){ return `<div class="h-2 rounded-full bg-[var(--void-2)] overflow-hidden"><div class="bar-fill h-full grad-brand" style="width:${done/total*100}%"></div></div><div class="text-[10px] mono text-[var(--ink-faint)] mt-1">${done}/${total} complete</div>`; }
+    progress.innerHTML = bar();
+
+    for(const p of PROJECTS){
+      try{
+        if(kind==='readme'){
+          const footer = document.getElementById('bulk-footer').value || '\n\n---\nSafe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first.\n';
+          if(Vault.hasGh()){
+            const existing = await GitHubData.readFile(p.repo,'README.md').catch(()=>null);
+            if(existing !== null){
+              await GitHubData.writeFile(p.repo,'README.md', existing+footer, 'docs: bulk footer update via Sovereign Deck');
+            }
+          } else {
+            toast('GitHub token required in Vault','error');
+            return;
+          }
+        }
+      }catch(e){ console.warn(p.id, e); }
+      done++; progress.innerHTML = bar();
+    }
+    toast('Bulk action complete','success');
+  }
+};
+
+const Search = {
+  open(){ document.getElementById('search-overlay').classList.remove('hidden'); document.getElementById('overlay-search-input').focus(); },
+  close(e){ if(!e || e.target.id==='search-overlay'){ document.getElementById('search-overlay').classList.add('hidden'); } },
+  run(q){
+    q = q.toLowerCase().trim();
+    const results = [];
+    if(q){
+      PROJECTS.forEach(p=>{ if(p.name.toLowerCase().includes(q)||p.tagline.toLowerCase().includes(q)||(p.category||'').toLowerCase().includes(q)) results.push({type:'Project',label:p.name+' · '+(p.category||''),action:()=>Drawer.open(p.id)}); });
+      AGENTS.forEach(a=>{ if(a.name.toLowerCase().includes(q)||a.role.toLowerCase().includes(q)) results.push({type:'Agent',label:a.name+' — '+a.role,action:()=>Docs.openAgent(a.repo,a.file,a.name)}); });
+      PROJECTS.forEach(p=> DOC_FILES.forEach(f=>{ if(f.toLowerCase().includes(q)||p.name.toLowerCase().includes(q)) results.push({type:'File',label:p.name+' / '+f,action:()=>Docs.open(p.repo,f,p.name)}); }));
+    }
+    document.getElementById('overlay-results').innerHTML = results.slice(0,20).map((r,i)=>`
+      <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--void-2)] flex items-center justify-between text-sm" onclick="Search.pick(${i})">
+        <span>${r.label}</span><span class="text-[10px] mono text-[var(--ink-faint)]">${r.type}</span>
+      </button>`).join('') || `<div class="text-xs text-[var(--ink-faint)] px-3 py-4 text-center">Type to search…</div>`;
+    this._results = results;
+  },
+  pick(i){ this._results[i].action(); this.close(); }
+};
+
+function exportReport(){
+  let total = 0;
+  const rows = PROJECTS.map(p=>{
+    const d = state.projects[p.id]||{};
+    total += d.balanceSats||0;
+    return `${p.name}\t${p.category||''}\t${statusMeta(d.status).label}\t${d.walletOk?d.balanceSats:'—'} sats\t${fmt.short(d.sha)}\t${fmt.actions(d.actionsStatus)}\t${healthScore(d)}\t${d.commitDate||'—'}`;
+  }).join('\n');
+  const report = `GIVE A BIT HQ — PORTFOLIO REPORT\nGenerated: ${new Date().toString()}\nTotal: ${fmt.sats(total)} sats ${btcUsdPrice?'('+fmt.usd(total/1e8*btcUsdPrice)+')':''}\nBTC/USD: ${btcUsdPrice||'—'}\n\nProject\tCategory\tStatus\tBalance\tCommit\tCI\tHealth\tDate\n${rows}\n\nSafe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first.`;
+  const blob = new Blob([report], {type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `giveabit-portfolio-${new Date().toISOString().split('T')[0]}.txt`;
+  a.click();
+  toast('Report exported','success');
+}
+
+function switchView(view){
+  state.view = view;
+  document.querySelectorAll('.view-tab').forEach(t=>{
+    const active = t.dataset.view === view;
+    t.classList.toggle('tab-active', active);
+    t.classList.toggle('text-[var(--ink-dim)]', !active);
+  });
+  document.querySelectorAll('.view-panel').forEach(p=> p.classList.add('hidden'));
+  document.getElementById('view-'+view).classList.remove('hidden');
+}
+document.querySelectorAll('.view-tab').forEach(t=> t.addEventListener('click', ()=>switchView(t.dataset.view)));
+document.querySelectorAll('.filter-chip').forEach(c=> c.addEventListener('click', ()=>{
+  document.querySelectorAll('.filter-chip').forEach(x=>x.classList.remove('chip-active'));
+  c.classList.add('chip-active');
+  state.filter = c.dataset.filter;
+  Dash.applyFilters();
+}));
+
+function isTyping(){
+  const t = document.activeElement?.tagName;
+  return t==='INPUT' || t==='TEXTAREA' || t==='SELECT' || document.activeElement?.isContentEditable;
+}
+document.addEventListener('keydown', e=>{
+  if(e.key==='/' && !isTyping()){ e.preventDefault(); Search.open(); }
+  if(e.key==='Escape'){
+    Search.close({target:{id:'search-overlay'}});
+    Drawer.close({target:{id:'drawer-backdrop'}});
+    Bulk.close({target:{id:'bulk-backdrop'}});
+    Vault.closeModal({target:{id:'vault-backdrop'}});
+  }
+  if(e.key==='g' && !isTyping()) switchView('grid');
+  if(e.key==='l' && !isTyping()) switchView('list');
+  if(e.key==='p' && !isTyping()) switchView('pipeline');
+  if(e.key==='d' && !isTyping()) switchView('docs');
+  if(e.key==='a' && !isTyping()) switchView('agents');
+  if(e.key==='r' && !isTyping()){ e.preventDefault(); Dash.refreshAll(true); }
+  if(e.key==='v' && !isTyping()) Vault.openModal();
+});
+
+/* BOOT */
+Vault.load();
+Vault.updateStatusChip();
+Dash.loadCache();
+Dash.render();
+Dash.renderPortfolio();
+Dash.renderTicker();
+Dash.refreshAll();
+setInterval(()=>Dash.refreshAll(), 60000);
+if(!Vault.hasGh() && Object.keys(Vault.data.wallets||{}).length===0){
+  setTimeout(()=>{ toast('Open Vault to add wallet keys & GitHub token','info'); }, 800);
+}
+</script>
+</body>
+</html>
