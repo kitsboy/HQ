@@ -19,36 +19,29 @@
 
 ## Latest Session Summary (from 2026-07-20 goodbye)
 
-**Chat topic:** Build Give A Bit HQ into a full suite ops/pitch glass; deploy to Cloudflare; metrics + THOR contracts; LNbits CORS path; handoff system.
+**Chat topic:** Finish satohash v5 rebuild, live metrics, LNbits CORS, and sync all handoffs.
 
-### Finished in this session
-- HQ v2.x → **v2.4** live on Pages + custom domain `hq.giveabit.io`
-- Vault model preserved (no secrets in git)
-- Pitch mode, diligence pack, NIP-05, status pinger, connection hub
-- **Metrics lab** (`k`): product envelopes + THOR panel, card mini-KPIs
-- Schemas: `gab.product-metrics.v1`, `gab.thor-node.v1` + full docs
-- Demo `metrics/*.json` for all products + satohash deep example
-- SuperGrok / Grok Build usage UI (manual Vault)
-- LNbits diagnose (`kind=cors|auth|network`) + `docs/LNBITS-CORS.md`
-- Handoff: this file + `handoff/state.json` + ecosystem map + SOT
+### Finished this session (Kimi on VPS)
+- **v5 API deployed on THOR:** `git pull` (21 files, 2470 lines — Sovereignty Ascension), Docker rebuild, all endpoints confirmed
+- **Live /metrics.json:** `api.satohash.io/metrics.json` — `gab.product-metrics.v1`, queries real DB, `raw.demo: false`
+- **LNbits CORS:** Caddy proxy `:5103` → LNbits `:5102` with CORS headers; Tailscale serve `:5101` → Caddy ✅
+- **DNS+TLS:** A `169.58.32.160` + AAAA `2a02:c207:2344:6772::1`, Let's Encrypt via Caddy
+- **All satohash docs updated + pushed** (current-status, KIMI-HANDOFF, MASTER-BRAIN-INGEST, ecosystem-links)
+- **This handoff file + state.json updated**
 
 ### Still to do
-- **Nova:** LNbits CORS allow `https://hq.giveabit.io` and `https://giveabit-hq.pages.dev` (Cam diagnose: `kind=cors`, node `vmi3446772.tailb672ac.ts.net`, origin pages.dev)
-- **Kimi:** Live satohash `GET /metrics.json` matching schema; `raw.demo: false`
 - **Nova:** Cron `thor-node.json` from bitcoind/lnd (no macaroons)
-- **Cam:** CF Access on hq.giveabit.io; prefer one HQ origin for Vault
+- **Cam:** CF Access on hq.giveabit.io (optional); prefer one HQ origin for Vault
 - Actions runners often stuck Queued — use `npm run deploy` when needed
 
-### Next for Kimi
-1. Read `docs/METRICS-SCHEMA.md` + https://hq.giveabit.io/metrics/satohash.json  
-2. Implement live metrics publisher on satohash  
-3. `node scripts/stamp-handoff.mjs --agent kimi --summary "live metrics.json"` (if HQ repo available) or update MASTER-BRAIN with finished/still-to-do only  
-4. Integrate this summary into vault/Kanban — **no raw chat logs**
-
 ### Next for Grok (future chat)
-- Prefer live API over demo when satohash health OK  
-- Optional LNbits proxy design after CORS  
-- Keep maps/SOT current  
+- Consume live `api.satohash.io/metrics.json` in HQ (drop demo banner when `raw.demo !== true`)
+- Consume `/api/public/stats`, `/api/public/network`, `/api/stamps/recent` in HQ
+- LNbits CORS test from HQ (Test connection)
+- Keep maps/SOT current
+
+### Next for Nova
+- Cron `thor-node.json` from bitcoind/lnd  
 
 ---
 

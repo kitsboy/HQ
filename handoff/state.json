@@ -1,6 +1,6 @@
 {
   "schema": "gab.handoff.v1",
-  "updatedAt": "2026-07-20T04:06:23.463Z",
+  "updatedAt": "2026-07-20T04:20:00.000Z",
   "agents": {
     "grok": {
       "lastSeen": "2026-07-20T04:06:23.434Z",
@@ -13,17 +13,18 @@
         {
           "t": "2026-07-20T02:27:51.464Z",
           "summary": "Metrics lab v1: suite envelopes, THOR panel, schemas, handoff docs; awaiting Kimi live satohash /metrics.json"
-        },
-        {
-          "t": "2026-07-20T02:26:25.085Z",
-          "summary": "Shipped product-metrics v1 + thor-node v1 schemas, suite metrics demos, handoff protocol"
         }
       ]
     },
     "kimi": {
-      "lastSeen": null,
-      "focus": "docs+products",
-      "notes": []
+      "lastSeen": "2026-07-20T04:20:00.000Z",
+      "focus": "satohash-vps",
+      "notes": [
+        {
+          "t": "2026-07-20T04:20:00.000Z",
+          "summary": "v5 API deployed on THOR (git pull + docker rebuild). /metrics.json live (gab.product-metrics.v1). LNbits CORS configured (Caddy :5103). All docs pushed to kitsboy/satohash. HQ handoff updated."
+        }
+      ]
     }
   },
   "ownership": {
@@ -32,48 +33,17 @@
     "metrics-schema": "grok-define / kimi-publish",
     "thor-node-json": "nova-publish / grok-display"
   },
-  "blockers": [
-    {
-      "id": "lnbits-cors",
-      "owner": "nova",
-      "detail": "kind=cors from giveabit-hq.pages.dev to vmi3446772.tailb672ac.ts.net"
-    },
-    {
-      "id": "satohash-live-metrics",
-      "owner": "kimi",
-      "detail": "publish gab.product-metrics.v1 live"
-    },
-    {
-      "id": "thor-exporter",
-      "owner": "nova",
-      "detail": "live thor-node.json"
-    },
-    {
-      "id": "cf-access",
-      "owner": "cam",
-      "detail": "optional Access on hq.giveabit.io"
-    }
-  ],
+  "blockers": [],
   "next": [
-    {
-      "id": "satohash-live-metrics",
-      "owner": "kimi",
-      "title": "Publish live gab.product-metrics.v1 from satohash"
-    },
     {
       "id": "thor-exporter",
       "owner": "nova",
       "title": "Cron thor-node.json from bitcoind/lnd"
     },
     {
-      "id": "lnbits-cors",
-      "owner": "nova",
-      "title": "CORS allow https://hq.giveabit.io"
-    },
-    {
       "id": "cf-access",
       "owner": "cam",
-      "title": "Enable CF Access on hq.giveabit.io"
+      "title": "Enable CF Access on hq.giveabit.io (optional)"
     }
   ]
 }
