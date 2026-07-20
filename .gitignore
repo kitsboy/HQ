@@ -6,3 +6,8 @@ giveabit.local.json
 *.bak
 .vault*
 node_modules/
+
+# CF Pages build output (assembled in CI / npm run build)
+public/
+node_modules/
+.wrangler/

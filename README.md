@@ -71,6 +71,44 @@ Never commit: LNbits keys, GitHub PATs, LND macaroons, Cloudflare tokens.
 
 Edit `projects.json` (and optional related links), refresh HQ. No HTML edit required when served over HTTP.
 
+## Deploy (Cloudflare Pages)
+
+| Item | Value |
+|------|--------|
+| CF project | `giveabit-hq` |
+| Build output | `public/` (`control-panel.html` → `index.html`) |
+| Preview | `https://giveabit-hq.pages.dev` |
+| Custom domain | `hq.giveabit.io` (add in CF dashboard) |
+
+### Secrets (same pattern as satohash)
+
+Add to **GitHub → kitsboy/HQ → Settings → Secrets → Actions**:
+
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
+
+### Deploy paths
+
+```bash
+# CI: push to main runs .github/workflows/deploy.yml
+
+# Local (after wrangler login or env tokens):
+npm run build
+npm run deploy
+```
+
+### Custom domain `hq.giveabit.io`
+
+1. Cloudflare → **Workers & Pages** → **giveabit-hq** → **Custom domains** → `hq.giveabit.io`  
+2. Optional: **Zero Trust → Access** on that hostname (login gate)
+
+### Local preview
+
+```bash
+npm run build && npm run preview
+# http://localhost:8765/
+```
+
 ## License
 
 Part of the Give A Bit family. Safe Harbour · Bitcoin sovereignty first.

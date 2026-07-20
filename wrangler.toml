@@ -1,0 +1,7 @@
+# Give A Bit HQ — Cloudflare Pages
+# Deploy: npx wrangler pages deploy ./public --project-name=giveabit-hq
+# Custom domain: hq.giveabit.io (Cloudflare dashboard → Pages → Custom domains)
+
+name = "giveabit-hq"
+compatibility_date = "2026-07-19"
+pages_build_output_dir = "public"
