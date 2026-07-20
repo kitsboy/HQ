@@ -1,23 +1,22 @@
 {
   "schema": "gab.thor-node.v1",
-  "updatedAt": "2026-07-20T06:00:33.372Z",
+  "updatedAt": "2026-07-20T06:50:14Z",
   "node": {
     "id": "THOR",
     "hostLabel": "THOR Contabo VPS 20",
-    "stack": "Docker \u00b7 LND Neutrino \u00b7 LNbits \u00b7 satohash-api",
+    "stack": "Docker \u00b7 LND Neutrino \u00b7 LNbits \u00b7 satohash-api \u00b7 Hermes",
     "region": "EU Contabo",
     "status": "green",
-    "uptimeSec": 1036800,
     "services": [
       {
         "id": "satohash-satohash-api-1",
         "status": "green",
-        "detail": "Up 2 hours (healthy)"
+        "detail": "Up 3 hours (healthy)"
       },
       {
         "id": "satohash-redis-1",
         "status": "green",
-        "detail": "Up 3 hours"
+        "detail": "Up 4 hours"
       },
       {
         "id": "lnbits",
@@ -27,12 +26,12 @@
       {
         "id": "lnbits-postgres",
         "status": "green",
-        "detail": "Up 28 hours (healthy)"
+        "detail": "Up 29 hours (healthy)"
       },
       {
         "id": "lnd",
         "status": "green",
-        "detail": "Up 13 hours (healthy)"
+        "detail": "Up 14 hours (healthy)"
       }
     ]
   },
@@ -71,14 +70,7 @@
   },
   "lnbits": {
     "ok": true,
-    "version": "latest",
-    "walletCount": 9,
-    "extensions": [
-      "lnurlp",
-      "tpos",
-      "withdraw"
-    ],
-    "hint": "CORS via Caddy :5103 for HQ origin"
+    "hint": "CORS proxy :5103 for hq.giveabit.io"
   },
   "series": [
     {
@@ -288,36 +280,22 @@
   ],
   "education": [
     {
-      "id": "prune",
-      "title": "Pruned \u2260 weak",
-      "body": "For suite ops, prune keeps disk sane while still verifying chain. Pitch: \u201cWe verify, we don\u2019t archive the planet.\u201d",
-      "action": "Keep pruned:true in public snapshot",
-      "severity": "info"
-    },
-    {
-      "id": "cors",
-      "title": "CORS is the HQ wallet unlock",
-      "body": "Empty balances on hq.giveabit.io almost always mean LNbits CORS, not wrong keys. THOR proxy :5103 adds CORS.",
-      "action": "Allow https://hq.giveabit.io on LNbits/Caddy",
-      "severity": "opportunity"
+      "id": "less-chat",
+      "title": "Read OPS-PULSE before chatting",
+      "body": "Morning pulse + this snapshot cover 90% of status questions.",
+      "action": "Only open Hermes when pulse shows red",
+      "severity": "plan"
     },
     {
       "id": "macaroon",
       "title": "Never publish admin macaroons",
-      "body": "THOR JSON is read-only aggregates. Invoice keys stay in Vault; admin/macaroon only on node.",
-      "action": "Publish snapshot via local cron \u2192 status/node.json",
+      "body": "THOR JSON is aggregates only.",
+      "action": "Invoice keys stay in browser Vault",
       "severity": "risk"
-    },
-    {
-      "id": "capacity",
-      "title": "Mold channel capacity into runway",
-      "body": "Local+remote capacity frames Lightning readiness for Tadbuy/Katoa settlement stories.",
-      "action": "Add capacity to pitch metrics when live",
-      "severity": "plan"
     }
   ],
   "security": {
     "secretsInPayload": false,
-    "notes": "Aggregates only. Invoice keys in browser Vault. Never macaroons."
+    "notes": "Auto-export from thor-node-export.py"
   }
 }
