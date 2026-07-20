@@ -1,11 +1,15 @@
 {
   "schema": "gab.handoff.v1",
-  "updatedAt": "2026-07-20T04:20:00.000Z",
+  "updatedAt": "2026-07-20T06:32:45.496Z",
   "agents": {
     "grok": {
-      "lastSeen": "2026-07-20T04:06:23.434Z",
+      "lastSeen": "2026-07-20T06:32:45.496Z",
       "focus": "HQ",
       "notes": [
+        {
+          "t": "2026-07-20T06:32:45.496Z",
+          "summary": "v2.5.1: keys vault scorecard/RO/tests/diagnose/bulk+ops board/domains/board pack/invoice/docs diff on gated HQ"
+        },
         {
           "t": "2026-07-20T04:06:23.434Z",
           "summary": "Goodbye 2026-07-20: docs refresh, CORS path documented, metrics/THOR/handoff live; Nova must fix LNbits CORS for hq + pages.dev"
@@ -36,14 +40,24 @@
   "blockers": [],
   "next": [
     {
+      "id": "satohash-live-metrics",
+      "owner": "kimi",
+      "title": "Publish live gab.product-metrics.v1 from satohash"
+    },
+    {
       "id": "thor-exporter",
       "owner": "nova",
       "title": "Cron thor-node.json from bitcoind/lnd"
     },
     {
+      "id": "lnbits-cors",
+      "owner": "nova",
+      "title": "CORS allow https://hq.giveabit.io"
+    },
+    {
       "id": "cf-access",
       "owner": "cam",
-      "title": "Enable CF Access on hq.giveabit.io (optional)"
+      "title": "Enable CF Access on hq.giveabit.io"
     }
   ]
 }

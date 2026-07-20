@@ -17,6 +17,14 @@
 
 ---
 
+
+## Grok add-on (2026-07-20 v2.5.1)
+
+On top of gate + tips + live pipes:
+- Vault keys UX: health scorecard, show/hide, RO flags, Test GH/LNbits, diagnose all, bulk paste, WIPE gate, security toggles
+- Ops board + Domains views, budget runway, board pack, invoice preview gate, docs Diff
+- Live satohash metrics already preferred via MetricsEngine wrap (Kimi `raw.demo:false` path)
+
 ## Latest Session Summary (from 2026-07-20 goodbye)
 
 **Chat topic:** Finish satohash v5 rebuild, live metrics, LNbits CORS, and sync all handoffs.

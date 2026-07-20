@@ -4,6 +4,14 @@
 
 Legend: **SHIPPED** in this pass · **LIVE** already in HQ · **NEXT** data/product dependency
 
+## Vault / keys (v2.5.1 on top of gate)
+- Health scorecard · show/hide · last-4 masks · bulk paste
+- Test GitHub · Test LNbits · Diagnose all wallets
+- Per-wallet RO · block Bulk Send · wipe requires WIPE
+- Manual BTC FX · Grok warn/crit · prefer live metrics
+- Ops board · Domains · board pack · invoice preview · docs Diff
+
+
 ## A. Presentation & pitch (1–12)
 1. LIVE Pitch mode (`P`)
 2. LIVE Diligence pack export

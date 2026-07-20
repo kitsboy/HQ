@@ -1,6 +1,6 @@
 # HQ SOURCE OF TRUTH
 
-_Updated: 2026-07-20 (v2.5 gate + pipes)_
+_Updated: 2026-07-20 (v2.5.1 keys + ops board)_
 
 ## Live
 
@@ -15,7 +15,7 @@ _Updated: 2026-07-20 (v2.5 gate + pipes)_
 
 | Path | Role |
 |------|------|
-| `control-panel.html` | Single-page app (v2.5) |
+| `control-panel.html` | Single-page app (v2.5.1) |
 | `projects.json` | Project registry + feed URLs |
 | `agents.json` | Agent personas + NIP-05 |
 | `tools.json` | Tools hub links |

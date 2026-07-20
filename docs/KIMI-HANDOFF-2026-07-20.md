@@ -75,3 +75,6 @@ END:   stamp-handoff.mjs + append Latest Session if goodbye
 ## Conflict rule
 
 Git history wins for code; last handoff stamp wins for narrative status.
+
+## Grok v2.5.1 (same day)
+Keys vault UX + Ops board + Domains + board pack + invoice gate + docs Diff on gated HQ. See KIMI-GROK-HANDOFF.md.

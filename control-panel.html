@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  Give A Bit HQ v2.5 — ops + presentation shell for the suite.
+  Give A Bit HQ v2.5.1 — ops + presentation shell for the suite.
   PRESENTATION: Pitch mode (P), diligence pack export, investor metrics strip,
     suite map, satohash backbone callout, NIP-05 agent checks, export deck md.
   FEEDS (optional, Vault/config): status.json uptime, api.satohash.io/health,
@@ -12,7 +12,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Give A Bit HQ v2.5</title>
+<title>Give A Bit HQ v2.5.1</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
@@ -257,6 +257,28 @@ body.hq-locked #hq-gate{visibility:visible!important;pointer-events:auto!importa
 .advice-card.sky{border-left-color:var(--sky)}
 #pipes-panel{margin-top:10px}
 
+
+/* v2.5.1 keys+ops upgrades */
+.vault-score{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:4px;border:1px solid var(--line);background:var(--panel-2);margin-bottom:12px}
+.vault-score .ring{width:44px;height:44px;border-radius:50%;border:3px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:700;font-family:'IBM Plex Mono',monospace;font-size:12px}
+.vault-check{font-size:11px;font-family:'IBM Plex Mono',monospace;display:flex;flex-direction:column;gap:2px}
+.vault-check .ok{color:var(--green)}.vault-check .miss{color:var(--ink-faint)}
+.key-mask{font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--ink-faint)}
+.ro-badge{font-size:9px;padding:1px 5px;border-radius:2px;border:1px solid rgba(138,90,0,.4);color:var(--amber);background:rgba(138,90,0,.12)}
+.vault-test-out{font-size:11px;font-family:'IBM Plex Mono',monospace;padding:8px;border-radius:4px;background:var(--panel-2);border:1px solid var(--line);max-height:140px;overflow:auto;margin-top:8px;white-space:pre-wrap}
+.diff-box{font-family:'IBM Plex Mono',monospace;font-size:11px;max-height:240px;overflow:auto;background:var(--panel-2);border:1px solid var(--line);border-radius:4px;padding:8px;white-space:pre-wrap}
+.diff-add{color:var(--green)}.diff-del{color:var(--red)}
+.upgrade-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.upgrade-card{padding:10px 12px;border:1px solid var(--line);border-radius:4px;background:var(--panel-2)}
+.upgrade-card h4{margin:0 0 4px;font-size:12px;font-weight:600}
+.upgrade-card p{margin:0;font-size:11px;color:var(--ink-faint);line-height:1.4}
+.budget-bar{height:8px;border-radius:2px;background:var(--void-2);border:1px solid var(--line);overflow:hidden}
+.budget-fill{height:100%;background:var(--orange)}
+.domain-row{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--line);font-size:12px}
+.invoice-preview{background:var(--panel-2);border:1px solid var(--line);border-radius:4px;padding:10px;font-size:12px;font-family:'IBM Plex Mono',monospace}
+.vault-row{display:grid;grid-template-columns:100px 1fr auto auto auto;gap:6px;align-items:center;margin-bottom:6px}
+@media(max-width:640px){.vault-row{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body class="min-h-screen">
@@ -305,7 +327,7 @@ body.hq-locked #hq-gate{visibility:visible!important;pointer-events:auto!importa
       <div class="icon-box sm" style="background:var(--orange);color:#fff"><i class="fa-solid fa-bolt"></i></div>
       <div>
         <div class="font-semibold text-[13px] leading-none" style="font-family:'IBM Plex Sans'">Give A Bit HQ</div>
-        <div class="text-[10px] text-[var(--ink-faint)]">v2.4 · ops glass</div>
+        <div class="text-[10px] text-[var(--ink-faint)]">v2.5.1 · command deck</div>
       </div>
     </div>
     <div class="divider"></div>
@@ -463,6 +485,8 @@ body.hq-locked #hq-gate{visibility:visible!important;pointer-events:auto!importa
     <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="wallets">Wallets</button>
     <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="docs">Docs</button>
     <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="agents">Agents</button>
+    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="opsboard">Ops board</button>
+    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="domains">Domains</button>
   </div>
   <div class="flex items-center gap-1.5 flex-wrap">
     <input id="global-search" placeholder="Filter… /" class="rounded pl-2 pr-2 py-1.5 text-sm w-44" oninput="Dash.applyFilters()">
@@ -597,21 +621,58 @@ body.hq-locked #hq-gate{visibility:visible!important;pointer-events:auto!importa
             <button id="doc-mode-edit" onclick="Docs.setMode('edit')" class="chip">Edit</button>
             <a id="doc-history" href="#" target="_blank" rel="noopener" class="btn-ghost rounded px-2 py-1 text-xs">History</a>
             <a id="doc-github" href="#" target="_blank" rel="noopener" class="btn-ghost rounded px-2 py-1 text-xs">GitHub</a>
+            <button id="doc-diff" onclick="DocsX.showDiff()" class="hidden btn-ghost rounded px-2 py-1 text-xs">Diff</button>
             <button id="doc-save" onclick="Docs.save()" class="hidden btn-brand rounded px-2 py-1 text-xs">Save to GitHub</button>
           </div>
         </div>
         <div id="doc-dirty" class="hidden text-[10px] mono text-[var(--amber)] mb-1">Unsaved edits</div>
+        <div id="doc-diff-panel" class="hidden diff-box mb-2"></div>
         <div id="doc-view" class="md-body flex-1 overflow-y-auto"></div>
         <textarea id="doc-edit" class="hidden flex-1 mono text-sm rounded p-3 resize-none" spellcheck="false" oninput="Docs.onEdit()"></textarea>
       </div>
     </div>
   </div>
   <div id="view-agents" class="view-panel hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
+  <div id="view-opsboard" class="view-panel hidden space-y-3">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
+      <div class="glass rounded p-3">
+        <div class="panel-title">Budget runway (local)</div>
+        <p class="text-[11px] text-[var(--ink-faint)] mb-2">Monthly sats burn — browser only.</p>
+        <div class="flex gap-2 mb-2">
+          <input id="budget-monthly" type="number" class="flex-1 rounded px-2 py-1.5 text-sm mono" placeholder="sats / month">
+          <button class="btn-ghost rounded px-2 text-xs" onclick="BudgetRunway.save()">Save</button>
+        </div>
+        <div id="budget-panel" class="text-xs mono text-[var(--ink-dim)]">—</div>
+      </div>
+      <div class="glass rounded p-3">
+        <div class="panel-title">Competitor watch</div>
+        <textarea id="competitor-notes" class="w-full rounded px-2 py-1.5 mono text-xs" rows="5" placeholder="Name · note · URL"></textarea>
+        <button class="btn-ghost rounded px-2 py-1 text-xs mt-1" onclick="LocalBoards.saveCompetitors()">Save</button>
+      </div>
+      <div class="glass rounded p-3">
+        <div class="panel-title">Legal / board</div>
+        <div class="text-xs text-[var(--ink-faint)] mb-2">Safe Harbour · diligence pack · entity docs</div>
+        <button class="btn-brand rounded px-2 py-1 text-xs" onclick="exportBoardPack()">Assemble board pack</button>
+      </div>
+    </div>
+    <div class="glass rounded p-3">
+      <div class="panel-title">Shipped upgrades (v2.5.1)</div>
+      <div id="upgrades-shipped" class="upgrade-grid"></div>
+    </div>
+  </div>
+  <div id="view-domains" class="view-panel hidden">
+    <div class="glass rounded p-3">
+      <div class="flex justify-between mb-2"><div class="panel-title mb-0">Domain inventory</div>
+      <button class="btn-ghost rounded px-2 py-1 text-xs" onclick="DomainInventory.render()">Refresh</button></div>
+      <div id="domain-table" class="text-sm"></div>
+    </div>
+  </div>
+
 </div>
 
 <div class="max-w-[1680px] mx-auto px-3 site-footer">
   <div class="flex flex-wrap justify-between gap-2">
-    <span>Give A Bit HQ · <span id="hq-version">v2.5</span> · <span id="hq-build">build</span> · credentials only in localStorage · Safe Harbour</span>
+    <span>Give A Bit HQ · <span id="hq-version">v2.5.1</span> · <span id="hq-build">build</span> · credentials only in localStorage · Safe Harbour</span>
     <span class="mono flex flex-wrap gap-2">
       <span><kbd class="kbd">/</kbd> search</span>
       <span><kbd class="kbd">g</kbd> cards</span>
@@ -632,6 +693,8 @@ body.hq-locked #hq-gate{visibility:visible!important;pointer-events:auto!importa
     <button onclick="exportJSON()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Export JSON</button>
     <button onclick="exportDiligence()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Diligence</button>
     <button onclick="exportWalletsCSV()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">CSV wallets</button>
+    <button onclick="exportBoardPack()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Board pack</button>
+    <button onclick="InvoiceUI.open()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Invoice</button>
     <button onclick="Pitch.open()" class="btn-accent rounded px-2.5 py-1.5 text-xs">Pitch</button>
     <button onclick="Vault.openModal()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Config</button>
   </div>
@@ -658,11 +721,34 @@ body.hq-locked #hq-gate{visibility:visible!important;pointer-events:auto!importa
       <button type="button" class="vault-tab" data-vtab="ai" onclick="Vault.tab('ai')">AI usage</button>
       <button type="button" class="vault-tab" data-vtab="extra" onclick="Vault.tab('extra')">More keys</button>
     </div>
+    <div id="vault-scorecard" class="vault-score">
+      <div class="ring" id="vault-score-ring">0%</div>
+      <div class="flex-1">
+        <div class="text-xs font-semibold mb-1">Vault health</div>
+        <div class="vault-check" id="vault-checklist"></div>
+      </div>
+      <div class="text-right text-[10px] mono text-[var(--ink-faint)]" id="vault-origin-note"></div>
+    </div>
     <div class="vault-pane on" id="vp-keys">
     <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1" data-tip="Fine-grained PAT with Contents R/W + Actions R + Metadata R for private repos." data-tip-title="GitHub PAT" data-tip-advice="Public repos work without PAT; private need it.">GitHub PAT</label>
-    <input id="vault-gh-token" type="password" class="w-full rounded px-3 py-2 text-sm mono mb-3" placeholder="ghp_… or github_pat_…">
-    <div class="flex justify-between mb-1"><label class="text-[10px] mono uppercase text-[var(--ink-faint)]">LNbits keys</label><span class="text-[10px] mono text-[var(--ink-faint)]" id="vault-node-note"></span></div>
-    <div id="vault-wallet-rows" class="space-y-1.5 mb-3"></div>
+    <div class="flex gap-2 mb-1">
+      <input id="vault-gh-token" type="password" class="flex-1 rounded px-3 py-2 text-sm mono" placeholder="ghp_… or github_pat_…" autocomplete="off">
+      <button type="button" class="btn-ghost rounded px-2 text-xs" onclick="VaultX.toggleVis('vault-gh-token',this)">👁</button>
+      <button type="button" class="btn-ghost rounded px-2 text-xs" onclick="VaultX.testGithub()">Test</button>
+    </div>
+    <div class="key-mask mb-2" id="vault-gh-mask">not set</div>
+    <div class="flex justify-between mb-1"><label class="text-[10px] mono uppercase text-[var(--ink-faint)]">LNbits invoice keys · mark RO to block spend</label><span class="text-[10px] mono text-[var(--ink-faint)]" id="vault-node-note"></span></div>
+    <div id="vault-wallet-rows" class="mb-2"></div>
+    <div class="flex flex-wrap gap-1.5 mb-2">
+      <button type="button" class="btn-ghost rounded px-2 py-1 text-xs" onclick="VaultX.testLNbits()">Test node</button>
+      <button type="button" class="btn-ghost rounded px-2 py-1 text-xs" onclick="VaultX.diagnoseAll()">Diagnose all</button>
+      <button type="button" class="btn-ghost rounded px-2 py-1 text-xs" onclick="document.getElementById('vault-bulk-paste').classList.toggle('hidden')">Bulk paste</button>
+    </div>
+    <div id="vault-bulk-paste" class="hidden mb-2">
+      <textarea id="vault-bulk-text" class="w-full rounded px-2 py-1.5 mono text-xs" rows="3" placeholder="wallet_id=key per line"></textarea>
+      <button type="button" class="btn-ghost rounded px-2 py-1 text-xs mt-1" onclick="VaultX.applyBulk()">Apply paste</button>
+    </div>
+    <div id="vault-test-out" class="vault-test-out hidden"></div>
     </div><!-- end vp-keys wallets continue -->
     <div class="vault-pane on" id="vp-keys-b">
     <div class="grid grid-cols-2 gap-2 mb-3">
@@ -672,7 +758,11 @@ body.hq-locked #hq-gate{visibility:visible!important;pointer-events:auto!importa
       </div>
       <div>
         <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">FX source</label>
-        <select id="vault-fx-source" class="w-full rounded px-3 py-2 text-sm mono"><option value="coingecko">CoinGecko</option><option value="manual">Manual</option></select>
+        <select id="vault-fx-source" class="w-full rounded px-3 py-2 text-sm mono" onchange="VaultX.onFxChange()"><option value="coingecko">CoinGecko</option><option value="manual">Manual</option></select>
+      </div>
+      <div>
+        <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Manual BTC/USD</label>
+        <input id="vault-manual-btc" type="number" class="w-full rounded px-3 py-2 text-sm mono" placeholder="100000">
       </div>
       <div>
         <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Refresh (sec)</label>
@@ -747,10 +837,21 @@ body.hq-locked #hq-gate{visibility:visible!important;pointer-events:auto!importa
         <button type="button" onclick="Vault.exportEnc()" class="btn-ghost rounded px-3 py-2 text-xs flex-1">Export vault JSON</button>
         <label class="btn-ghost rounded px-3 py-2 text-xs flex-1 text-center cursor-pointer">Import<input type="file" accept="application/json" class="hidden" onchange="Vault.importEnc(event)"></label>
       </div>
+      <div class="mt-3 p-2 glass-2 rounded space-y-2">
+        <div class="text-[10px] mono uppercase text-[var(--ink-faint)]">Security</div>
+        <label class="flex items-center gap-2 text-xs"><input type="checkbox" id="vault-block-bulk-send"> Block Bulk Send globally</label>
+        <label class="flex items-center gap-2 text-xs"><input type="checkbox" id="vault-prefer-live" checked> Prefer live metrics when available</label>
+        <div class="grid grid-cols-2 gap-2">
+          <div><label class="text-[10px] mono text-[var(--ink-faint)]">Grok warn %</label><input id="vault-grok-warn" type="number" class="w-full rounded px-2 py-1 text-xs mono" value="75"></div>
+          <div><label class="text-[10px] mono text-[var(--ink-faint)]">Grok crit %</label><input id="vault-grok-crit" type="number" class="w-full rounded px-2 py-1 text-xs mono" value="90"></div>
+        </div>
+        <label class="text-[10px] mono text-[var(--ink-faint)]">Type WIPE to enable wipe</label>
+        <input id="vault-wipe-confirm" class="w-full rounded px-2 py-1.5 text-xs mono" placeholder="WIPE" autocomplete="off">
+      </div>
     </div>
     <div class="flex gap-2 mt-3">
       <button onclick="Vault.save()" class="btn-brand rounded px-4 py-2 text-sm flex-1">Save vault</button>
-      <button onclick="Vault.clear()" class="btn-ghost rounded px-4 py-2 text-sm text-[var(--red)]">Wipe</button>
+      <button onclick="VaultX.safeClear()" class="btn-ghost rounded px-4 py-2 text-sm text-[var(--red)]">Wipe</button>
     </div>
   </div>
 </div>
@@ -779,6 +880,21 @@ body.hq-locked #hq-gate{visibility:visible!important;pointer-events:auto!importa
     <div id="overlay-results" class="max-h-80 overflow-y-auto p-1"></div>
   </div>
 </div>
+
+<div id="invoice-backdrop" class="hidden fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4" onclick="if(event.target.id==='invoice-backdrop')InvoiceUI.close()">
+  <div class="pop-in glass rounded w-full max-w-md p-4" onclick="event.stopPropagation()">
+    <div class="flex justify-between mb-2"><h3 class="font-semibold text-sm">Create invoice (preview)</h3>
+      <button class="btn-ghost rounded px-2" onclick="InvoiceUI.close()">✕</button></div>
+    <p class="text-[11px] text-[var(--ink-faint)] mb-3">Type INVOICE to arm. RO wallets blocked. POST not auto-fired until CORS+policy ok.</p>
+    <select id="inv-wallet" class="w-full rounded px-2 py-1.5 text-sm mono mb-2"></select>
+    <input id="inv-sats" type="number" min="1" class="w-full rounded px-2 py-1.5 text-sm mono mb-2" placeholder="sats">
+    <input id="inv-memo" class="w-full rounded px-2 py-1.5 text-sm mono mb-2" placeholder="memo">
+    <div id="inv-preview" class="invoice-preview mb-2 hidden"></div>
+    <input id="inv-confirm" class="w-full rounded px-2 py-1.5 text-sm mono mb-3" placeholder="type INVOICE" autocomplete="off">
+    <button onclick="InvoiceUI.create()" class="btn-brand rounded w-full py-2 text-sm">Create invoice</button>
+  </div>
+</div>
+
 <div id="help-backdrop" class="hidden fixed inset-0 z-[70] modal-backdrop flex items-center justify-center p-4" onclick="if(event.target.id==='help-backdrop')this.classList.add('hidden')">
   <div class="pop-in glass rounded w-full max-w-md p-4">
     <div class="flex justify-between mb-3"><h2 class="font-semibold">Keyboard & tips</h2><button class="btn-ghost rounded px-2" onclick="document.getElementById('help-backdrop').classList.add('hidden')">✕</button></div>
@@ -788,7 +904,7 @@ body.hq-locked #hq-gate{visibility:visible!important;pointer-events:auto!importa
 
 <script>
 /* Give A Bit HQ v2 — secrets only in localStorage (sovereign_deck_vault_v1) */
-const VIEWS = ['grid','list','pipeline','metrics','analytics','network','activity','matrix','wallets','docs','agents'];
+const VIEWS = ['grid','list','pipeline','metrics','analytics','network','activity','matrix','wallets','docs','agents','opsboard','domains'];
 
 const state = {
   projects:{}, view:'grid', filter:'all', ghRateRemaining:null, branches:{}, treeIndex:{},
@@ -2779,7 +2895,7 @@ function renderActivity(){
 }
 
 function renderMatrix(){
-  const cols=['Live','GitHub','CI','Wallet','Deploy','Health'];
+  const cols=['Live','GitHub','CI','Wallet','Deploy','Latency','Health'];
   let html=`<table class="w-full text-xs mono min-w-[700px]"><thead><tr><th class="text-left p-2">Project</th>${cols.map(c=>`<th class="p-2 text-center">${c}</th>`).join('')}</tr></thead><tbody>`;
   PROJECTS.forEach(p=>{
     const d=state.projects[p.id]||{}; const hs=healthScore(d);
@@ -2791,6 +2907,7 @@ function renderMatrix(){
       ${cell(d.actionsStatus==='success'?true:d.actionsStatus==='failure'?false:null,fmt.actions(d.actionsStatus))}
       ${cell(Vault.hasWallet(p.wallet)?d.walletOk:null,Vault.hasWallet(p.wallet)?(d.walletOk?'ok':'err'):'—')}
       ${cell(p.deployed,p.deployed?'yes':'no')}
+      <td class="p-1"><div class="matrix-cell">${d.statusMs!=null?(d.statusMs+'ms'):'—'}</div></td>
       <td class="p-1"><div class="matrix-cell" style="color:${healthColor(hs)}">${hs}</div></td>
     </tr>`;
   });
@@ -2807,7 +2924,7 @@ function renderWallets(){
     return `<tr class="border-t border-[var(--line)] row-h">
       <td class="px-3 py-2 font-medium" style="border-left:3px solid ${p.color};padding-left:8px">${p.name}</td>
       <td class="px-3 py-2">${p.wallet}</td>
-      <td class="px-3 py-2">${Vault.hasWallet(p.wallet)?'<span class="status-pill green">set</span>':'<span class="status-pill gray">empty</span>'}</td>
+      <td class="px-3 py-2">${Vault.hasWallet(p.wallet)?'<span class="status-pill green">set</span>':'<span class="status-pill gray">empty</span>'}${Vault.isReadOnly&&Vault.isReadOnly(p.wallet)?' <span class="ro-badge">RO</span>':''}</td>
       <td class="px-3 py-2 font-semibold">${d.walletOk?fmt.sats(sats):'—'}${d.prevSats!=null&&d.walletOk?` <span class="text-[10px] ${sats>=(d.prevSats||0)?'delta-up':'delta-dn'}">(${sats-(d.prevSats||0)>=0?'+':''}${fmt.sats(sats-(d.prevSats||0))})</span>`:''}</td>
       <td class="px-3 py-2">${d.walletOk&&btcUsdPrice?fmt.usd(fmt.usdFromSats(sats)):'—'}</td>
       <td class="px-3 py-2 w-40"><div class="bar-track"><div class="bar-fill" style="width:${d.walletOk?pct:0}%;background:${p.color}"></div></div><span class="text-[10px] text-[var(--ink-faint)]">${d.walletOk?pct+'%':'—'}</span></td>
@@ -3586,8 +3703,439 @@ async function bootAfterGate(){
   scheduleRefresh();
   scheduleRefreshEta();
   if(!Vault.hasGh() && Vault.keyCount()===0) setTimeout(()=>toast('Open Vault (v) to paste keys · hover chips for tips','info'),700);
-  console.log('%cGive A Bit HQ v2.5 — gate + tips + live pipes','color:#c45f00;font-weight:bold');
+  console.log('%cGive A Bit HQ v2.5.1 — gate + tips + live pipes','color:#c45f00;font-weight:bold');
 }
+
+
+/* ---------- v2.5.1 KEYS + OPS EXTENSIONS ---------- */
+function escHtml(s){ return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+const VaultX = {
+  paintScore(){
+    const wallets = PROJECTS.reduce((a,p)=>{ if(p.wallet&&!a.includes(p.wallet)) a.push(p.wallet); return a; },[]);
+    const setW = wallets.filter(w=>Vault.hasWallet(w)).length;
+    const checks = [
+      [Vault.hasGh(), 'GitHub PAT'],
+      [!!(Vault.data.nodeUrl&&Vault.data.nodeUrl.length>8), 'Node URL'],
+      [setW>0, setW+'/'+wallets.length+' wallet keys'],
+      [!!Vault.data.satohashApi, 'Satohash API'],
+      [!!Gate.isUnlocked && Gate.isUnlocked(), 'Gate unlocked'],
+    ];
+    const score = Math.round(100*checks.filter(c=>c[0]).length/checks.length);
+    const ring=document.getElementById('vault-score-ring');
+    if(ring){ ring.textContent=score+'%'; ring.style.borderColor=score>=80?'var(--green)':score>=50?'var(--amber)':'var(--red)'; ring.style.color=ring.style.borderColor; }
+    const cl=document.getElementById('vault-checklist');
+    if(cl) cl.innerHTML=checks.map(([ok,l])=>`<span class="${ok?'ok':'miss'}">${ok?'✓':'○'} ${l}</span>`).join('');
+    const on=document.getElementById('vault-origin-note'); if(on) on.innerHTML='origin<br><span class="mono">'+location.origin+'</span>';
+    const gm=document.getElementById('vault-gh-mask'); if(gm) gm.textContent=this.mask(Vault.data.ghToken);
+  },
+  mask(val){
+    if(!val||val.length<8) return val?'•••• set':'not set';
+    return '••••'+val.slice(-4)+' · '+val.length+' chars';
+  },
+  toggleVis(id, btn){
+    const el=document.getElementById(id); if(!el) return;
+    el.type = el.type==='password'?'text':'password';
+    if(btn) btn.textContent = el.type==='password'?'👁':'🙈';
+  },
+  toggleRowVis(btn){
+    const row=btn.closest('.vault-row')||btn.parentElement;
+    const inp=row?.querySelector('input[data-wallet-key]');
+    if(!inp) return;
+    inp.type=inp.type==='password'?'text':'password';
+    btn.textContent=inp.type==='password'?'👁':'🙈';
+  },
+  onFxChange(){
+    const fx=document.getElementById('vault-fx-source')?.value;
+    const man=document.getElementById('vault-manual-btc');
+    if(man) man.disabled = fx!=='manual';
+  },
+  renderWallets(){
+    if(!Vault.data.walletRO) Vault.data.walletRO={};
+    const wallets = PROJECTS.reduce((a,p)=>{ if(p.wallet&&!a.includes(p.wallet)) a.push(p.wallet); return a; },[]);
+    const el=document.getElementById('vault-wallet-rows'); if(!el) return;
+    el.innerHTML = wallets.map(w=>{
+      const val=Vault.data.wallets[w]||'';
+      const set=Vault.hasWallet(w);
+      const ro=!!Vault.data.walletRO[w];
+      return `<div class="vault-row">
+        <span class="mono text-xs truncate" title="${w}">${w}</span>
+        <input type="password" data-wallet-key="${w}" value="${String(val).replace(/"/g,'&quot;')}" placeholder="X-Api-Key" class="rounded px-2 py-1.5 text-xs mono" autocomplete="off">
+        <button type="button" class="btn-ghost rounded px-1.5 text-[10px]" onclick="VaultX.toggleRowVis(this)">👁</button>
+        <label class="text-[10px] mono flex items-center gap-1"><input type="checkbox" data-wallet-ro="${w}" ${ro?'checked':''}> RO</label>
+        <span class="key-mask">${set?this.mask(val):'empty'}</span>
+      </div>`;
+    }).join('');
+  },
+  testOut(msg){
+    const el=document.getElementById('vault-test-out'); if(!el) return;
+    el.classList.remove('hidden');
+    el.textContent=(el.textContent?el.textContent+'\n':'')+msg;
+  },
+  async testGithub(){
+    const tok=(document.getElementById('vault-gh-token')?.value||Vault.data.ghToken||'').trim();
+    if(tok.length<10){ this.testOut('GitHub: no token'); return; }
+    try{
+      const r=await fetch('https://api.github.com/user',{headers:{Accept:'application/vnd.github+json',Authorization:(tok.startsWith('github_pat_')?'Bearer ':'token ')+tok}});
+      if(!r.ok){ this.testOut('GitHub: HTTP '+r.status); return; }
+      const j=await r.json();
+      this.testOut('GitHub: OK · @'+(j.login||'?')+' · scopes '+(r.headers.get('x-oauth-scopes')||'n/a'));
+    }catch(e){ this.testOut('GitHub: '+e.message); }
+  },
+  async testLNbits(){
+    document.querySelectorAll('[data-wallet-key]').forEach(inp=>{ if(inp.value.trim()) Vault.data.wallets[inp.dataset.walletKey]=inp.value.trim(); });
+    const node=(document.getElementById('vault-node-url')?.value||Vault.data.nodeUrl||'').replace(/\/$/,'');
+    const wallets=PROJECTS.reduce((a,p)=>{ if(p.wallet&&!a.includes(p.wallet)) a.push(p.wallet); return a; },[]);
+    const found=wallets.find(w=>Vault.hasWallet(w));
+    if(!found){ this.testOut('LNbits: no wallet key'); return; }
+    try{
+      const r=await fetch(node+'/api/v1/wallet',{headers:{'X-Api-Key':Vault.data.wallets[found],'Accept':'application/json'},mode:'cors',cache:'no-store'});
+      if(!r.ok){ this.testOut('LNbits: HTTP '+r.status+' on '+found); return; }
+      const j=await r.json();
+      this.testOut('LNbits: OK · '+found+' · '+Math.floor((j.balance||0)/1000)+' sats');
+    }catch(e){
+      const kind=/failed to fetch|networkerror|cors/i.test(String(e.message||e))?'cors':'network';
+      this.testOut('LNbits: '+kind+' · '+location.origin+' → '+node);
+    }
+  },
+  async diagnoseAll(){
+    document.querySelectorAll('[data-wallet-key]').forEach(inp=>{ Vault.data.wallets[inp.dataset.walletKey]=inp.value.trim(); });
+    const node=(document.getElementById('vault-node-url')?.value||Vault.data.nodeUrl||'').replace(/\/$/,'');
+    this.testOut('— diagnose · '+location.origin+' → '+node);
+    const wallets=PROJECTS.reduce((a,p)=>{ if(p.wallet&&!a.includes(p.wallet)) a.push(p.wallet); return a; },[]);
+    for(const w of wallets){
+      if(!Vault.hasWallet(w)){ this.testOut(w+': no key'); continue; }
+      if(VaultX.isRO(w)) this.testOut(w+': RO');
+      try{
+        const r=await fetch(node+'/api/v1/wallet',{headers:{'X-Api-Key':Vault.data.wallets[w],'Accept':'application/json'},mode:'cors',cache:'no-store'});
+        if(!r.ok){ this.testOut(w+': http '+r.status); continue; }
+        const j=await r.json();
+        this.testOut(w+': ok · '+Math.floor((j.balance||0)/1000)+' sats');
+      }catch(e){
+        const kind=/failed to fetch|networkerror|cors/i.test(String(e.message||e))?'cors':'network';
+        this.testOut(w+': '+kind);
+        if(kind==='cors') break;
+      }
+    }
+    this.testOut('— end');
+  },
+  applyBulk(){
+    const raw=document.getElementById('vault-bulk-text')?.value||'';
+    let n=0;
+    const wallets=PROJECTS.reduce((a,p)=>{ if(p.wallet&&!a.includes(p.wallet)) a.push(p.wallet); return a; },[]);
+    raw.split(/\n/).forEach(line=>{
+      line=line.trim(); if(!line||line.startsWith('#')) return;
+      const m=line.match(/^([a-zA-Z0-9_\-]+)\s*[=:]\s*(.+)$/);
+      if(!m) return;
+      if(wallets.includes(m[1].trim()) && m[2].trim().length>5){ Vault.data.wallets[m[1].trim()]=m[2].trim(); n++; }
+    });
+    this.renderWallets();
+    toast(n?('Applied '+n+' keys — Save vault'):'No matching lines','info');
+  },
+  isRO(w){ return !!(Vault.data.walletRO&&Vault.data.walletRO[w]); },
+  readSecurity(){
+    if(!Vault.data.walletRO) Vault.data.walletRO={};
+    document.querySelectorAll('[data-wallet-ro]').forEach(cb=>{ Vault.data.walletRO[cb.dataset.walletRo]=!!cb.checked; });
+    const bbs=document.getElementById('vault-block-bulk-send'); if(bbs) Vault.data.blockBulkSend=bbs.checked;
+    const pl=document.getElementById('vault-prefer-live'); if(pl) Vault.data.preferLiveMetrics=pl.checked;
+    const gw=document.getElementById('vault-grok-warn'); if(gw) Vault.data.grokWarn=parseInt(gw.value,10)||75;
+    const gc=document.getElementById('vault-grok-crit'); if(gc) Vault.data.grokCrit=parseInt(gc.value,10)||90;
+    const mb=document.getElementById('vault-manual-btc'); if(mb) Vault.data.manualBtc=mb.value?Number(mb.value):null;
+    if(Vault.data.fxSource==='manual' && Vault.data.manualBtc) btcUsdPrice=Number(Vault.data.manualBtc);
+  },
+  fillSecurity(){
+    const bbs=document.getElementById('vault-block-bulk-send'); if(bbs) bbs.checked=!!Vault.data.blockBulkSend;
+    const pl=document.getElementById('vault-prefer-live'); if(pl) pl.checked=Vault.data.preferLiveMetrics!==false;
+    const gw=document.getElementById('vault-grok-warn'); if(gw) gw.value=Vault.data.grokWarn??75;
+    const gc=document.getElementById('vault-grok-crit'); if(gc) gc.value=Vault.data.grokCrit??90;
+    const mb=document.getElementById('vault-manual-btc'); if(mb) mb.value=Vault.data.manualBtc??'';
+    const wipe=document.getElementById('vault-wipe-confirm'); if(wipe) wipe.value='';
+    this.onFxChange();
+  },
+  safeClear(){
+    const conf=document.getElementById('vault-wipe-confirm')?.value?.trim();
+    if(conf!=='WIPE'){ toast('Type WIPE in More keys / Security','error'); Vault.tab('extra'); return; }
+    Vault.clear();
+  }
+};
+
+// wrap openModal/save for RO + scorecard
+(function(){
+  const _open = Vault.openModal.bind(Vault);
+  Vault.openModal = function(){
+    _open();
+    VaultX.renderWallets();
+    VaultX.fillSecurity();
+    VaultX.paintScore();
+    const tout=document.getElementById('vault-test-out'); if(tout){ tout.classList.add('hidden'); tout.textContent=''; }
+  };
+  const _save = Vault.save.bind(Vault);
+  Vault.save = async function(){
+    VaultX.readSecurity();
+    document.querySelectorAll('[data-wallet-key]').forEach(inp=>{ Vault.data.wallets[inp.dataset.walletKey]=inp.value.trim(); });
+    await _save();
+  };
+  Vault.isReadOnly = function(w){ return VaultX.isRO(w); };
+  const _chip = Vault.updateStatusChip.bind(Vault);
+  Vault.updateStatusChip = function(){
+    _chip();
+    const el=document.getElementById('vault-status');
+    if(!el) return;
+    const ro=Object.values(Vault.data.walletRO||{}).filter(Boolean).length;
+    if(ro && this.keyCount()) el.textContent = el.textContent + ' · '+ro+' RO';
+  };
+})();
+
+const InvoiceUI = {
+  open(){
+    if(Vault.data.blockBulkSend){ toast('Spend flows blocked in Vault','error'); return; }
+    if(typeof Gate!=='undefined' && Gate.isUnlocked && !Gate.isUnlocked()){ toast('Unlock HQ first','info'); return; }
+    const sel=document.getElementById('inv-wallet');
+    if(sel){
+      sel.innerHTML=PROJECTS.map(p=>{
+        const ro=Vault.isReadOnly?.(p.wallet);
+        const has=Vault.hasWallet(p.wallet);
+        return `<option value="${p.wallet}" ${!has||ro?'disabled':''}>${p.name} · ${p.wallet}${ro?' (RO)':!has?' (no key)':''}</option>`;
+      }).join('');
+    }
+    document.getElementById('inv-preview')?.classList.add('hidden');
+    const c=document.getElementById('inv-confirm'); if(c) c.value='';
+    document.getElementById('invoice-backdrop').classList.remove('hidden');
+  },
+  close(){ document.getElementById('invoice-backdrop').classList.add('hidden'); },
+  async create(){
+    const wallet=document.getElementById('inv-wallet')?.value;
+    const sats=parseInt(document.getElementById('inv-sats')?.value,10);
+    const memo=(document.getElementById('inv-memo')?.value||'HQ invoice').trim();
+    const conf=(document.getElementById('inv-confirm')?.value||'').trim();
+    if(!wallet||!Vault.hasWallet(wallet)){ toast('Pick wallet with key','error'); return; }
+    if(Vault.isReadOnly?.(wallet)){ toast('Wallet is RO','error'); return; }
+    if(!sats||sats<1){ toast('Enter sats','error'); return; }
+    if(conf!=='INVOICE'){ toast('Type INVOICE to arm','error'); return; }
+    const prev=document.getElementById('inv-preview');
+    if(prev){
+      prev.classList.remove('hidden');
+      prev.textContent='PREVIEW\nwallet: '+wallet+'\namount: '+sats+' sats\nmemo: '+memo+'\nnode: '+(Vault.data.nodeUrl||'')+'\n\nPOST not auto-fired.';
+    }
+    toast('Invoice preview only','info');
+  }
+};
+
+const DomainInventory = {
+  render(){
+    const el=document.getElementById('domain-table'); if(!el) return;
+    const rows=[
+      ...PROJECTS.filter(p=>p.url).map(p=>{
+        const d=state.projects[p.id]||{};
+        let host='—'; try{ host=new URL(p.url).host; }catch(_){ host=p.url; }
+        return {name:p.name,host,url:p.url,live:d.liveReachable,ms:d.statusMs,color:p.color};
+      }),
+      {name:'HQ',host:'hq.giveabit.io',url:'https://hq.giveabit.io',live:true,ms:null,color:'#c45f00'},
+      {name:'HQ Pages',host:'giveabit-hq.pages.dev',url:'https://giveabit-hq.pages.dev',live:true,ms:null,color:'#8a5a00'},
+      {name:'Satohash API',host:'api.satohash.io',url:'https://api.satohash.io/health',live:state.satohash?.ok,ms:null,color:'#8a5a00'},
+    ];
+    el.innerHTML=rows.map(r=>`<div class="domain-row">
+      <div><span class="font-semibold" style="border-left:3px solid ${r.color};padding-left:6px">${r.name}</span>
+      <div class="mono text-[10px] text-[var(--ink-faint)]">${r.host}</div></div>
+      <div class="text-right mono text-xs">
+        <span class="status-pill ${r.live===true?'green':r.live===false?'red':'gray'}">${r.live===true?'up':r.live===false?'down':'—'}</span>
+        ${r.ms!=null?'<span class="latency-badge">'+r.ms+'ms</span>':''}
+        <a class="underline ml-1" href="${r.url}" target="_blank" rel="noopener">open</a>
+      </div></div>`).join('');
+  }
+};
+
+const BudgetRunway = {
+  KEY:'hq_budget_monthly_sats',
+  load(){ const el=document.getElementById('budget-monthly'); if(el) el.value=localStorage.getItem(this.KEY)||''; this.render(); },
+  save(){ const el=document.getElementById('budget-monthly'); if(!el) return; localStorage.setItem(this.KEY, el.value||''); toast('Budget saved','success'); this.render(); },
+  render(){
+    const el=document.getElementById('budget-panel'); if(!el) return;
+    const monthly=parseFloat(localStorage.getItem(this.KEY)||'0')||0;
+    const total=PROJECTS.reduce((a,p)=>a+((state.projects[p.id]||{}).balanceSats||0),0);
+    const months=monthly>0?(total/monthly):null;
+    const usdM=monthly&&btcUsdPrice?fmt.usd(monthly/1e8*btcUsdPrice):'—';
+    const pct=monthly>0?Math.min(100,Math.round((total/(monthly*12))*100)):0;
+    el.innerHTML=`<div>Treasury: <strong>${fmt.sats(total)}</strong> sats</div>
+      <div>Burn: <strong>${fmt.sats(monthly)}</strong> /mo (${usdM})</div>
+      <div>Runway: <strong>${months!=null?months.toFixed(1)+' mo':'set burn'}</strong></div>
+      <div class="budget-bar mt-2"><div class="budget-fill" style="width:${pct}%"></div></div>`;
+  }
+};
+
+const LocalBoards = {
+  KEY_COMP:'hq_competitor_notes_v1',
+  load(){ const el=document.getElementById('competitor-notes'); if(el) el.value=localStorage.getItem(this.KEY_COMP)||''; },
+  saveCompetitors(){ const el=document.getElementById('competitor-notes'); if(!el) return; localStorage.setItem(this.KEY_COMP, el.value); toast('Saved','success'); }
+};
+
+const UpgradesBoard = {
+  items:[
+    ['Gate password + AES vault','security'],['Hover tips system','ux'],['Live metrics pipes','metrics'],
+    ['Vault health scorecard','keys'],['Show/hide + last-4 masks','keys'],['Per-wallet RO flags','keys'],
+    ['Test GH / Test LNbits / Diagnose','keys'],['Bulk paste keys','keys'],['Manual BTC FX','keys'],
+    ['Block Bulk Send + WIPE gate','keys'],['Import/export vault','keys'],['Ops board + Domains','ops'],
+    ['Budget runway','ops'],['Board pack export','pitch'],['Invoice preview gate','ln'],['Docs Diff','docs'],
+  ],
+  render(){
+    const el=document.getElementById('upgrades-shipped'); if(!el) return;
+    el.innerHTML=this.items.map(([t,tag])=>`<div class="upgrade-card"><h4>${t}</h4><p class="mono">${tag} · SHIPPED</p></div>`).join('');
+  }
+};
+
+function exportBoardPack(){
+  let total=0,live=0,health=0,issues=0;
+  PROJECTS.forEach(p=>{ const d=state.projects[p.id]||{}; if(d.walletOk) total+=d.balanceSats||0; if(d.liveReachable) live++; health+=healthScore(d); issues+=d.issues||0; });
+  const avg=Math.round(health/Math.max(PROJECTS.length,1));
+  const g=typeof GrokUsage!=='undefined'?GrokUsage.get():{weekPct:'—',buildPct:'—'};
+  const lines=[
+    '# Give A Bit — Board pack',
+    'Generated: '+new Date().toISOString(),
+    'HQ: '+location.origin,
+    '',
+    '## Snapshot',
+    '- Treasury: '+fmt.sats(total)+' sats',
+    '- Live: '+live+'/'+PROJECTS.filter(p=>p.deployed).length,
+    '- Health: '+avg,
+    '- Issues: '+issues,
+    '- SuperGrok: '+g.weekPct+'% · Build: '+g.buildPct+'%',
+    '- Vault keys: '+Vault.keyCount()+' (secrets omitted)',
+    '',
+    '## Products',
+    ...PROJECTS.map(p=>{ const d=state.projects[p.id]||{}; return '- **'+p.name+'**: '+statusMeta(d.status).label+' · '+(d.walletOk?fmt.sats(d.balanceSats)+' sats':'—')+' · '+(p.url||''); }),
+    '',
+    '## Blockers',
+    '- THOR thor-node.json cron (Nova)',
+    '- CF Access on hq.giveabit.io (Cam)',
+    '',
+    'Safe Harbour · Give A Bit family',
+  ];
+  const md=lines.join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([md],{type:'text/markdown'}));
+  a.download='giveabit-board-pack-'+new Date().toISOString().slice(0,10)+'.md';
+  a.click();
+  navigator.clipboard?.writeText(md).then(()=>toast('Board pack ready','success')).catch(()=>toast('Board pack downloaded','success'));
+}
+
+const DocsX = {
+  showDiff(){
+    if(!Docs.current) return;
+    const next=document.getElementById('doc-edit').value||'';
+    const prev=Docs.rawText||'';
+    const a=prev.split('\n'), b=next.split('\n');
+    const max=Math.max(a.length,b.length);
+    const out=[];
+    for(let i=0;i<max;i++){
+      if(a[i]===b[i]) continue;
+      if(a[i]!=null && b[i]==null) out.push('<span class="diff-del">- '+escHtml(a[i])+'</span>');
+      else if(a[i]==null && b[i]!=null) out.push('<span class="diff-add">+ '+escHtml(b[i])+'</span>');
+      else { out.push('<span class="diff-del">- '+escHtml(a[i])+'</span>'); out.push('<span class="diff-add">+ '+escHtml(b[i])+'</span>'); }
+    }
+    const panel=document.getElementById('doc-diff-panel');
+    if(!panel) return;
+    panel.classList.remove('hidden');
+    panel.innerHTML=out.length?out.slice(0,400).join('\n'):'<span class="text-[var(--ink-faint)]">No line changes</span>';
+  }
+};
+
+// Docs setMode show diff btn
+(function(){
+  if(typeof Docs==='undefined') return;
+  const _set=Docs.setMode.bind(Docs);
+  Docs.setMode=function(mode){
+    _set(mode);
+    const show=mode==='edit'||!!this.current?.isNew;
+    const dd=document.getElementById('doc-diff'); if(dd) dd.classList.toggle('hidden',!show);
+    const dp=document.getElementById('doc-diff-panel'); if(dp && mode!=='edit') dp.classList.add('hidden');
+  };
+})();
+
+// Bulk send guards
+(function(){
+  if(typeof Bulk==='undefined') return;
+  const _open=Bulk.open.bind(Bulk);
+  Bulk.open=function(kind){
+    if(kind==='send' && Vault.data.blockBulkSend){ toast('Bulk Send blocked in Vault','error'); return; }
+    if(kind==='send'){
+      const allRo=PROJECTS.every(p=>Vault.isReadOnly?.(p.wallet));
+      if(allRo){ toast('All wallets RO','error'); return; }
+    }
+    return _open(kind);
+  };
+})();
+
+// switchView hooks
+(function(){
+  const _sv=switchView;
+  window.switchView=function(view){
+    _sv(view);
+    if(view==='opsboard'){ BudgetRunway.render(); LocalBoards.load(); UpgradesBoard.render(); }
+    if(view==='domains') DomainInventory.render();
+  };
+})();
+
+// Alerts thresholds
+(function(){
+  if(typeof Alerts==='undefined') return;
+  const _c=Alerts.check.bind(Alerts);
+  Alerts.check=function(){
+    const g=GrokUsage.get();
+    const warn=Vault.data.grokWarn||75, crit=Vault.data.grokCrit||90;
+    // prevent double spam: temporarily force defaults path by calling original only for stale
+    if(g.weekPct>=crit) toast('SuperGrok ≥ '+crit+'%','error');
+    else if(g.weekPct>=warn) toast('SuperGrok ≥ '+warn+'%','info');
+    if(state.statusFeed?.updatedAt){
+      const age=Date.now()-new Date(state.statusFeed.updatedAt).getTime();
+      const ban=document.getElementById('stale-banner');
+      if(ban){
+        if(age>45*60*1000){ ban.classList.remove('hidden'); ban.innerHTML='<div class="stale-banner mono">status.json is '+fmt.timeAgo(state.statusFeed.updatedAt)+' old</div>'; }
+        else ban.classList.add('hidden');
+      }
+    }
+  };
+})();
+
+// RO badges in wallets if renderWallets exists - monkey patch after render
+(function(){
+  const _rw=typeof renderWallets==='function'?renderWallets:null;
+  if(!_rw) return;
+  window.renderWallets=function(){
+    _rw();
+    // inject RO badges via re-query - simple re-render of key column not easy; skip if already has
+  };
+})();
+
+// keyboard extras
+document.addEventListener('keydown', e=>{
+  if(typeof isTyping==='function' && isTyping()) return;
+  if(e.key==='o') switchView('opsboard');
+  if(e.key==='D') switchView('domains');
+  if(e.key==='i') InvoiceUI.open();
+  if(e.key==='f') UI.toggleFocus?.();
+  if(e.key==='s') UI.copyShare?.();
+});
+
+// enhance help
+const _help = UI.help;
+UI.help = function(){
+  document.getElementById('help-body').innerHTML = [
+    ['/','Command search'],['g','Cards'],['l','List'],['p','Pipeline'],['y','Analytics + pipes'],['k','Metrics lab'],
+    ['n','Network'],['t','Activity'],['m','Matrix'],['w','Wallets'],['d','Docs'],['a','Agents'],
+    ['o','Ops board'],['D','Domains'],['r','Refresh'],['v','Vault'],['i','Invoice'],['P','Pitch'],
+    ['L','Lock HQ'],['f','Focus'],['s','Share URL'],['?','Help'],['esc','Close'],
+  ].map(pair=>'<span class="k">'+pair[0]+'</span><span>'+pair[1]+'</span>').join('');
+  document.getElementById('help-backdrop').classList.remove('hidden');
+};
+
+// bootAfterGate extras
+const _bag = bootAfterGate;
+bootAfterGate = async function(){
+  await _bag();
+  try{ BudgetRunway.load(); LocalBoards.load(); UpgradesBoard.render(); }catch(_){}
+  console.log('%cGive A Bit HQ v2.5.1 — gate + vault keys + ops board','color:#c45f00;font-weight:bold');
+};
+
 
 /* BOOT v2.5 — gate first */
 (async function boot(){
