@@ -1,1676 +1,1500 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="stone" data-density="comfy">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Give A Bit HQ</title>
+<title>Give A Bit HQ v2</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  /* Ops desk: warm stone, high ink contrast, no neon / no pure white */
-  :root{
-    --void:#b9b4aa;
-    --void-2:#a8a297;
-    --panel:#d4cfc4;
-    --panel-2:#c9c3b7;
-    --panel-raised:#ddd8cd;
-    --line:rgba(18,18,16,.22);
-    --line-hi:rgba(18,18,16,.38);
-    --orange:#c45f00;
-    --orange-2:#9a4a00;
-    --green:#1f6b3a;
-    --green-soft:rgba(31,107,58,.14);
-    --amber:#8a5a00;
-    --amber-soft:rgba(138,90,0,.14);
-    --red:#a32020;
-    --red-soft:rgba(163,32,32,.12);
-    --gray:#5c5a54;
-    --ink:#121210;
-    --ink-dim:#2e2c28;
-    --ink-faint:#5a574f;
-    --shadow:none;
-  }
-  *{box-sizing:border-box}
-  html,body{background:var(--void);color:var(--ink);font-family:'IBM Plex Sans',system-ui,sans-serif;margin:0;}
-  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace;}
-  body{background:var(--void);}
-  ::-webkit-scrollbar{width:8px;height:8px}
-  ::-webkit-scrollbar-track{background:transparent}
-  ::-webkit-scrollbar-thumb{background:rgba(18,18,16,.25);border-radius:4px}
-  ::-webkit-scrollbar-thumb:hover{background:rgba(18,18,16,.4)}
-
-  .glass{
-    background:var(--panel);
-    border:1px solid var(--line);
-  }
-  .glass-soft{
-    background:var(--panel-2);
-    border:1px solid var(--line);
-  }
-  .glass-hover:hover{border-color:var(--line-hi); background:var(--panel-raised);}
-  .glass, .glass-hover{transition:border-color .15s ease, background .15s ease;}
-
-  .grad-brand{background:var(--orange);}
-  .grad-text{color:var(--ink); background:none; -webkit-background-clip:unset; background-clip:unset;}
-
-  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none;border:1px solid rgba(0,0,0,.25);}
-  .dot-green{background:var(--green);}
-  .dot-amber{background:#c48a00;}
-  .dot-red{background:var(--red);}
-  .dot-gray{background:var(--gray);}
-
-  .tab-active{color:#fff;background:var(--ink);border:1px solid var(--ink);}
-  .chip{border:1px solid var(--line);background:var(--panel-2);transition:all .12s ease;color:var(--ink-dim);}
-  .chip:hover{border-color:var(--line-hi);color:var(--ink);}
-  .chip-active{background:var(--ink);border-color:var(--ink);color:#e8e4dc;font-weight:600;}
-
-  input,textarea,select{background:var(--panel-raised); border:1px solid var(--line); color:var(--ink);}
-  input:focus,textarea:focus,select:focus{outline:none; border-color:var(--ink); box-shadow:0 0 0 2px rgba(18,18,16,.12);}
-  input::placeholder,textarea::placeholder{color:var(--ink-faint)}
-  :focus-visible{outline:2px solid var(--orange); outline-offset:2px;}
-
-  .btn-brand{background:var(--ink); color:#e8e4dc; font-weight:600; border:1px solid var(--ink);}
-  .btn-brand:hover{background:#000; color:#fff;}
-  .btn-ghost{border:1px solid var(--line); color:var(--ink-dim); background:var(--panel-2);}
-  .btn-ghost:hover{border-color:var(--line-hi); color:var(--ink); background:var(--panel-raised);}
-  .btn-accent{background:var(--orange); color:#fff; font-weight:600; border:1px solid var(--orange-2);}
-  .btn-accent:hover{filter:brightness(.95);}
-
-  .skeleton{background:var(--panel-2); opacity:.7;}
-
-  .md-body h1{font-size:1.4rem;font-weight:700;margin:1.1em 0 .45em;color:var(--ink)}
-  .md-body h2{font-size:1.15rem;font-weight:700;margin:1em 0 .4em;color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:.3em}
-  .md-body h3{font-size:1rem;font-weight:600;margin:.9em 0 .35em;color:var(--ink-dim)}
-  .md-body p{margin:.55em 0;color:var(--ink-dim);line-height:1.65}
-  .md-body code{background:var(--panel-2);padding:.1em .35em;border-radius:2px;font-family:'IBM Plex Mono',monospace;font-size:.85em;color:var(--ink);border:1px solid var(--line)}
-  .md-body pre{background:#1a1916;border:1px solid #0a0a09;padding:.9em;border-radius:4px;overflow:auto;margin:.7em 0}
-  .md-body pre code{background:none;border:0;padding:0;color:#d4cfc4}
-  .md-body ul,.md-body ol{margin:.5em 0;padding-left:1.3em;color:var(--ink-dim)}
-  .md-body li{margin:.2em 0}
-  .md-body a{color:var(--orange-2);text-decoration:underline;text-underline-offset:2px}
-  .md-body blockquote{border-left:3px solid var(--ink);padding-left:.9em;color:var(--ink-faint);margin:.7em 0}
-  .md-body table{width:100%;border-collapse:collapse;margin:.7em 0;font-size:.9em}
-  .md-body th,.md-body td{border:1px solid var(--line);padding:.35em .5em;text-align:left}
-  .md-body th{background:var(--panel-2);font-weight:600}
-
-  .modal-backdrop{background:rgba(18,18,16,.55);}
-  .slide-in{animation:slideIn .2s ease-out;}
-  @keyframes slideIn{from{transform:translateX(12px);opacity:0}to{transform:translateX(0);opacity:1}}
-  .pop-in{animation:popIn .15s ease-out;}
-  @keyframes popIn{from{opacity:0}to{opacity:1}}
-
-  .toast{animation:toastIn .15s ease, toastOut .2s ease 3.5s forwards;}
-  @keyframes toastIn{from{opacity:0}to{opacity:1}}
-  @keyframes toastOut{to{opacity:0}}
-
-  .scrollbar-thin::-webkit-scrollbar{width:6px}
-  .bar-fill{transition:width .4s ease;}
-  @media (prefers-reduced-motion: reduce){
-    *,*::before,*::after{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important;}
-  }
-
-  [data-tip]{position:relative}
-  [data-tip]:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--ink);color:#e8e4dc;font-size:11px;padding:4px 8px;border-radius:2px;white-space:nowrap;z-index:50;font-family:'IBM Plex Mono',monospace}
-
-  .ticker-track{display:flex;gap:2rem;animation:ticker 40s linear infinite;}
-  @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-  .status-pill{
-    display:inline-flex;align-items:center;gap:5px;
-    font-size:10px;font-family:'IBM Plex Mono',monospace;
-    padding:2px 7px;border-radius:2px;border:1px solid var(--line);
-    background:var(--panel-2);color:var(--ink-dim);letter-spacing:.02em;text-transform:uppercase;
-  }
-  .status-pill.green{background:var(--green-soft);border-color:rgba(31,107,58,.35);color:var(--green);}
-  .status-pill.amber{background:var(--amber-soft);border-color:rgba(138,90,0,.35);color:var(--amber);}
-  .status-pill.red{background:var(--red-soft);border-color:rgba(163,32,32,.3);color:var(--red);}
-  .status-pill.gray{background:rgba(92,90,84,.12);color:var(--ink-faint);}
-
-  .metric-tile{
-    background:var(--panel-2);
-    border:1px solid var(--line);
-    border-radius:4px;
-    padding:8px 10px;
-  }
-  .health-ring{
-    width:32px;height:32px;border-radius:2px;
-    display:flex;align-items:center;justify-content:center;
-    font-size:11px;font-family:'IBM Plex Mono',monospace;font-weight:600;
-    border:1px solid var(--line);
-    background:var(--panel-2);
-  }
-  .row-hover:hover{background:rgba(18,18,16,.04);}
-  .topbar{background:var(--panel); border-bottom:1px solid var(--line);}
-  .divider{width:1px;height:14px;background:var(--line);flex-shrink:0;}
-  .detail-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px;}
-  .detail-row:last-child{border-bottom:0;}
-  .pipe-step-ok{background:var(--green);}
-  .pipe-step-fail{background:rgba(18,18,16,.15);}
-  .pipe-step-amber{background:#c48a00;}
-  .accent-bar{height:3px;background:var(--orange);}
-  .kbd{font-family:'IBM Plex Mono',monospace;font-size:10px;border:1px solid var(--line);padding:1px 5px;border-radius:2px;background:var(--panel-2);color:var(--ink-faint);}
-  .banner-warn{background:var(--amber-soft);border:1px solid rgba(138,90,0,.35);color:var(--amber);padding:8px 12px;font-size:12px;border-radius:4px;}
-  .banner-err{background:var(--red-soft);border:1px solid rgba(163,32,32,.3);color:var(--red);padding:8px 12px;font-size:12px;border-radius:4px;}
-  .site-footer{border-top:1px solid var(--line);color:var(--ink-faint);font-size:11px;padding:16px 0 80px;}
-  .icon-box{width:36px;height:36px;border-radius:4px;background:var(--ink);color:#e8e4dc;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-  .icon-box.sm{width:28px;height:28px;font-size:11px;}
-  .icon-box.accent{background:var(--orange);color:#fff;}
-  table thead th{position:sticky;top:0;z-index:1;}
+/* ===== THEME TOKENS ===== */
+[data-theme="stone"]{
+  --void:#b5b0a6;--void-2:#a39e93;--panel:#d0cbc0;--panel-2:#c4beb2;--panel-hi:#ddd8ce;
+  --ink:#121210;--ink-dim:#2c2a26;--ink-faint:#5a574f;
+  --line:rgba(18,18,16,.22);--line-hi:rgba(18,18,16,.4);
+  --orange:#c45f00;--orange-2:#9a4a00;--green:#1f6b3a;--amber:#8a5a00;--red:#a32020;--sky:#1a5f7a;--violet:#5c3d7a;
+}
+[data-theme="slate"]{
+  --void:#8a9099;--void-2:#7a8088;--panel:#a8aeb6;--panel-2:#9aa1aa;--panel-hi:#b8bec6;
+  --ink:#0e1218;--ink-dim:#1e2630;--ink-faint:#4a5560;
+  --line:rgba(10,14,20,.25);--line-hi:rgba(10,14,20,.42);
+  --orange:#c45f00;--orange-2:#9a4a00;--green:#1a5c34;--amber:#7a5000;--red:#9a1c1c;--sky:#165570;--violet:#4a3568;
+}
+[data-theme="ink"]{
+  --void:#3a3d42;--void-2:#2e3136;--panel:#4a4e55;--panel-2:#42464d;--panel-hi:#555a62;
+  --ink:#e8e6e1;--ink-dim:#c4c0b8;--ink-faint:#8a8680;
+  --line:rgba(0,0,0,.35);--line-hi:rgba(255,255,255,.18);
+  --orange:#e07a20;--orange-2:#f0a050;--green:#3dba6a;--amber:#e0a030;--red:#e05050;--sky:#4aa0c8;--violet:#a078c8;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--void);color:var(--ink);font-family:'IBM Plex Sans',system-ui,sans-serif}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+[data-density="compact"] .pad-d{padding:.5rem !important}
+[data-density="compact"] .gap-d{gap:.35rem !important}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:rgba(0,0,0,.25);border-radius:4px}
+.glass{background:var(--panel);border:1px solid var(--line)}
+.glass-2{background:var(--panel-2);border:1px solid var(--line)}
+.glass-hi{background:var(--panel-hi);border:1px solid var(--line)}
+.glass-hover:hover{background:var(--panel-hi);border-color:var(--line-hi)}
+.accent-bar{height:3px;background:var(--orange)}
+.topbar{background:var(--panel);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.2);flex:none}
+.dot-green{background:var(--green)}.dot-amber{background:#c48a00}.dot-red{background:var(--red)}.dot-gray{background:#6b6860}
+.tab-active{background:var(--ink);color:var(--panel);border:1px solid var(--ink)}
+.chip{border:1px solid var(--line);background:var(--panel-2);color:var(--ink-dim);font-size:11px;padding:3px 8px;border-radius:2px;cursor:pointer}
+.chip:hover{border-color:var(--line-hi);color:var(--ink)}
+.chip-active{background:var(--ink);color:var(--panel);border-color:var(--ink);font-weight:600}
+.btn-brand{background:var(--ink);color:var(--panel);border:1px solid var(--ink);font-weight:600;cursor:pointer}
+.btn-brand:hover{filter:brightness(1.08)}
+.btn-ghost{background:var(--panel-2);color:var(--ink-dim);border:1px solid var(--line);cursor:pointer}
+.btn-ghost:hover{color:var(--ink);border-color:var(--line-hi)}
+.btn-accent{background:var(--orange);color:#fff;border:1px solid var(--orange-2);font-weight:600;cursor:pointer}
+input,textarea,select{background:var(--panel-hi);border:1px solid var(--line);color:var(--ink);border-radius:3px}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 2px rgba(0,0,0,.1)}
+:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+.status-pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-family:'IBM Plex Mono',monospace;padding:2px 7px;border-radius:2px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink-dim);text-transform:uppercase;letter-spacing:.03em}
+.status-pill.green{background:rgba(31,107,58,.14);border-color:rgba(31,107,58,.35);color:var(--green)}
+.status-pill.amber{background:rgba(138,90,0,.14);border-color:rgba(138,90,0,.35);color:var(--amber)}
+.status-pill.red{background:rgba(163,32,32,.12);border-color:rgba(163,32,32,.3);color:var(--red)}
+.status-pill.gray{opacity:.85}
+.metric{background:var(--panel-2);border:1px solid var(--line);border-radius:4px;padding:8px 10px}
+.icon-box{width:32px;height:32px;border-radius:4px;display:flex;align-items:center;justify-content:center;background:var(--ink);color:var(--panel);flex-shrink:0;font-size:12px}
+.icon-box.sm{width:26px;height:26px;font-size:11px}
+.card-border{border-left:4px solid var(--pc,var(--orange))}
+.bar-track{height:6px;background:var(--void-2);border:1px solid var(--line);border-radius:2px;overflow:hidden}
+.bar-fill{height:100%;background:var(--ink);transition:width .4s ease}
+.modal-backdrop{background:rgba(18,18,16,.55)}
+.toast{animation:tIn .15s ease,tOut .2s ease 3.5s forwards}
+@keyframes tIn{from{opacity:0}to{opacity:1}}
+@keyframes tOut{to{opacity:0}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+.ticker-track{display:flex;gap:1.75rem;animation:tick 42s linear infinite;white-space:nowrap}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.md-body h1{font-size:1.35rem;font-weight:700;margin:1em 0 .4em}
+.md-body h2{font-size:1.1rem;font-weight:700;margin:.9em 0 .35em;border-bottom:1px solid var(--line);padding-bottom:.25em}
+.md-body h3{font-size:1rem;font-weight:600;margin:.8em 0 .3em;color:var(--ink-dim)}
+.md-body p,.md-body li{color:var(--ink-dim);line-height:1.65}
+.md-body code{background:var(--panel-2);padding:.1em .35em;border-radius:2px;font-family:'IBM Plex Mono',monospace;font-size:.85em;border:1px solid var(--line)}
+.md-body pre{background:#1a1916;color:#d4cfc4;padding:.85em;border-radius:4px;overflow:auto}
+.md-body pre code{background:none;border:0;color:inherit}
+.md-body a{color:var(--orange-2)}
+.kbd{font-family:'IBM Plex Mono',monospace;font-size:10px;border:1px solid var(--line);padding:1px 5px;border-radius:2px;background:var(--panel-2)}
+.banner-warn{background:rgba(138,90,0,.14);border:1px solid rgba(138,90,0,.35);color:var(--amber);padding:8px 12px;font-size:12px;border-radius:4px}
+.banner-err{background:rgba(163,32,32,.12);border:1px solid rgba(163,32,32,.3);color:var(--red);padding:8px 12px;font-size:12px;border-radius:4px}
+.health-ring{width:30px;height:30px;border-radius:3px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:10px;font-family:'IBM Plex Mono',monospace;font-weight:600;background:var(--panel-2)}
+.matrix-cell{width:100%;height:28px;border-radius:2px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:10px;font-family:'IBM Plex Mono',monospace}
+.slide-in{animation:slide .2s ease-out}
+@keyframes slide{from{transform:translateX(12px);opacity:0}to{transform:translateX(0);opacity:1}}
+.pop-in{animation:pop .12s ease-out}
+@keyframes pop{from{opacity:0}to{opacity:1}}
+.chart-box{position:relative;width:100%;height:180px}
+.chart-box canvas{width:100%!important;height:100%!important}
+.net-svg{width:100%;height:420px;background:var(--panel-2);border:1px solid var(--line);border-radius:4px}
+.fav{color:var(--amber);cursor:pointer}
+.row-h:hover{background:rgba(0,0,0,.04)}
+.site-footer{border-top:1px solid var(--line);color:var(--ink-faint);font-size:11px;padding:14px 0 88px}
+.divider{width:1px;height:14px;background:var(--line);flex-shrink:0}
+.detail-row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);font-size:13px}
+.detail-row:last-child{border-bottom:0}
+.pipe-ok{background:var(--green)}.pipe-bad{background:rgba(0,0,0,.15)}.pipe-amb{background:#c48a00}
+.skel{background:var(--panel-2);opacity:.65;border-radius:2px;height:12px;margin:6px 0}
+.spark{display:inline-block;vertical-align:middle}
+.help-grid{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:12px}
+.help-grid .k{font-family:'IBM Plex Mono',monospace;color:var(--ink-faint)}
+#log-panel{max-height:200px;overflow:auto}
+.pin-star{opacity:.4}.pin-star.on{opacity:1;color:var(--amber)}
+table thead th{position:sticky;top:0;z-index:1;background:var(--panel-2)}
 </style>
 </head>
-<body class="min-h-screen pb-28">
-
-<!-- ============ SYSTEM HEALTH BAR ============ -->
+<body class="min-h-screen">
 <div class="accent-bar"></div>
-<div class="sticky top-0 z-40 topbar">
-  <div class="max-w-[1600px] mx-auto px-4 py-2 flex items-center gap-4 text-xs mono overflow-x-auto scrollbar-thin">
-    <div class="flex items-center gap-2.5 shrink-0">
-      <div class="icon-box sm accent"><i class="fa-solid fa-bolt"></i></div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="max-w-[1680px] mx-auto px-3 py-2 flex items-center gap-3 text-xs mono overflow-x-auto">
+    <div class="flex items-center gap-2 shrink-0">
+      <div class="icon-box sm" style="background:var(--orange);color:#fff"><i class="fa-solid fa-bolt"></i></div>
       <div>
-        <div class="font-semibold text-[13px] leading-none tracking-tight">Give A Bit HQ</div>
-        <div class="text-[10px] text-[var(--ink-faint)] mt-0.5">portfolio · wallets · docs</div>
+        <div class="font-semibold text-[13px] leading-none" style="font-family:'IBM Plex Sans'">Give A Bit HQ</div>
+        <div class="text-[10px] text-[var(--ink-faint)]">v2.0 · portfolio ops</div>
       </div>
     </div>
     <div class="divider"></div>
-    <div id="hb-thor" class="flex items-center gap-1.5 shrink-0"><span class="dot dot-gray"></span><span class="text-[var(--ink-dim)]">THOR</span></div>
-    <div id="hb-lnbits" class="flex items-center gap-1.5 shrink-0"><span class="dot dot-gray"></span><span class="text-[var(--ink-dim)]">LNbits</span></div>
-    <div id="hb-lnd" class="flex items-center gap-1.5 shrink-0"><span class="dot dot-gray"></span><span class="text-[var(--ink-dim)]">LND</span></div>
-    <div id="hb-github" class="flex items-center gap-1.5 shrink-0"><span class="dot dot-gray"></span><span class="text-[var(--ink-dim)]">GitHub <span id="gh-rate" class="text-[var(--ink-faint)]"></span></span></div>
+    <div id="hb-thor" class="flex items-center gap-1.5 shrink-0"><span class="dot dot-gray"></span>THOR</div>
+    <div id="hb-lnbits" class="flex items-center gap-1.5 shrink-0"><span class="dot dot-gray"></span>LNbits</div>
+    <div id="hb-lnd" class="flex items-center gap-1.5 shrink-0"><span class="dot dot-gray"></span>LND</div>
+    <div id="hb-github" class="flex items-center gap-1.5 shrink-0"><span class="dot dot-gray"></span>GitHub <span id="gh-rate" class="text-[var(--ink-faint)]"></span></div>
     <div class="divider"></div>
-    <div class="flex items-center gap-1.5 shrink-0 text-[var(--ink-dim)]">
-      <span class="text-[var(--ink-faint)]">BTC</span>
-      <span id="btc-price-top" class="font-medium">$—</span>
-    </div>
-    <div id="vault-status" class="status-pill gray shrink-0">vault 0 keys</div>
-    <div class="ml-auto flex items-center gap-2 shrink-0">
+    <span id="btc-price-top" class="shrink-0">BTC $—</span>
+    <span id="net-status" class="status-pill gray shrink-0">online</span>
+    <span id="vault-status" class="status-pill gray shrink-0">vault empty</span>
+    <span id="clock" class="text-[var(--ink-faint)] shrink-0"></span>
+    <div class="ml-auto flex items-center gap-1.5 shrink-0">
       <span id="cache-age" class="text-[var(--ink-faint)] hidden sm:inline"></span>
       <span id="last-refresh" class="text-[var(--ink-faint)]">not synced</span>
-      <button onclick="Dash.refreshAll(true)" class="btn-ghost rounded px-2 py-1 flex items-center gap-1.5" data-tip="Refresh (r)"><i class="fa-solid fa-rotate-right text-[10px]"></i></button>
-      <button onclick="Vault.openModal()" class="btn-ghost rounded px-2 py-1 flex items-center gap-1.5" data-tip="Vault"><i class="fa-solid fa-key text-[10px]"></i> Vault</button>
+      <button onclick="UI.cycleTheme()" class="btn-ghost rounded px-2 py-1" data-tip="Theme" title="Theme">◐</button>
+      <button onclick="UI.cycleDensity()" class="btn-ghost rounded px-2 py-1" title="Density"> dens</button>
+      <button onclick="UI.toggleLog()" class="btn-ghost rounded px-2 py-1" title="Event log"><i class="fa-solid fa-bell text-[10px]"></i></button>
+      <button onclick="UI.help()" class="btn-ghost rounded px-2 py-1" title="Help">?</button>
+      <button onclick="Dash.refreshAll(true)" class="btn-ghost rounded px-2 py-1" title="Refresh (r)"><i class="fa-solid fa-rotate-right text-[10px]"></i></button>
+      <button onclick="Vault.openModal()" class="btn-ghost rounded px-2 py-1" title="Vault (v)"><i class="fa-solid fa-key text-[10px]"></i> Vault</button>
     </div>
   </div>
 </div>
+<div id="sys-banner" class="hidden max-w-[1680px] mx-auto px-3 pt-2"></div>
+<div id="log-panel" class="hidden max-w-[1680px] mx-auto px-3 pt-2"></div>
 
-<div id="sys-banner" class="hidden max-w-[1600px] mx-auto px-4 pt-3"></div>
-
-<!-- ============ PORTFOLIO HEADER ============ -->
-<div class="max-w-[1600px] mx-auto px-4 pt-5">
-  <div class="glass rounded p-5">
-    <div class="flex flex-wrap items-end justify-between gap-6">
+<!-- PORTFOLIO -->
+<div class="max-w-[1680px] mx-auto px-3 pt-4">
+  <div class="glass rounded p-4 pad-d">
+    <div class="flex flex-wrap gap-5 items-end justify-between">
       <div>
-        <div class="text-[10px] mono uppercase tracking-[0.14em] text-[var(--ink-faint)] mb-1.5">Collective balance</div>
-        <div class="flex items-baseline gap-3 flex-wrap">
-          <span id="total-sats" class="text-4xl font-bold mono tracking-tight text-[var(--ink)]">—</span>
+        <div class="text-[10px] mono uppercase tracking-[0.14em] text-[var(--ink-faint)] mb-1">Collective balance</div>
+        <div class="flex items-baseline gap-2 flex-wrap">
+          <span id="total-sats" class="text-4xl font-bold mono">—</span>
           <span class="text-sm mono text-[var(--ink-faint)]">sats</span>
-          <span id="total-usd" class="text-lg mono text-[var(--ink-dim)] font-medium">$—</span>
+          <span id="total-usd" class="text-lg mono text-[var(--ink-dim)]">$—</span>
         </div>
-        <div class="mt-3 flex flex-wrap items-center gap-2 text-xs mono">
+        <div class="mt-2 flex flex-wrap gap-1.5">
           <span id="portfolio-count" class="status-pill">0/9 synced</span>
-          <span id="portfolio-change" class="status-pill">24h —</span>
           <span id="portfolio-health" class="status-pill">health —</span>
           <span id="portfolio-live" class="status-pill">live —</span>
           <span id="visible-count" class="status-pill gray">showing 9</span>
+          <span id="fav-count" class="status-pill gray">0 pinned</span>
         </div>
+        <canvas id="spark-total" class="spark mt-2" width="220" height="36"></canvas>
       </div>
-      <div class="flex-1 min-w-[260px] max-w-md">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-[10px] mono uppercase tracking-[0.12em] text-[var(--ink-faint)]">Allocation</span>
-          <span id="btc-price-label" class="text-[10px] mono text-[var(--ink-faint)]">BTC/USD —</span>
+      <div class="flex gap-3 flex-wrap">
+        <div class="chart-box" style="width:160px;height:160px"><canvas id="chart-donut"></canvas></div>
+        <div class="min-w-[200px] flex-1 max-w-xs">
+          <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-1.5">Allocation</div>
+          <div id="bal-bars" class="space-y-1"></div>
         </div>
-        <div id="bal-bars" class="space-y-1.5"></div>
-      </div>
-      <div class="grid grid-cols-2 gap-2 text-xs mono min-w-[200px]">
-        <div class="metric-tile">
-          <div class="text-[var(--ink-faint)] text-[10px] uppercase">Projects</div>
-          <div class="text-lg font-semibold mt-0.5" id="stat-projects">9</div>
-        </div>
-        <div class="metric-tile">
-          <div class="text-[var(--ink-faint)] text-[10px] uppercase">Agents</div>
-          <div class="text-lg font-semibold mt-0.5" id="stat-agents">7</div>
-        </div>
-        <div class="metric-tile">
-          <div class="text-[var(--ink-faint)] text-[10px] uppercase">Grok weekly</div>
-          <div class="font-semibold mt-0.5 text-[var(--ink-dim)]">0%</div>
-        </div>
-        <div class="metric-tile">
-          <div class="text-[var(--ink-faint)] text-[10px] uppercase">Nous</div>
-          <div id="nous-credits" class="font-semibold mt-0.5 text-[var(--ink-faint)]">—</div>
+        <div class="grid grid-cols-2 gap-1.5 text-xs mono w-[200px]">
+          <div class="metric"><div class="text-[10px] text-[var(--ink-faint)] uppercase">Projects</div><div class="text-lg font-semibold" id="stat-projects">9</div></div>
+          <div class="metric"><div class="text-[10px] text-[var(--ink-faint)] uppercase">Agents</div><div class="text-lg font-semibold" id="stat-agents">7</div></div>
+          <div class="metric"><div class="text-[10px] text-[var(--ink-faint)] uppercase">BTC</div><div class="font-semibold" id="btc-price-label">—</div></div>
+          <div class="metric"><div class="text-[10px] text-[var(--ink-faint)] uppercase">Avg health</div><div class="font-semibold" id="stat-health">—</div></div>
+          <div class="metric"><div class="text-[10px] text-[var(--ink-faint)] uppercase">Grok week</div><div class="font-semibold text-[var(--ink-faint)]">0%</div></div>
+          <div class="metric"><div class="text-[10px] text-[var(--ink-faint)] uppercase">Nous</div><div class="font-semibold text-[var(--ink-faint)]" id="nous-credits">—</div></div>
         </div>
       </div>
     </div>
-
-    <div class="mt-4 pt-4 border-t border-[var(--line)] grid grid-cols-2 sm:grid-cols-4 gap-3" id="status-breakdown">
-      <div class="flex items-center gap-2.5">
-        <span class="dot dot-green"></span>
-        <div>
-          <div class="text-[10px] mono text-[var(--ink-faint)] uppercase">Live</div>
-          <div class="font-semibold mono text-sm" id="count-green">—</div>
-        </div>
-      </div>
-      <div class="flex items-center gap-2.5">
-        <span class="dot dot-amber"></span>
-        <div>
-          <div class="text-[10px] mono text-[var(--ink-faint)] uppercase">Pending</div>
-          <div class="font-semibold mono text-sm" id="count-amber">—</div>
-        </div>
-      </div>
-      <div class="flex items-center gap-2.5">
-        <span class="dot dot-red"></span>
-        <div>
-          <div class="text-[10px] mono text-[var(--ink-faint)] uppercase">Attention</div>
-          <div class="font-semibold mono text-sm" id="count-red">—</div>
-        </div>
-      </div>
-      <div class="flex items-center gap-2.5">
-        <span class="dot dot-gray"></span>
-        <div>
-          <div class="text-[10px] mono text-[var(--ink-faint)] uppercase">Pre-MVP</div>
-          <div class="font-semibold mono text-sm" id="count-gray">—</div>
-        </div>
-      </div>
+    <div class="mt-3 pt-3 border-t border-[var(--line)] grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div class="flex items-center gap-2"><span class="dot dot-green"></span><div><div class="text-[10px] mono text-[var(--ink-faint)] uppercase">Live</div><div class="font-semibold mono" id="count-green">—</div></div></div>
+      <div class="flex items-center gap-2"><span class="dot dot-amber"></span><div><div class="text-[10px] mono text-[var(--ink-faint)] uppercase">Pending</div><div class="font-semibold mono" id="count-amber">—</div></div></div>
+      <div class="flex items-center gap-2"><span class="dot dot-red"></span><div><div class="text-[10px] mono text-[var(--ink-faint)] uppercase">Attention</div><div class="font-semibold mono" id="count-red">—</div></div></div>
+      <div class="flex items-center gap-2"><span class="dot dot-gray"></span><div><div class="text-[10px] mono text-[var(--ink-faint)] uppercase">Pre-MVP</div><div class="font-semibold mono" id="count-gray">—</div></div></div>
     </div>
   </div>
 </div>
 
-<!-- ============ TICKER ============ -->
-<div class="max-w-[1600px] mx-auto px-4 mt-3">
-  <div class="glass rounded py-2 overflow-hidden">
-    <div id="ticker" class="ticker-track px-3 mono text-xs text-[var(--ink-dim)] whitespace-nowrap"></div>
-  </div>
+<!-- TICKER -->
+<div class="max-w-[1680px] mx-auto px-3 mt-2">
+  <div class="glass rounded py-1.5 overflow-hidden"><div id="ticker" class="ticker-track px-3 mono text-xs text-[var(--ink-dim)]"></div></div>
 </div>
 
-<!-- ============ VIEW TOGGLE + FILTERS ============ -->
-<div class="max-w-[1600px] mx-auto px-4 mt-5 flex flex-wrap items-center gap-3 justify-between">
-  <div class="flex items-center gap-0.5 glass rounded p-0.5">
-    <button class="view-tab tab-active px-3 py-1.5 rounded text-sm font-medium" data-view="grid">Cards</button>
-    <button class="view-tab px-3 py-1.5 rounded text-sm font-medium text-[var(--ink-dim)]" data-view="list">List</button>
-    <button class="view-tab px-3 py-1.5 rounded text-sm font-medium text-[var(--ink-dim)]" data-view="pipeline">Pipeline</button>
-    <button class="view-tab px-3 py-1.5 rounded text-sm font-medium text-[var(--ink-dim)]" data-view="docs">Docs</button>
-    <button class="view-tab px-3 py-1.5 rounded text-sm font-medium text-[var(--ink-dim)]" data-view="agents">Agents</button>
+<!-- NAV -->
+<div class="max-w-[1680px] mx-auto px-3 mt-4 flex flex-wrap items-center gap-2 justify-between">
+  <div class="flex flex-wrap items-center gap-0.5 glass rounded p-0.5" id="view-tabs">
+    <button class="view-tab tab-active px-2.5 py-1.5 rounded text-sm" data-view="grid">Cards</button>
+    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="list">List</button>
+    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="pipeline">Pipeline</button>
+    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="analytics">Analytics</button>
+    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="network">Network</button>
+    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="activity">Activity</button>
+    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="matrix">Matrix</button>
+    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="wallets">Wallets</button>
+    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="docs">Docs</button>
+    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="agents">Agents</button>
   </div>
-  <div class="flex items-center gap-2 flex-wrap">
-    <div class="relative">
-      <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--ink-faint)] text-xs"></i>
-      <input id="global-search" placeholder="Filter…  /" class="rounded pl-8 pr-3 py-1.5 text-sm w-52" oninput="Dash.applyFilters()">
-    </div>
-    <button data-filter="all" class="filter-chip chip chip-active rounded px-2.5 py-1.5 text-xs mono">All</button>
-    <button data-filter="attention" class="filter-chip chip rounded px-2.5 py-1.5 text-xs mono">Attention</button>
-    <button data-filter="recent" class="filter-chip chip rounded px-2.5 py-1.5 text-xs mono">Recent</button>
-    <button data-filter="stale" class="filter-chip chip rounded px-2.5 py-1.5 text-xs mono">Stale</button>
-    <select id="sort-select" onchange="Dash.applyFilters()" class="rounded px-2.5 py-1.5 text-xs mono">
+  <div class="flex items-center gap-1.5 flex-wrap">
+    <input id="global-search" placeholder="Filter… /" class="rounded pl-2 pr-2 py-1.5 text-sm w-44" oninput="Dash.applyFilters()">
+    <button data-filter="all" class="filter-chip chip chip-active">All</button>
+    <button data-filter="attention" class="filter-chip chip">Attention</button>
+    <button data-filter="recent" class="filter-chip chip">Recent</button>
+    <button data-filter="stale" class="filter-chip chip">Stale</button>
+    <button data-filter="pinned" class="filter-chip chip">Pinned</button>
+    <select id="sort-select" onchange="Dash.applyFilters()" class="rounded px-2 py-1.5 text-xs mono">
       <option value="balance">Balance ↓</option>
       <option value="name">Name</option>
       <option value="updated">Updated</option>
       <option value="health">Health</option>
+      <option value="category">Category</option>
     </select>
   </div>
 </div>
 
-<!-- ============ MAIN CONTENT ============ -->
-<div class="max-w-[1600px] mx-auto px-4 mt-5">
-
-  <div id="view-grid" class="view-panel grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
-
+<!-- VIEWS -->
+<div class="max-w-[1680px] mx-auto px-3 mt-3 pb-4">
+  <div id="view-grid" class="view-panel grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
   <div id="view-list" class="view-panel hidden glass rounded overflow-hidden">
     <div class="overflow-x-auto max-h-[70vh]">
-      <table class="w-full text-sm min-w-[960px]">
-        <thead class="bg-[var(--panel-2)] text-[var(--ink-faint)] mono text-[10px] uppercase tracking-wider border-b border-[var(--line)]">
+      <table class="w-full text-sm min-w-[1000px]">
+        <thead class="text-[10px] mono uppercase text-[var(--ink-faint)] border-b border-[var(--line)]">
           <tr>
-            <th class="text-left px-3 py-2.5">Project</th>
-            <th class="text-left px-3 py-2.5">Status</th>
-            <th class="text-left px-3 py-2.5">Balance</th>
-            <th class="text-left px-3 py-2.5">USD</th>
-            <th class="text-left px-3 py-2.5">Commit</th>
-            <th class="text-left px-3 py-2.5">CI</th>
-            <th class="text-left px-3 py-2.5">Updated</th>
-            <th class="text-left px-3 py-2.5">Health</th>
-            <th class="text-left px-3 py-2.5">Wallet</th>
-            <th class="text-right px-3 py-2.5">Links</th>
+            <th class="text-left px-3 py-2">★</th>
+            <th class="text-left px-3 py-2">Project</th>
+            <th class="text-left px-3 py-2">Status</th>
+            <th class="text-left px-3 py-2">Balance</th>
+            <th class="text-left px-3 py-2">USD</th>
+            <th class="text-left px-3 py-2">Commit</th>
+            <th class="text-left px-3 py-2">CI</th>
+            <th class="text-left px-3 py-2">Updated</th>
+            <th class="text-left px-3 py-2">Health</th>
+            <th class="text-left px-3 py-2">Wallet</th>
+            <th class="text-right px-3 py-2">Links</th>
           </tr>
         </thead>
         <tbody id="list-body" class="mono text-xs"></tbody>
       </table>
     </div>
   </div>
-
   <div id="view-pipeline" class="view-panel hidden space-y-2"></div>
-
-  <div id="view-docs" class="view-panel hidden grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-3">
-    <div class="glass rounded p-2 max-h-[75vh] overflow-y-auto scrollbar-thin">
-      <div class="text-[10px] mono uppercase tracking-[0.12em] text-[var(--ink-faint)] px-2 py-2">Files</div>
-      <div id="file-tree" class="space-y-0.5"></div>
+  <div id="view-analytics" class="view-panel hidden grid grid-cols-1 lg:grid-cols-2 gap-3">
+    <div class="glass rounded p-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Balance ranking</div><div class="chart-box" style="height:220px"><canvas id="chart-rank"></canvas></div></div>
+    <div class="glass rounded p-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Health by project</div><div class="chart-box" style="height:220px"><canvas id="chart-health"></canvas></div></div>
+    <div class="glass rounded p-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Category mix</div><div class="chart-box" style="height:200px"><canvas id="chart-cat"></canvas></div></div>
+    <div class="glass rounded p-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Portfolio history (local snapshots)</div><div class="chart-box" style="height:200px"><canvas id="chart-hist"></canvas></div></div>
+    <div class="glass rounded p-3 lg:col-span-2"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">KPI strip</div><div id="kpi-strip" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2"></div></div>
+  </div>
+  <div id="view-network" class="view-panel hidden">
+    <div class="glass rounded p-3">
+      <div class="flex justify-between items-center mb-2">
+        <div class="text-[10px] mono uppercase text-[var(--ink-faint)]">Ecosystem graph · click node for detail</div>
+        <button onclick="Net.redraw()" class="btn-ghost rounded px-2 py-1 text-xs">Redraw</button>
+      </div>
+      <svg id="net-svg" class="net-svg" viewBox="0 0 900 420"></svg>
+    </div>
+  </div>
+  <div id="view-activity" class="view-panel hidden">
+    <div class="glass rounded p-3">
+      <div class="flex flex-wrap gap-2 mb-3 items-center">
+        <div class="text-[10px] mono uppercase text-[var(--ink-faint)]">Cross-project activity</div>
+        <select id="act-filter" onchange="renderActivity()" class="rounded px-2 py-1 text-xs mono ml-auto">
+          <option value="all">All projects</option>
+        </select>
+      </div>
+      <div id="activity-feed" class="space-y-1.5 max-h-[65vh] overflow-y-auto"></div>
+    </div>
+  </div>
+  <div id="view-matrix" class="view-panel hidden">
+    <div class="glass rounded p-3 overflow-x-auto">
+      <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Status matrix</div>
+      <div id="matrix-table"></div>
+    </div>
+  </div>
+  <div id="view-wallets" class="view-panel hidden">
+    <div class="glass rounded overflow-hidden">
+      <table class="w-full text-sm">
+        <thead class="text-[10px] mono uppercase text-[var(--ink-faint)] bg-[var(--panel-2)]">
+          <tr>
+            <th class="text-left px-3 py-2">Project</th>
+            <th class="text-left px-3 py-2">Wallet slot</th>
+            <th class="text-left px-3 py-2">Key</th>
+            <th class="text-left px-3 py-2">Balance</th>
+            <th class="text-left px-3 py-2">USD</th>
+            <th class="text-left px-3 py-2">Share</th>
+          </tr>
+        </thead>
+        <tbody id="wallet-body" class="mono text-xs"></tbody>
+      </table>
+    </div>
+  </div>
+  <div id="view-docs" class="view-panel hidden grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-2.5">
+    <div class="glass rounded p-2 max-h-[75vh] overflow-y-auto">
+      <div class="text-[10px] mono uppercase text-[var(--ink-faint)] px-2 py-2">Files</div>
+      <div id="file-tree"></div>
     </div>
     <div class="glass rounded p-4 min-h-[75vh] flex flex-col">
       <div id="doc-empty" class="flex-1 flex flex-col items-center justify-center text-center text-[var(--ink-faint)] gap-2">
         <p class="text-sm text-[var(--ink-dim)]">Select a file to read or edit.</p>
-        <p class="text-xs max-w-xs">Saves use GitHub Contents API + PAT from Vault (localStorage only).</p>
+        <p class="text-xs">Saves use GitHub API + Vault PAT only.</p>
       </div>
       <div id="doc-loaded" class="hidden flex-1 flex flex-col">
-        <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+        <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
           <div>
-            <div id="doc-path" class="mono text-sm font-medium text-[var(--ink)]"></div>
+            <div id="doc-path" class="mono text-sm font-medium"></div>
             <div id="doc-meta" class="mono text-[11px] text-[var(--ink-faint)]"></div>
           </div>
-          <div class="flex items-center gap-1.5 flex-wrap">
-            <button id="doc-mode-view" onclick="Docs.setMode('view')" class="chip chip-active rounded px-2.5 py-1 text-xs">Preview</button>
-            <button id="doc-mode-edit" onclick="Docs.setMode('edit')" class="chip rounded px-2.5 py-1 text-xs">Edit</button>
-            <a id="doc-history" href="#" target="_blank" rel="noopener" class="btn-ghost rounded px-2.5 py-1 text-xs">History</a>
-            <a id="doc-github" href="#" target="_blank" rel="noopener" class="btn-ghost rounded px-2.5 py-1 text-xs">GitHub</a>
-            <button id="doc-save" onclick="Docs.save()" class="hidden btn-brand rounded px-2.5 py-1 text-xs">Save to GitHub</button>
+          <div class="flex gap-1 flex-wrap">
+            <button id="doc-mode-view" onclick="Docs.setMode('view')" class="chip chip-active">Preview</button>
+            <button id="doc-mode-edit" onclick="Docs.setMode('edit')" class="chip">Edit</button>
+            <a id="doc-history" href="#" target="_blank" rel="noopener" class="btn-ghost rounded px-2 py-1 text-xs">History</a>
+            <a id="doc-github" href="#" target="_blank" rel="noopener" class="btn-ghost rounded px-2 py-1 text-xs">GitHub</a>
+            <button id="doc-save" onclick="Docs.save()" class="hidden btn-brand rounded px-2 py-1 text-xs">Save to GitHub</button>
           </div>
         </div>
-        <div id="doc-dirty" class="hidden text-[10px] mono text-[var(--amber)] mb-2">Unsaved edits · Save writes to the default branch</div>
-        <div id="doc-view" class="md-body flex-1 overflow-y-auto scrollbar-thin pr-1"></div>
-        <textarea id="doc-edit" class="hidden flex-1 mono text-sm rounded p-3 resize-none scrollbar-thin" spellcheck="false" oninput="Docs.onEdit()"></textarea>
+        <div id="doc-dirty" class="hidden text-[10px] mono text-[var(--amber)] mb-1">Unsaved edits</div>
+        <div id="doc-view" class="md-body flex-1 overflow-y-auto"></div>
+        <textarea id="doc-edit" class="hidden flex-1 mono text-sm rounded p-3 resize-none" spellcheck="false" oninput="Docs.onEdit()"></textarea>
       </div>
     </div>
   </div>
-
-  <div id="view-agents" class="view-panel hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
-
+  <div id="view-agents" class="view-panel hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
 </div>
 
-<div class="max-w-[1600px] mx-auto px-4 site-footer">
-  <div class="flex flex-wrap items-center justify-between gap-2">
-    <span>Give A Bit HQ · v1.1 · credentials never leave localStorage</span>
-    <span class="mono flex items-center gap-3">
+<div class="max-w-[1680px] mx-auto px-3 site-footer">
+  <div class="flex flex-wrap justify-between gap-2">
+    <span>Give A Bit HQ · v2.0 · credentials only in localStorage · Safe Harbour</span>
+    <span class="mono flex flex-wrap gap-2">
       <span><kbd class="kbd">/</kbd> search</span>
       <span><kbd class="kbd">g</kbd> cards</span>
-      <span><kbd class="kbd">d</kbd> docs</span>
+      <span><kbd class="kbd">y</kbd> analytics</span>
+      <span><kbd class="kbd">n</kbd> network</span>
       <span><kbd class="kbd">r</kbd> refresh</span>
-      <span><kbd class="kbd">esc</kbd> close</span>
+      <span><kbd class="kbd">?</kbd> help</span>
     </span>
   </div>
-  <div class="mt-1 text-[var(--ink-faint)]">Safe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first.</div>
 </div>
 
-<!-- ============ BULK ACTIONS FLOATING BAR ============ -->
-<div class="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[min(94vw,720px)]">
-  <div class="glass rounded px-3 py-2 flex items-center gap-1.5 flex-wrap justify-center border border-[var(--line)]">
-    <button onclick="Bulk.open('send')" class="btn-brand rounded px-3 py-2 text-xs flex items-center gap-1.5">Bulk Send</button>
-    <button onclick="Bulk.open('address')" class="btn-ghost rounded px-3 py-2 text-xs">Address</button>
-    <button onclick="Bulk.open('readme')" class="btn-ghost rounded px-3 py-2 text-xs">README</button>
-    <button onclick="Bulk.open('deploy')" class="btn-ghost rounded px-3 py-2 text-xs">Deploy</button>
-    <button onclick="exportReport()" class="btn-ghost rounded px-3 py-2 text-xs">Export</button>
-    <button onclick="Vault.openModal()" class="btn-ghost rounded px-3 py-2 text-xs">Config</button>
+<!-- FLOAT BAR -->
+<div class="fixed bottom-3 left-1/2 -translate-x-1/2 z-40 w-[min(96vw,760px)]">
+  <div class="glass rounded px-2 py-1.5 flex flex-wrap gap-1 justify-center border border-[var(--line)]">
+    <button onclick="Bulk.open('send')" class="btn-brand rounded px-2.5 py-1.5 text-xs">Bulk Send</button>
+    <button onclick="Bulk.open('readme')" class="btn-ghost rounded px-2.5 py-1.5 text-xs">README</button>
+    <button onclick="exportReport()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Export TXT</button>
+    <button onclick="exportJSON()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Export JSON</button>
+    <button onclick="Vault.openModal()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Config</button>
   </div>
 </div>
 
-<!-- ============ TOASTS ============ -->
-<div id="toast-stack" class="fixed top-16 right-4 z-[100] flex flex-col gap-2 items-end"></div>
-
-<!-- ============ PROJECT DETAIL DRAWER ============ -->
+<div id="toast-stack" class="fixed top-14 right-3 z-[100] flex flex-col gap-1.5 items-end"></div>
 <div id="drawer-backdrop" class="hidden fixed inset-0 z-50 modal-backdrop" onclick="Drawer.close(event)">
-  <div id="drawer" class="slide-in absolute right-0 top-0 h-full w-[min(94vw,640px)] glass rounded-l overflow-y-auto scrollbar-thin p-5 border-l border-[var(--line)]" onclick="event.stopPropagation()"></div>
+  <div id="drawer" class="slide-in absolute right-0 top-0 h-full w-[min(96vw,640px)] glass rounded-l overflow-y-auto p-4 border-l border-[var(--line)]" onclick="event.stopPropagation()"></div>
 </div>
-
-<!-- ============ BULK ACTION MODAL ============ -->
 <div id="bulk-backdrop" class="hidden fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4" onclick="Bulk.close(event)">
-  <div id="bulk-modal" class="pop-in glass rounded w-full max-w-lg p-5" onclick="event.stopPropagation()"></div>
+  <div id="bulk-modal" class="pop-in glass rounded w-full max-w-lg p-4" onclick="event.stopPropagation()"></div>
 </div>
-
-<!-- ============ VAULT / SETTINGS MODAL ============ -->
 <div id="vault-backdrop" class="hidden fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4" onclick="Vault.closeModal(event)">
-  <div class="pop-in glass rounded w-full max-w-2xl p-5 max-h-[88vh] overflow-y-auto scrollbar-thin" onclick="event.stopPropagation()">
-    <div class="flex items-center justify-between mb-1">
+  <div class="pop-in glass rounded w-full max-w-2xl p-4 max-h-[88vh] overflow-y-auto" onclick="event.stopPropagation()">
+    <div class="flex justify-between items-center mb-2">
       <h2 class="text-base font-semibold">Credential Vault</h2>
-      <button onclick="Vault.closeModal()" class="btn-ghost w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+      <button onclick="Vault.closeModal()" class="btn-ghost w-8 h-8 rounded">✕</button>
     </div>
-    <p class="text-xs text-[var(--ink-faint)] mb-4 leading-relaxed">Browser <span class="mono">localStorage</span> only. Never written to this file or GitHub. Wipe anytime.</p>
-
-    <div class="mb-5">
-      <label class="text-xs mono uppercase tracking-widest text-[var(--ink-faint)] block mb-2">GitHub Personal Access Token <span class="normal-case">(repo scope for .md edits)</span></label>
-      <input id="vault-gh-token" type="password" placeholder="ghp_••••••••••••••••••••" class="w-full rounded-lg px-3 py-2.5 text-sm mono">
-    </div>
-
-    <div class="mb-4">
-      <div class="flex items-center justify-between mb-2">
-        <label class="text-xs mono uppercase tracking-widest text-[var(--ink-faint)]">LNbits Wallet Keys</label>
-        <span class="text-[10px] mono text-[var(--ink-faint)]" id="vault-node-note">Node: https://vmi3446772.tailb672ac.ts.net</span>
-      </div>
-      <div id="vault-wallet-rows" class="space-y-2"></div>
-    </div>
-
-    <div class="grid grid-cols-2 gap-3 mb-5">
+    <p class="text-xs text-[var(--ink-faint)] mb-3">localStorage only · never committed. Same vault key as v1 so your keys still work.</p>
+    <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">GitHub PAT</label>
+    <input id="vault-gh-token" type="password" class="w-full rounded px-3 py-2 text-sm mono mb-3" placeholder="ghp_… or github_pat_…">
+    <div class="flex justify-between mb-1"><label class="text-[10px] mono uppercase text-[var(--ink-faint)]">LNbits keys</label><span class="text-[10px] mono text-[var(--ink-faint)]" id="vault-node-note"></span></div>
+    <div id="vault-wallet-rows" class="space-y-1.5 mb-3"></div>
+    <div class="grid grid-cols-2 gap-2 mb-3">
       <div>
-        <label class="text-xs mono uppercase tracking-widest text-[var(--ink-faint)] block mb-2">LNbits Node URL</label>
-        <input id="vault-node-url" placeholder="https://your-node.ts.net" class="w-full rounded-lg px-3 py-2.5 text-sm mono">
+        <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Node URL</label>
+        <input id="vault-node-url" class="w-full rounded px-3 py-2 text-sm mono">
       </div>
       <div>
-        <label class="text-xs mono uppercase tracking-widest text-[var(--ink-faint)] block mb-2">BTC/USD source</label>
-        <select id="vault-fx-source" class="w-full rounded-lg px-3 py-2.5 text-sm mono">
-          <option value="coingecko">CoinGecko (public)</option>
-          <option value="manual">Manual entry</option>
-        </select>
+        <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">FX source</label>
+        <select id="vault-fx-source" class="w-full rounded px-3 py-2 text-sm mono"><option value="coingecko">CoinGecko</option><option value="manual">Manual</option></select>
+      </div>
+      <div>
+        <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Refresh (sec)</label>
+        <select id="vault-refresh" class="w-full rounded px-3 py-2 text-sm mono"><option value="30">30</option><option value="60" selected>60</option><option value="120">120</option></select>
       </div>
     </div>
-
-    <div class="flex items-center gap-2">
-      <button onclick="Vault.save()" class="btn-brand rounded px-4 py-2 text-sm font-semibold flex-1">Save vault</button>
+    <div class="flex gap-2">
+      <button onclick="Vault.save()" class="btn-brand rounded px-4 py-2 text-sm flex-1">Save vault</button>
       <button onclick="Vault.clear()" class="btn-ghost rounded px-4 py-2 text-sm text-[var(--red)]">Wipe</button>
     </div>
-    <div class="mt-4 pt-3 border-t border-[var(--line)] text-[11px] text-[var(--ink-faint)] leading-relaxed">
-      LNbits from static HTML needs CORS on the node (or same tailnet). Empty balances are usually network/CORS, not a dashboard bug.
-    </div>
   </div>
 </div>
-
-<!-- ============ SEARCH OVERLAY ============ -->
 <div id="search-overlay" class="hidden fixed inset-0 z-[60] modal-backdrop flex items-start justify-center pt-20 px-4" onclick="Search.close(event)">
   <div class="pop-in glass rounded w-full max-w-xl p-1" onclick="event.stopPropagation()">
     <div class="flex items-center gap-2 px-3 py-2 border-b border-[var(--line)]">
-      <i class="fa-solid fa-magnifying-glass text-[var(--ink-faint)] text-sm"></i>
-      <input id="overlay-search-input" placeholder="Jump to project, agent, or file…" class="flex-1 bg-transparent border-0 focus:ring-0 focus:shadow-none py-1" oninput="Search.run(this.value)">
+      <input id="overlay-search-input" placeholder="Jump to project, agent, file, view…" class="flex-1 bg-transparent border-0 py-1" oninput="Search.run(this.value)">
       <kbd class="kbd">esc</kbd>
     </div>
-    <div id="overlay-results" class="max-h-80 overflow-y-auto scrollbar-thin p-1"></div>
+    <div id="overlay-results" class="max-h-80 overflow-y-auto p-1"></div>
+  </div>
+</div>
+<div id="help-backdrop" class="hidden fixed inset-0 z-[70] modal-backdrop flex items-center justify-center p-4" onclick="if(event.target.id==='help-backdrop')this.classList.add('hidden')">
+  <div class="pop-in glass rounded w-full max-w-md p-4">
+    <div class="flex justify-between mb-3"><h2 class="font-semibold">Keyboard & tips</h2><button class="btn-ghost rounded px-2" onclick="document.getElementById('help-backdrop').classList.add('hidden')">✕</button></div>
+    <div class="help-grid mono text-[var(--ink-dim)]" id="help-body"></div>
   </div>
 </div>
 
 <script>
-/* =========================================================================
-   Give A Bit HQ — single-file command center. Secrets stay in localStorage.
-   ========================================================================= */
-
+/* Give A Bit HQ v2 — secrets only in localStorage (sovereign_deck_vault_v1) */
 const PROJECTS = [
-  { id:'giveabit',    name:'Give A Bit',   repo:'giveabit',    url:'https://giveabit.io',              tagline:'Bitcoin Sovereignty, Education & Tools', wallet:'giveabit_main', deployed:true, icon:'fa-solid fa-seedling', category:'Foundation' },
-  { id:'satohash',    name:'Satohash',     repo:'satohash',    url:'https://satohash.io',              tagline:'Stamp Documents on Bitcoin. Immutable Proof.', wallet:'satohash', deployed:true, icon:'fa-solid fa-stamp', category:'Proof' },
-  { id:'katoa',       name:'Katoa',        repo:'katoa',       url:'https://katoa.org',                tagline:'Zero-Fee Bitcoin Creator Platform · Lightning & Nostr', wallet:'katoa', deployed:true, icon:'fa-solid fa-feather-pointed', category:'Creator' },
-  { id:'stranded',    name:'Stranded',     repo:'stranded',    url:'https://stranded.giveabit.io',     tagline:'Stranded Energy, Bitcoin Access, Stranded Value', wallet:'stranded', deployed:true, icon:'fa-solid fa-bolt-lightning', category:'Energy' },
-  { id:'tadbuy',      name:'Tadbuy',       repo:'tadbuy',      url:'https://tadbuy.giveabit.io',       tagline:'Bitcoin-Native Ad Buying Platform', wallet:'tadbuy', deployed:true, icon:'fa-solid fa-bullhorn', category:'Ads' },
-  { id:'motopass',    name:'MotoPass',     repo:'motopass',    url:'https://motopass.giveabit.io',     tagline:'Bitcoin Sovereign Passports & Residency', wallet:'motopass', deployed:true, icon:'fa-solid fa-passport', category:'Identity' },
-  { id:'sherpacarta', name:'SherpaCarta',  repo:'sherpacarta', url:'https://sherpacarta.org',          tagline:'The Global Digital Magna Carta for the 21st Century', wallet:'sherpacarta', deployed:true, icon:'fa-solid fa-scroll', category:'Governance' },
-  { id:'openstrata',  name:'Hermes Strata',repo:'openstrata',  url:'https://openstrata.giveabit.io',   tagline:'Sovereign Strata Corporation Dashboard', wallet:'openstrata', deployed:true, icon:'fa-solid fa-building-columns', category:'Corp' },
-  { id:'btcminiscript',name:'BTC Miniscript', repo:'btcminiscript', url:null,                          tagline:'Not yet deployed — Miniscript tooling R&D', wallet:'kimi', deployed:false, icon:'fa-solid fa-flask', category:'R&D' },
+  {id:'giveabit',name:'Give A Bit',repo:'giveabit',url:'https://giveabit.io',tagline:'Bitcoin Sovereignty, Education & Tools',wallet:'giveabit_main',deployed:true,icon:'fa-solid fa-seedling',category:'Foundation',color:'#c45f00',stack:['Nostr','Lightning','Education'],related:['satohash','katoa','sherpacarta']},
+  {id:'satohash',name:'Satohash',repo:'satohash',url:'https://satohash.io',tagline:'Stamp Documents on Bitcoin. Immutable Proof.',wallet:'satohash',deployed:true,icon:'fa-solid fa-stamp',category:'Proof',color:'#8a5a00',stack:['Bitcoin','Timestamps'],related:['giveabit']},
+  {id:'katoa',name:'Katoa',repo:'katoa',url:'https://katoa.org',tagline:'Zero-Fee Bitcoin Creator Platform · Lightning & Nostr',wallet:'katoa',deployed:true,icon:'fa-solid fa-feather-pointed',category:'Creator',color:'#1a5f7a',stack:['Lightning','Nostr'],related:['giveabit','sherpacarta']},
+  {id:'stranded',name:'Stranded',repo:'stranded',url:'https://stranded.giveabit.io',tagline:'Stranded Energy, Bitcoin Access, Stranded Value',wallet:'stranded',deployed:true,icon:'fa-solid fa-bolt-lightning',category:'Energy',color:'#1f6b3a',stack:['Energy','Bitcoin'],related:['giveabit']},
+  {id:'tadbuy',name:'Tadbuy',repo:'tadbuy',url:'https://tadbuy.giveabit.io',tagline:'Bitcoin-Native Ad Buying Platform',wallet:'tadbuy',deployed:true,icon:'fa-solid fa-bullhorn',category:'Ads',color:'#a32020',stack:['Ads','Lightning'],related:['giveabit','katoa']},
+  {id:'motopass',name:'MotoPass',repo:'motopass',url:'https://motopass.giveabit.io',tagline:'Bitcoin Sovereign Passports & Residency',wallet:'motopass',deployed:true,icon:'fa-solid fa-passport',category:'Identity',color:'#5c3d7a',stack:['Identity','Travel'],related:['giveabit','sherpacarta']},
+  {id:'sherpacarta',name:'SherpaCarta',repo:'sherpacarta',url:'https://sherpacarta.org',tagline:'Global Digital Magna Carta for the 21st Century',wallet:'sherpacarta',deployed:true,icon:'fa-solid fa-scroll',category:'Governance',color:'#6b4f2a',stack:['Nostr','Governance'],related:['giveabit','katoa','motopass']},
+  {id:'openstrata',name:'Hermes Strata',repo:'openstrata',url:'https://openstrata.giveabit.io',tagline:'Sovereign Strata Corporation Dashboard',wallet:'openstrata',deployed:true,icon:'fa-solid fa-building-columns',category:'Corp',color:'#2a4a5c',stack:['Corp','Dashboard'],related:['giveabit']},
+  {id:'btcminiscript',name:'BTC Miniscript',repo:'btcminiscript',url:null,tagline:'Miniscript tooling R&D',wallet:'kimi',deployed:false,icon:'fa-solid fa-flask',category:'R&D',color:'#5a574f',stack:['Bitcoin','Miniscript'],related:['giveabit']},
 ];
-
 const AGENTS = [
-  { name:'Andrea', role:'Ops & Diligence', motto:'Trust, but verify on-chain.', nip05:'andrea@giveabit.io', repo:'giveabit', file:'agents/ANDREA.md' },
-  { name:'Kimi',   role:'Lead Orchestrator', motto:'Ship sovereign, ship often.', nip05:'kimi@giveabit.io', repo:'giveabit', file:'agents/KIMI.md' },
-  { name:'Lenny',  role:'Legal & Compliance', motto:'Freedom needs a paper trail.', nip05:'lenny@giveabit.io', repo:'giveabit', file:'agents/LENNY.md' },
-  { name:'Mimi',   role:'Design & Brand', motto:'Clarity is the brand.', nip05:'mimi@giveabit.io', repo:'giveabit', file:'agents/MIMI.md' },
-  { name:'Nova',   role:'Infra & Deploys', motto:'Green means go.', nip05:'nova@giveabit.io', repo:'giveabit', file:'agents/NOVA.md' },
-  { name:'Rosa',   role:'Community & Nostr', motto:'Sovereignty is social.', nip05:'rosa@giveabit.io', repo:'giveabit', file:'agents/ROSA.md' },
-  { name:'Ziggy',  role:'Growth & Marketing', motto:'Every sat tells a story.', nip05:'ziggy@giveabit.io', repo:'giveabit', file:'agents/ZIGGY.md' },
+  {name:'Andrea',role:'Ops & Diligence',motto:'Trust, but verify on-chain.',nip05:'andrea@giveabit.io',repo:'giveabit',file:'agents/ANDREA.md',color:'#1f6b3a'},
+  {name:'Kimi',role:'Lead Orchestrator',motto:'Ship sovereign, ship often.',nip05:'kimi@giveabit.io',repo:'giveabit',file:'agents/KIMI.md',color:'#c45f00'},
+  {name:'Lenny',role:'Legal & Compliance',motto:'Freedom needs a paper trail.',nip05:'lenny@giveabit.io',repo:'giveabit',file:'agents/LENNY.md',color:'#5c3d7a'},
+  {name:'Mimi',role:'Design & Brand',motto:'Clarity is the brand.',nip05:'mimi@giveabit.io',repo:'giveabit',file:'agents/MIMI.md',color:'#a32020'},
+  {name:'Nova',role:'Infra & Deploys',motto:'Green means go.',nip05:'nova@giveabit.io',repo:'giveabit',file:'agents/NOVA.md',color:'#1a5f7a'},
+  {name:'Rosa',role:'Community & Nostr',motto:'Sovereignty is social.',nip05:'rosa@giveabit.io',repo:'giveabit',file:'agents/ROSA.md',color:'#8a5a00'},
+  {name:'Ziggy',role:'Growth & Marketing',motto:'Every sat tells a story.',nip05:'ziggy@giveabit.io',repo:'giveabit',file:'agents/ZIGGY.md',color:'#2a4a5c'},
 ];
-
 const DOC_FILES = ['README.md','AGENTS.md','GROK-SESSION-PROTOCOL.md','SOURCE-OF-TRUTH.md','DILIGENCE.md','EXEC-SUMMARY.md','CHANGELOG.md','CONTRIBUTING.md','MARKETING-ONELINER.md','docs/KIMI-HANDOFF.md'];
-
 const GH_OWNER = 'kitsboy';
-/* Known non-main defaults (also auto-detected via API when possible) */
 const BRANCH_DEFAULTS = { openstrata: 'talent' };
+const VIEWS = ['grid','list','pipeline','analytics','network','activity','matrix','wallets','docs','agents'];
 
 const state = {
-  projects: {},
-  view: 'grid',
-  filter: 'all',
-  ghRateRemaining: null,
-  branches: {}, // repo -> default branch name
-  treeIndex: {}, // repo -> Set of paths (from git tree)
+  projects:{}, view:'grid', filter:'all', ghRateRemaining:null, branches:{}, treeIndex:{},
+  pins: new Set(), history:[], log:[], theme:'stone', density:'comfy', refreshSec:60
 };
 
-/* =========================================================================
-   VAULT — local-only credential storage. Nothing here ever gets committed.
-   ========================================================================= */
-const Vault = {
-  KEY: 'sovereign_deck_vault_v1',
-  data: { ghToken:'', nodeUrl:'https://vmi3446772.tailb672ac.ts.net', wallets:{}, fxSource:'coingecko' },
+let btcUsdPrice = null;
+let refreshTimer = null;
 
-  load(){
-    try{
-      const raw = localStorage.getItem(this.KEY);
-      if(raw) this.data = Object.assign(this.data, JSON.parse(raw));
-    }catch(e){ console.warn('vault load failed', e); }
+/* ---------- UI chrome ---------- */
+const UI = {
+  cycleTheme(){
+    const t = ['stone','slate','ink'];
+    const i = t.indexOf(document.documentElement.dataset.theme||'stone');
+    const n = t[(i+1)%t.length];
+    document.documentElement.dataset.theme = n;
+    state.theme = n;
+    localStorage.setItem('hq_theme', n);
+    toast('Theme: '+n,'info');
+    Charts.all();
   },
-  persist(){
-    localStorage.setItem(this.KEY, JSON.stringify(this.data));
+  cycleDensity(){
+    const n = (document.documentElement.dataset.density||'comfy')==='comfy'?'compact':'comfy';
+    document.documentElement.dataset.density = n;
+    localStorage.setItem('hq_density', n);
+    toast('Density: '+n,'info');
   },
-  openModal(){
-    document.getElementById('vault-backdrop').classList.remove('hidden');
-    document.getElementById('vault-gh-token').value = this.data.ghToken || '';
-    document.getElementById('vault-node-url').value = this.data.nodeUrl || '';
-    document.getElementById('vault-fx-source').value = this.data.fxSource || 'coingecko';
-    const rows = document.getElementById('vault-wallet-rows');
-    rows.innerHTML = PROJECTS.reduce((seen,p)=>{ if(!seen.includes(p.wallet)) seen.push(p.wallet); return seen; },[])
-      .map(w => `
-        <div class="flex items-center gap-2">
-          <span class="mono text-xs text-[var(--ink-dim)] w-32 shrink-0 truncate" title="${w}">${w}</span>
-          <input type="password" data-wallet-key="${w}" value="${(this.data.wallets[w]||'')}" placeholder="LNbits X-Api-Key (invoice key recommended)" class="flex-1 rounded-lg px-3 py-2 text-xs mono">
-        </div>`).join('');
+  toggleLog(){
+    const el = document.getElementById('log-panel');
+    el.classList.toggle('hidden');
+    if(!el.classList.contains('hidden')){
+      el.innerHTML = `<div class="glass rounded p-2 text-xs mono space-y-1">${(state.log.slice(-20).reverse().map(l=>`<div class="text-[var(--ink-dim)]"><span class="text-[var(--ink-faint)]">${l.t}</span> ${l.msg}</div>`).join('')||'<div class="text-[var(--ink-faint)]">No events yet</div>')}</div>`;
+    }
   },
-  closeModal(e){
-    if(e && e.target.id !== 'vault-backdrop') return;
-    document.getElementById('vault-backdrop').classList.add('hidden');
+  help(){
+    document.getElementById('help-body').innerHTML = [
+      ['/','Command search'],['g','Cards'],['l','List'],['p','Pipeline'],['y','Analytics'],
+      ['n','Network'],['t','Activity'],['m','Matrix'],['w','Wallets'],['d','Docs'],['a','Agents'],
+      ['r','Refresh'],['v','Vault'],['?','This help'],['esc','Close overlays'],
+    ].map(([k,v])=>`<span class="k">${k}</span><span>${v}</span>`).join('');
+    document.getElementById('help-backdrop').classList.remove('hidden');
   },
-  save(){
-    this.data.ghToken = document.getElementById('vault-gh-token').value.trim();
-    this.data.nodeUrl = document.getElementById('vault-node-url').value.trim() || this.data.nodeUrl;
-    this.data.fxSource = document.getElementById('vault-fx-source').value;
-    document.querySelectorAll('[data-wallet-key]').forEach(inp=>{
-      this.data.wallets[inp.dataset.walletKey] = inp.value.trim();
-    });
-    this.persist();
-    toast('Vault saved on this browser only', 'success');
-    document.getElementById('vault-backdrop').classList.add('hidden');
-    this.updateStatusChip();
-    Dash.refreshAll();
-  },
-  clear(){
-    if(!confirm('Wipe all locally-stored credentials from this browser?')) return;
-    localStorage.removeItem(this.KEY);
-    this.data = { ghToken:'', nodeUrl:'https://vmi3446772.tailb672ac.ts.net', wallets:{}, fxSource:'coingecko' };
-    toast('Vault wiped', 'error');
-    this.updateStatusChip();
-    this.openModal();
-  },
-  hasWallet(w){ return !!(this.data.wallets[w] && this.data.wallets[w].length>10); },
-  hasGh(){ return !!(this.data.ghToken && this.data.ghToken.length>10); },
-  keyCount(){
-    return Object.values(this.data.wallets||{}).filter(v=>v && v.length>10).length + (this.hasGh()?1:0);
-  },
-  updateStatusChip(){
-    const el = document.getElementById('vault-status');
-    if(!el) return;
-    const n = this.keyCount();
-    el.textContent = n ? `vault ${n} set` : 'vault empty';
-    el.className = 'status-pill shrink-0 ' + (n ? 'green' : 'gray');
+  clock(){
+    const el = document.getElementById('clock');
+    if(el) el.textContent = new Date().toLocaleTimeString();
   }
 };
 
 function toast(msg, kind='info'){
-  const colors = { success:'var(--green)', error:'var(--red)', info:'var(--orange-2)' };
-  const icons = { success:'fa-circle-check', error:'fa-circle-exclamation', info:'fa-circle-info' };
+  const colors = {success:'var(--green)',error:'var(--red)',info:'var(--orange)'};
   const el = document.createElement('div');
-  el.className = 'toast glass rounded-xl px-4 py-3 text-sm flex items-center gap-2 max-w-sm';
-  el.style.borderColor = colors[kind];
-  el.innerHTML = `<i class="fa-solid ${icons[kind]}" style="color:${colors[kind]}"></i><span>${msg}</span>`;
+  el.className = 'toast glass rounded px-3 py-2 text-sm max-w-xs border';
+  el.style.borderColor = colors[kind]||colors.info;
+  el.textContent = msg;
   document.getElementById('toast-stack').appendChild(el);
-  setTimeout(()=>el.remove(), 4200);
+  setTimeout(()=>el.remove(),4000);
+  const t = new Date().toLocaleTimeString();
+  state.log.push({t,msg,kind});
+  if(state.log.length>50) state.log.shift();
 }
 
 const fmt = {
-  sats(n){ return n==null ? '—' : new Intl.NumberFormat('en-US').format(Math.round(n)); },
-  usd(n){ return n==null ? '$—' : '$'+new Intl.NumberFormat('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n); },
-  usdFromSats(sats){
-    if(sats==null || btcUsdPrice==null) return null;
-    return sats/1e8*btcUsdPrice;
-  },
+  sats(n){ return n==null?'—':new Intl.NumberFormat('en-US').format(Math.round(n)); },
+  usd(n){ return n==null?'$—':'$'+new Intl.NumberFormat('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n); },
+  usdFromSats(s){ return (s==null||btcUsdPrice==null)?null:s/1e8*btcUsdPrice; },
   timeAgo(iso){
     if(!iso) return '—';
-    const s = Math.floor((Date.now()-new Date(iso).getTime())/1000);
-    if(s<60) return s+'s ago';
-    if(s<3600) return Math.floor(s/60)+'m ago';
-    if(s<86400) return Math.floor(s/3600)+'h ago';
-    if(s<86400*30) return Math.floor(s/86400)+'d ago';
-    return Math.floor(s/86400/30)+'mo ago';
+    const s = Math.floor((Date.now()-new Date(iso))/1000);
+    if(s<60) return s+'s';
+    if(s<3600) return Math.floor(s/60)+'m';
+    if(s<86400) return Math.floor(s/3600)+'h';
+    if(s<86400*30) return Math.floor(s/86400)+'d';
+    return Math.floor(s/86400/30)+'mo';
   },
-  short(sha){ return sha ? sha.substring(0,7) : '—'; },
-  actions(status){
-    if(!status) return '—';
-    if(status==='success') return '✓ success';
-    if(status==='failure') return '✗ failed';
-    if(status==='in_progress'||status==='queued') return '… '+status;
-    return status;
+  short(sha){ return sha?sha.slice(0,7):'—'; },
+  actions(st){
+    if(!st) return '—';
+    if(st==='success') return 'ok';
+    if(st==='failure') return 'fail';
+    if(st==='in_progress'||st==='queued') return '…';
+    return st;
   }
 };
 
-let btcUsdPrice = null;
+/* ---------- VAULT (same key as v1) ---------- */
+const Vault = {
+  KEY: 'sovereign_deck_vault_v1',
+  data: { ghToken:'', nodeUrl:'https://vmi3446772.tailb672ac.ts.net', wallets:{}, fxSource:'coingecko', refreshSec:60 },
+  load(){
+    try{ const raw=localStorage.getItem(this.KEY); if(raw) this.data=Object.assign(this.data,JSON.parse(raw)); }catch(e){}
+    try{
+      const pins = JSON.parse(localStorage.getItem('hq_pins')||'[]');
+      state.pins = new Set(pins);
+      state.theme = localStorage.getItem('hq_theme')||'stone';
+      state.density = localStorage.getItem('hq_density')||'comfy';
+      document.documentElement.dataset.theme = state.theme;
+      document.documentElement.dataset.density = state.density;
+      const hist = JSON.parse(localStorage.getItem('hq_hist')||'[]');
+      state.history = hist;
+    }catch(e){}
+  },
+  persist(){ localStorage.setItem(this.KEY, JSON.stringify(this.data)); },
+  openModal(){
+    document.getElementById('vault-backdrop').classList.remove('hidden');
+    document.getElementById('vault-gh-token').value = this.data.ghToken||'';
+    document.getElementById('vault-node-url').value = this.data.nodeUrl||'';
+    document.getElementById('vault-fx-source').value = this.data.fxSource||'coingecko';
+    document.getElementById('vault-refresh').value = String(this.data.refreshSec||60);
+    document.getElementById('vault-node-note').textContent = this.data.nodeUrl||'';
+    const wallets = PROJECTS.reduce((a,p)=>{ if(!a.includes(p.wallet)) a.push(p.wallet); return a; },[]);
+    document.getElementById('vault-wallet-rows').innerHTML = wallets.map(w=>`
+      <div class="flex gap-2 items-center">
+        <span class="mono text-xs w-28 truncate text-[var(--ink-dim)]">${w}</span>
+        <input type="password" data-wallet-key="${w}" value="${this.data.wallets[w]||''}" placeholder="X-Api-Key" class="flex-1 rounded px-2 py-1.5 text-xs mono">
+      </div>`).join('');
+  },
+  closeModal(e){ if(e && e.target && e.target.id!=='vault-backdrop') return; document.getElementById('vault-backdrop').classList.add('hidden'); },
+  save(){
+    this.data.ghToken = document.getElementById('vault-gh-token').value.trim();
+    this.data.nodeUrl = document.getElementById('vault-node-url').value.trim()||this.data.nodeUrl;
+    this.data.fxSource = document.getElementById('vault-fx-source').value;
+    this.data.refreshSec = parseInt(document.getElementById('vault-refresh').value,10)||60;
+    document.querySelectorAll('[data-wallet-key]').forEach(inp=>{ this.data.wallets[inp.dataset.walletKey]=inp.value.trim(); });
+    this.persist();
+    this.updateStatusChip();
+    document.getElementById('vault-backdrop').classList.add('hidden');
+    toast('Vault saved locally','success');
+    scheduleRefresh();
+    Dash.refreshAll();
+  },
+  clear(){
+    if(!confirm('Wipe vault on this browser?')) return;
+    localStorage.removeItem(this.KEY);
+    this.data = { ghToken:'', nodeUrl:'https://vmi3446772.tailb672ac.ts.net', wallets:{}, fxSource:'coingecko', refreshSec:60 };
+    toast('Vault wiped','error');
+    this.updateStatusChip();
+    this.openModal();
+  },
+  hasWallet(w){ return !!(this.data.wallets[w]&&this.data.wallets[w].length>10); },
+  hasGh(){ return !!(this.data.ghToken&&this.data.ghToken.length>10); },
+  keyCount(){ return Object.values(this.data.wallets||{}).filter(v=>v&&v.length>10).length+(this.hasGh()?1:0); },
+  updateStatusChip(){
+    const el=document.getElementById('vault-status'); if(!el) return;
+    const n=this.keyCount();
+    el.textContent = n?`vault ${n} set`:'vault empty';
+    el.className = 'status-pill shrink-0 '+(n?'green':'gray');
+  }
+};
 
 function ghAuthHeader(){
   if(!Vault.hasGh()) return {};
-  const t = Vault.data.ghToken;
-  // fine-grained PATs (github_pat_*) prefer Bearer; classic ghp_ works with either
-  const scheme = t.startsWith('github_pat_') ? 'Bearer' : 'token';
-  return { Authorization: `${scheme} ${t}` };
+  const t=Vault.data.ghToken;
+  return { Authorization: (t.startsWith('github_pat_')?'Bearer ':'token ')+t };
 }
-
 function decodeGitHubContent(b64){
-  const clean = (b64 || '').replace(/\n/g, '');
-  const bin = atob(clean);
-  const bytes = new Uint8Array(bin.length);
-  for(let i=0;i<bin.length;i++) bytes[i] = bin.charCodeAt(i);
-  return new TextDecoder('utf-8').decode(bytes);
+  const clean=(b64||'').replace(/\n/g,'');
+  const bin=atob(clean); const bytes=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
 }
-
 function encodeGitHubContent(text){
-  // UTF-8 safe base64 for Contents API
-  const bytes = new TextEncoder().encode(text);
-  let bin = '';
-  bytes.forEach(b => bin += String.fromCharCode(b));
-  return btoa(bin);
+  const bytes=new TextEncoder().encode(text); let bin='';
+  bytes.forEach(b=>bin+=String.fromCharCode(b)); return btoa(bin);
 }
 
 const GitHubData = {
   async defaultBranch(repo){
     if(state.branches[repo]) return state.branches[repo];
-    if(BRANCH_DEFAULTS[repo]) {
-      state.branches[repo] = BRANCH_DEFAULTS[repo];
-      // still try API when we have auth to confirm
-    }
+    if(BRANCH_DEFAULTS[repo]) state.branches[repo]=BRANCH_DEFAULTS[repo];
     try{
-      const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}`, { headers: { Accept:'application/vnd.github+json', ...ghAuthHeader() }});
+      const r=await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}`,{headers:{Accept:'application/vnd.github+json',...ghAuthHeader()}});
       this._trackRate(r);
-      if(r.ok){
-        const j = await r.json();
-        state.branches[repo] = j.default_branch || BRANCH_DEFAULTS[repo] || 'main';
-        return state.branches[repo];
-      }
+      if(r.ok){ const j=await r.json(); state.branches[repo]=j.default_branch||BRANCH_DEFAULTS[repo]||'main'; return state.branches[repo]; }
     }catch(e){}
-    state.branches[repo] = BRANCH_DEFAULTS[repo] || 'main';
+    state.branches[repo]=BRANCH_DEFAULTS[repo]||'main';
     return state.branches[repo];
   },
-
   async branchInfo(repo){
-    const branch = await this.defaultBranch(repo);
-    const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}/branches/${encodeURIComponent(branch)}`, {
-      headers: { Accept:'application/vnd.github+json', ...ghAuthHeader() }
-    });
+    const branch=await this.defaultBranch(repo);
+    const r=await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}/branches/${encodeURIComponent(branch)}`,{headers:{Accept:'application/vnd.github+json',...ghAuthHeader()}});
     this._trackRate(r);
     if(!r.ok) throw new Error('gh '+r.status);
     return r.json();
   },
-
   async lastRun(repo){
     try{
-      const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}/actions/runs?per_page=1`, {
-        headers: { Accept:'application/vnd.github+json', ...ghAuthHeader() }
-      });
+      const r=await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}/actions/runs?per_page=1`,{headers:{Accept:'application/vnd.github+json',...ghAuthHeader()}});
       this._trackRate(r);
       if(!r.ok) return null;
-      const j = await r.json();
-      return (j.workflow_runs && j.workflow_runs[0]) || null;
+      const j=await r.json();
+      return (j.workflow_runs&&j.workflow_runs[0])||null;
     }catch(e){ return null; }
   },
-
-  /**
-   * Read a file via Contents API (works for private repos when Vault PAT is set).
-   * Falls back to raw.githubusercontent for public repos without a token.
-   */
   async readFile(repo, path){
-    const branch = await this.defaultBranch(repo);
-    const headers = { Accept:'application/vnd.github+json', ...ghAuthHeader() };
-
-    // Prefer authenticated Contents API — required for private repos (e.g. giveabit)
+    const branch=await this.defaultBranch(repo);
     if(Vault.hasGh()){
-      const api = `https://api.github.com/repos/${GH_OWNER}/${repo}/contents/${path.split('/').map(encodeURIComponent).join('/')}?ref=${encodeURIComponent(branch)}`;
-      const r = await fetch(api, { headers });
+      const api=`https://api.github.com/repos/${GH_OWNER}/${repo}/contents/${path.split('/').map(encodeURIComponent).join('/')}?ref=${encodeURIComponent(branch)}`;
+      const r=await fetch(api,{headers:{Accept:'application/vnd.github+json',...ghAuthHeader()}});
       this._trackRate(r);
-      if(r.status === 404) throw new Error(`not found: ${path} on ${branch}`);
-      if(r.status === 401 || r.status === 403) throw new Error('GitHub auth failed — check PAT in Vault (repo scope)');
+      if(r.status===404) throw new Error(`not found: ${path} on ${branch}`);
+      if(r.status===401||r.status===403) throw new Error('GitHub auth failed — check PAT in Vault');
       if(!r.ok) throw new Error('gh '+r.status);
-      const j = await r.json();
+      const j=await r.json();
       if(Array.isArray(j)) throw new Error('path is a directory');
-      if(j.encoding === 'base64' && j.content) return decodeGitHubContent(j.content);
-      if(j.download_url){
-        const dr = await fetch(j.download_url, { headers: ghAuthHeader() });
-        if(dr.ok) return dr.text();
-      }
+      if(j.encoding==='base64'&&j.content) return decodeGitHubContent(j.content);
       throw new Error('empty content');
     }
-
-    // No PAT: public raw only
-    const raw = `https://raw.githubusercontent.com/${GH_OWNER}/${repo}/${branch}/${path}?t=${Date.now()}`;
-    const r = await fetch(raw);
-    if(!r.ok) throw new Error(`not found (add GitHub PAT in Vault for private repos): ${path} on ${branch}`);
+    const raw=`https://raw.githubusercontent.com/${GH_OWNER}/${repo}/${branch}/${path}?t=${Date.now()}`;
+    const r=await fetch(raw);
+    if(!r.ok) throw new Error(`not found (add PAT for private repos): ${path} on ${branch}`);
     return r.text();
   },
-
   async writeFile(repo, path, content, message){
     if(!Vault.hasGh()) throw new Error('No GitHub token in vault');
-    const branch = await this.defaultBranch(repo);
-    const apiPath = path.split('/').map(encodeURIComponent).join('/');
-    const api = `https://api.github.com/repos/${GH_OWNER}/${repo}/contents/${apiPath}`;
-    const headers = { Accept:'application/vnd.github+json', 'Content-Type':'application/json', ...ghAuthHeader() };
-    let sha = null;
+    const branch=await this.defaultBranch(repo);
+    const apiPath=path.split('/').map(encodeURIComponent).join('/');
+    const api=`https://api.github.com/repos/${GH_OWNER}/${repo}/contents/${apiPath}`;
+    const headers={Accept:'application/vnd.github+json','Content-Type':'application/json',...ghAuthHeader()};
+    let sha=null;
     try{
-      const cur = await fetch(`${api}?ref=${encodeURIComponent(branch)}`, { headers });
+      const cur=await fetch(`${api}?ref=${encodeURIComponent(branch)}`,{headers});
       this._trackRate(cur);
-      if(cur.ok){ const j = await cur.json(); sha = j.sha; }
+      if(cur.ok){ const j=await cur.json(); sha=j.sha; }
     }catch(e){}
-    const body = {
-      message: message || `docs: update ${path} via Give A Bit HQ`,
-      content: encodeGitHubContent(content),
-      branch
-    };
-    if(sha) body.sha = sha;
-    const res = await fetch(api, { method:'PUT', headers, body: JSON.stringify(body) });
+    const body={ message: message||`docs: update ${path} via Give A Bit HQ`, content: encodeGitHubContent(content), branch };
+    if(sha) body.sha=sha;
+    const res=await fetch(api,{method:'PUT',headers,body:JSON.stringify(body)});
     this._trackRate(res);
-    if(res.status === 409) throw new Error('conflict — file changed on GitHub; re-open the file and try again');
-    if(res.status === 401 || res.status === 403) throw new Error('auth failed — PAT needs contents:write on '+repo);
-    if(!res.ok){ const t = await res.text(); throw new Error('save failed: '+t.substring(0,180)); }
-    // bust tree cache so existence marks update
+    if(res.status===409) throw new Error('conflict — re-open file and retry');
+    if(res.status===401||res.status===403) throw new Error('auth failed — need contents:write on '+repo);
+    if(!res.ok) throw new Error('save failed: '+(await res.text()).slice(0,160));
     delete state.treeIndex[repo];
     return res.json();
   },
-
-  /** One recursive tree fetch per repo — used to mark exists/missing in Docs tree */
   async treePaths(repo){
     if(state.treeIndex[repo]) return state.treeIndex[repo];
     try{
-      const b = await this.branchInfo(repo);
-      const treeSha = b.commit?.commit?.tree?.sha;
-      if(!treeSha) throw new Error('no tree');
-      const r = await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}/git/trees/${treeSha}?recursive=1`, {
-        headers: { Accept:'application/vnd.github+json', ...ghAuthHeader() }
-      });
+      const b=await this.branchInfo(repo);
+      const treeSha=b.commit?.commit?.tree?.sha;
+      const r=await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}/git/trees/${treeSha}?recursive=1`,{headers:{Accept:'application/vnd.github+json',...ghAuthHeader()}});
       this._trackRate(r);
-      if(!r.ok) throw new Error('tree '+r.status);
-      const j = await r.json();
-      const set = new Set((j.tree||[]).filter(t=>t.type==='blob').map(t=>t.path));
-      state.treeIndex[repo] = set;
-      return set;
-    }catch(e){
-      state.treeIndex[repo] = new Set();
+      if(!r.ok) throw new Error('tree');
+      const j=await r.json();
+      state.treeIndex[repo]=new Set((j.tree||[]).filter(t=>t.type==='blob').map(t=>t.path));
       return state.treeIndex[repo];
-    }
+    }catch(e){ state.treeIndex[repo]=new Set(); return state.treeIndex[repo]; }
   },
-
-  pathExists(repo, path){
-    const set = state.treeIndex[repo];
-    if(!set) return null; // unknown until scanned
-    return set.has(path);
-  },
-
-  /** After create/save, mark path present without full re-scan */
-  markPath(repo, path){
-    if(!state.treeIndex[repo]) state.treeIndex[repo] = new Set();
-    state.treeIndex[repo].add(path);
-  },
-
+  markPath(repo,path){ if(!state.treeIndex[repo]) state.treeIndex[repo]=new Set(); state.treeIndex[repo].add(path); },
   _trackRate(r){
-    const rem = r.headers.get('x-ratelimit-remaining');
-    if(rem !== null){
-      state.ghRateRemaining = rem;
-      const el = document.getElementById('gh-rate');
-      if(el) el.textContent = `(${rem} left)`;
-      const ban = document.getElementById('sys-banner');
-      if(!ban) return;
-      if(Number(rem) < 15 && Number(rem) > 0){
-        ban.classList.remove('hidden');
-        ban.innerHTML = `<div class="banner-warn mono">GitHub rate limit low (${rem} remaining).</div>`;
-      } else if(Number(rem) === 0){
-        ban.classList.remove('hidden');
-        ban.innerHTML = `<div class="banner-err mono">GitHub rate limit exhausted. Wait or check Vault PAT.</div>`;
-      } else if(!ban.dataset.sticky){
-        ban.classList.add('hidden');
-        ban.innerHTML = '';
-      }
-    }
+    const rem=r.headers.get('x-ratelimit-remaining');
+    if(rem===null) return;
+    state.ghRateRemaining=rem;
+    const el=document.getElementById('gh-rate'); if(el) el.textContent=`(${rem} left)`;
+    const ban=document.getElementById('sys-banner'); if(!ban) return;
+    if(+rem<15 && +rem>0){ ban.classList.remove('hidden'); ban.innerHTML=`<div class="banner-warn mono">GitHub rate low (${rem})</div>`; }
+    else if(+rem===0){ ban.classList.remove('hidden'); ban.innerHTML=`<div class="banner-err mono">GitHub rate exhausted</div>`; }
+    else { ban.classList.add('hidden'); ban.innerHTML=''; }
   }
 };
 
 const LNbitsData = {
   async wallet(walletKey){
     if(!Vault.hasWallet(walletKey)) return null;
-    const url = `${Vault.data.nodeUrl.replace(/\/$/,'')}/api/v1/wallet`;
-    const r = await fetch(url, { headers:{ 'X-Api-Key': Vault.data.wallets[walletKey] }});
+    const url=`${Vault.data.nodeUrl.replace(/\/$/,'')}/api/v1/wallet`;
+    const r=await fetch(url,{headers:{'X-Api-Key':Vault.data.wallets[walletKey]}});
     if(!r.ok) throw new Error('lnbits '+r.status);
     return r.json();
   }
 };
 
 async function checkLive(url){
-  if(!url) return { ok:false, status:null };
-  try{
-    await fetch(url, { method:'GET', mode:'no-cors', cache:'no-store' });
-    return { ok:true, status:'opaque' };
-  }catch(e){
-    return { ok:false, status:'unreachable' };
-  }
+  if(!url) return {ok:false};
+  try{ await fetch(url,{method:'GET',mode:'no-cors',cache:'no-store'}); return {ok:true}; }
+  catch(e){ return {ok:false}; }
 }
 
+function healthScore(d){
+  let s=50;
+  if(d.status==='green') s+=40; else if(d.status==='amber') s+=10; else if(d.status==='red') s-=40;
+  if(d.walletOk) s+=10;
+  if(d.actionsStatus==='success') s+=10; else if(d.actionsStatus==='failure') s-=20;
+  if(d.liveReachable) s+=5;
+  return Math.max(0,Math.min(100,s));
+}
+function computeStatus(p,d){
+  if(!p.deployed) return 'gray';
+  if(d.liveReachable===false) return 'red';
+  if(d.actionsStatus==='failure') return 'red';
+  if(d.actionsStatus==='in_progress'||d.actionsStatus==='queued') return 'amber';
+  if(d.ghOk===false) return 'amber';
+  return 'green';
+}
+function statusMeta(status){
+  return {green:{dot:'green',label:'Live'},amber:{dot:'amber',label:'Pending'},red:{dot:'red',label:'Down'},gray:{dot:'gray',label:'Pre-MVP'}}[status]||{dot:'gray',label:'?'};
+}
+function setHealthDot(id,color){ const el=document.getElementById(id)?.querySelector('.dot'); if(el) el.className=`dot dot-${color}`; }
+function healthColor(score){ if(score>=80) return 'var(--green)'; if(score>=50) return 'var(--amber)'; return 'var(--red)'; }
+function copyText(t,label){ if(!t||t==='—')return; navigator.clipboard?.writeText(t).then(()=>toast('Copied '+(label||t),'success')); }
+function togglePin(id,e){
+  e?.stopPropagation();
+  if(state.pins.has(id)) state.pins.delete(id); else state.pins.add(id);
+  localStorage.setItem('hq_pins', JSON.stringify([...state.pins]));
+  Dash.render();
+  Dash.applyFilters();
+  document.getElementById('fav-count').textContent = state.pins.size+' pinned';
+}
+
+/* ---------- CHARTS (canvas, no deps) ---------- */
+const Charts = {
+  clear(c){ const ctx=c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height); return ctx; },
+  ink(){ return getComputedStyle(document.documentElement).getPropertyValue('--ink').trim()||'#121210'; },
+  dim(){ return getComputedStyle(document.documentElement).getPropertyValue('--ink-faint').trim()||'#5a574f'; },
+  donut(){
+    const c=document.getElementById('chart-donut'); if(!c) return;
+    c.width=160; c.height=160;
+    const ctx=this.clear(c);
+    const bars=PROJECTS.map(p=>({name:p.name,sats:(state.projects[p.id]||{}).balanceSats||0,color:p.color}));
+    const total=bars.reduce((a,b)=>a+b.sats,0)||1;
+    let a=-Math.PI/2;
+    const cx=80,cy=80,r=62,ri=38;
+    bars.forEach(b=>{
+      const slice=(b.sats/total)*Math.PI*2;
+      ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,a,a+slice); ctx.closePath();
+      ctx.fillStyle=b.color||this.ink(); ctx.globalAlpha=b.sats?0.9:0.25; ctx.fill(); ctx.globalAlpha=1;
+      a+=slice;
+    });
+    ctx.globalCompositeOperation='destination-out';
+    ctx.beginPath(); ctx.arc(cx,cy,ri,0,Math.PI*2); ctx.fill();
+    ctx.globalCompositeOperation='source-over';
+    ctx.fillStyle=this.ink(); ctx.font='600 11px IBM Plex Mono'; ctx.textAlign='center';
+    ctx.fillText(total>1?fmt.sats(total):'—',cx,cy+4);
+  },
+  spark(canvasId, series, color){
+    const c=document.getElementById(canvasId); if(!c||!series.length) return;
+    const ctx=this.clear(c);
+    const w=c.width,h=c.height,pad=2;
+    const min=Math.min(...series), max=Math.max(...series);
+    const span=(max-min)||1;
+    ctx.strokeStyle=color||this.ink(); ctx.lineWidth=1.5; ctx.beginPath();
+    series.forEach((v,i)=>{
+      const x=pad+(i/(series.length-1||1))*(w-pad*2);
+      const y=h-pad-((v-min)/span)*(h-pad*2);
+      i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+    });
+    ctx.stroke();
+  },
+  bars(canvasId, items, key, colorFn){
+    const c=document.getElementById(canvasId); if(!c) return;
+    const dpr=window.devicePixelRatio||1;
+    const cssW=c.parentElement.clientWidth||400, cssH=220;
+    c.width=cssW*dpr; c.height=cssH*dpr; c.style.width=cssW+'px'; c.style.height=cssH+'px';
+    const ctx=c.getContext('2d'); ctx.scale(dpr,dpr); ctx.clearRect(0,0,cssW,cssH);
+    const max=Math.max(1,...items.map(i=>i[key]||0));
+    const rowH=cssH/Math.max(items.length,1);
+    items.forEach((it,i)=>{
+      const y=i*rowH+4;
+      const bw=((it[key]||0)/max)*(cssW-90);
+      ctx.fillStyle=colorFn?colorFn(it):this.ink();
+      ctx.globalAlpha=0.85; ctx.fillRect(80,y,bw,rowH-8); ctx.globalAlpha=1;
+      ctx.fillStyle=this.dim(); ctx.font='11px IBM Plex Mono'; ctx.textAlign='left';
+      ctx.fillText(it.name.slice(0,10),4,y+rowH/2+3);
+      ctx.textAlign='right'; ctx.fillStyle=this.ink();
+      ctx.fillText(key==='health'?String(it[key]||0):fmt.sats(it[key]||0),cssW-4,y+rowH/2+3);
+    });
+  },
+  cats(){
+    const c=document.getElementById('chart-cat'); if(!c) return;
+    const map={};
+    PROJECTS.forEach(p=>{ map[p.category]=(map[p.category]||0)+1; });
+    const items=Object.entries(map).map(([name,n])=>({name,n,color:PROJECTS.find(p=>p.category===name)?.color||'#666'}));
+    const dpr=window.devicePixelRatio||1;
+    const cssW=c.parentElement.clientWidth||400, cssH=200;
+    c.width=cssW*dpr; c.height=cssH*dpr; c.style.width=cssW+'px'; c.style.height=cssH+'px';
+    const ctx=c.getContext('2d'); ctx.scale(dpr,dpr); ctx.clearRect(0,0,cssW,cssH);
+    const max=Math.max(1,...items.map(i=>i.n));
+    const bw=(cssW-20)/items.length;
+    items.forEach((it,i)=>{
+      const h=(it.n/max)*(cssH-40);
+      ctx.fillStyle=it.color; ctx.fillRect(10+i*bw+4,cssH-20-h,bw-12,h);
+      ctx.fillStyle=this.dim(); ctx.font='10px IBM Plex Mono'; ctx.textAlign='center';
+      ctx.fillText(it.name.slice(0,8),10+i*bw+bw/2,cssH-6);
+      ctx.fillStyle=this.ink(); ctx.fillText(String(it.n),10+i*bw+bw/2,cssH-24-h);
+    });
+  },
+  hist(){
+    const c=document.getElementById('chart-hist'); if(!c) return;
+    const series=state.history.map(h=>h.total);
+    if(series.length<2){ const ctx=this.clear(c); ctx.fillStyle=this.dim(); ctx.font='12px IBM Plex Mono'; ctx.fillText('Snapshots build as you refresh…',12,40); return; }
+    const dpr=window.devicePixelRatio||1;
+    const cssW=c.parentElement.clientWidth||400, cssH=200;
+    c.width=cssW*dpr; c.height=cssH*dpr; c.style.width=cssW+'px'; c.style.height=cssH+'px';
+    const ctx=c.getContext('2d'); ctx.scale(dpr,dpr); ctx.clearRect(0,0,cssW,cssH);
+    const min=Math.min(...series), max=Math.max(...series), span=(max-min)||1;
+    ctx.strokeStyle=this.ink(); ctx.lineWidth=2; ctx.beginPath();
+    series.forEach((v,i)=>{
+      const x=10+(i/(series.length-1))*(cssW-20);
+      const y=cssH-20-((v-min)/span)*(cssH-40);
+      i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+    });
+    ctx.stroke();
+  },
+  all(){
+    this.donut();
+    const rank=PROJECTS.map(p=>({name:p.name,sats:(state.projects[p.id]||{}).balanceSats||0,color:p.color})).sort((a,b)=>b.sats-a.sats);
+    this.bars('chart-rank',rank,'sats',it=>it.color);
+    const health=PROJECTS.map(p=>({name:p.name,health:healthScore(state.projects[p.id]||{}),color:p.color}));
+    this.bars('chart-health',health,'health',it=>it.color);
+    this.cats();
+    this.hist();
+    this.spark('spark-total', state.history.map(h=>h.total).concat([
+      PROJECTS.reduce((a,p)=>a+((state.projects[p.id]||{}).balanceSats||0),0)
+    ].filter((x,i,arr)=>i<arr.length)), getComputedStyle(document.documentElement).getPropertyValue('--orange').trim());
+  }
+};
+
+/* ---------- NET GRAPH ---------- */
+const Net = {
+  redraw(){
+    const svg=document.getElementById('net-svg'); if(!svg) return;
+    const W=900,H=420,cx=W/2,cy=H/2;
+    const n=PROJECTS.length;
+    const nodes=PROJECTS.map((p,i)=>{
+      const ang=-Math.PI/2+(i/n)*Math.PI*2;
+      const rad=p.id==='giveabit'?0:150;
+      return {id:p.id,p,x:cx+Math.cos(ang)*rad,y:cy+Math.sin(ang)*rad};
+    });
+    // pull giveabit center
+    const hub=nodes.find(n=>n.id==='giveabit'); if(hub){ hub.x=cx; hub.y=cy; }
+    let edges='';
+    PROJECTS.forEach(p=>{
+      (p.related||[]).forEach(rid=>{
+        const a=nodes.find(n=>n.id===p.id), b=nodes.find(n=>n.id===rid);
+        if(a&&b) edges+=`<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="rgba(0,0,0,.25)" stroke-width="1.5"/>`;
+      });
+    });
+    const dots=nodes.map(n=>{
+      const d=state.projects[n.id]||{};
+      const s=statusMeta(d.status||'gray');
+      return `<g style="cursor:pointer" onclick="Drawer.open('${n.id}')">
+        <circle cx="${n.x}" cy="${n.y}" r="${n.id==='giveabit'?28:22}" fill="${n.p.color}" opacity="0.92" stroke="#121210" stroke-width="1.5"/>
+        <text x="${n.x}" y="${n.y+5}" text-anchor="middle" font-size="10" font-family="IBM Plex Sans" font-weight="600" fill="#fff">${n.p.name.slice(0,8)}</text>
+        <title>${n.p.name} · ${s.label}</title>
+      </g>`;
+    }).join('');
+    svg.innerHTML = edges+dots;
+  }
+};
+
+/* ---------- DASH ---------- */
 const Dash = {
   async refreshAll(manual=false){
-    setHealthDot('hb-github', navigator.onLine ? 'amber' : 'red');
-    if(manual) toast('Refreshing all data sources…','info');
-
+    setHealthDot('hb-github', navigator.onLine?'amber':'red');
+    document.getElementById('net-status').textContent = navigator.onLine?'online':'offline';
+    document.getElementById('net-status').className = 'status-pill shrink-0 '+(navigator.onLine?'green':'red');
+    if(manual) toast('Refreshing…','info');
     await this.fetchPrice();
-    await Promise.all(PROJECTS.map(p => this.refreshProject(p)));
-
+    await Promise.all(PROJECTS.map(p=>this.refreshProject(p)));
+    this.snapshot();
     this.render();
     this.renderPortfolio();
     this.renderTicker();
-    setHealthDot('hb-github', 'green');
-    setHealthDot('hb-lnbits', Object.values(state.projects).some(p=>p.walletOk) ? 'green' : (Object.keys(Vault.data.wallets||{}).some(k=>Vault.hasWallet(k)) ? 'red':'gray'));
-    setHealthDot('hb-thor', 'amber');
-    setHealthDot('hb-lnd', 'gray');
-    document.getElementById('last-refresh').textContent = 'synced ' + new Date().toLocaleTimeString();
+    Charts.all();
+    if(state.view==='network') Net.redraw();
+    if(state.view==='activity') renderActivity();
+    if(state.view==='matrix') renderMatrix();
+    if(state.view==='wallets') renderWallets();
+    if(state.view==='analytics') Charts.all();
+    setHealthDot('hb-github','green');
+    setHealthDot('hb-lnbits', Object.values(state.projects).some(p=>p.walletOk)?'green':(Vault.keyCount()>1?'red':'gray'));
+    setHealthDot('hb-thor','amber');
+    setHealthDot('hb-lnd','gray');
+    document.getElementById('last-refresh').textContent='synced '+new Date().toLocaleTimeString();
     this.cache();
   },
-
   async fetchPrice(){
-    if(Vault.data.fxSource !== 'coingecko') return;
+    if(Vault.data.fxSource!=='coingecko') return;
     try{
-      const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
-      const j = await r.json();
-      btcUsdPrice = j.bitcoin.usd;
-      const priceStr = 'BTC $' + new Intl.NumberFormat('en-US',{maximumFractionDigits:0}).format(btcUsdPrice);
-      document.getElementById('btc-price-top').textContent = priceStr;
-      document.getElementById('btc-price-label').textContent = priceStr + ' · CoinGecko';
-    }catch(e){ /* keep last known */ }
+      const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+      const j=await r.json(); btcUsdPrice=j.bitcoin.usd;
+      const s='$'+new Intl.NumberFormat('en-US',{maximumFractionDigits:0}).format(btcUsdPrice);
+      document.getElementById('btc-price-top').textContent='BTC '+s;
+      document.getElementById('btc-price-label').textContent=s;
+    }catch(e){}
   },
-
   async refreshProject(p){
-    const d = state.projects[p.id] || {};
-    d.id = p.id;
-
+    const d=state.projects[p.id]||{}; d.id=p.id;
     try{
-      const b = await GitHubData.branchInfo(p.repo);
-      d.sha = b.commit.sha;
-      d.commitMsg = b.commit.commit.message.split('\n')[0];
-      d.commitDate = b.commit.commit.committer.date;
-      d.author = b.commit.commit.author?.name || '—';
-      d.ghOk = true;
-    }catch(e){ d.ghOk = false; }
-
+      const b=await GitHubData.branchInfo(p.repo);
+      d.sha=b.commit.sha; d.commitMsg=b.commit.commit.message.split('\n')[0];
+      d.commitDate=b.commit.commit.committer.date; d.author=b.commit.commit.author?.name||'—'; d.ghOk=true;
+    }catch(e){ d.ghOk=false; }
     try{
-      const run = await GitHubData.lastRun(p.repo);
-      d.actionsStatus = run ? run.conclusion || run.status : null;
-      d.actionsName = run ? run.name : null;
-      d.actionsUrl = run ? run.html_url : null;
-    }catch(e){ d.actionsStatus = null; }
-
-    if(p.deployed && p.url){
-      const live = await checkLive(p.url);
-      d.liveReachable = live.ok;
-    } else {
-      d.liveReachable = null;
-    }
-
-    d.walletOk = false;
+      const run=await GitHubData.lastRun(p.repo);
+      d.actionsStatus=run?(run.conclusion||run.status):null;
+      d.actionsName=run?.name; d.actionsUrl=run?.html_url;
+    }catch(e){ d.actionsStatus=null; }
+    if(p.deployed&&p.url){ d.liveReachable=(await checkLive(p.url)).ok; } else d.liveReachable=null;
+    d.walletOk=false;
     if(Vault.hasWallet(p.wallet)){
-      try{
-        const w = await LNbitsData.wallet(p.wallet);
-        d.balanceMsat = w.balance;
-        d.balanceSats = Math.floor(w.balance/1000);
-        d.walletName = w.name || p.wallet;
-        d.walletOk = true;
-      }catch(e){ d.walletOk = false; d.walletError = true; }
+      try{ const w=await LNbitsData.wallet(p.wallet); d.balanceMsat=w.balance; d.balanceSats=Math.floor(w.balance/1000); d.walletName=w.name; d.walletOk=true; }
+      catch(e){ d.walletOk=false; d.walletError=true; }
     }
-
-    d.status = computeStatus(p, d);
-    d.updatedAt = d.commitDate || d.updatedAt;
-    state.projects[p.id] = d;
+    d.status=computeStatus(p,d);
+    state.projects[p.id]=d;
   },
-
+  snapshot(){
+    const total=PROJECTS.reduce((a,p)=>a+((state.projects[p.id]||{}).balanceSats||0),0);
+    state.history.push({ts:Date.now(),total,price:btcUsdPrice});
+    if(state.history.length>48) state.history=state.history.slice(-48);
+    localStorage.setItem('hq_hist', JSON.stringify(state.history));
+  },
   render(){
-    renderGrid();
-    renderList();
-    renderPipeline();
-    renderAgents();
-    renderDocTree();
+    renderGrid(); renderList(); renderPipeline(); renderAgents(); renderDocTree();
     this.applyFilters();
   },
-
   renderPortfolio(){
-    let total = 0, synced = 0, healthSum = 0, liveCount = 0;
-    const bars = [];
-    const counts = { green:0, amber:0, red:0, gray:0 };
-
+    let total=0,synced=0,healthSum=0,liveCount=0;
+    const counts={green:0,amber:0,red:0,gray:0};
+    const bars=[];
     PROJECTS.forEach(p=>{
-      const d = state.projects[p.id] || {};
-      if(d.walletOk){ total += d.balanceSats||0; synced++; }
+      const d=state.projects[p.id]||{};
+      if(d.walletOk){ total+=d.balanceSats||0; synced++; }
       if(d.liveReachable) liveCount++;
-      healthSum += healthScore(d);
-      counts[d.status||'gray'] = (counts[d.status||'gray']||0)+1;
-      bars.push({ name:p.name, sats: d.balanceSats||0, ok: !!d.walletOk });
+      healthSum+=healthScore(d);
+      counts[d.status||'gray']=(counts[d.status||'gray']||0)+1;
+      bars.push({name:p.name,sats:d.balanceSats||0,ok:!!d.walletOk,color:p.color});
     });
-
-    document.getElementById('total-sats').textContent = fmt.sats(total);
-    document.getElementById('total-usd').textContent = btcUsdPrice ? fmt.usd(total/1e8*btcUsdPrice) : '$—';
-    document.getElementById('portfolio-count').textContent = `${synced}/${PROJECTS.length} synced`;
-    document.getElementById('portfolio-change').textContent = '24h —';
-    document.getElementById('portfolio-health').textContent = `health ${Math.round(healthSum/PROJECTS.length)}`;
-    document.getElementById('portfolio-live').textContent = `${liveCount} live`;
-    document.getElementById('stat-projects').textContent = PROJECTS.length;
-    document.getElementById('stat-agents').textContent = AGENTS.length;
-    document.getElementById('count-green').textContent = counts.green;
-    document.getElementById('count-amber').textContent = counts.amber;
-    document.getElementById('count-red').textContent = counts.red;
-    document.getElementById('count-gray').textContent = counts.gray;
+    document.getElementById('total-sats').textContent=fmt.sats(total);
+    document.getElementById('total-usd').textContent=btcUsdPrice?fmt.usd(total/1e8*btcUsdPrice):'$—';
+    document.getElementById('portfolio-count').textContent=`${synced}/${PROJECTS.length} synced`;
+    document.getElementById('portfolio-health').textContent=`health ${Math.round(healthSum/PROJECTS.length)}`;
+    document.getElementById('portfolio-live').textContent=`${liveCount} live`;
+    document.getElementById('stat-projects').textContent=PROJECTS.length;
+    document.getElementById('stat-agents').textContent=AGENTS.length;
+    document.getElementById('stat-health').textContent=Math.round(healthSum/PROJECTS.length);
+    document.getElementById('count-green').textContent=counts.green;
+    document.getElementById('count-amber').textContent=counts.amber;
+    document.getElementById('count-red').textContent=counts.red;
+    document.getElementById('count-gray').textContent=counts.gray;
+    document.getElementById('fav-count').textContent=state.pins.size+' pinned';
     Vault.updateStatusChip();
-
-    const max = Math.max(1, ...bars.map(b=>b.sats));
-    document.getElementById('bal-bars').innerHTML = bars.map(b=>`
+    const max=Math.max(1,...bars.map(b=>b.sats));
+    document.getElementById('bal-bars').innerHTML=bars.map(b=>`
       <div class="flex items-center gap-2 text-[11px] mono">
-        <span class="w-24 truncate text-[var(--ink-faint)]" title="${b.name}">${b.name}</span>
-        <div class="flex-1 h-1.5 rounded-sm bg-[var(--void-2)] overflow-hidden border border-[var(--line)]">
-          <div class="bar-fill h-full ${b.ok?'bg-[var(--ink)]':'bg-[var(--gray)]'}" style="width:${(b.sats/max*100)||0}%; opacity:${b.ok?1:0.4}"></div>
-        </div>
-        <span class="w-16 text-right text-[var(--ink-dim)]">${fmt.sats(b.sats)}</span>
+        <span class="w-20 truncate text-[var(--ink-faint)]">${b.name}</span>
+        <div class="flex-1 bar-track"><div class="bar-fill" style="width:${(b.sats/max*100)||0}%;background:${b.color||'var(--ink)'};opacity:${b.ok?1:.35}"></div></div>
+        <span class="w-14 text-right">${fmt.sats(b.sats)}</span>
       </div>`).join('');
+    // KPI strip
+    const kpis=[
+      ['Total sats',fmt.sats(total)],['USD',btcUsdPrice?fmt.usd(total/1e8*btcUsdPrice):'—'],
+      ['Synced',`${synced}/${PROJECTS.length}`],['Live',String(liveCount)],
+      ['Avg health',String(Math.round(healthSum/PROJECTS.length))],['Vault keys',String(Vault.keyCount())],
+      ['GH left',state.ghRateRemaining??'—'],['Pins',String(state.pins.size)],
+    ];
+    const ks=document.getElementById('kpi-strip');
+    if(ks) ks.innerHTML=kpis.map(([l,v])=>`<div class="metric"><div class="text-[10px] text-[var(--ink-faint)] uppercase">${l}</div><div class="font-semibold mono text-sm mt-0.5">${v}</div></div>`).join('');
   },
-
   renderTicker(){
-    const items = PROJECTS.map(p=>{
-      const d = state.projects[p.id]||{};
-      const s = statusMeta(d.status);
-      const bal = d.walletOk ? fmt.sats(d.balanceSats)+' sats' : (Vault.hasWallet(p.wallet)?'err':'no key');
-      const ci = d.actionsStatus ? fmt.actions(d.actionsStatus) : 'no CI';
-      return `<span class="inline-flex items-center gap-1.5"><span class="dot dot-${s.dot}"></span><strong class="text-[var(--ink)]">${p.name}</strong> <span class="text-[var(--ink-faint)]">${bal}</span> <span class="text-[var(--ink-faint)]">· ${ci}</span> <span class="text-[var(--ink-faint)]">· ${fmt.timeAgo(d.commitDate)}</span></span>`;
+    const items=PROJECTS.map(p=>{
+      const d=state.projects[p.id]||{}; const s=statusMeta(d.status);
+      return `<span class="inline-flex items-center gap-1.5"><span class="dot dot-${s.dot}"></span><strong>${p.name}</strong> <span class="text-[var(--ink-faint)]">${d.walletOk?fmt.sats(d.balanceSats)+' sats':(Vault.hasWallet(p.wallet)?'err':'no key')}</span> · ${fmt.actions(d.actionsStatus)} · ${fmt.timeAgo(d.commitDate)}</span>`;
     });
-    document.getElementById('ticker').innerHTML = items.concat(items).join('<span class="text-[var(--ink-faint)] mx-1">·</span>');
+    document.getElementById('ticker').innerHTML=items.concat(items).join('<span class="text-[var(--ink-faint)] mx-1">·</span>');
   },
-
   applyFilters(){
-    const q = document.getElementById('global-search').value.toLowerCase().trim();
-    const f = state.filter;
-    const sortBy = document.getElementById('sort-select').value;
-
-    let list = PROJECTS.filter(p=>{
-      const d = state.projects[p.id]||{};
-      if(q && !(p.name.toLowerCase().includes(q) || p.tagline.toLowerCase().includes(q) || (p.category||'').toLowerCase().includes(q) || p.repo.toLowerCase().includes(q))) return false;
-      if(f==='attention') return d.status==='red' || d.status==='amber' || (d.walletOk && d.balanceSats===0);
-      if(f==='recent') return d.commitDate && (Date.now()-new Date(d.commitDate))<7*86400*1000;
-      if(f==='stale') return d.commitDate && (Date.now()-new Date(d.commitDate))>30*86400*1000;
+    const q=(document.getElementById('global-search').value||'').toLowerCase().trim();
+    const f=state.filter, sortBy=document.getElementById('sort-select').value;
+    let list=PROJECTS.filter(p=>{
+      const d=state.projects[p.id]||{};
+      if(q && !(p.name.toLowerCase().includes(q)||p.tagline.toLowerCase().includes(q)||(p.category||'').toLowerCase().includes(q)||p.repo.toLowerCase().includes(q)||(p.stack||[]).some(s=>s.toLowerCase().includes(q)))) return false;
+      if(f==='attention') return d.status==='red'||d.status==='amber'||(d.walletOk&&d.balanceSats===0);
+      if(f==='recent') return d.commitDate&&(Date.now()-new Date(d.commitDate))<7*86400*1000;
+      if(f==='stale') return d.commitDate&&(Date.now()-new Date(d.commitDate))>30*86400*1000;
+      if(f==='pinned') return state.pins.has(p.id);
       return true;
     });
-
     list.sort((a,b)=>{
       const da=state.projects[a.id]||{}, db=state.projects[b.id]||{};
       if(sortBy==='balance') return (db.balanceSats||0)-(da.balanceSats||0);
       if(sortBy==='name') return a.name.localeCompare(b.name);
       if(sortBy==='updated') return new Date(db.commitDate||0)-new Date(da.commitDate||0);
       if(sortBy==='health') return healthScore(db)-healthScore(da);
+      if(sortBy==='category') return (a.category||'').localeCompare(b.category||'');
       return 0;
     });
-
-    const ids = list.map(p=>p.id);
-    document.querySelectorAll('[data-project-card]').forEach(el=> el.style.display = ids.includes(el.dataset.projectCard) ? '' : 'none');
-    document.querySelectorAll('[data-project-row]').forEach(el=> el.style.display = ids.includes(el.dataset.projectRow) ? '' : 'none');
-    document.querySelectorAll('[data-project-pipe]').forEach(el=> el.style.display = ids.includes(el.dataset.projectPipe) ? '' : 'none');
-    const vc = document.getElementById('visible-count');
-    if(vc) vc.textContent = `showing ${ids.length}`;
+    const ids=list.map(p=>p.id);
+    document.querySelectorAll('[data-project-card]').forEach(el=>el.style.display=ids.includes(el.dataset.projectCard)?'':'none');
+    document.querySelectorAll('[data-project-row]').forEach(el=>el.style.display=ids.includes(el.dataset.projectRow)?'':'none');
+    document.querySelectorAll('[data-project-pipe]').forEach(el=>el.style.display=ids.includes(el.dataset.projectPipe)?'':'none');
+    const vc=document.getElementById('visible-count'); if(vc) vc.textContent=`showing ${ids.length}`;
   },
-
-  cache(){
-    try{ localStorage.setItem('sovereign_deck_cache', JSON.stringify({ projects:state.projects, price:btcUsdPrice, ts:Date.now() })); }catch(e){}
-  },
+  cache(){ try{ localStorage.setItem('sovereign_deck_cache', JSON.stringify({projects:state.projects,price:btcUsdPrice,ts:Date.now()})); }catch(e){} },
   loadCache(){
     try{
-      const raw = localStorage.getItem('sovereign_deck_cache');
-      if(raw){
-        const j = JSON.parse(raw);
-        state.projects = j.projects||{};
-        btcUsdPrice = j.price;
-        state.cacheTs = j.ts;
-        const age = document.getElementById('cache-age');
-        if(age && j.ts){
-          age.textContent = 'cache '+fmt.timeAgo(new Date(j.ts).toISOString());
-          age.classList.remove('hidden');
-        }
+      const raw=localStorage.getItem('sovereign_deck_cache');
+      if(raw){ const j=JSON.parse(raw); state.projects=j.projects||{}; btcUsdPrice=j.price;
+        const age=document.getElementById('cache-age'); if(age&&j.ts){ age.textContent='cache '+fmt.timeAgo(new Date(j.ts).toISOString()); age.classList.remove('hidden'); }
       }
     }catch(e){}
   }
 };
 
-function copyText(text, label){
-  if(!text || text==='—') return;
-  navigator.clipboard?.writeText(text).then(()=>toast('Copied '+ (label||text), 'success')).catch(()=>{});
-}
-
-function healthScore(d){
-  let s = 50;
-  if(d.status==='green') s+=40; else if(d.status==='amber') s+=10; else if(d.status==='red') s-=40;
-  if(d.walletOk) s+=10;
-  if(d.actionsStatus==='success') s+=10; else if(d.actionsStatus==='failure') s-=20;
-  if(d.liveReachable) s+=5;
-  return Math.max(0, Math.min(100, s));
-}
-
-function computeStatus(p, d){
-  if(!p.deployed) return 'gray';
-  if(d.liveReachable===false) return 'red';
-  if(d.actionsStatus==='failure') return 'red';
-  if(d.actionsStatus==='in_progress' || d.actionsStatus==='queued') return 'amber';
-  if(d.ghOk===false) return 'amber';
-  return 'green';
-}
-
-function statusMeta(status){
-  return { green:{dot:'green',label:'Live'}, amber:{dot:'amber',label:'Pending'}, red:{dot:'red',label:'Down'}, gray:{dot:'gray',label:'Pre-MVP'} }[status] || {dot:'gray',label:'Unknown'};
-}
-
-function setHealthDot(id, color){
-  const el = document.getElementById(id).querySelector('.dot');
-  el.className = `dot dot-${color}`;
-}
-
-function healthColor(score){
-  if(score>=80) return 'var(--green)';
-  if(score>=50) return 'var(--amber)';
-  return 'var(--red)';
-}
-
 function renderGrid(){
-  const el = document.getElementById('view-grid');
-  el.innerHTML = PROJECTS.map(p=>{
-    const d = state.projects[p.id]||{};
-    const s = statusMeta(d.status);
-    const hs = healthScore(d);
-    const usd = d.walletOk ? fmt.usd(fmt.usdFromSats(d.balanceSats)) : '$—';
-    const walletBadge = Vault.hasWallet(p.wallet)
-      ? (d.walletOk ? '<span class="status-pill green">wallet</span>' : '<span class="status-pill red">wallet err</span>')
-      : '<span class="status-pill gray">no key</span>';
-    const liveBadge = d.liveReachable===true ? '<span class="status-pill green">live</span>'
-      : d.liveReachable===false ? '<span class="status-pill red">down</span>'
-      : '<span class="status-pill gray">—</span>';
-    const steps = [
-      { ok: !!d.sha },
-      { ok: d.actionsStatus==='success', amber: d.actionsStatus==='in_progress'||d.actionsStatus==='queued' },
-      { ok: d.status==='green' },
-      { ok: d.liveReachable===true },
-    ];
-    const absDate = d.commitDate ? new Date(d.commitDate).toLocaleString() : '';
-
-    return `
-    <div data-project-card="${p.id}" class="glass glass-hover rounded p-4 cursor-pointer flex flex-col gap-3" onclick="Drawer.open('${p.id}')">
-      <div class="flex items-start justify-between gap-2">
-        <div class="flex items-center gap-2.5 min-w-0">
-          <div class="icon-box sm"><i class="${p.icon}"></i></div>
-          <div class="min-w-0">
-            <h3 class="font-semibold text-[14px] leading-tight">${p.name}</h3>
-            <div class="text-[10px] mono text-[var(--ink-faint)] mt-0.5 truncate">${p.category||'—'} · ${p.repo}</div>
-          </div>
+  document.getElementById('view-grid').innerHTML=PROJECTS.map(p=>{
+    const d=state.projects[p.id]||{}; const s=statusMeta(d.status); const hs=healthScore(d);
+    const usd=d.walletOk?fmt.usd(fmt.usdFromSats(d.balanceSats)):'$—';
+    const pin=state.pins.has(p.id);
+    const steps=[{ok:!!d.sha},{ok:d.actionsStatus==='success',amber:d.actionsStatus==='in_progress'||d.actionsStatus==='queued'},{ok:d.status==='green'},{ok:d.liveReachable===true}];
+    return `<div data-project-card="${p.id}" class="glass glass-hover rounded p-3.5 cursor-pointer flex flex-col gap-2.5 card-border" style="--pc:${p.color}" onclick="Drawer.open('${p.id}')">
+      <div class="flex justify-between gap-2">
+        <div class="flex items-center gap-2 min-w-0">
+          <div class="icon-box sm" style="background:${p.color}"><i class="${p.icon}"></i></div>
+          <div class="min-w-0"><div class="font-semibold text-[14px]">${p.name}</div>
+          <div class="text-[10px] mono text-[var(--ink-faint)]">${p.category} · ${p.repo}</div></div>
         </div>
-        <div class="flex items-center gap-1.5 shrink-0">
+        <div class="flex items-center gap-1">
+          <button class="pin-star ${pin?'on':''}" onclick="togglePin('${p.id}',event)" title="Pin">★</button>
           <span class="status-pill ${s.dot}"><span class="dot dot-${s.dot}" style="width:6px;height:6px"></span>${s.label}</span>
-          <div class="health-ring" style="color:${healthColor(hs)};border-color:${healthColor(hs)}" title="Health">${hs}</div>
+          <div class="health-ring" style="color:${healthColor(hs)};border-color:${healthColor(hs)}">${hs}</div>
         </div>
       </div>
-
-      <p class="text-xs text-[var(--ink-dim)] leading-snug line-clamp-2">${p.tagline}</p>
-
+      <p class="text-xs text-[var(--ink-dim)] line-clamp-2">${p.tagline}</p>
+      <div class="flex flex-wrap gap-1">${(p.stack||[]).map(t=>`<span class="chip" style="cursor:default">${t}</span>`).join('')}</div>
       <div class="grid grid-cols-2 gap-1.5">
-        <div class="metric-tile">
-          <div class="text-[9px] mono uppercase text-[var(--ink-faint)]">Balance</div>
-          <div class="mono text-[15px] font-semibold mt-0.5 ${d.walletOk?'text-[var(--ink)]':'text-[var(--ink-faint)]'}">${d.walletOk?fmt.sats(d.balanceSats):'—'} <span class="text-[9px] font-normal text-[var(--ink-faint)]">sats</span></div>
-          <div class="text-[10px] mono text-[var(--ink-faint)]">${usd}</div>
-        </div>
-        <div class="metric-tile">
-          <div class="text-[9px] mono uppercase text-[var(--ink-faint)]">Commit</div>
-          <div class="mono text-sm font-semibold mt-0.5 cursor-copy" title="Click to copy" onclick="event.stopPropagation();copyText('${d.sha||''}','SHA')">${fmt.short(d.sha)}</div>
-          <div class="text-[10px] mono text-[var(--ink-faint)] truncate" title="${(d.commitMsg||'').replace(/"/g,'&quot;')}">${d.commitMsg? d.commitMsg.substring(0,28)+(d.commitMsg.length>28?'…':''):'—'}</div>
-        </div>
+        <div class="metric"><div class="text-[9px] mono uppercase text-[var(--ink-faint)]">Balance</div>
+          <div class="mono font-semibold">${d.walletOk?fmt.sats(d.balanceSats):'—'} <span class="text-[9px] text-[var(--ink-faint)]">sats</span></div>
+          <div class="text-[10px] mono text-[var(--ink-faint)]">${usd}</div></div>
+        <div class="metric"><div class="text-[9px] mono uppercase text-[var(--ink-faint)]">Commit</div>
+          <div class="mono font-semibold cursor-copy" onclick="event.stopPropagation();copyText('${d.sha||''}','SHA')">${fmt.short(d.sha)}</div>
+          <div class="text-[10px] mono text-[var(--ink-faint)] truncate">${(d.commitMsg||'—').slice(0,28)}</div></div>
       </div>
-
-      <div class="flex flex-wrap gap-1">
-        ${walletBadge}
-        ${liveBadge}
-        <span class="status-pill ${d.actionsStatus==='success'?'green':d.actionsStatus==='failure'?'red':d.actionsStatus?'amber':'gray'}">ci ${fmt.actions(d.actionsStatus)}</span>
+      <div class="flex gap-1">
+        <span class="status-pill ${Vault.hasWallet(p.wallet)?(d.walletOk?'green':'red'):'gray'}">${Vault.hasWallet(p.wallet)?(d.walletOk?'wallet':'w err'):'no key'}</span>
+        <span class="status-pill ${d.liveReachable?'green':d.liveReachable===false?'red':'gray'}">${d.liveReachable?'live':d.liveReachable===false?'down':'—'}</span>
+        <span class="status-pill ${d.actionsStatus==='success'?'green':d.actionsStatus==='failure'?'red':'gray'}">ci ${fmt.actions(d.actionsStatus)}</span>
       </div>
-
-      <div class="flex items-center gap-1">
-        ${steps.map((st,i)=>`
-          <div class="flex-1 h-1 rounded-sm ${st.ok?'pipe-step-ok':st.amber?'pipe-step-amber':'pipe-step-fail'}" title="${['Commit','Actions','Deploy','Live'][i]}"></div>
-        `).join('')}
-      </div>
-
-      <div class="mt-auto pt-2 border-t border-[var(--line)] flex items-center justify-between text-[10px] mono text-[var(--ink-faint)]">
-        <span title="${absDate}">${fmt.timeAgo(d.commitDate)}${d.author? ' · '+d.author:''}</span>
-        ${p.url
-          ? `<a href="${p.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="text-[var(--ink)] underline underline-offset-2">open</a>`
-          : `<span>dev</span>`}
+      <div class="flex gap-1">${steps.map((st,i)=>`<div class="flex-1 h-1 rounded-sm ${st.ok?'pipe-ok':st.amber?'pipe-amb':'pipe-bad'}" title="${['Commit','CI','Deploy','Live'][i]}"></div>`).join('')}</div>
+      <div class="pt-2 border-t border-[var(--line)] flex justify-between text-[10px] mono text-[var(--ink-faint)]">
+        <span>${fmt.timeAgo(d.commitDate)}${d.author?' · '+d.author:''}</span>
+        ${p.url?`<a href="${p.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="underline text-[var(--ink)]">open</a>`:'<span>dev</span>'}
       </div>
     </div>`;
   }).join('');
 }
 
 function renderList(){
-  const el = document.getElementById('list-body');
-  el.innerHTML = PROJECTS.map(p=>{
-    const d = state.projects[p.id]||{};
-    const s = statusMeta(d.status);
-    const hs = healthScore(d);
-    const usd = d.walletOk && btcUsdPrice ? fmt.usd(fmt.usdFromSats(d.balanceSats)) : '—';
-    return `
-    <tr data-project-row="${p.id}" class="border-t border-[var(--line)] row-hover cursor-pointer" onclick="Drawer.open('${p.id}')">
-      <td class="px-3 py-2.5">
-        <div class="font-medium text-[13px]">${p.name}</div>
-        <div class="text-[10px] text-[var(--ink-faint)] mt-0.5">${p.category||''} · ${p.repo}</div>
-      </td>
-      <td class="px-3 py-2.5"><span class="status-pill ${s.dot}"><span class="dot dot-${s.dot}" style="width:6px;height:6px"></span>${s.label}</span></td>
-      <td class="px-3 py-2.5 font-semibold">${d.walletOk?fmt.sats(d.balanceSats):'—'} <span class="text-[var(--ink-faint)] font-normal">sats</span></td>
-      <td class="px-3 py-2.5 text-[var(--ink-dim)]">${usd}</td>
-      <td class="px-3 py-2.5">
-        <div class="cursor-copy" onclick="event.stopPropagation();copyText('${d.sha||''}','SHA')">${fmt.short(d.sha)}</div>
-        <div class="text-[10px] text-[var(--ink-faint)] truncate max-w-[140px]" title="${(d.commitMsg||'').replace(/"/g,'&quot;')}">${d.commitMsg||'—'}</div>
-      </td>
-      <td class="px-3 py-2.5">${fmt.actions(d.actionsStatus)}</td>
-      <td class="px-3 py-2.5" title="${d.commitDate?new Date(d.commitDate).toLocaleString():''}">${fmt.timeAgo(d.commitDate)}</td>
-      <td class="px-3 py-2.5"><span style="color:${healthColor(hs)};font-weight:600">${hs}</span></td>
-      <td class="px-3 py-2.5">${Vault.hasWallet(p.wallet)?(d.walletOk?'ok':'err'):'—'}</td>
-      <td class="px-3 py-2.5 text-right space-x-2">
-        ${p.url?`<a href="${p.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="underline">site</a>`:''}
-        <a href="https://github.com/${GH_OWNER}/${p.repo}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="text-[var(--ink-faint)] underline">gh</a>
-      </td>
+  document.getElementById('list-body').innerHTML=PROJECTS.map(p=>{
+    const d=state.projects[p.id]||{}; const s=statusMeta(d.status); const hs=healthScore(d);
+    const usd=d.walletOk&&btcUsdPrice?fmt.usd(fmt.usdFromSats(d.balanceSats)):'—';
+    const pin=state.pins.has(p.id);
+    return `<tr data-project-row="${p.id}" class="border-t border-[var(--line)] row-h cursor-pointer" onclick="Drawer.open('${p.id}')">
+      <td class="px-3 py-2"><button class="pin-star ${pin?'on':''}" onclick="togglePin('${p.id}',event)">★</button></td>
+      <td class="px-3 py-2"><div class="font-medium" style="border-left:3px solid ${p.color};padding-left:6px">${p.name}</div><div class="text-[10px] text-[var(--ink-faint)]">${p.category} · ${p.repo}</div></td>
+      <td class="px-3 py-2"><span class="status-pill ${s.dot}">${s.label}</span></td>
+      <td class="px-3 py-2 font-semibold">${d.walletOk?fmt.sats(d.balanceSats):'—'}</td>
+      <td class="px-3 py-2">${usd}</td>
+      <td class="px-3 py-2"><div onclick="event.stopPropagation();copyText('${d.sha||''}')">${fmt.short(d.sha)}</div><div class="text-[10px] text-[var(--ink-faint)] truncate max-w-[120px]">${d.commitMsg||'—'}</div></td>
+      <td class="px-3 py-2">${fmt.actions(d.actionsStatus)}</td>
+      <td class="px-3 py-2">${fmt.timeAgo(d.commitDate)}</td>
+      <td class="px-3 py-2" style="color:${healthColor(hs)};font-weight:600">${hs}</td>
+      <td class="px-3 py-2">${Vault.hasWallet(p.wallet)?(d.walletOk?'ok':'err'):'—'}</td>
+      <td class="px-3 py-2 text-right">${p.url?`<a href="${p.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="underline">site</a>`:''}
+        <a href="https://github.com/${GH_OWNER}/${p.repo}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="underline text-[var(--ink-faint)] ml-1">gh</a></td>
     </tr>`;
   }).join('');
 }
 
 function renderPipeline(){
-  const el = document.getElementById('view-pipeline');
-  el.innerHTML = PROJECTS.map(p=>{
-    const d = state.projects[p.id]||{};
-    const s = statusMeta(d.status);
-    const steps = [
-      { label:'Commit', ok: !!d.sha, detail: fmt.short(d.sha) },
-      { label:'Actions', ok: d.actionsStatus==='success', amber: d.actionsStatus==='in_progress'||d.actionsStatus==='queued', detail: fmt.actions(d.actionsStatus) },
-      { label:'Deployed', ok: d.status==='green', detail: s.label },
-      { label:'Live', ok: d.liveReachable===true, detail: d.liveReachable===true?'reachable':d.liveReachable===false?'down':'n/a' },
+  document.getElementById('view-pipeline').innerHTML=PROJECTS.map(p=>{
+    const d=state.projects[p.id]||{}; const s=statusMeta(d.status);
+    const steps=[
+      {label:'Commit',ok:!!d.sha,detail:fmt.short(d.sha)},
+      {label:'Actions',ok:d.actionsStatus==='success',amber:d.actionsStatus==='in_progress'||d.actionsStatus==='queued',detail:fmt.actions(d.actionsStatus)},
+      {label:'Deployed',ok:d.status==='green',detail:s.label},
+      {label:'Live',ok:d.liveReachable===true,detail:d.liveReachable?'ok':d.liveReachable===false?'down':'n/a'},
     ];
-    return `
-    <div data-project-pipe="${p.id}" class="glass rounded p-3 flex items-center gap-4 flex-wrap cursor-pointer glass-hover" onclick="Drawer.open('${p.id}')">
-      <div class="w-44 shrink-0">
-        <div class="font-semibold text-sm flex items-center gap-2"><span class="dot dot-${s.dot}"></span>${p.name}</div>
-        <div class="text-[10px] mono text-[var(--ink-faint)] mt-1 line-clamp-1" title="${(d.commitMsg||'').replace(/"/g,'&quot;')}">${d.commitMsg||'—'}</div>
-        <div class="text-[10px] mono text-[var(--ink-faint)] mt-0.5">${fmt.timeAgo(d.commitDate)} · ${healthScore(d)}</div>
-      </div>
-      <div class="flex items-center gap-1.5 flex-1 min-w-[260px]">
-        ${steps.map((st,i)=>`
-          <div class="flex items-center gap-1.5 flex-1">
-            <div class="flex flex-col items-center gap-0.5 flex-1">
-              <div class="w-full h-2 rounded-sm ${st.ok?'pipe-step-ok':st.amber?'pipe-step-amber':'pipe-step-fail'}"></div>
-              <span class="text-[9px] mono text-[var(--ink-dim)]">${st.label}</span>
-              <span class="text-[9px] mono text-[var(--ink-faint)]">${st.detail}</span>
-            </div>
-            ${i<3?'<span class="text-[var(--ink-faint)] text-[10px] -mt-3">›</span>':''}
-          </div>`).join('')}
-      </div>
-      <div class="text-right shrink-0">
-        <div class="mono text-sm font-semibold">${d.walletOk?fmt.sats(d.balanceSats)+' sats':'—'}</div>
-        ${p.url?`<a href="${p.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="text-[10px] underline">open</a>`:'<span class="text-[10px] text-[var(--ink-faint)]">pre-MVP</span>'}
-      </div>
+    return `<div data-project-pipe="${p.id}" class="glass rounded p-3 flex flex-wrap gap-3 items-center cursor-pointer glass-hover card-border" style="--pc:${p.color}" onclick="Drawer.open('${p.id}')">
+      <div class="w-40"><div class="font-semibold text-sm flex items-center gap-2"><span class="dot dot-${s.dot}"></span>${p.name}</div>
+      <div class="text-[10px] mono text-[var(--ink-faint)] truncate">${d.commitMsg||'—'}</div></div>
+      <div class="flex flex-1 gap-1 min-w-[240px]">${steps.map((st,i)=>`
+        <div class="flex-1 text-center"><div class="h-2 rounded-sm mb-1 ${st.ok?'pipe-ok':st.amber?'pipe-amb':'pipe-bad'}"></div>
+        <div class="text-[9px] mono">${st.label}</div><div class="text-[9px] mono text-[var(--ink-faint)]">${st.detail}</div></div>`).join('')}</div>
+      <div class="mono text-sm font-semibold">${d.walletOk?fmt.sats(d.balanceSats)+' sats':'—'}</div>
     </div>`;
   }).join('');
 }
 
 function renderAgents(){
-  const el = document.getElementById('view-agents');
-  el.innerHTML = AGENTS.map(a=>`
-    <div class="glass glass-hover rounded p-4 cursor-pointer" onclick="Docs.openAgent('${a.repo}','${a.file}','${a.name}')">
-      <div class="flex items-center gap-3 mb-2">
-        <div class="icon-box">${a.name[0]}</div>
-        <div>
-          <div class="font-semibold">${a.name}</div>
-          <div class="text-xs text-[var(--ink-dim)]">${a.role}</div>
-        </div>
+  document.getElementById('view-agents').innerHTML=AGENTS.map(a=>`
+    <div class="glass glass-hover rounded p-3.5 cursor-pointer card-border" style="--pc:${a.color}" onclick="Docs.openAgent('${a.repo}','${a.file}','${a.name}')">
+      <div class="flex items-center gap-2.5 mb-2">
+        <div class="icon-box" style="background:${a.color}">${a.name[0]}</div>
+        <div><div class="font-semibold">${a.name}</div><div class="text-xs text-[var(--ink-dim)]">${a.role}</div></div>
       </div>
-      <p class="text-sm text-[var(--ink-dim)] mb-3 leading-snug">"${a.motto}"</p>
-      <div class="flex items-center justify-between text-[11px] mono pt-2 border-t border-[var(--line)]">
-        <span class="text-[var(--ink-faint)]">${a.nip05}</span>
-        <span class="text-[var(--ink)]">edit →</span>
+      <p class="text-sm text-[var(--ink-dim)] mb-2">"${a.motto}"</p>
+      <div class="flex justify-between text-[11px] mono pt-2 border-t border-[var(--line)]">
+        <span class="text-[var(--ink-faint)]">${a.nip05}</span><span>edit →</span>
       </div>
-      <div class="text-[10px] mono text-[var(--ink-faint)] mt-1.5">${a.file}</div>
+      <div class="text-[10px] mono text-[var(--ink-faint)] mt-1">${a.file}</div>
     </div>`).join('');
 }
 
-function docStub(projectName, path, agentMeta){
-  if(agentMeta){
-    return `# ${agentMeta.name}\n\n**Role:** ${agentMeta.role}\n\n**Motto:** ${agentMeta.motto}\n\n**NIP-05:** \`${agentMeta.nip05}\`\n\n## Notes\n\n_Persona notes for ${agentMeta.name}. Edit and save from Give A Bit HQ._\n\n---\nSafe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first.\n`;
+function renderActivity(){
+  const filter=document.getElementById('act-filter')?.value||'all';
+  const sel=document.getElementById('act-filter');
+  if(sel && sel.options.length<=1){
+    PROJECTS.forEach(p=>{ const o=document.createElement('option'); o.value=p.id; o.textContent=p.name; sel.appendChild(o); });
   }
-  const base = path.split('/').pop().replace(/\.md$/i,'');
-  return `# ${base}\n\n> **${projectName}** · \`${path}\`\n>\n> Created via Give A Bit HQ\n\n## Summary\n\n_TODO — fill in from the dashboard._\n\n## Details\n\n-\n\n---\nSafe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first.\n`;
+  let items=PROJECTS.map(p=>{
+    const d=state.projects[p.id]||{};
+    return {p,d,ts:d.commitDate?new Date(d.commitDate).getTime():0};
+  }).filter(x=>x.ts);
+  if(filter!=='all') items=items.filter(x=>x.p.id===filter);
+  items.sort((a,b)=>b.ts-a.ts);
+  document.getElementById('activity-feed').innerHTML=items.map(({p,d})=>`
+    <div class="flex gap-3 items-start p-2 rounded glass-2 cursor-pointer" onclick="Drawer.open('${p.id}')">
+      <div class="w-2 h-2 rounded-full mt-1.5 shrink-0" style="background:${p.color}"></div>
+      <div class="min-w-0 flex-1">
+        <div class="text-sm"><strong>${p.name}</strong> <span class="mono text-[10px] text-[var(--ink-faint)]">${fmt.short(d.sha)}</span></div>
+        <div class="text-xs text-[var(--ink-dim)] truncate">${d.commitMsg||'—'}</div>
+        <div class="text-[10px] mono text-[var(--ink-faint)]">${fmt.timeAgo(d.commitDate)} · ${d.author||''} · ${new Date(d.commitDate).toLocaleString()}</div>
+      </div>
+      <span class="status-pill ${statusMeta(d.status).dot}">${statusMeta(d.status).label}</span>
+    </div>`).join('')||'<div class="text-xs text-[var(--ink-faint)] p-4">No commit data yet — refresh.</div>';
+}
+
+function renderMatrix(){
+  const cols=['Live','GitHub','CI','Wallet','Deploy','Health'];
+  let html=`<table class="w-full text-xs mono min-w-[700px]"><thead><tr><th class="text-left p-2">Project</th>${cols.map(c=>`<th class="p-2 text-center">${c}</th>`).join('')}</tr></thead><tbody>`;
+  PROJECTS.forEach(p=>{
+    const d=state.projects[p.id]||{}; const hs=healthScore(d);
+    const cell=(ok,label,col)=>`<td class="p-1"><div class="matrix-cell" style="background:${ok==null?'var(--panel-2)':ok?'rgba(31,107,58,.2)':ok===false?'rgba(163,32,32,.15)':'rgba(138,90,0,.15)'};color:${ok?'var(--green)':ok===false?'var(--red)':'var(--ink-dim)'}">${label}</div></td>`;
+    html+=`<tr class="border-t border-[var(--line)] cursor-pointer" onclick="Drawer.open('${p.id}')">
+      <td class="p-2 font-semibold" style="border-left:3px solid ${p.color};padding-left:8px">${p.name}</td>
+      ${cell(d.liveReachable,d.liveReachable?'up':d.liveReachable===false?'down':'—')}
+      ${cell(d.ghOk,d.ghOk?'ok':'err')}
+      ${cell(d.actionsStatus==='success'?true:d.actionsStatus==='failure'?false:null,fmt.actions(d.actionsStatus))}
+      ${cell(Vault.hasWallet(p.wallet)?d.walletOk:null,Vault.hasWallet(p.wallet)?(d.walletOk?'ok':'err'):'—')}
+      ${cell(p.deployed,p.deployed?'yes':'no')}
+      <td class="p-1"><div class="matrix-cell" style="color:${healthColor(hs)}">${hs}</div></td>
+    </tr>`;
+  });
+  html+='</tbody></table>';
+  document.getElementById('matrix-table').innerHTML=html;
+}
+
+function renderWallets(){
+  const total=PROJECTS.reduce((a,p)=>a+((state.projects[p.id]||{}).balanceSats||0),0)||1;
+  document.getElementById('wallet-body').innerHTML=PROJECTS.map(p=>{
+    const d=state.projects[p.id]||{};
+    const sats=d.balanceSats||0;
+    const pct=Math.round((sats/total)*100);
+    return `<tr class="border-t border-[var(--line)] row-h">
+      <td class="px-3 py-2 font-medium" style="border-left:3px solid ${p.color};padding-left:8px">${p.name}</td>
+      <td class="px-3 py-2">${p.wallet}</td>
+      <td class="px-3 py-2">${Vault.hasWallet(p.wallet)?'<span class="status-pill green">set</span>':'<span class="status-pill gray">empty</span>'}</td>
+      <td class="px-3 py-2 font-semibold">${d.walletOk?fmt.sats(sats):'—'}</td>
+      <td class="px-3 py-2">${d.walletOk&&btcUsdPrice?fmt.usd(fmt.usdFromSats(sats)):'—'}</td>
+      <td class="px-3 py-2 w-40"><div class="bar-track"><div class="bar-fill" style="width:${d.walletOk?pct:0}%;background:${p.color}"></div></div><span class="text-[10px] text-[var(--ink-faint)]">${d.walletOk?pct+'%':'—'}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function docStub(projectName,path,agentMeta){
+  if(agentMeta) return `# ${agentMeta.name}\n\n**Role:** ${agentMeta.role}\n\n**Motto:** ${agentMeta.motto}\n\n**NIP-05:** \`${agentMeta.nip05}\`\n\n## Notes\n\n_Edit from Give A Bit HQ._\n\n---\nSafe Harbour · Part of the Give A Bit family.\n`;
+  const base=path.split('/').pop().replace(/\.md$/i,'');
+  return `# ${base}\n\n> **${projectName}** · \`${path}\`\n\n## Summary\n\n_TODO_\n\n---\nSafe Harbour · Part of the Give A Bit family.\n`;
 }
 
 function renderDocTree(){
-  const el = document.getElementById('file-tree');
-  el.innerHTML = PROJECTS.map(p=>{
-    const agentFiles = p.repo === 'giveabit'
-      ? AGENTS.map(a=>`<button data-doc-path="${a.file}" data-doc-repo="${p.repo}" onclick="Docs.open('${p.repo}','${a.file}','${p.name}',{agent:'${a.name}'})" class="w-full flex items-center gap-2 px-2 py-1 rounded-md hover:bg-[var(--void-2)] text-left text-xs text-[var(--ink-dim)] mono">
-            <span class="w-3 text-center text-[9px] text-[var(--ink-faint)]" id="mark-${p.repo}-${a.file.replace(/[\/.]/g,'_')}">·</span>${a.file}
-          </button>`).join('')
-      : '';
-    return `
-    <div class="tree-project">
-      <button onclick="toggleTree('${p.id}')" class="w-full flex items-center justify-between px-2 py-1.5 rounded hover:bg-[var(--void-2)] text-sm">
-        <span class="flex items-center gap-2"><i class="fa-solid fa-folder text-[var(--ink-dim)] text-xs"></i>${p.name}</span>
-        <i class="fa-solid fa-chevron-down text-[9px] text-[var(--ink-faint)] transition-transform" id="chev-${p.id}"></i>
+  document.getElementById('file-tree').innerHTML=PROJECTS.map(p=>{
+    const agents=p.repo==='giveabit'?AGENTS.map(a=>`
+      <button data-doc-path="${a.file}" data-doc-repo="${p.repo}" onclick="Docs.open('${p.repo}','${a.file}','${p.name}',{agent:'${a.name}'})" class="w-full flex items-center gap-2 px-2 py-1 rounded text-left text-xs mono text-[var(--ink-dim)] hover:bg-[var(--void-2)]">
+        <span class="w-3 text-center text-[9px]" id="mark-${p.repo}-${a.file.replace(/[\/.]/g,'_')}">·</span>${a.file}
+      </button>`).join(''):'';
+    return `<div>
+      <button onclick="toggleTree('${p.id}')" class="w-full flex justify-between px-2 py-1.5 rounded text-sm hover:bg-[var(--void-2)]">
+        <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full" style="background:${p.color}"></span>${p.name}</span>
+        <i class="fa-solid fa-chevron-down text-[9px] text-[var(--ink-faint)]" id="chev-${p.id}"></i>
       </button>
-      <div id="tree-${p.id}" class="pl-4 space-y-0.5 hidden">
-        ${DOC_FILES.map(f=>`
-          <button data-doc-path="${f}" data-doc-repo="${p.repo}" onclick="Docs.open('${p.repo}','${f}','${p.name}')" class="w-full flex items-center gap-2 px-2 py-1 rounded-md hover:bg-[var(--void-2)] text-left text-xs text-[var(--ink-dim)] mono">
-            <span class="w-3 text-center text-[9px]" id="mark-${p.repo}-${f.replace(/[\/.]/g,'_')}">·</span>${f}
-          </button>`).join('')}
-        ${agentFiles ? `<div class="text-[9px] mono uppercase text-[var(--ink-faint)] px-2 pt-2">Agents</div>${agentFiles}` : ''}
+      <div id="tree-${p.id}" class="pl-3 space-y-0.5 hidden">
+        ${DOC_FILES.map(f=>`<button data-doc-path="${f}" data-doc-repo="${p.repo}" onclick="Docs.open('${p.repo}','${f}','${p.name}')" class="w-full flex items-center gap-2 px-2 py-1 rounded text-left text-xs mono text-[var(--ink-dim)] hover:bg-[var(--void-2)]">
+          <span class="w-3 text-center text-[9px]" id="mark-${p.repo}-${f.replace(/[\/.]/g,'_')}">·</span>${f}
+        </button>`).join('')}
+        ${agents?`<div class="text-[9px] mono uppercase text-[var(--ink-faint)] px-2 pt-2">Agents</div>${agents}`:''}
       </div>
     </div>`;
   }).join('');
 }
 
 async function toggleTree(id){
-  const t = document.getElementById('tree-'+id);
-  const c = document.getElementById('chev-'+id);
-  const opening = t.classList.contains('hidden');
+  const t=document.getElementById('tree-'+id); const c=document.getElementById('chev-'+id);
+  const open=t.classList.contains('hidden');
   t.classList.toggle('hidden');
-  c.style.transform = t.classList.contains('hidden') ? '' : 'rotate(180deg)';
-  if(opening){
-    const p = PROJECTS.find(x=>x.id===id);
-    if(p && Vault.hasGh()) await markTreeFiles(p.repo);
-  }
+  if(c) c.style.transform=t.classList.contains('hidden')?'':'rotate(180deg)';
+  if(open){ const p=PROJECTS.find(x=>x.id===id); if(p&&Vault.hasGh()) await markTreeFiles(p.repo); }
 }
-
 async function markTreeFiles(repo){
-  if(!Vault.hasGh()) return;
   try{
-    const paths = await GitHubData.treePaths(repo);
-    const marks = document.querySelectorAll(`[id^="mark-${repo}-"]`);
-    marks.forEach(el=>{
-      const btn = el.closest('button');
-      const path = btn?.dataset?.docPath;
-      if(!path) return;
-      const ok = paths.has(path);
-      el.textContent = ok ? '●' : '○';
-      el.style.color = ok ? 'var(--green)' : 'var(--ink-faint)';
-      el.title = ok ? 'exists on GitHub' : 'missing — open to create & save';
+    const paths=await GitHubData.treePaths(repo);
+    document.querySelectorAll(`[id^="mark-${repo}-"]`).forEach(el=>{
+      const path=el.closest('button')?.dataset?.docPath; if(!path) return;
+      const ok=paths.has(path);
+      el.textContent=ok?'●':'○';
+      el.style.color=ok?'var(--green)':'var(--ink-faint)';
     });
-  }catch(e){ /* non-fatal */ }
+  }catch(e){}
 }
 
 const Docs = {
-  current: null,
-  rawText: '',
-  dirty: false,
-
-  open(repo, path, projectName, opts){
+  current:null, rawText:'', dirty:false,
+  open(repo,path,projectName,opts){
     switchView('docs');
-    const agent = opts?.agent ? AGENTS.find(a=>a.name===opts.agent) : (path.startsWith('agents/') ? AGENTS.find(a=>a.file===path) : null);
-    this.current = { repo, path, projectName, isNew:false, agent };
-    this.dirty = false;
+    const agent=opts?.agent?AGENTS.find(a=>a.name===opts.agent):(path.startsWith('agents/')?AGENTS.find(a=>a.file===path):null);
+    this.current={repo,path,projectName,isNew:false,agent};
+    this.dirty=false;
     document.getElementById('doc-dirty').classList.add('hidden');
     document.getElementById('doc-empty').classList.add('hidden');
     document.getElementById('doc-loaded').classList.remove('hidden');
-    document.getElementById('doc-path').textContent = `${projectName} / ${path}`;
-    document.getElementById('doc-meta').textContent = 'loading…';
-    document.getElementById('doc-view').innerHTML = `<div class="space-y-2">${'<div class="skeleton h-4 rounded"></div>'.repeat(6)}</div>`;
-    document.getElementById('doc-edit').value = '';
+    document.getElementById('doc-path').textContent=`${projectName} / ${path}`;
+    document.getElementById('doc-meta').textContent='loading…';
+    document.getElementById('doc-view').innerHTML='<div class="skel"></div><div class="skel"></div><div class="skel"></div>';
     this.setMode('view');
-
     if(!Vault.hasGh()){
-      document.getElementById('doc-view').innerHTML = `<div class="text-sm text-[var(--ink-dim)] leading-relaxed">
-        <p class="font-semibold text-[var(--ink)] mb-2">GitHub token required</p>
-        <p class="text-xs mb-3">Load and save use the GitHub Contents API with your Vault PAT (needed for private repos and writes).</p>
-        <button onclick="Vault.openModal()" class="btn-brand rounded px-3 py-1.5 text-xs">Open Vault</button>
-      </div>`;
-      document.getElementById('doc-meta').textContent = 'no PAT';
+      document.getElementById('doc-view').innerHTML=`<div class="text-sm"><p class="font-semibold mb-2">GitHub token required</p><button onclick="Vault.openModal()" class="btn-brand rounded px-3 py-1.5 text-xs">Open Vault</button></div>`;
       return;
     }
-
     GitHubData.defaultBranch(repo).then(branch=>{
-      this.current.branch = branch;
-      document.getElementById('doc-history').href = `https://github.com/${GH_OWNER}/${repo}/commits/${branch}/${path}`;
-      document.getElementById('doc-github').href = `https://github.com/${GH_OWNER}/${repo}/blob/${branch}/${path}`;
-      document.getElementById('doc-meta').textContent = `loading ${GH_OWNER}/${repo}@${branch}…`;
-      return GitHubData.readFile(repo, path).then(text=>({ text, branch, missing:false }));
-    }).then(({text, branch})=>{
-      this._showLoaded(text, branch, false);
-      GitHubData.markPath(repo, path);
-      markTreeFiles(repo);
+      this.current.branch=branch;
+      document.getElementById('doc-history').href=`https://github.com/${GH_OWNER}/${repo}/commits/${branch}/${path}`;
+      document.getElementById('doc-github').href=`https://github.com/${GH_OWNER}/${repo}/blob/${branch}/${path}`;
+      return GitHubData.readFile(repo,path).then(text=>({text,branch}));
+    }).then(({text,branch})=>{
+      this.rawText=text; this.current.isNew=false; this.current.branch=branch;
+      document.getElementById('doc-view').innerHTML=marked.parse(text);
+      document.getElementById('doc-edit').value=text;
+      document.getElementById('doc-meta').textContent=`${text.split('\n').length} lines · ${(text.length/1024).toFixed(1)} KB · ${GH_OWNER}/${repo}@${branch}`;
+      GitHubData.markPath(repo,path); markTreeFiles(repo);
     }).catch(err=>{
-      const msg = (err && err.message) || '';
-      const missing = /not found/i.test(msg) || /404/.test(msg);
-      if(missing){
-        this._showMissing(repo, path, projectName, this.current.branch || 'main', agent);
+      const msg=err?.message||'';
+      if(/not found/i.test(msg)){
+        const stub=docStub(projectName,path,agent);
+        this.current.isNew=true; this.rawText='';
+        document.getElementById('doc-edit').value=stub;
+        document.getElementById('doc-meta').textContent=`missing · create & save`;
+        document.getElementById('doc-view').innerHTML=`<div class="text-sm text-[var(--ink-dim)]"><p class="font-semibold text-[var(--ink)] mb-2">File not on GitHub yet</p>
+          <p class="text-xs mono mb-2">${path}</p>
+          <button onclick="Docs.setMode('edit')" class="btn-brand rounded px-3 py-1.5 text-xs mr-1">Edit draft</button>
+          <button onclick="Docs.save()" class="btn-ghost rounded px-3 py-1.5 text-xs">Create on GitHub</button>
+          <pre class="mt-3 p-2 glass-2 rounded text-xs overflow-auto max-h-40">${stub.replace(/</g,'&lt;')}</pre></div>`;
       } else {
-        document.getElementById('doc-view').innerHTML = `<div class="text-[var(--red)] text-sm leading-relaxed">
-          <p class="font-semibold mb-1">Could not load file</p>
-          <p class="mono text-xs text-[var(--ink-dim)] mb-2">${path}</p>
-          <p class="text-xs text-[var(--ink-faint)]">${msg}</p>
-          <p class="text-xs text-[var(--ink-faint)] mt-2">Check Vault PAT access to <span class="mono">${GH_OWNER}/${repo}</span>.</p>
-        </div>`;
-        document.getElementById('doc-meta').textContent = 'error';
-        this.rawText = '';
+        document.getElementById('doc-view').innerHTML=`<div class="text-[var(--red)] text-sm">${msg}</div>`;
       }
     });
   },
-
-  _showLoaded(text, branch, isNew){
-    this.rawText = text;
-    this.current.isNew = !!isNew;
-    this.current.branch = branch;
-    this.dirty = false;
-    document.getElementById('doc-dirty').classList.add('hidden');
-    document.getElementById('doc-view').innerHTML = marked.parse(text);
-    document.getElementById('doc-edit').value = text;
-    const tag = isNew ? 'NEW (not on GitHub yet)' : `${text.split('\n').length} lines · ${(text.length/1024).toFixed(1)} KB`;
-    document.getElementById('doc-meta').textContent = `${tag} · ${GH_OWNER}/${this.current.repo}@${branch}`;
-    document.getElementById('doc-github').href = `https://github.com/${GH_OWNER}/${this.current.repo}/blob/${branch}/${this.current.path}`;
-  },
-
-  _showMissing(repo, path, projectName, branch, agent){
-    const stub = docStub(projectName, path, agent || null);
-    this.current.isNew = true;
-    this.current.branch = branch;
-    this.rawText = '';
-    document.getElementById('doc-edit').value = stub;
-    document.getElementById('doc-meta').textContent = `missing on ${branch} · create & save to add`;
-    document.getElementById('doc-view').innerHTML = `<div class="text-sm text-[var(--ink-dim)] leading-relaxed max-w-md">
-      <p class="font-semibold text-[var(--ink)] mb-2">File not on GitHub yet</p>
-      <p class="text-xs mb-1 mono">${GH_OWNER}/${repo}/${path}</p>
-      <p class="text-xs mb-3">Branch: <span class="mono">${branch}</span>. A starter draft is ready — edit if you want, then <strong>Save to GitHub</strong> to create it.</p>
-      <button onclick="Docs.setMode('edit')" class="btn-brand rounded px-3 py-1.5 text-xs mr-2">Edit draft</button>
-      <button onclick="Docs.save()" class="btn-ghost rounded px-3 py-1.5 text-xs">Create on GitHub now</button>
-      <div class="mt-4 p-3 glass-soft rounded text-xs mono whitespace-pre-wrap max-h-48 overflow-auto">${stub.replace(/</g,'&lt;')}</div>
-    </div>`;
-    this.setMode('view');
-  },
-
-  openAgent(repo, file, name){
-    const p = PROJECTS.find(x=>x.repo===repo);
-    this.open(repo, file, p?.name || repo, { agent: name });
-  },
-
+  openAgent(repo,file,name){ const p=PROJECTS.find(x=>x.repo===repo); this.open(repo,file,p?.name||repo,{agent:name}); },
   setMode(mode){
-    document.getElementById('doc-mode-view').classList.toggle('chip-active', mode==='view');
-    document.getElementById('doc-mode-edit').classList.toggle('chip-active', mode==='edit');
-    document.getElementById('doc-view').classList.toggle('hidden', mode!=='view');
-    document.getElementById('doc-edit').classList.toggle('hidden', mode!=='edit');
-    const showSave = mode==='edit' || !!this.current?.isNew;
-    document.getElementById('doc-save').classList.toggle('hidden', !showSave);
-    if(mode==='view' && this.current && document.getElementById('doc-edit').value){
-      document.getElementById('doc-view').innerHTML = marked.parse(document.getElementById('doc-edit').value);
-    }
+    document.getElementById('doc-mode-view').classList.toggle('chip-active',mode==='view');
+    document.getElementById('doc-mode-edit').classList.toggle('chip-active',mode==='edit');
+    document.getElementById('doc-view').classList.toggle('hidden',mode!=='view');
+    document.getElementById('doc-edit').classList.toggle('hidden',mode!=='edit');
+    const show=mode==='edit'||!!this.current?.isNew;
+    document.getElementById('doc-save').classList.toggle('hidden',!show);
+    if(mode==='view'&&document.getElementById('doc-edit').value)
+      document.getElementById('doc-view').innerHTML=marked.parse(document.getElementById('doc-edit').value);
   },
-
   onEdit(){
     if(!this.current) return;
-    const v = document.getElementById('doc-edit').value;
-    this.dirty = v !== this.rawText;
-    document.getElementById('doc-dirty').classList.toggle('hidden', !this.dirty && !this.current.isNew);
+    this.dirty=document.getElementById('doc-edit').value!==this.rawText;
+    document.getElementById('doc-dirty').classList.toggle('hidden',!this.dirty&&!this.current.isNew);
   },
-
   async save(){
-    if(!this.current) return;
-    if(!Vault.hasGh()){ toast('Add a GitHub token in the Vault first','error'); Vault.openModal(); return; }
-    const content = document.getElementById('doc-edit').value;
-    if(!content.trim()){ toast('Nothing to save — file is empty','error'); return; }
-
-    const { repo, path, isNew, branch } = this.current;
-    const action = isNew ? 'Create' : 'Update';
-    if(!confirm(`${action} ${path} on ${GH_OWNER}/${repo}@${branch || 'default'}?\n\nThis commits to GitHub immediately.`)) return;
-
-    const btn = document.getElementById('doc-save');
-    const oldHtml = btn.innerHTML;
-    btn.disabled = true;
-    btn.innerHTML = 'Saving…';
+    if(!this.current||!Vault.hasGh()){ toast('Need Vault PAT','error'); return; }
+    const content=document.getElementById('doc-edit').value;
+    if(!content.trim()){ toast('Empty file','error'); return; }
+    const {repo,path,isNew,branch}=this.current;
+    if(!confirm(`${isNew?'Create':'Update'} ${path} on ${GH_OWNER}/${repo}@${branch||'default'}?`)) return;
+    const btn=document.getElementById('doc-save'); btn.disabled=true; btn.textContent='Saving…';
     try{
-      const msg = isNew
-        ? `docs: create ${path} via Give A Bit HQ`
-        : `docs: update ${path} via Give A Bit HQ`;
-      const result = await GitHubData.writeFile(repo, path, content, msg);
-      this.rawText = content;
-      this.current.isNew = false;
-      this.dirty = false;
+      const result=await GitHubData.writeFile(repo,path,content, isNew?`docs: create ${path} via Give A Bit HQ`:`docs: update ${path} via Give A Bit HQ`);
+      this.rawText=content; this.current.isNew=false; this.dirty=false;
       document.getElementById('doc-dirty').classList.add('hidden');
-      document.getElementById('doc-view').innerHTML = marked.parse(content);
-      document.getElementById('doc-meta').textContent = `saved · ${content.split('\n').length} lines · ${GH_OWNER}/${repo}@${this.current.branch||''}`;
-      GitHubData.markPath(repo, path);
-      // invalidate tree cache so marks refresh with truth
-      delete state.treeIndex[repo];
-      markTreeFiles(repo);
-      const url = result?.content?.html_url || result?.commit?.html_url;
-      toast(url ? `Saved ${path}` : `Saved ${path} to ${repo}`,'success');
-      if(url) document.getElementById('doc-github').href = url;
+      document.getElementById('doc-view').innerHTML=marked.parse(content);
+      document.getElementById('doc-meta').textContent=`saved · ${GH_OWNER}/${repo}`;
+      delete state.treeIndex[repo]; markTreeFiles(repo);
+      toast('Saved '+path,'success');
+      if(result?.content?.html_url) document.getElementById('doc-github').href=result.content.html_url;
       this.setMode('view');
-    }catch(e){
-      toast('Save failed: '+e.message,'error');
-    }
-    btn.disabled = false;
-    btn.innerHTML = oldHtml || 'Save to GitHub';
+    }catch(e){ toast('Save failed: '+e.message,'error'); }
+    btn.disabled=false; btn.textContent='Save to GitHub';
   }
 };
 
 const Drawer = {
   open(id){
-    const p = PROJECTS.find(x=>x.id===id);
-    const d = state.projects[id]||{};
-    const s = statusMeta(d.status);
-    const hs = healthScore(d);
-    const usd = d.walletOk && btcUsdPrice ? fmt.usd(fmt.usdFromSats(d.balanceSats)) : '$—';
-    document.getElementById('drawer').innerHTML = `
-      <div class="flex items-start justify-between mb-4">
-        <div class="flex items-center gap-3">
-          <div class="icon-box"><i class="${p.icon}"></i></div>
-          <div>
-            <h2 class="text-lg font-bold">${p.name}</h2>
-            <div class="flex items-center gap-1.5 text-xs mono text-[var(--ink-faint)] mt-0.5">
-              <span class="status-pill ${s.dot}"><span class="dot dot-${s.dot}" style="width:6px;height:6px"></span>${s.label}</span>
-              <span>${p.category||''}</span>
-            </div>
-          </div>
+    const p=PROJECTS.find(x=>x.id===id); const d=state.projects[id]||{}; const s=statusMeta(d.status); const hs=healthScore(d);
+    const usd=d.walletOk&&btcUsdPrice?fmt.usd(fmt.usdFromSats(d.balanceSats)):'$—';
+    document.getElementById('drawer').innerHTML=`
+      <div class="flex justify-between mb-3">
+        <div class="flex gap-2 items-center">
+          <div class="icon-box" style="background:${p.color}"><i class="${p.icon}"></i></div>
+          <div><h2 class="text-lg font-bold">${p.name}</h2>
+          <div class="flex gap-1.5 items-center text-xs"><span class="status-pill ${s.dot}">${s.label}</span><span class="text-[var(--ink-faint)]">${p.category}</span>
+          <button class="pin-star ${state.pins.has(id)?'on':''}" onclick="togglePin('${id}',event)">★</button></div></div>
         </div>
-        <button onclick="Drawer.close({target:{id:'drawer-backdrop'}})" class="btn-ghost w-8 h-8 rounded flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+        <button onclick="Drawer.close({target:{id:'drawer-backdrop'}})" class="btn-ghost w-8 h-8 rounded">✕</button>
       </div>
-
-      <p class="text-sm text-[var(--ink-dim)] mb-4 leading-snug">${p.tagline}</p>
-
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 mb-4">
-        <div class="metric-tile text-center">
-          <div class="text-[9px] mono text-[var(--ink-faint)] uppercase">Balance</div>
-          <div class="font-semibold mono mt-1 text-sm">${d.walletOk?fmt.sats(d.balanceSats):'—'}</div>
-          <div class="text-[10px] text-[var(--ink-faint)] mono">${usd}</div>
-        </div>
-        <div class="metric-tile text-center">
-          <div class="text-[9px] mono text-[var(--ink-faint)] uppercase">Health</div>
-          <div class="font-semibold mono mt-1 text-sm" style="color:${healthColor(hs)}">${hs}/100</div>
-        </div>
-        <div class="metric-tile text-center">
-          <div class="text-[9px] mono text-[var(--ink-faint)] uppercase">Commit</div>
-          <div class="font-semibold mono mt-1 text-sm">${fmt.timeAgo(d.commitDate)}</div>
-        </div>
-        <div class="metric-tile text-center">
-          <div class="text-[9px] mono text-[var(--ink-faint)] uppercase">CI</div>
-          <div class="font-semibold mono mt-1 text-sm">${fmt.actions(d.actionsStatus)}</div>
+      <p class="text-sm text-[var(--ink-dim)] mb-3">${p.tagline}</p>
+      <div class="flex flex-wrap gap-1 mb-3">${(p.stack||[]).map(t=>`<span class="chip">${t}</span>`).join('')}</div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 mb-3">
+        <div class="metric text-center"><div class="text-[9px] mono text-[var(--ink-faint)]">SATS</div><div class="font-semibold mono">${d.walletOk?fmt.sats(d.balanceSats):'—'}</div><div class="text-[10px]">${usd}</div></div>
+        <div class="metric text-center"><div class="text-[9px] mono text-[var(--ink-faint)]">HEALTH</div><div class="font-semibold mono" style="color:${healthColor(hs)}">${hs}</div></div>
+        <div class="metric text-center"><div class="text-[9px] mono text-[var(--ink-faint)]">COMMIT</div><div class="font-semibold mono">${fmt.timeAgo(d.commitDate)}</div></div>
+        <div class="metric text-center"><div class="text-[9px] mono text-[var(--ink-faint)]">CI</div><div class="font-semibold mono">${fmt.actions(d.actionsStatus)}</div></div>
+      </div>
+      ${p.url?`<a href="${p.url}" target="_blank" rel="noopener" class="btn-brand rounded px-3 py-2 text-sm flex justify-center mb-3">Open site</a>`:''}
+      <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-1">Related</div>
+      <div class="flex flex-wrap gap-1 mb-3">${(p.related||[]).map(rid=>{const rp=PROJECTS.find(x=>x.id===rid);return rp?`<button class="chip" onclick="Drawer.open('${rid}')">${rp.name}</button>`:''}).join('')||'<span class="text-xs text-[var(--ink-faint)]">—</span>'}</div>
+      <div class="glass-2 rounded p-3 text-sm mb-3">
+        <div class="detail-row"><span class="text-[var(--ink-faint)]">Wallet</span><span class="mono">${p.wallet}</span></div>
+        <div class="detail-row"><span class="text-[var(--ink-faint)]">Vault</span><span class="mono">${Vault.hasWallet(p.wallet)?'set':'empty'}</span></div>
+        <div class="detail-row"><span class="text-[var(--ink-faint)]">Repo</span><span class="mono">${GH_OWNER}/${p.repo}</span></div>
+        <div class="detail-row"><span class="text-[var(--ink-faint)]">SHA</span><span class="mono cursor-copy" onclick="copyText('${d.sha||''}')">${fmt.short(d.sha)}</span></div>
+        <div class="detail-row"><span class="text-[var(--ink-faint)]">Message</span><span class="mono truncate max-w-[220px]">${d.commitMsg||'—'}</span></div>
+        <div class="flex gap-1 mt-2">
+          <a href="https://github.com/${GH_OWNER}/${p.repo}" target="_blank" rel="noopener" class="btn-ghost rounded flex-1 py-1.5 text-xs text-center">Repo</a>
+          ${d.actionsUrl?`<a href="${d.actionsUrl}" target="_blank" rel="noopener" class="btn-ghost rounded flex-1 py-1.5 text-xs text-center">Last CI</a>`:''}
         </div>
       </div>
-
-      ${p.url? `<a href="${p.url}" target="_blank" rel="noopener" class="btn-brand rounded px-4 py-2 text-sm font-semibold flex items-center justify-center gap-2 mb-4">Open ${p.url.replace('https://','')}</a>`: '<div class="mb-4 text-center text-xs mono text-[var(--ink-faint)] glass-soft rounded py-2.5">Not deployed</div>'}
-
-      <div class="space-y-3">
-        <div>
-          <h3 class="text-[10px] mono uppercase tracking-[0.12em] text-[var(--ink-faint)] mb-1.5">Wallet</h3>
-          <div class="glass-soft rounded p-3 text-sm">
-            <div class="detail-row"><span class="text-[var(--ink-faint)]">Key slot</span><span class="mono">${p.wallet}</span></div>
-            <div class="detail-row"><span class="text-[var(--ink-faint)]">Vault</span><span class="mono">${Vault.hasWallet(p.wallet)?'set':'empty'}</span></div>
-            <div class="detail-row"><span class="text-[var(--ink-faint)]">Sats</span><span class="mono font-semibold">${d.walletOk?fmt.sats(d.balanceSats):'—'}</span></div>
-            <div class="detail-row"><span class="text-[var(--ink-faint)]">Msats</span><span class="mono">${d.balanceMsat??'—'}</span></div>
-            <div class="detail-row"><span class="text-[var(--ink-faint)]">USD</span><span class="mono">${usd}</span></div>
-            ${d.walletName?`<div class="detail-row"><span class="text-[var(--ink-faint)]">LNbits name</span><span class="mono">${d.walletName}</span></div>`:''}
-            <button onclick="toast('Invoice: POST /api/v1/payments — wire when node is reachable','info')" class="w-full btn-ghost rounded py-1.5 text-xs mt-2">Create invoice (stub)</button>
-          </div>
-        </div>
-        <div>
-          <h3 class="text-[10px] mono uppercase tracking-[0.12em] text-[var(--ink-faint)] mb-1.5">Repo & deploy</h3>
-          <div class="glass-soft rounded p-3 text-sm">
-            <div class="detail-row"><span class="text-[var(--ink-faint)]">Repo</span><span class="mono">${GH_OWNER}/${p.repo}</span></div>
-            <div class="detail-row"><span class="text-[var(--ink-faint)]">SHA</span><span class="mono cursor-copy" onclick="copyText('${d.sha||''}','SHA')">${fmt.short(d.sha)} ⧉</span></div>
-            <div class="detail-row"><span class="text-[var(--ink-faint)]">Message</span><span class="mono truncate max-w-[240px]" title="${(d.commitMsg||'').replace(/"/g,'&quot;')}">${d.commitMsg||'—'}</span></div>
-            <div class="detail-row"><span class="text-[var(--ink-faint)]">Author</span><span class="mono">${d.author||'—'}</span></div>
-            <div class="detail-row"><span class="text-[var(--ink-faint)]">Actions</span><span class="mono">${d.actionsName?d.actionsName+': ':''}${fmt.actions(d.actionsStatus)}</span></div>
-            <div class="detail-row"><span class="text-[var(--ink-faint)]">Live probe</span><span class="mono">${d.liveReachable===true?'reachable (opaque)':d.liveReachable===false?'unreachable':'n/a'}</span></div>
-            <div class="flex gap-1.5 mt-2">
-              <a href="https://github.com/${GH_OWNER}/${p.repo}" target="_blank" rel="noopener" class="flex-1 btn-ghost rounded py-1.5 text-xs text-center">Repo</a>
-              ${d.actionsUrl?`<a href="${d.actionsUrl}" target="_blank" rel="noopener" class="flex-1 btn-ghost rounded py-1.5 text-xs text-center">Last run</a>`:''}
-            </div>
-          </div>
-        </div>
-        <div>
-          <h3 class="text-[10px] mono uppercase tracking-[0.12em] text-[var(--ink-faint)] mb-1.5">Editable docs</h3>
-          <p class="text-[10px] text-[var(--ink-faint)] mb-1.5">Opens Docs CMS (preview / edit / save via Vault PAT)</p>
-          <div class="grid grid-cols-2 gap-1">
-            ${DOC_FILES.map(f=>`<button onclick="Docs.open('${p.repo}','${f}','${p.name}');Drawer.close({target:{id:'drawer-backdrop'}})" class="btn-ghost rounded px-2 py-1.5 text-[10px] mono truncate text-left" title="Edit ${f}">${f}</button>`).join('')}
-          </div>
-        </div>
-      </div>`;
+      <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-1">Editable docs</div>
+      <div class="grid grid-cols-2 gap-1">${DOC_FILES.map(f=>`<button onclick="Docs.open('${p.repo}','${f}','${p.name}');Drawer.close({target:{id:'drawer-backdrop'}})" class="btn-ghost rounded px-2 py-1.5 text-[10px] mono truncate text-left">${f}</button>`).join('')}</div>`;
     document.getElementById('drawer-backdrop').classList.remove('hidden');
   },
-  close(e){
-    if(e.target.id === 'drawer-backdrop') document.getElementById('drawer-backdrop').classList.add('hidden');
-  }
+  close(e){ if(e.target.id==='drawer-backdrop') document.getElementById('drawer-backdrop').classList.add('hidden'); }
 };
 
 const Bulk = {
   open(kind){
-    const bodies = {
-      send: `
-        <h2 class="text-lg font-semibold mb-1"><i class="fa-solid fa-bolt text-[var(--orange)] mr-1.5"></i>Bulk Send</h2>
-        <p class="text-xs text-[var(--ink-faint)] mb-4 leading-relaxed">Distribute sats across wallets with a configured key. <strong>Not auto-wired to fire payments</strong> — needs a two-step confirm (type SEND) before real <span class="mono">POST /api/v1/payments</span> calls.</p>
-        <label class="text-xs mono uppercase text-[var(--ink-faint)] block mb-1">Amount per wallet (sats)</label>
-        <input id="bulk-amount" type="number" placeholder="1000" class="w-full rounded-lg px-3 py-2 mb-3 text-sm mono">
-        <button onclick="Bulk.confirm('send')" class="btn-brand rounded-lg px-4 py-2.5 text-sm font-semibold w-full">Review & Confirm</button>`,
-      address: `
-        <h2 class="text-lg font-semibold mb-1"><i class="fa-solid fa-wallet text-[var(--orange)] mr-1.5"></i>Bulk Address Update</h2>
-        <p class="text-xs text-[var(--ink-faint)] mb-4">Replace on-chain payout address across project configs (GitHub write). Scaffolded — confirm before wiring writes.</p>
-        <input id="bulk-addr" placeholder="bc1q…" class="w-full rounded-lg px-3 py-2 mb-3 text-sm mono">
-        <button onclick="Bulk.confirm('address')" class="btn-brand rounded-lg px-4 py-2.5 text-sm font-semibold w-full">Review & Confirm</button>`,
-      readme: `
-        <h2 class="text-lg font-semibold mb-1"><i class="fa-solid fa-file-pen text-[var(--orange)] mr-1.5"></i>Bulk README Update</h2>
-        <p class="text-xs text-[var(--ink-faint)] mb-4">Append a footer to every project's README.md using your GitHub token from the Vault.</p>
-        <textarea id="bulk-footer" rows="4" placeholder="---&#10;Safe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first." class="w-full rounded-lg px-3 py-2 mb-3 text-xs mono"></textarea>
-        <button onclick="Bulk.confirm('readme')" class="btn-brand rounded-lg px-4 py-2.5 text-sm font-semibold w-full">Apply to ${PROJECTS.length} repos</button>`,
-      deploy: `
-        <h2 class="text-lg font-semibold mb-1"><i class="fa-solid fa-rocket text-[var(--orange)] mr-1.5"></i>Deploy All</h2>
-        <p class="text-xs text-[var(--ink-faint)] mb-4">Triggers <span class="mono">repository_dispatch</span> / workflow_dispatch per repo once workflows listen for it.</p>
-        <button onclick="Bulk.confirm('deploy')" class="btn-brand rounded-lg px-4 py-2.5 text-sm font-semibold w-full">Trigger Deploy Workflows</button>`
+    const bodies={
+      send:`<h2 class="font-semibold mb-2">Bulk Send</h2><p class="text-xs text-[var(--ink-faint)] mb-3">Not wired for real payments — needs type-SEND confirm later.</p>
+        <input id="bulk-amount" type="number" placeholder="sats each" class="w-full rounded px-3 py-2 mb-2 text-sm mono">
+        <button onclick="toast('Bulk Send not auto-firing — by design','info')" class="btn-brand rounded w-full py-2 text-sm">Review</button>`,
+      readme:`<h2 class="font-semibold mb-2">Bulk README</h2>
+        <textarea id="bulk-footer" rows="3" class="w-full rounded px-3 py-2 mb-2 text-xs mono" placeholder="Footer to append"></textarea>
+        <button onclick="Bulk.confirm('readme')" class="btn-brand rounded w-full py-2 text-sm">Apply to ${PROJECTS.length} repos</button>`
     };
-    document.getElementById('bulk-modal').innerHTML = bodies[kind] + `<div id="bulk-progress" class="mt-4"></div>`;
+    document.getElementById('bulk-modal').innerHTML=(bodies[kind]||'')+`<div id="bulk-progress" class="mt-3"></div>`;
     document.getElementById('bulk-backdrop').classList.remove('hidden');
-    this.kind = kind;
   },
-  close(e){
-    if(!e || e.target.id==='bulk-backdrop') document.getElementById('bulk-backdrop').classList.add('hidden');
-  },
+  close(e){ if(!e||e.target.id==='bulk-backdrop') document.getElementById('bulk-backdrop').classList.add('hidden'); },
   async confirm(kind){
-    if(kind==='send' || kind==='address' || kind==='deploy'){
-      toast(kind==='send'
-        ? 'Bulk Send is intentionally not wired for real payments yet — see Claude notes'
-        : kind==='address'
-          ? 'Bulk Address write path is scaffolded, not auto-applied'
-          : 'Deploy triggers need workflows listening for dispatch',
-        'info');
-      return;
-    }
-    if(!confirm(`This will apply to all ${PROJECTS.length} projects. Continue?`)) return;
-    const progress = document.getElementById('bulk-progress');
-    let done = 0;
-    const total = PROJECTS.length;
-    function bar(){ return `<div class="h-2 rounded-full bg-[var(--void-2)] overflow-hidden"><div class="bar-fill h-full grad-brand" style="width:${done/total*100}%"></div></div><div class="text-[10px] mono text-[var(--ink-faint)] mt-1">${done}/${total} complete</div>`; }
-    progress.innerHTML = bar();
-
+    if(kind!=='readme') return;
+    if(!Vault.hasGh()){ toast('Need GitHub PAT','error'); return; }
+    if(!confirm('Append footer to all READMEs?')) return;
+    const footer=document.getElementById('bulk-footer').value||'\n\n---\nSafe Harbour · Part of the Give A Bit family.\n';
+    const prog=document.getElementById('bulk-progress'); let done=0;
     for(const p of PROJECTS){
       try{
-        if(kind==='readme'){
-          const footer = document.getElementById('bulk-footer').value || '\n\n---\nSafe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first.\n';
-          if(Vault.hasGh()){
-            const existing = await GitHubData.readFile(p.repo,'README.md').catch(()=>null);
-            if(existing !== null){
-              await GitHubData.writeFile(p.repo,'README.md', existing+footer, 'docs: bulk footer update via Sovereign Deck');
-            }
-          } else {
-            toast('GitHub token required in Vault','error');
-            return;
-          }
-        }
-      }catch(e){ console.warn(p.id, e); }
-      done++; progress.innerHTML = bar();
+        const existing=await GitHubData.readFile(p.repo,'README.md').catch(()=>null);
+        if(existing!==null) await GitHubData.writeFile(p.repo,'README.md',existing+footer,'docs: bulk footer via Give A Bit HQ');
+      }catch(e){ console.warn(p.id,e); }
+      done++; prog.innerHTML=`<div class="bar-track"><div class="bar-fill" style="width:${done/PROJECTS.length*100}%"></div></div><div class="text-[10px] mono">${done}/${PROJECTS.length}</div>`;
     }
-    toast('Bulk action complete','success');
+    toast('Bulk README done','success');
   }
 };
 
 const Search = {
   open(){ document.getElementById('search-overlay').classList.remove('hidden'); document.getElementById('overlay-search-input').focus(); },
-  close(e){ if(!e || e.target.id==='search-overlay'){ document.getElementById('search-overlay').classList.add('hidden'); } },
+  close(e){ if(!e||e.target.id==='search-overlay') document.getElementById('search-overlay').classList.add('hidden'); },
   run(q){
-    q = q.toLowerCase().trim();
-    const results = [];
+    q=(q||'').toLowerCase().trim(); const results=[];
     if(q){
-      PROJECTS.forEach(p=>{ if(p.name.toLowerCase().includes(q)||p.tagline.toLowerCase().includes(q)||(p.category||'').toLowerCase().includes(q)) results.push({type:'Project',label:p.name+' · '+(p.category||''),action:()=>Drawer.open(p.id)}); });
-      AGENTS.forEach(a=>{ if(a.name.toLowerCase().includes(q)||a.role.toLowerCase().includes(q)) results.push({type:'Agent',label:a.name+' — '+a.role,action:()=>Docs.openAgent(a.repo,a.file,a.name)}); });
-      PROJECTS.forEach(p=> DOC_FILES.forEach(f=>{ if(f.toLowerCase().includes(q)||p.name.toLowerCase().includes(q)) results.push({type:'File',label:p.name+' / '+f,action:()=>Docs.open(p.repo,f,p.name)}); }));
+      VIEWS.forEach(v=>{ if(v.includes(q)) results.push({type:'View',label:v,action:()=>switchView(v)}); });
+      PROJECTS.forEach(p=>{ if(p.name.toLowerCase().includes(q)||p.category.toLowerCase().includes(q)) results.push({type:'Project',label:p.name,action:()=>Drawer.open(p.id)}); });
+      AGENTS.forEach(a=>{ if(a.name.toLowerCase().includes(q)||a.role.toLowerCase().includes(q)) results.push({type:'Agent',label:a.name,action:()=>Docs.openAgent(a.repo,a.file,a.name)}); });
+      PROJECTS.forEach(p=>DOC_FILES.forEach(f=>{ if(f.toLowerCase().includes(q)||p.name.toLowerCase().includes(q)) results.push({type:'File',label:p.name+' / '+f,action:()=>Docs.open(p.repo,f,p.name)}); }));
     }
-    document.getElementById('overlay-results').innerHTML = results.slice(0,20).map((r,i)=>`
-      <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--void-2)] flex items-center justify-between text-sm" onclick="Search.pick(${i})">
+    this._results=results;
+    document.getElementById('overlay-results').innerHTML=results.slice(0,24).map((r,i)=>`
+      <button class="w-full text-left px-3 py-2 rounded hover:bg-[var(--void-2)] flex justify-between text-sm" onclick="Search.pick(${i})">
         <span>${r.label}</span><span class="text-[10px] mono text-[var(--ink-faint)]">${r.type}</span>
-      </button>`).join('') || `<div class="text-xs text-[var(--ink-faint)] px-3 py-4 text-center">Type to search…</div>`;
-    this._results = results;
+      </button>`).join('')||'<div class="text-xs text-[var(--ink-faint)] p-4 text-center">Type to search…</div>';
   },
   pick(i){ this._results[i].action(); this.close(); }
 };
 
 function exportReport(){
-  let total = 0;
-  const rows = PROJECTS.map(p=>{
-    const d = state.projects[p.id]||{};
-    total += d.balanceSats||0;
-    return `${p.name}\t${p.category||''}\t${statusMeta(d.status).label}\t${d.walletOk?d.balanceSats:'—'} sats\t${fmt.short(d.sha)}\t${fmt.actions(d.actionsStatus)}\t${healthScore(d)}\t${d.commitDate||'—'}`;
-  }).join('\n');
-  const report = `GIVE A BIT HQ — PORTFOLIO REPORT\nGenerated: ${new Date().toString()}\nTotal: ${fmt.sats(total)} sats ${btcUsdPrice?'('+fmt.usd(total/1e8*btcUsdPrice)+')':''}\nBTC/USD: ${btcUsdPrice||'—'}\n\nProject\tCategory\tStatus\tBalance\tCommit\tCI\tHealth\tDate\n${rows}\n\nSafe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first.`;
-  const blob = new Blob([report], {type:'text/plain'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `giveabit-portfolio-${new Date().toISOString().split('T')[0]}.txt`;
-  a.click();
-  toast('Report exported','success');
+  let total=0;
+  const rows=PROJECTS.map(p=>{ const d=state.projects[p.id]||{}; total+=d.balanceSats||0;
+    return `${p.name}\t${p.category}\t${statusMeta(d.status).label}\t${d.walletOk?d.balanceSats:'—'}\t${fmt.short(d.sha)}\t${healthScore(d)}\t${d.commitDate||''}`; }).join('\n');
+  const report=`GIVE A BIT HQ v2 REPORT\n${new Date()}\\nTotal: ${fmt.sats(total)} sats\n\n${rows}\n`;
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([report],{type:'text/plain'}));
+  a.download=`giveabit-hq-${new Date().toISOString().slice(0,10)}.txt`; a.click(); toast('Exported TXT','success');
+}
+function exportJSON(){
+  const payload={ generated:new Date().toISOString(), btcUsdPrice, projects:PROJECTS.map(p=>({...p, live:state.projects[p.id]||{}})), history:state.history };
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));
+  a.download=`giveabit-hq-${new Date().toISOString().slice(0,10)}.json`; a.click(); toast('Exported JSON','success');
 }
 
 function switchView(view){
-  state.view = view;
+  state.view=view;
   document.querySelectorAll('.view-tab').forEach(t=>{
-    const active = t.dataset.view === view;
-    t.classList.toggle('tab-active', active);
-    t.classList.toggle('text-[var(--ink-dim)]', !active);
+    const on=t.dataset.view===view;
+    t.classList.toggle('tab-active',on);
+    t.classList.toggle('text-[var(--ink-dim)]',!on);
   });
-  document.querySelectorAll('.view-panel').forEach(p=> p.classList.add('hidden'));
-  document.getElementById('view-'+view).classList.remove('hidden');
-  if(view==='docs' && Vault.hasGh()){
-    // warm tree indexes for open folders only; expand any project to scan
-  }
+  document.querySelectorAll('.view-panel').forEach(p=>p.classList.add('hidden'));
+  const el=document.getElementById('view-'+view); if(el) el.classList.remove('hidden');
+  if(view==='analytics') Charts.all();
+  if(view==='network') Net.redraw();
+  if(view==='activity') renderActivity();
+  if(view==='matrix') renderMatrix();
+  if(view==='wallets') renderWallets();
 }
-document.querySelectorAll('.view-tab').forEach(t=> t.addEventListener('click', ()=>switchView(t.dataset.view)));
-document.querySelectorAll('.filter-chip').forEach(c=> c.addEventListener('click', ()=>{
-  document.querySelectorAll('.filter-chip').forEach(x=>x.classList.remove('chip-active'));
-  c.classList.add('chip-active');
-  state.filter = c.dataset.filter;
-  Dash.applyFilters();
-}));
 
-function isTyping(){
-  const t = document.activeElement?.tagName;
-  return t==='INPUT' || t==='TEXTAREA' || t==='SELECT' || document.activeElement?.isContentEditable;
+function scheduleRefresh(){
+  if(refreshTimer) clearInterval(refreshTimer);
+  const sec=Vault.data.refreshSec||60;
+  refreshTimer=setInterval(()=>Dash.refreshAll(), sec*1000);
 }
-document.addEventListener('keydown', e=>{
-  if(e.key==='/' && !isTyping()){ e.preventDefault(); Search.open(); }
-  if(e.key==='Escape'){
-    Search.close({target:{id:'search-overlay'}});
-    Drawer.close({target:{id:'drawer-backdrop'}});
-    Bulk.close({target:{id:'bulk-backdrop'}});
-    Vault.closeModal({target:{id:'vault-backdrop'}});
-  }
-  if(e.key==='g' && !isTyping()) switchView('grid');
-  if(e.key==='l' && !isTyping()) switchView('list');
-  if(e.key==='p' && !isTyping()) switchView('pipeline');
-  if(e.key==='d' && !isTyping()) switchView('docs');
-  if(e.key==='a' && !isTyping()) switchView('agents');
-  if(e.key==='r' && !isTyping()){ e.preventDefault(); Dash.refreshAll(true); }
-  if(e.key==='v' && !isTyping()) Vault.openModal();
+
+function isTyping(){ const t=document.activeElement?.tagName; return t==='INPUT'||t==='TEXTAREA'||t==='SELECT'; }
+document.querySelectorAll('.view-tab').forEach(t=>t.addEventListener('click',()=>switchView(t.dataset.view)));
+document.querySelectorAll('.filter-chip').forEach(c=>c.addEventListener('click',()=>{
+  document.querySelectorAll('.filter-chip').forEach(x=>x.classList.remove('chip-active'));
+  c.classList.add('chip-active'); state.filter=c.dataset.filter; Dash.applyFilters();
+}));
+document.addEventListener('keydown',e=>{
+  if(e.key==='/'&&!isTyping()){ e.preventDefault(); Search.open(); }
+  if(e.key==='Escape'){ Search.close({target:{id:'search-overlay'}}); Drawer.close({target:{id:'drawer-backdrop'}}); Bulk.close({target:{id:'bulk-backdrop'}}); Vault.closeModal({target:{id:'vault-backdrop'}}); document.getElementById('help-backdrop').classList.add('hidden'); }
+  if(isTyping()) return;
+  const map={g:'grid',l:'list',p:'pipeline',y:'analytics',n:'network',t:'activity',m:'matrix',w:'wallets',d:'docs',a:'agents'};
+  if(map[e.key]) switchView(map[e.key]);
+  if(e.key==='r'){ e.preventDefault(); Dash.refreshAll(true); }
+  if(e.key==='v') Vault.openModal();
+  if(e.key==='?') UI.help();
 });
 
 /* BOOT */
 Vault.load();
-Vault.updateStatusChip();
 Dash.loadCache();
 Dash.render();
 Dash.renderPortfolio();
 Dash.renderTicker();
+Charts.all();
+UI.clock(); setInterval(UI.clock,1000);
 Dash.refreshAll();
-setInterval(()=>Dash.refreshAll(), 60000);
-if(!Vault.hasGh() && Object.keys(Vault.data.wallets||{}).length===0){
-  setTimeout(()=>{ toast('Open Vault to add wallet keys & GitHub token','info'); }, 800);
-}
+scheduleRefresh();
+if(!Vault.hasGh()&&Vault.keyCount()===0) setTimeout(()=>toast('Open Vault to connect keys','info'),700);
+console.log('%cGive A Bit HQ v2.0','color:#c45f00;font-weight:bold');
 </script>
 </body>
 </html>

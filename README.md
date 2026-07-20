@@ -1,8 +1,14 @@
 # Give A Bit HQ
 
-Single-file portfolio and ops deck for the Give A Bit suite.
+Single-file portfolio and ops deck for the Give A Bit suite (**v2.0**).
 
 Open `control-panel.html` in a browser. No build step.
+
+## Views
+
+Cards · List · Pipeline · **Analytics** · **Network** · **Activity** · **Matrix** · **Wallets** · Docs · Agents
+
+GitHub Actions / CI status appears on each project card, Pipeline stages, Matrix column “CI”, and drawer “Last CI” — there is no separate Actions page.
 
 ## Security
 
