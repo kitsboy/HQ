@@ -1,6 +1,6 @@
 # Give A Bit — Ecosystem map
 
-_Last update: 2026-07-20_
+_Last update: 2026-07-20 (v2.7 LNbits proxy)_
 
 ## Domains
 
@@ -8,15 +8,16 @@ _Last update: 2026-07-20_
 |------|---------|------|
 | giveabit.io | Give A Bit | Namespace, education, NIP-05 |
 | satohash.io | Satohash | OTS proof plane (**backbone**) |
-| api.satohash.io | Satohash API | Stamp/status/metrics (when live) |
+| api.satohash.io | Satohash API | Stamp/status/metrics + LNbits public host:port |
 | katoa.org | Katoa | Creators · Lightning · Nostr |
 | stranded.giveabit.io | Stranded | Energy |
 | tadbuy.giveabit.io | Tadbuy | Ad settlement |
 | motopass.giveabit.io | MotoPass | Identity / residency |
 | sherpacarta.org | SherpaCarta | Governance |
-| openstrata.giveabit.io | Hermes Strata | Corp dashboard |
-| **hq.giveabit.io** | **HQ** | Ops + pitch glass |
+| openstrata.giveabit.io | Hermes Strata | Corp / **HERMES dashboard · kanban** |
+| **hq.giveabit.io** | **HQ** | Ops + pitch glass **v2.7** |
 | giveabit-hq.pages.dev | HQ | CF Pages (same app) |
+| giveabit-lnbits-proxy.kitsboy.workers.dev | HQ | LNbits **balance proxy** Worker |
 
 ## GitHub (kitsboy)
 
@@ -29,14 +30,16 @@ Products  --metrics.json-->  HQ Metrics lab + cards
 Products  --status pings-->  status.json --> HQ matrix/latency
 Suite     --OTS family---->  Satohash backbone
 THOR      --thor-node.json->  HQ node pane (read-only)
-Browser   --Vault---------->  LNbits balances (needs CORS)
+Browser Vault --proxy token + invoice keys--> CF Worker --> LNbits :5102
+(Direct browser → Tailscale LNbits still CORS-blocked; use proxy)
 ```
 
 ## Money / identity / node
 
-- **Money:** LNbits multi-wallet on THOR; HQ Vault invoice keys  
+- **Money:** LNbits multi-wallet on THOR; HQ via **Cloudflare LNbits proxy** + invoice keys  
 - **Identity:** `giveabit.io/.well-known/nostr.json`  
 - **Node:** bitcoind pruned + LND + LNbits; never macaroons in HQ  
+- **Proxy docs:** `docs/LNBITS-PROXY.md`  
 
 ## Handoff
 

@@ -10,46 +10,48 @@
 
 | Agent | Owns |
 |-------|------|
-| **Grok** | `kitsboy/HQ`, CF Pages `giveabit-hq`, metrics **visualization**, schemas, status pinger, pitch glass, CORS **docs** |
-| **Kimi** | Cross-repo diligence, agent docs, **satohash publisher** for live metrics when Cam opens that repo |
-| **Nova** | THOR node, LNbits CORS, deploys reliability, thor-node.json exporter |
-| **Cam** | Secrets, Access, priorities |
+| **Grok** | `kitsboy/HQ`, CF Pages `giveabit-hq`, LNbits **proxy Worker**, metrics UI, schemas, status pinger, pitch glass |
+| **Kimi** | Cross-repo diligence, agent docs, **satohash** live metrics / API on THOR |
+| **Nova** | THOR node, LNbits host hardening, `thor-node.json` exporter, deploys reliability |
+| **Cam** | Secrets, Access, priorities, Vault proxy token |
 
 ---
 
+## Latest Session Summary (from 2026-07-20 goodbye — Grok / HQ)
 
-## Grok add-on (2026-07-20 v2.5.1)
+**Chat topic:** HQ mega upgrades + visual pack + live LNbits via Cloudflare Worker proxy.
 
-On top of gate + tips + live pipes:
-- Vault keys UX: health scorecard, show/hide, RO flags, Test GH/LNbits, diagnose all, bulk paste, WIPE gate, security toggles
-- Ops board + Domains views, budget runway, board pack, invoice preview gate, docs Diff
-- Live satohash metrics already preferred via MetricsEngine wrap (Kimi `raw.demo:false` path)
-
-## Latest Session Summary (from 2026-07-20 goodbye)
-
-**Chat topic:** Finish satohash v5 rebuild, live metrics, LNbits CORS, and sync all handoffs.
-
-### Finished this session (Kimi on VPS)
-- **v5 API deployed on THOR:** `git pull` (21 files, 2470 lines — Sovereignty Ascension), Docker rebuild, all endpoints confirmed
-- **Live /metrics.json:** `api.satohash.io/metrics.json` — `gab.product-metrics.v1`, queries real DB, `raw.demo: false`
-- **LNbits CORS:** Caddy proxy `:5103` → LNbits `:5102` with CORS headers; Tailscale serve `:5101` → Caddy ✅
-- **DNS+TLS:** A `169.58.32.160` + AAAA `2a02:c207:2344:6772::1`, Let's Encrypt via Caddy
-- **All satohash docs updated + pushed** (current-status, KIMI-HANDOFF, MASTER-BRAIN-INGEST, ecosystem-links)
-- **This handoff file + state.json updated**
+### Finished in this session
+- HQ **v2.5.x → v2.7.0** shipped and deployed to `hq.giveabit.io`
+- Vault sticky footer, keys UX, Ops board, Domains, board pack, invoice gate, docs Diff
+- **v2.6.0** ~50 visual upgrades (depth, frosted chrome, cards, pills)
+- Footer always stamps **version + build time + origin**
+- Close-by URLs panel (HERMES Dashboard/Kanban first)
+- **giveabit-lnbits-proxy** Worker live: https://giveabit-lnbits-proxy.kitsboy.workers.dev
+- Upstream: `http://api.satohash.io:5102` (Workers cannot use Tailscale / bare IP)
+- Cam confirmed: **balances live**, treasury visible, more BTC than hour prior; no issues
+- Docs: `LNBITS-PROXY.md`, SOT, README path update
 
 ### Still to do
-- **Nova:** Cron `thor-node.json` from bitcoind/lnd (no macaroons)
-- **Cam:** CF Access on hq.giveabit.io (optional); prefer one HQ origin for Vault
-- Actions runners often stuck Queued — use `npm run deploy` when needed
+- **Optional Cam:** move keys to Worker `WALLETS_JSON`; rotate PROXY_TOKEN if needed  
+- **Nova:** harden public `:5102` (firewall / Tunnel+HTTPS); cron `thor-node.json`  
+- **Cam:** CF Access optional on `hq.giveabit.io`  
+- **Grok/Kimi:** deeper satohash public feeds in HQ UI  
+
+### Next for Kimi
+1. Integrate this summary into MASTER-BRAIN / Kanban on M4 (clean bullets only — no raw chats)  
+2. Keep satohash `metrics.json` live (`raw.demo: false`)  
+3. Note HQ balances path is **proxy**, not browser→Tailscale CORS  
+4. Educate Hermes: `docs/LNBITS-PROXY.md` + `SOURCE-OF-TRUTH.md`  
 
 ### Next for Grok (future chat)
-- Consume live `api.satohash.io/metrics.json` in HQ (drop demo banner when `raw.demo !== true`)
-- Consume `/api/public/stats`, `/api/public/network`, `/api/stamps/recent` in HQ
-- LNbits CORS test from HQ (Test connection)
-- Keep maps/SOT current
+- Prefer live satohash envelope when `raw.demo !== true`  
+- Optional WALLETS_JSON server keys path  
+- Keep maps/SOT current  
 
 ### Next for Nova
-- Cron `thor-node.json` from bitcoind/lnd  
+- `thor-node.json` cron from bitcoind/lnd (no macaroons)  
+- Prefer locking down LNbits public port after proxy proven  
 
 ---
 
@@ -58,11 +60,12 @@ On top of gate + tips + live pipes:
 | Area | Owner |
 |------|--------|
 | kitsboy/HQ | Grok |
-| kitsboy/satohash (app/API) | Kimi / Cam focus |
+| giveabit-lnbits-proxy | Grok |
+| kitsboy/satohash | Kimi / Cam |
 | metrics schema definition | Grok |
-| metrics live publish | Kimi (satohash) + each product later |
+| metrics live publish | Kimi (satohash) |
 | thor-node publish | Nova |
-| LNbits CORS | Nova |
+| LNbits host / firewall | Nova |
 | CF Access | Cam |
 
 ## Session protocol

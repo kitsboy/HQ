@@ -11,6 +11,13 @@ Legend: **SHIPPED** in this pass · **LIVE** already in HQ · **NEXT** data/prod
 - Manual BTC FX · Grok warn/crit · prefer live metrics
 - Ops board · Domains · board pack · invoice preview · docs Diff
 
+## v2.6–v2.7 (2026-07-20)
+- SHIPPED Visual upgrade pack (~50 surface/chrome/card/nav polish)
+- SHIPPED Footer always stamps HQ_VERSION + build + origin
+- SHIPPED Close-by URLs (HERMES first)
+- SHIPPED LNbits Cloudflare proxy Worker (live balances, CORS bypass)
+- SHIPPED Vault proxy URL / token / use-proxy toggle
+
 
 ## A. Presentation & pitch (1–12)
 1. LIVE Pitch mode (`P`)

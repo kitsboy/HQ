@@ -1,19 +1,25 @@
 # LNbits balances empty on HQ — CORS / network fix
 
+> **Preferred path (2026-07-20):** use the **Cloudflare LNbits proxy** — see [`LNBITS-PROXY.md`](./LNBITS-PROXY.md).  
+> Live balances work without browser CORS when Vault has proxy URL + token.  
+> This page remains the guide for **direct** browser → LNbits (legacy / fallback).
+
 ## What the banner means
 
 HQ is a **static page** in the browser (e.g. `https://hq.giveabit.io`).
 
-When you save wallet keys in **Vault**, the browser calls:
+When **not** using the proxy, the browser calls:
 
 ```http
 GET {Node URL}/api/v1/wallet
 Header: X-Api-Key: <invoice key>
 ```
 
-Default node in Vault is often a **Tailscale** host:
+Default Tailscale host (direct):
 
 `https://vmi3446772.tailb672ac.ts.net`
+
+Worker upstream (proxy path): `http://api.satohash.io:5102`
 
 Two different failures look the same (“empty balances”):
 

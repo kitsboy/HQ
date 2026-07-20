@@ -1,11 +1,15 @@
 {
   "schema": "gab.handoff.v1",
-  "updatedAt": "2026-07-20T06:32:45.496Z",
+  "updatedAt": "2026-07-20T07:24:46.000Z",
   "agents": {
     "grok": {
-      "lastSeen": "2026-07-20T06:32:45.496Z",
+      "lastSeen": "2026-07-20T07:24:46.000Z",
       "focus": "HQ",
       "notes": [
+        {
+          "t": "2026-07-20T07:24:46.644Z",
+          "summary": "Goodbye 2026-07-20: HQ v2.7.0 + LNbits proxy live; Cam confirmed balances; docs+MASTER-BRAIN ingest updated"
+        },
         {
           "t": "2026-07-20T06:32:45.496Z",
           "summary": "v2.5.1: keys vault scorecard/RO/tests/diagnose/bulk+ops board/domains/board pack/invoice/docs diff on gated HQ"
@@ -35,14 +39,32 @@
     "kitsboy/HQ": "grok",
     "kitsboy/satohash": "shared",
     "metrics-schema": "grok-define / kimi-publish",
-    "thor-node-json": "nova-publish / grok-display"
+    "thor-node-json": "nova-publish / grok-display",
+    "giveabit-lnbits-proxy": "grok",
+    "lnbits-proxy": "grok"
   },
-  "blockers": [],
+  "blockers": [
+    {
+      "id": "lnbits-public-harden",
+      "owner": "nova",
+      "detail": "LNbits :5102 public HTTP \u2014 firewall/tunnel/HTTPS preferred"
+    },
+    {
+      "id": "thor-exporter",
+      "owner": "nova",
+      "detail": "live thor-node.json cron"
+    },
+    {
+      "id": "cf-access",
+      "owner": "cam",
+      "detail": "optional Access on hq.giveabit.io"
+    }
+  ],
   "next": [
     {
-      "id": "satohash-live-metrics",
-      "owner": "kimi",
-      "title": "Publish live gab.product-metrics.v1 from satohash"
+      "id": "wallets-json-optional",
+      "owner": "cam",
+      "title": "Optional: WALLETS_JSON on proxy (keys off browser)"
     },
     {
       "id": "thor-exporter",
@@ -50,14 +72,14 @@
       "title": "Cron thor-node.json from bitcoind/lnd"
     },
     {
-      "id": "lnbits-cors",
+      "id": "lnbits-harden",
       "owner": "nova",
-      "title": "CORS allow https://hq.giveabit.io"
+      "title": "Harden public LNbits :5102"
     },
     {
       "id": "cf-access",
       "owner": "cam",
-      "title": "Enable CF Access on hq.giveabit.io"
+      "title": "Enable CF Access on hq.giveabit.io (optional)"
     }
   ]
 }

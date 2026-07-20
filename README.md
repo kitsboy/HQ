@@ -1,117 +1,84 @@
 # Give A Bit HQ
 
-**Ops + pitch glass** for the Give A Bit suite (**v2.5**).
+**Ops + pitch glass** for the Give A Bit suite (**v2.7.0**).
 
 | | |
 |--|--|
 | **Live** | https://hq.giveabit.io · https://giveabit-hq.pages.dev |
 | **Repo** | https://github.com/kitsboy/HQ |
-| **CF project** | `giveabit-hq` (Cloudflare Pages) |
+| **CF Pages** | `giveabit-hq` |
+| **LNbits proxy** | https://giveabit-lnbits-proxy.kitsboy.workers.dev |
 
 Open in a browser (prefer **hq.giveabit.io** so Vault storage stays consistent).
 
 ```bash
-# Local
 cd /Users/cam/projects/HQ && npm run build && npm run preview
 # http://localhost:8765/
 ```
 
-## v2.5 highlights
+## Highlights (v2.7)
 
 | Feature | How |
 |---------|-----|
-| **Password gate** | First visit sets operator password; locks public site until unlock (key L) |
-| **Vault tabs** | Keys · Feeds/pipes · AI usage · Extra keys + export/import |
-| **Hover tips** | Mouse over chips, KPIs, tools — advice on how to mold data |
-| **Live pipes board** | Analytics (y) — suite, Satohash metrics.json, THOR, wallets, FX |
-| **More graphs** | Latency bars, uptime pulse, area sparklines, Satohash series |
-| **Secrets** | Still browser-only; optional AES-GCM when gate password set |
+| **Password gate** | First visit sets operator password (`L` locks) |
+| **Vault** | Sticky Save bar · Keys · Node/FX · Feeds · AI · Security |
+| **Live balances** | **LNbits Cloudflare proxy** (invoice keys + proxy token) |
+| **Footer version** | Always `vX.Y.Z` + build time + origin |
+| **Close-by URLs** | HERMES Dashboard/Kanban first (`tools.json` closeby) |
+| **Visual glass** | v2.6 depth / frosted chrome / elevated cards |
+| **Metrics lab** | `k` — product envelopes + THOR |
+| **Pitch** | `P` |
 
 ## Views
 
-Cards · List · Pipeline · **Metrics (`k`)** · Analytics · Network · Activity · Matrix · Wallets · Docs · Agents · **Pitch (`P`)**
+Cards · List · Pipeline · Metrics · Analytics · Network · Activity · Matrix · Wallets · Docs · Agents · Ops board · Domains · Pitch
 
 ## What it does
 
-- Portfolio sats/USD (CoinGecko), wallets via **Vault → LNbits** (invoice keys)
+- Portfolio sats/USD (CoinGecko), wallets via **proxy → LNbits** (invoice keys)
 - GitHub commits/CI/docs (PAT in Vault)
 - **status.json** uptime (pinger every 15m)
-- **Product metrics** (`gab.product-metrics.v1`) + **THOR node** (`gab.thor-node.v1`)
-- SuperGrok / Grok Build usage (manual % in Vault)
-- NIP-05 checks, diligence export, tools hub, ops notes
+- Product metrics + THOR node contracts
+- SuperGrok usage (manual % in Vault)
+- NIP-05, diligence export, tools hub, ops notes
 
 ## Security (non‑negotiable)
 
-**Zero secrets in git.** Vault = browser `localStorage` only (`sovereign_deck_vault_v1`).
+**Zero secrets in git.** Vault = browser `localStorage` (`sovereign_deck_vault_v1`).
 
-Never commit: LNbits keys, GitHub PATs, LND macaroons, CF tokens (CF deploy tokens only as GitHub Actions secrets).
+Never commit: LNbits keys, GitHub PATs, LND macaroons, proxy token values, CF tokens (deploy tokens only as Actions secrets).
+
+**Use invoice keys only** — not admin keys in the browser.
 
 ## Deploy
 
 ```bash
 npm run build
-npx wrangler pages deploy ./public --project-name=giveabit-hq --branch=main
-# or push main → .github/workflows/deploy.yml (needs CLOUDFLARE_* secrets)
+npx wrangler pages deploy ./public --project-name=giveabit-hq
+# Worker:
+cd workers/lnbits-proxy && npx wrangler deploy
 ```
 
-Custom domain: Cloudflare → Pages → **giveabit-hq** → Custom domains → `hq.giveabit.io`.
+## Live balances (preferred)
 
-Optional login wall: [`docs/CLOUDFLARE-ACCESS.md`](docs/CLOUDFLARE-ACCESS.md).
+1. Vault → **Node & FX**  
+2. Proxy URL + proxy token + **Use proxy** on  
+3. Upstream node: `http://api.satohash.io:5102`  
+4. Invoice keys on Keys tab → Save  
 
-## LNbits balances empty?
+Full guide: [`docs/LNBITS-PROXY.md`](docs/LNBITS-PROXY.md)
 
-If Vault has keys but sats stay empty: **CORS or Tailscale reachability** — not “paste keys into HTML.”
+Legacy direct CORS: [`docs/LNBITS-CORS.md`](docs/LNBITS-CORS.md)
 
-- Diagnose: blue banner → **Test connection** (`kind=cors|network|auth`)
-- Fix guide: [`docs/LNBITS-CORS.md`](docs/LNBITS-CORS.md)
-- Allow origins: `https://hq.giveabit.io` and `https://giveabit-hq.pages.dev`
-
-## Metrics & node contracts
+## Metrics & node
 
 | Doc | Schema / files |
 |-----|----------------|
-| [`docs/METRICS-SCHEMA.md`](docs/METRICS-SCHEMA.md) | `schemas/product-metrics.v1.schema.json` · `metrics/*.json` |
-| [`docs/THOR-NODE-JSON.md`](docs/THOR-NODE-JSON.md) | `schemas/thor-node.v1.schema.json` · `metrics/thor-node.json` |
+| [`docs/METRICS-SCHEMA.md`](docs/METRICS-SCHEMA.md) | product-metrics v1 |
+| [`docs/THOR-NODE-JSON.md`](docs/THOR-NODE-JSON.md) | thor-node v1 |
 
-**Kimi (satohash):** publish live `GET /metrics.json` matching the schema (`raw.demo: false`).  
-**Nova (THOR):** cron exporter → thor-node JSON; fix LNbits CORS.
+## Handoff
 
-## Handoff (Grok ↔ Kimi)
+[`docs/KIMI-GROK-HANDOFF.md`](docs/KIMI-GROK-HANDOFF.md) · `handoff/state.json` · [`SOURCE-OF-TRUTH.md`](SOURCE-OF-TRUTH.md)
 
-| File | Role |
-|------|------|
-| [`docs/KIMI-GROK-HANDOFF.md`](docs/KIMI-GROK-HANDOFF.md) | Human protocol |
-| [`handoff/state.json`](handoff/state.json) | Machine state |
-| [`docs/ECOSYSTEM-MAP.md`](docs/ECOSYSTEM-MAP.md) | Domains + planes |
-| [`SOURCE-OF-TRUTH.md`](SOURCE-OF-TRUTH.md) | Index of truth |
-
-```bash
-node scripts/stamp-handoff.mjs --agent grok --summary "…"
-node scripts/stamp-handoff.mjs --agent kimi --summary "…"
-```
-
-## Keyboard
-
-| Key | Action |
-|-----|--------|
-| `P` | Pitch mode |
-| `k` | Metrics lab |
-| `/` | Search |
-| `g` `l` `p` | Cards / List / Pipeline |
-| `y` `n` `t` `m` `w` | Analytics / Network / Activity / Matrix / Wallets |
-| `d` `a` | Docs / Agents |
-| `r` `v` `?` | Refresh / Vault / Help |
-| `esc` | Close |
-
-## Changelog (high level)
-
-- **v2.5** — Password gate, tip system, live pipes board, metrics.json, richer vault
-- **v2.4** — Metrics lab, product + THOR envelopes, handoff system, LNbits diagnose  
-- **v2.3** — Tools hub, ops notes, latency, BTC 24h, PWA  
-- **v2.2** — Pitch, diligence, NIP-05, status feeds, registry JSON  
-- **v2.1** — Connection hub, CF Pages, custom domain path  
-- Full map: [`docs/UPGRADES-100.md`](docs/UPGRADES-100.md)
-
-## License
-
-Part of the Give A Bit family. Safe Harbour · Bitcoin sovereignty first.
+Safe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first.
