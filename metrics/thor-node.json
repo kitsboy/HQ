@@ -1,6 +1,6 @@
 {
   "schema": "gab.thor-node.v1",
-  "updatedAt": "2026-07-20T08:00:11Z",
+  "updatedAt": "2026-07-20T08:30:14Z",
   "node": {
     "id": "THOR",
     "hostLabel": "THOR Contabo VPS 20",
@@ -26,12 +26,12 @@
       {
         "id": "lnbits-postgres",
         "status": "green",
-        "detail": "Up 30 hours (healthy)"
+        "detail": "Up 31 hours (healthy)"
       },
       {
         "id": "lnd",
         "status": "green",
-        "detail": "Up 15 hours (healthy)"
+        "detail": "Up 16 hours (healthy)"
       }
     ]
   },
