@@ -905,14 +905,35 @@ const Feeds = {
       parts.push(state.nip05?.ok ? 'nip-05: ok' : 'nip-05: pending/err');
       fs.textContent = parts.join(' · ');
     }
-    // CORS hint if keys set but no wallets ok
+    // CORS / wallet connectivity banner
     const keys = Object.values(Vault.data.wallets||{}).filter(v=>v&&v.length>10).length;
     const anyOk = Object.values(state.projects).some(p=>p.walletOk);
+    const kinds = Object.values(state.projects).map(p=>p.walletErrorKind).filter(Boolean);
+    const corsLikely = kinds.includes('cors') || (keys>0 && !anyOk && !kinds.includes('auth'));
+    const authLikely = kinds.includes('auth');
     const cors = document.getElementById('cors-banner');
     if(cors){
       if(keys>0 && !anyOk){
         cors.classList.remove('hidden');
-        cors.innerHTML = `<div class="cors-banner mono">Wallet keys are in Vault but balances are empty — almost always <strong>CORS/network</strong> (static HTML → LNbits). Fix on the node (allow origin / open on tailnet), not by pasting keys into this HTML file.</div>`;
+        const node = (Vault.data.nodeUrl||'').replace(/\/$/,'');
+        const origin = location.origin;
+        const title = authLikely
+          ? 'Wallet keys rejected (401/403) — check invoice key / wallet slot name'
+          : 'Wallet keys are in Vault but balances are empty — CORS or network';
+        const fix = authLikely
+          ? `Re-copy <strong>Invoice/read</strong> key for each wallet in LNbits. Slot names in Vault must match projects (e.g. <span class="mono">satohash</span>).`
+          : `HQ at <span class="mono">${origin}</span> calls <span class="mono">${node}/api/v1/wallet</span>. The browser blocks that unless LNbits/Caddy sends CORS allowing this origin.`;
+        cors.innerHTML = `<div class="cors-banner">
+          <div class="font-semibold mb-1">${title}</div>
+          <div class="text-[11px] leading-relaxed mb-2">${fix} <strong>Do not</strong> paste keys into HTML/git.</div>
+          <div class="text-[10px] mono mb-2">Allow origin: <strong>${origin}</strong>${origin.includes('hq.giveabit')?'':''} · also useful: https://hq.giveabit.io · https://giveabit-hq.pages.dev</div>
+          <div class="flex flex-wrap gap-2">
+            <button type="button" class="btn-brand rounded px-2 py-1 text-xs" onclick="LNbitsHelp.diagnose()">Test connection</button>
+            <a class="btn-ghost rounded px-2 py-1 text-xs" href="/docs/LNBITS-CORS.md" target="_blank" rel="noopener">CORS fix guide</a>
+            <button type="button" class="btn-ghost rounded px-2 py-1 text-xs" onclick="Vault.openModal()">Open Vault (node URL)</button>
+          </div>
+          <pre id="lnbits-diag" class="hidden mt-2 p-2 glass-2 rounded text-[10px] mono overflow-auto max-h-40"></pre>
+        </div>`;
         state.corsHint = true;
       } else {
         cors.classList.add('hidden');
@@ -1342,6 +1363,33 @@ const MetricsEngine = {
 
 
 /* ---------- TOOLS + NOTES + ALERTS + BTC 24h ---------- */
+const LNbitsHelp = {
+  async diagnose(){
+    const pre = document.getElementById('lnbits-diag');
+    if(pre){ pre.classList.remove('hidden'); pre.textContent = 'Testing…'; }
+    toast('Testing LNbits from this browser…','info');
+    const report = await LNbitsData.diagnose();
+    const lines = [
+      'LNbits diagnose (this browser only)',
+      'origin:  '+report.origin,
+      'node:    '+report.nodeUrl,
+      'keys:    '+report.keys,
+      report.sample ? (report.sample.ok
+        ? `OK wallet=${report.sample.wallet} balance=${report.sample.balanceSats} sats name=${report.sample.name||'—'}`
+        : `FAIL wallet=${report.sample.wallet} kind=${report.sample.kind} msg=${report.sample.message}`)
+        : 'No keys to test',
+      '',
+      'If kind=cors: add Access-Control-Allow-Origin for your HQ origin on the node.',
+      'If kind=auth: wrong/expired X-Api-Key or wrong wallet.',
+      'If kind=network: node URL unreachable from the public internet (Tailscale-only host).',
+      'Guide: docs/LNBITS-CORS.md',
+    ];
+    if(pre) pre.textContent = lines.join('\n');
+    if(report.sample?.ok) toast('LNbits OK — '+report.sample.balanceSats+' sats','success');
+    else toast('LNbits still failing — see diagnose panel','error');
+  }
+};
+
 const ToolsHub = {
   data: null,
   async load(){
@@ -1872,12 +1920,52 @@ const GitHubData = {
 };
 
 const LNbitsData = {
+  lastError: null,
   async wallet(walletKey){
     if(!Vault.hasWallet(walletKey)) return null;
-    const url=`${Vault.data.nodeUrl.replace(/\/$/,'')}/api/v1/wallet`;
-    const r=await fetch(url,{headers:{'X-Api-Key':Vault.data.wallets[walletKey]}});
-    if(!r.ok) throw new Error('lnbits '+r.status);
-    return r.json();
+    const base = (Vault.data.nodeUrl||'').replace(/\/$/,'');
+    const url = `${base}/api/v1/wallet`;
+    try{
+      const r = await fetch(url, {
+        headers: { 'X-Api-Key': Vault.data.wallets[walletKey], 'Accept': 'application/json' },
+        mode: 'cors',
+        cache: 'no-store',
+      });
+      if(!r.ok){
+        const err = new Error('HTTP '+r.status);
+        err.code = r.status;
+        err.kind = r.status===401||r.status===403 ? 'auth' : 'http';
+        throw err;
+      }
+      this.lastError = null;
+      return r.json();
+    }catch(e){
+      // Browser CORS failures usually surface as TypeError: Failed to fetch (no status)
+      const kind = e.kind || (e.name==='TypeError' || /failed to fetch|networkerror|cors/i.test(String(e.message||e)) ? 'cors' : 'network');
+      this.lastError = { kind, message: e.message||String(e), url, origin: location.origin, at: Date.now() };
+      const err = new Error(e.message||'fetch failed');
+      err.kind = kind;
+      throw err;
+    }
+  },
+  async diagnose(){
+    const base = (Vault.data.nodeUrl||'').replace(/\/$/,'');
+    const origin = location.origin;
+    const report = { origin, nodeUrl: base, keys: 0, sample: null };
+    const wallets = PROJECTS.reduce((a,p)=>{ if(p.wallet && !a.includes(p.wallet)) a.push(p.wallet); return a; },[]);
+    for(const w of wallets){
+      if(!Vault.hasWallet(w)) continue;
+      report.keys++;
+      try{
+        const data = await this.wallet(w);
+        report.sample = { wallet: w, ok: true, balanceSats: Math.floor((data.balance||0)/1000), name: data.name };
+        break;
+      }catch(e){
+        report.sample = { wallet: w, ok: false, kind: e.kind||LNbitsData.lastError?.kind||'error', message: e.message };
+        if(report.sample.kind==='cors') break;
+      }
+    }
+    return report;
   }
 };
 
@@ -2134,9 +2222,9 @@ const Dash = {
     else d.liveReachable=null;
     if(Vault.hasWallet(p.wallet)){
       tasks.push(LNbitsData.wallet(p.wallet).then(w=>{
-        d.balanceMsat=w.balance; d.balanceSats=Math.floor(w.balance/1000); d.walletName=w.name; d.walletOk=true;
-      }).catch(()=>{ d.walletOk=false; d.walletError=true; }));
-    } else d.walletOk=false;
+        d.balanceMsat=w.balance; d.balanceSats=Math.floor(w.balance/1000); d.walletName=w.name; d.walletOk=true; d.walletError=false; d.walletErrorKind=null;
+      }).catch((e)=>{ d.walletOk=false; d.walletError=true; d.walletErrorKind=e.kind||LNbitsData.lastError?.kind||'error'; }));
+    } else { d.walletOk=false; d.walletError=false; }
     await Promise.all(tasks);
     d.status=computeStatus(p,d);
     d.linkScore = [d.ghOk, d.walletOk, d.liveReachable===true, !!d.actionsStatus, (p.related||[]).length>0].filter(Boolean).length;
