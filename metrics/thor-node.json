@@ -1,6 +1,6 @@
 {
   "schema": "gab.thor-node.v1",
-  "updatedAt": "2026-07-20T23:14:33Z",
+  "updatedAt": "2026-07-20T21:30:38Z",
   "node": {
     "id": "THOR",
     "hostLabel": "THOR Contabo VPS 20",
@@ -26,12 +26,12 @@
       {
         "id": "lnbits-postgres",
         "status": "green",
-        "detail": "Up 43 hours (healthy)"
+        "detail": "Up 44 hours (healthy)"
       },
       {
         "id": "lnd",
         "status": "green",
-        "detail": "Up 28 hours (healthy)"
+        "detail": "Up 29 hours (healthy)"
       }
     ]
   },
@@ -294,43 +294,6 @@
       "severity": "risk"
     }
   ],
-  "system": {
-    "disk": {
-      "totalGB": 387,
-      "usedGB": 27,
-      "freeGB": 360,
-      "usedPercent": 7,
-      "mount": "/dev/sda1"
-    },
-    "breakdownGB": {
-      "MASTER-BRAIN_vault": 1.333,
-      "Hermes_skills_config": 0.511,
-      "Docker_images": 2.647,
-      "Docker_volumes": 5.0,
-      "Docker_build_cache": 0.0,
-      "satohash_repo": 0.015,
-      "HQ_repo": 0.002,
-      "other_system": 17.5
-    },
-    "memory": {
-      "totalGB": 7.8,
-      "usedGB": 2.4,
-      "freeGB": 3.0,
-      "availableGB": 5.3
-    },
-    "cpu": {
-      "loadAvg1m": 0.47,
-      "loadAvg5m": 0.21,
-      "loadAvg15m": 0.18,
-      "uptimeDays": 3.9
-    },
-    "docker": {
-      "images": 6,
-      "containers": 5,
-      "volumes": 0,
-      "buildCacheGB": 0.0
-    }
-  },
   "security": {
     "secretsInPayload": false,
     "notes": "Auto-export from thor-node-export.py"
