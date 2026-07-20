@@ -56,7 +56,7 @@ jobs:
           # Prefer full site assembly if sources present
           if [ -f control-panel.html ]; then
             cp control-panel.html public/index.html
-            cp projects.json agents.json status.example.json public/ 2>/dev/null || true
+            cp projects.json agents.json tools.json status.example.json manifest.webmanifest public/ 2>/dev/null || true
             cp pages/_headers pages/_redirects public/ 2>/dev/null || true
           fi
           cp status.json public/status.json

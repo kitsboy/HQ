@@ -123,6 +123,23 @@ table thead th{position:sticky;top:0;z-index:1;background:var(--panel-2)}
   body.pitch-active .pitch-root, #pitch-root:not(.hidden){position:static;padding:12px;background:#fff;color:#111}
   .pitch-card,.pitch-metric,.glass{break-inside:avoid;box-shadow:none;border:1px solid #ccc}
 }
+
+/* v2.3 mega polish */
+.tools-strip{display:flex;flex-wrap:wrap;gap:6px}
+.tools-strip a{font-size:11px;padding:4px 8px;border:1px solid var(--line);border-radius:3px;background:var(--panel-2);color:var(--ink-dim);text-decoration:none}
+.tools-strip a:hover{border-color:var(--line-hi);color:var(--ink)}
+.latency-badge{font-size:9px;font-family:'IBM Plex Mono',monospace;padding:1px 5px;border-radius:2px;border:1px solid var(--line);color:var(--ink-faint)}
+.latency-badge.fast{color:var(--green);border-color:rgba(31,107,58,.35)}
+.latency-badge.slow{color:var(--amber);border-color:rgba(138,90,0,.35)}
+.latency-badge.dead{color:var(--red);border-color:rgba(163,32,32,.3)}
+.focus-mode .topbar,.focus-mode .fixed.bottom-3,.focus-mode .site-footer{display:none!important}
+.focus-mode body,.focus-mode{padding-bottom:1rem}
+#ops-notes{width:100%;min-height:64px;font-size:12px;resize:vertical}
+.stale-banner{background:rgba(138,90,0,.12);border:1px solid rgba(138,90,0,.35);color:var(--amber);padding:8px 12px;border-radius:4px;font-size:12px}
+#refresh-eta{font-variant-numeric:tabular-nums}
+.btc-chg-up{color:var(--green)}.btc-chg-dn{color:var(--red)}
+.panel-title{font-size:10px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-faint);margin-bottom:8px}
+
 .pitch-root{position:fixed;inset:0;z-index:200;background:var(--void);overflow:auto;padding:24px 28px 40px}
 .pitch-root .pitch-hero{max-width:1100px;margin:0 auto}
 .pitch-metric{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:16px 18px;text-align:center}
@@ -181,7 +198,7 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
       <div class="icon-box sm" style="background:var(--orange);color:#fff"><i class="fa-solid fa-bolt"></i></div>
       <div>
         <div class="font-semibold text-[13px] leading-none" style="font-family:'IBM Plex Sans'">Give A Bit HQ</div>
-        <div class="text-[10px] text-[var(--ink-faint)]">v2.2 · pitch + feeds</div>
+        <div class="text-[10px] text-[var(--ink-faint)]">v2.3 · ops glass</div>
       </div>
     </div>
     <div class="divider"></div>
@@ -212,6 +229,8 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
 </div>
 <div id="sys-banner" class="hidden max-w-[1680px] mx-auto px-3 pt-2"></div>
 <div id="cors-banner" class="hidden max-w-[1680px] mx-auto px-3 pt-2"></div>
+<div id="stale-banner" class="hidden max-w-[1680px] mx-auto px-3 pt-2"></div>
+<div id="offline-banner" class="hidden max-w-[1680px] mx-auto px-3 pt-2"><div class="stale-banner mono">You are offline — showing cache where available.</div></div>
 <div id="log-panel" class="hidden max-w-[1680px] mx-auto px-3 pt-2"></div>
 
 <!-- PORTFOLIO -->
@@ -289,6 +308,30 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
       <div class="conn-hub" id="conn-hub"></div>
       <div class="sync-rail" id="sync-rail"></div>
       <div id="suite-status-strip" class="mt-2 flex flex-wrap gap-1.5" title="Best-effort live probes + optional status.json"></div>
+
+    <div class="mt-3 pt-3 border-t border-[var(--line)] grid grid-cols-1 lg:grid-cols-3 gap-3">
+      <div class="glass-2 rounded p-3">
+        <div class="panel-title">Tools hub</div>
+        <div id="tools-hub" class="tools-strip"></div>
+      </div>
+      <div class="glass-2 rounded p-3">
+        <div class="panel-title flex justify-between"><span>Ops notes (local)</span><button type="button" class="btn-ghost rounded px-1 text-[10px]" onclick="OpsNotes.save()">Save</button></div>
+        <textarea id="ops-notes" class="rounded px-2 py-1.5 mono" placeholder="Standup, blockers, reminders…"></textarea>
+      </div>
+      <div class="glass-2 rounded p-3">
+        <div class="panel-title">Node plane (read-only TBD)</div>
+        <div id="node-panel" class="text-xs mono text-[var(--ink-dim)] space-y-1">
+          <div>Bitcoin: <span id="node-btc">— pruned full node planned</span></div>
+          <div>LND: <span id="node-lnd">— channels feed not wired</span></div>
+          <div class="text-[var(--ink-faint)]">Never store macaroons in HQ HTML.</div>
+        </div>
+        <div class="panel-title mt-3">Identity score</div>
+        <div id="identity-score" class="text-sm mono font-semibold">—</div>
+        <div class="panel-title mt-3">Grok countdown</div>
+        <div id="grok-countdown" class="text-sm mono font-semibold">—</div>
+      </div>
+    </div>
+
     </div>
   </div>
 </div>
@@ -440,7 +483,7 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
 
 <div class="max-w-[1680px] mx-auto px-3 site-footer">
   <div class="flex flex-wrap justify-between gap-2">
-    <span>Give A Bit HQ · v2.2 · credentials only in localStorage · Safe Harbour</span>
+    <span>Give A Bit HQ · <span id="hq-version">v2.3</span> · <span id="hq-build">build</span> · credentials only in localStorage · Safe Harbour</span>
     <span class="mono flex flex-wrap gap-2">
       <span><kbd class="kbd">/</kbd> search</span>
       <span><kbd class="kbd">g</kbd> cards</span>
@@ -460,6 +503,7 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
     <button onclick="exportReport()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Export TXT</button>
     <button onclick="exportJSON()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Export JSON</button>
     <button onclick="exportDiligence()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Diligence</button>
+    <button onclick="exportWalletsCSV()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">CSV wallets</button>
     <button onclick="Pitch.open()" class="btn-accent rounded px-2.5 py-1.5 text-xs">Pitch</button>
     <button onclick="Vault.openModal()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Config</button>
   </div>
@@ -1002,8 +1046,131 @@ function exportDiligence(){
 }
 
 
+
+/* ---------- TOOLS + NOTES + ALERTS + BTC 24h ---------- */
+const ToolsHub = {
+  data: null,
+  async load(){
+    try{
+      const r = await fetch('tools.json?t='+Date.now());
+      if(r.ok) this.data = await r.json();
+    }catch(_){}
+    this.render();
+  },
+  render(){
+    const el = document.getElementById('tools-hub');
+    if(!el) return;
+    const groups = (this.data && this.data.groups) || [];
+    if(!groups.length){
+      el.innerHTML = '<span class="text-[var(--ink-faint)] text-xs">tools.json not loaded</span>';
+      return;
+    }
+    el.innerHTML = groups.map(g => `
+      <div class="w-full">
+        <div class="text-[9px] mono text-[var(--ink-faint)] mb-1">${g.label}</div>
+        <div class="tools-strip">${(g.links||[]).map(l =>
+          `<a href="${l.url}" target="_blank" rel="noopener">${l.name}</a>`
+        ).join('')}</div>
+      </div>`).join('');
+  }
+};
+
+const OpsNotes = {
+  KEY: 'hq_ops_notes_v1',
+  load(){
+    const el = document.getElementById('ops-notes');
+    if(!el) return;
+    el.value = localStorage.getItem(this.KEY) || '';
+  },
+  save(){
+    const el = document.getElementById('ops-notes');
+    if(!el) return;
+    localStorage.setItem(this.KEY, el.value);
+    toast('Ops notes saved locally','success');
+  }
+};
+
+const StatusHistory = {
+  KEY: 'hq_status_hist_v1',
+  pushSnapshot(){
+    try{
+      let live=0, total=0, issues=0;
+      PROJECTS.forEach(p=>{
+        const d=state.projects[p.id]||{};
+        if(p.deployed){ total++; if(d.liveReachable) live++; }
+        issues += d.issues||0;
+      });
+      const row = { ts: Date.now(), live, total, issues, sats: PROJECTS.reduce((a,p)=>a+((state.projects[p.id]||{}).balanceSats||0),0) };
+      let hist = [];
+      try{ hist = JSON.parse(localStorage.getItem(this.KEY)||'[]'); }catch(_){}
+      hist.push(row);
+      if(hist.length > 96) hist = hist.slice(-96);
+      localStorage.setItem(this.KEY, JSON.stringify(hist));
+      state.statusHist = hist;
+    }catch(_){}
+  },
+  uptimePct(){
+    const hist = state.statusHist || [];
+    if(hist.length < 2) return null;
+    const recent = hist.slice(-24);
+    const scores = recent.map(h => h.total ? h.live/h.total : 0);
+    return Math.round(1000 * scores.reduce((a,b)=>a+b,0) / scores.length) / 10;
+  }
+};
+
+const Alerts = {
+  check(){
+    const g = GrokUsage.get();
+    if(g.weekPct >= 90) toast('SuperGrok weekly usage ≥ 90%','error');
+    else if(g.weekPct >= 75) toast('SuperGrok weekly usage ≥ 75%','info');
+    // stale status feed
+    if(state.statusFeed?.updatedAt){
+      const age = Date.now() - new Date(state.statusFeed.updatedAt).getTime();
+      const ban = document.getElementById('stale-banner');
+      if(ban){
+        if(age > 45*60*1000){
+          ban.classList.remove('hidden');
+          ban.innerHTML = `<div class="stale-banner mono">status.json is ${fmt.timeAgo(state.statusFeed.updatedAt)} old — pinger may be queued. Client probes still apply.</div>`;
+        } else ban.classList.add('hidden');
+      }
+    }
+  }
+};
+
+// extend CoinGecko for 24h change
+const Market = {
+  async fetch(){
+    try{
+      const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
+      const j = await r.json();
+      btcUsdPrice = j.bitcoin.usd;
+      state.btcChange24h = j.bitcoin.usd_24h_change;
+      const s = '$'+new Intl.NumberFormat('en-US',{maximumFractionDigits:0}).format(btcUsdPrice);
+      const top = document.getElementById('btc-price-top'); if(top) top.textContent = 'BTC '+s;
+      const lab = document.getElementById('btc-price-label'); if(lab) lab.textContent = s;
+      const ch = document.getElementById('btc-chg');
+      if(ch && state.btcChange24h != null){
+        const v = state.btcChange24h;
+        ch.textContent = (v>=0?'+':'')+v.toFixed(2)+'% 24h';
+        ch.className = 'mono hidden sm:inline '+(v>=0?'btc-chg-up':'btc-chg-dn');
+      }
+    }catch(e){}
+  }
+};
+
+// monkey-patch UI methods after UI defined - inject into UI object via string replace later
+
 /* ---------- UI chrome ---------- */
 const UI = {
+
+  toggleFocus(){
+    document.documentElement.classList.toggle('focus-mode');
+    toast(document.documentElement.classList.contains('focus-mode')?'Focus mode on':'Focus mode off','info');
+  },
+  copyShare(){
+    const url = location.origin + location.pathname;
+    navigator.clipboard?.writeText(url).then(()=>toast('Copied '+url,'success')).catch(()=>toast(url,'info'));
+  },
   cycleTheme(){
     const t = ['stone','slate','ink'];
     const i = t.indexOf(document.documentElement.dataset.theme||'stone');
@@ -1031,7 +1198,7 @@ const UI = {
     document.getElementById('help-body').innerHTML = [
       ['/','Command search'],['g','Cards'],['l','List'],['p','Pipeline'],['y','Analytics'],
       ['n','Network'],['t','Activity'],['m','Matrix'],['w','Wallets'],['d','Docs'],['a','Agents'],
-      ['r','Refresh'],['v','Vault'],['?','This help'],['P','Pitch mode'],['Shift+D','—'],['esc','Close overlays'],
+      ['r','Refresh'],['v','Vault'],['?','This help'],['P','Pitch mode'],['esc','Close overlays'],
     ].map(([k,v])=>`<span class="k">${k}</span><span>${v}</span>`).join('');
     document.getElementById('help-backdrop').classList.remove('hidden');
   },
@@ -1127,8 +1294,21 @@ const GrokUsage = {
     const d = new Date(v);
     return isNaN(d.getTime()) ? v : d.toISOString();
   },
+  updateCountdown(){
+    const el = document.getElementById('grok-countdown');
+    if(!el) return;
+    const g = this.get();
+    const t = new Date(g.resetAt).getTime();
+    if(isNaN(t)){ el.textContent = '—'; return; }
+    const ms = t - Date.now();
+    if(ms <= 0){ el.textContent = 'Reset due — update % in Edit'; el.style.color='var(--amber)'; return; }
+    const d = Math.floor(ms/86400000), h = Math.floor((ms%86400000)/3600000), m = Math.floor((ms%3600000)/60000);
+    el.textContent = (d?d+'d ':'')+h+'h '+m+'m to reset';
+    el.style.color = '';
+  },
   render(){
     const g = this.get();
+    this.updateCountdown();
     const w = Math.max(0, Math.min(100, g.weekPct));
     const b = Math.max(0, Math.min(100, g.buildPct));
     const set = (id, text)=>{ const el=document.getElementById(id); if(el) el.textContent=text; };
@@ -1609,6 +1789,11 @@ const Dash = {
     // recompute status after status.json may have set liveReachable
     PROJECTS.forEach(p=>{ const d=state.projects[p.id]; if(d) d.status=computeStatus(p,d); });
     this.snapshot();
+    StatusHistory.pushSnapshot();
+    Alerts.check();
+    paintNodePanel();
+    paintIdentityScore();
+    scheduleRefreshEta();
     this.render();
     this.renderPortfolio();
     this.renderTicker();
@@ -1742,6 +1927,8 @@ const Dash = {
       if(d.actionsStatus==='failure') ciFail++;
     });
     const avg=Math.round(health/Math.max(PROJECTS.length,1));
+    const up = StatusHistory.uptimePct();
+    const g = GrokUsage.get();
     const cells=[
       ['Treasury',fmt.sats(total)+' sats'],
       ['USD',btcUsdPrice?fmt.usd(total/1e8*btcUsdPrice):'—'],
@@ -1749,8 +1936,8 @@ const Dash = {
       ['Health',String(avg)],
       ['CI ok/fail',`${ciOk}/${ciFail}`],
       ['Issues',String(issues)],
-      ['Wallets',`${synced}/${PROJECTS.length}`],
-      ['BTC',btcUsdPrice?'$'+new Intl.NumberFormat('en-US',{maximumFractionDigits:0}).format(btcUsdPrice):'—'],
+      ['SuperGrok',g.weekPct+'%'],
+      ['Uptime pulse', up!=null ? up+'%' : '—'],
     ];
     el.innerHTML=cells.map(([l,v])=>`<div class="metric"><div class="text-[10px] text-[var(--ink-faint)] uppercase">${l}</div><div class="big mt-0.5">${v}</div></div>`).join('');
   },
@@ -1870,6 +2057,68 @@ function renderConnHub(){
   }
 }
 
+
+function paintNodePanel(){
+  const n = state.statusFeed?.node;
+  const btc = document.getElementById('node-btc');
+  const lnd = document.getElementById('node-lnd');
+  if(btc){
+    if(n?.bitcoin && n.bitcoin.ok != null) btc.textContent = `${n.bitcoin.ok?'ok':'down'} height ${n.bitcoin.height??'—'} pruned=${n.bitcoin.pruned??'?'}`;
+    else btc.textContent = '— pruned full node planned (read-only feed)';
+  }
+  if(lnd){
+    if(n?.lnd && n.lnd.ok != null) lnd.textContent = `${n.lnd.ok?'ok':'down'} channels ${n.lnd.channels??'—'}`;
+    else lnd.textContent = '— channels feed not wired (no macaroons in HTML)';
+  }
+}
+function paintIdentityScore(){
+  const el = document.getElementById('identity-score');
+  if(!el) return;
+  const names = state.nip05.names || {};
+  let ok = 0;
+  AGENTS.forEach(a=>{
+    const local = (a.nip05||'').split('@')[0];
+    if(state.nip05.ok && names[local] != null) ok++;
+  });
+  el.textContent = state.nip05.ok ? `${ok}/${AGENTS.length} NIP-05 verified` : 'NIP-05 unchecked';
+  el.style.color = ok === AGENTS.length ? 'var(--green)' : (ok>0 ? 'var(--amber)' : 'var(--ink-faint)');
+}
+let _refreshEtaTimer = null;
+function scheduleRefreshEta(){
+  const sec = Vault.data.refreshSec || 60;
+  let left = sec;
+  const el = document.getElementById('refresh-eta');
+  if(_refreshEtaTimer) clearInterval(_refreshEtaTimer);
+  const tick = ()=>{
+    if(el){ el.textContent = 'next '+left+'s'; el.classList.remove('hidden'); }
+    left--;
+    if(left < 0) left = Vault.data.refreshSec || 60;
+  };
+  tick();
+  _refreshEtaTimer = setInterval(tick, 1000);
+}
+function exportWalletsCSV(){
+  const rows = [['project','wallet','configured','sats','usd','language','status','latency_ms']];
+  PROJECTS.forEach(p=>{
+    const d = state.projects[p.id]||{};
+    const usd = d.walletOk && btcUsdPrice ? (d.balanceSats/1e8*btcUsdPrice).toFixed(2) : '';
+    rows.push([p.name,p.wallet,Vault.hasWallet(p.wallet)?'yes':'no',d.walletOk?d.balanceSats:'',usd,d.language||'',statusMeta(d.status).label,d.statusMs??'']);
+  });
+  const csv = rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download = `giveabit-wallets-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  toast('Wallets CSV exported','success');
+}
+function latencyBadge(d){
+  if(d.statusMs == null) return '';
+  const ms = d.statusMs;
+  const cls = !d.liveReachable ? 'dead' : ms < 400 ? 'fast' : ms < 1200 ? 'slow' : 'dead';
+  return `<span class="latency-badge ${cls}" title="HTTP ${d.statusHttp??'?'}> · ${d.statusSource||'probe'}">${ms}ms</span>`;
+}
+
+
 function renderGrid(){
   document.getElementById('view-grid').innerHTML=PROJECTS.map(p=>{
     const d=state.projects[p.id]||{}; const s=statusMeta(d.status); const hs=healthScore(d);
@@ -1908,6 +2157,7 @@ function renderGrid(){
       <div class="flex gap-1">
         <span class="status-pill ${Vault.hasWallet(p.wallet)?(d.walletOk?'green':'red'):'gray'}">${Vault.hasWallet(p.wallet)?(d.walletOk?'wallet':'w err'):'no key'}</span>
         <span class="status-pill ${d.liveReachable?'green':d.liveReachable===false?'red':'gray'}">${d.liveReachable?'live':d.liveReachable===false?'down':'—'}</span>
+        ${latencyBadge(d)}
         <span class="status-pill ${d.actionsStatus==='success'?'green':d.actionsStatus==='failure'?'red':'gray'}">ci ${fmt.actions(d.actionsStatus)}</span>
       </div>
       <div class="flex gap-1">${steps.map((st,i)=>`<div class="flex-1 h-1 rounded-sm ${st.ok?'pipe-ok':st.amber?'pipe-amb':'pipe-bad'}" title="${['Commit','CI','Deploy','Live'][i]}"></div>`).join('')}</div>
@@ -2347,11 +2597,21 @@ document.addEventListener('keydown',e=>{
   Dash.renderTicker();
   if(typeof Dash.renderInvestorStrip==='function') Dash.renderInvestorStrip();
   GrokUsage.render();
+  OpsNotes.load();
+  ToolsHub.load();
+  try{ state.statusHist = JSON.parse(localStorage.getItem(StatusHistory.KEY)||'[]'); }catch(_){ state.statusHist=[]; }
   Charts.all();
   UI.clock(); setInterval(UI.clock,1000);
+  setInterval(()=>GrokUsage.updateCountdown && GrokUsage.updateCountdown(), 30000);
+  window.addEventListener('online', ()=>{ document.getElementById('offline-banner')?.classList.add('hidden'); toast('Back online','success'); });
+  window.addEventListener('offline', ()=>{ document.getElementById('offline-banner')?.classList.remove('hidden'); });
+  if(!navigator.onLine) document.getElementById('offline-banner')?.classList.remove('hidden');
+  const build = document.getElementById('hq-build');
+  if(build) build.textContent = new Date().toISOString().slice(0,16).replace('T',' ');
   await Dash.refreshAll();
   GrokUsage.render();
   scheduleRefresh();
+  scheduleRefreshEta();
   if(!Vault.hasGh()&&Vault.keyCount()===0) setTimeout(()=>toast('Open Vault to connect keys · Pitch with P','info'),700);
   console.log('%cGive A Bit HQ v2.2 — pitch + feeds + Grok usage','color:#c45f00;font-weight:bold');
 })();

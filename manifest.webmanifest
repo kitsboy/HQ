@@ -1,0 +1,10 @@
+{
+  "name": "Give A Bit HQ",
+  "short_name": "GAB HQ",
+  "description": "Suite ops, pitch, treasury, and health glass",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#b5b0a6",
+  "theme_color": "#c45f00",
+  "lang": "en"
+}

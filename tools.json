@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "groups": [
+    {
+      "id": "suite",
+      "label": "Suite live sites",
+      "links": [
+        { "name": "Give A Bit", "url": "https://giveabit.io" },
+        { "name": "Satohash", "url": "https://satohash.io" },
+        { "name": "Katoa", "url": "https://katoa.org" },
+        { "name": "Stranded", "url": "https://stranded.giveabit.io" },
+        { "name": "Tadbuy", "url": "https://tadbuy.giveabit.io" },
+        { "name": "MotoPass", "url": "https://motopass.giveabit.io" },
+        { "name": "SherpaCarta", "url": "https://sherpacarta.org" },
+        { "name": "OpenStrata", "url": "https://openstrata.giveabit.io" }
+      ]
+    },
+    {
+      "id": "ops",
+      "label": "Ops & identity",
+      "links": [
+        { "name": "HQ (this glass)", "url": "https://hq.giveabit.io" },
+        { "name": "GitHub kitsboy", "url": "https://github.com/kitsboy" },
+        { "name": "NIP-05 nostr.json", "url": "https://giveabit.io/.well-known/nostr.json" },
+        { "name": "Satohash API health", "url": "https://api.satohash.io/health" },
+        { "name": "status.json", "url": "/status.json" }
+      ]
+    },
+    {
+      "id": "ai",
+      "label": "AI & build",
+      "links": [
+        { "name": "xAI / Grok", "url": "https://x.ai" },
+        { "name": "Grok (chat)", "url": "https://grok.com" },
+        { "name": "Cloudflare dashboard", "url": "https://dash.cloudflare.com" },
+        { "name": "GitHub Actions HQ", "url": "https://github.com/kitsboy/HQ/actions" }
+      ]
+    }
+  ]
+}

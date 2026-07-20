@@ -4,7 +4,7 @@
   "version": "2.2.1",
   "description": "Give A Bit HQ — static ops & pitch deck for Cloudflare Pages",
   "scripts": {
-    "build": "mkdir -p public && cp control-panel.html public/index.html && cp projects.json agents.json status.example.json public/ && cp pages/_headers pages/_redirects public/",
+    "build": "mkdir -p public && cp control-panel.html public/index.html && cp projects.json agents.json tools.json status.example.json manifest.webmanifest public/ && cp pages/_headers pages/_redirects public/ && (test -f status.json && cp status.json public/ || true)",
     "deploy": "npm run build && wrangler pages deploy ./public --project-name=giveabit-hq",
     "preview": "python3 -m http.server 8765 --directory public"
   },

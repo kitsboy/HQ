@@ -22,8 +22,9 @@ jobs:
         run: |
           mkdir -p public
           cp control-panel.html public/index.html
-          cp projects.json agents.json status.example.json public/
+          cp projects.json agents.json tools.json status.example.json manifest.webmanifest public/
           cp pages/_headers pages/_redirects public/
+          if [ -f status.json ]; then cp status.json public/; fi
           ls -la public
 
       - uses: actions/setup-node@v4

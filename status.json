@@ -1,47 +1,47 @@
 {
-  "updatedAt": "2026-07-20T02:01:52.085Z",
+  "updatedAt": "2026-07-20T02:14:44.160Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 406,
+      "ms": 353,
       "url": "https://giveabit.io"
     },
     "satohash": {
       "ok": true,
       "status": 200,
-      "ms": 379,
+      "ms": 316,
       "url": "https://satohash.io"
     },
     "katoa": {
       "ok": true,
       "status": 200,
-      "ms": 367,
+      "ms": 328,
       "url": "https://katoa.org"
     },
     "stranded": {
       "ok": true,
       "status": 200,
-      "ms": 372,
+      "ms": 335,
       "url": "https://stranded.giveabit.io"
     },
     "tadbuy": {
       "ok": true,
       "status": 200,
-      "ms": 378,
+      "ms": 305,
       "url": "https://tadbuy.giveabit.io"
     },
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 388,
+      "ms": 316,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 339,
+      "ms": 340,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
@@ -61,7 +61,7 @@
     "satohashApi": {
       "ok": false,
       "status": null,
-      "ms": 14,
+      "ms": 11,
       "healthUrl": "https://api.satohash.io/health",
       "error": "fetch failed"
     },
