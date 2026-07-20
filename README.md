@@ -80,6 +80,18 @@ Never commit: LNbits keys, GitHub PATs, LND macaroons, Cloudflare tokens.
 
 Edit `projects.json` (and optional related links), refresh HQ. No HTML edit required when served over HTTP.
 
+## Cloudflare Access (login wall)
+
+Step-by-step: [`docs/CLOUDFLARE-ACCESS.md`](docs/CLOUDFLARE-ACCESS.md)  
+Protect `hq.giveabit.io` with email/GitHub allowlist (Zero Trust → Access). No app code required.
+
+## Status pinger (true uptime)
+
+- Script: `node scripts/status-ping.mjs` → writes `status.json`
+- Actions: `.github/workflows/status-pinger.yml` every **15 minutes** (+ manual)
+- HQ loads `/status.json`, then GitHub raw fallback
+- Also probes satohash `/health` + `/metrics` when available
+
 ## Deploy (Cloudflare Pages)
 
 | Item | Value |

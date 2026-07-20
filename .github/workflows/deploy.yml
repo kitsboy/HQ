@@ -3,6 +3,11 @@ name: Deploy HQ to Cloudflare Pages
 on:
   push:
     branches: [main]
+    paths-ignore:
+      # status-pinger deploys status.json itself when CF secrets exist
+      - "status.json"
+      - "docs/**"
+      - "**.md"
   workflow_dispatch:
 
 jobs:

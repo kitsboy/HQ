@@ -1,0 +1,83 @@
+{
+  "updatedAt": "2026-07-20T02:01:52.085Z",
+  "source": "kitsboy/HQ status-pinger",
+  "sites": {
+    "giveabit": {
+      "ok": true,
+      "status": 200,
+      "ms": 406,
+      "url": "https://giveabit.io"
+    },
+    "satohash": {
+      "ok": true,
+      "status": 200,
+      "ms": 379,
+      "url": "https://satohash.io"
+    },
+    "katoa": {
+      "ok": true,
+      "status": 200,
+      "ms": 367,
+      "url": "https://katoa.org"
+    },
+    "stranded": {
+      "ok": true,
+      "status": 200,
+      "ms": 372,
+      "url": "https://stranded.giveabit.io"
+    },
+    "tadbuy": {
+      "ok": true,
+      "status": 200,
+      "ms": 378,
+      "url": "https://tadbuy.giveabit.io"
+    },
+    "motopass": {
+      "ok": true,
+      "status": 200,
+      "ms": 388,
+      "url": "https://motopass.giveabit.io"
+    },
+    "sherpacarta": {
+      "ok": true,
+      "status": 200,
+      "ms": 339,
+      "url": "https://sherpacarta.org"
+    },
+    "openstrata": {
+      "ok": true,
+      "status": 200,
+      "ms": 354,
+      "url": "https://openstrata.giveabit.io"
+    },
+    "btcminiscript": {
+      "ok": null,
+      "status": null,
+      "ms": null,
+      "note": "not-deployed"
+    }
+  },
+  "feeds": {
+    "satohashApi": {
+      "ok": false,
+      "status": null,
+      "ms": 14,
+      "healthUrl": "https://api.satohash.io/health",
+      "error": "fetch failed"
+    },
+    "satohashMetrics": null
+  },
+  "node": {
+    "bitcoin": {
+      "ok": null,
+      "height": null,
+      "pruned": true,
+      "note": "Wire read-only snapshot later"
+    },
+    "lnd": {
+      "ok": null,
+      "channels": null,
+      "note": "Never put macaroons in HQ HTML"
+    }
+  }
+}

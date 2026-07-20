@@ -118,6 +118,11 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--ink);box
 table thead th{position:sticky;top:0;z-index:1;background:var(--panel-2)}
 
 /* v2.2 pitch + identity + feeds */
+@media print{
+  .topbar,.fixed,#view-tabs,.site-footer,#toast-stack,#cors-banner,#sys-banner,button,.btn-brand,.btn-ghost,.btn-accent{display:none!important}
+  body.pitch-active .pitch-root, #pitch-root:not(.hidden){position:static;padding:12px;background:#fff;color:#111}
+  .pitch-card,.pitch-metric,.glass{break-inside:avoid;box-shadow:none;border:1px solid #ccc}
+}
 .pitch-root{position:fixed;inset:0;z-index:200;background:var(--void);overflow:auto;padding:24px 28px 40px}
 .pitch-root .pitch-hero{max-width:1100px;margin:0 auto}
 .pitch-metric{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:16px 18px;text-align:center}
@@ -518,7 +523,8 @@ let DOC_FILES = ['README.md','AGENTS.md','GROK-SESSION-PROTOCOL.md','SOURCE-OF-T
 let GH_OWNER = 'kitsboy';
 let BRANCH_DEFAULTS = { openstrata: 'talent' };
 const FEEDS_DEFAULT = {
-  statusJsonUrl: '',
+  statusJsonUrl: '/status.json',
+  statusJsonFallback: 'https://raw.githubusercontent.com/kitsboy/HQ/main/status.json',
   satohashHealthUrl: 'https://api.satohash.io/health',
   satohashMetricsUrl: 'https://api.satohash.io/metrics',
   nip05Url: 'https://giveabit.io/.well-known/nostr.json'
@@ -601,39 +607,81 @@ const Feeds = {
     this.renderBanners();
     this.paintHealthBar();
   },
-  async statusJson(){
-    const url = (Vault.data.statusJsonUrl || state.feeds.statusJsonUrl || '').trim();
-    if(!url){ state.statusFeed = null; return; }
+  statusUrls(){
+    const urls = [];
+    const vault = (Vault.data.statusJsonUrl || '').trim();
+    const feed = (state.feeds.statusJsonUrl || FEEDS_DEFAULT.statusJsonUrl || '').trim();
+    const fallback = (state.feeds.statusJsonFallback || FEEDS_DEFAULT.statusJsonFallback || '').trim();
+    // Prefer same-origin /status.json, then vault override, then GitHub raw
+    if(feed) urls.push(feed);
+    if(vault && !urls.includes(vault)) urls.push(vault);
+    if(fallback && !urls.includes(fallback)) urls.push(fallback);
+    // absolute pages / custom domain
     try{
-      const r = await fetch(url + (url.includes('?')?'&':'?') + 't=' + Date.now());
-      if(!r.ok) throw new Error('status '+r.status);
-      state.statusFeed = await r.json();
-      // apply true uptime onto projects
-      const sites = state.statusFeed.sites || {};
-      PROJECTS.forEach(p=>{
-        const s = sites[p.id] || sites[p.repo];
-        if(!s) return;
-        const d = state.projects[p.id] || (state.projects[p.id]={id:p.id});
-        d.statusHttp = s.status;
-        d.statusMs = s.ms;
-        d.liveReachable = !!s.ok;
-        d.statusSource = 'status.json';
-      });
-    }catch(e){ state.statusFeed = { error: e.message }; }
+      const abs = new URL('/status.json', location.href).href;
+      if(!urls.includes(abs) && !urls.includes('/status.json')) urls.unshift('/status.json');
+    }catch(_){}
+    return [...new Set(urls.filter(Boolean))];
+  },
+  async statusJson(){
+    const urls = this.statusUrls();
+    if(!urls.length){ state.statusFeed = null; return; }
+    let lastErr = null;
+    for(const url of urls){
+      try{
+        const join = url.includes('?') ? '&' : (url.startsWith('http') || url.startsWith('/') ? '?' : '?');
+        const r = await fetch(url + join + 't=' + Date.now(), { cache:'no-store' });
+        if(!r.ok) throw new Error('status '+r.status);
+        state.statusFeed = await r.json();
+        state.statusFeed._loadedFrom = url;
+        const sites = state.statusFeed.sites || {};
+        PROJECTS.forEach(p=>{
+          const s = sites[p.id] || sites[p.repo];
+          if(!s || s.note === 'not-deployed') return;
+          const d = state.projects[p.id] || (state.projects[p.id]={id:p.id});
+          d.statusHttp = s.status;
+          d.statusMs = s.ms;
+          if(typeof s.ok === 'boolean'){
+            d.liveReachable = s.ok;
+            d.statusSource = 'status.json';
+          }
+        });
+        // merge satohash metrics from pinger if present
+        if(state.statusFeed.feeds?.satohashApi){
+          const api = state.statusFeed.feeds.satohashApi;
+          if(!state.satohash) state.satohash = {};
+          if(api.ok != null) state.satohash = Object.assign({}, state.satohash, { ok: api.ok, status: api.status, base: (api.healthUrl||'').replace(/\/health$/,'') });
+        }
+        if(state.statusFeed.feeds?.satohashMetrics){
+          state.satohash = Object.assign({}, state.satohash || {}, { metrics: state.statusFeed.feeds.satohashMetrics });
+        }
+        return;
+      }catch(e){ lastErr = e; }
+    }
+    state.statusFeed = { error: lastErr?.message || 'status.json unavailable' };
   },
   async satohashHealth(){
-    // Probe Satohash API backbone (default https://api.satohash.io/health).
-    // Site https://satohash.io is covered separately via PROJECTS checkLive / status.json.
+    // Probe Satohash API backbone (default https://api.satohash.io/health) + optional /metrics.
     const base = (Vault.data.satohashApi || state.feeds.satohashHealthUrl?.replace(/\/health$/,'') || 'https://api.satohash.io').replace(/\/$/,'');
+    const metricsUrl = state.feeds.satohashMetricsUrl || (base + '/metrics');
     try{
       const r = await fetch(base + '/health', { mode:'cors', cache:'no-store' });
       if(!r.ok) throw new Error('http '+r.status);
       let body = null;
       try{ body = await r.json(); }catch(_){ body = { raw: true }; }
-      state.satohash = { ok:true, status:r.status, body, base };
+      state.satohash = Object.assign({}, state.satohash || {}, { ok:true, status:r.status, body, base });
     }catch(e){
-      state.satohash = { ok:false, error: e.message, base };
+      state.satohash = Object.assign({}, state.satohash || {}, { ok:false, error: e.message, base });
     }
+    // Best-effort metrics (CORS may block; status-pinger embeds metrics into status.json)
+    try{
+      const r = await fetch(metricsUrl, { mode:'cors', cache:'no-store' });
+      if(r.ok){
+        const ct = r.headers.get('content-type')||'';
+        const metrics = ct.includes('json') ? await r.json() : { text: await r.text() };
+        state.satohash = Object.assign({}, state.satohash || {}, { metrics });
+      }
+    }catch(_){ /* ignore — offline or CORS */ }
   },
   paintHealthBar(){
     const sh = state.satohash;
@@ -681,17 +729,35 @@ const Feeds = {
   renderBanners(){
     const bb = document.getElementById('backbone-banner');
     if(bb){
-      const sh = state.satohash;
-      const health = sh ? (sh.ok ? `API health: OK (${sh.status||200})` : `API health: offline (${sh.error||'n/a'})`) : 'API health: not checked';
-      bb.innerHTML = `<strong style="color:var(--orange-2)">Satohash backbone</strong> — Shared OpenTimestamps service for the suite · free internal use · public API planned at <span class="mono">api.satohash.io</span>. Node verifies Bitcoin; LND settles Lightning. OTS create still uses calendars for MVP. <span class="mono">· ${health}</span>`;
+      const sh = state.satohash || {};
+      const health = sh.ok === true ? `API health: OK (${sh.status||200})` : sh.ok === false ? `API health: offline (${sh.error||'n/a'})` : 'API health: not checked';
+      const m = sh.metrics || {};
+      const metricBits = [];
+      // Flexible metric keys (whatever satohash publishes)
+      const pick = (...keys)=>{ for(const k of keys){ if(m[k]!=null && m[k]!=='') return m[k]; if(m.data && m.data[k]!=null) return m.data[k]; } return null; };
+      const stamps = pick('stamps_today','stampsToday','stamps_24h','total_stamps','stamps');
+      const pending = pick('pending','pending_stamps','pendingCount');
+      const confirmed = pick('confirmed','confirmed_stamps','confirmedCount');
+      if(stamps!=null) metricBits.push(`stamps: ${stamps}`);
+      if(pending!=null) metricBits.push(`pending: ${pending}`);
+      if(confirmed!=null) metricBits.push(`confirmed: ${confirmed}`);
+      const metricsLine = metricBits.length ? ` · <span class="mono">${metricBits.join(' · ')}</span>` : (m && Object.keys(m).length ? ` · <span class="mono">metrics loaded</span>` : ' · metrics pending (API or status-pinger)');
+      const statusAge = state.statusFeed?.updatedAt ? ` · status ${fmt.timeAgo(state.statusFeed.updatedAt)}` : '';
+      bb.innerHTML = `<strong style="color:var(--orange-2)">Satohash backbone</strong> — Shared OpenTimestamps for the suite · free internal · public API at <span class="mono">api.satohash.io</span>. Bitcoin node verifies; LND settles. <span class="mono">· ${health}</span>${metricsLine}<span class="mono">${statusAge}</span>`;
     }
     const fs = document.getElementById('feeds-status');
     if(fs){
       const parts = [];
       parts.push(state.registryLoaded ? 'registry: projects.json' : 'registry: embedded fallback');
-      if(Vault.data.statusJsonUrl || state.feeds.statusJsonUrl) parts.push(state.statusFeed?.error ? 'status.json: err' : state.statusFeed ? 'status.json: ok' : 'status.json: …');
-      else parts.push('status.json: not configured');
+      if(state.statusFeed && !state.statusFeed.error){
+        parts.push('status.json: ok' + (state.statusFeed._loadedFrom ? ' ('+state.statusFeed._loadedFrom+')' : ''));
+      } else if(state.statusFeed?.error){
+        parts.push('status.json: '+state.statusFeed.error);
+      } else {
+        parts.push('status.json: waiting for pinger');
+      }
       parts.push(state.satohash?.ok ? 'satohash: ok' : 'satohash: offline/pending');
+      parts.push(state.satohash?.metrics ? 'metrics: yes' : 'metrics: —');
       parts.push(state.nip05?.ok ? 'nip-05: ok' : 'nip-05: pending/err');
       fs.textContent = parts.join(' · ');
     }
@@ -741,6 +807,7 @@ const Pitch = {
           <div class="flex gap-2">
             <button onclick="Pitch.copyDeck()" class="btn-brand rounded px-3 py-2 text-sm">Copy deck MD</button>
             <button onclick="exportDiligence()" class="btn-ghost rounded px-3 py-2 text-sm">Diligence pack</button>
+            <button onclick="window.print()" class="btn-ghost rounded px-3 py-2 text-sm">Print / PDF</button>
             <button onclick="Pitch.close()" class="btn-ghost rounded px-3 py-2 text-sm">Exit (Esc)</button>
           </div>
         </div>

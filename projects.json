@@ -8,11 +8,12 @@
     "MARKETING-ONELINER.md", "docs/KIMI-HANDOFF.md"
   ],
   "feeds": {
-    "statusJsonUrl": "",
+    "statusJsonUrl": "/status.json",
+    "statusJsonFallback": "https://raw.githubusercontent.com/kitsboy/HQ/main/status.json",
     "satohashHealthUrl": "https://api.satohash.io/health",
     "satohashMetricsUrl": "https://api.satohash.io/metrics",
     "nip05Url": "https://giveabit.io/.well-known/nostr.json",
-    "note": "Override URLs in Vault (localStorage). Empty statusJsonUrl = client-side probes only."
+    "note": "Override in Vault. HQ tries /status.json then GitHub raw then Vault URL."
   },
   "projects": [
     {
