@@ -1,9 +1,18 @@
 <!DOCTYPE html>
+<!--
+  Give A Bit HQ v2.2 — ops + presentation shell for the suite.
+  PRESENTATION: Pitch mode (P), diligence pack export, investor metrics strip,
+    suite map, satohash backbone callout, NIP-05 agent checks, export deck md.
+  FEEDS (optional, Vault/config): status.json uptime, api.satohash.io/health,
+    projects.json + agents.json registry, GitHub Contents + Actions, LNbits balances.
+  SECRETS: NEVER in this file. Vault localStorage key sovereign_deck_vault_v1 only.
+  Safe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first.
+-->
 <html lang="en" data-theme="stone" data-density="comfy">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Give A Bit HQ v2</title>
+<title>Give A Bit HQ v2.2</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
@@ -108,6 +117,23 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--ink);box
 .pin-star{opacity:.4}.pin-star.on{opacity:1;color:var(--amber)}
 table thead th{position:sticky;top:0;z-index:1;background:var(--panel-2)}
 
+/* v2.2 pitch + identity + feeds */
+.pitch-root{position:fixed;inset:0;z-index:200;background:var(--void);overflow:auto;padding:24px 28px 40px}
+.pitch-root .pitch-hero{max-width:1100px;margin:0 auto}
+.pitch-metric{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:16px 18px;text-align:center}
+.pitch-metric .big{font-size:1.75rem;font-weight:700;font-family:'IBM Plex Mono',monospace}
+.pitch-metric .lbl{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-faint);margin-top:6px}
+.pitch-card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px 16px;border-top:3px solid var(--pc,#c45f00)}
+.pitch-card h3{margin:0 0 6px;font-size:1rem}
+.pitch-card p{margin:0;font-size:13px;color:var(--ink-dim);line-height:1.45}
+.backbone-banner{background:linear-gradient(90deg,rgba(138,90,0,.18),rgba(196,95,0,.08));border:1px solid rgba(138,90,0,.35);border-radius:4px;padding:10px 14px;font-size:12px}
+.nip-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:4px;background:var(--panel-2);margin-bottom:6px}
+.cors-banner{background:rgba(26,95,122,.12);border:1px solid rgba(26,95,122,.35);color:var(--sky);padding:8px 12px;font-size:12px;border-radius:4px}
+.investor-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-top:10px}
+.investor-strip .metric .big{font-size:1.15rem;font-weight:700;font-family:'IBM Plex Mono',monospace}
+body.pitch-active .topbar,body.pitch-active .fixed,body.pitch-active #view-tabs,body.pitch-active .site-footer{display:none!important}
+
+
 /* v2.1 visual + connection polish */
 body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);}
 .glass{box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 8px 24px -16px rgba(0,0,0,.18);}
@@ -150,7 +176,7 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
       <div class="icon-box sm" style="background:var(--orange);color:#fff"><i class="fa-solid fa-bolt"></i></div>
       <div>
         <div class="font-semibold text-[13px] leading-none" style="font-family:'IBM Plex Sans'">Give A Bit HQ</div>
-        <div class="text-[10px] text-[var(--ink-faint)]">v2.1 · connected ops</div>
+        <div class="text-[10px] text-[var(--ink-faint)]">v2.2 · pitch + feeds</div>
       </div>
     </div>
     <div class="divider"></div>
@@ -169,6 +195,8 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
       <button onclick="UI.cycleTheme()" class="btn-ghost rounded px-2 py-1" data-tip="Theme" title="Theme">◐</button>
       <button onclick="UI.cycleDensity()" class="btn-ghost rounded px-2 py-1" title="Density"> dens</button>
       <button onclick="UI.toggleLog()" class="btn-ghost rounded px-2 py-1" title="Event log"><i class="fa-solid fa-bell text-[10px]"></i></button>
+      <button onclick="Pitch.open()" class="btn-accent rounded px-2 py-1" title="Pitch mode (P)">Pitch</button>
+      <button onclick="exportDiligence()" class="btn-ghost rounded px-2 py-1" title="Diligence pack">Diligence</button>
       <button onclick="UI.help()" class="btn-ghost rounded px-2 py-1" title="Help">?</button>
       <button onclick="Dash.refreshAll(true)" class="btn-ghost rounded px-2 py-1" title="Refresh (r)"><i class="fa-solid fa-rotate-right text-[10px]"></i></button>
       <button onclick="Vault.openModal()" class="btn-ghost rounded px-2 py-1" title="Vault (v)"><i class="fa-solid fa-key text-[10px]"></i> Vault</button>
@@ -176,6 +204,7 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
   </div>
 </div>
 <div id="sys-banner" class="hidden max-w-[1680px] mx-auto px-3 pt-2"></div>
+<div id="cors-banner" class="hidden max-w-[1680px] mx-auto px-3 pt-2"></div>
 <div id="log-panel" class="hidden max-w-[1680px] mx-auto px-3 pt-2"></div>
 
 <!-- PORTFOLIO -->
@@ -380,7 +409,7 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
 
 <div class="max-w-[1680px] mx-auto px-3 site-footer">
   <div class="flex flex-wrap justify-between gap-2">
-    <span>Give A Bit HQ · v2.1 · credentials only in localStorage · Safe Harbour</span>
+    <span>Give A Bit HQ · v2.2 · credentials only in localStorage · Safe Harbour</span>
     <span class="mono flex flex-wrap gap-2">
       <span><kbd class="kbd">/</kbd> search</span>
       <span><kbd class="kbd">g</kbd> cards</span>
@@ -399,10 +428,13 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
     <button onclick="Bulk.open('readme')" class="btn-ghost rounded px-2.5 py-1.5 text-xs">README</button>
     <button onclick="exportReport()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Export TXT</button>
     <button onclick="exportJSON()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Export JSON</button>
+    <button onclick="exportDiligence()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Diligence</button>
+    <button onclick="Pitch.open()" class="btn-accent rounded px-2.5 py-1.5 text-xs">Pitch</button>
     <button onclick="Vault.openModal()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Config</button>
   </div>
 </div>
 
+<div id="pitch-root" class="pitch-root hidden"></div>
 <div id="toast-stack" class="fixed top-14 right-3 z-[100] flex flex-col gap-1.5 items-end"></div>
 <div id="drawer-backdrop" class="hidden fixed inset-0 z-50 modal-backdrop" onclick="Drawer.close(event)">
   <div id="drawer" class="slide-in absolute right-0 top-0 h-full w-[min(96vw,640px)] glass rounded-l overflow-y-auto p-4 border-l border-[var(--line)]" onclick="event.stopPropagation()"></div>
@@ -434,6 +466,18 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
         <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Refresh (sec)</label>
         <select id="vault-refresh" class="w-full rounded px-3 py-2 text-sm mono"><option value="30">30</option><option value="60" selected>60</option><option value="120">120</option></select>
       </div>
+      <div class="col-span-2">
+        <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">status.json URL (optional uptime feed)</label>
+        <input id="vault-status-url" class="w-full rounded px-3 py-2 text-sm mono" placeholder="https://…/status.json">
+      </div>
+      <div>
+        <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Satohash API base</label>
+        <input id="vault-satohash-api" class="w-full rounded px-3 py-2 text-sm mono" placeholder="https://api.satohash.io">
+      </div>
+      <div>
+        <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">NIP-05 JSON URL</label>
+        <input id="vault-nip05-url" class="w-full rounded px-3 py-2 text-sm mono" placeholder="https://giveabit.io/.well-known/nostr.json">
+      </div>
     </div>
     <div class="flex gap-2">
       <button onclick="Vault.save()" class="btn-brand rounded px-4 py-2 text-sm flex-1">Save vault</button>
@@ -459,38 +503,345 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
 
 <script>
 /* Give A Bit HQ v2 — secrets only in localStorage (sovereign_deck_vault_v1) */
-const PROJECTS = [
-  {id:'giveabit',name:'Give A Bit',repo:'giveabit',url:'https://giveabit.io',tagline:'Bitcoin Sovereignty, Education & Tools',wallet:'giveabit_main',deployed:true,icon:'fa-solid fa-seedling',category:'Foundation',color:'#c45f00',stack:['Nostr','Lightning','Education'],related:['satohash','katoa','sherpacarta']},
-  {id:'satohash',name:'Satohash',repo:'satohash',url:'https://satohash.io',tagline:'Stamp Documents on Bitcoin. Immutable Proof.',wallet:'satohash',deployed:true,icon:'fa-solid fa-stamp',category:'Proof',color:'#8a5a00',stack:['Bitcoin','Timestamps'],related:['giveabit']},
-  {id:'katoa',name:'Katoa',repo:'katoa',url:'https://katoa.org',tagline:'Zero-Fee Bitcoin Creator Platform · Lightning & Nostr',wallet:'katoa',deployed:true,icon:'fa-solid fa-feather-pointed',category:'Creator',color:'#1a5f7a',stack:['Lightning','Nostr'],related:['giveabit','sherpacarta']},
-  {id:'stranded',name:'Stranded',repo:'stranded',url:'https://stranded.giveabit.io',tagline:'Stranded Energy, Bitcoin Access, Stranded Value',wallet:'stranded',deployed:true,icon:'fa-solid fa-bolt-lightning',category:'Energy',color:'#1f6b3a',stack:['Energy','Bitcoin'],related:['giveabit']},
-  {id:'tadbuy',name:'Tadbuy',repo:'tadbuy',url:'https://tadbuy.giveabit.io',tagline:'Bitcoin-Native Ad Buying Platform',wallet:'tadbuy',deployed:true,icon:'fa-solid fa-bullhorn',category:'Ads',color:'#a32020',stack:['Ads','Lightning'],related:['giveabit','katoa']},
-  {id:'motopass',name:'MotoPass',repo:'motopass',url:'https://motopass.giveabit.io',tagline:'Bitcoin Sovereign Passports & Residency',wallet:'motopass',deployed:true,icon:'fa-solid fa-passport',category:'Identity',color:'#5c3d7a',stack:['Identity','Travel'],related:['giveabit','sherpacarta']},
-  {id:'sherpacarta',name:'SherpaCarta',repo:'sherpacarta',url:'https://sherpacarta.org',tagline:'Global Digital Magna Carta for the 21st Century',wallet:'sherpacarta',deployed:true,icon:'fa-solid fa-scroll',category:'Governance',color:'#6b4f2a',stack:['Nostr','Governance'],related:['giveabit','katoa','motopass']},
-  {id:'openstrata',name:'Hermes Strata',repo:'openstrata',url:'https://openstrata.giveabit.io',tagline:'Sovereign Strata Corporation Dashboard',wallet:'openstrata',deployed:true,icon:'fa-solid fa-building-columns',category:'Corp',color:'#2a4a5c',stack:['Corp','Dashboard'],related:['giveabit']},
-  {id:'btcminiscript',name:'BTC Miniscript',repo:'btcminiscript',url:null,tagline:'Miniscript tooling R&D',wallet:'kimi',deployed:false,icon:'fa-solid fa-flask',category:'R&D',color:'#5a574f',stack:['Bitcoin','Miniscript'],related:['giveabit']},
-];
-const AGENTS = [
-  {name:'Andrea',role:'Ops & Diligence',motto:'Trust, but verify on-chain.',nip05:'andrea@giveabit.io',repo:'giveabit',file:'agents/ANDREA.md',color:'#1f6b3a'},
-  {name:'Kimi',role:'Lead Orchestrator',motto:'Ship sovereign, ship often.',nip05:'kimi@giveabit.io',repo:'giveabit',file:'agents/KIMI.md',color:'#c45f00'},
-  {name:'Lenny',role:'Legal & Compliance',motto:'Freedom needs a paper trail.',nip05:'lenny@giveabit.io',repo:'giveabit',file:'agents/LENNY.md',color:'#5c3d7a'},
-  {name:'Mimi',role:'Design & Brand',motto:'Clarity is the brand.',nip05:'mimi@giveabit.io',repo:'giveabit',file:'agents/MIMI.md',color:'#a32020'},
-  {name:'Nova',role:'Infra & Deploys',motto:'Green means go.',nip05:'nova@giveabit.io',repo:'giveabit',file:'agents/NOVA.md',color:'#1a5f7a'},
-  {name:'Rosa',role:'Community & Nostr',motto:'Sovereignty is social.',nip05:'rosa@giveabit.io',repo:'giveabit',file:'agents/ROSA.md',color:'#8a5a00'},
-  {name:'Ziggy',role:'Growth & Marketing',motto:'Every sat tells a story.',nip05:'ziggy@giveabit.io',repo:'giveabit',file:'agents/ZIGGY.md',color:'#2a4a5c'},
-];
-const DOC_FILES = ['README.md','AGENTS.md','GROK-SESSION-PROTOCOL.md','SOURCE-OF-TRUTH.md','DILIGENCE.md','EXEC-SUMMARY.md','CHANGELOG.md','CONTRIBUTING.md','MARKETING-ONELINER.md','docs/KIMI-HANDOFF.md'];
-const GH_OWNER = 'kitsboy';
-const BRANCH_DEFAULTS = { openstrata: 'talent' };
 const VIEWS = ['grid','list','pipeline','analytics','network','activity','matrix','wallets','docs','agents'];
 
 const state = {
   projects:{}, view:'grid', filter:'all', ghRateRemaining:null, branches:{}, treeIndex:{},
-  pins: new Set(), history:[], log:[], theme:'stone', density:'comfy', refreshSec:60
+  pins: new Set(), history:[], log:[], theme:'stone', density:'comfy', refreshSec:60,
+  feeds:{}, nip05:{}, statusFeed:null, satohash:null, registryLoaded:false, corsHint:false
+};
+let PROJECTS = [];
+let AGENTS = [];
+let DOC_FILES = ['README.md','AGENTS.md','GROK-SESSION-PROTOCOL.md','SOURCE-OF-TRUTH.md','DILIGENCE.md','EXEC-SUMMARY.md','CHANGELOG.md','CONTRIBUTING.md','MARKETING-ONELINER.md','docs/KIMI-HANDOFF.md'];
+let GH_OWNER = 'kitsboy';
+let BRANCH_DEFAULTS = { openstrata: 'talent' };
+const FEEDS_DEFAULT = {
+  statusJsonUrl: '',
+  satohashHealthUrl: 'https://api.satohash.io/health',
+  satohashMetricsUrl: 'https://api.satohash.io/metrics',
+  nip05Url: 'https://giveabit.io/.well-known/nostr.json'
 };
 
 let btcUsdPrice = null;
 let refreshTimer = null;
+
+
+/* ---------- REGISTRY (projects.json / agents.json) ---------- */
+const FALLBACK = {
+  projects: [
+    {id:'giveabit',name:'Give A Bit',repo:'giveabit',url:'https://giveabit.io',tagline:'Bitcoin Sovereignty, Education & Tools',pitch:'The family hub — education, tools, and the Give A Bit namespace.',wallet:'giveabit_main',deployed:true,icon:'fa-solid fa-seedling',category:'Foundation',color:'#c45f00',stack:['Nostr','Lightning','Education'],related:['satohash','katoa','sherpacarta'],backbone:false},
+    {id:'satohash',name:'Satohash',repo:'satohash',url:'https://satohash.io',tagline:'Stamp Documents on Bitcoin. Immutable Proof.',pitch:'Shared OTS timestamp backbone for the suite — free internal, public API planned.',wallet:'satohash',deployed:true,icon:'fa-solid fa-stamp',category:'Proof',color:'#8a5a00',stack:['Bitcoin','OpenTimestamps'],related:['giveabit'],backbone:true},
+    {id:'katoa',name:'Katoa',repo:'katoa',url:'https://katoa.org',tagline:'Zero-Fee Bitcoin Creator Platform · Lightning & Nostr',pitch:'Creators on Lightning and Nostr — zero-fee rails.',wallet:'katoa',deployed:true,icon:'fa-solid fa-feather-pointed',category:'Creator',color:'#1a5f7a',stack:['Lightning','Nostr'],related:['giveabit','sherpacarta']},
+    {id:'stranded',name:'Stranded',repo:'stranded',url:'https://stranded.giveabit.io',tagline:'Stranded Energy, Bitcoin Access, Stranded Value',pitch:'Unlock stranded energy with Bitcoin access.',wallet:'stranded',deployed:true,icon:'fa-solid fa-bolt-lightning',category:'Energy',color:'#1f6b3a',stack:['Energy','Bitcoin'],related:['giveabit']},
+    {id:'tadbuy',name:'Tadbuy',repo:'tadbuy',url:'https://tadbuy.giveabit.io',tagline:'Bitcoin-Native Ad Buying Platform',pitch:'Ad buys settled in Bitcoin and Lightning.',wallet:'tadbuy',deployed:true,icon:'fa-solid fa-bullhorn',category:'Ads',color:'#a32020',stack:['Ads','Lightning'],related:['giveabit','katoa']},
+    {id:'motopass',name:'MotoPass',repo:'motopass',url:'https://motopass.giveabit.io',tagline:'Bitcoin Sovereign Passports & Residency',pitch:'Sovereign passports and residency programs.',wallet:'motopass',deployed:true,icon:'fa-solid fa-passport',category:'Identity',color:'#5c3d7a',stack:['Identity','Travel'],related:['giveabit','sherpacarta']},
+    {id:'sherpacarta',name:'SherpaCarta',repo:'sherpacarta',url:'https://sherpacarta.org',tagline:'Global Digital Magna Carta for the 21st Century',pitch:'Governance charter for digital citizens.',wallet:'sherpacarta',deployed:true,icon:'fa-solid fa-scroll',category:'Governance',color:'#6b4f2a',stack:['Nostr','Governance'],related:['giveabit','katoa','motopass']},
+    {id:'openstrata',name:'Hermes Strata',repo:'openstrata',url:'https://openstrata.giveabit.io',tagline:'Sovereign Strata Corporation Dashboard',pitch:'Corporate strata dashboard for sovereign ops.',wallet:'openstrata',deployed:true,icon:'fa-solid fa-building-columns',category:'Corp',color:'#2a4a5c',stack:['Corp','Dashboard'],related:['giveabit']},
+    {id:'btcminiscript',name:'BTC Miniscript',repo:'btcminiscript',url:null,tagline:'Miniscript tooling R&D',pitch:'R&D on Bitcoin Miniscript tooling.',wallet:'kimi',deployed:false,icon:'fa-solid fa-flask',category:'R&D',color:'#5a574f',stack:['Bitcoin','Miniscript'],related:['giveabit']},
+  ],
+  agents: [
+    {name:'Andrea',role:'Ops & Diligence',motto:'Trust, but verify on-chain.',nip05:'andrea@giveabit.io',repo:'giveabit',file:'agents/ANDREA.md',color:'#1f6b3a',lead:false},
+    {name:'Kimi',role:'Lead Orchestrator',motto:'Ship sovereign, ship often.',nip05:'kimi@giveabit.io',repo:'giveabit',file:'agents/KIMI.md',color:'#c45f00',lead:true},
+    {name:'Lenny',role:'Legal & Compliance',motto:'Freedom needs a paper trail.',nip05:'lenny@giveabit.io',repo:'giveabit',file:'agents/LENNY.md',color:'#5c3d7a',lead:false},
+    {name:'Mimi',role:'Design & Brand',motto:'Clarity is the brand.',nip05:'mimi@giveabit.io',repo:'giveabit',file:'agents/MIMI.md',color:'#a32020',lead:false},
+    {name:'Nova',role:'Infra & Deploys',motto:'Green means go.',nip05:'nova@giveabit.io',repo:'giveabit',file:'agents/NOVA.md',color:'#1a5f7a',lead:false},
+    {name:'Rosa',role:'Community & Nostr',motto:'Sovereignty is social.',nip05:'rosa@giveabit.io',repo:'giveabit',file:'agents/ROSA.md',color:'#8a5a00',lead:false},
+    {name:'Ziggy',role:'Growth & Marketing',motto:'Every sat tells a story.',nip05:'ziggy@giveabit.io',repo:'giveabit',file:'agents/ZIGGY.md',color:'#2a4a5c',lead:false},
+  ]
+};
+
+async function loadRegistry(){
+  try{
+    const [pr, ar] = await Promise.all([
+      fetch('projects.json?t='+Date.now()).then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch('agents.json?t='+Date.now()).then(r=>r.ok?r.json():null).catch(()=>null),
+    ]);
+    if(pr && pr.projects){
+      PROJECTS = pr.projects;
+      if(pr.ghOwner) GH_OWNER = pr.ghOwner;
+      if(pr.branchDefaults) BRANCH_DEFAULTS = pr.branchDefaults;
+      if(pr.docFiles) DOC_FILES = pr.docFiles;
+      if(pr.feeds) state.feeds = Object.assign({}, FEEDS_DEFAULT, pr.feeds);
+      state.registryLoaded = true;
+    } else {
+      PROJECTS = FALLBACK.projects.slice();
+      state.feeds = Object.assign({}, FEEDS_DEFAULT);
+    }
+    if(ar && ar.agents){
+      AGENTS = ar.agents;
+      if(ar.nip05Url) state.feeds.nip05Url = ar.nip05Url;
+    } else AGENTS = FALLBACK.agents.slice();
+  }catch(e){
+    PROJECTS = FALLBACK.projects.slice();
+    AGENTS = FALLBACK.agents.slice();
+    state.feeds = Object.assign({}, FEEDS_DEFAULT);
+  }
+  if(!PROJECTS.length){ PROJECTS = FALLBACK.projects.slice(); AGENTS = FALLBACK.agents.slice(); }
+}
+
+/* ---------- EXTERNAL FEEDS (public only) ---------- */
+const Feeds = {
+  async all(){
+    await Promise.all([this.statusJson(), this.satohashHealth(), this.verifyNip05(false)]);
+    this.renderBanners();
+  },
+  async statusJson(){
+    const url = (Vault.data.statusJsonUrl || state.feeds.statusJsonUrl || '').trim();
+    if(!url){ state.statusFeed = null; return; }
+    try{
+      const r = await fetch(url + (url.includes('?')?'&':'?') + 't=' + Date.now());
+      if(!r.ok) throw new Error('status '+r.status);
+      state.statusFeed = await r.json();
+      // apply true uptime onto projects
+      const sites = state.statusFeed.sites || {};
+      PROJECTS.forEach(p=>{
+        const s = sites[p.id] || sites[p.repo];
+        if(!s) return;
+        const d = state.projects[p.id] || (state.projects[p.id]={id:p.id});
+        d.statusHttp = s.status;
+        d.statusMs = s.ms;
+        d.liveReachable = !!s.ok;
+        d.statusSource = 'status.json';
+      });
+    }catch(e){ state.statusFeed = { error: e.message }; }
+  },
+  async satohashHealth(){
+    const base = (Vault.data.satohashApi || 'https://api.satohash.io').replace(/\/$/,'');
+    try{
+      const r = await fetch(base + '/health', { mode:'cors', cache:'no-store' });
+      if(!r.ok) throw new Error('http '+r.status);
+      let body = null;
+      try{ body = await r.json(); }catch(_){ body = { raw: true }; }
+      state.satohash = { ok:true, status:r.status, body, base };
+    }catch(e){
+      state.satohash = { ok:false, error: e.message, base };
+    }
+  },
+  async verifyNip05(manual){
+    const url = (Vault.data.nip05Url || state.feeds.nip05Url || FEEDS_DEFAULT.nip05Url);
+    try{
+      const r = await fetch(url + (url.includes('?')?'&':'?')+'t='+Date.now(), { cache:'no-store' });
+      if(!r.ok) throw new Error('http '+r.status);
+      const j = await r.json();
+      const names = (j.names || j);
+      state.nip05 = { ok:true, url, names: typeof names === 'object' ? names : {}, raw:j };
+      this.renderNip05();
+      if(manual) toast('NIP-05 re-checked','success');
+    }catch(e){
+      state.nip05 = { ok:false, error:e.message, url };
+      this.renderNip05();
+      if(manual) toast('NIP-05 failed: '+e.message,'error');
+    }
+  },
+  renderNip05(){
+    const panel = document.getElementById('nip05-panel');
+    const list = document.getElementById('nip05-list');
+    if(!panel||!list) return;
+    panel.classList.remove('hidden');
+    const names = state.nip05.names || {};
+    list.innerHTML = AGENTS.map(a=>{
+      const local = (a.nip05||'').split('@')[0];
+      const has = state.nip05.ok && names && (names[local] != null || names[a.nip05] != null);
+      return `<div class="nip-row">
+        <div><span class="font-semibold">${a.name}</span> <span class="mono text-[10px] text-[var(--ink-faint)]">${a.nip05}</span>
+        ${a.lead?'<span class="status-pill amber ml-1">lead</span>':''}</div>
+        <span class="status-pill ${has?'green':state.nip05.ok?'red':'gray'}">${has?'verified':state.nip05.ok?'missing':'unchecked'}</span>
+      </div>`;
+    }).join('') + (state.nip05.ok?'':`<div class="text-[11px] text-[var(--ink-faint)]">Could not load ${state.nip05.url||'NIP-05'} — ${state.nip05.error||''}</div>`);
+  },
+  renderBanners(){
+    const bb = document.getElementById('backbone-banner');
+    if(bb){
+      const sh = state.satohash;
+      const health = sh ? (sh.ok ? `API health: OK (${sh.status||200})` : `API health: offline (${sh.error||'n/a'})`) : 'API health: not checked';
+      bb.innerHTML = `<strong style="color:var(--orange-2)">Satohash backbone</strong> — Shared OpenTimestamps service for the suite · free internal use · public API planned at <span class="mono">api.satohash.io</span>. Node verifies Bitcoin; LND settles Lightning. OTS create still uses calendars for MVP. <span class="mono">· ${health}</span>`;
+    }
+    const fs = document.getElementById('feeds-status');
+    if(fs){
+      const parts = [];
+      parts.push(state.registryLoaded ? 'registry: projects.json' : 'registry: embedded fallback');
+      if(Vault.data.statusJsonUrl || state.feeds.statusJsonUrl) parts.push(state.statusFeed?.error ? 'status.json: err' : state.statusFeed ? 'status.json: ok' : 'status.json: …');
+      else parts.push('status.json: not configured');
+      parts.push(state.satohash?.ok ? 'satohash: ok' : 'satohash: offline/pending');
+      parts.push(state.nip05?.ok ? 'nip-05: ok' : 'nip-05: pending/err');
+      fs.textContent = parts.join(' · ');
+    }
+    // CORS hint if keys set but no wallets ok
+    const keys = Object.values(Vault.data.wallets||{}).filter(v=>v&&v.length>10).length;
+    const anyOk = Object.values(state.projects).some(p=>p.walletOk);
+    const cors = document.getElementById('cors-banner');
+    if(cors){
+      if(keys>0 && !anyOk){
+        cors.classList.remove('hidden');
+        cors.innerHTML = `<div class="cors-banner mono">Wallet keys are in Vault but balances are empty — almost always <strong>CORS/network</strong> (static HTML → LNbits). Fix on the node (allow origin / open on tailnet), not by pasting keys into this HTML file.</div>`;
+        state.corsHint = true;
+      } else {
+        cors.classList.add('hidden');
+        state.corsHint = false;
+      }
+    }
+  }
+};
+
+/* ---------- PITCH MODE ---------- */
+const Pitch = {
+  open(){
+    document.body.classList.add('pitch-active');
+    const root = document.getElementById('pitch-root');
+    root.classList.remove('hidden');
+    let total=0, live=0, health=0, issues=0, ciOk=0, ciFail=0;
+    PROJECTS.forEach(p=>{
+      const d=state.projects[p.id]||{};
+      if(d.walletOk) total+=d.balanceSats||0;
+      if(d.liveReachable) live++;
+      health+=healthScore(d);
+      issues+=d.issues||0;
+      if(d.actionsStatus==='success') ciOk++;
+      if(d.actionsStatus==='failure') ciFail++;
+    });
+    const avg = Math.round(health/Math.max(PROJECTS.length,1));
+    const usd = btcUsdPrice?fmt.usd(total/1e8*btcUsdPrice):'$—';
+    root.innerHTML = `
+      <div class="pitch-hero">
+        <div class="flex justify-between items-start mb-6 flex-wrap gap-3">
+          <div>
+            <div class="text-[11px] mono uppercase tracking-[0.16em] text-[var(--ink-faint)]">Give A Bit · Safe Harbour</div>
+            <h1 class="text-3xl font-bold mt-1" style="font-family:'IBM Plex Sans'">Bitcoin sovereignty suite</h1>
+            <p class="text-sm text-[var(--ink-dim)] mt-2 max-w-xl">Compartmentalized products. One ops glass. Lightning wallets · GitHub ship path · OpenTimestamps backbone · named Nostr operators.</p>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="Pitch.copyDeck()" class="btn-brand rounded px-3 py-2 text-sm">Copy deck MD</button>
+            <button onclick="exportDiligence()" class="btn-ghost rounded px-3 py-2 text-sm">Diligence pack</button>
+            <button onclick="Pitch.close()" class="btn-ghost rounded px-3 py-2 text-sm">Exit (Esc)</button>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
+          <div class="pitch-metric"><div class="big">${fmt.sats(total)}</div><div class="lbl">Treasury sats</div></div>
+          <div class="pitch-metric"><div class="big">${usd}</div><div class="lbl">USD (spot)</div></div>
+          <div class="pitch-metric"><div class="big">${live}/${PROJECTS.filter(p=>p.deployed).length}</div><div class="lbl">Live sites</div></div>
+          <div class="pitch-metric"><div class="big">${avg}</div><div class="lbl">Avg health</div></div>
+          <div class="pitch-metric"><div class="big">${ciOk}/${ciFail}</div><div class="lbl">CI ok / fail</div></div>
+          <div class="pitch-metric"><div class="big">${issues}</div><div class="lbl">Open issues</div></div>
+        </div>
+        <div class="backbone-banner mb-5"><strong>Satohash</strong> — shared OpenTimestamps backbone for the family · free internal · public API planned · Bitcoin node verifies, LND settles.</div>
+        <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Suite map</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+          ${PROJECTS.map(p=>{
+            const d=state.projects[p.id]||{}; const s=statusMeta(d.status);
+            return `<div class="pitch-card" style="--pc:${p.color}">
+              <div class="flex justify-between items-start gap-2">
+                <h3>${p.name}</h3>
+                <span class="status-pill ${s.dot}">${s.label}</span>
+              </div>
+              <p>${p.pitch||p.tagline}</p>
+              <div class="mt-2 text-[10px] mono text-[var(--ink-faint)]">${p.category}${p.backbone?' · BACKBONE':''} · ${d.walletOk?fmt.sats(d.balanceSats)+' sats':'—'}</div>
+            </div>`;
+          }).join('')}
+        </div>
+        <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Operators (NIP-05)</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mb-6">
+          ${AGENTS.map(a=>{
+            const local=(a.nip05||'').split('@')[0];
+            const names=state.nip05.names||{};
+            const has=state.nip05.ok && names[local]!=null;
+            return `<div class="pitch-card" style="--pc:${a.color}">
+              <h3>${a.name}${a.lead?' · Lead':''}</h3>
+              <p>${a.role} — ${a.motto}</p>
+              <div class="mt-2 mono text-[10px]">${a.nip05} · ${has?'✓': '·'}</div>
+            </div>`;
+          }).join('')}
+        </div>
+        <p class="text-xs text-[var(--ink-faint)] mono">Safe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first · Generated ${new Date().toISOString()}</p>
+      </div>`;
+  },
+  close(){
+    document.body.classList.remove('pitch-active');
+    document.getElementById('pitch-root').classList.add('hidden');
+  },
+  copyDeck(){
+    let total=0; PROJECTS.forEach(p=>{ const d=state.projects[p.id]||{}; if(d.walletOk) total+=d.balanceSats||0; });
+    const lines = [
+      '# Give A Bit — Suite Deck',
+      '',
+      `Generated: ${new Date().toISOString()}`,
+      `Treasury: ${fmt.sats(total)} sats` + (btcUsdPrice?` (${fmt.usd(total/1e8*btcUsdPrice)})`:''),
+      '',
+      '## Products',
+      ...PROJECTS.map(p=>{
+        const d=state.projects[p.id]||{};
+        return `- **${p.name}** — ${p.pitch||p.tagline} _(status: ${statusMeta(d.status).label})_`;
+      }),
+      '',
+      '## Backbone',
+      '- **Satohash** — OpenTimestamps for the suite; free internal; public API planned',
+      '',
+      '## Operators',
+      ...AGENTS.map(a=>`- ${a.name} (${a.role}) — \`${a.nip05}\`${a.lead?' **Lead**':''}`),
+      '',
+      'Safe Harbour · Give A Bit family · Bitcoin sovereignty first.',
+    ];
+    navigator.clipboard?.writeText(lines.join('\n')).then(()=>toast('Deck markdown copied','success'));
+  }
+};
+
+function exportDiligence(){
+  let total=0;
+  const rows = PROJECTS.map(p=>{
+    const d=state.projects[p.id]||{};
+    if(d.walletOk) total+=d.balanceSats||0;
+    const docs = DOC_FILES.map(f=>`  - [ ] ${f}`).join('\n');
+    return [
+      `## ${p.name}`,
+      `- Repo: kitsboy/${p.repo}`,
+      `- URL: ${p.url||'n/a'}`,
+      `- Category: ${p.category}`,
+      `- Status: ${statusMeta(d.status).label}`,
+      `- Health: ${healthScore(d)}/100`,
+      `- Live: ${d.liveReachable===true?'yes':d.liveReachable===false?'no':'n/a'}${d.statusMs!=null?' ('+d.statusMs+'ms)':''}`,
+      `- Wallet: ${d.walletOk?fmt.sats(d.balanceSats)+' sats':'not synced'}`,
+      `- Last commit: ${fmt.short(d.sha)} — ${(d.commitMsg||'—').replace(/\n/g,' ')}`,
+      `- CI: ${fmt.actions(d.actionsStatus)}`,
+      `- Language: ${d.language||'—'} · Issues: ${d.issues??'—'}`,
+      `- Pitch: ${p.pitch||p.tagline}`,
+      `- Docs checklist:`,
+      docs,
+      ''
+    ].join('\n');
+  }).join('\n');
+  const nip = AGENTS.map(a=>{
+    const local=(a.nip05||'').split('@')[0];
+    const names=state.nip05.names||{};
+    const has=state.nip05.ok && names[local]!=null;
+    return `- ${a.nip05}: ${has?'VERIFIED':'unchecked/missing'}`;
+  }).join('\n');
+  const md = [
+    '# Give A Bit — Diligence Pack',
+    `Generated: ${new Date().toString()}`,
+    '',
+    '## Portfolio snapshot',
+    `- Total sats: ${fmt.sats(total)}`,
+    `- USD: ${btcUsdPrice?fmt.usd(total/1e8*btcUsdPrice):'—'}`,
+    `- BTC/USD: ${btcUsdPrice||'—'}`,
+    `- Projects: ${PROJECTS.length} · Agents: ${AGENTS.length}`,
+    `- Satohash API: ${state.satohash?.ok?'healthy':'offline/unknown'}`,
+    `- status.json: ${state.statusFeed && !state.statusFeed.error ? 'loaded' : 'not configured or error'}`,
+    '',
+    '## NIP-05',
+    nip,
+    '',
+    '## Per-project',
+    rows,
+    '---',
+    'Safe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first.',
+    'Secrets are never included in this pack.',
+  ].join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([md],{type:'text/markdown'}));
+  a.download=`giveabit-diligence-${new Date().toISOString().slice(0,10)}.md`;
+  a.click();
+  toast('Diligence pack downloaded','success');
+}
+
 
 /* ---------- UI chrome ---------- */
 const UI = {
@@ -521,7 +872,7 @@ const UI = {
     document.getElementById('help-body').innerHTML = [
       ['/','Command search'],['g','Cards'],['l','List'],['p','Pipeline'],['y','Analytics'],
       ['n','Network'],['t','Activity'],['m','Matrix'],['w','Wallets'],['d','Docs'],['a','Agents'],
-      ['r','Refresh'],['v','Vault'],['?','This help'],['esc','Close overlays'],
+      ['r','Refresh'],['v','Vault'],['?','This help'],['P','Pitch mode'],['Shift+D','—'],['esc','Close overlays'],
     ].map(([k,v])=>`<span class="k">${k}</span><span>${v}</span>`).join('');
     document.getElementById('help-backdrop').classList.remove('hidden');
   },
@@ -570,7 +921,7 @@ const fmt = {
 /* ---------- VAULT (same key as v1) ---------- */
 const Vault = {
   KEY: 'sovereign_deck_vault_v1',
-  data: { ghToken:'', nodeUrl:'https://vmi3446772.tailb672ac.ts.net', wallets:{}, fxSource:'coingecko', refreshSec:60 },
+  data: { ghToken:'', nodeUrl:'https://vmi3446772.tailb672ac.ts.net', wallets:{}, fxSource:'coingecko', refreshSec:60, statusJsonUrl:'', satohashApi:'https://api.satohash.io', nip05Url:'https://giveabit.io/.well-known/nostr.json' },
   load(){
     try{ const raw=localStorage.getItem(this.KEY); if(raw) this.data=Object.assign(this.data,JSON.parse(raw)); }catch(e){}
     try{
@@ -591,6 +942,9 @@ const Vault = {
     document.getElementById('vault-node-url').value = this.data.nodeUrl||'';
     document.getElementById('vault-fx-source').value = this.data.fxSource||'coingecko';
     document.getElementById('vault-refresh').value = String(this.data.refreshSec||60);
+    const su=document.getElementById('vault-status-url'); if(su) su.value=this.data.statusJsonUrl||'';
+    const sa=document.getElementById('vault-satohash-api'); if(sa) sa.value=this.data.satohashApi||'https://api.satohash.io';
+    const nu=document.getElementById('vault-nip05-url'); if(nu) nu.value=this.data.nip05Url||FEEDS_DEFAULT.nip05Url;
     document.getElementById('vault-node-note').textContent = this.data.nodeUrl||'';
     const wallets = PROJECTS.reduce((a,p)=>{ if(!a.includes(p.wallet)) a.push(p.wallet); return a; },[]);
     document.getElementById('vault-wallet-rows').innerHTML = wallets.map(w=>`
@@ -605,6 +959,9 @@ const Vault = {
     this.data.nodeUrl = document.getElementById('vault-node-url').value.trim()||this.data.nodeUrl;
     this.data.fxSource = document.getElementById('vault-fx-source').value;
     this.data.refreshSec = parseInt(document.getElementById('vault-refresh').value,10)||60;
+    const su=document.getElementById('vault-status-url'); if(su) this.data.statusJsonUrl=su.value.trim();
+    const sa=document.getElementById('vault-satohash-api'); if(sa) this.data.satohashApi=sa.value.trim()||'https://api.satohash.io';
+    const n5=document.getElementById('vault-nip05-url'); if(n5) this.data.nip05Url=n5.value.trim()||FEEDS_DEFAULT.nip05Url;
     document.querySelectorAll('[data-wallet-key]').forEach(inp=>{ this.data.wallets[inp.dataset.walletKey]=inp.value.trim(); });
     this.persist();
     this.updateStatusChip();
@@ -616,7 +973,7 @@ const Vault = {
   clear(){
     if(!confirm('Wipe vault on this browser?')) return;
     localStorage.removeItem(this.KEY);
-    this.data = { ghToken:'', nodeUrl:'https://vmi3446772.tailb672ac.ts.net', wallets:{}, fxSource:'coingecko', refreshSec:60 };
+    this.data = { ghToken:'', nodeUrl:'https://vmi3446772.tailb672ac.ts.net', wallets:{}, fxSource:'coingecko', refreshSec:60, statusJsonUrl:'', satohashApi:'https://api.satohash.io', nip05Url:'https://giveabit.io/.well-known/nostr.json' };
     toast('Vault wiped','error');
     this.updateStatusChip();
     this.openModal();
@@ -966,10 +1323,14 @@ const Dash = {
     if(manual) toast('Refreshing…','info');
     await this.fetchPrice();
     await Promise.all(PROJECTS.map(p=>this.refreshProject(p)));
+    await Feeds.all();
+    // recompute status after status.json may have set liveReachable
+    PROJECTS.forEach(p=>{ const d=state.projects[p.id]; if(d) d.status=computeStatus(p,d); });
     this.snapshot();
     this.render();
     this.renderPortfolio();
     this.renderTicker();
+    this.renderInvestorStrip();
     Charts.all();
     if(state.view==='network') Net.redraw();
     if(state.view==='activity') renderActivity();
@@ -1084,6 +1445,31 @@ const Dash = {
     ];
     const ks=document.getElementById('kpi-strip');
     if(ks) ks.innerHTML=kpis.map(([l,v])=>`<div class="metric"><div class="text-[10px] text-[var(--ink-faint)] uppercase">${l}</div><div class="font-semibold mono text-sm mt-0.5">${v}</div></div>`).join('');
+  },
+  renderInvestorStrip(){
+    const el=document.getElementById('investor-strip'); if(!el) return;
+    let total=0,live=0,health=0,issues=0,ciOk=0,ciFail=0,synced=0;
+    PROJECTS.forEach(p=>{
+      const d=state.projects[p.id]||{};
+      if(d.walletOk){ total+=d.balanceSats||0; synced++; }
+      if(d.liveReachable) live++;
+      health+=healthScore(d);
+      issues+=d.issues||0;
+      if(d.actionsStatus==='success') ciOk++;
+      if(d.actionsStatus==='failure') ciFail++;
+    });
+    const avg=Math.round(health/Math.max(PROJECTS.length,1));
+    const cells=[
+      ['Treasury',fmt.sats(total)+' sats'],
+      ['USD',btcUsdPrice?fmt.usd(total/1e8*btcUsdPrice):'—'],
+      ['Live',`${live}/${PROJECTS.filter(p=>p.deployed).length}`],
+      ['Health',String(avg)],
+      ['CI ok/fail',`${ciOk}/${ciFail}`],
+      ['Issues',String(issues)],
+      ['Wallets',`${synced}/${PROJECTS.length}`],
+      ['BTC',btcUsdPrice?'$'+new Intl.NumberFormat('en-US',{maximumFractionDigits:0}).format(btcUsdPrice):'—'],
+    ];
+    el.innerHTML=cells.map(([l,v])=>`<div class="metric"><div class="text-[10px] text-[var(--ink-faint)] uppercase">${l}</div><div class="big mt-0.5">${v}</div></div>`).join('');
   },
   renderTicker(){
     const items=PROJECTS.map(p=>{
@@ -1266,18 +1652,24 @@ function renderPipeline(){
 }
 
 function renderAgents(){
-  document.getElementById('view-agents').innerHTML=AGENTS.map(a=>`
+  document.getElementById('view-agents').innerHTML=AGENTS.map(a=>{
+    const local=(a.nip05||'').split('@')[0];
+    const names=state.nip05.names||{};
+    const has=state.nip05.ok && names[local]!=null;
+    return `
     <div class="glass glass-hover rounded p-3.5 cursor-pointer card-border" style="--pc:${a.color}" onclick="Docs.openAgent('${a.repo}','${a.file}','${a.name}')">
       <div class="flex items-center gap-2.5 mb-2">
         <div class="icon-box" style="background:${a.color}">${a.name[0]}</div>
-        <div><div class="font-semibold">${a.name}</div><div class="text-xs text-[var(--ink-dim)]">${a.role}</div></div>
+        <div><div class="font-semibold">${a.name}${a.lead?' <span class="status-pill amber">lead</span>':''}</div>
+        <div class="text-xs text-[var(--ink-dim)]">${a.role}</div></div>
       </div>
       <p class="text-sm text-[var(--ink-dim)] mb-2">"${a.motto}"</p>
       <div class="flex justify-between text-[11px] mono pt-2 border-t border-[var(--line)]">
-        <span class="text-[var(--ink-faint)]">${a.nip05}</span><span>edit →</span>
+        <span class="text-[var(--ink-faint)]">${a.nip05}</span>
+        <span class="status-pill ${has?'green':'gray'}">${has?'nip-05':'?'}</span>
       </div>
-      <div class="text-[10px] mono text-[var(--ink-faint)] mt-1">${a.file}</div>
-    </div>`).join('');
+      <div class="text-[10px] mono text-[var(--ink-faint)] mt-1">${a.file} · edit →</div>
+    </div>`;}).join('');
 }
 
 function renderActivity(){
@@ -1334,7 +1726,7 @@ function renderWallets(){
       <td class="px-3 py-2 font-medium" style="border-left:3px solid ${p.color};padding-left:8px">${p.name}</td>
       <td class="px-3 py-2">${p.wallet}</td>
       <td class="px-3 py-2">${Vault.hasWallet(p.wallet)?'<span class="status-pill green">set</span>':'<span class="status-pill gray">empty</span>'}</td>
-      <td class="px-3 py-2 font-semibold">${d.walletOk?fmt.sats(sats):'—'}</td>
+      <td class="px-3 py-2 font-semibold">${d.walletOk?fmt.sats(sats):'—'}${d.prevSats!=null&&d.walletOk?` <span class="text-[10px] ${sats>=(d.prevSats||0)?'delta-up':'delta-dn'}">(${sats-(d.prevSats||0)>=0?'+':''}${fmt.sats(sats-(d.prevSats||0))})</span>`:''}</td>
       <td class="px-3 py-2">${d.walletOk&&btcUsdPrice?fmt.usd(fmt.usdFromSats(sats)):'—'}</td>
       <td class="px-3 py-2 w-40"><div class="bar-track"><div class="bar-fill" style="width:${d.walletOk?pct:0}%;background:${p.color}"></div></div><span class="text-[10px] text-[var(--ink-faint)]">${d.walletOk?pct+'%':'—'}</span></td>
     </tr>`;
@@ -1625,27 +2017,32 @@ document.querySelectorAll('.filter-chip').forEach(c=>c.addEventListener('click',
 }));
 document.addEventListener('keydown',e=>{
   if(e.key==='/'&&!isTyping()){ e.preventDefault(); Search.open(); }
-  if(e.key==='Escape'){ Search.close({target:{id:'search-overlay'}}); Drawer.close({target:{id:'drawer-backdrop'}}); Bulk.close({target:{id:'bulk-backdrop'}}); Vault.closeModal({target:{id:'vault-backdrop'}}); document.getElementById('help-backdrop').classList.add('hidden'); }
+  if(e.key==='Escape'){ Search.close({target:{id:'search-overlay'}}); Drawer.close({target:{id:'drawer-backdrop'}}); Bulk.close({target:{id:'bulk-backdrop'}}); Vault.closeModal({target:{id:'vault-backdrop'}}); document.getElementById('help-backdrop').classList.add('hidden'); Pitch.close(); }
   if(isTyping()) return;
   const map={g:'grid',l:'list',p:'pipeline',y:'analytics',n:'network',t:'activity',m:'matrix',w:'wallets',d:'docs',a:'agents'};
   if(map[e.key]) switchView(map[e.key]);
   if(e.key==='r'){ e.preventDefault(); Dash.refreshAll(true); }
   if(e.key==='v') Vault.openModal();
   if(e.key==='?') UI.help();
+  if(e.key==='P') Pitch.open();
 });
 
 /* BOOT */
-Vault.load();
-Dash.loadCache();
-Dash.render();
-Dash.renderPortfolio();
-Dash.renderTicker();
-Charts.all();
-UI.clock(); setInterval(UI.clock,1000);
-Dash.refreshAll();
-scheduleRefresh();
-if(!Vault.hasGh()&&Vault.keyCount()===0) setTimeout(()=>toast('Open Vault to connect keys','info'),700);
-console.log('%cGive A Bit HQ v2.1','color:#c45f00;font-weight:bold');
+(async function boot(){
+  Vault.load();
+  await loadRegistry();
+  Dash.loadCache();
+  Dash.render();
+  Dash.renderPortfolio();
+  Dash.renderTicker();
+  if(typeof Dash.renderInvestorStrip==='function') Dash.renderInvestorStrip();
+  Charts.all();
+  UI.clock(); setInterval(UI.clock,1000);
+  await Dash.refreshAll();
+  scheduleRefresh();
+  if(!Vault.hasGh()&&Vault.keyCount()===0) setTimeout(()=>toast('Open Vault to connect keys · Pitch with P','info'),700);
+  console.log('%cGive A Bit HQ v2.2 — pitch + feeds + registry','color:#c45f00;font-weight:bold');
+})();
 </script>
 </body>
 </html>

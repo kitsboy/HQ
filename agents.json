@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "namespace": "giveabit.io",
+  "nip05Url": "https://giveabit.io/.well-known/nostr.json",
+  "agents": [
+    {
+      "name": "Andrea",
+      "role": "Ops & Diligence",
+      "motto": "Trust, but verify on-chain.",
+      "nip05": "andrea@giveabit.io",
+      "repo": "giveabit",
+      "file": "agents/ANDREA.md",
+      "color": "#1f6b3a",
+      "lead": false
+    },
+    {
+      "name": "Kimi",
+      "role": "Lead Orchestrator",
+      "motto": "Ship sovereign, ship often.",
+      "nip05": "kimi@giveabit.io",
+      "repo": "giveabit",
+      "file": "agents/KIMI.md",
+      "color": "#c45f00",
+      "lead": true
+    },
+    {
+      "name": "Lenny",
+      "role": "Legal & Compliance",
+      "motto": "Freedom needs a paper trail.",
+      "nip05": "lenny@giveabit.io",
+      "repo": "giveabit",
+      "file": "agents/LENNY.md",
+      "color": "#5c3d7a",
+      "lead": false
+    },
+    {
+      "name": "Mimi",
+      "role": "Design & Brand",
+      "motto": "Clarity is the brand.",
+      "nip05": "mimi@giveabit.io",
+      "repo": "giveabit",
+      "file": "agents/MIMI.md",
+      "color": "#a32020",
+      "lead": false
+    },
+    {
+      "name": "Nova",
+      "role": "Infra & Deploys",
+      "motto": "Green means go.",
+      "nip05": "nova@giveabit.io",
+      "repo": "giveabit",
+      "file": "agents/NOVA.md",
+      "color": "#1a5f7a",
+      "lead": false
+    },
+    {
+      "name": "Rosa",
+      "role": "Community & Nostr",
+      "motto": "Sovereignty is social.",
+      "nip05": "rosa@giveabit.io",
+      "repo": "giveabit",
+      "file": "agents/ROSA.md",
+      "color": "#8a5a00",
+      "lead": false
+    },
+    {
+      "name": "Ziggy",
+      "role": "Growth & Marketing",
+      "motto": "Every sat tells a story.",
+      "nip05": "ziggy@giveabit.io",
+      "repo": "giveabit",
+      "file": "agents/ZIGGY.md",
+      "color": "#2a4a5c",
+      "lead": false
+    }
+  ]
+}

@@ -1,51 +1,75 @@
 # Give A Bit HQ
 
-Single-file portfolio and ops deck for the Give A Bit suite (**v2.0**).
+Single-file portfolio, ops, and **pitch** glass for the Give A Bit suite (**v2.2**).
 
-Open `control-panel.html` in a browser. No build step.
+Open `control-panel.html` in a browser (serve the folder or open via `file://` — registry JSON needs a local server for `fetch`; embedded fallback works offline).
+
+```bash
+# Recommended: serve the folder so projects.json / agents.json load
+cd /Users/cam/projects/HQ && python3 -m http.server 8765
+# open http://localhost:8765/control-panel.html
+```
 
 ## Views
 
-Cards · List · Pipeline · **Analytics** · **Network** · **Activity** · **Matrix** · **Wallets** · Docs · Agents
+Cards · List · Pipeline · Analytics · Network · Activity · Matrix · Wallets · Docs · Agents · **Pitch** (`P`)
 
-GitHub Actions / CI status appears on each project card, Pipeline stages, Matrix column “CI”, and drawer “Last CI” — there is no separate Actions page.
+GitHub Actions / CI status appears on cards, Pipeline, Matrix, and drawer — not a separate Actions tab.
+
+## v2.2 changelog
+
+### Presentation (P0)
+- **Pitch mode** — fullscreen suite map, 6 big metrics, one sentence per project, operators, satohash backbone; **Copy deck MD**
+- **Investor metrics strip** — treasury, USD, live, health, CI ok/fail, issues, wallets, BTC
+- **Diligence pack** export (markdown) — portfolio + per-project status/commit/CI/docs checklist + NIP-05
+- **Satohash backbone** banner (OTS family service)
+- **NIP-05 panel** — verifies `giveabit.io/.well-known/nostr.json`, green/red per agent
+
+### Data contracts (P1)
+- **`projects.json` / `agents.json`** — config-first registry (add a 10th project without HTML edits)
+- **status.json** URL in Vault — shape in `status.example.json` for true uptime
+- **Satohash health** — optional `GET {api}/health` (graceful offline)
+- GitHub Actions still rate-limit aware; failures don’t kill the board
+
+### Ops polish (P2)
+- **CORS banner** when Vault keys exist but balances empty
+- Wallet **Δ since previous cache**
+- Vault fields: status.json URL, satohash API base, NIP-05 URL
+- Connection hub + sync rail (from v2.1)
 
 ## Security
 
-**No API keys in this repo.** Wallet keys and GitHub tokens are entered in the **Vault** UI and stored only in that browser’s `localStorage`.
+**No API keys in this repo.** Vault = browser `localStorage` (`sovereign_deck_vault_v1`).
 
-Do not commit:
-
-- LNbits `X-Api-Key` values  
-- GitHub PATs  
-- Any `*.local.json` credential files  
-
-## Features
-
-- Live portfolio totals (sats + USD via CoinGecko)
-- Per-project cards, list, pipeline, docs CMS, agents
-- GitHub branch / Actions metadata (`kitsboy/*`)
-- LNbits balances (when keys are in Vault and CORS allows)
-- Bulk README footer writes (PAT required)
-- Export report, filters, keyboard shortcuts
+Never commit: LNbits keys, GitHub PATs, LND macaroons, Cloudflare tokens.
 
 ## Keyboard
 
 | Key | Action |
 |-----|--------|
+| `P` | Pitch mode |
 | `/` | Search |
-| `g` | Cards |
-| `l` | List |
-| `p` | Pipeline |
-| `d` | Docs |
-| `a` | Agents |
+| `g` `l` `p` | Cards / List / Pipeline |
+| `y` `n` `t` `m` `w` | Analytics / Network / Activity / Matrix / Wallets |
+| `d` `a` | Docs / Agents |
 | `r` | Refresh |
 | `v` | Vault |
-| `esc` | Close overlays |
+| `?` | Help |
+| `esc` | Close overlays / exit pitch |
 
-## CORS note
+## Offline vs Vault vs node
 
-Calling LNbits from a static file only works if the node allows your origin (or you open the page on the same Tailscale network). Empty balances are usually CORS/network, not a UI bug.
+| Mode | What works |
+|------|------------|
+| Offline / file:// | Embedded project fallback, UI, cache, CoinGecko may fail |
+| Local server + no Vault | Public GitHub reads (rate-limited), NIP-05/satohash if CORS allows |
+| Vault + GitHub PAT | Private repos, docs save, higher rate limit |
+| Vault + LNbits keys | Balances **if** node CORS/tailnet allows |
+| status.json URL | True HTTP uptime per site |
+
+## Adding a project
+
+Edit `projects.json` (and optional related links), refresh HQ. No HTML edit required when served over HTTP.
 
 ## License
 

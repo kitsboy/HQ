@@ -1,0 +1,18 @@
+{
+  "updatedAt": "2026-07-19T12:00:00.000Z",
+  "note": "Copy to a hosted URL or commit to a status repo. Set statusJsonUrl in Vault. HQ fetches this for true HTTP uptime.",
+  "sites": {
+    "giveabit": { "ok": true, "ms": 140, "status": 200 },
+    "satohash": { "ok": true, "ms": 120, "status": 200 },
+    "katoa": { "ok": true, "ms": 180, "status": 200 },
+    "stranded": { "ok": true, "ms": 200, "status": 200 },
+    "tadbuy": { "ok": true, "ms": 160, "status": 200 },
+    "motopass": { "ok": true, "ms": 150, "status": 200 },
+    "sherpacarta": { "ok": true, "ms": 170, "status": 200 },
+    "openstrata": { "ok": true, "ms": 190, "status": 200 }
+  },
+  "node": {
+    "bitcoin": { "ok": null, "height": null, "pruned": true, "note": "Wire read-only snapshot later" },
+    "lnd": { "ok": null, "channels": null, "note": "Never put macaroons in HQ HTML" }
+  }
+}
