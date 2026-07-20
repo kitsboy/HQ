@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  Give A Bit HQ v2.5.2 — ops + presentation shell for the suite.
+  Give A Bit HQ v2.5.3 — ops + presentation shell for the suite.
   PRESENTATION: Pitch mode (P), diligence pack export, investor metrics strip,
     suite map, satohash backbone callout, NIP-05 agent checks, export deck md.
   FEEDS (optional, Vault/config): status.json uptime, api.satohash.io/health,
@@ -12,7 +12,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Give A Bit HQ v2.5.2</title>
+<title>Give A Bit HQ v2.5.3</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
@@ -347,6 +347,22 @@ body.hq-locked #hq-gate{visibility:visible!important;pointer-events:auto!importa
   .vault-modal-foot .btn-brand{flex:1;min-width:0}
   .vault-modal-foot .hint{width:100%;margin:0 0 4px}
 }
+
+/* Quick URLs + version footer */
+.quick-urls{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.quick-url{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;padding:5px 10px;border-radius:4px;
+  border:1px solid var(--line);background:var(--panel-2);
+  color:var(--ink);text-decoration:none;font-family:'IBM Plex Mono',monospace;
+}
+.quick-url:hover{border-color:var(--line-hi);background:var(--panel-hi)}
+.quick-url.primary{border-color:rgba(196,95,0,.45);background:rgba(196,95,0,.12);font-weight:600}
+.quick-url .ico{opacity:.7;font-size:10px}
+.version-chip{font-variant-numeric:tabular-nums;font-weight:600}
+.site-footer .ver-line{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+#lnbits-diag{white-space:pre-wrap;line-height:1.45}
+
 </style>
 </head>
 <body class="min-h-screen">
@@ -395,7 +411,7 @@ body.hq-locked #hq-gate{visibility:visible!important;pointer-events:auto!importa
       <div class="icon-box sm" style="background:var(--orange);color:#fff"><i class="fa-solid fa-bolt"></i></div>
       <div>
         <div class="font-semibold text-[13px] leading-none" style="font-family:'IBM Plex Sans'">Give A Bit HQ</div>
-        <div class="text-[10px] text-[var(--ink-faint)]">v2.5.2 · command deck</div>
+        <div class="text-[10px] text-[var(--ink-faint)]">v2.5.3 · command deck · <span id="hq-version-top" class="version-chip">v2.5.3</span></div>
       </div>
     </div>
     <div class="divider"></div>
@@ -506,6 +522,15 @@ body.hq-locked #hq-gate{visibility:visible!important;pointer-events:auto!importa
       <div class="conn-hub" id="conn-hub"></div>
       <div class="sync-rail" id="sync-rail"></div>
       <div id="suite-status-strip" class="mt-2 flex flex-wrap gap-1.5" title="Best-effort live probes + optional status.json"></div>
+
+
+    <div class="mt-3 pt-3 border-t border-[var(--line)]">
+      <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
+        <div class="text-[10px] mono uppercase tracking-[0.12em] text-[var(--ink-faint)]">Close-by URLs</div>
+        <span class="text-[10px] mono text-[var(--ink-faint)]">always handy · open in new tab</span>
+      </div>
+      <div id="quick-urls" class="quick-urls"></div>
+    </div>
 
     <div class="mt-3 pt-3 border-t border-[var(--line)] grid grid-cols-1 lg:grid-cols-3 gap-3">
       <div class="glass-2 rounded p-3">
@@ -739,13 +764,18 @@ body.hq-locked #hq-gate{visibility:visible!important;pointer-events:auto!importa
 </div>
 
 <div class="max-w-[1680px] mx-auto px-3 site-footer">
-  <div class="flex flex-wrap justify-between gap-2">
-    <span>Give A Bit HQ · <span id="hq-version">v2.5.2</span> · <span id="hq-build">build</span> · credentials only in localStorage · Safe Harbour</span>
+  <div class="ver-line flex flex-wrap justify-between gap-2">
+    <span class="mono">
+      Give A Bit HQ
+      · <span class="version-chip" id="hq-version">v2.5.3</span>
+      · build <span id="hq-build">—</span>
+      · <span id="hq-origin" class="text-[var(--ink-faint)]"></span>
+      · credentials only in localStorage · Safe Harbour
+    </span>
     <span class="mono flex flex-wrap gap-2">
       <span><kbd class="kbd">/</kbd> search</span>
-      <span><kbd class="kbd">g</kbd> cards</span>
-      <span><kbd class="kbd">y</kbd> analytics</span>
-      <span><kbd class="kbd">n</kbd> network</span>
+      <span><kbd class="kbd">v</kbd> vault</span>
+      <span><kbd class="kbd">P</kbd> pitch</span>
       <span><kbd class="kbd">r</kbd> refresh</span>
       <span><kbd class="kbd">?</kbd> help</span>
     </span>
@@ -1065,6 +1095,8 @@ body.hq-locked #hq-gate{visibility:visible!important;pointer-events:auto!importa
 
 <script>
 /* Give A Bit HQ v2 — secrets only in localStorage (sovereign_deck_vault_v1) */
+const HQ_VERSION = 'v2.5.3';
+const HQ_BUILD_ISO = null; // filled at boot
 const VIEWS = ['grid','list','pipeline','metrics','analytics','network','activity','matrix','wallets','docs','agents','opsboard','domains'];
 
 const state = {
@@ -1778,30 +1810,127 @@ const MetricsEngine = {
 /* ---------- TOOLS + NOTES + ALERTS + BTC 24h ---------- */
 const LNbitsHelp = {
   async diagnose(){
-    const pre = document.getElementById('lnbits-diag');
-    if(pre){ pre.classList.remove('hidden'); pre.textContent = 'Testing…'; }
+    let pre = document.getElementById('lnbits-diag');
+    // ensure banner visible so pre exists
+    const cors = document.getElementById('cors-banner');
+    if(cors && !pre){
+      cors.classList.remove('hidden');
+      if(!cors.innerHTML.includes('lnbits-diag')){
+        cors.innerHTML = `<div class="cors-banner">
+          <div class="font-semibold mb-1">LNbits diagnose</div>
+          <pre id="lnbits-diag" class="mt-2 p-2 glass-2 rounded text-[10px] mono overflow-auto max-h-56"></pre>
+        </div>`;
+      }
+      pre = document.getElementById('lnbits-diag');
+    }
+    if(pre){ pre.classList.remove('hidden'); pre.textContent = 'Testing from this browser…'; }
     toast('Testing LNbits from this browser…','info');
-    const report = await LNbitsData.diagnose();
+
+    const origin = location.origin;
+    const node = (Vault.data.nodeUrl||'').replace(/\/$/,'');
+    const wallets = PROJECTS.reduce((a,p)=>{ if(p.wallet && !a.includes(p.wallet)) a.push(p.wallet); return a; },[]);
+    const withKey = wallets.filter(w=>Vault.hasWallet(w));
     const lines = [
       'LNbits diagnose (this browser only)',
-      'origin:  '+report.origin,
-      'node:    '+report.nodeUrl,
-      'keys:    '+report.keys,
-      report.sample ? (report.sample.ok
-        ? `OK wallet=${report.sample.wallet} balance=${report.sample.balanceSats} sats name=${report.sample.name||'—'}`
-        : `FAIL wallet=${report.sample.wallet} kind=${report.sample.kind} msg=${report.sample.message}`)
-        : 'No keys to test',
+      'origin:  '+origin,
+      'node:    '+node,
+      'keys:    '+withKey.length,
       '',
-      'If kind=cors: add Access-Control-Allow-Origin for your HQ origin on the node.',
-      'If kind=auth: wrong/expired X-Api-Key or wrong wallet.',
-      'If kind=network: node URL unreachable from the public internet (Tailscale-only host).',
-      'Guide: docs/LNBITS-CORS.md',
     ];
+    let anyOk=false, sawCors=false, sawAuth=false, sawNet=false;
+    if(!withKey.length){
+      lines.push('No keys to test — open Vault (v) and paste invoice keys.');
+    } else {
+      for(const w of withKey){
+        try{
+          const data = await LNbitsData.wallet(w);
+          const sats = Math.floor((data.balance||0)/1000);
+          lines.push(`OK   wallet=${w} balance=${sats} sats name=${data.name||'—'}`);
+          anyOk = true;
+        }catch(e){
+          const kind = e.kind || LNbitsData.lastError?.kind || 'error';
+          const msg = e.message || String(e);
+          lines.push(`FAIL wallet=${w} kind=${kind} msg=${msg}`);
+          if(kind==='cors') sawCors=true;
+          if(kind==='auth') sawAuth=true;
+          if(kind==='network') sawNet=true;
+          // CORS usually fails the same for all — still try a couple then stop if pure cors
+          if(kind==='cors' && withKey.indexOf(w)>=0){ /* continue one more optional */ }
+        }
+      }
+    }
+    lines.push('');
+    lines.push('If kind=cors: add Access-Control-Allow-Origin for your HQ origin on the node.');
+    lines.push('  Allow: '+origin+'  (and https://giveabit-hq.pages.dev if used)');
+    lines.push('If kind=auth: wrong/expired X-Api-Key or wrong wallet.');
+    lines.push('If kind=network: node URL unreachable from the public internet (Tailscale-only host).');
+    lines.push('Guide: docs/LNBITS-CORS.md');
+    if(sawCors){
+      lines.push('');
+      lines.push('Your result looks like CORS: browser blocked reading the LNbits response.');
+      lines.push('Nova: Caddy/LNbits must send Access-Control-Allow-Origin: '+origin);
+    }
     if(pre) pre.textContent = lines.join('\n');
-    if(report.sample?.ok) toast('LNbits OK — '+report.sample.balanceSats+' sats','success');
+    if(anyOk) toast('LNbits OK for at least one wallet','success');
+    else if(sawCors) toast('CORS block — node must allow '+origin,'error');
     else toast('LNbits still failing — see diagnose panel','error');
+    return lines.join('\n');
   }
 };
+
+const QuickUrls = {
+  // Built-in close-by list; tools.json "closeby" group can extend/override order
+  defaults: [
+    { name:'HERMES Dashboard / Kanban', url:'https://openstrata.giveabit.io', primary:true, tip:'Hermes Strata ops · kanban / corp dashboard' },
+    { name:'HQ', url:'https://hq.giveabit.io', tip:'This glass' },
+    { name:'Satohash', url:'https://satohash.io', tip:'OTS backbone SPA' },
+    { name:'Satohash API', url:'https://api.satohash.io/health', tip:'Health probe' },
+    { name:'Satohash metrics', url:'https://api.satohash.io/metrics.json', tip:'Live product metrics' },
+    { name:'Give A Bit', url:'https://giveabit.io', tip:'Brand + NIP-05' },
+    { name:'LNbits (node)', url:'https://vmi3446772.tailb672ac.ts.net', tip:'THOR LNbits — needs Tailscale or public proxy' },
+    { name:'CORS guide', url:'/docs/LNBITS-CORS.md', tip:'Empty balances? Fix here' },
+    { name:'GitHub kitsboy', url:'https://github.com/kitsboy', tip:'Code truth' },
+    { name:'HQ Actions', url:'https://github.com/kitsboy/HQ/actions', tip:'Deploy + pinger' },
+    { name:'Cloudflare', url:'https://dash.cloudflare.com', tip:'Pages + DNS + Access' },
+    { name:'xAI / Grok', url:'https://grok.com', tip:'Usage → paste % in Vault' },
+    { name:'status.json', url:'/status.json', tip:'Suite pinger feed' },
+    { name:'Handoff', url:'/handoff/state.json', tip:'Grok↔Kimi state' },
+  ],
+  render(){
+    const el = document.getElementById('quick-urls');
+    if(!el) return;
+    let links = this.defaults.slice();
+    // prepend/merge tools.json closeby group if present
+    try{
+      const g = (ToolsHub.data && ToolsHub.data.groups || []).find(x=>x.id==='closeby');
+      if(g && g.links && g.links.length){
+        const extra = g.links.map(l=>({ name:l.name, url:l.url, tip:l.tip, primary:!!l.primary }));
+        // put tools.json first (user-configured), then defaults not already listed
+        const seen = new Set(extra.map(x=>x.url));
+        links = extra.concat(links.filter(d=>!seen.has(d.url)));
+      }
+    }catch(_){}
+    el.innerHTML = links.map(l=>`
+      <a class="quick-url ${l.primary?'primary':''}" href="${l.url}" target="_blank" rel="noopener"
+         title="${(l.tip||l.name).replace(/"/g,'&quot;')}" data-tip="${(l.tip||'').replace(/"/g,'&quot;')}" data-tip-title="${l.name.replace(/"/g,'&quot;')}">
+        <span class="ico">${l.primary?'★':'↗'}</span>${l.name}
+      </a>`).join('');
+  }
+};
+
+function stampVersion(){
+  const v = (typeof HQ_VERSION==='string' ? HQ_VERSION : 'v?');
+  const build = new Date().toISOString().slice(0,16).replace('T',' ');
+  const set = (id, text)=>{ const el=document.getElementById(id); if(el) el.textContent=text; };
+  set('hq-version', v);
+  set('hq-version-top', v);
+  set('hq-build', build);
+  const orig = document.getElementById('hq-origin');
+  if(orig) orig.textContent = location.origin;
+  document.querySelectorAll('[data-hq-ver]').forEach(el=>{ el.textContent = v; });
+  document.title = 'Give A Bit HQ '+v;
+  console.log('%cGive A Bit HQ '+v+' · build '+build+' · '+location.origin,'color:#c45f00;font-weight:bold');
+}
 
 const ToolsHub = {
   data: null,
@@ -1816,11 +1945,14 @@ const ToolsHub = {
     const el = document.getElementById('tools-hub');
     if(!el) return;
     const groups = (this.data && this.data.groups) || [];
+    if(typeof QuickUrls!=='undefined') QuickUrls.render();
     if(!groups.length){
       el.innerHTML = '<span class="text-[var(--ink-faint)] text-xs">tools.json not loaded</span>';
       return;
     }
-    el.innerHTML = groups.map(g => `
+    // skip closeby group in tools hub (shown in Close-by URLs panel)
+    const show = groups.filter(g=>g.id!=='closeby');
+    el.innerHTML = show.map(g => `
       <div class="w-full">
         <div class="text-[9px] mono text-[var(--ink-faint)] mb-1">${g.label}</div>
         <div class="tools-strip">${(g.links||[]).map(l =>
@@ -3861,8 +3993,12 @@ async function bootAfterGate(){
   window.addEventListener('online', ()=>{ const b=document.getElementById('offline-banner'); if(b) b.classList.add('hidden'); toast('Back online','success'); });
   window.addEventListener('offline', ()=>{ const b=document.getElementById('offline-banner'); if(b) b.classList.remove('hidden'); });
   if(!navigator.onLine){ const b=document.getElementById('offline-banner'); if(b) b.classList.remove('hidden'); }
-  const build = document.getElementById('hq-build');
-  if(build) build.textContent = new Date().toISOString().slice(0,16).replace('T',' ')+' · v2.5';
+  if(typeof stampVersion==='function') stampVersion();
+  else {
+    const build = document.getElementById('hq-build');
+    if(build) build.textContent = new Date().toISOString().slice(0,16).replace('T',' ');
+  }
+  if(typeof QuickUrls!=='undefined') QuickUrls.render();
   await Dash.refreshAll();
   try{ await MetricsEngine.loadAll(); }catch(_){}
   GrokUsage.render();
@@ -3870,7 +4006,7 @@ async function bootAfterGate(){
   scheduleRefresh();
   scheduleRefreshEta();
   if(!Vault.hasGh() && Vault.keyCount()===0) setTimeout(()=>toast('Open Vault (v) to paste keys · hover chips for tips','info'),700);
-  console.log('%cGive A Bit HQ v2.5.2 — gate + tips + live pipes','color:#c45f00;font-weight:bold');
+  console.log('%cGive A Bit HQ v2.5.3 — gate + tips + live pipes','color:#c45f00;font-weight:bold');
 }
 
 
@@ -4314,14 +4450,16 @@ const _bag = bootAfterGate;
 bootAfterGate = async function(){
   await _bag();
   try{ BudgetRunway.load(); LocalBoards.load(); UpgradesBoard.render(); }catch(_){}
-  console.log('%cGive A Bit HQ v2.5.2 — gate + vault keys + ops board','color:#c45f00;font-weight:bold');
+  console.log('%cGive A Bit HQ v2.5.3 — gate + vault keys + ops board','color:#c45f00;font-weight:bold');
 };
 
 
 /* BOOT v2.5 — gate first */
 (async function boot(){
+  if(typeof stampVersion==='function') stampVersion();
   Tips.init();
   Vault.load();
+  if(typeof QuickUrls!=='undefined') QuickUrls.render();
   const ok = await Gate.ensure();
   if(ok) await bootAfterGate();
 })();

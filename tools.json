@@ -1,6 +1,74 @@
 {
-  "version": 2,
+  "version": 3,
   "groups": [
+    {
+      "id": "closeby",
+      "label": "Close-by URLs",
+      "tip": "Pinned handy links \u2014 HERMES first.",
+      "links": [
+        {
+          "name": "HERMES Dashboard / Kanban",
+          "url": "https://openstrata.giveabit.io",
+          "tip": "Hermes Strata \u00b7 kanban / corp dashboard",
+          "primary": true
+        },
+        {
+          "name": "HQ",
+          "url": "https://hq.giveabit.io",
+          "tip": "This ops glass"
+        },
+        {
+          "name": "Satohash",
+          "url": "https://satohash.io",
+          "tip": "OTS backbone"
+        },
+        {
+          "name": "Satohash API health",
+          "url": "https://api.satohash.io/health",
+          "tip": "Backbone green"
+        },
+        {
+          "name": "Satohash metrics",
+          "url": "https://api.satohash.io/metrics.json",
+          "tip": "Live metrics v1"
+        },
+        {
+          "name": "Give A Bit",
+          "url": "https://giveabit.io",
+          "tip": "Brand + NIP-05"
+        },
+        {
+          "name": "LNbits node (Tailscale)",
+          "url": "https://vmi3446772.tailb672ac.ts.net",
+          "tip": "Needs CORS for hq.giveabit.io"
+        },
+        {
+          "name": "CORS fix guide",
+          "url": "/docs/LNBITS-CORS.md",
+          "tip": "Empty balances"
+        },
+        {
+          "name": "GitHub kitsboy",
+          "url": "https://github.com/kitsboy",
+          "tip": "Repos"
+        },
+        {
+          "name": "HQ Actions",
+          "url": "https://github.com/kitsboy/HQ/actions",
+          "tip": "Deploy"
+        },
+        {
+          "name": "Cloudflare",
+          "url": "https://dash.cloudflare.com",
+          "tip": "Pages"
+        },
+        {
+          "name": "Grok",
+          "url": "https://grok.com",
+          "tip": "Usage %"
+        }
+      ]
+    },
     {
       "id": "suite",
       "label": "Suite live sites",

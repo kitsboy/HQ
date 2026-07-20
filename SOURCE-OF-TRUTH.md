@@ -18,7 +18,8 @@ _Updated: 2026-07-20 (v2.5.1 keys + ops board)_
 | `control-panel.html` | Single-page app (v2.5.1) |
 | `projects.json` | Project registry + feed URLs |
 | `agents.json` | Agent personas + NIP-05 |
-| `tools.json` | Tools hub links |
+| `tools.json` | Tools hub + close-by URLs (HERMES first) |
+| Footer version | Always `HQ_VERSION` + build timestamp |
 | `metrics/*.json` | Product + THOR demo envelopes |
 | `schemas/*.schema.json` | Metrics & node contracts |
 | `status.json` | Uptime from pinger |
