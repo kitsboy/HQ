@@ -194,6 +194,7 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
     <span id="btc-price-top" class="shrink-0">BTC $—</span>
     <span id="net-status" class="status-pill gray shrink-0">online</span>
     <span id="vault-status" class="status-pill gray shrink-0">vault empty</span>
+    <span id="grok-top-chip" class="status-pill gray shrink-0" title="SuperGrok weekly usage — edit in Vault">Grok —</span>
     <span id="clock" class="text-[var(--ink-faint)] shrink-0"></span>
     <div class="ml-auto flex items-center gap-1.5 shrink-0">
       <span id="cache-age" class="text-[var(--ink-faint)] hidden sm:inline"></span>
@@ -246,8 +247,31 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
           <div class="metric"><div class="text-[10px] text-[var(--ink-faint)] uppercase">Agents</div><div class="text-lg font-semibold" id="stat-agents">7</div></div>
           <div class="metric"><div class="text-[10px] text-[var(--ink-faint)] uppercase">BTC</div><div class="font-semibold" id="btc-price-label">—</div></div>
           <div class="metric"><div class="text-[10px] text-[var(--ink-faint)] uppercase">Avg health</div><div class="font-semibold" id="stat-health">—</div></div>
-          <div class="metric"><div class="text-[10px] text-[var(--ink-faint)] uppercase">Grok week</div><div class="font-semibold text-[var(--ink-faint)]">0%</div></div>
-          <div class="metric"><div class="text-[10px] text-[var(--ink-faint)] uppercase">Nous</div><div class="font-semibold text-[var(--ink-faint)]" id="nous-credits">—</div></div>
+        </div>
+        <div class="glass-2 rounded p-3 min-w-[220px] flex-1 max-w-sm" id="grok-usage-card">
+          <div class="flex items-center justify-between mb-2">
+            <div class="text-[10px] mono uppercase tracking-[0.12em] text-[var(--ink-faint)]">xAI · SuperGrok</div>
+            <button type="button" onclick="GrokUsage.openEdit()" class="btn-ghost rounded px-1.5 py-0.5 text-[10px]">Edit</button>
+          </div>
+          <div class="mb-2.5">
+            <div class="flex justify-between text-xs mono mb-1">
+              <span>Weekly SuperGrok</span>
+              <span id="grok-week-pct" class="font-semibold">—</span>
+            </div>
+            <div class="bar-track h-2"><div id="grok-week-bar" class="bar-fill" style="width:0%;background:var(--orange)"></div></div>
+            <div id="grok-week-reset" class="text-[10px] mono text-[var(--ink-faint)] mt-1">Resets —</div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs mono mb-1">
+              <span>Grok Build</span>
+              <span id="grok-build-pct" class="font-semibold">—</span>
+            </div>
+            <div class="bar-track h-2"><div id="grok-build-bar" class="bar-fill" style="width:0%;background:var(--sky)"></div></div>
+          </div>
+          <div class="mt-2 flex justify-between text-[10px] mono text-[var(--ink-faint)]">
+            <span id="nous-credits">Nous —</span>
+            <span id="grok-usage-src">local</span>
+          </div>
         </div>
       </div>
     </div>
@@ -486,10 +510,48 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
         <input id="vault-nip05-url" class="w-full rounded px-3 py-2 text-sm mono" placeholder="https://giveabit.io/.well-known/nostr.json">
       </div>
     </div>
+    <div class="mt-2 mb-3 p-3 glass-2 rounded">
+      <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">xAI SuperGrok / Grok Build usage</div>
+      <p class="text-[11px] text-[var(--ink-faint)] mb-2">No public API — paste from your xAI account page. Stored only in this browser (Vault).</p>
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label class="text-[10px] mono text-[var(--ink-faint)] block mb-1">Weekly SuperGrok % used</label>
+          <input id="vault-grok-week" type="number" min="0" max="100" step="0.1" class="w-full rounded px-2 py-1.5 text-sm mono" placeholder="16">
+        </div>
+        <div>
+          <label class="text-[10px] mono text-[var(--ink-faint)] block mb-1">Grok Build % used</label>
+          <input id="vault-grok-build" type="number" min="0" max="100" step="0.1" class="w-full rounded px-2 py-1.5 text-sm mono" placeholder="16">
+        </div>
+        <div class="col-span-2">
+          <label class="text-[10px] mono text-[var(--ink-faint)] block mb-1">Weekly limit resets (local time)</label>
+          <input id="vault-grok-reset" type="datetime-local" class="w-full rounded px-2 py-1.5 text-sm mono">
+        </div>
+        <div class="col-span-2">
+          <label class="text-[10px] mono text-[var(--ink-faint)] block mb-1">Nous credits (optional label)</label>
+          <input id="vault-nous" class="w-full rounded px-2 py-1.5 text-sm mono" placeholder="not set">
+        </div>
+      </div>
+    </div>
     <div class="flex gap-2">
       <button onclick="Vault.save()" class="btn-brand rounded px-4 py-2 text-sm flex-1">Save vault</button>
       <button onclick="Vault.clear()" class="btn-ghost rounded px-4 py-2 text-sm text-[var(--red)]">Wipe</button>
     </div>
+  </div>
+</div>
+<div id="grok-edit-backdrop" class="hidden fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4" onclick="if(event.target.id==='grok-edit-backdrop')GrokUsage.closeEdit()">
+  <div class="pop-in glass rounded w-full max-w-sm p-4" onclick="event.stopPropagation()">
+    <div class="flex justify-between mb-2">
+      <h3 class="font-semibold text-sm">Update Grok usage</h3>
+      <button class="btn-ghost rounded px-2" onclick="GrokUsage.closeEdit()">✕</button>
+    </div>
+    <p class="text-[11px] text-[var(--ink-faint)] mb-3">From xAI account → Usage. Saved in Vault on this site only.</p>
+    <label class="text-[10px] mono text-[var(--ink-faint)]">Weekly SuperGrok %</label>
+    <input id="grok-edit-week" type="number" min="0" max="100" step="0.1" class="w-full rounded px-2 py-1.5 text-sm mono mb-2">
+    <label class="text-[10px] mono text-[var(--ink-faint)]">Grok Build %</label>
+    <input id="grok-edit-build" type="number" min="0" max="100" step="0.1" class="w-full rounded px-2 py-1.5 text-sm mono mb-2">
+    <label class="text-[10px] mono text-[var(--ink-faint)]">Resets</label>
+    <input id="grok-edit-reset" type="datetime-local" class="w-full rounded px-2 py-1.5 text-sm mono mb-3">
+    <button onclick="GrokUsage.saveEdit()" class="btn-brand rounded w-full py-2 text-sm">Save</button>
   </div>
 </div>
 <div id="search-overlay" class="hidden fixed inset-0 z-[60] modal-backdrop flex items-start justify-center pt-20 px-4" onclick="Search.close(event)">
@@ -816,9 +878,10 @@ const Pitch = {
           <div class="pitch-metric"><div class="big">${usd}</div><div class="lbl">USD (spot)</div></div>
           <div class="pitch-metric"><div class="big">${live}/${PROJECTS.filter(p=>p.deployed).length}</div><div class="lbl">Live sites</div></div>
           <div class="pitch-metric"><div class="big">${avg}</div><div class="lbl">Avg health</div></div>
-          <div class="pitch-metric"><div class="big">${ciOk}/${ciFail}</div><div class="lbl">CI ok / fail</div></div>
-          <div class="pitch-metric"><div class="big">${issues}</div><div class="lbl">Open issues</div></div>
+          <div class="pitch-metric"><div class="big">${GrokUsage.get().weekPct}%</div><div class="lbl">SuperGrok week</div></div>
+          <div class="pitch-metric"><div class="big">${GrokUsage.get().buildPct}%</div><div class="lbl">Grok Build</div></div>
         </div>
+        <div class="text-xs mono text-[var(--ink-faint)] mb-6">${GrokUsage.formatReset(GrokUsage.get().resetAt)} · CI ${ciOk}/${ciFail} · issues ${issues}</div>
         <div class="backbone-banner mb-5"><strong>Satohash</strong> — shared OpenTimestamps backbone for the family · free internal · public API planned · Bitcoin node verifies, LND settles.</div>
         <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Suite map</div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
@@ -1014,10 +1077,129 @@ const fmt = {
   }
 };
 
+/* ---------- GROK / SUPERGROK USAGE (manual — no public API) ---------- */
+const GrokUsage = {
+  // Defaults from Cam's account snapshot (overwritten when Vault is saved)
+  defaults: {
+    weekPct: 16,
+    buildPct: 16,
+    // July 26, 2026 3:03 PM — local; stored as ISO when saved
+    resetAt: '2026-07-26T15:03:00',
+    nous: '',
+  },
+  get(){
+    const g = (Vault.data && Vault.data.grok) || {};
+    return {
+      weekPct: g.weekPct != null ? Number(g.weekPct) : this.defaults.weekPct,
+      buildPct: g.buildPct != null ? Number(g.buildPct) : this.defaults.buildPct,
+      resetAt: g.resetAt || this.defaults.resetAt,
+      nous: g.nous != null ? g.nous : this.defaults.nous,
+      updatedAt: g.updatedAt || null,
+    };
+  },
+  set( partial ){
+    Vault.data.grok = Object.assign({}, this.get(), partial, { updatedAt: new Date().toISOString() });
+    Vault.persist();
+    this.render();
+  },
+  barColor(pct){
+    if(pct >= 90) return 'var(--red)';
+    if(pct >= 70) return 'var(--amber)';
+    return 'var(--orange)';
+  },
+  formatReset(iso){
+    if(!iso) return 'Resets —';
+    try{
+      const d = new Date(iso);
+      if(isNaN(d.getTime())) return 'Resets '+iso;
+      return 'Resets '+d.toLocaleString(undefined, { dateStyle:'medium', timeStyle:'short' });
+    }catch(_){ return 'Resets '+iso; }
+  },
+  toLocalInput(iso){
+    if(!iso) return '';
+    const d = new Date(iso);
+    if(isNaN(d.getTime())) return '';
+    const pad = n => String(n).padStart(2,'0');
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  },
+  fromLocalInput(v){
+    if(!v) return '';
+    const d = new Date(v);
+    return isNaN(d.getTime()) ? v : d.toISOString();
+  },
+  render(){
+    const g = this.get();
+    const w = Math.max(0, Math.min(100, g.weekPct));
+    const b = Math.max(0, Math.min(100, g.buildPct));
+    const set = (id, text)=>{ const el=document.getElementById(id); if(el) el.textContent=text; };
+    set('grok-week-pct', w + '% used');
+    set('grok-build-pct', b + '% used');
+    set('grok-week-reset', this.formatReset(g.resetAt));
+    const wb = document.getElementById('grok-week-bar');
+    const bb = document.getElementById('grok-build-bar');
+    if(wb){ wb.style.width = w+'%'; wb.style.background = this.barColor(w); }
+    if(bb){ bb.style.width = b+'%'; bb.style.background = b>=90?'var(--red)':b>=70?'var(--amber)':'var(--sky)'; }
+    const chip = document.getElementById('grok-top-chip');
+    if(chip){
+      chip.textContent = `Grok ${w}%`;
+      chip.className = 'status-pill shrink-0 ' + (w>=90?'red':w>=70?'amber':'green');
+      chip.title = `SuperGrok weekly ${w}% · Build ${b}% · ${this.formatReset(g.resetAt)}`;
+    }
+    const nous = document.getElementById('nous-credits');
+    if(nous) nous.textContent = g.nous ? ('Nous '+g.nous) : 'Nous —';
+    const src = document.getElementById('grok-usage-src');
+    if(src) src.textContent = g.updatedAt ? ('saved '+fmt.timeAgo(g.updatedAt)) : 'default';
+  },
+  openEdit(){
+    const g = this.get();
+    document.getElementById('grok-edit-week').value = g.weekPct;
+    document.getElementById('grok-edit-build').value = g.buildPct;
+    document.getElementById('grok-edit-reset').value = this.toLocalInput(g.resetAt);
+    document.getElementById('grok-edit-backdrop').classList.remove('hidden');
+  },
+  closeEdit(){ document.getElementById('grok-edit-backdrop').classList.add('hidden'); },
+  saveEdit(){
+    const weekPct = parseFloat(document.getElementById('grok-edit-week').value);
+    const buildPct = parseFloat(document.getElementById('grok-edit-build').value);
+    const resetAt = this.fromLocalInput(document.getElementById('grok-edit-reset').value);
+    this.set({
+      weekPct: isNaN(weekPct) ? 0 : weekPct,
+      buildPct: isNaN(buildPct) ? 0 : buildPct,
+      resetAt: resetAt || this.defaults.resetAt,
+    });
+    this.closeEdit();
+    toast('Grok usage updated','success');
+  },
+  fillVaultForm(){
+    const g = this.get();
+    const w = document.getElementById('vault-grok-week');
+    const b = document.getElementById('vault-grok-build');
+    const r = document.getElementById('vault-grok-reset');
+    const n = document.getElementById('vault-nous');
+    if(w) w.value = g.weekPct;
+    if(b) b.value = g.buildPct;
+    if(r) r.value = this.toLocalInput(g.resetAt);
+    if(n) n.value = g.nous || '';
+  },
+  readVaultForm(){
+    const weekPct = parseFloat(document.getElementById('vault-grok-week')?.value);
+    const buildPct = parseFloat(document.getElementById('vault-grok-build')?.value);
+    const resetAt = this.fromLocalInput(document.getElementById('vault-grok-reset')?.value || '');
+    const nous = document.getElementById('vault-nous')?.value?.trim() || '';
+    return {
+      weekPct: isNaN(weekPct) ? this.defaults.weekPct : weekPct,
+      buildPct: isNaN(buildPct) ? this.defaults.buildPct : buildPct,
+      resetAt: resetAt || this.defaults.resetAt,
+      nous,
+      updatedAt: new Date().toISOString(),
+    };
+  }
+};
+
 /* ---------- VAULT (same key as v1) ---------- */
 const Vault = {
   KEY: 'sovereign_deck_vault_v1',
-  data: { ghToken:'', nodeUrl:'https://vmi3446772.tailb672ac.ts.net', wallets:{}, fxSource:'coingecko', refreshSec:60, statusJsonUrl:'', satohashApi:'https://api.satohash.io', nip05Url:'https://giveabit.io/.well-known/nostr.json' },
+  data: { ghToken:'', nodeUrl:'https://vmi3446772.tailb672ac.ts.net', wallets:{}, fxSource:'coingecko', refreshSec:60, statusJsonUrl:'', satohashApi:'https://api.satohash.io', nip05Url:'https://giveabit.io/.well-known/nostr.json', grok:null },
   load(){
     try{ const raw=localStorage.getItem(this.KEY); if(raw) this.data=Object.assign(this.data,JSON.parse(raw)); }catch(e){}
     try{
@@ -1042,6 +1224,7 @@ const Vault = {
     const sa=document.getElementById('vault-satohash-api'); if(sa) sa.value=this.data.satohashApi||'https://api.satohash.io';
     const nu=document.getElementById('vault-nip05-url'); if(nu) nu.value=this.data.nip05Url||FEEDS_DEFAULT.nip05Url;
     document.getElementById('vault-node-note').textContent = this.data.nodeUrl||'';
+    GrokUsage.fillVaultForm();
     const wallets = PROJECTS.reduce((a,p)=>{ if(!a.includes(p.wallet)) a.push(p.wallet); return a; },[]);
     document.getElementById('vault-wallet-rows').innerHTML = wallets.map(w=>`
       <div class="flex gap-2 items-center">
@@ -1059,19 +1242,22 @@ const Vault = {
     const sa=document.getElementById('vault-satohash-api'); if(sa) this.data.satohashApi=sa.value.trim()||'https://api.satohash.io';
     const n5=document.getElementById('vault-nip05-url'); if(n5) this.data.nip05Url=n5.value.trim()||FEEDS_DEFAULT.nip05Url;
     document.querySelectorAll('[data-wallet-key]').forEach(inp=>{ this.data.wallets[inp.dataset.walletKey]=inp.value.trim(); });
+    this.data.grok = GrokUsage.readVaultForm();
     this.persist();
     this.updateStatusChip();
+    GrokUsage.render();
     document.getElementById('vault-backdrop').classList.add('hidden');
     toast('Vault saved locally','success');
     scheduleRefresh();
     Dash.refreshAll();
   },
   clear(){
-    if(!confirm('Wipe vault on this browser?')) return;
+    if(!confirm('Wipe vault on this browser? (also clears Grok usage numbers)')) return;
     localStorage.removeItem(this.KEY);
-    this.data = { ghToken:'', nodeUrl:'https://vmi3446772.tailb672ac.ts.net', wallets:{}, fxSource:'coingecko', refreshSec:60, statusJsonUrl:'', satohashApi:'https://api.satohash.io', nip05Url:'https://giveabit.io/.well-known/nostr.json' };
+    this.data = { ghToken:'', nodeUrl:'https://vmi3446772.tailb672ac.ts.net', wallets:{}, fxSource:'coingecko', refreshSec:60, statusJsonUrl:'', satohashApi:'https://api.satohash.io', nip05Url:'https://giveabit.io/.well-known/nostr.json', grok:null };
     toast('Vault wiped','error');
     this.updateStatusChip();
+    GrokUsage.render();
     this.openModal();
   },
   hasWallet(w){ return !!(this.data.wallets[w]&&this.data.wallets[w].length>10); },
@@ -2160,12 +2346,14 @@ document.addEventListener('keydown',e=>{
   Dash.renderPortfolio();
   Dash.renderTicker();
   if(typeof Dash.renderInvestorStrip==='function') Dash.renderInvestorStrip();
+  GrokUsage.render();
   Charts.all();
   UI.clock(); setInterval(UI.clock,1000);
   await Dash.refreshAll();
+  GrokUsage.render();
   scheduleRefresh();
   if(!Vault.hasGh()&&Vault.keyCount()===0) setTimeout(()=>toast('Open Vault to connect keys · Pitch with P','info'),700);
-  console.log('%cGive A Bit HQ v2.2 — pitch + feeds + registry','color:#c45f00;font-weight:bold');
+  console.log('%cGive A Bit HQ v2.2 — pitch + feeds + Grok usage','color:#c45f00;font-weight:bold');
 })();
 </script>
 </body>
