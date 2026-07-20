@@ -107,6 +107,37 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:var(--ink);box
 #log-panel{max-height:200px;overflow:auto}
 .pin-star{opacity:.4}.pin-star.on{opacity:1;color:var(--amber)}
 table thead th{position:sticky;top:0;z-index:1;background:var(--panel-2)}
+
+/* v2.1 visual + connection polish */
+body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);}
+.glass{box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 8px 24px -16px rgba(0,0,0,.18);}
+.glass-hover{transition:background .15s,border-color .15s,transform .15s;}
+.glass-hover:hover{transform:translateY(-1px);}
+.conn-hub{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
+.conn-card{flex:1 1 140px;min-width:130px;padding:10px 12px;border-radius:4px;border:1px solid var(--line);background:var(--panel-2);cursor:pointer;transition:border-color .15s}
+.conn-card:hover{border-color:var(--line-hi);background:var(--panel-hi)}
+.conn-card .lbl{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);font-family:'IBM Plex Mono',monospace}
+.conn-card .val{font-size:14px;font-weight:600;margin-top:4px}
+.conn-card .sub{font-size:10px;color:var(--ink-faint);margin-top:2px;font-family:'IBM Plex Mono',monospace}
+.rel-chip{display:inline-flex;align-items:center;gap:4px;font-size:10px;padding:2px 7px;border-radius:999px;border:1px solid var(--line);background:var(--panel);cursor:pointer}
+.rel-chip:hover{border-color:var(--line-hi)}
+.rel-dot{width:6px;height:6px;border-radius:50%;flex:none}
+.delta-up{color:var(--green)}.delta-dn{color:var(--red)}.delta-flat{color:var(--ink-faint)}
+.lang-badge{font-size:9px;font-family:'IBM Plex Mono',monospace;padding:1px 6px;border-radius:2px;background:var(--void-2);border:1px solid var(--line);color:var(--ink-dim)}
+.sync-rail{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:6px;margin-top:10px}
+.sync-cell{text-align:center;padding:8px 4px;border-radius:4px;border:1px solid var(--line);background:var(--panel-2);font-size:10px;font-family:'IBM Plex Mono',monospace}
+.sync-cell .n{font-size:16px;font-weight:700;display:block;margin-bottom:2px}
+.topbar{backdrop-filter:saturate(1.1)}
+.net-svg{background:linear-gradient(145deg,var(--panel-2),var(--panel))}
+.edge-label{font-size:8px;fill:var(--ink-faint);font-family:'IBM Plex Mono',monospace}
+.pulse-ring{animation:none}
+.card-border{box-shadow:inset 3px 0 0 0 var(--pc,var(--orange))}
+.card-border{border-left:0}
+.view-tab{border:1px solid transparent;border-radius:3px}
+.view-tab:hover:not(.tab-active){background:var(--panel-2)}
+#total-delta{font-size:13px;font-weight:600;font-family:'IBM Plex Mono',monospace}
+.link-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+
 </style>
 </head>
 <body class="min-h-screen">
@@ -119,7 +150,7 @@ table thead th{position:sticky;top:0;z-index:1;background:var(--panel-2)}
       <div class="icon-box sm" style="background:var(--orange);color:#fff"><i class="fa-solid fa-bolt"></i></div>
       <div>
         <div class="font-semibold text-[13px] leading-none" style="font-family:'IBM Plex Sans'">Give A Bit HQ</div>
-        <div class="text-[10px] text-[var(--ink-faint)]">v2.0 · portfolio ops</div>
+        <div class="text-[10px] text-[var(--ink-faint)]">v2.1 · connected ops</div>
       </div>
     </div>
     <div class="divider"></div>
@@ -158,12 +189,14 @@ table thead th{position:sticky;top:0;z-index:1;background:var(--panel-2)}
           <span class="text-sm mono text-[var(--ink-faint)]">sats</span>
           <span id="total-usd" class="text-lg mono text-[var(--ink-dim)]">$—</span>
         </div>
-        <div class="mt-2 flex flex-wrap gap-1.5">
+        <div class="mt-2 flex flex-wrap gap-1.5 items-center">
           <span id="portfolio-count" class="status-pill">0/9 synced</span>
           <span id="portfolio-health" class="status-pill">health —</span>
           <span id="portfolio-live" class="status-pill">live —</span>
+          <span id="portfolio-issues" class="status-pill gray">issues —</span>
           <span id="visible-count" class="status-pill gray">showing 9</span>
           <span id="fav-count" class="status-pill gray">0 pinned</span>
+          <span id="total-delta" class="delta-flat">Δ —</span>
         </div>
         <canvas id="spark-total" class="spark mt-2" width="220" height="36"></canvas>
       </div>
@@ -188,6 +221,14 @@ table thead th{position:sticky;top:0;z-index:1;background:var(--panel-2)}
       <div class="flex items-center gap-2"><span class="dot dot-amber"></span><div><div class="text-[10px] mono text-[var(--ink-faint)] uppercase">Pending</div><div class="font-semibold mono" id="count-amber">—</div></div></div>
       <div class="flex items-center gap-2"><span class="dot dot-red"></span><div><div class="text-[10px] mono text-[var(--ink-faint)] uppercase">Attention</div><div class="font-semibold mono" id="count-red">—</div></div></div>
       <div class="flex items-center gap-2"><span class="dot dot-gray"></span><div><div class="text-[10px] mono text-[var(--ink-faint)] uppercase">Pre-MVP</div><div class="font-semibold mono" id="count-gray">—</div></div></div>
+    </div>
+    <div class="mt-3 pt-3 border-t border-[var(--line)]">
+      <div class="flex items-center justify-between mb-2">
+        <div class="text-[10px] mono uppercase tracking-[0.12em] text-[var(--ink-faint)]">Connection hub · click to open</div>
+        <div class="text-[10px] mono text-[var(--ink-faint)]" id="conn-summary">—</div>
+      </div>
+      <div class="conn-hub" id="conn-hub"></div>
+      <div class="sync-rail" id="sync-rail"></div>
     </div>
   </div>
 </div>
@@ -339,7 +380,7 @@ table thead th{position:sticky;top:0;z-index:1;background:var(--panel-2)}
 
 <div class="max-w-[1680px] mx-auto px-3 site-footer">
   <div class="flex flex-wrap justify-between gap-2">
-    <span>Give A Bit HQ · v2.0 · credentials only in localStorage · Safe Harbour</span>
+    <span>Give A Bit HQ · v2.1 · credentials only in localStorage · Safe Harbour</span>
     <span class="mono flex flex-wrap gap-2">
       <span><kbd class="kbd">/</kbd> search</span>
       <span><kbd class="kbd">g</kbd> cards</span>
@@ -626,6 +667,21 @@ const GitHubData = {
     if(!r.ok) throw new Error('gh '+r.status);
     return r.json();
   },
+
+  async repoMeta(repo){
+    try{
+      const r=await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}`,{headers:{Accept:'application/vnd.github+json',...ghAuthHeader()}});
+      this._trackRate(r);
+      if(!r.ok) return null;
+      const j=await r.json();
+      state.branches[repo]=j.default_branch||BRANCH_DEFAULTS[repo]||'main';
+      return {
+        language:j.language, stars:j.stargazers_count||0, issues:j.open_issues_count||0,
+        updated:j.pushed_at||j.updated_at, homepage:j.homepage, private:j.private,
+        desc:j.description, defaultBranch:j.default_branch
+      };
+    }catch(e){ return null; }
+  },
   async lastRun(repo){
     try{
       const r=await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}/actions/runs?per_page=1`,{headers:{Accept:'application/vnd.github+json',...ghAuthHeader()}});
@@ -865,25 +921,36 @@ const Net = {
     const n=PROJECTS.length;
     const nodes=PROJECTS.map((p,i)=>{
       const ang=-Math.PI/2+(i/n)*Math.PI*2;
-      const rad=p.id==='giveabit'?0:150;
+      const rad=p.id==='giveabit'?0:165;
       return {id:p.id,p,x:cx+Math.cos(ang)*rad,y:cy+Math.sin(ang)*rad};
     });
-    // pull giveabit center
     const hub=nodes.find(n=>n.id==='giveabit'); if(hub){ hub.x=cx; hub.y=cy; }
+    const drawn=new Set();
     let edges='';
     PROJECTS.forEach(p=>{
       (p.related||[]).forEach(rid=>{
+        const key=[p.id,rid].sort().join('>');
+        if(drawn.has(key)) return; drawn.add(key);
         const a=nodes.find(n=>n.id===p.id), b=nodes.find(n=>n.id===rid);
-        if(a&&b) edges+=`<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="rgba(0,0,0,.25)" stroke-width="1.5"/>`;
+        if(!a||!b) return;
+        const mx=(a.x+b.x)/2, my=(a.y+b.y)/2;
+        edges+=`<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="${p.color}" stroke-opacity="0.35" stroke-width="2"/>`;
+        edges+=`<text class="edge-label" x="${mx}" y="${my-4}" text-anchor="middle">link</text>`;
       });
     });
     const dots=nodes.map(n=>{
       const d=state.projects[n.id]||{};
       const s=statusMeta(d.status||'gray');
+      const r=n.id==='giveabit'?30:20+(d.walletOk?Math.min(8,(d.balanceSats||0)/50000):0);
+      const ring=d.liveReachable?'#1f6b3a':d.ghOk?'#8a5a00':'#666';
       return `<g style="cursor:pointer" onclick="Drawer.open('${n.id}')">
-        <circle cx="${n.x}" cy="${n.y}" r="${n.id==='giveabit'?28:22}" fill="${n.p.color}" opacity="0.92" stroke="#121210" stroke-width="1.5"/>
-        <text x="${n.x}" y="${n.y+5}" text-anchor="middle" font-size="10" font-family="IBM Plex Sans" font-weight="600" fill="#fff">${n.p.name.slice(0,8)}</text>
-        <title>${n.p.name} · ${s.label}</title>
+        <circle cx="${n.x}" cy="${n.y}" r="${r+4}" fill="none" stroke="${ring}" stroke-width="2" opacity="0.7"/>
+        <circle cx="${n.x}" cy="${n.y}" r="${r}" fill="${n.p.color}" opacity="0.95" stroke="#121210" stroke-width="1"/>
+        <text x="${n.x}" y="${n.y+4}" text-anchor="middle" font-size="10" font-family="IBM Plex Sans" font-weight="600" fill="#fff">${n.p.name.slice(0,8)}</text>
+        <text x="${n.x}" y="${n.y+r+12}" text-anchor="middle" font-size="8" font-family="IBM Plex Mono" fill="#333">${d.language||'—'} · ${s.label}</text>
+        <title>${n.p.name}
+${s.label} · ${d.walletOk?fmt.sats(d.balanceSats)+' sats':'no wallet'}
+${(n.p.related||[]).length} connections · ${d.issues||0} issues</title>
       </g>`;
     }).join('');
     svg.innerHTML = edges+dots;
@@ -927,24 +994,29 @@ const Dash = {
     }catch(e){}
   },
   async refreshProject(p){
-    const d=state.projects[p.id]||{}; d.id=p.id;
-    try{
-      const b=await GitHubData.branchInfo(p.repo);
-      d.sha=b.commit.sha; d.commitMsg=b.commit.commit.message.split('\n')[0];
-      d.commitDate=b.commit.commit.committer.date; d.author=b.commit.commit.author?.name||'—'; d.ghOk=true;
-    }catch(e){ d.ghOk=false; }
-    try{
-      const run=await GitHubData.lastRun(p.repo);
-      d.actionsStatus=run?(run.conclusion||run.status):null;
-      d.actionsName=run?.name; d.actionsUrl=run?.html_url;
-    }catch(e){ d.actionsStatus=null; }
-    if(p.deployed&&p.url){ d.liveReachable=(await checkLive(p.url)).ok; } else d.liveReachable=null;
-    d.walletOk=false;
+    const d=state.projects[p.id]||{}; d.id=p.id; d.prevSats=d.balanceSats;
+    // Parallel: meta + branch + actions + live + wallet
+    const tasks = [
+      GitHubData.repoMeta(p.repo).then(m=>{ if(m){ d.language=m.language; d.stars=m.stars; d.issues=m.issues; d.repoUpdated=m.updated; d.repoPrivate=m.private; d.repoDesc=m.desc; } }).catch(()=>{}),
+      GitHubData.branchInfo(p.repo).then(b=>{
+        d.sha=b.commit.sha; d.commitMsg=b.commit.commit.message.split('\n')[0];
+        d.commitDate=b.commit.commit.committer.date; d.author=b.commit.commit.author?.name||'—'; d.ghOk=true;
+      }).catch(()=>{ d.ghOk=false; }),
+      GitHubData.lastRun(p.repo).then(run=>{
+        d.actionsStatus=run?(run.conclusion||run.status):null;
+        d.actionsName=run?.name; d.actionsUrl=run?.html_url;
+      }).catch(()=>{ d.actionsStatus=null; }),
+    ];
+    if(p.deployed&&p.url) tasks.push(checkLive(p.url).then(l=>{ d.liveReachable=l.ok; }));
+    else d.liveReachable=null;
     if(Vault.hasWallet(p.wallet)){
-      try{ const w=await LNbitsData.wallet(p.wallet); d.balanceMsat=w.balance; d.balanceSats=Math.floor(w.balance/1000); d.walletName=w.name; d.walletOk=true; }
-      catch(e){ d.walletOk=false; d.walletError=true; }
-    }
+      tasks.push(LNbitsData.wallet(p.wallet).then(w=>{
+        d.balanceMsat=w.balance; d.balanceSats=Math.floor(w.balance/1000); d.walletName=w.name; d.walletOk=true;
+      }).catch(()=>{ d.walletOk=false; d.walletError=true; }));
+    } else d.walletOk=false;
+    await Promise.all(tasks);
     d.status=computeStatus(p,d);
+    d.linkScore = [d.ghOk, d.walletOk, d.liveReachable===true, !!d.actionsStatus, (p.related||[]).length>0].filter(Boolean).length;
     state.projects[p.id]=d;
   },
   snapshot(){
@@ -982,6 +1054,19 @@ const Dash = {
     document.getElementById('count-red').textContent=counts.red;
     document.getElementById('count-gray').textContent=counts.gray;
     document.getElementById('fav-count').textContent=state.pins.size+' pinned';
+    const issuesTot=PROJECTS.reduce((a,p)=>a+((state.projects[p.id]||{}).issues||0),0);
+    const pi=document.getElementById('portfolio-issues'); if(pi) pi.textContent=issuesTot+' issues';
+    // portfolio delta vs previous snapshot
+    const deltaEl=document.getElementById('total-delta');
+    if(deltaEl){
+      const prev=state.history.length>=2?state.history[state.history.length-2].total:null;
+      if(prev!=null){
+        const diff=total-prev;
+        deltaEl.textContent=(diff>0?'Δ +':diff<0?'Δ ':'Δ ')+fmt.sats(diff)+' sats';
+        deltaEl.className=diff>0?'delta-up':diff<0?'delta-dn':'delta-flat';
+      } else deltaEl.textContent='Δ —';
+    }
+    renderConnHub();
     Vault.updateStatusChip();
     const max=Math.max(1,...bars.map(b=>b.sats));
     document.getElementById('bal-bars').innerHTML=bars.map(b=>`
@@ -1045,6 +1130,50 @@ const Dash = {
   }
 };
 
+
+function renderConnHub(){
+  const hub=document.getElementById('conn-hub');
+  const rail=document.getElementById('sync-rail');
+  if(!hub) return;
+  const edges=PROJECTS.reduce((a,p)=>a+(p.related||[]).length,0);
+  const langs={};
+  let ghOk=0,wOk=0,live=0,ciOk=0;
+  PROJECTS.forEach(p=>{
+    const d=state.projects[p.id]||{};
+    if(d.ghOk) ghOk++;
+    if(d.walletOk) wOk++;
+    if(d.liveReachable) live++;
+    if(d.actionsStatus==='success') ciOk++;
+    if(d.language) langs[d.language]=(langs[d.language]||0)+1;
+  });
+  const cs=document.getElementById('conn-summary');
+  if(cs) cs.textContent=`${edges} links · ${Object.keys(langs).length} languages · ${ghOk} gh`;
+  hub.innerHTML=PROJECTS.map(p=>{
+    const d=state.projects[p.id]||{};
+    const rel=(p.related||[]).length;
+    return `<div class="conn-card" style="border-top:3px solid ${p.color}" onclick="Drawer.open('${p.id}')">
+      <div class="lbl">${p.category}</div>
+      <div class="val">${p.name}</div>
+      <div class="sub">${d.language||'—'} · ${rel} links · ${d.walletOk?fmt.sats(d.balanceSats)+'s':'wallet —'}</div>
+      <div class="link-row mt-1.5">${(p.related||[]).slice(0,3).map(rid=>{
+        const rp=PROJECTS.find(x=>x.id===rid);
+        return rp?`<span class="rel-chip" onclick="event.stopPropagation();Drawer.open('${rid}')"><span class="rel-dot" style="background:${rp.color}"></span>${rp.name}</span>`:'';
+      }).join('')}</div>
+    </div>`;
+  }).join('');
+  if(rail){
+    rail.innerHTML=`
+      <div class="sync-cell"><span class="n" style="color:var(--green)">${live}</span>live sites</div>
+      <div class="sync-cell"><span class="n">${ghOk}</span>github ok</div>
+      <div class="sync-cell"><span class="n">${wOk}</span>wallets</div>
+      <div class="sync-cell"><span class="n">${ciOk}</span>ci green</div>
+      <div class="sync-cell"><span class="n">${edges}</span>graph edges</div>
+      <div class="sync-cell"><span class="n">${Vault.keyCount()}</span>vault keys</div>
+      <div class="sync-cell"><span class="n">${Object.keys(langs).join('/')||'—'}</span>langs</div>
+      <div class="sync-cell"><span class="n">${state.ghRateRemaining??'—'}</span>gh left</div>`;
+  }
+}
+
 function renderGrid(){
   document.getElementById('view-grid').innerHTML=PROJECTS.map(p=>{
     const d=state.projects[p.id]||{}; const s=statusMeta(d.status); const hs=healthScore(d);
@@ -1065,7 +1194,13 @@ function renderGrid(){
         </div>
       </div>
       <p class="text-xs text-[var(--ink-dim)] line-clamp-2">${p.tagline}</p>
-      <div class="flex flex-wrap gap-1">${(p.stack||[]).map(t=>`<span class="chip" style="cursor:default">${t}</span>`).join('')}</div>
+      <div class="flex flex-wrap gap-1 items-center">
+        ${d.language?`<span class="lang-badge">${d.language}</span>`:''}
+        ${(p.stack||[]).map(t=>`<span class="chip" style="cursor:default">${t}</span>`).join('')}
+        ${d.issues!=null?`<span class="status-pill gray">${d.issues} iss</span>`:''}
+        ${(d.stars!=null&&d.stars>0)?`<span class="status-pill gray">★${d.stars}</span>`:''}
+      </div>
+      <div class="flex flex-wrap gap-1">${(p.related||[]).map(rid=>{const rp=PROJECTS.find(x=>x.id===rid);return rp?`<span class="rel-chip" onclick="event.stopPropagation();Drawer.open('${rid}')"><span class="rel-dot" style="background:${rp.color}"></span>${rp.name}</span>`:''}).join('')}</div>
       <div class="grid grid-cols-2 gap-1.5">
         <div class="metric"><div class="text-[9px] mono uppercase text-[var(--ink-faint)]">Balance</div>
           <div class="mono font-semibold">${d.walletOk?fmt.sats(d.balanceSats):'—'} <span class="text-[9px] text-[var(--ink-faint)]">sats</span></div>
@@ -1359,8 +1494,24 @@ const Drawer = {
         <div class="metric text-center"><div class="text-[9px] mono text-[var(--ink-faint)]">CI</div><div class="font-semibold mono">${fmt.actions(d.actionsStatus)}</div></div>
       </div>
       ${p.url?`<a href="${p.url}" target="_blank" rel="noopener" class="btn-brand rounded px-3 py-2 text-sm flex justify-center mb-3">Open site</a>`:''}
-      <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-1">Related</div>
-      <div class="flex flex-wrap gap-1 mb-3">${(p.related||[]).map(rid=>{const rp=PROJECTS.find(x=>x.id===rid);return rp?`<button class="chip" onclick="Drawer.open('${rid}')">${rp.name}</button>`:''}).join('')||'<span class="text-xs text-[var(--ink-faint)]">—</span>'}</div>
+      <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-1">Signals</div>
+      <div class="flex flex-wrap gap-1 mb-2">
+        ${d.language?`<span class="lang-badge">${d.language}</span>`:''}
+        <span class="status-pill gray">${d.issues??0} open issues</span>
+        <span class="status-pill gray">★ ${d.stars??0}</span>
+        <span class="status-pill gray">links ${(p.related||[]).length}</span>
+        <span class="status-pill ${d.repoPrivate?'amber':'green'}">${d.repoPrivate?'private':'public'}</span>
+      </div>
+      <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-1">Related projects</div>
+      <div class="flex flex-wrap gap-1 mb-3">${(p.related||[]).map(rid=>{const rp=PROJECTS.find(x=>x.id===rid);return rp?`<button class="rel-chip" onclick="Drawer.open('${rid}')"><span class="rel-dot" style="background:${rp.color}"></span>${rp.name}</button>`:''}).join('')||'<span class="text-xs text-[var(--ink-faint)]">—</span>'}</div>
+      <div class="link-row mb-3">
+        ${p.url?`<a class="btn-ghost rounded px-2 py-1 text-xs" href="${p.url}" target="_blank" rel="noopener">Live</a>`:''}
+        <a class="btn-ghost rounded px-2 py-1 text-xs" href="https://github.com/${GH_OWNER}/${p.repo}" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn-ghost rounded px-2 py-1 text-xs" href="https://github.com/${GH_OWNER}/${p.repo}/issues" target="_blank" rel="noopener">Issues</a>
+        ${d.actionsUrl?`<a class="btn-ghost rounded px-2 py-1 text-xs" href="${d.actionsUrl}" target="_blank" rel="noopener">CI run</a>`:''}
+        <button class="btn-ghost rounded px-2 py-1 text-xs" onclick="Docs.open('${p.repo}','README.md','${p.name}');Drawer.close({target:{id:'drawer-backdrop'}})">README</button>
+        <button class="btn-ghost rounded px-2 py-1 text-xs" onclick="switchView('network')">Network</button>
+      </div>
       <div class="glass-2 rounded p-3 text-sm mb-3">
         <div class="detail-row"><span class="text-[var(--ink-faint)]">Wallet</span><span class="mono">${p.wallet}</span></div>
         <div class="detail-row"><span class="text-[var(--ink-faint)]">Vault</span><span class="mono">${Vault.hasWallet(p.wallet)?'set':'empty'}</span></div>
@@ -1494,7 +1645,7 @@ UI.clock(); setInterval(UI.clock,1000);
 Dash.refreshAll();
 scheduleRefresh();
 if(!Vault.hasGh()&&Vault.keyCount()===0) setTimeout(()=>toast('Open Vault to connect keys','info'),700);
-console.log('%cGive A Bit HQ v2.0','color:#c45f00;font-weight:bold');
+console.log('%cGive A Bit HQ v2.1','color:#c45f00;font-weight:bold');
 </script>
 </body>
 </html>
