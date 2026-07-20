@@ -1,134 +1,104 @@
 # Give A Bit HQ
 
-Single-file portfolio, ops, and **pitch** glass for the Give A Bit suite (**v2.2**).
+**Ops + pitch glass** for the Give A Bit suite (**v2.4**).
 
-Open `control-panel.html` in a browser (serve the folder or open via `file://` — registry JSON needs a local server for `fetch`; embedded fallback works offline).
+| | |
+|--|--|
+| **Live** | https://hq.giveabit.io · https://giveabit-hq.pages.dev |
+| **Repo** | https://github.com/kitsboy/HQ |
+| **CF project** | `giveabit-hq` (Cloudflare Pages) |
+
+Open in a browser (prefer **hq.giveabit.io** so Vault storage stays consistent).
 
 ```bash
-# Recommended: serve the folder so projects.json / agents.json load
-cd /Users/cam/projects/HQ && python3 -m http.server 8765
-# open http://localhost:8765/control-panel.html
+# Local
+cd /Users/cam/projects/HQ && npm run build && npm run preview
+# http://localhost:8765/
 ```
 
 ## Views
 
-Cards · List · Pipeline · Analytics · Network · Activity · Matrix · Wallets · Docs · Agents · **Pitch** (`P`)
+Cards · List · Pipeline · **Metrics (`k`)** · Analytics · Network · Activity · Matrix · Wallets · Docs · Agents · **Pitch (`P`)**
 
-GitHub Actions / CI status appears on cards, Pipeline, Matrix, and drawer — not a separate Actions tab.
+## What it does
 
-## v2.2.1 notes (Satohash backbone polish)
+- Portfolio sats/USD (CoinGecko), wallets via **Vault → LNbits** (invoice keys)
+- GitHub commits/CI/docs (PAT in Vault)
+- **status.json** uptime (pinger every 15m)
+- **Product metrics** (`gab.product-metrics.v1`) + **THOR node** (`gab.thor-node.v1`)
+- SuperGrok / Grok Build usage (manual % in Vault)
+- NIP-05 checks, diligence export, tools hub, ops notes
 
-- Health bar **Satohash** dot probes `GET https://api.satohash.io/health` (override via Vault `satohashApi`)
-- Site `https://satohash.io` still covered by suite project live probes / optional `status.json`
-- Connection hub: **Proof plane: Satohash** card + suite status strip (per-project live chips)
-- `status.json` shape documented in HTML comment + `status.example.json`
-- Graph edges: satohash ↔ giveabit enforced for backbone link
-- **No secrets** in repo — Vault remains `localStorage` only
+## Security (non‑negotiable)
 
-## v2.2 changelog
+**Zero secrets in git.** Vault = browser `localStorage` only (`sovereign_deck_vault_v1`).
 
-### Presentation (P0)
-- **Pitch mode** — fullscreen suite map, 6 big metrics, one sentence per project, operators, satohash backbone; **Copy deck MD**
-- **Investor metrics strip** — treasury, USD, live, health, CI ok/fail, issues, wallets, BTC
-- **Diligence pack** export (markdown) — portfolio + per-project status/commit/CI/docs checklist + NIP-05
-- **Satohash backbone** banner (OTS family service)
-- **NIP-05 panel** — verifies `giveabit.io/.well-known/nostr.json`, green/red per agent
+Never commit: LNbits keys, GitHub PATs, LND macaroons, CF tokens (CF deploy tokens only as GitHub Actions secrets).
 
-### Data contracts (P1)
-- **`projects.json` / `agents.json`** — config-first registry (add a 10th project without HTML edits)
-- **status.json** URL in Vault — shape in `status.example.json` for true uptime
-- **Satohash health** — optional `GET {api}/health` (graceful offline)
-- GitHub Actions still rate-limit aware; failures don’t kill the board
+## Deploy
 
-### Ops polish (P2)
-- **CORS banner** when Vault keys exist but balances empty
-- Wallet **Δ since previous cache**
-- Vault fields: status.json URL, satohash API base, NIP-05 URL
-- Connection hub + sync rail (from v2.1)
+```bash
+npm run build
+npx wrangler pages deploy ./public --project-name=giveabit-hq --branch=main
+# or push main → .github/workflows/deploy.yml (needs CLOUDFLARE_* secrets)
+```
 
-## Security
+Custom domain: Cloudflare → Pages → **giveabit-hq** → Custom domains → `hq.giveabit.io`.
 
-**No API keys in this repo.** Vault = browser `localStorage` (`sovereign_deck_vault_v1`).
+Optional login wall: [`docs/CLOUDFLARE-ACCESS.md`](docs/CLOUDFLARE-ACCESS.md).
 
-Never commit: LNbits keys, GitHub PATs, LND macaroons, Cloudflare tokens.
+## LNbits balances empty?
+
+If Vault has keys but sats stay empty: **CORS or Tailscale reachability** — not “paste keys into HTML.”
+
+- Diagnose: blue banner → **Test connection** (`kind=cors|network|auth`)
+- Fix guide: [`docs/LNBITS-CORS.md`](docs/LNBITS-CORS.md)
+- Allow origins: `https://hq.giveabit.io` and `https://giveabit-hq.pages.dev`
+
+## Metrics & node contracts
+
+| Doc | Schema / files |
+|-----|----------------|
+| [`docs/METRICS-SCHEMA.md`](docs/METRICS-SCHEMA.md) | `schemas/product-metrics.v1.schema.json` · `metrics/*.json` |
+| [`docs/THOR-NODE-JSON.md`](docs/THOR-NODE-JSON.md) | `schemas/thor-node.v1.schema.json` · `metrics/thor-node.json` |
+
+**Kimi (satohash):** publish live `GET /metrics.json` matching the schema (`raw.demo: false`).  
+**Nova (THOR):** cron exporter → thor-node JSON; fix LNbits CORS.
+
+## Handoff (Grok ↔ Kimi)
+
+| File | Role |
+|------|------|
+| [`docs/KIMI-GROK-HANDOFF.md`](docs/KIMI-GROK-HANDOFF.md) | Human protocol |
+| [`handoff/state.json`](handoff/state.json) | Machine state |
+| [`docs/ECOSYSTEM-MAP.md`](docs/ECOSYSTEM-MAP.md) | Domains + planes |
+| [`SOURCE-OF-TRUTH.md`](SOURCE-OF-TRUTH.md) | Index of truth |
+
+```bash
+node scripts/stamp-handoff.mjs --agent grok --summary "…"
+node scripts/stamp-handoff.mjs --agent kimi --summary "…"
+```
 
 ## Keyboard
 
 | Key | Action |
 |-----|--------|
 | `P` | Pitch mode |
+| `k` | Metrics lab |
 | `/` | Search |
 | `g` `l` `p` | Cards / List / Pipeline |
 | `y` `n` `t` `m` `w` | Analytics / Network / Activity / Matrix / Wallets |
 | `d` `a` | Docs / Agents |
-| `r` | Refresh |
-| `v` | Vault |
-| `?` | Help |
-| `esc` | Close overlays / exit pitch |
+| `r` `v` `?` | Refresh / Vault / Help |
+| `esc` | Close |
 
-## Offline vs Vault vs node
+## Changelog (high level)
 
-| Mode | What works |
-|------|------------|
-| Offline / file:// | Embedded project fallback, UI, cache, CoinGecko may fail |
-| Local server + no Vault | Public GitHub reads (rate-limited), NIP-05/satohash if CORS allows |
-| Vault + GitHub PAT | Private repos, docs save, higher rate limit |
-| Vault + LNbits keys | Balances **if** node CORS/tailnet allows |
-| status.json URL | True HTTP uptime per site |
-
-## Adding a project
-
-Edit `projects.json` (and optional related links), refresh HQ. No HTML edit required when served over HTTP.
-
-## Cloudflare Access (login wall)
-
-Step-by-step: [`docs/CLOUDFLARE-ACCESS.md`](docs/CLOUDFLARE-ACCESS.md)  
-Protect `hq.giveabit.io` with email/GitHub allowlist (Zero Trust → Access). No app code required.
-
-## Status pinger (true uptime)
-
-- Script: `node scripts/status-ping.mjs` → writes `status.json`
-- Actions: `.github/workflows/status-pinger.yml` every **15 minutes** (+ manual)
-- HQ loads `/status.json`, then GitHub raw fallback
-- Also probes satohash `/health` + `/metrics` when available
-
-## Deploy (Cloudflare Pages)
-
-| Item | Value |
-|------|--------|
-| CF project | `giveabit-hq` |
-| Build output | `public/` (`control-panel.html` → `index.html`) |
-| Preview | `https://giveabit-hq.pages.dev` |
-| Custom domain | `hq.giveabit.io` (add in CF dashboard) |
-
-### Secrets (same pattern as satohash)
-
-Add to **GitHub → kitsboy/HQ → Settings → Secrets → Actions**:
-
-- `CLOUDFLARE_API_TOKEN`
-- `CLOUDFLARE_ACCOUNT_ID`
-
-### Deploy paths
-
-```bash
-# CI: push to main runs .github/workflows/deploy.yml
-
-# Local (after wrangler login or env tokens):
-npm run build
-npm run deploy
-```
-
-### Custom domain `hq.giveabit.io`
-
-1. Cloudflare → **Workers & Pages** → **giveabit-hq** → **Custom domains** → `hq.giveabit.io`  
-2. Optional: **Zero Trust → Access** on that hostname (login gate)
-
-### Local preview
-
-```bash
-npm run build && npm run preview
-# http://localhost:8765/
-```
+- **v2.4** — Metrics lab, product + THOR envelopes, handoff system, LNbits diagnose  
+- **v2.3** — Tools hub, ops notes, latency, BTC 24h, PWA  
+- **v2.2** — Pitch, diligence, NIP-05, status feeds, registry JSON  
+- **v2.1** — Connection hub, CF Pages, custom domain path  
+- Full map: [`docs/UPGRADES-100.md`](docs/UPGRADES-100.md)
 
 ## License
 

@@ -1,11 +1,15 @@
 {
   "schema": "gab.handoff.v1",
-  "updatedAt": "2026-07-20T02:27:51.464Z",
+  "updatedAt": "2026-07-20T04:06:23.463Z",
   "agents": {
     "grok": {
-      "lastSeen": "2026-07-20T02:27:51.464Z",
+      "lastSeen": "2026-07-20T04:06:23.434Z",
       "focus": "HQ",
       "notes": [
+        {
+          "t": "2026-07-20T04:06:23.434Z",
+          "summary": "Goodbye 2026-07-20: docs refresh, CORS path documented, metrics/THOR/handoff live; Nova must fix LNbits CORS for hq + pages.dev"
+        },
         {
           "t": "2026-07-20T02:27:51.464Z",
           "summary": "Metrics lab v1: suite envelopes, THOR panel, schemas, handoff docs; awaiting Kimi live satohash /metrics.json"
@@ -28,7 +32,28 @@
     "metrics-schema": "grok-define / kimi-publish",
     "thor-node-json": "nova-publish / grok-display"
   },
-  "blockers": [],
+  "blockers": [
+    {
+      "id": "lnbits-cors",
+      "owner": "nova",
+      "detail": "kind=cors from giveabit-hq.pages.dev to vmi3446772.tailb672ac.ts.net"
+    },
+    {
+      "id": "satohash-live-metrics",
+      "owner": "kimi",
+      "detail": "publish gab.product-metrics.v1 live"
+    },
+    {
+      "id": "thor-exporter",
+      "owner": "nova",
+      "detail": "live thor-node.json"
+    },
+    {
+      "id": "cf-access",
+      "owner": "cam",
+      "detail": "optional Access on hq.giveabit.io"
+    }
+  ],
   "next": [
     {
       "id": "satohash-live-metrics",
