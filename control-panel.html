@@ -2091,6 +2091,34 @@ const MetricsEngine = {
           </div>
         </div>
       </div>
+      <div class="thor-grid mb-4">
+        <div class="glass-2 rounded p-3">
+          <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">System Health · Disk</div>
+          <div class="space-y-1 text-xs mono">
+            ${t.system?`
+            <div title="Total disk capacity">disk: <strong>${t.system.disk.totalGB} GB</strong></div>
+            <div title="Used vs free">used: <strong>${t.system.disk.usedGB} GB</strong> · free: ${t.system.disk.freeGB} GB</div>
+            <div class="bar-track mt-1 mb-1"><div class="bar-fill" style="width:${t.system.disk.usedPercent}%;background:${t.system.disk.usedPercent>80?'var(--red)':t.system.disk.usedPercent>60?'var(--amber)':'var(--green)'}"></div></div>
+            <div class="text-[var(--ink-faint)]">${t.system.disk.usedPercent}% used · mount ${t.system.disk.mount}</div>
+            <div class="mt-2 text-[var(--ink-faint)] text-[10px]">top consumers:</div>
+            ${Object.entries(t.system.breakdownGB||{}).slice(0,5).map(([k,v])=>`<div class="flex justify-between"><span>${k.replace(/_/g,' ')}</span><span>${v} GB</span></div>`).join('')}
+            `:'<div class="text-[var(--ink-faint)]">no system metrics loaded</div>'}
+          </div>
+        </div>
+        <div class="glass-2 rounded p-3">
+          <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">System Health · Memory & CPU</div>
+          <div class="space-y-1 text-xs mono">
+            ${t.system?`
+            <div title="RAM total">memory: <strong>${t.system.memory.totalGB} GB</strong></div>
+            <div title="Used vs available">used: <strong>${t.system.memory.usedGB} GB</strong> · available: ${t.system.memory.availableGB} GB</div>
+            <div class="bar-track mt-1 mb-1"><div class="bar-fill" style="width:${Math.round((t.system.memory.usedGB/t.system.memory.totalGB)*100)}%;background:${(t.system.memory.usedGB/t.system.memory.totalGB)>0.8?'var(--red)':(t.system.memory.usedGB/t.system.memory.totalGB)>0.6?'var(--amber)':'var(--green)'}"></div></div>
+            <div class="text-[var(--ink-faint)]">${Math.round((t.system.memory.usedGB/t.system.memory.totalGB)*100)}% used</div>
+            <div class="mt-2">load: ${t.system.cpu.loadAvg1m} / ${t.system.cpu.loadAvg5m} / ${t.system.cpu.loadAvg15m}</div>
+            <div class="text-[var(--ink-faint)]">uptime ${t.system.cpu.uptimeDays} days · Docker build cache ${t.system.docker.buildCacheGB} GB</div>
+            `:'<div class="text-[var(--ink-faint)]">no system metrics loaded</div>'}
+          </div>
+        </div>
+      </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
         ${(t.series||[]).map(s=>`<div class="glass-2 rounded p-2">${this.sparkline(s)}</div>`).join('')}
       </div>
