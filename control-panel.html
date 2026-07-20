@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  Give A Bit HQ v2.6.0 — ops + presentation shell for the suite.
+  Give A Bit HQ v2.7.0 — ops + presentation shell for the suite.
   PRESENTATION: Pitch mode (P), diligence pack export, investor metrics strip,
     suite map, satohash backbone callout, NIP-05 agent checks, export deck md.
   FEEDS (optional, Vault/config): status.json uptime, api.satohash.io/health,
@@ -12,7 +12,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Give A Bit HQ v2.6.0</title>
+<title>Give A Bit HQ v2.7.0</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
@@ -709,7 +709,7 @@ table thead th{
       <div class="icon-box sm" style="background:var(--orange);color:#fff"><i class="fa-solid fa-bolt"></i></div>
       <div>
         <div class="font-semibold text-[13px] leading-none" style="font-family:'IBM Plex Sans'">Give A Bit HQ</div>
-        <div class="text-[10px] text-[var(--ink-faint)]">v2.6.0 · command deck · <span id="hq-version-top" class="version-chip">v2.6.0</span></div>
+        <div class="text-[10px] text-[var(--ink-faint)]">v2.7.0 · command deck · live proxy · <span id="hq-version-top" class="version-chip">v2.7.0</span></div>
       </div>
     </div>
     <div class="divider"></div>
@@ -1065,7 +1065,7 @@ table thead th{
   <div class="ver-line flex flex-wrap justify-between gap-2">
     <span class="mono">
       Give A Bit HQ
-      · <span class="version-chip" id="hq-version">v2.6.0</span>
+      · <span class="version-chip" id="hq-version">v2.7.0</span>
       · build <span id="hq-build">—</span>
       · <span id="hq-origin" class="text-[var(--ink-faint)]"></span>
       · credentials only in localStorage · Safe Harbour
@@ -1181,7 +1181,24 @@ table thead th{
           <div class="vault-section-title">Node connection</div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div class="vault-field sm:col-span-2">
-              <label data-tip="LNbits base URL reachable from THIS browser. Public or Tailscale Funnel + CORS." data-tip-title="Node URL" data-tip-advice="If balances empty: docs/LNBITS-CORS.md">LNbits node URL</label>
+              <label data-tip="Cloudflare Worker that calls LNbits server-side so browser CORS is not needed." data-tip-title="LNbits proxy" data-tip-advice="docs/LNBITS-PROXY.md — live balances without Tailscale CORS">LNbits proxy URL (recommended)</label>
+              <input id="vault-proxy-url" class="w-full rounded px-3 py-2 text-sm mono" placeholder="https://giveabit-lnbits-proxy.kitsboy.workers.dev">
+              <div class="hint mt-1">Default: https://giveabit-lnbits-proxy.kitsboy.workers.dev</div>
+            </div>
+            <div class="vault-field sm:col-span-2">
+              <label>Proxy token (Bearer)</label>
+              <div class="flex gap-2">
+                <input id="vault-proxy-token" type="password" class="flex-1 rounded px-3 py-2 text-sm mono" placeholder="from Worker PROXY_TOKEN secret" autocomplete="off">
+                <button type="button" class="btn-ghost rounded px-2 text-xs" onclick="VaultX.toggleVis('vault-proxy-token',this)">👁</button>
+              </div>
+            </div>
+            <div class="vault-field sm:col-span-2">
+              <label class="flex items-center gap-2 normal-case tracking-normal text-xs" style="text-transform:none;letter-spacing:0">
+                <input type="checkbox" id="vault-use-proxy" checked> Use proxy for live balances (skip browser CORS)
+              </label>
+            </div>
+            <div class="vault-field sm:col-span-2">
+              <label data-tip="LNbits base URL reachable from THIS browser. Public or Tailscale Funnel + CORS." data-tip-title="Node URL" data-tip-advice="If balances empty: docs/LNBITS-CORS.md">LNbits node URL (upstream for proxy / direct fallback)</label>
               <input id="vault-node-url" class="w-full rounded px-3 py-2 text-sm mono" placeholder="https://….ts.net">
             </div>
             <div class="vault-field">
@@ -1392,8 +1409,8 @@ table thead th{
 </div>
 
 <script>
-/* Give A Bit HQ v2.6.0 — secrets only in localStorage (sovereign_deck_vault_v1) */
-const HQ_VERSION = 'v2.6.0';
+/* Give A Bit HQ v2.7.0 — secrets only in localStorage (sovereign_deck_vault_v1) */
+const HQ_VERSION = 'v2.7.0';
 const HQ_BUILD_ISO = null; // filled at boot
 const VIEWS = ['grid','list','pipeline','metrics','analytics','network','activity','matrix','wallets','docs','agents','opsboard','domains'];
 
@@ -1414,7 +1431,8 @@ const FEEDS_DEFAULT = {
   satohashMetricsUrl: 'https://api.satohash.io/metrics.json',
   nip05Url: 'https://giveabit.io/.well-known/nostr.json',
   thorNodeUrl: '/metrics/thor-node.json',
-  metricsBase: '/metrics'
+  metricsBase: '/metrics',
+  lnbitsProxyUrl: 'https://giveabit-lnbits-proxy.kitsboy.workers.dev'
 };
 
 let btcUsdPrice = null;
@@ -1669,9 +1687,10 @@ const Feeds = {
         cors.innerHTML = `<div class="cors-banner">
           <div class="font-semibold mb-1">${title}</div>
           <div class="text-[11px] leading-relaxed mb-2">${fix} <strong>Do not</strong> paste keys into HTML/git.</div>
-          <div class="text-[10px] mono mb-2">Allow origin: <strong>${origin}</strong>${origin.includes('hq.giveabit')?'':''} · also useful: https://hq.giveabit.io · https://giveabit-hq.pages.dev</div>
+          <div class="text-[10px] mono mb-2">Fix: set <strong>LNbits proxy URL + proxy token</strong> in Vault (Node tab) — Worker bypasses CORS. Or allow origin on node: <strong>${origin}</strong></div>
           <div class="flex flex-wrap gap-2">
             <button type="button" class="btn-brand rounded px-2 py-1 text-xs" onclick="LNbitsHelp.diagnose()">Test connection</button>
+            <button type="button" class="btn-ghost rounded px-2 py-1 text-xs" onclick="Vault.openModal(); setTimeout(()=>Vault.tab&&Vault.tab('node'),50)">Open Vault proxy</button>
             <a class="btn-ghost rounded px-2 py-1 text-xs" href="/docs/LNBITS-CORS.md" target="_blank" rel="noopener">CORS fix guide</a>
             <button type="button" class="btn-ghost rounded px-2 py-1 text-xs" onclick="Vault.openModal()">Open Vault (node URL)</button>
           </div>
@@ -2132,6 +2151,7 @@ const LNbitsHelp = {
       'LNbits diagnose (this browser only)',
       'origin:  '+origin,
       'node:    '+node,
+      'proxy:   '+(LNbitsData.proxyUrl()||'(not set)')+(LNbitsData.useProxy()?' · ACTIVE':' · inactive — set proxy token in Vault'),
       'keys:    '+withKey.length,
       '',
     ];
@@ -2564,7 +2584,7 @@ const GrokUsage = {
 /* ---------- VAULT (same key as v1) ---------- */
 const Vault = {
   KEY: 'sovereign_deck_vault_v1',
-  data: { ghToken:'', nodeUrl:'https://vmi3446772.tailb672ac.ts.net', wallets:{}, fxSource:'coingecko', refreshSec:60, statusJsonUrl:'', satohashApi:'https://api.satohash.io', nip05Url:'https://giveabit.io/.well-known/nostr.json', grok:null },
+  data: { ghToken:'', nodeUrl:'http://api.satohash.io:5102', wallets:{}, fxSource:'coingecko', refreshSec:60, statusJsonUrl:'', satohashApi:'https://api.satohash.io', nip05Url:'https://giveabit.io/.well-known/nostr.json', grok:null, lnbitsProxyUrl:'https://giveabit-lnbits-proxy.kitsboy.workers.dev', proxyToken:'', useProxy:true },
   load(){
     try{ const raw=localStorage.getItem(this.KEY); if(raw) this.data=Object.assign(this.data,JSON.parse(raw)); }catch(e){}
     try{
@@ -2583,6 +2603,9 @@ const Vault = {
     document.getElementById('vault-backdrop').classList.remove('hidden');
     document.getElementById('vault-gh-token').value = this.data.ghToken||'';
     document.getElementById('vault-node-url').value = this.data.nodeUrl||'';
+    const pu=document.getElementById('vault-proxy-url'); if(pu) pu.value=this.data.lnbitsProxyUrl||(state.feeds&&state.feeds.lnbitsProxyUrl)||'';
+    const pt=document.getElementById('vault-proxy-token'); if(pt) pt.value=this.data.proxyToken||'';
+    const up=document.getElementById('vault-use-proxy'); if(up) up.checked=this.data.useProxy!==false;
     document.getElementById('vault-fx-source').value = this.data.fxSource||'coingecko';
     document.getElementById('vault-refresh').value = String(this.data.refreshSec||60);
     const su=document.getElementById('vault-status-url'); if(su) su.value=this.data.statusJsonUrl||'';
@@ -2601,6 +2624,9 @@ const Vault = {
   save(){
     this.data.ghToken = document.getElementById('vault-gh-token').value.trim();
     this.data.nodeUrl = document.getElementById('vault-node-url').value.trim()||this.data.nodeUrl;
+    const pu=document.getElementById('vault-proxy-url'); if(pu) this.data.lnbitsProxyUrl=pu.value.trim();
+    const pt=document.getElementById('vault-proxy-token'); if(pt) this.data.proxyToken=pt.value.trim();
+    const up=document.getElementById('vault-use-proxy'); if(up) this.data.useProxy=!!up.checked;
     this.data.fxSource = document.getElementById('vault-fx-source').value;
     this.data.refreshSec = parseInt(document.getElementById('vault-refresh').value,10)||60;
     const su=document.getElementById('vault-status-url'); if(su) this.data.statusJsonUrl=su.value.trim();
@@ -2619,7 +2645,7 @@ const Vault = {
   clear(){
     if(!confirm('Wipe vault on this browser? (also clears Grok usage numbers)')) return;
     localStorage.removeItem(this.KEY);
-    this.data = { ghToken:'', nodeUrl:'https://vmi3446772.tailb672ac.ts.net', wallets:{}, fxSource:'coingecko', refreshSec:60, statusJsonUrl:'', satohashApi:'https://api.satohash.io', nip05Url:'https://giveabit.io/.well-known/nostr.json', grok:null };
+    this.data = { ghToken:'', nodeUrl:'http://api.satohash.io:5102', wallets:{}, fxSource:'coingecko', refreshSec:60, statusJsonUrl:'', satohashApi:'https://api.satohash.io', nip05Url:'https://giveabit.io/.well-known/nostr.json', grok:null, lnbitsProxyUrl:'https://giveabit-lnbits-proxy.kitsboy.workers.dev', proxyToken:'', useProxy:true };
     toast('Vault wiped','error');
     this.updateStatusChip();
     GrokUsage.render();
@@ -2764,7 +2790,21 @@ const GitHubData = {
 
 const LNbitsData = {
   lastError: null,
+  proxyUrl(){
+    const v = (Vault.data.lnbitsProxyUrl || (state.feeds && state.feeds.lnbitsProxyUrl) || FEEDS_DEFAULT.lnbitsProxyUrl || '').trim().replace(/\/$/,'');
+    return v;
+  },
+  useProxy(){
+    if(Vault.data.useProxy === false) return false;
+    const url = this.proxyUrl();
+    const tok = (Vault.data.proxyToken || '').trim();
+    return !!(url && tok);
+  },
   async wallet(walletKey){
+    // Prefer Cloudflare Worker proxy (fixes CORS). Falls back to direct LNbits.
+    if(this.useProxy()){
+      return this.walletViaProxy(walletKey);
+    }
     if(!Vault.hasWallet(walletKey)) return null;
     const base = (Vault.data.nodeUrl||'').replace(/\/$/,'');
     const url = `${base}/api/v1/wallet`;
@@ -2783,10 +2823,48 @@ const LNbitsData = {
       this.lastError = null;
       return r.json();
     }catch(e){
-      // Browser CORS failures usually surface as TypeError: Failed to fetch (no status)
       const kind = e.kind || (e.name==='TypeError' || /failed to fetch|networkerror|cors/i.test(String(e.message||e)) ? 'cors' : 'network');
-      this.lastError = { kind, message: e.message||String(e), url, origin: location.origin, at: Date.now() };
+      this.lastError = { kind, message: e.message||String(e), url, origin: location.origin, at: Date.now(), via:'direct' };
       const err = new Error(e.message||'fetch failed');
+      err.kind = kind;
+      throw err;
+    }
+  },
+  async walletViaProxy(walletKey){
+    const proxy = this.proxyUrl();
+    const token = (Vault.data.proxyToken||'').trim();
+    const node = (Vault.data.nodeUrl||'').replace(/\/$/,'');
+    const key = (Vault.data.wallets||{})[walletKey];
+    if(!key || key.length<8){
+      const err = new Error('no wallet key'); err.kind='nokey'; throw err;
+    }
+    const url = `${proxy}/balance/${encodeURIComponent(walletKey)}`;
+    try{
+      const headers = {
+        'Authorization': 'Bearer '+token,
+        'Accept': 'application/json',
+        'X-Api-Key': key,
+      };
+      if(node) headers['X-LNbits-Base'] = node;
+      const r = await fetch(url, { headers, mode:'cors', cache:'no-store' });
+      const body = await r.json().catch(()=>({}));
+      if(!r.ok || body.ok === false){
+        const err = new Error(body.error || ('proxy HTTP '+r.status));
+        err.code = r.status;
+        err.kind = body.kind || (r.status===401||r.status===403 ? 'auth' : 'http');
+        throw err;
+      }
+      this.lastError = null;
+      // Normalize to LNbits shape
+      return {
+        name: body.name,
+        balance: body.balance != null ? body.balance : (body.balanceSats != null ? body.balanceSats * 1000 : 0),
+      };
+    }catch(e){
+      if(e.kind){ this.lastError={ kind:e.kind, message:e.message, url, origin:location.origin, at:Date.now(), via:'proxy' }; throw e; }
+      const kind = e.name==='TypeError' || /failed to fetch|networkerror|cors/i.test(String(e.message||e)) ? 'network' : 'error';
+      this.lastError = { kind, message: e.message||String(e), url, origin: location.origin, at: Date.now(), via:'proxy' };
+      const err = new Error(e.message||'proxy failed');
       err.kind = kind;
       throw err;
     }
@@ -2794,18 +2872,27 @@ const LNbitsData = {
   async diagnose(){
     const base = (Vault.data.nodeUrl||'').replace(/\/$/,'');
     const origin = location.origin;
-    const report = { origin, nodeUrl: base, keys: 0, sample: null };
+    const report = {
+      origin,
+      nodeUrl: base,
+      proxyUrl: this.proxyUrl() || null,
+      useProxy: this.useProxy(),
+      keys: 0,
+      sample: null,
+      mode: this.useProxy() ? 'proxy' : 'direct',
+    };
     const wallets = PROJECTS.reduce((a,p)=>{ if(p.wallet && !a.includes(p.wallet)) a.push(p.wallet); return a; },[]);
     for(const w of wallets){
       if(!Vault.hasWallet(w)) continue;
       report.keys++;
       try{
         const data = await this.wallet(w);
-        report.sample = { wallet: w, ok: true, balanceSats: Math.floor((data.balance||0)/1000), name: data.name };
+        report.sample = { wallet: w, ok: true, balanceSats: Math.floor((data.balance||0)/1000), name: data.name, via: report.mode };
         break;
       }catch(e){
-        report.sample = { wallet: w, ok: false, kind: e.kind||LNbitsData.lastError?.kind||'error', message: e.message };
-        if(report.sample.kind==='cors') break;
+        report.sample = { wallet: w, ok: false, kind: e.kind||LNbitsData.lastError?.kind||'error', message: e.message, via: report.mode };
+        // keep going through wallets for proxy; for cors-direct stop early
+        if(report.sample.kind==='cors' && report.mode==='direct') break;
       }
     }
     return report;

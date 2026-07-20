@@ -18,6 +18,11 @@
           "tip": "This ops glass"
         },
         {
+          "name": "LNbits proxy health",
+          "url": "https://giveabit-lnbits-proxy.kitsboy.workers.dev/health",
+          "tip": "Cloudflare Worker \u2014 live balances path"
+        },
+        {
           "name": "Satohash",
           "url": "https://satohash.io",
           "tip": "OTS backbone"

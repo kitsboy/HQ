@@ -10,6 +10,8 @@ _Updated: 2026-07-20 (v2.5.1 keys + ops board)_
 | Pages preview | https://giveabit-hq.pages.dev |
 | GitHub | https://github.com/kitsboy/HQ |
 | CF Pages project | `giveabit-hq` (account Kitsboy) |
+| LNbits proxy Worker | `giveabit-lnbits-proxy` · https://giveabit-lnbits-proxy.kitsboy.workers.dev |
+| LNbits upstream | `http://api.satohash.io:5102` (public; not Tailscale for Worker) |
 
 ## Code layout
 

@@ -25,7 +25,8 @@
     "note": "Override in Vault. Prefer /metrics.json (gab.product-metrics.v1). HQ tries live candidates then static /metrics/*.json.",
     "thorNodeUrl": "/metrics/thor-node.json",
     "thorNodeFallback": "https://raw.githubusercontent.com/kitsboy/HQ/main/metrics/thor-node.json",
-    "metricsBase": "/metrics"
+    "metricsBase": "/metrics",
+    "lnbitsProxyUrl": "https://giveabit-lnbits-proxy.kitsboy.workers.dev"
   },
   "projects": [
     {

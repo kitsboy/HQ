@@ -1,0 +1,3 @@
+PROXY_URL=https://giveabit-lnbits-proxy.kitsboy.workers.dev
+PROXY_TOKEN=<set via wrangler secret put>
+LNBITS_BASE_URL=http://api.satohash.io:5102

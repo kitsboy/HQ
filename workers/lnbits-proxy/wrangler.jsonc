@@ -1,0 +1,17 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "giveabit-lnbits-proxy",
+  "main": "src/index.js",
+  "compatibility_date": "2026-07-20",
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+  "vars": {
+    "ALLOWED_ORIGINS": "https://hq.giveabit.io,https://giveabit-hq.pages.dev,http://localhost:8765,http://127.0.0.1:8765"
+  }
+  // Secrets (set via wrangler secret put — never commit):
+  //   PROXY_TOKEN       — Bearer token HQ puts in Vault once
+  //   LNBITS_BASE_URL   — e.g. https://vmi3446772.tailb672ac.ts.net
+  //   WALLETS_JSON      — optional {"giveabit_main":"invoice_key",...} server-side keys
+}
