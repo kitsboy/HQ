@@ -1,0 +1,14 @@
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: interest-cohort=()
+
+/index.html
+  Cache-Control: no-cache
+
+/projects.json
+  Cache-Control: public, max-age=60
+
+/agents.json
+  Cache-Control: public, max-age=60

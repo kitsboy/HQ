@@ -18,28 +18,12 @@ jobs:
           mkdir -p public
           cp control-panel.html public/index.html
           cp projects.json agents.json status.example.json public/
-          cat > public/_headers << 'EOF'
-/*
-  X-Frame-Options: DENY
-  X-Content-Type-Options: nosniff
-  Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: interest-cohort=()
-
-/index.html
-  Cache-Control: no-cache
-
-/projects.json
-  Cache-Control: public, max-age=60
-
-/agents.json
-  Cache-Control: public, max-age=60
-EOF
-          printf '%s\n' '/control-panel.html /index.html 301' '/hq /index.html 301' > public/_redirects
+          cp pages/_headers pages/_redirects public/
           ls -la public
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Deploy to Cloudflare Pages
         env:
@@ -48,7 +32,6 @@ EOF
         run: |
           if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
             echo "::error::CLOUDFLARE_API_TOKEN not set."
-            echo "Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID to kitsboy/HQ secrets (same as satohash)."
             exit 1
           fi
           npx --yes wrangler@4 pages deploy ./public --project-name=giveabit-hq --branch=main
