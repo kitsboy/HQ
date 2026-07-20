@@ -23,7 +23,11 @@
         { "name": "GitHub kitsboy", "url": "https://github.com/kitsboy" },
         { "name": "NIP-05 nostr.json", "url": "https://giveabit.io/.well-known/nostr.json" },
         { "name": "Satohash API health", "url": "https://api.satohash.io/health" },
-        { "name": "status.json", "url": "/status.json" }
+        { "name": "status.json", "url": "/status.json" },
+        { "name": "Satohash metrics", "url": "/metrics/satohash.json" },
+        { "name": "THOR node JSON", "url": "/metrics/thor-node.json" },
+        { "name": "Handoff state", "url": "/handoff/state.json" },
+        { "name": "Metrics schema", "url": "/schemas/product-metrics.v1.schema.json" }
       ]
     },
     {
