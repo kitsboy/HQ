@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  Give A Bit HQ v2.2 — ops + presentation shell for the suite.
+  Give A Bit HQ v2.2.1 — ops + presentation shell for the suite.
   PRESENTATION: Pitch mode (P), diligence pack export, investor metrics strip,
     suite map, satohash backbone callout, NIP-05 agent checks, export deck md.
   FEEDS (optional, Vault/config): status.json uptime, api.satohash.io/health,
@@ -12,7 +12,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Give A Bit HQ v2.2</title>
+<title>Give A Bit HQ v2.2.1</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
@@ -184,6 +184,7 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
     <div id="hb-lnbits" class="flex items-center gap-1.5 shrink-0"><span class="dot dot-gray"></span>LNbits</div>
     <div id="hb-lnd" class="flex items-center gap-1.5 shrink-0"><span class="dot dot-gray"></span>LND</div>
     <div id="hb-github" class="flex items-center gap-1.5 shrink-0"><span class="dot dot-gray"></span>GitHub <span id="gh-rate" class="text-[var(--ink-faint)]"></span></div>
+    <div id="hb-satohash" class="flex items-center gap-1.5 shrink-0" title="Satohash API · api.satohash.io/health"><span class="dot dot-gray"></span>Satohash</div>
     <div class="divider"></div>
     <span id="btc-price-top" class="shrink-0">BTC $—</span>
     <span id="net-status" class="status-pill gray shrink-0">online</span>
@@ -258,6 +259,7 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
       </div>
       <div class="conn-hub" id="conn-hub"></div>
       <div class="sync-rail" id="sync-rail"></div>
+      <div id="suite-status-strip" class="mt-2 flex flex-wrap gap-1.5" title="Best-effort live probes + optional status.json"></div>
     </div>
   </div>
 </div>
@@ -580,10 +582,24 @@ async function loadRegistry(){
 }
 
 /* ---------- EXTERNAL FEEDS (public only) ---------- */
+/*
+ * Optional status.json (Vault statusJsonUrl or projects.json feeds.statusJsonUrl).
+ * Expected shape (see status.example.json):
+ * {
+ *   "updatedAt": "ISO-8601",
+ *   "sites": {
+ *     "<projectId>": { "ok": true|false, "ms": 140, "status": 200 }
+ *   },
+ *   "node": { "bitcoin": { "ok": null }, "lnd": { "ok": null } }  // optional; never secrets
+ * }
+ * When set, site ok/status/ms paint liveReachable + statusHttp/statusMs on project cards.
+ * Empty URL = client-side checkLive only (no-cors best-effort).
+ */
 const Feeds = {
   async all(){
     await Promise.all([this.statusJson(), this.satohashHealth(), this.verifyNip05(false)]);
     this.renderBanners();
+    this.paintHealthBar();
   },
   async statusJson(){
     const url = (Vault.data.statusJsonUrl || state.feeds.statusJsonUrl || '').trim();
@@ -606,7 +622,9 @@ const Feeds = {
     }catch(e){ state.statusFeed = { error: e.message }; }
   },
   async satohashHealth(){
-    const base = (Vault.data.satohashApi || 'https://api.satohash.io').replace(/\/$/,'');
+    // Probe Satohash API backbone (default https://api.satohash.io/health).
+    // Site https://satohash.io is covered separately via PROJECTS checkLive / status.json.
+    const base = (Vault.data.satohashApi || state.feeds.satohashHealthUrl?.replace(/\/health$/,'') || 'https://api.satohash.io').replace(/\/$/,'');
     try{
       const r = await fetch(base + '/health', { mode:'cors', cache:'no-store' });
       if(!r.ok) throw new Error('http '+r.status);
@@ -615,6 +633,17 @@ const Feeds = {
       state.satohash = { ok:true, status:r.status, body, base };
     }catch(e){
       state.satohash = { ok:false, error: e.message, base };
+    }
+  },
+  paintHealthBar(){
+    const sh = state.satohash;
+    setHealthDot('hb-satohash', sh ? (sh.ok ? 'green' : 'red') : 'gray');
+    const el = document.getElementById('hb-satohash');
+    if(el){
+      const tip = sh
+        ? (sh.ok ? `Satohash API OK · ${sh.base||'api.satohash.io'}/health` : `Satohash API offline · ${sh.error||'n/a'}`)
+        : 'Satohash API · not checked';
+      el.title = tip;
     }
   },
   async verifyNip05(manual){
@@ -1341,6 +1370,7 @@ const Dash = {
     setHealthDot('hb-lnbits', Object.values(state.projects).some(p=>p.walletOk)?'green':(Vault.keyCount()>1?'red':'gray'));
     setHealthDot('hb-thor','amber');
     setHealthDot('hb-lnd','gray');
+    Feeds.paintHealthBar();
     document.getElementById('last-refresh').textContent='synced '+new Date().toLocaleTimeString();
     this.cache();
   },
@@ -1521,6 +1551,11 @@ function renderConnHub(){
   const hub=document.getElementById('conn-hub');
   const rail=document.getElementById('sync-rail');
   if(!hub) return;
+  // Ensure satohash ↔ giveabit related edge for suite graph (backbone link)
+  const sh=PROJECTS.find(p=>p.id==='satohash');
+  if(sh && Array.isArray(sh.related) && !sh.related.includes('giveabit')) sh.related.push('giveabit');
+  const gab=PROJECTS.find(p=>p.id==='giveabit');
+  if(gab && Array.isArray(gab.related) && !gab.related.includes('satohash')) gab.related.push('satohash');
   const edges=PROJECTS.reduce((a,p)=>a+(p.related||[]).length,0);
   const langs={};
   let ghOk=0,wOk=0,live=0,ciOk=0;
@@ -1532,13 +1567,23 @@ function renderConnHub(){
     if(d.actionsStatus==='success') ciOk++;
     if(d.language) langs[d.language]=(langs[d.language]||0)+1;
   });
+  const shOk = state.satohash?.ok === true;
   const cs=document.getElementById('conn-summary');
-  if(cs) cs.textContent=`${edges} links · ${Object.keys(langs).length} languages · ${ghOk} gh`;
-  hub.innerHTML=PROJECTS.map(p=>{
+  if(cs) cs.textContent=`${edges} links · ${Object.keys(langs).length} languages · ${ghOk} gh · proof plane: Satohash`;
+  const proofCard = `<div class="conn-card" style="border-top:3px solid #8a5a00;cursor:pointer" onclick="window.open('https://satohash.io','_blank')" title="Shared OTS backbone for the suite">
+      <div class="lbl">Proof plane</div>
+      <div class="val">Satohash</div>
+      <div class="sub mono">${shOk?'API health OK':'API offline/pending'} · api.satohash.io</div>
+      <div class="link-row mt-1.5">
+        <span class="rel-chip" onclick="event.stopPropagation();Drawer.open('satohash')"><span class="rel-dot" style="background:#8a5a00"></span>Satohash</span>
+        <span class="rel-chip" onclick="event.stopPropagation();Drawer.open('giveabit')"><span class="rel-dot" style="background:#c45f00"></span>Give A Bit</span>
+      </div>
+    </div>`;
+  hub.innerHTML=proofCard+PROJECTS.map(p=>{
     const d=state.projects[p.id]||{};
     const rel=(p.related||[]).length;
     return `<div class="conn-card" style="border-top:3px solid ${p.color}" onclick="Drawer.open('${p.id}')">
-      <div class="lbl">${p.category}</div>
+      <div class="lbl">${p.category}${p.backbone?' · BACKBONE':''}</div>
       <div class="val">${p.name}</div>
       <div class="sub">${d.language||'—'} · ${rel} links · ${d.walletOk?fmt.sats(d.balanceSats)+'s':'wallet —'}</div>
       <div class="link-row mt-1.5">${(p.related||[]).slice(0,3).map(rid=>{
@@ -1550,13 +1595,25 @@ function renderConnHub(){
   if(rail){
     rail.innerHTML=`
       <div class="sync-cell"><span class="n" style="color:var(--green)">${live}</span>live sites</div>
+      <div class="sync-cell"><span class="n" style="color:${shOk?'var(--green)':'var(--amber)'}">${shOk?'ok':'—'}</span>satohash api</div>
       <div class="sync-cell"><span class="n">${ghOk}</span>github ok</div>
       <div class="sync-cell"><span class="n">${wOk}</span>wallets</div>
       <div class="sync-cell"><span class="n">${ciOk}</span>ci green</div>
       <div class="sync-cell"><span class="n">${edges}</span>graph edges</div>
       <div class="sync-cell"><span class="n">${Vault.keyCount()}</span>vault keys</div>
-      <div class="sync-cell"><span class="n">${Object.keys(langs).join('/')||'—'}</span>langs</div>
       <div class="sync-cell"><span class="n">${state.ghRateRemaining??'—'}</span>gh left</div>`;
+  }
+  const strip=document.getElementById('suite-status-strip');
+  if(strip){
+    strip.innerHTML=PROJECTS.map(p=>{
+      const d=state.projects[p.id]||{};
+      const s=statusMeta(d.status||'gray');
+      const liveLabel = d.liveReachable===true ? 'live' : d.liveReachable===false ? 'down' : (p.deployed?'…':'n/a');
+      const src = d.statusSource==='status.json' ? 'feed' : 'probe';
+      return `<button type="button" class="status-pill ${s.dot}" style="cursor:pointer" onclick="Drawer.open('${p.id}')" title="${p.url||'no url'} · ${src}">
+        <span class="dot dot-${s.dot}" style="width:6px;height:6px"></span>${p.name} · ${liveLabel}
+      </button>`;
+    }).join('');
   }
 }
 

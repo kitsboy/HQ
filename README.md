@@ -16,6 +16,15 @@ Cards · List · Pipeline · Analytics · Network · Activity · Matrix · Walle
 
 GitHub Actions / CI status appears on cards, Pipeline, Matrix, and drawer — not a separate Actions tab.
 
+## v2.2.1 notes (Satohash backbone polish)
+
+- Health bar **Satohash** dot probes `GET https://api.satohash.io/health` (override via Vault `satohashApi`)
+- Site `https://satohash.io` still covered by suite project live probes / optional `status.json`
+- Connection hub: **Proof plane: Satohash** card + suite status strip (per-project live chips)
+- `status.json` shape documented in HTML comment + `status.example.json`
+- Graph edges: satohash ↔ giveabit enforced for backbone link
+- **No secrets** in repo — Vault remains `localStorage` only
+
 ## v2.2 changelog
 
 ### Presentation (P0)
