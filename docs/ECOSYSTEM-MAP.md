@@ -41,3 +41,7 @@ Browser   --Vault---------->  LNbits balances (needs CORS)
 ## Handoff
 
 `docs/KIMI-GROK-HANDOFF.md` · `handoff/state.json` · stamp via `scripts/stamp-handoff.mjs`
+
+## Vault map
+
+`~/MASTER-BRAIN/Obsidian/01-Architecture/Folder-Map.md` — full THOR path topology.

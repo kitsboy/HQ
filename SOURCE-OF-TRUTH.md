@@ -1,6 +1,6 @@
 # HQ SOURCE OF TRUTH
 
-_Updated: 2026-07-20 (goodbye session)_
+_Updated: 2026-07-20 (ops clean)_
 
 ## Live
 
@@ -54,15 +54,15 @@ Vault key: `sovereign_deck_vault_v1` (per browser **origin**).
 | `docs/CLOUDFLARE-ACCESS.md` | Login wall |
 | `docs/UPGRADES-100.md` | Roadmap map |
 | `handoff/state.json` | Machine handoff |
-| `SESSION-SUMMARY-*.md` | Chat goodbye summaries |
+| `docs/archive/SESSION-SUMMARY-*.md` | Chat goodbye summaries |
 
-## Known open items
+## Known open items (verified 2026-07-20)
 
-1. LNbits CORS for `hq.giveabit.io` + `giveabit-hq.pages.dev` (Nova) — diagnose shows `kind=cors`
-2. Live satohash `GET /metrics.json` (Kimi) — replace demo envelope
-3. Live THOR exporter cron (Nova)
-4. CF Access enable (Cam)
-5. GitHub Actions often Queued/startup_failure — local `wrangler pages deploy` works
+1. LNbits CORS for browser Vault on `hq.giveabit.io` / pages.dev — confirm :5103 proxy + Access-Control headers
+2. ~~Live satohash `GET /metrics.json`~~ **DONE** — https://api.satohash.io/metrics.json → 200
+3. Live THOR exporter → `metrics/thor-node.json` cron (if not already wired)
+4. CF Access enable (Cam decision)
+5. GitHub Actions Queued/startup_failure intermittent — local wrangler deploy remains fallback
 
 ## Pitch (one line)
 
