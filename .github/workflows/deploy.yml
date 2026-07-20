@@ -21,11 +21,17 @@ jobs:
       - name: Assemble public site
         run: |
           mkdir -p public
+          mkdir -p public/metrics public/schemas public/docs public/handoff
           cp control-panel.html public/index.html
           cp projects.json agents.json tools.json status.example.json manifest.webmanifest public/
           cp pages/_headers pages/_redirects public/
+          cp -R metrics/. public/metrics/
+          cp -R schemas/. public/schemas/
+          cp docs/*.md public/docs/ || true
+          cp handoff/state.json public/handoff/ || true
           if [ -f status.json ]; then cp status.json public/; fi
-          ls -la public
+          ls -la public && ls public/metrics | head
+
 
       - uses: actions/setup-node@v4
         with:

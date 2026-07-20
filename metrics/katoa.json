@@ -1,0 +1,150 @@
+{
+  "schema": "gab.product-metrics.v1",
+  "productId": "katoa",
+  "name": "Katoa",
+  "updatedAt": "2026-07-20T02:25:24.267Z",
+  "window": {
+    "label": "7d"
+  },
+  "health": {
+    "status": "green",
+    "message": "Demo envelope — wire live metrics.json on product origin",
+    "latencyMs": 350,
+    "uptimePct24h": 99,
+    "dependencies": [
+      {
+        "id": "satohash",
+        "status": "green",
+        "detail": "OTS backbone available"
+      }
+    ]
+  },
+  "kpis": [
+    {
+      "key": "creators",
+      "label": "Creators",
+      "value": 88,
+      "format": "number",
+      "priority": 1,
+      "hint": "Lightning/Nostr creator accounts (demo)"
+    },
+    {
+      "key": "zaps",
+      "label": "Zaps 7d",
+      "value": 1204,
+      "unit": "sats",
+      "format": "sats",
+      "priority": 2,
+      "hint": "Social settlement plane"
+    },
+    {
+      "key": "ots_docs",
+      "label": "OTS via Satohash",
+      "value": 68,
+      "format": "number",
+      "priority": 1,
+      "hint": "Family free proofs"
+    }
+  ],
+  "series": [
+    {
+      "key": "activity",
+      "label": "Activity",
+      "unit": "units",
+      "color": "#1a5f7a",
+      "points": [
+        {
+          "t": "2026-07-06T02:25:24.267Z",
+          "v": 55.2
+        },
+        {
+          "t": "2026-07-07T02:25:24.267Z",
+          "v": 56.4
+        },
+        {
+          "t": "2026-07-08T02:25:24.267Z",
+          "v": 53.2
+        },
+        {
+          "t": "2026-07-09T02:25:24.267Z",
+          "v": 57.8
+        },
+        {
+          "t": "2026-07-10T02:25:24.267Z",
+          "v": 57.2
+        },
+        {
+          "t": "2026-07-11T02:25:24.267Z",
+          "v": 54.3
+        },
+        {
+          "t": "2026-07-12T02:25:24.267Z",
+          "v": 60
+        },
+        {
+          "t": "2026-07-13T02:25:24.267Z",
+          "v": 63.5
+        },
+        {
+          "t": "2026-07-14T02:25:24.267Z",
+          "v": 65
+        },
+        {
+          "t": "2026-07-15T02:25:24.267Z",
+          "v": 69.5
+        },
+        {
+          "t": "2026-07-16T02:25:24.267Z",
+          "v": 73.6
+        },
+        {
+          "t": "2026-07-17T02:25:24.267Z",
+          "v": 72.6
+        },
+        {
+          "t": "2026-07-18T02:25:24.267Z",
+          "v": 71.1
+        },
+        {
+          "t": "2026-07-19T02:25:24.267Z",
+          "v": 68
+        },
+        {
+          "t": "2026-07-20T02:25:24.267Z",
+          "v": 72.9
+        }
+      ]
+    }
+  ],
+  "funnels": [],
+  "segments": [],
+  "offers": [
+    {
+      "id": "creator_ots",
+      "title": "Creator attestations",
+      "for": [
+        "satohash"
+      ],
+      "status": "beta",
+      "hint": "Stamp releases"
+    }
+  ],
+  "education": [
+    {
+      "id": "wire",
+      "title": "Publish live metrics",
+      "body": "Katoa should host /metrics.json (or CDN) matching gab.product-metrics.v1 so HQ cards stay honest.",
+      "action": "Add metrics route on katoa",
+      "severity": "plan"
+    }
+  ],
+  "links": [
+    {
+      "label": "Schema",
+      "url": "/schemas/product-metrics.v1.schema.json"
+    }
+  ],
+  "raw": {
+    "demo": true
+  }
+}

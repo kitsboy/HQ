@@ -1,0 +1,317 @@
+{
+  "schema": "gab.thor-node.v1",
+  "updatedAt": "2026-07-20T02:25:24.267Z",
+  "node": {
+    "id": "THOR",
+    "hostLabel": "THOR (suite node)",
+    "stack": "Umbrel-class / custom",
+    "region": "private",
+    "status": "amber",
+    "uptimeSec": 1036800,
+    "services": [
+      {
+        "id": "bitcoind",
+        "status": "green",
+        "detail": "Pruned mainnet"
+      },
+      {
+        "id": "lnd",
+        "status": "green",
+        "detail": "Channels active"
+      },
+      {
+        "id": "lnbits",
+        "status": "amber",
+        "detail": "CORS must allow HQ origin for browser balances"
+      },
+      {
+        "id": "tailscale",
+        "status": "green",
+        "detail": "Operator mesh"
+      }
+    ]
+  },
+  "bitcoin": {
+    "ok": true,
+    "chain": "main",
+    "blocks": 903421,
+    "headers": 903421,
+    "verificationProgress": 0.99999,
+    "pruned": true,
+    "pruneTargetGB": 50,
+    "sizeOnDiskGB": 48.2,
+    "difficulty": 112000000000000,
+    "mempoolTx": 18420,
+    "mempoolMB": 42,
+    "minRelayFeeSatVb": 1,
+    "connections": 12,
+    "ibd": false,
+    "hint": "Pruned full node: sovereignty + verify path. Not archival."
+  },
+  "lightning": {
+    "ok": true,
+    "implementation": "lnd",
+    "syncedToChain": true,
+    "syncedToGraph": true,
+    "numPeers": 8,
+    "numActiveChannels": 6,
+    "numInactiveChannels": 1,
+    "numPendingChannels": 0,
+    "totalLocalBalanceSats": 2450000,
+    "totalRemoteBalanceSats": 1820000,
+    "totalCapacitySats": 4270000,
+    "aliasPublic": "THOR-GAB",
+    "pubkeyPrefix": "02a1b2c3d4e5",
+    "hint": "Settlement plane for LNbits wallets. Never expose macaroons to HQ HTML."
+  },
+  "lnbits": {
+    "ok": true,
+    "version": "0.12.x",
+    "walletCount": 9,
+    "extensions": [
+      "LNURLp",
+      "scrub"
+    ],
+    "hint": "Browser HQ needs CORS for public domain balances."
+  },
+  "series": [
+    {
+      "key": "channels_active",
+      "label": "Active channels",
+      "unit": "n",
+      "color": "#1f6b3a",
+      "points": [
+        {
+          "t": "2026-07-06T02:25:24.267Z",
+          "v": 6
+        },
+        {
+          "t": "2026-07-07T02:25:24.267Z",
+          "v": 6.2
+        },
+        {
+          "t": "2026-07-08T02:25:24.267Z",
+          "v": 6
+        },
+        {
+          "t": "2026-07-09T02:25:24.267Z",
+          "v": 6.3
+        },
+        {
+          "t": "2026-07-10T02:25:24.267Z",
+          "v": 6.8
+        },
+        {
+          "t": "2026-07-11T02:25:24.267Z",
+          "v": 7.1
+        },
+        {
+          "t": "2026-07-12T02:25:24.267Z",
+          "v": 6.7
+        },
+        {
+          "t": "2026-07-13T02:25:24.267Z",
+          "v": 7.1
+        },
+        {
+          "t": "2026-07-14T02:25:24.267Z",
+          "v": 7.2
+        },
+        {
+          "t": "2026-07-15T02:25:24.267Z",
+          "v": 7.1
+        },
+        {
+          "t": "2026-07-16T02:25:24.267Z",
+          "v": 7.3
+        },
+        {
+          "t": "2026-07-17T02:25:24.267Z",
+          "v": 7.3
+        },
+        {
+          "t": "2026-07-18T02:25:24.267Z",
+          "v": 7.8
+        },
+        {
+          "t": "2026-07-19T02:25:24.267Z",
+          "v": 7.6
+        },
+        {
+          "t": "2026-07-20T02:25:24.267Z",
+          "v": 7.6
+        }
+      ]
+    },
+    {
+      "key": "local_sats",
+      "label": "Local balance",
+      "unit": "sats",
+      "color": "#c45f00",
+      "points": [
+        {
+          "t": "2026-07-06T02:25:24.267Z",
+          "v": 2369289.8
+        },
+        {
+          "t": "2026-07-07T02:25:24.267Z",
+          "v": 2364857.6
+        },
+        {
+          "t": "2026-07-08T02:25:24.267Z",
+          "v": 2384525.1
+        },
+        {
+          "t": "2026-07-09T02:25:24.267Z",
+          "v": 2427041.8
+        },
+        {
+          "t": "2026-07-10T02:25:24.267Z",
+          "v": 2437673.2
+        },
+        {
+          "t": "2026-07-11T02:25:24.267Z",
+          "v": 2412800.7
+        },
+        {
+          "t": "2026-07-12T02:25:24.267Z",
+          "v": 2380120.6
+        },
+        {
+          "t": "2026-07-13T02:25:24.267Z",
+          "v": 2374022.4
+        },
+        {
+          "t": "2026-07-14T02:25:24.267Z",
+          "v": 2410739.5
+        },
+        {
+          "t": "2026-07-15T02:25:24.267Z",
+          "v": 2407255.2
+        },
+        {
+          "t": "2026-07-16T02:25:24.267Z",
+          "v": 2438128.3
+        },
+        {
+          "t": "2026-07-17T02:25:24.267Z",
+          "v": 2438831.1
+        },
+        {
+          "t": "2026-07-18T02:25:24.267Z",
+          "v": 2417591.5
+        },
+        {
+          "t": "2026-07-19T02:25:24.267Z",
+          "v": 2422518.4
+        },
+        {
+          "t": "2026-07-20T02:25:24.267Z",
+          "v": 2440211.4
+        }
+      ]
+    },
+    {
+      "key": "mempool_tx",
+      "label": "Mempool txs",
+      "unit": "n",
+      "color": "#8a5a00",
+      "points": [
+        {
+          "t": "2026-07-06T02:25:24.267Z",
+          "v": 17864.7
+        },
+        {
+          "t": "2026-07-07T02:25:24.267Z",
+          "v": 17974.7
+        },
+        {
+          "t": "2026-07-08T02:25:24.267Z",
+          "v": 17492
+        },
+        {
+          "t": "2026-07-09T02:25:24.267Z",
+          "v": 17537.9
+        },
+        {
+          "t": "2026-07-10T02:25:24.267Z",
+          "v": 16680.9
+        },
+        {
+          "t": "2026-07-11T02:25:24.267Z",
+          "v": 17437.9
+        },
+        {
+          "t": "2026-07-12T02:25:24.267Z",
+          "v": 17101.2
+        },
+        {
+          "t": "2026-07-13T02:25:24.267Z",
+          "v": 16481
+        },
+        {
+          "t": "2026-07-14T02:25:24.267Z",
+          "v": 17937.1
+        },
+        {
+          "t": "2026-07-15T02:25:24.267Z",
+          "v": 18955.4
+        },
+        {
+          "t": "2026-07-16T02:25:24.267Z",
+          "v": 19449.3
+        },
+        {
+          "t": "2026-07-17T02:25:24.267Z",
+          "v": 20492.1
+        },
+        {
+          "t": "2026-07-18T02:25:24.267Z",
+          "v": 22104.9
+        },
+        {
+          "t": "2026-07-19T02:25:24.267Z",
+          "v": 23114.9
+        },
+        {
+          "t": "2026-07-20T02:25:24.267Z",
+          "v": 24513.7
+        }
+      ]
+    }
+  ],
+  "education": [
+    {
+      "id": "prune",
+      "title": "Pruned ≠ weak",
+      "body": "For suite ops, prune keeps disk sane while still verifying chain. Pitch: “We verify, we don’t archive the planet.”",
+      "action": "Keep pruned:true in public snapshot",
+      "severity": "info"
+    },
+    {
+      "id": "cors",
+      "title": "CORS is the HQ wallet unlock",
+      "body": "Empty balances on hq.giveabit.io almost always mean LNbits CORS, not wrong keys.",
+      "action": "Allow https://hq.giveabit.io on LNbits/Caddy",
+      "severity": "opportunity"
+    },
+    {
+      "id": "macaroon",
+      "title": "Never publish admin macaroons",
+      "body": "THOR JSON is read-only aggregates. Invoice keys stay in Vault; admin/macaroon only on node.",
+      "action": "Publish snapshot via local cron → status/node.json",
+      "severity": "risk"
+    },
+    {
+      "id": "capacity",
+      "title": "Mold channel capacity into runway",
+      "body": "Local+remote capacity frames Lightning readiness for Tadbuy/Katoa settlement stories.",
+      "action": "Add capacity to pitch metrics when live",
+      "severity": "plan"
+    }
+  ],
+  "security": {
+    "secretsInPayload": false,
+    "notes": "Demo snapshot for HQ. Replace via node exporter cron."
+  }
+}

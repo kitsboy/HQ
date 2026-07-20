@@ -124,7 +124,7 @@ table thead th{position:sticky;top:0;z-index:1;background:var(--panel-2)}
   .pitch-card,.pitch-metric,.glass{break-inside:avoid;box-shadow:none;border:1px solid #ccc}
 }
 
-/* v2.3 mega polish */
+/* v2.4 mega polish */
 .tools-strip{display:flex;flex-wrap:wrap;gap:6px}
 .tools-strip a{font-size:11px;padding:4px 8px;border:1px solid var(--line);border-radius:3px;background:var(--panel-2);color:var(--ink-dim);text-decoration:none}
 .tools-strip a:hover{border-color:var(--line-hi);color:var(--ink)}
@@ -139,6 +139,30 @@ table thead th{position:sticky;top:0;z-index:1;background:var(--panel-2)}
 #refresh-eta{font-variant-numeric:tabular-nums}
 .btc-chg-up{color:var(--green)}.btc-chg-dn{color:var(--red)}
 .panel-title{font-size:10px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-faint);margin-bottom:8px}
+
+
+/* Metrics lab v1 */
+.metrics-lab{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:1024px){.metrics-lab{grid-template-columns:280px 1fr}}
+.ml-nav button{width:100%;text-align:left;margin-bottom:4px}
+.ml-kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.ml-kpi{background:var(--panel-2);border:1px solid var(--line);border-radius:4px;padding:10px;cursor:help;position:relative}
+.ml-kpi:hover{border-color:var(--line-hi)}
+.ml-kpi .v{font-size:1.25rem;font-weight:700;font-family:'IBM Plex Mono',monospace}
+.ml-kpi .l{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);margin-top:4px}
+.ml-kpi .d{font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:2px}
+.ml-kpi .d.up{color:var(--green)}.ml-kpi .d.dn{color:var(--red)}
+.ml-edu{border-left:3px solid var(--orange);padding:8px 10px;margin-bottom:8px;background:var(--panel-2);border-radius:0 4px 4px 0}
+.ml-edu.risk{border-left-color:var(--red)}.ml-edu.opportunity{border-left-color:var(--green)}.ml-edu.plan{border-left-color:var(--sky)}
+.ml-funnel-step{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.ml-funnel-bar{height:18px;border-radius:2px;background:var(--orange);min-width:4px}
+.demo-banner{background:rgba(138,90,0,.15);border:1px solid rgba(138,90,0,.4);color:var(--amber);padding:8px 12px;border-radius:4px;font-size:12px;margin-bottom:10px}
+.card-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px}
+.card-kpis .ck{background:var(--panel-2);border:1px solid var(--line);border-radius:2px;padding:4px 6px;text-align:center}
+.card-kpis .ck .cv{font-size:11px;font-weight:700;font-family:'IBM Plex Mono',monospace}
+.card-kpis .ck .cl{font-size:8px;color:var(--ink-faint);text-transform:uppercase}
+.thor-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:700px){.thor-grid{grid-template-columns:1fr}}
 
 .pitch-root{position:fixed;inset:0;z-index:200;background:var(--void);overflow:auto;padding:24px 28px 40px}
 .pitch-root .pitch-hero{max-width:1100px;margin:0 auto}
@@ -198,7 +222,7 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
       <div class="icon-box sm" style="background:var(--orange);color:#fff"><i class="fa-solid fa-bolt"></i></div>
       <div>
         <div class="font-semibold text-[13px] leading-none" style="font-family:'IBM Plex Sans'">Give A Bit HQ</div>
-        <div class="text-[10px] text-[var(--ink-faint)]">v2.3 · ops glass</div>
+        <div class="text-[10px] text-[var(--ink-faint)]">v2.4 · ops glass</div>
       </div>
     </div>
     <div class="divider"></div>
@@ -347,6 +371,7 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
     <button class="view-tab tab-active px-2.5 py-1.5 rounded text-sm" data-view="grid">Cards</button>
     <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="list">List</button>
     <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="pipeline">Pipeline</button>
+    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="metrics">Metrics</button>
     <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="analytics">Analytics</button>
     <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="network">Network</button>
     <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="activity">Activity</button>
@@ -398,6 +423,17 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
     </div>
   </div>
   <div id="view-pipeline" class="view-panel hidden space-y-2"></div>
+  <div id="view-metrics" class="view-panel hidden">
+    <div class="metrics-lab">
+      <div class="glass rounded p-3">
+        <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Products + node</div>
+        <div id="ml-nav" class="ml-nav space-y-0.5"></div>
+      </div>
+      <div class="glass rounded p-4 min-h-[70vh]">
+        <div id="ml-body"><div class="text-sm text-[var(--ink-faint)]">Loading metrics lab…</div></div>
+      </div>
+    </div>
+  </div>
   <div id="view-analytics" class="view-panel hidden grid grid-cols-1 lg:grid-cols-2 gap-3">
     <div class="glass rounded p-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Balance ranking</div><div class="chart-box" style="height:220px"><canvas id="chart-rank"></canvas></div></div>
     <div class="glass rounded p-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Health by project</div><div class="chart-box" style="height:220px"><canvas id="chart-health"></canvas></div></div>
@@ -483,7 +519,7 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
 
 <div class="max-w-[1680px] mx-auto px-3 site-footer">
   <div class="flex flex-wrap justify-between gap-2">
-    <span>Give A Bit HQ · <span id="hq-version">v2.3</span> · <span id="hq-build">build</span> · credentials only in localStorage · Safe Harbour</span>
+    <span>Give A Bit HQ · <span id="hq-version">v2.4</span> · <span id="hq-build">build</span> · credentials only in localStorage · Safe Harbour</span>
     <span class="mono flex flex-wrap gap-2">
       <span><kbd class="kbd">/</kbd> search</span>
       <span><kbd class="kbd">g</kbd> cards</span>
@@ -616,7 +652,7 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
 
 <script>
 /* Give A Bit HQ v2 — secrets only in localStorage (sovereign_deck_vault_v1) */
-const VIEWS = ['grid','list','pipeline','analytics','network','activity','matrix','wallets','docs','agents'];
+const VIEWS = ['grid','list','pipeline','metrics','analytics','network','activity','matrix','wallets','docs','agents'];
 
 const state = {
   projects:{}, view:'grid', filter:'all', ghRateRemaining:null, branches:{}, treeIndex:{},
@@ -633,7 +669,9 @@ const FEEDS_DEFAULT = {
   statusJsonFallback: 'https://raw.githubusercontent.com/kitsboy/HQ/main/status.json',
   satohashHealthUrl: 'https://api.satohash.io/health',
   satohashMetricsUrl: 'https://api.satohash.io/metrics',
-  nip05Url: 'https://giveabit.io/.well-known/nostr.json'
+  nip05Url: 'https://giveabit.io/.well-known/nostr.json',
+  thorNodeUrl: '/metrics/thor-node.json',
+  metricsBase: '/metrics'
 };
 
 let btcUsdPrice = null;
@@ -709,7 +747,7 @@ async function loadRegistry(){
  */
 const Feeds = {
   async all(){
-    await Promise.all([this.statusJson(), this.satohashHealth(), this.verifyNip05(false)]);
+    await Promise.all([this.statusJson(), this.satohashHealth(), this.verifyNip05(false), MetricsEngine.loadAll()]);
     this.renderBanners();
     this.paintHealthBar();
   },
@@ -1047,6 +1085,262 @@ function exportDiligence(){
 
 
 
+
+/* ---------- PRODUCT METRICS + THOR NODE LAB ---------- */
+const MetricsEngine = {
+  cache: {}, // productId -> envelope
+  thor: null,
+  selected: 'satohash',
+  async loadAll(){
+    const base = (state.feeds.metricsBase || '/metrics').replace(/\/$/,'');
+    await Promise.all(PROJECTS.map(async p=>{
+      const url = p.metricsUrl || `${base}/${p.id}.json`;
+      try{
+        const r = await fetch(url + (url.includes('?')?'&':'?') + 't=' + Date.now(), { cache:'no-store' });
+        if(!r.ok) throw new Error('http '+r.status);
+        const j = await r.json();
+        // live candidates for satohash
+        if(p.id==='satohash' && p.metricsLiveCandidates){
+          for(const live of p.metricsLiveCandidates){
+            try{
+              const lr = await fetch(live, { mode:'cors', cache:'no-store' });
+              if(lr.ok){
+                const body = await lr.json().catch(()=>({}));
+                j.raw = Object.assign({}, j.raw||{}, { liveProbe: { url: live, body } });
+                j.health = j.health || {};
+                if(live.includes('health') || live.includes('status')){
+                  j.health.message = (j.health.message||'') + ' · live probe OK';
+                }
+                break;
+              }
+            }catch(_){}
+          }
+        }
+        this.cache[p.id] = j;
+        const d = state.projects[p.id] || (state.projects[p.id]={id:p.id});
+        d.metrics = j;
+      }catch(e){
+        this.cache[p.id] = null;
+      }
+    }));
+    // THOR
+    const urls = [
+      Vault.data.thorNodeUrl,
+      state.feeds.thorNodeUrl,
+      '/metrics/thor-node.json',
+      state.feeds.thorNodeFallback,
+      'https://raw.githubusercontent.com/kitsboy/HQ/main/metrics/thor-node.json'
+    ].filter(Boolean);
+    for(const u of [...new Set(urls)]){
+      try{
+        const r = await fetch(u + (String(u).includes('?')?'&':'?') + 't=' + Date.now(), { cache:'no-store' });
+        if(!r.ok) continue;
+        this.thor = await r.json();
+        break;
+      }catch(_){}
+    }
+    this.renderNav();
+    if(state.view==='metrics') this.renderBody();
+    this.paintThorSummary();
+  },
+  topKpis(env, n=3){
+    if(!env || !env.kpis) return [];
+    return [...env.kpis].sort((a,b)=>(a.priority||9)-(b.priority||9)).slice(0,n);
+  },
+  fmtVal(kpi){
+    if(!kpi) return '—';
+    const v = kpi.value;
+    if(kpi.format==='percent') return v + (kpi.unit && kpi.unit!=='%' ? kpi.unit : '%');
+    if(kpi.format==='sats') return (typeof fmt!=='undefined'?fmt.sats(v):v) + ' sats';
+    if(typeof v==='number') return new Intl.NumberFormat('en-US',{maximumFractionDigits:1}).format(v) + (kpi.unit? ' '+kpi.unit : '');
+    return String(v) + (kpi.unit? ' '+kpi.unit : '');
+  },
+  renderNav(){
+    const nav = document.getElementById('ml-nav');
+    if(!nav) return;
+    const items = [
+      { id: 'satohash', label: '★ Satohash backbone', color: '#8a5a00' },
+      { id: '__thor__', label: '⚡ THOR node', color: '#1f6b3a' },
+      ...PROJECTS.filter(p=>p.id!=='satohash').map(p=>({ id:p.id, label:p.name, color:p.color }))
+    ];
+    nav.innerHTML = items.map(it => {
+      const env = it.id==='__thor__' ? this.thor : this.cache[it.id];
+      const st = it.id==='__thor__' ? (this.thor?.node?.status||'unknown') : (env?.health?.status||'unknown');
+      const active = this.selected===it.id;
+      return `<button type="button" class="chip ${active?'chip-active':''}" style="border-left:3px solid ${it.color}" onclick="MetricsEngine.select('${it.id}')">
+        <span class="dot dot-${st==='green'?'green':st==='red'?'red':st==='amber'?'amber':'gray'}" style="width:7px;height:7px"></span>
+        ${it.label}
+      </button>`;
+    }).join('');
+  },
+  select(id){
+    this.selected = id;
+    this.renderNav();
+    this.renderBody();
+    if(state.view!=='metrics') switchView('metrics');
+  },
+  sparkline(series, w=280, h=56){
+    if(!series || !series.points || series.points.length<2) return '';
+    const pts = series.points;
+    const vs = pts.map(p=>p.v);
+    const min = Math.min(...vs), max = Math.max(...vs), span = (max-min)||1;
+    const path = pts.map((p,i)=>{
+      const x = (i/(pts.length-1))*w;
+      const y = h - ((p.v-min)/span)* (h-4) - 2;
+      return (i?'L':'M')+x.toFixed(1)+','+y.toFixed(1);
+    }).join(' ');
+    const color = series.color || 'var(--orange)';
+    const last = pts[pts.length-1];
+    return `<div class="mb-2" title="${series.label}: ${last.v} ${series.unit||''}">
+      <div class="flex justify-between text-[10px] mono text-[var(--ink-faint)] mb-0.5"><span>${series.label}</span><span>${last.v}${series.unit?' '+series.unit:''}</span></div>
+      <svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" class="block">
+        <path d="${path}" fill="none" stroke="${color}" stroke-width="2" vector-effect="non-scaling-stroke"/>
+      </svg>
+    </div>`;
+  },
+  renderBody(){
+    const body = document.getElementById('ml-body');
+    if(!body) return;
+    if(this.selected==='__thor__'){ body.innerHTML = this.renderThor(); return; }
+    const env = this.cache[this.selected];
+    const p = PROJECTS.find(x=>x.id===this.selected);
+    if(!env){
+      body.innerHTML = `<div class="text-sm text-[var(--ink-dim)]">No metrics envelope for <span class="mono">${this.selected}</span>. Add <span class="mono">/metrics/${this.selected}.json</span> or live publisher.</div>`;
+      return;
+    }
+    const demo = env.raw?.demo === true;
+    const kpis = [...(env.kpis||[])].sort((a,b)=>(a.priority||9)-(b.priority||9));
+    const health = env.health || {};
+    body.innerHTML = `
+      ${demo?`<div class="demo-banner mono">DEMO ENVELOPE — structure is live for HQ; replace with product publisher (<span class="mono">raw.demo:false</span>). See docs/METRICS-SCHEMA.md · Kimi: satohash GET /metrics.json</div>`:''}
+      <div class="flex flex-wrap justify-between gap-2 mb-3">
+        <div>
+          <h2 class="text-xl font-bold" style="color:${p?.color||'inherit'}">${env.name||this.selected}</h2>
+          <div class="text-xs mono text-[var(--ink-faint)]">${env.schema||''} · updated ${env.updatedAt?fmt.timeAgo(env.updatedAt):'—'} · window ${env.window?.label||'—'}</div>
+        </div>
+        <div class="status-pill ${health.status||'gray'}">${health.status||'unknown'}</div>
+      </div>
+      <p class="text-sm text-[var(--ink-dim)] mb-3" title="Health message">${health.message||''}</p>
+      <div class="ml-kpi-grid mb-4">
+        ${kpis.map(k=>`
+          <div class="ml-kpi" title="${(k.hint||k.label||'').replace(/"/g,'&quot;')}">
+            <div class="v">${this.fmtVal(k)}</div>
+            <div class="l">${k.label}</div>
+            ${k.delta!=null?`<div class="d ${k.delta>=0?'up':'dn'}">${k.delta>=0?'+':''}${k.delta}${k.deltaUnit||''}</div>`:''}
+          </div>`).join('')}
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        ${(env.series||[]).map(s=>`<div class="glass-2 rounded p-2">${this.sparkline(s)}</div>`).join('')||'<div class="text-xs text-[var(--ink-faint)]">No series</div>'}
+      </div>
+      ${(env.funnels||[]).map(f=>{
+        const max = Math.max(1, ...f.steps.map(s=>s.count));
+        return `<div class="mb-4"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">${f.label}</div>
+          ${f.steps.map(s=>`<div class="ml-funnel-step" title="${(s.hint||'').replace(/"/g,'&quot;')}">
+            <div class="w-28 text-xs truncate">${s.label}</div>
+            <div class="flex-1 bg-[var(--void-2)] rounded-sm overflow-hidden"><div class="ml-funnel-bar" style="width:${(s.count/max)*100}%;background:${p?.color||'var(--orange)'}"></div></div>
+            <div class="w-12 text-right mono text-xs">${s.count}</div>
+          </div>`).join('')}
+        </div>`;
+      }).join('')}
+      ${(env.segments||[]).map(seg=>`
+        <div class="mb-4"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">${seg.label}</div>
+          <div class="space-y-1">${(seg.rows||[]).map(r=>{
+            const max = Math.max(1, ...seg.rows.map(x=>x.value));
+            return `<div class="flex items-center gap-2 text-xs" title="${JSON.stringify(r.meta||{}).replace(/"/g,'&quot;')}">
+              <span class="w-28 truncate">${r.label}</span>
+              <div class="flex-1 bar-track"><div class="bar-fill" style="width:${(r.value/max)*100}%;background:${p?.color||'var(--ink)'}"></div></div>
+              <span class="mono w-14 text-right">${r.value}</span>
+            </div>`;
+          }).join('')}</div>
+        </div>`).join('')}
+      <div class="mb-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Offers (what this product gives the suite)</div>
+        <div class="space-y-1">${(env.offers||[]).map(o=>`
+          <div class="glass-2 rounded px-2 py-1.5 text-xs" title="${(o.hint||'').replace(/"/g,'&quot;')}">
+            <strong>${o.title}</strong> <span class="status-pill gray">${o.status||''}</span>
+            <div class="mono text-[10px] text-[var(--ink-faint)]">${o.endpoint||''} · for ${(o.for||[]).join(', ')}</div>
+          </div>`).join('')||'<div class="text-[var(--ink-faint)] text-xs">—</div>'}
+      </div>
+      <div><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">How to mold this data</div>
+        ${(env.education||[]).map(e=>`
+          <div class="ml-edu ${e.severity||'info'}">
+            <div class="font-semibold text-sm">${e.title}</div>
+            <div class="text-xs text-[var(--ink-dim)] mt-1">${e.body}</div>
+            ${e.action?`<div class="text-[10px] mono mt-1 text-[var(--orange-2)]">→ ${e.action}</div>`:''}
+          </div>`).join('')||'<div class="text-xs text-[var(--ink-faint)]">—</div>'}
+      </div>
+      <div class="mt-3 flex flex-wrap gap-2">${(env.links||[]).map(l=>`<a class="btn-ghost rounded px-2 py-1 text-xs" href="${l.url}" target="_blank" rel="noopener">${l.label}</a>`).join('')}</div>
+    `;
+  },
+  renderThor(){
+    const t = this.thor;
+    if(!t) return `<div class="demo-banner">No THOR snapshot loaded. See docs/THOR-NODE-JSON.md — place metrics/thor-node.json or set Vault thor URL.</div>`;
+    const b = t.bitcoin||{}, l = t.lightning||{}, n = t.node||{};
+    const demo = true; // example file is demo-shaped
+    return `
+      <div class="demo-banner mono">THOR snapshot schema <span class="mono">gab.thor-node.v1</span> — ${t.security?.secretsInPayload===false?'no secrets in payload ✓':'check security'} · Nova: publish live from node cron</div>
+      <div class="flex justify-between mb-3">
+        <div>
+          <h2 class="text-xl font-bold">${n.id||'THOR'} · ${n.hostLabel||''}</h2>
+          <div class="text-xs mono text-[var(--ink-faint)]">${t.schema} · ${t.updatedAt?fmt.timeAgo(t.updatedAt):'—'} · stack ${n.stack||'—'}</div>
+        </div>
+        <span class="status-pill ${n.status||'gray'}">${n.status||'unknown'}</span>
+      </div>
+      <div class="thor-grid mb-4">
+        <div class="glass-2 rounded p-3">
+          <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Bitcoin</div>
+          <div class="space-y-1 text-xs mono">
+            <div title="Chain tip height">blocks: <strong>${b.blocks??'—'}</strong> / headers ${b.headers??'—'}</div>
+            <div title="Pruned full node keeps verify capability with less disk">pruned: <strong>${b.pruned?'yes':'no'}</strong> · disk ${b.sizeOnDiskGB??'—'} GB</div>
+            <div title="Mempool pressure context for fees">mempool: ${b.mempoolTx??'—'} tx · ${b.mempoolMB??'—'} MB</div>
+            <div>connections: ${b.connections??'—'} · ibd: ${b.ibd?'yes':'no'}</div>
+            <div class="text-[var(--ink-faint)]">${b.hint||''}</div>
+          </div>
+        </div>
+        <div class="glass-2 rounded p-3">
+          <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Lightning (LND)</div>
+          <div class="space-y-1 text-xs mono">
+            <div title="Active payment channels">channels: <strong>${l.numActiveChannels??'—'}</strong> active · ${l.numInactiveChannels??0} inactive</div>
+            <div title="Local sats available to send">local: <strong>${typeof fmt!=='undefined'?fmt.sats(l.totalLocalBalanceSats):l.totalLocalBalanceSats}</strong> sats</div>
+            <div title="Remote sats (inbound liquidity)">remote: ${typeof fmt!=='undefined'?fmt.sats(l.totalRemoteBalanceSats):l.totalRemoteBalanceSats} sats</div>
+            <div title="Total capacity">capacity: ${typeof fmt!=='undefined'?fmt.sats(l.totalCapacitySats):l.totalCapacitySats} sats</div>
+            <div>peers: ${l.numPeers??'—'} · sync chain/graph: ${l.syncedToChain?'✓':'✗'}/${l.syncedToGraph?'✓':'✗'}</div>
+            <div class="text-[var(--ink-faint)]">${l.hint||''}</div>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+        ${(t.series||[]).map(s=>`<div class="glass-2 rounded p-2">${this.sparkline(s)}</div>`).join('')}
+      </div>
+      <div class="mb-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Services</div>
+        <div class="flex flex-wrap gap-1">${(n.services||[]).map(s=>`<span class="status-pill ${s.status||'gray'}" title="${(s.detail||'').replace(/"/g,'&quot;')}">${s.id}: ${s.status}</span>`).join('')}</div>
+      </div>
+      <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Mold / educate</div>
+      ${(t.education||[]).map(e=>`<div class="ml-edu ${e.severity||'info'}"><div class="font-semibold text-sm">${e.title}</div><div class="text-xs text-[var(--ink-dim)] mt-1">${e.body}</div>${e.action?`<div class="text-[10px] mono mt-1 text-[var(--orange-2)]">→ ${e.action}</div>`:''}</div>`).join('')}
+    `;
+  },
+  paintThorSummary(){
+    const t = this.thor;
+    const btc = document.getElementById('node-btc');
+    const lnd = document.getElementById('node-lnd');
+    if(!t) return;
+    const b = t.bitcoin||{}, l = t.lightning||{};
+    if(btc) btc.textContent = `${b.ok?'ok':'?'} blocks ${b.blocks??'—'} pruned=${b.pruned?'yes':'no'}`;
+    if(lnd) lnd.textContent = `${l.ok?'ok':'?'} ch ${l.numActiveChannels??'—'} local ${typeof fmt!=='undefined'?fmt.sats(l.totalLocalBalanceSats):l.totalLocalBalanceSats||'—'} sats`;
+  },
+  cardKpisHtml(projectId){
+    const env = this.cache[projectId];
+    if(!env) return '';
+    const kpis = this.topKpis(env, 3);
+    if(!kpis.length) return '';
+    return `<div class="card-kpis">${kpis.map(k=>`
+      <div class="ck" title="${(k.hint||k.label||'').replace(/"/g,'&quot;')}">
+        <div class="cv">${this.fmtVal(k)}</div>
+        <div class="cl">${k.label}</div>
+      </div>`).join('')}</div>`;
+  }
+};
+
+
 /* ---------- TOOLS + NOTES + ALERTS + BTC 24h ---------- */
 const ToolsHub = {
   data: null,
@@ -1196,7 +1490,7 @@ const UI = {
   },
   help(){
     document.getElementById('help-body').innerHTML = [
-      ['/','Command search'],['g','Cards'],['l','List'],['p','Pipeline'],['y','Analytics'],
+      ['/','Command search'],['g','Cards'],['l','List'],['p','Pipeline'],['y','Analytics'],['k','Metrics lab'],
       ['n','Network'],['t','Activity'],['m','Matrix'],['w','Wallets'],['d','Docs'],['a','Agents'],
       ['r','Refresh'],['v','Vault'],['?','This help'],['P','Pitch mode'],['esc','Close overlays'],
     ].map(([k,v])=>`<span class="k">${k}</span><span>${v}</span>`).join('');
@@ -2146,6 +2440,8 @@ function renderGrid(){
         ${(d.stars!=null&&d.stars>0)?`<span class="status-pill gray">★${d.stars}</span>`:''}
       </div>
       <div class="flex flex-wrap gap-1">${(p.related||[]).map(rid=>{const rp=PROJECTS.find(x=>x.id===rid);return rp?`<span class="rel-chip" onclick="event.stopPropagation();Drawer.open('${rid}')"><span class="rel-dot" style="background:${rp.color}"></span>${rp.name}</span>`:''}).join('')}</div>
+      ${MetricsEngine.cardKpisHtml(p.id)}
+      <div class="text-[10px] mono mt-1"><button type="button" class="underline text-[var(--ink-faint)]" onclick="event.stopPropagation();MetricsEngine.select('${p.id}')">open metrics →</button></div>
       <div class="grid grid-cols-2 gap-1.5">
         <div class="metric"><div class="text-[9px] mono uppercase text-[var(--ink-faint)]">Balance</div>
           <div class="mono font-semibold">${d.walletOk?fmt.sats(d.balanceSats):'—'} <span class="text-[9px] text-[var(--ink-faint)]">sats</span></div>
@@ -2557,6 +2853,7 @@ function switchView(view){
   document.querySelectorAll('.view-panel').forEach(p=>p.classList.add('hidden'));
   const el=document.getElementById('view-'+view); if(el) el.classList.remove('hidden');
   if(view==='analytics') Charts.all();
+  if(view==='metrics') MetricsEngine.renderBody();
   if(view==='network') Net.redraw();
   if(view==='activity') renderActivity();
   if(view==='matrix') renderMatrix();
@@ -2579,7 +2876,7 @@ document.addEventListener('keydown',e=>{
   if(e.key==='/'&&!isTyping()){ e.preventDefault(); Search.open(); }
   if(e.key==='Escape'){ Search.close({target:{id:'search-overlay'}}); Drawer.close({target:{id:'drawer-backdrop'}}); Bulk.close({target:{id:'bulk-backdrop'}}); Vault.closeModal({target:{id:'vault-backdrop'}}); document.getElementById('help-backdrop').classList.add('hidden'); Pitch.close(); }
   if(isTyping()) return;
-  const map={g:'grid',l:'list',p:'pipeline',y:'analytics',n:'network',t:'activity',m:'matrix',w:'wallets',d:'docs',a:'agents'};
+  const map={g:'grid',l:'list',p:'pipeline',y:'analytics',k:'metrics',n:'network',t:'activity',m:'matrix',w:'wallets',d:'docs',a:'agents'};
   if(map[e.key]) switchView(map[e.key]);
   if(e.key==='r'){ e.preventDefault(); Dash.refreshAll(true); }
   if(e.key==='v') Vault.openModal();

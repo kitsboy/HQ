@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hq.giveabit.io/schemas/thor-node.v1.schema.json",
+  "title": "THOR Node Snapshot v1",
+  "description": "Read-only public/semi-public snapshot of Bitcoin + LND health. NEVER include macaroons, admin keys, seed phrases, or wallet private keys.",
+  "type": "object",
+  "required": ["schema", "updatedAt", "node", "bitcoin", "lightning"],
+  "properties": {
+    "schema": { "const": "gab.thor-node.v1" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "node": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "examples": ["THOR"] },
+        "hostLabel": { "type": "string", "description": "Public label only, not a secret hostname if sensitive" },
+        "stack": { "type": "string", "examples": ["Umbrel", "Start9", "custom"] },
+        "region": { "type": "string" },
+        "status": { "enum": ["green", "amber", "red", "unknown"] },
+        "uptimeSec": { "type": "number" },
+        "services": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "status": { "enum": ["green", "amber", "red", "unknown"] },
+              "detail": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "bitcoin": {
+      "type": "object",
+      "properties": {
+        "ok": { "type": "boolean" },
+        "chain": { "enum": ["main", "test", "signet", "regtest"] },
+        "blocks": { "type": "integer" },
+        "headers": { "type": "integer" },
+        "verificationProgress": { "type": "number" },
+        "pruned": { "type": "boolean" },
+        "pruneTargetGB": { "type": "number" },
+        "sizeOnDiskGB": { "type": "number" },
+        "difficulty": { "type": "number" },
+        "mempoolTx": { "type": "integer" },
+        "mempoolMB": { "type": "number" },
+        "minRelayFeeSatVb": { "type": "number" },
+        "connections": { "type": "integer" },
+        "ibd": { "type": "boolean", "description": "Initial block download" },
+        "hint": { "type": "string" }
+      }
+    },
+    "lightning": {
+      "type": "object",
+      "properties": {
+        "ok": { "type": "boolean" },
+        "implementation": { "enum": ["lnd", "cln", "eclair", "other"] },
+        "syncedToChain": { "type": "boolean" },
+        "syncedToGraph": { "type": "boolean" },
+        "numPeers": { "type": "integer" },
+        "numActiveChannels": { "type": "integer" },
+        "numInactiveChannels": { "type": "integer" },
+        "numPendingChannels": { "type": "integer" },
+        "totalLocalBalanceSats": { "type": "integer" },
+        "totalRemoteBalanceSats": { "type": "integer" },
+        "totalCapacitySats": { "type": "integer" },
+        "aliasPublic": { "type": "string", "description": "Optional public node alias — never admin macaroon" },
+        "pubkeyPrefix": { "type": "string", "description": "First 8–16 chars only if sharing pubkey" },
+        "hint": { "type": "string" }
+      }
+    },
+    "lnbits": {
+      "type": "object",
+      "properties": {
+        "ok": { "type": "boolean" },
+        "version": { "type": "string" },
+        "walletCount": { "type": "integer" },
+        "extensions": { "type": "array", "items": { "type": "string" } },
+        "hint": { "type": "string" }
+      }
+    },
+    "series": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": { "type": "string" },
+          "label": { "type": "string" },
+          "unit": { "type": "string" },
+          "points": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "t": { "type": "string" },
+                "v": { "type": "number" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "education": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "body": { "type": "string" },
+          "action": { "type": "string" },
+          "severity": { "enum": ["info", "opportunity", "risk", "plan"] }
+        }
+      }
+    },
+    "security": {
+      "type": "object",
+      "properties": {
+        "secretsInPayload": { "const": false },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

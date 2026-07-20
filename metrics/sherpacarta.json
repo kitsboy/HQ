@@ -1,0 +1,131 @@
+{
+  "schema": "gab.product-metrics.v1",
+  "productId": "sherpacarta",
+  "name": "SherpaCarta",
+  "updatedAt": "2026-07-20T02:25:24.267Z",
+  "window": {
+    "label": "7d"
+  },
+  "health": {
+    "status": "green",
+    "message": "Demo envelope — wire live metrics.json on product origin",
+    "latencyMs": 350,
+    "uptimePct24h": 99,
+    "dependencies": [
+      {
+        "id": "satohash",
+        "status": "green",
+        "detail": "OTS backbone available"
+      }
+    ]
+  },
+  "kpis": [
+    {
+      "key": "charters",
+      "label": "Charter docs",
+      "value": 18,
+      "format": "number",
+      "priority": 1,
+      "hint": "Governance artifacts"
+    },
+    {
+      "key": "ots",
+      "label": "OTS anchors",
+      "value": 41,
+      "format": "number",
+      "priority": 1,
+      "hint": "Satohash"
+    }
+  ],
+  "series": [
+    {
+      "key": "activity",
+      "label": "Activity",
+      "unit": "units",
+      "color": "#6b4f2a",
+      "points": [
+        {
+          "t": "2026-07-06T02:25:24.267Z",
+          "v": 47.2
+        },
+        {
+          "t": "2026-07-07T02:25:24.267Z",
+          "v": 49.6
+        },
+        {
+          "t": "2026-07-08T02:25:24.267Z",
+          "v": 45.1
+        },
+        {
+          "t": "2026-07-09T02:25:24.267Z",
+          "v": 51.2
+        },
+        {
+          "t": "2026-07-10T02:25:24.267Z",
+          "v": 51.2
+        },
+        {
+          "t": "2026-07-11T02:25:24.267Z",
+          "v": 52.6
+        },
+        {
+          "t": "2026-07-12T02:25:24.267Z",
+          "v": 51.2
+        },
+        {
+          "t": "2026-07-13T02:25:24.267Z",
+          "v": 53
+        },
+        {
+          "t": "2026-07-14T02:25:24.267Z",
+          "v": 49.5
+        },
+        {
+          "t": "2026-07-15T02:25:24.267Z",
+          "v": 53.2
+        },
+        {
+          "t": "2026-07-16T02:25:24.267Z",
+          "v": 48.6
+        },
+        {
+          "t": "2026-07-17T02:25:24.267Z",
+          "v": 46.9
+        },
+        {
+          "t": "2026-07-18T02:25:24.267Z",
+          "v": 52.6
+        },
+        {
+          "t": "2026-07-19T02:25:24.267Z",
+          "v": 48.9
+        },
+        {
+          "t": "2026-07-20T02:25:24.267Z",
+          "v": 48
+        }
+      ]
+    }
+  ],
+  "funnels": [],
+  "segments": [],
+  "offers": [],
+  "education": [
+    {
+      "id": "wire",
+      "title": "Publish live metrics",
+      "body": "SherpaCarta should host /metrics.json (or CDN) matching gab.product-metrics.v1 so HQ cards stay honest.",
+      "action": "Add metrics route on sherpacarta",
+      "severity": "plan"
+    }
+  ],
+  "links": [
+    {
+      "label": "Schema",
+      "url": "/schemas/product-metrics.v1.schema.json"
+    }
+  ],
+  "raw": {
+    "demo": true
+  }
+}

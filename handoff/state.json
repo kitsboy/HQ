@@ -1,0 +1,54 @@
+{
+  "schema": "gab.handoff.v1",
+  "updatedAt": "2026-07-20T02:27:51.464Z",
+  "agents": {
+    "grok": {
+      "lastSeen": "2026-07-20T02:27:51.464Z",
+      "focus": "HQ",
+      "notes": [
+        {
+          "t": "2026-07-20T02:27:51.464Z",
+          "summary": "Metrics lab v1: suite envelopes, THOR panel, schemas, handoff docs; awaiting Kimi live satohash /metrics.json"
+        },
+        {
+          "t": "2026-07-20T02:26:25.085Z",
+          "summary": "Shipped product-metrics v1 + thor-node v1 schemas, suite metrics demos, handoff protocol"
+        }
+      ]
+    },
+    "kimi": {
+      "lastSeen": null,
+      "focus": "docs+products",
+      "notes": []
+    }
+  },
+  "ownership": {
+    "kitsboy/HQ": "grok",
+    "kitsboy/satohash": "shared",
+    "metrics-schema": "grok-define / kimi-publish",
+    "thor-node-json": "nova-publish / grok-display"
+  },
+  "blockers": [],
+  "next": [
+    {
+      "id": "satohash-live-metrics",
+      "owner": "kimi",
+      "title": "Publish live gab.product-metrics.v1 from satohash"
+    },
+    {
+      "id": "thor-exporter",
+      "owner": "nova",
+      "title": "Cron thor-node.json from bitcoind/lnd"
+    },
+    {
+      "id": "lnbits-cors",
+      "owner": "nova",
+      "title": "CORS allow https://hq.giveabit.io"
+    },
+    {
+      "id": "cf-access",
+      "owner": "cam",
+      "title": "Enable CF Access on hq.giveabit.io"
+    }
+  ]
+}

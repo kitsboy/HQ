@@ -1,0 +1,149 @@
+{
+  "schema": "gab.product-metrics.v1",
+  "productId": "giveabit",
+  "name": "Give A Bit",
+  "updatedAt": "2026-07-20T02:25:24.267Z",
+  "window": {
+    "label": "7d"
+  },
+  "health": {
+    "status": "green",
+    "message": "Demo envelope — wire live metrics.json on product origin",
+    "latencyMs": 350,
+    "uptimePct24h": 99,
+    "dependencies": [
+      {
+        "id": "satohash",
+        "status": "green",
+        "detail": "OTS backbone available"
+      }
+    ]
+  },
+  "kpis": [
+    {
+      "key": "learners",
+      "label": "Education sessions",
+      "value": 420,
+      "format": "number",
+      "priority": 1,
+      "hint": "Namespace + tools education touchpoints"
+    },
+    {
+      "key": "nip05",
+      "label": "NIP-05 agents",
+      "value": 7,
+      "format": "number",
+      "priority": 1,
+      "hint": "giveabit.io identities"
+    },
+    {
+      "key": "suite_links",
+      "label": "Suite products",
+      "value": 9,
+      "format": "number",
+      "priority": 2,
+      "hint": "Compartmentalized apps under one glass"
+    }
+  ],
+  "series": [
+    {
+      "key": "activity",
+      "label": "Activity",
+      "unit": "units",
+      "color": "#c45f00",
+      "points": [
+        {
+          "t": "2026-07-06T02:25:24.267Z",
+          "v": 45.9
+        },
+        {
+          "t": "2026-07-07T02:25:24.267Z",
+          "v": 43.7
+        },
+        {
+          "t": "2026-07-08T02:25:24.267Z",
+          "v": 38.5
+        },
+        {
+          "t": "2026-07-09T02:25:24.267Z",
+          "v": 40.2
+        },
+        {
+          "t": "2026-07-10T02:25:24.267Z",
+          "v": 39.6
+        },
+        {
+          "t": "2026-07-11T02:25:24.267Z",
+          "v": 38.2
+        },
+        {
+          "t": "2026-07-12T02:25:24.267Z",
+          "v": 43.8
+        },
+        {
+          "t": "2026-07-13T02:25:24.267Z",
+          "v": 48.2
+        },
+        {
+          "t": "2026-07-14T02:25:24.267Z",
+          "v": 52.1
+        },
+        {
+          "t": "2026-07-15T02:25:24.267Z",
+          "v": 47.8
+        },
+        {
+          "t": "2026-07-16T02:25:24.267Z",
+          "v": 45.1
+        },
+        {
+          "t": "2026-07-17T02:25:24.267Z",
+          "v": 41.6
+        },
+        {
+          "t": "2026-07-18T02:25:24.267Z",
+          "v": 39.3
+        },
+        {
+          "t": "2026-07-19T02:25:24.267Z",
+          "v": 43.8
+        },
+        {
+          "t": "2026-07-20T02:25:24.267Z",
+          "v": 46.3
+        }
+      ]
+    }
+  ],
+  "funnels": [],
+  "segments": [],
+  "offers": [
+    {
+      "id": "namespace",
+      "title": "NIP-05 namespace",
+      "for": [
+        "*"
+      ],
+      "status": "ga",
+      "hint": "Identity root"
+    }
+  ],
+  "education": [
+    {
+      "id": "wire",
+      "title": "Publish live metrics",
+      "body": "Give A Bit should host /metrics.json (or CDN) matching gab.product-metrics.v1 so HQ cards stay honest.",
+      "action": "Add metrics route on giveabit",
+      "severity": "plan"
+    }
+  ],
+  "links": [
+    {
+      "label": "Schema",
+      "url": "/schemas/product-metrics.v1.schema.json"
+    }
+  ],
+  "raw": {
+    "demo": true
+  }
+}

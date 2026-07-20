@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hq.giveabit.io/schemas/product-metrics.v1.schema.json",
+  "title": "Give A Bit Product Metrics v1",
+  "description": "Public, secret-free metrics envelope every suite product can publish. HQ cards + Metrics lab consume this shape.",
+  "type": "object",
+  "required": ["schema", "productId", "updatedAt", "health", "kpis"],
+  "properties": {
+    "schema": { "const": "gab.product-metrics.v1" },
+    "productId": { "type": "string", "description": "Must match projects.json id (e.g. satohash)" },
+    "name": { "type": "string" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "window": {
+      "type": "object",
+      "properties": {
+        "label": { "type": "string", "examples": ["24h", "7d", "30d", "all"] },
+        "from": { "type": "string", "format": "date-time" },
+        "to": { "type": "string", "format": "date-time" }
+      }
+    },
+    "health": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": { "enum": ["green", "amber", "red", "unknown"] },
+        "message": { "type": "string" },
+        "latencyMs": { "type": "number" },
+        "uptimePct24h": { "type": "number", "minimum": 0, "maximum": 100 },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "status": { "enum": ["green", "amber", "red", "unknown"] },
+              "detail": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "kpis": {
+      "type": "array",
+      "description": "Primary numbers for card + pitch",
+      "items": {
+        "type": "object",
+        "required": ["key", "label", "value"],
+        "properties": {
+          "key": { "type": "string" },
+          "label": { "type": "string" },
+          "value": {},
+          "unit": { "type": "string" },
+          "delta": { "type": "number", "description": "Change vs prior window" },
+          "deltaUnit": { "type": "string" },
+          "hint": { "type": "string", "description": "Tooltip / education" },
+          "format": { "enum": ["number", "percent", "sats", "usd", "duration", "raw"] },
+          "priority": { "type": "integer", "minimum": 1, "maximum": 10 }
+        }
+      }
+    },
+    "series": {
+      "type": "array",
+      "description": "Time series for sparklines / charts",
+      "items": {
+        "type": "object",
+        "required": ["key", "label", "points"],
+        "properties": {
+          "key": { "type": "string" },
+          "label": { "type": "string" },
+          "unit": { "type": "string" },
+          "color": { "type": "string" },
+          "points": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["t", "v"],
+              "properties": {
+                "t": { "type": "string", "format": "date-time" },
+                "v": { "type": "number" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "funnels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": "string" },
+          "steps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string" },
+                "label": { "type": "string" },
+                "count": { "type": "number" },
+                "hint": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "segments": {
+      "type": "array",
+      "description": "Breakdowns (client_id, region, product consumer)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": "string" },
+          "rows": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string" },
+                "label": { "type": "string" },
+                "value": { "type": "number" },
+                "meta": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "offers": {
+      "type": "array",
+      "description": "What this product offers the suite / public",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "for": { "type": "array", "items": { "type": "string" }, "description": "project ids that consume this" },
+          "status": { "enum": ["ga", "beta", "planned", "internal"] },
+          "endpoint": { "type": "string" },
+          "hint": { "type": "string" }
+        }
+      }
+    },
+    "education": {
+      "type": "array",
+      "description": "Mold-the-data coaching for operators / pitch",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "body": { "type": "string" },
+          "action": { "type": "string" },
+          "severity": { "enum": ["info", "opportunity", "risk", "plan"] }
+        }
+      }
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": { "type": "string" },
+          "url": { "type": "string" }
+        }
+      }
+    },
+    "raw": { "type": "object", "description": "Product-specific bag; HQ may ignore unknown keys" }
+  }
+}

@@ -1,11 +1,20 @@
 {
   "version": 1,
   "ghOwner": "kitsboy",
-  "branchDefaults": { "openstrata": "talent" },
+  "branchDefaults": {
+    "openstrata": "talent"
+  },
   "docFiles": [
-    "README.md", "AGENTS.md", "GROK-SESSION-PROTOCOL.md", "SOURCE-OF-TRUTH.md",
-    "DILIGENCE.md", "EXEC-SUMMARY.md", "CHANGELOG.md", "CONTRIBUTING.md",
-    "MARKETING-ONELINER.md", "docs/KIMI-HANDOFF.md"
+    "README.md",
+    "AGENTS.md",
+    "GROK-SESSION-PROTOCOL.md",
+    "SOURCE-OF-TRUTH.md",
+    "DILIGENCE.md",
+    "EXEC-SUMMARY.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "MARKETING-ONELINER.md",
+    "docs/KIMI-HANDOFF.md"
   ],
   "feeds": {
     "statusJsonUrl": "/status.json",
@@ -13,7 +22,10 @@
     "satohashHealthUrl": "https://api.satohash.io/health",
     "satohashMetricsUrl": "https://api.satohash.io/metrics",
     "nip05Url": "https://giveabit.io/.well-known/nostr.json",
-    "note": "Override in Vault. HQ tries /status.json then GitHub raw then Vault URL."
+    "note": "Override in Vault. HQ tries /status.json then GitHub raw then Vault URL.",
+    "thorNodeUrl": "/metrics/thor-node.json",
+    "thorNodeFallback": "https://raw.githubusercontent.com/kitsboy/HQ/main/metrics/thor-node.json",
+    "metricsBase": "/metrics"
   },
   "projects": [
     {
@@ -22,15 +34,24 @@
       "repo": "giveabit",
       "url": "https://giveabit.io",
       "tagline": "Bitcoin Sovereignty, Education & Tools",
-      "pitch": "The family hub — education, tools, and the Give A Bit namespace.",
+      "pitch": "The family hub \u2014 education, tools, and the Give A Bit namespace.",
       "wallet": "giveabit_main",
       "deployed": true,
       "icon": "fa-solid fa-seedling",
       "category": "Foundation",
       "color": "#c45f00",
-      "stack": ["Nostr", "Lightning", "Education"],
-      "related": ["satohash", "katoa", "sherpacarta"],
-      "metricsKey": null
+      "stack": [
+        "Nostr",
+        "Lightning",
+        "Education"
+      ],
+      "related": [
+        "satohash",
+        "katoa",
+        "sherpacarta"
+      ],
+      "metricsKey": "giveabit",
+      "metricsUrl": "/metrics/giveabit.json"
     },
     {
       "id": "satohash",
@@ -38,32 +59,50 @@
       "repo": "satohash",
       "url": "https://satohash.io",
       "tagline": "Stamp Documents on Bitcoin. Immutable Proof.",
-      "pitch": "Shared OTS timestamp backbone for the suite — free internal, public API planned.",
+      "pitch": "Shared OTS timestamp backbone for the suite \u2014 free internal, public API planned.",
       "wallet": "satohash",
       "deployed": true,
       "icon": "fa-solid fa-stamp",
       "category": "Proof",
       "color": "#8a5a00",
-      "stack": ["Bitcoin", "OpenTimestamps"],
-      "related": ["giveabit"],
+      "stack": [
+        "Bitcoin",
+        "OpenTimestamps"
+      ],
+      "related": [
+        "giveabit"
+      ],
       "backbone": true,
-      "metricsKey": "satohash"
+      "metricsKey": "satohash",
+      "metricsUrl": "/metrics/satohash.json",
+      "metricsLiveCandidates": [
+        "https://api.satohash.io/api/public/status",
+        "https://api.satohash.io/metrics",
+        "https://api.satohash.io/health"
+      ]
     },
     {
       "id": "katoa",
       "name": "Katoa",
       "repo": "katoa",
       "url": "https://katoa.org",
-      "tagline": "Zero-Fee Bitcoin Creator Platform · Lightning & Nostr",
-      "pitch": "Creators on Lightning and Nostr — zero-fee rails.",
+      "tagline": "Zero-Fee Bitcoin Creator Platform \u00b7 Lightning & Nostr",
+      "pitch": "Creators on Lightning and Nostr \u2014 zero-fee rails.",
       "wallet": "katoa",
       "deployed": true,
       "icon": "fa-solid fa-feather-pointed",
       "category": "Creator",
       "color": "#1a5f7a",
-      "stack": ["Lightning", "Nostr"],
-      "related": ["giveabit", "sherpacarta"],
-      "metricsKey": null
+      "stack": [
+        "Lightning",
+        "Nostr"
+      ],
+      "related": [
+        "giveabit",
+        "sherpacarta"
+      ],
+      "metricsKey": "katoa",
+      "metricsUrl": "/metrics/katoa.json"
     },
     {
       "id": "stranded",
@@ -77,9 +116,15 @@
       "icon": "fa-solid fa-bolt-lightning",
       "category": "Energy",
       "color": "#1f6b3a",
-      "stack": ["Energy", "Bitcoin"],
-      "related": ["giveabit"],
-      "metricsKey": null
+      "stack": [
+        "Energy",
+        "Bitcoin"
+      ],
+      "related": [
+        "giveabit"
+      ],
+      "metricsKey": "stranded",
+      "metricsUrl": "/metrics/stranded.json"
     },
     {
       "id": "tadbuy",
@@ -93,9 +138,16 @@
       "icon": "fa-solid fa-bullhorn",
       "category": "Ads",
       "color": "#a32020",
-      "stack": ["Ads", "Lightning"],
-      "related": ["giveabit", "katoa"],
-      "metricsKey": null
+      "stack": [
+        "Ads",
+        "Lightning"
+      ],
+      "related": [
+        "giveabit",
+        "katoa"
+      ],
+      "metricsKey": "tadbuy",
+      "metricsUrl": "/metrics/tadbuy.json"
     },
     {
       "id": "motopass",
@@ -109,9 +161,16 @@
       "icon": "fa-solid fa-passport",
       "category": "Identity",
       "color": "#5c3d7a",
-      "stack": ["Identity", "Travel"],
-      "related": ["giveabit", "sherpacarta"],
-      "metricsKey": null
+      "stack": [
+        "Identity",
+        "Travel"
+      ],
+      "related": [
+        "giveabit",
+        "sherpacarta"
+      ],
+      "metricsKey": "motopass",
+      "metricsUrl": "/metrics/motopass.json"
     },
     {
       "id": "sherpacarta",
@@ -125,9 +184,17 @@
       "icon": "fa-solid fa-scroll",
       "category": "Governance",
       "color": "#6b4f2a",
-      "stack": ["Nostr", "Governance"],
-      "related": ["giveabit", "katoa", "motopass"],
-      "metricsKey": null
+      "stack": [
+        "Nostr",
+        "Governance"
+      ],
+      "related": [
+        "giveabit",
+        "katoa",
+        "motopass"
+      ],
+      "metricsKey": "sherpacarta",
+      "metricsUrl": "/metrics/sherpacarta.json"
     },
     {
       "id": "openstrata",
@@ -141,9 +208,15 @@
       "icon": "fa-solid fa-building-columns",
       "category": "Corp",
       "color": "#2a4a5c",
-      "stack": ["Corp", "Dashboard"],
-      "related": ["giveabit"],
-      "metricsKey": null
+      "stack": [
+        "Corp",
+        "Dashboard"
+      ],
+      "related": [
+        "giveabit"
+      ],
+      "metricsKey": "openstrata",
+      "metricsUrl": "/metrics/openstrata.json"
     },
     {
       "id": "btcminiscript",
@@ -157,9 +230,15 @@
       "icon": "fa-solid fa-flask",
       "category": "R&D",
       "color": "#5a574f",
-      "stack": ["Bitcoin", "Miniscript"],
-      "related": ["giveabit"],
-      "metricsKey": null
+      "stack": [
+        "Bitcoin",
+        "Miniscript"
+      ],
+      "related": [
+        "giveabit"
+      ],
+      "metricsKey": "btcminiscript",
+      "metricsUrl": "/metrics/btcminiscript.json"
     }
   ]
 }
