@@ -1,3 +1,5 @@
+**v2.5 SHIPPED:** password gate, tip system, pipes board, metrics.json live merge, vault tabs, latency/uptime charts, AES vault export.
+
 # Give A Bit HQ — 100 upgrades map
 
 Legend: **SHIPPED** in this pass · **LIVE** already in HQ · **NEXT** data/product dependency

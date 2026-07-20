@@ -1,33 +1,38 @@
 {
   "schema": "gab.thor-node.v1",
-  "updatedAt": "2026-07-20T02:25:24.267Z",
+  "updatedAt": "2026-07-20T06:00:33.372Z",
   "node": {
     "id": "THOR",
-    "hostLabel": "THOR (suite node)",
-    "stack": "Umbrel-class / custom",
-    "region": "private",
-    "status": "amber",
+    "hostLabel": "THOR Contabo VPS 20",
+    "stack": "Docker \u00b7 LND Neutrino \u00b7 LNbits \u00b7 satohash-api",
+    "region": "EU Contabo",
+    "status": "green",
     "uptimeSec": 1036800,
     "services": [
       {
-        "id": "bitcoind",
+        "id": "satohash-satohash-api-1",
         "status": "green",
-        "detail": "Pruned mainnet"
+        "detail": "Up 2 hours (healthy)"
+      },
+      {
+        "id": "satohash-redis-1",
+        "status": "green",
+        "detail": "Up 3 hours"
+      },
+      {
+        "id": "lnbits",
+        "status": "green",
+        "detail": "Up 8 hours"
+      },
+      {
+        "id": "lnbits-postgres",
+        "status": "green",
+        "detail": "Up 28 hours (healthy)"
       },
       {
         "id": "lnd",
         "status": "green",
-        "detail": "Channels active"
-      },
-      {
-        "id": "lnbits",
-        "status": "amber",
-        "detail": "CORS must allow HQ origin for browser balances"
-      },
-      {
-        "id": "tailscale",
-        "status": "green",
-        "detail": "Operator mesh"
+        "detail": "Up 13 hours (healthy)"
       }
     ]
   },
@@ -66,13 +71,14 @@
   },
   "lnbits": {
     "ok": true,
-    "version": "0.12.x",
+    "version": "latest",
     "walletCount": 9,
     "extensions": [
-      "LNURLp",
-      "scrub"
+      "lnurlp",
+      "tpos",
+      "withdraw"
     ],
-    "hint": "Browser HQ needs CORS for public domain balances."
+    "hint": "CORS via Caddy :5103 for HQ origin"
   },
   "series": [
     {
@@ -283,15 +289,15 @@
   "education": [
     {
       "id": "prune",
-      "title": "Pruned ≠ weak",
-      "body": "For suite ops, prune keeps disk sane while still verifying chain. Pitch: “We verify, we don’t archive the planet.”",
+      "title": "Pruned \u2260 weak",
+      "body": "For suite ops, prune keeps disk sane while still verifying chain. Pitch: \u201cWe verify, we don\u2019t archive the planet.\u201d",
       "action": "Keep pruned:true in public snapshot",
       "severity": "info"
     },
     {
       "id": "cors",
       "title": "CORS is the HQ wallet unlock",
-      "body": "Empty balances on hq.giveabit.io almost always mean LNbits CORS, not wrong keys.",
+      "body": "Empty balances on hq.giveabit.io almost always mean LNbits CORS, not wrong keys. THOR proxy :5103 adds CORS.",
       "action": "Allow https://hq.giveabit.io on LNbits/Caddy",
       "severity": "opportunity"
     },
@@ -299,7 +305,7 @@
       "id": "macaroon",
       "title": "Never publish admin macaroons",
       "body": "THOR JSON is read-only aggregates. Invoice keys stay in Vault; admin/macaroon only on node.",
-      "action": "Publish snapshot via local cron → status/node.json",
+      "action": "Publish snapshot via local cron \u2192 status/node.json",
       "severity": "risk"
     },
     {
@@ -312,6 +318,6 @@
   ],
   "security": {
     "secretsInPayload": false,
-    "notes": "Demo snapshot for HQ. Replace via node exporter cron."
+    "notes": "Aggregates only. Invoice keys in browser Vault. Never macaroons."
   }
 }

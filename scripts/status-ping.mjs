@@ -62,24 +62,27 @@ async function main() {
   // Optional satohash API health into feeds block
   const apiBase = (feeds.satohashHealthUrl || 'https://api.satohash.io/health').replace(/\/health$/, '');
   const healthUrl = `${apiBase}/health`;
-  const metricsUrl = feeds.satohashMetricsUrl || `${apiBase}/metrics`;
+  const metricsUrl = feeds.satohashMetricsUrl || `${apiBase}/metrics.json`;
   process.stderr.write(`ping satohash-api ${healthUrl} … `);
   const apiHealth = await ping(healthUrl);
   process.stderr.write(`${apiHealth.ok ? 'OK' : 'FAIL'}\n`);
 
   let metrics = null;
-  process.stderr.write(`ping satohash-metrics ${metricsUrl} … `);
-  try {
-    const r = await fetch(metricsUrl, { headers: { 'User-Agent': 'GiveABit-HQ-StatusPinger/1.0' }, signal: AbortSignal.timeout(10000) });
-    if (r.ok) {
-      const ct = r.headers.get('content-type') || '';
-      metrics = ct.includes('json') ? await r.json() : { raw: await r.text() };
-      process.stderr.write('OK\n');
-    } else {
+  const metricsCandidates = [...new Set([metricsUrl, `${apiBase}/metrics.json`, `${apiBase}/metrics`])];
+  for (const mu of metricsCandidates) {
+    process.stderr.write(`ping satohash-metrics ${mu} … `);
+    try {
+      const r = await fetch(mu, { headers: { 'User-Agent': 'GiveABit-HQ-StatusPinger/1.0' }, signal: AbortSignal.timeout(10000) });
+      if (r.ok) {
+        const ct = r.headers.get('content-type') || '';
+        metrics = ct.includes('json') ? await r.json() : { raw: await r.text() };
+        process.stderr.write('OK\n');
+        break;
+      }
       process.stderr.write(`HTTP ${r.status}\n`);
+    } catch (e) {
+      process.stderr.write(`skip ${e.message}\n`);
     }
-  } catch (e) {
-    process.stderr.write(`skip ${e.message}\n`);
   }
 
   const out = {

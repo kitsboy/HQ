@@ -1,6 +1,6 @@
 # Give A Bit HQ
 
-**Ops + pitch glass** for the Give A Bit suite (**v2.4**).
+**Ops + pitch glass** for the Give A Bit suite (**v2.5**).
 
 | | |
 |--|--|
@@ -15,6 +15,17 @@ Open in a browser (prefer **hq.giveabit.io** so Vault storage stays consistent).
 cd /Users/cam/projects/HQ && npm run build && npm run preview
 # http://localhost:8765/
 ```
+
+## v2.5 highlights
+
+| Feature | How |
+|---------|-----|
+| **Password gate** | First visit sets operator password; locks public site until unlock (key L) |
+| **Vault tabs** | Keys · Feeds/pipes · AI usage · Extra keys + export/import |
+| **Hover tips** | Mouse over chips, KPIs, tools — advice on how to mold data |
+| **Live pipes board** | Analytics (y) — suite, Satohash metrics.json, THOR, wallets, FX |
+| **More graphs** | Latency bars, uptime pulse, area sparklines, Satohash series |
+| **Secrets** | Still browser-only; optional AES-GCM when gate password set |
 
 ## Views
 
@@ -94,6 +105,7 @@ node scripts/stamp-handoff.mjs --agent kimi --summary "…"
 
 ## Changelog (high level)
 
+- **v2.5** — Password gate, tip system, live pipes board, metrics.json, richer vault
 - **v2.4** — Metrics lab, product + THOR envelopes, handoff system, LNbits diagnose  
 - **v2.3** — Tools hub, ops notes, latency, BTC 24h, PWA  
 - **v2.2** — Pitch, diligence, NIP-05, status feeds, registry JSON  

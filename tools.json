@@ -1,43 +1,172 @@
 {
-  "version": 1,
+  "version": 2,
   "groups": [
     {
       "id": "suite",
       "label": "Suite live sites",
+      "tip": "Public product front-doors. Green latency on HQ cards comes from status.json pings.",
       "links": [
-        { "name": "Give A Bit", "url": "https://giveabit.io" },
-        { "name": "Satohash", "url": "https://satohash.io" },
-        { "name": "Katoa", "url": "https://katoa.org" },
-        { "name": "Stranded", "url": "https://stranded.giveabit.io" },
-        { "name": "Tadbuy", "url": "https://tadbuy.giveabit.io" },
-        { "name": "MotoPass", "url": "https://motopass.giveabit.io" },
-        { "name": "SherpaCarta", "url": "https://sherpacarta.org" },
-        { "name": "OpenStrata", "url": "https://openstrata.giveabit.io" }
+        {
+          "name": "Give A Bit",
+          "url": "https://giveabit.io",
+          "tip": "Parent brand + NIP-05 + education"
+        },
+        {
+          "name": "Satohash",
+          "url": "https://satohash.io",
+          "tip": "OTS proof SPA"
+        },
+        {
+          "name": "Katoa",
+          "url": "https://katoa.org",
+          "tip": "Creators \u00b7 Lightning \u00b7 Nostr"
+        },
+        {
+          "name": "Stranded",
+          "url": "https://stranded.giveabit.io",
+          "tip": "Energy / diesel-site map"
+        },
+        {
+          "name": "Tadbuy",
+          "url": "https://tadbuy.giveabit.io",
+          "tip": "Ad settlement"
+        },
+        {
+          "name": "MotoPass",
+          "url": "https://motopass.giveabit.io",
+          "tip": "Identity / residency"
+        },
+        {
+          "name": "SherpaCarta",
+          "url": "https://sherpacarta.org",
+          "tip": "Governance charter"
+        },
+        {
+          "name": "OpenStrata",
+          "url": "https://openstrata.giveabit.io",
+          "tip": "Strata / corp dashboard"
+        }
       ]
     },
     {
       "id": "ops",
-      "label": "Ops & identity",
+      "label": "Ops feeds & contracts",
+      "tip": "These are the data pipes HQ sucks into Metrics/Analytics. Prefer live over demo.",
       "links": [
-        { "name": "HQ (this glass)", "url": "https://hq.giveabit.io" },
-        { "name": "GitHub kitsboy", "url": "https://github.com/kitsboy" },
-        { "name": "NIP-05 nostr.json", "url": "https://giveabit.io/.well-known/nostr.json" },
-        { "name": "Satohash API health", "url": "https://api.satohash.io/health" },
-        { "name": "status.json", "url": "/status.json" },
-        { "name": "Satohash metrics", "url": "/metrics/satohash.json" },
-        { "name": "THOR node JSON", "url": "/metrics/thor-node.json" },
-        { "name": "Handoff state", "url": "/handoff/state.json" },
-        { "name": "Metrics schema", "url": "/schemas/product-metrics.v1.schema.json" }
+        {
+          "name": "HQ",
+          "url": "https://hq.giveabit.io",
+          "tip": "This glass"
+        },
+        {
+          "name": "Satohash API health",
+          "url": "https://api.satohash.io/health",
+          "tip": "Must be 200 for backbone green"
+        },
+        {
+          "name": "Satohash metrics.json",
+          "url": "https://api.satohash.io/metrics.json",
+          "tip": "Live gab.product-metrics.v1"
+        },
+        {
+          "name": "status.json",
+          "url": "/status.json",
+          "tip": "15m suite pinger"
+        },
+        {
+          "name": "Static metrics cache",
+          "url": "/metrics/satohash.json",
+          "tip": "Fallback envelope"
+        },
+        {
+          "name": "THOR node JSON",
+          "url": "/metrics/thor-node.json",
+          "tip": "Node aggregates \u2014 no secrets"
+        },
+        {
+          "name": "Handoff state",
+          "url": "/handoff/state.json",
+          "tip": "Grok\u2194Kimi machine handoff"
+        },
+        {
+          "name": "Product schema",
+          "url": "/schemas/product-metrics.v1.schema.json",
+          "tip": "Contract for publishers"
+        },
+        {
+          "name": "NIP-05",
+          "url": "https://giveabit.io/.well-known/nostr.json",
+          "tip": "Agent identities"
+        },
+        {
+          "name": "GitHub kitsboy",
+          "url": "https://github.com/kitsboy",
+          "tip": "Code truth"
+        }
       ]
     },
     {
       "id": "ai",
       "label": "AI & build",
+      "tip": "Paste SuperGrok % into Vault \u2014 no public usage API.",
       "links": [
-        { "name": "xAI / Grok", "url": "https://x.ai" },
-        { "name": "Grok (chat)", "url": "https://grok.com" },
-        { "name": "Cloudflare dashboard", "url": "https://dash.cloudflare.com" },
-        { "name": "GitHub Actions HQ", "url": "https://github.com/kitsboy/HQ/actions" }
+        {
+          "name": "xAI / Grok",
+          "url": "https://x.ai",
+          "tip": "Account usage page"
+        },
+        {
+          "name": "Grok chat",
+          "url": "https://grok.com",
+          "tip": "M3 coding agent UI"
+        },
+        {
+          "name": "Cloudflare",
+          "url": "https://dash.cloudflare.com",
+          "tip": "Pages + Access wall"
+        },
+        {
+          "name": "HQ Actions",
+          "url": "https://github.com/kitsboy/HQ/actions",
+          "tip": "Deploy + status pinger"
+        },
+        {
+          "name": "CF Access docs",
+          "url": "/docs/CLOUDFLARE-ACCESS.md",
+          "tip": "Enterprise login wall (optional)"
+        }
+      ]
+    },
+    {
+      "id": "advice",
+      "label": "Operator advice",
+      "tip": "How to mold HQ data into decisions.",
+      "links": [
+        {
+          "name": "LNbits CORS fix",
+          "url": "/docs/LNBITS-CORS.md",
+          "tip": "Empty sats? Start here"
+        },
+        {
+          "name": "Metrics schema",
+          "url": "/docs/METRICS-SCHEMA.md",
+          "tip": "How products publish KPIs"
+        },
+        {
+          "name": "THOR node doc",
+          "url": "/docs/THOR-NODE-JSON.md",
+          "tip": "What node exporter must send"
+        },
+        {
+          "name": "Ecosystem map",
+          "url": "/docs/ECOSYSTEM-MAP.md",
+          "tip": "Domains + planes"
+        },
+        {
+          "name": "100 upgrades map",
+          "url": "/docs/UPGRADES-100.md",
+          "tip": "Roadmap of pipes"
+        }
       ]
     }
   ]

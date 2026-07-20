@@ -20,9 +20,9 @@
     "statusJsonUrl": "/status.json",
     "statusJsonFallback": "https://raw.githubusercontent.com/kitsboy/HQ/main/status.json",
     "satohashHealthUrl": "https://api.satohash.io/health",
-    "satohashMetricsUrl": "https://api.satohash.io/metrics",
+    "satohashMetricsUrl": "https://api.satohash.io/metrics.json",
     "nip05Url": "https://giveabit.io/.well-known/nostr.json",
-    "note": "Override in Vault. HQ tries /status.json then GitHub raw then Vault URL.",
+    "note": "Override in Vault. Prefer /metrics.json (gab.product-metrics.v1). HQ tries live candidates then static /metrics/*.json.",
     "thorNodeUrl": "/metrics/thor-node.json",
     "thorNodeFallback": "https://raw.githubusercontent.com/kitsboy/HQ/main/metrics/thor-node.json",
     "metricsBase": "/metrics"
@@ -59,7 +59,7 @@
       "repo": "satohash",
       "url": "https://satohash.io",
       "tagline": "Stamp Documents on Bitcoin. Immutable Proof.",
-      "pitch": "Shared OTS timestamp backbone for the suite \u2014 free internal, public API planned.",
+      "pitch": "Shared OTS timestamp backbone \u2014 live API on THOR (api.satohash.io).",
       "wallet": "satohash",
       "deployed": true,
       "icon": "fa-solid fa-stamp",
@@ -76,8 +76,8 @@
       "metricsKey": "satohash",
       "metricsUrl": "/metrics/satohash.json",
       "metricsLiveCandidates": [
+        "https://api.satohash.io/metrics.json",
         "https://api.satohash.io/api/public/status",
-        "https://api.satohash.io/metrics",
         "https://api.satohash.io/health"
       ]
     },

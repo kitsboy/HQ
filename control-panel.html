@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  Give A Bit HQ v2.2.1 — ops + presentation shell for the suite.
+  Give A Bit HQ v2.5 — ops + presentation shell for the suite.
   PRESENTATION: Pitch mode (P), diligence pack export, investor metrics strip,
     suite map, satohash backbone callout, NIP-05 agent checks, export deck md.
   FEEDS (optional, Vault/config): status.json uptime, api.satohash.io/health,
@@ -12,7 +12,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Give A Bit HQ v2.2.1</title>
+<title>Give A Bit HQ v2.5</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
@@ -210,9 +210,92 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
 #total-delta{font-size:13px;font-weight:600;font-family:'IBM Plex Mono',monospace}
 .link-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 
+
+/* ===== v2.5 gate · tips · pipes · charts ===== */
+#hq-gate{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;
+  background:radial-gradient(ellipse at 30% 20%,rgba(196,95,0,.18),transparent 50%),var(--void)}
+#hq-gate.hidden{display:none!important}
+.gate-card{width:min(440px,96vw);padding:28px 24px;border-radius:8px}
+.gate-card h1{font-size:1.35rem;margin:0 0 6px}
+.gate-card .sub{font-size:13px;color:var(--ink-dim);margin:0 0 18px;line-height:1.45}
+.gate-err{color:var(--red);font-size:12px;min-height:18px;margin:8px 0}
+body.hq-locked > *:not(#hq-gate):not(script):not(style){visibility:hidden!important;pointer-events:none!important}
+body.hq-locked #hq-gate{visibility:visible!important;pointer-events:auto!important}
+
+.tip{position:relative;cursor:help;border-bottom:1px dotted rgba(0,0,0,.25)}
+[data-tip]{cursor:help}
+.tip-bubble{position:fixed;z-index:400;max-width:min(320px,90vw);padding:10px 12px;border-radius:6px;
+  background:var(--ink);color:var(--panel);font-size:12px;line-height:1.45;pointer-events:none;
+  box-shadow:0 12px 40px rgba(0,0,0,.35);opacity:0;transform:translateY(4px);transition:opacity .12s,transform .12s}
+.tip-bubble.show{opacity:1;transform:translateY(0)}
+.tip-bubble .tip-title{font-weight:700;margin-bottom:4px;font-size:11px;text-transform:uppercase;letter-spacing:.06em;opacity:.85}
+.tip-bubble .tip-advice{margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.2);font-size:11px;opacity:.9}
+
+.pipe-board{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.pipe-card{padding:10px;border-radius:4px;border:1px solid var(--line);background:var(--panel-2)}
+.pipe-card .pn{font-size:10px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint)}
+.pipe-card .pv{font-size:18px;font-weight:700;font-family:'IBM Plex Mono',monospace;margin-top:4px}
+.pipe-card .ps{font-size:10px;color:var(--ink-faint);margin-top:2px;font-family:'IBM Plex Mono',monospace}
+.area-spark path.area{opacity:.18}
+.chart-legend{display:flex;flex-wrap:wrap;gap:8px;font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--ink-faint);margin-top:6px}
+.chart-legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px}
+.latency-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;font-size:11px}
+.latency-row .nm{width:88px;truncate;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.latency-row .trk{flex:1;height:10px;background:var(--void-2);border-radius:2px;overflow:hidden;border:1px solid var(--line)}
+.latency-row .fl{height:100%;border-radius:2px}
+.vault-tabs{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap}
+.vault-tab{font-size:11px;padding:4px 10px;border-radius:3px;border:1px solid var(--line);background:var(--panel-2);cursor:pointer}
+.vault-tab.on{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.vault-pane{display:none}.vault-pane.on{display:block}
+.lock-chip{cursor:pointer}
+.advice-rail{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin-top:10px}
+.advice-card{padding:10px 12px;border-radius:4px;border-left:3px solid var(--orange);background:var(--panel-2);font-size:12px}
+.advice-card h4{margin:0 0 4px;font-size:12px}
+.advice-card p{margin:0;color:var(--ink-dim);line-height:1.4}
+.advice-card.risk{border-left-color:var(--red)}
+.advice-card.ok{border-left-color:var(--green)}
+.advice-card.sky{border-left-color:var(--sky)}
+#pipes-panel{margin-top:10px}
+
 </style>
 </head>
 <body class="min-h-screen">
+
+<!-- HQ GATE v2.5 — password wall (client-side; pair with CF Access for enterprise) -->
+<div id="hq-gate" class="hidden" role="dialog" aria-modal="true" aria-label="HQ unlock">
+  <div class="gate-card glass">
+    <div class="accent-bar" style="margin:-28px -24px 18px;border-radius:8px 8px 0 0"></div>
+    <div class="flex items-center gap-2 mb-1">
+      <div class="icon-box"><i class="fa-solid fa-shield-halved"></i></div>
+      <div>
+        <h1 id="gate-title">Unlock Give A Bit HQ</h1>
+        <div class="text-[10px] mono text-[var(--ink-faint)]">v2.5 · keys stay in this browser</div>
+      </div>
+    </div>
+    <p class="sub" id="gate-sub">Operator password protects Vault secrets on the public URL. Metrics still load after unlock. Pair with Cloudflare Access for a true login wall.</p>
+    <div id="gate-setup" class="hidden">
+      <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Create password</label>
+      <input id="gate-pw1" type="password" class="w-full rounded px-3 py-2 text-sm mono mb-2" placeholder="min 8 chars" autocomplete="new-password">
+      <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Confirm</label>
+      <input id="gate-pw2" type="password" class="w-full rounded px-3 py-2 text-sm mono mb-2" placeholder="repeat" autocomplete="new-password">
+      <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Hint (optional, public)</label>
+      <input id="gate-hint" class="w-full rounded px-3 py-2 text-sm mb-2" placeholder="e.g. phrase from Safe Harbour sticky">
+      <button type="button" onclick="Gate.setup()" class="btn-brand rounded w-full py-2.5 text-sm">Set password & enter</button>
+    </div>
+    <div id="gate-unlock">
+      <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Password</label>
+      <input id="gate-pw" type="password" class="w-full rounded px-3 py-2 text-sm mono mb-2" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')Gate.unlock()">
+      <div class="text-[11px] text-[var(--ink-faint)] mb-2 mono" id="gate-hint-show"></div>
+      <button type="button" onclick="Gate.unlock()" class="btn-brand rounded w-full py-2.5 text-sm mb-2">Unlock</button>
+      <button type="button" onclick="Gate.resetPrompt()" class="btn-ghost rounded w-full py-2 text-xs">Forgot — wipe gate & vault on this browser</button>
+    </div>
+    <div class="gate-err" id="gate-err"></div>
+    <div class="text-[10px] text-[var(--ink-faint)] mt-3 leading-relaxed">
+      <strong>ELI16:</strong> Like a lock on your ops toolbox. Public people see the lock; you type the code; your LNbits/GitHub keys live only in this browser’s Vault (never in git).
+    </div>
+  </div>
+</div>
+
 <div class="accent-bar"></div>
 
 <!-- TOPBAR -->
@@ -234,7 +317,8 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
     <div class="divider"></div>
     <span id="btc-price-top" class="shrink-0">BTC $—</span>
     <span id="net-status" class="status-pill gray shrink-0">online</span>
-    <span id="vault-status" class="status-pill gray shrink-0">vault empty</span>
+    <span id="gate-lock-chip" class="status-pill green shrink-0 lock-chip" onclick="Gate.lock()" data-tip="Click to lock HQ on this tab. Password required again." data-tip-title="Session lock">unlocked</span>
+    <span id="vault-status" class="status-pill gray shrink-0" data-tip="How many secrets are saved in this browser Vault (never in git)." data-tip-title="Vault" data-tip-advice="Open Config (v) to paste LNbits invoice keys + GitHub PAT.">vault empty</span>
     <span id="grok-top-chip" class="status-pill gray shrink-0" title="SuperGrok weekly usage — edit in Vault">Grok —</span>
     <span id="clock" class="text-[var(--ink-faint)] shrink-0"></span>
     <div class="ml-auto flex items-center gap-1.5 shrink-0">
@@ -435,11 +519,19 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
     </div>
   </div>
   <div id="view-analytics" class="view-panel hidden grid grid-cols-1 lg:grid-cols-2 gap-3">
-    <div class="glass rounded p-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Balance ranking</div><div class="chart-box" style="height:220px"><canvas id="chart-rank"></canvas></div></div>
-    <div class="glass rounded p-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Health by project</div><div class="chart-box" style="height:220px"><canvas id="chart-health"></canvas></div></div>
+    <div class="glass rounded p-3 lg:col-span-2">
+      <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2" data-tip="Live pipes HQ is sucking right now — status pinger, Satohash API, THOR node, CoinGecko, GitHub, LNbits." data-tip-title="Data pipes" data-tip-advice="Green = responding. Amber = demo/fallback. Red = fix CORS, DNS, or Vault keys.">Live pipes board</div>
+      <div id="pipes-board" class="pipe-board"></div>
+      <div id="advice-rail" class="advice-rail"></div>
+    </div>
+    <div class="glass rounded p-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2" data-tip="Wallet sats per product from LNbits invoice keys in Vault." data-tip-title="Balance ranking" data-tip-advice="Empty bars usually mean Vault keys missing or LNbits CORS — not a bug in the chart.">Balance ranking</div><div class="chart-box" style="height:220px"><canvas id="chart-rank"></canvas></div></div>
+    <div class="glass rounded p-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2" data-tip="Composite health: live site + GitHub + CI + wallet." data-tip-title="Health" data-tip-advice="Push red projects first. Open drawer for the failing signal.">Health by project</div><div class="chart-box" style="height:220px"><canvas id="chart-health"></canvas></div></div>
+    <div class="glass rounded p-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2" data-tip="HTTP latency from status.json pinger (ms).">Suite latency</div><div id="latency-bars" class="max-h-[220px] overflow-y-auto"></div></div>
+    <div class="glass rounded p-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2" data-tip="Local refresh snapshots of total portfolio sats.">Portfolio history</div><div class="chart-box" style="height:200px"><canvas id="chart-hist"></canvas></div></div>
     <div class="glass rounded p-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Category mix</div><div class="chart-box" style="height:200px"><canvas id="chart-cat"></canvas></div></div>
-    <div class="glass rounded p-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Portfolio history (local snapshots)</div><div class="chart-box" style="height:200px"><canvas id="chart-hist"></canvas></div></div>
+    <div class="glass rounded p-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2" data-tip="Uptime share from StatusHistory local snapshots.">Suite uptime pulse</div><div class="chart-box" style="height:200px"><canvas id="chart-uptime"></canvas></div></div>
     <div class="glass rounded p-3 lg:col-span-2"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">KPI strip</div><div id="kpi-strip" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2"></div></div>
+    <div class="glass rounded p-3 lg:col-span-2"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2" data-tip="Merged live Satohash series when metrics.json is reachable.">Satohash stamp velocity (live or cache)</div><div id="sato-series" class="grid grid-cols-1 md:grid-cols-2 gap-2"></div></div>
   </div>
   <div id="view-network" class="view-panel hidden">
     <div class="glass rounded p-3">
@@ -519,7 +611,7 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
 
 <div class="max-w-[1680px] mx-auto px-3 site-footer">
   <div class="flex flex-wrap justify-between gap-2">
-    <span>Give A Bit HQ · <span id="hq-version">v2.4</span> · <span id="hq-build">build</span> · credentials only in localStorage · Safe Harbour</span>
+    <span>Give A Bit HQ · <span id="hq-version">v2.5</span> · <span id="hq-build">build</span> · credentials only in localStorage · Safe Harbour</span>
     <span class="mono flex flex-wrap gap-2">
       <span><kbd class="kbd">/</kbd> search</span>
       <span><kbd class="kbd">g</kbd> cards</span>
@@ -559,14 +651,23 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
       <h2 class="text-base font-semibold">Credential Vault</h2>
       <button onclick="Vault.closeModal()" class="btn-ghost w-8 h-8 rounded">✕</button>
     </div>
-    <p class="text-xs text-[var(--ink-faint)] mb-3">localStorage only · never committed. Same vault key as v1 so your keys still work.</p>
-    <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">GitHub PAT</label>
+    <p class="text-xs text-[var(--ink-faint)] mb-3" data-tip="Vault is encrypted at rest with your HQ password (AES-GCM) when a gate password is set. Still never put secrets in git." data-tip-title="Credential Vault" data-tip-advice="Invoice keys = read balances. Never paste admin macaroons.">Browser-only · optional AES encryption via gate password · same key <span class="mono">sovereign_deck_vault_v1</span></p>
+    <div class="vault-tabs">
+      <button type="button" class="vault-tab on" data-vtab="keys" onclick="Vault.tab('keys')">Keys</button>
+      <button type="button" class="vault-tab" data-vtab="feeds" onclick="Vault.tab('feeds')">Feeds & pipes</button>
+      <button type="button" class="vault-tab" data-vtab="ai" onclick="Vault.tab('ai')">AI usage</button>
+      <button type="button" class="vault-tab" data-vtab="extra" onclick="Vault.tab('extra')">More keys</button>
+    </div>
+    <div class="vault-pane on" id="vp-keys">
+    <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1" data-tip="Fine-grained PAT with Contents R/W + Actions R + Metadata R for private repos." data-tip-title="GitHub PAT" data-tip-advice="Public repos work without PAT; private need it.">GitHub PAT</label>
     <input id="vault-gh-token" type="password" class="w-full rounded px-3 py-2 text-sm mono mb-3" placeholder="ghp_… or github_pat_…">
     <div class="flex justify-between mb-1"><label class="text-[10px] mono uppercase text-[var(--ink-faint)]">LNbits keys</label><span class="text-[10px] mono text-[var(--ink-faint)]" id="vault-node-note"></span></div>
     <div id="vault-wallet-rows" class="space-y-1.5 mb-3"></div>
+    </div><!-- end vp-keys wallets continue -->
+    <div class="vault-pane on" id="vp-keys-b">
     <div class="grid grid-cols-2 gap-2 mb-3">
       <div>
-        <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Node URL</label>
+        <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1" data-tip="LNbits base URL reachable from THIS browser. Public or Tailscale Funnel + CORS." data-tip-title="Node URL" data-tip-advice="If balances empty: docs/LNBITS-CORS.md">Node URL</label>
         <input id="vault-node-url" class="w-full rounded px-3 py-2 text-sm mono">
       </div>
       <div>
@@ -590,6 +691,24 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
         <input id="vault-nip05-url" class="w-full rounded px-3 py-2 text-sm mono" placeholder="https://giveabit.io/.well-known/nostr.json">
       </div>
     </div>
+    </div><!-- end keys-b grid parent handled -->
+    </div><!-- vp-keys-b -->
+    <div class="vault-pane" id="vp-feeds">
+      <p class="text-[11px] text-[var(--ink-faint)] mb-2">Override default data pipes. Leave blank for built-ins.</p>
+      <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">status.json URL</label>
+      <input id="vault-status-url-b" class="w-full rounded px-3 py-2 text-sm mono mb-2" placeholder="/status.json">
+      <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Satohash API base</label>
+      <input id="vault-satohash-api-b" class="w-full rounded px-3 py-2 text-sm mono mb-2" placeholder="https://api.satohash.io">
+      <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Satohash metrics URL</label>
+      <input id="vault-satohash-metrics" class="w-full rounded px-3 py-2 text-sm mono mb-2" placeholder="https://api.satohash.io/metrics.json">
+      <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">THOR node JSON URL</label>
+      <input id="vault-thor-node" class="w-full rounded px-3 py-2 text-sm mono mb-2" placeholder="/metrics/thor-node.json">
+      <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">NIP-05 JSON URL</label>
+      <input id="vault-nip05-url-b" class="w-full rounded px-3 py-2 text-sm mono mb-2" placeholder="https://giveabit.io/.well-known/nostr.json">
+      <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Metrics base (static cache)</label>
+      <input id="vault-metrics-base" class="w-full rounded px-3 py-2 text-sm mono mb-2" placeholder="/metrics">
+    </div>
+    <div class="vault-pane" id="vp-ai">
     <div class="mt-2 mb-3 p-3 glass-2 rounded">
       <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">xAI SuperGrok / Grok Build usage</div>
       <p class="text-[11px] text-[var(--ink-faint)] mb-2">No public API — paste from your xAI account page. Stored only in this browser (Vault).</p>
@@ -612,7 +731,24 @@ body{background-image:linear-gradient(180deg,rgba(0,0,0,.03),transparent 120px);
         </div>
       </div>
     </div>
-    <div class="flex gap-2">
+    </div><!-- glass grok -->
+    </div><!-- vp-ai -->
+    <div class="vault-pane" id="vp-extra">
+      <p class="text-[11px] text-[var(--ink-faint)] mb-2">Optional labels only — still browser-local. Never LND macaroons.</p>
+      <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Cloudflare account note</label>
+      <input id="vault-cf-note" class="w-full rounded px-3 py-2 text-sm mono mb-2" placeholder="account id last4 / project giveabit-hq">
+      <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Extra API key A (label:value)</label>
+      <input id="vault-extra-a" type="password" class="w-full rounded px-3 py-2 text-sm mono mb-2" placeholder="e.g. family:sk_…">
+      <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Extra API key B</label>
+      <input id="vault-extra-b" type="password" class="w-full rounded px-3 py-2 text-sm mono mb-2" placeholder="optional">
+      <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Operator telegram / contact</label>
+      <input id="vault-contact" class="w-full rounded px-3 py-2 text-sm mb-2" placeholder="@…">
+      <div class="flex gap-2 mt-2">
+        <button type="button" onclick="Vault.exportEnc()" class="btn-ghost rounded px-3 py-2 text-xs flex-1">Export vault JSON</button>
+        <label class="btn-ghost rounded px-3 py-2 text-xs flex-1 text-center cursor-pointer">Import<input type="file" accept="application/json" class="hidden" onchange="Vault.importEnc(event)"></label>
+      </div>
+    </div>
+    <div class="flex gap-2 mt-3">
       <button onclick="Vault.save()" class="btn-brand rounded px-4 py-2 text-sm flex-1">Save vault</button>
       <button onclick="Vault.clear()" class="btn-ghost rounded px-4 py-2 text-sm text-[var(--red)]">Wipe</button>
     </div>
@@ -668,7 +804,7 @@ const FEEDS_DEFAULT = {
   statusJsonUrl: '/status.json',
   statusJsonFallback: 'https://raw.githubusercontent.com/kitsboy/HQ/main/status.json',
   satohashHealthUrl: 'https://api.satohash.io/health',
-  satohashMetricsUrl: 'https://api.satohash.io/metrics',
+  satohashMetricsUrl: 'https://api.satohash.io/metrics.json',
   nip05Url: 'https://giveabit.io/.well-known/nostr.json',
   thorNodeUrl: '/metrics/thor-node.json',
   metricsBase: '/metrics'
@@ -807,7 +943,7 @@ const Feeds = {
   async satohashHealth(){
     // Probe Satohash API backbone (default https://api.satohash.io/health) + optional /metrics.
     const base = (Vault.data.satohashApi || state.feeds.satohashHealthUrl?.replace(/\/health$/,'') || 'https://api.satohash.io').replace(/\/$/,'');
-    const metricsUrl = state.feeds.satohashMetricsUrl || (base + '/metrics');
+    const metricsUrl = state.feeds.satohashMetricsUrl || Vault.data.satohashMetricsUrl || (base + '/metrics.json');
     try{
       const r = await fetch(base + '/health', { mode:'cors', cache:'no-store' });
       if(!r.ok) throw new Error('http '+r.status);
@@ -2168,6 +2304,8 @@ const Dash = {
     await this.fetchPrice();
     await Promise.all(PROJECTS.map(p=>this.refreshProject(p)));
     await Feeds.all();
+    try{ await MetricsEngine.loadAll(); }catch(_e){}
+    try{ Pipes.render(); }catch(_e){}
     // recompute status after status.json may have set liveReachable
     PROJECTS.forEach(p=>{ const d=state.projects[p.id]; if(d) d.status=computeStatus(p,d); });
     this.snapshot();
@@ -2972,9 +3110,457 @@ document.addEventListener('keydown',e=>{
   if(e.key==='P') Pitch.open();
 });
 
-/* BOOT */
-(async function boot(){
-  Vault.load();
+
+/* ========== HQ v2.5: Gate · Tips · Pipes · Live metrics merge ========== */
+const Tips = {
+  el: null,
+  init(){
+    if(this.el) return;
+    this.el = document.createElement('div');
+    this.el.className = 'tip-bubble';
+    this.el.id = 'tip-bubble';
+    document.body.appendChild(this.el);
+    document.addEventListener('pointerover', (e)=>{
+      const t = e.target.closest('[data-tip]');
+      if(!t) return;
+      const tip = t.getAttribute('data-tip');
+      if(!tip) return;
+      const title = t.getAttribute('data-tip-title') || '';
+      const advice = t.getAttribute('data-tip-advice') || '';
+      this.show(e.clientX, e.clientY, tip, title, advice);
+    });
+    document.addEventListener('pointermove', (e)=>{
+      if(this.el.classList.contains('show')) this.pos(e.clientX, e.clientY);
+    });
+    document.addEventListener('pointerout', (e)=>{
+      if(e.target.closest('[data-tip]')) this.hide();
+    });
+  },
+  show(x,y,body,title,advice){
+    this.el.innerHTML = (title?('<div class="tip-title">'+title+'</div>'):'') +
+      '<div>'+body+'</div>' +
+      (advice?('<div class="tip-advice">💡 '+advice+'</div>'):'');
+    this.el.classList.add('show');
+    this.pos(x,y);
+  },
+  pos(x,y){
+    const pad=14, w=this.el.offsetWidth||280, h=this.el.offsetHeight||80;
+    let left=x+pad, top=y+pad;
+    if(left+w > innerWidth-8) left = x-w-pad;
+    if(top+h > innerHeight-8) top = y-h-pad;
+    this.el.style.left = Math.max(8,left)+'px';
+    this.el.style.top = Math.max(8,top)+'px';
+  },
+  hide(){ this.el.classList.remove('show'); }
+};
+
+const Gate = {
+  KEY: 'hq_gate_v1',
+  SESSION: 'hq_gate_session_v1',
+  _key: null,
+  cfg(){
+    try{ return JSON.parse(localStorage.getItem(this.KEY)||'null'); }catch(_){ return null; }
+  },
+  isUnlocked(){ return sessionStorage.getItem(this.SESSION)==='1'; },
+  async sha(buf){
+    const h = await crypto.subtle.digest('SHA-256', buf);
+    return [...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,'0')).join('');
+  },
+  b64(u8){ let s=''; u8.forEach(b=>s+=String.fromCharCode(b)); return btoa(s); },
+  unb64(s){ const bin=atob(s); const u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) u[i]=bin.charCodeAt(i); return u; },
+  async deriveBits(pw, saltU8){
+    const enc = new TextEncoder();
+    const base = await crypto.subtle.importKey('raw', enc.encode(pw), 'PBKDF2', false, ['deriveBits','deriveKey']);
+    return crypto.subtle.deriveBits({name:'PBKDF2', salt:saltU8, iterations:120000, hash:'SHA-256'}, base, 256);
+  },
+  async deriveKey(pw, saltU8){
+    const enc = new TextEncoder();
+    const base = await crypto.subtle.importKey('raw', enc.encode(pw), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey({name:'PBKDF2', salt:saltU8, iterations:120000, hash:'SHA-256'}, base, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']);
+  },
+  async setup(){
+    const p1 = document.getElementById('gate-pw1').value;
+    const p2 = document.getElementById('gate-pw2').value;
+    const hint = document.getElementById('gate-hint').value.trim();
+    const err = document.getElementById('gate-err');
+    if(!p1 || p1.length < 8){ err.textContent = 'Password min 8 characters'; return; }
+    if(p1 !== p2){ err.textContent = 'Passwords do not match'; return; }
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const bits = new Uint8Array(await this.deriveBits(p1, salt));
+    const hash = await this.sha(bits);
+    localStorage.setItem(this.KEY, JSON.stringify({ v:1, salt: this.b64(salt), hash, hint }));
+    this._key = await this.deriveKey(p1, salt);
+    sessionStorage.setItem(this.SESSION, '1');
+    err.textContent = '';
+    toast('HQ password set — session unlocked','success');
+    this.hide();
+    await bootAfterGate();
+  },
+  async unlock(){
+    const cfg = this.cfg();
+    const err = document.getElementById('gate-err');
+    if(!cfg){ err.textContent = 'No password configured'; return; }
+    const pw = document.getElementById('gate-pw').value;
+    if(!pw){ err.textContent = 'Enter password'; return; }
+    try{
+      const salt = this.unb64(cfg.salt);
+      const bits = new Uint8Array(await this.deriveBits(pw, salt));
+      const hash = await this.sha(bits);
+      if(hash !== cfg.hash){ err.textContent = 'Wrong password'; return; }
+      this._key = await this.deriveKey(pw, salt);
+      sessionStorage.setItem(this.SESSION, '1');
+      err.textContent = '';
+      this.hide();
+      await bootAfterGate();
+    }catch(e){ err.textContent = 'Unlock failed: '+(e.message||e); }
+  },
+  lock(){
+    sessionStorage.removeItem(this.SESSION);
+    this._key = null;
+    this.show();
+    toast('HQ locked','info');
+  },
+  resetPrompt(){
+    if(!confirm('Wipe gate password AND vault secrets on THIS browser? Cannot undo.')) return;
+    localStorage.removeItem(this.KEY);
+    localStorage.removeItem(Vault.KEY);
+    localStorage.removeItem(Vault.KEY_ENC);
+    sessionStorage.removeItem(this.SESSION);
+    this._key = null;
+    location.reload();
+  },
+  show(){
+    document.body.classList.add('hq-locked');
+    const g = document.getElementById('hq-gate');
+    g.classList.remove('hidden');
+    const cfg = this.cfg();
+    const setup = document.getElementById('gate-setup');
+    const unlock = document.getElementById('gate-unlock');
+    if(!cfg){
+      document.getElementById('gate-title').textContent = 'Create HQ password';
+      document.getElementById('gate-sub').textContent = 'First visit on this browser: set a password so Vault keys stay private on the public site.';
+      setup.classList.remove('hidden'); unlock.classList.add('hidden');
+    } else {
+      document.getElementById('gate-title').textContent = 'Unlock Give A Bit HQ';
+      document.getElementById('gate-sub').textContent = 'Operator password protects Vault secrets. Metrics and graphs load after unlock.';
+      setup.classList.add('hidden'); unlock.classList.remove('hidden');
+      const hs = document.getElementById('gate-hint-show');
+      hs.textContent = cfg.hint ? ('Hint: '+cfg.hint) : '';
+      setTimeout(()=>document.getElementById('gate-pw') && document.getElementById('gate-pw').focus(), 100);
+    }
+    const chip = document.getElementById('gate-lock-chip');
+    if(chip){ chip.textContent='locked'; chip.className='status-pill red shrink-0 lock-chip'; }
+  },
+  hide(){
+    document.body.classList.remove('hq-locked');
+    document.getElementById('hq-gate').classList.add('hidden');
+    const chip = document.getElementById('gate-lock-chip');
+    if(chip){ chip.textContent='unlocked'; chip.className='status-pill green shrink-0 lock-chip'; }
+  },
+  async ensure(){
+    if(this.isUnlocked()){
+      this.hide();
+      return true;
+    }
+    this.show();
+    return false;
+  }
+};
+
+Vault.KEY_ENC = 'sovereign_deck_vault_enc_v1';
+Vault.tab = function(name){
+  document.querySelectorAll('.vault-tab').forEach(b=>b.classList.toggle('on', b.dataset.vtab===name));
+  document.querySelectorAll('.vault-pane').forEach(p=>p.classList.remove('on'));
+  if(name==='keys'){
+    const a=document.getElementById('vp-keys'); if(a) a.classList.add('on');
+    const b=document.getElementById('vp-keys-b'); if(b) b.classList.add('on');
+  } else {
+    const p=document.getElementById('vp-'+name); if(p) p.classList.add('on');
+  }
+};
+(function wrapVault(){
+  const _open = Vault.openModal.bind(Vault);
+  Vault.openModal = function(){
+    if(!Gate.isUnlocked()){ Gate.show(); toast('Unlock HQ first','info'); return; }
+    _open();
+    const sync = (id, val)=>{ const el=document.getElementById(id); if(el) el.value = val||''; };
+    sync('vault-status-url-b', this.data.statusJsonUrl);
+    sync('vault-satohash-api-b', this.data.satohashApi);
+    sync('vault-nip05-url-b', this.data.nip05Url);
+    sync('vault-satohash-metrics', this.data.satohashMetricsUrl||'https://api.satohash.io/metrics.json');
+    sync('vault-thor-node', this.data.thorNodeUrl||'/metrics/thor-node.json');
+    sync('vault-metrics-base', this.data.metricsBase||'/metrics');
+    sync('vault-cf-note', this.data.cfNote);
+    sync('vault-extra-a', this.data.extraA);
+    sync('vault-extra-b', this.data.extraB);
+    sync('vault-contact', this.data.contact);
+    this.tab('keys');
+  };
+  const _save = Vault.save.bind(Vault);
+  Vault.save = async function(){
+    const pick = (ids)=>{
+      for(const id of ids){ const el=document.getElementById(id); if(el && el.value.trim()) return el.value.trim(); }
+      const el=document.getElementById(ids[0]); return el?el.value.trim():'';
+    };
+    this.data.statusJsonUrl = pick(['vault-status-url','vault-status-url-b']);
+    this.data.satohashApi = pick(['vault-satohash-api','vault-satohash-api-b'])||'https://api.satohash.io';
+    this.data.nip05Url = pick(['vault-nip05-url','vault-nip05-url-b'])||FEEDS_DEFAULT.nip05Url;
+    const sm=document.getElementById('vault-satohash-metrics'); if(sm) this.data.satohashMetricsUrl=sm.value.trim()||'https://api.satohash.io/metrics.json';
+    const th=document.getElementById('vault-thor-node'); if(th) this.data.thorNodeUrl=th.value.trim()||'/metrics/thor-node.json';
+    const mb=document.getElementById('vault-metrics-base'); if(mb) this.data.metricsBase=mb.value.trim()||'/metrics';
+    const cf=document.getElementById('vault-cf-note'); if(cf) this.data.cfNote=cf.value.trim();
+    const ea=document.getElementById('vault-extra-a'); if(ea) this.data.extraA=ea.value.trim();
+    const eb=document.getElementById('vault-extra-b'); if(eb) this.data.extraB=eb.value.trim();
+    const ct=document.getElementById('vault-contact'); if(ct) this.data.contact=ct.value.trim();
+    _save();
+    await this.persistEnc();
+  };
+})();
+Vault.persistEnc = async function(){
+  try{
+    if(!Gate._key) return;
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const pt = new TextEncoder().encode(JSON.stringify(this.data));
+    const ct = new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM', iv}, Gate._key, pt));
+    localStorage.setItem(this.KEY_ENC, JSON.stringify({ v:1, iv: Gate.b64(iv), ct: Gate.b64(ct) }));
+  }catch(e){ console.warn('vault enc', e); }
+};
+Vault.loadEnc = async function(){
+  try{
+    if(!Gate._key) return false;
+    const raw = localStorage.getItem(this.KEY_ENC); if(!raw) return false;
+    const j = JSON.parse(raw);
+    const iv = Gate.unb64(j.iv);
+    const ct = Gate.unb64(j.ct);
+    const pt = await crypto.subtle.decrypt({name:'AES-GCM', iv}, Gate._key, ct);
+    const data = JSON.parse(new TextDecoder().decode(pt));
+    this.data = Object.assign(this.data, data);
+    this.persist();
+    return true;
+  }catch(e){ console.warn('vault dec', e); return false; }
+};
+Vault.exportEnc = function(){
+  const blob = { exportedAt: new Date().toISOString(), note: 'Contains secrets — store offline', vault: this.data };
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(blob,null,2)],{type:'application/json'}));
+  a.download='hq-vault-export-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+  toast('Vault exported — keep offline','info');
+};
+Vault.importEnc = function(ev){
+  const f = ev.target.files && ev.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = ()=>{
+    try{
+      const j = JSON.parse(r.result);
+      const data = j.vault || j;
+      if(!data || typeof data !== 'object') throw new Error('bad file');
+      this.data = Object.assign(this.data, data);
+      this.persist();
+      this.openModal();
+      toast('Vault imported — click Save','success');
+    }catch(e){ toast('Import failed: '+e.message,'error'); }
+  };
+  r.readAsText(f);
+};
+
+(function wrapMetrics(){
+  const _meLoad = MetricsEngine.loadAll.bind(MetricsEngine);
+  MetricsEngine.loadAll = async function(){
+    await _meLoad();
+    const p = PROJECTS.find(x=>x.id==='satohash');
+    if(p){
+      const candidates = [
+        Vault.data.satohashMetricsUrl,
+        'https://api.satohash.io/metrics.json',
+        ...(p.metricsLiveCandidates||[]),
+        '/metrics/satohash.json'
+      ].filter(Boolean);
+      for(const url of [...new Set(candidates)]){
+        try{
+          const r = await fetch(url + (url.includes('?')?'&':'?') + 't=' + Date.now(), { mode:'cors', cache:'no-store' });
+          if(!r.ok) continue;
+          const body = await r.json();
+          if(body && (body.schema==='gab.product-metrics.v1' || body.kpis || body.productId==='satohash')){
+            body.raw = Object.assign({}, body.raw||{}, { source: url, live: true });
+            if(String(url).includes('api.satohash.io')) body.raw.demo = false;
+            this.cache.satohash = body;
+            const d = state.projects.satohash || (state.projects.satohash={id:'satohash'});
+            d.metrics = body;
+            break;
+          }
+        }catch(_){}
+      }
+    }
+    this.renderNav();
+    if(state.view==='metrics') this.renderBody();
+    this.paintThorSummary();
+    try{ Pipes.render(); }catch(_){}
+  };
+  const _spark = MetricsEngine.sparkline.bind(MetricsEngine);
+  MetricsEngine.sparkline = function(series, w=280, h=56){
+    if(!series || !series.points || series.points.length<2) return '';
+    const pts = series.points;
+    const vs = pts.map(p=>p.v);
+    const min = Math.min(...vs), max = Math.max(...vs), span = (max-min)||1;
+    const coords = pts.map((p,i)=>{
+      const x = (i/(pts.length-1))*w;
+      const y = h - ((p.v-min)/span)* (h-4) - 2;
+      return [x,y];
+    });
+    const path = coords.map((c,i)=>(i?'L':'M')+c[0].toFixed(1)+','+c[1].toFixed(1)).join(' ');
+    const area = path + ' L'+w+','+h+' L0,'+h+' Z';
+    const color = series.color || 'var(--orange)';
+    const last = pts[pts.length-1];
+    const tip = series.label+': '+last.v+' '+(series.unit||'')+' · '+pts.length+' pts';
+    return '<div class="mb-2 area-spark" data-tip="'+tip+'" data-tip-title="'+series.label+'" data-tip-advice="Rising slope = growth. Flat + high pending = calendar/fee pressure.">'+
+      '<div class="flex justify-between text-[10px] mono text-[var(--ink-faint)] mb-0.5"><span>'+series.label+'</span><span>'+last.v+(series.unit?(' '+series.unit):'')+'</span></div>'+
+      '<svg width="100%" height="'+h+'" viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none" class="block">'+
+      '<path class="area" d="'+area+'" fill="'+color+'"/>'+
+      '<path d="'+path+'" fill="none" stroke="'+color+'" stroke-width="2" vector-effect="non-scaling-stroke"/>'+
+      '</svg></div>';
+  };
+})();
+
+const Pipes = {
+  render(){
+    const board = document.getElementById('pipes-board');
+    const advice = document.getElementById('advice-rail');
+    if(!board) return;
+    const sites = (state.statusFeed && state.statusFeed.sites) || {};
+    const liveN = Object.values(sites).filter(s=>s && s.ok).length;
+    const siteN = Object.values(sites).filter(s=>s && s.ok!=null).length;
+    const sato = MetricsEngine.cache.satohash;
+    const thor = MetricsEngine.thor;
+    const apiOk = !!(state.satohash && (state.satohash.ok || state.satohash.metrics || (state.statusFeed && state.statusFeed.feeds && state.statusFeed.feeds.satohashApi && state.statusFeed.feeds.satohashApi.ok)));
+    const wallets = PROJECTS.filter(p=>Vault.hasWallet(p.wallet)).length;
+    const walletOk = PROJECTS.filter(p=>(state.projects[p.id]||{}).walletOk).length;
+    const cards = [
+      { n:'Suite sites', v: liveN+'/'+(siteN||PROJECTS.filter(p=>p.deployed).length), s: 'status.json', ok: liveN>0, tip:'Public product uptime from pinger', advice:'Red site → check CF Pages deploy' },
+      { n:'Satohash API', v: apiOk?'live':'—', s: Vault.data.satohashApi||'api.satohash.io', ok: apiOk, tip:'Proof plane health', advice:'curl /health must 200' },
+      { n:'Metrics env', v: sato?((sato.raw && (sato.raw.live || (sato.raw.source||'').includes('api')))?'LIVE':'cache'):'none', s: (sato && sato.schema)||'—', ok: !!sato, tip:'gab.product-metrics.v1 envelope', advice:'Prefer metrics.json over demo' },
+      { n:'THOR node', v: (thor && thor.node && thor.node.status)||'—', s: (thor && thor.node && thor.node.hostLabel)||'snapshot', ok: !!(thor && thor.node && thor.node.status==='green'), tip:'Node aggregates JSON', advice:'Cron exporter keeps this fresh' },
+      { n:'Vault keys', v: wallets+' set', s: walletOk+' balances', ok: wallets>0, tip:'LNbits invoice keys in browser', advice:'CORS if keys set but sats empty' },
+      { n:'GitHub', v: Vault.hasGh()?'PAT':'public', s: state.ghRateRemaining!=null?('rate '+state.ghRateRemaining):'—', ok: true, tip:'Commits + CI + docs', advice:'PAT unlocks private + higher rate' },
+      { n:'BTC FX', v: btcUsdPrice?('$'+(btcUsdPrice/1000).toFixed(1)+'k'):'—', s: (state.btcChange24h!=null?((state.btcChange24h>=0?'+':'')+state.btcChange24h.toFixed(2)+'%'):'CoinGecko'), ok: !!btcUsdPrice, tip:'Portfolio USD conversion', advice:'Manual FX in Vault if CG blocked' },
+      { n:'Uptime pulse', v: (StatusHistory.uptimePct()!=null?StatusHistory.uptimePct()+'%':'—'), s: ((state.statusHist||[]).length)+' snaps', ok: true, tip:'Local suite live ratio history', advice:'Keep HQ open to accumulate' },
+    ];
+    board.innerHTML = cards.map(c=>
+      '<div class="pipe-card" data-tip="'+c.tip+'" data-tip-title="'+c.n+'" data-tip-advice="'+c.advice+'">'+
+      '<div class="pn"><span class="dot '+(c.ok?'dot-green':'dot-amber')+'" style="width:7px;height:7px;margin-right:4px"></span>'+c.n+'</div>'+
+      '<div class="pv">'+c.v+'</div><div class="ps">'+c.s+'</div></div>'
+    ).join('');
+    if(advice){
+      const items = [];
+      if(wallets>0 && walletOk===0) items.push({t:'LNbits CORS', b:'Keys are set but no balances. Fix Access-Control-Allow-Origin for hq.giveabit.io on the node proxy.', c:'risk'});
+      if(!apiOk) items.push({t:'Satohash API', b:'Health not green from this browser. Check api.satohash.io/health and CORS.', c:'risk'});
+      if(sato && sato.raw && sato.raw.demo) items.push({t:'Demo metrics', b:'Satohash envelope still demo-shaped. Live metrics.json should set raw.demo=false.', c:'sky'});
+      if(apiOk && sato && !(sato.raw && sato.raw.demo)) items.push({t:'Proof plane live', b:'Satohash metrics flowing. Mold stamps_total + confirm_rate into investor pitch.', c:'ok'});
+      if(!Vault.hasGh()) items.push({t:'Add GitHub PAT', b:'Unlocks Actions status, private docs edit, higher API rate.', c:'sky'});
+      if(!items.length) items.push({t:'All pipes quiet', b:'Suite looks healthy. Use Pitch (P) for partner view; Metrics (k) for deep KPIs.', c:'ok'});
+      advice.innerHTML = items.map(i=>'<div class="advice-card '+i.c+'"><h4>'+i.t+'</h4><p>'+i.b+'</p></div>').join('');
+    }
+    const lb = document.getElementById('latency-bars');
+    if(lb){
+      const rows = Object.entries(sites).filter((pair)=>pair[1] && pair[1].ms!=null).sort((a,b)=>(b[1].ms||0)-(a[1].ms||0));
+      const max = Math.max(1, ...rows.map(pair=>pair[1].ms||0));
+      lb.innerHTML = rows.map(pair=>{
+        const id=pair[0], s=pair[1];
+        const p = PROJECTS.find(x=>x.id===id);
+        const col = s.ok ? (s.ms<500?'var(--green)':s.ms<1200?'var(--amber)':'var(--red)') : 'var(--red)';
+        return '<div class="latency-row" data-tip="'+(s.url||id)+' · HTTP '+(s.status||'—')+' · '+s.ms+'ms" data-tip-title="'+(p?p.name:id)+'" data-tip-advice="'+(s.ok?'Latency under 500ms is great for pitch.':'Site failed ping — check deploy.')+'">'+
+          '<span class="nm">'+(p?p.name:id)+'</span>'+
+          '<div class="trk"><div class="fl" style="width:'+((s.ms/max)*100)+'%;background:'+col+'"></div></div>'+
+          '<span class="mono w-12 text-right">'+s.ms+'ms</span></div>';
+      }).join('') || '<div class="text-xs text-[var(--ink-faint)]">No status.json latency yet — wait for pinger.</div>';
+    }
+    const ss = document.getElementById('sato-series');
+    if(ss && sato){
+      ss.innerHTML = (sato.series||[]).slice(0,4).map(s=>'<div class="glass-2 rounded p-2">'+MetricsEngine.sparkline(s, 320, 64)+'</div>').join('')
+        || '<div class="text-xs text-[var(--ink-faint)]">No series in envelope</div>';
+    }
+  }
+};
+
+(function wrapCharts(){
+  const _all = Charts.all.bind(Charts);
+  Charts.uptime = function(){
+    const c=document.getElementById('chart-uptime'); if(!c) return;
+    const hist = state.statusHist || [];
+    const ctx=c.getContext('2d');
+    const dpr=window.devicePixelRatio||1;
+    const W=c.clientWidth||300, H=c.clientHeight||200;
+    c.width=W*dpr; c.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,W,H);
+    const faint=getComputedStyle(document.documentElement).getPropertyValue('--ink-faint').trim();
+    if(hist.length<2){
+      ctx.fillStyle=faint; ctx.font='12px IBM Plex Sans'; ctx.fillText('Collecting local uptime snapshots…', 12, H/2);
+      return;
+    }
+    const pts = hist.slice(-48).map(h=>({ v: h.total? (h.live/h.total)*100 : 0 }));
+    const green=getComputedStyle(document.documentElement).getPropertyValue('--green').trim()||'#1f6b3a';
+    ctx.strokeStyle=green; ctx.lineWidth=2; ctx.beginPath();
+    pts.forEach((p,i)=>{
+      const x=(i/(pts.length-1))*(W-20)+10;
+      const y=H-12-(p.v/100)*(H-24);
+      if(i) ctx.lineTo(x,y); else ctx.moveTo(x,y);
+    });
+    ctx.stroke();
+    const y99=H-12-(0.99)*(H-24);
+    ctx.strokeStyle='rgba(0,0,0,.2)'; ctx.setLineDash([4,4]); ctx.beginPath(); ctx.moveTo(10,y99); ctx.lineTo(W-10,y99); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle=faint; ctx.font='10px IBM Plex Mono'; ctx.fillText('99%', 12, y99-4);
+    const last=pts[pts.length-1].v;
+    ctx.font='bold 14px IBM Plex Mono'; ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--ink').trim();
+    ctx.fillText(last.toFixed(1)+'% live', Math.max(12,W-110), 20);
+  };
+  Charts.all = function(){
+    _all();
+    this.uptime();
+    try{ Pipes.render(); }catch(_){}
+  };
+})();
+
+(function wrapTools(){
+  ToolsHub.render = function(){
+    const el = document.getElementById('tools-hub');
+    if(!el) return;
+    const groups = (this.data && this.data.groups) || [];
+    if(!groups.length){
+      el.innerHTML = '<span class="text-[var(--ink-faint)] text-xs">tools.json not loaded</span>';
+      return;
+    }
+    el.innerHTML = groups.map(g =>
+      '<div class="w-full" data-tip="'+(g.tip||'')+'" data-tip-title="'+g.label+'">'+
+      '<div class="text-[9px] mono text-[var(--ink-faint)] mb-1">'+g.label+'</div>'+
+      '<div class="tools-strip">'+(g.links||[]).map(l =>
+        '<a href="'+l.url+'" target="_blank" rel="noopener" data-tip="'+(l.tip||l.name)+'" data-tip-title="'+l.name+'" data-tip-advice="'+(g.tip||'External tool')+'">'+l.name+'</a>'
+      ).join('')+'</div></div>'
+    ).join('');
+  };
+})();
+
+UI.help = function(){
+  document.getElementById('help-body').innerHTML = [
+    ['/','Command search'],['g','Cards'],['l','List'],['p','Pipeline'],['y','Analytics + pipes'],['k','Metrics lab'],
+    ['n','Network'],['t','Activity'],['m','Matrix'],['w','Wallets'],['d','Docs'],['a','Agents'],
+    ['r','Refresh all pipes'],['v','Vault (keys)'],['P','Pitch mode'],['L','Lock HQ session'],
+    ['?','This help'],['esc','Close overlays'],
+    ['tip','Hover almost anything for advice'],
+  ].map(pair=>'<span class="k">'+pair[0]+'</span><span>'+pair[1]+'</span>').join('');
+  document.getElementById('help-backdrop').classList.remove('hidden');
+};
+
+document.addEventListener('keydown', e=>{
+  if(typeof isTyping==='function' && isTyping()) return;
+  if(e.key==='L' && !e.metaKey && !e.ctrlKey){ e.preventDefault(); Gate.lock(); }
+});
+
+let _booted = false;
+async function bootAfterGate(){
+  if(_booted) return;
+  _booted = true;
+  await Vault.loadEnc();
+  Vault.updateStatusChip();
   await loadRegistry();
   Dash.loadCache();
   Dash.render();
@@ -2987,18 +3573,28 @@ document.addEventListener('keydown',e=>{
   try{ state.statusHist = JSON.parse(localStorage.getItem(StatusHistory.KEY)||'[]'); }catch(_){ state.statusHist=[]; }
   Charts.all();
   UI.clock(); setInterval(UI.clock,1000);
-  setInterval(()=>GrokUsage.updateCountdown && GrokUsage.updateCountdown(), 30000);
-  window.addEventListener('online', ()=>{ document.getElementById('offline-banner')?.classList.add('hidden'); toast('Back online','success'); });
-  window.addEventListener('offline', ()=>{ document.getElementById('offline-banner')?.classList.remove('hidden'); });
-  if(!navigator.onLine) document.getElementById('offline-banner')?.classList.remove('hidden');
+  setInterval(()=>{ if(GrokUsage.updateCountdown) GrokUsage.updateCountdown(); }, 30000);
+  window.addEventListener('online', ()=>{ const b=document.getElementById('offline-banner'); if(b) b.classList.add('hidden'); toast('Back online','success'); });
+  window.addEventListener('offline', ()=>{ const b=document.getElementById('offline-banner'); if(b) b.classList.remove('hidden'); });
+  if(!navigator.onLine){ const b=document.getElementById('offline-banner'); if(b) b.classList.remove('hidden'); }
   const build = document.getElementById('hq-build');
-  if(build) build.textContent = new Date().toISOString().slice(0,16).replace('T',' ');
+  if(build) build.textContent = new Date().toISOString().slice(0,16).replace('T',' ')+' · v2.5';
   await Dash.refreshAll();
+  try{ await MetricsEngine.loadAll(); }catch(_){}
   GrokUsage.render();
+  Pipes.render();
   scheduleRefresh();
   scheduleRefreshEta();
-  if(!Vault.hasGh()&&Vault.keyCount()===0) setTimeout(()=>toast('Open Vault to connect keys · Pitch with P','info'),700);
-  console.log('%cGive A Bit HQ v2.2 — pitch + feeds + Grok usage','color:#c45f00;font-weight:bold');
+  if(!Vault.hasGh() && Vault.keyCount()===0) setTimeout(()=>toast('Open Vault (v) to paste keys · hover chips for tips','info'),700);
+  console.log('%cGive A Bit HQ v2.5 — gate + tips + live pipes','color:#c45f00;font-weight:bold');
+}
+
+/* BOOT v2.5 — gate first */
+(async function boot(){
+  Tips.init();
+  Vault.load();
+  const ok = await Gate.ensure();
+  if(ok) await bootAfterGate();
 })();
 </script>
 </body>

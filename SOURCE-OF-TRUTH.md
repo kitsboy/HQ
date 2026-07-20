@@ -1,6 +1,6 @@
 # HQ SOURCE OF TRUTH
 
-_Updated: 2026-07-20 (ops clean)_
+_Updated: 2026-07-20 (v2.5 gate + pipes)_
 
 ## Live
 
@@ -15,7 +15,7 @@ _Updated: 2026-07-20 (ops clean)_
 
 | Path | Role |
 |------|------|
-| `control-panel.html` | Single-page app (v2.4) |
+| `control-panel.html` | Single-page app (v2.5) |
 | `projects.json` | Project registry + feed URLs |
 | `agents.json` | Agent personas + NIP-05 |
 | `tools.json` | Tools hub links |
@@ -63,6 +63,15 @@ Vault key: `sovereign_deck_vault_v1` (per browser **origin**).
 3. Live THOR exporter → `metrics/thor-node.json` cron (if not already wired)
 4. CF Access enable (Cam decision)
 5. GitHub Actions Queued/startup_failure intermittent — local wrangler deploy remains fallback
+
+## v2.5 security
+
+| Layer | What |
+|-------|------|
+| Gate password | Browser session unlock (PBKDF2) |
+| Vault | localStorage; AES-GCM when gate key in session |
+| CF Access | Optional — docs/CLOUDFLARE-ACCESS.md |
+| Never in git | LNbits keys, PAT, macaroons |
 
 ## Pitch (one line)
 
