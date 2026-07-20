@@ -1,8 +1,6 @@
 name: Status pinger
 
-# True HTTP uptime for HQ (writes status.json — no secrets).
-# HQ loads /status.json or raw GitHub after this runs.
-
+# HTTP uptime → status.json (no secrets). Commits + deploys matrix.
 on:
   schedule:
     - cron: "*/15 * * * *"
@@ -31,33 +29,38 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Ping suite URLs
+      - name: Ping suite + satohash metrics
         run: node scripts/status-ping.mjs
 
-      - name: Commit status.json
+      - name: Commit status.json if changed
+        id: commit
         run: |
           git config user.name "hq-status-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add status.json
           if git diff --staged --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No status change"
           else
             git commit -m "chore: refresh status.json [skip deploy]"
             git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Pushed status.json"
           fi
 
-      - name: Deploy status.json to Cloudflare Pages
-        if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+      - name: Deploy status matrix to Cloudflare Pages
+        if: ${{ steps.commit.outputs.changed == 'true' && secrets.CLOUDFLARE_API_TOKEN != '' }}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          mkdir -p public
-          # Prefer full site assembly if sources present
-          if [ -f control-panel.html ]; then
-            cp control-panel.html public/index.html
-            cp projects.json agents.json tools.json status.example.json manifest.webmanifest public/ 2>/dev/null || true
-            cp pages/_headers pages/_redirects public/ 2>/dev/null || true
-          fi
+          mkdir -p public/metrics public/schemas public/docs public/handoff
+          cp control-panel.html public/index.html
+          cp projects.json agents.json tools.json status.example.json manifest.webmanifest public/ || true
+          cp pages/_headers pages/_redirects public/ || true
+          cp -R metrics/. public/metrics/ || true
+          cp -R schemas/. public/schemas/ || true
+          cp docs/*.md public/docs/ 2>/dev/null || true
+          cp handoff/state.json public/handoff/ 2>/dev/null || true
           cp status.json public/status.json
           npx --yes wrangler@4 pages deploy ./public --project-name=giveabit-hq --branch=main
