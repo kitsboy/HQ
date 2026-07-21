@@ -19,6 +19,7 @@
   const GATE_SESSION = "hq_gate_session_v1";
   const BAL_POLL_MS = 60000;
   const DATA_POLL_MS = 300000;
+  const IDLE_LOCK_MS = 30 * 60 * 1000; // auto-lock after 30 min idle
 
   const PROJECT_ACCENTS = {
     giveabit: "#ff8c00",
@@ -2120,16 +2121,46 @@
   }
 
   /* ── Password gate (casual client lock — vault keys stay browser-local regardless) ── */
+  /* Legacy v2.5 format: {v:1, salt(b64), hash(b64 PBKDF2 120k)} — still accepted so old passphrases keep working.
+     New format: hex SHA-256("hq-gate·"+pw). Reset link wipes the stored hash (vault keys are NOT touched). */
   async function gateHash(text) {
     const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("hq-gate·" + text));
     return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
   }
-  function gateLocked() {
+  function b64FromU8(u8) { let s = ""; u8.forEach((b) => s += String.fromCharCode(b)); return btoa(s); }
+  function u8FromB64(s) { const bin = atob(s); const u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return u; }
+  async function legacyGateHash(pw, saltB64) {
+    const enc = new TextEncoder();
+    const base = await crypto.subtle.importKey("raw", enc.encode(pw), "PBKDF2", false, ["deriveBits"]);
+    const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", salt: u8FromB64(saltB64), iterations: 120000, hash: "SHA-256" }, base, 256);
+    return b64FromU8(new Uint8Array(bits));
+  }
+  function gateStored() {
     try {
-      const stored = localStorage.getItem(GATE_KEY);
-      if (!stored) return "setup"; // first visit — create passphrase
-      return sessionStorage.getItem(GATE_SESSION) === stored ? false : "locked";
-    } catch { return false; }
+      const raw = localStorage.getItem(GATE_KEY);
+      if (!raw) return null;
+      if (raw.trim().startsWith("{")) return { kind: "legacy", json: JSON.parse(raw) };
+      return { kind: "hex", hash: raw.trim() };
+    } catch { return null; }
+  }
+  function gateLocked() {
+    const stored = gateStored();
+    if (!stored) return "setup";
+    try { return sessionStorage.getItem(GATE_SESSION) === "1" ? false : "locked"; } catch { return "locked"; }
+  }
+  function gateUnlockedSet() {
+    try { sessionStorage.setItem(GATE_SESSION, "1"); } catch {}
+  }
+  async function gateVerify(pw) {
+    const stored = gateStored();
+    if (!stored) return false;
+    if (stored.kind === "legacy") {
+      try {
+        const h = await legacyGateHash(pw, stored.json.salt);
+        return h === stored.json.hash;
+      } catch { return false; }
+    }
+    return (await gateHash(pw)) === stored.hash;
   }
   async function bootGate() {
     const gate = document.getElementById("gate");
@@ -2139,12 +2170,12 @@
     if (mode === false) { app.hidden = false; gate.hidden = true; init(); return; }
     app.hidden = true;
     gate.hidden = false;
-    const title = document.getElementById("gate-title");
     const sub = document.getElementById("gate-sub");
     const input = document.getElementById("gate-input");
     const confirm = document.getElementById("gate-confirm");
     const btn = document.getElementById("gate-btn");
     const err = document.getElementById("gate-error");
+    const reset = document.getElementById("gate-reset");
     if (mode === "setup") {
       sub.textContent = "First visit — create a passphrase for this ops glass";
       confirm.hidden = false;
@@ -2153,31 +2184,38 @@
       sub.textContent = "Locked · enter your passphrase";
       btn.textContent = "Unlock";
     }
+    if (reset) reset.onclick = () => {
+      if (confirm("Reset the HQ passphrase? Your vault keys are NOT deleted — you will just set a new passphrase.")) {
+        try { localStorage.removeItem(GATE_KEY); sessionStorage.removeItem(GATE_SESSION); } catch {}
+        location.reload();
+      }
+    };
     const attempt = async () => {
       err.textContent = "";
-      const val = input.value;
-      if (!val || val.length < 4) { err.textContent = "Passphrase needs 4+ characters"; return; }
-      if (mode === "setup") {
-        if (val !== confirm.value) { err.textContent = "Passphrases don't match"; return; }
-        const h = await gateHash(val);
-        try {
-          localStorage.setItem(GATE_KEY, h);
-          sessionStorage.setItem(GATE_SESSION, h);
-        } catch {}
-        gate.hidden = true; app.hidden = false;
-        toast("Passphrase set · HQ unlocked", "ok");
-        init();
-      } else {
-        const h = await gateHash(val);
-        if (h === localStorage.getItem(GATE_KEY)) {
-          try { sessionStorage.setItem(GATE_SESSION, h); } catch {}
+      btn.disabled = true;
+      try {
+        const val = input.value;
+        if (!val || val.length < 4) { err.textContent = "Passphrase needs 4+ characters"; return; }
+        if (mode === "setup") {
+          if (val !== confirm.value) { err.textContent = "Passphrases don't match"; return; }
+          try { localStorage.setItem(GATE_KEY, await gateHash(val)); } catch {}
+          gateUnlockedSet();
           gate.hidden = true; app.hidden = false;
+          toast("Passphrase set · HQ unlocked", "ok");
           init();
         } else {
-          err.textContent = "Wrong passphrase";
-          input.select();
+          if (await gateVerify(val)) {
+            // upgrade legacy hash to new format silently
+            try { localStorage.setItem(GATE_KEY, await gateHash(val)); } catch {}
+            gateUnlockedSet();
+            gate.hidden = true; app.hidden = false;
+            init();
+          } else {
+            err.textContent = "Wrong passphrase · forgotten? use reset below";
+            input.select();
+          }
         }
-      }
+      } finally { btn.disabled = false; }
     };
     btn.onclick = attempt;
     [input, confirm].forEach((el) => el.addEventListener("keydown", (e) => { if (e.key === "Enter") attempt(); }));
@@ -2847,6 +2885,19 @@
     });
 
     bootstrap();
+    // Auto-lock after idle (gate is only useful if it actually locks)
+    try {
+      let idleTimer = null;
+      const resetIdle = () => {
+        if (idleTimer) clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => {
+          if (gateStored()) { toast("Auto-locked after 30 min idle", "ok"); setTimeout(lockNow, 600); }
+        }, IDLE_LOCK_MS);
+      };
+      ["click", "keydown", "mousemove", "touchstart", "scroll"].forEach((ev) =>
+        document.addEventListener(ev, resetIdle, { passive: true }));
+      resetIdle();
+    } catch { /* ignore */ }
     // Live pulse: refresh status + thor + live metrics every 5 min, countdown chip
     try {
       state.nextDataPoll = Date.now() + DATA_POLL_MS;
