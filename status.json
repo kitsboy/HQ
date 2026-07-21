@@ -1,53 +1,53 @@
 {
-  "updatedAt": "2026-07-21T21:30:31.847Z",
+  "updatedAt": "2026-07-21T22:00:35.208Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 246,
+      "ms": 409,
       "url": "https://giveabit.io"
     },
     "satohash": {
       "ok": true,
       "status": 200,
-      "ms": 144,
+      "ms": 268,
       "url": "https://satohash.io"
     },
     "katoa": {
       "ok": true,
       "status": 200,
-      "ms": 138,
+      "ms": 206,
       "url": "https://katoa.org"
     },
     "stranded": {
       "ok": true,
       "status": 200,
-      "ms": 166,
+      "ms": 123,
       "url": "https://stranded.giveabit.io"
     },
     "tadbuy": {
       "ok": true,
       "status": 200,
-      "ms": 308,
+      "ms": 161,
       "url": "https://tadbuy.giveabit.io"
     },
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 169,
+      "ms": 178,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 337,
+      "ms": 256,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
       "ok": true,
       "status": 200,
-      "ms": 213,
+      "ms": 259,
       "url": "https://openstrata.giveabit.io"
     },
     "btcminiscript": {
@@ -61,7 +61,7 @@
     "satohashApi": {
       "ok": false,
       "status": 502,
-      "ms": 38,
+      "ms": 150,
       "healthUrl": "https://api.satohash.io/health"
     },
     "satohashMetrics": null
