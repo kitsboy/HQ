@@ -31,7 +31,7 @@
 
 **Still to do:** Cam re-adds Vault keys on prod if browser data was cleared · product live metrics beyond satohash · CF Web Analytics beacons per ANALYTICS-PLAN · Grok: do NOT touch gate.js or the design system without reading docs/AGENT-GUARDRAILS.md.
 
-**Next for Grok:** Read docs/AGENT-GUARDRAILS.md + DESIGN-CONTEXT.md + schemas/design-tokens.json BEFORE any HQ UI work. Additive changes only. Login smoke test mandatory after gate-adjacent edits. **CRITICAL: ref/GROK-BOOT.md + Umami tracking + /metrics.json — see docs/UMAMI-DEPLOYMENT.md.**
+**Next for Grok:** Read docs/AGENT-GUARDRAILS.md + DESIGN-CONTEXT.md + schemas/design-tokens.json BEFORE any HQ UI work. Additive changes only. Login smoke test mandatory after gate-adjacent edits. **CRITICAL: ref/GROK-BOOT.md + Umami tracking + /metrics.json — see docs/UMAMI-DEPLOYMENT.md. NEXT: Tadbuy live campaign data — replace static metrics.json with live counts from app state. See docs/NEXT-STEPS.md Priority 1.**
 
 ---
 

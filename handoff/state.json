@@ -21,6 +21,10 @@
    "focus": "satohash-vps",
    "notes": [
     {
+     "t": "2026-07-21T21:27:28.000Z",
+     "summary": "Session done: All 8 products have Umami+metrics. Next: Tadbuy live campaign data (Grok), then CF Web Analytics (Cam dashboard). docs/NEXT-STEPS.md created."
+    },
+    {
      "t": "2026-07-21T19:15:25.000Z",
      "summary": "v3.9.0: Ref-puller system \u2014 auto-pulls ref/ docs from 9 repos every 5 min. Seed ref/ files created. Tadbuy ARCHITECTURE.md documents all metrics and integrations. Cron running."
     },
