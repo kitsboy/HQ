@@ -2,39 +2,71 @@
   "schema": "gab.product-metrics.v1",
   "productId": "stranded",
   "name": "Stranded",
-  "updatedAt": "2026-07-20T02:25:24.267Z",
+  "updatedAt": "2026-07-21T12:00:00Z",
   "window": {
-    "label": "7d"
+    "label": "7d",
+    "from": "2026-07-14T12:00:00Z",
+    "to": "2026-07-21T12:00:00Z"
   },
   "health": {
     "status": "green",
-    "message": "Demo envelope — wire live metrics.json on product origin",
-    "latencyMs": 350,
-    "uptimePct24h": 99,
+    "message": "Enriched demo envelope \u2014 replace with live metrics.json on product origin when ready",
+    "latencyMs": 364,
+    "uptimePct24h": 99.1,
     "dependencies": [
       {
         "id": "satohash",
         "status": "green",
         "detail": "OTS backbone available"
+      },
+      {
+        "id": "hq-status",
+        "status": "green",
+        "detail": "status.json pinger"
       }
     ]
   },
   "kpis": [
     {
       "key": "sites",
-      "label": "Energy sites tracked",
+      "label": "Energy sites",
       "value": 12,
       "format": "number",
       "priority": 1,
-      "hint": "Demo inventory"
+      "hint": "Mapped stranded energy sites"
     },
     {
       "key": "mwh",
-      "label": "Stranded MWh (est)",
+      "label": "MWh potential",
       "value": 840,
       "format": "number",
+      "priority": 1,
+      "hint": "Estimated stranded capacity",
+      "unit": "MWh"
+    },
+    {
+      "key": "miners_ready",
+      "label": "Miner-ready sites",
+      "value": 5,
+      "format": "number",
       "priority": 2,
-      "hint": "Narrative KPI"
+      "hint": "Bitcoin conversion candidates"
+    },
+    {
+      "key": "map_views",
+      "label": "Map views 7d",
+      "value": 620,
+      "format": "number",
+      "priority": 3,
+      "hint": "Engagement"
+    },
+    {
+      "key": "partners",
+      "label": "Partners",
+      "value": 3,
+      "format": "number",
+      "priority": 2,
+      "hint": "Active energy partners"
     }
   ],
   "series": [
@@ -42,90 +74,316 @@
       "key": "activity",
       "label": "Activity",
       "unit": "units",
-      "color": "#1f6b3a",
+      "color": "#2dd4bf",
       "points": [
         {
-          "t": "2026-07-06T02:25:24.267Z",
-          "v": 46
+          "t": "2026-07-07T12:00:00Z",
+          "v": 42.19
         },
         {
-          "t": "2026-07-07T02:25:24.267Z",
-          "v": 41.6
+          "t": "2026-07-08T12:00:00Z",
+          "v": 45.67
         },
         {
-          "t": "2026-07-08T02:25:24.267Z",
-          "v": 40.1
+          "t": "2026-07-09T12:00:00Z",
+          "v": 46.73
         },
         {
-          "t": "2026-07-09T02:25:24.267Z",
-          "v": 40.4
+          "t": "2026-07-10T12:00:00Z",
+          "v": 45.15
         },
         {
-          "t": "2026-07-10T02:25:24.267Z",
-          "v": 39.1
+          "t": "2026-07-11T12:00:00Z",
+          "v": 45.38
         },
         {
-          "t": "2026-07-11T02:25:24.267Z",
-          "v": 41.1
+          "t": "2026-07-12T12:00:00Z",
+          "v": 45.09
         },
         {
-          "t": "2026-07-12T02:25:24.267Z",
-          "v": 43.8
+          "t": "2026-07-13T12:00:00Z",
+          "v": 42.3
         },
         {
-          "t": "2026-07-13T02:25:24.267Z",
-          "v": 49.4
+          "t": "2026-07-14T12:00:00Z",
+          "v": 43.99
         },
         {
-          "t": "2026-07-14T02:25:24.267Z",
-          "v": 51.5
+          "t": "2026-07-15T12:00:00Z",
+          "v": 43.27
         },
         {
-          "t": "2026-07-15T02:25:24.267Z",
-          "v": 53.3
+          "t": "2026-07-16T12:00:00Z",
+          "v": 42.99
         },
         {
-          "t": "2026-07-16T02:25:24.267Z",
-          "v": 59.3
+          "t": "2026-07-17T12:00:00Z",
+          "v": 46.33
         },
         {
-          "t": "2026-07-17T02:25:24.267Z",
-          "v": 64.4
+          "t": "2026-07-18T12:00:00Z",
+          "v": 43.22
         },
         {
-          "t": "2026-07-18T02:25:24.267Z",
-          "v": 63.4
+          "t": "2026-07-19T12:00:00Z",
+          "v": 44.88
         },
         {
-          "t": "2026-07-19T02:25:24.267Z",
-          "v": 61.9
+          "t": "2026-07-20T12:00:00Z",
+          "v": 46.5
         },
         {
-          "t": "2026-07-20T02:25:24.267Z",
-          "v": 65.5
+          "t": "2026-07-21T12:00:00Z",
+          "v": 43.45
+        }
+      ]
+    },
+    {
+      "key": "mwh_tracked",
+      "label": "MWh tracked",
+      "unit": "MWh",
+      "color": "#67e8f9",
+      "points": [
+        {
+          "t": "2026-07-07T12:00:00Z",
+          "v": 822.26
+        },
+        {
+          "t": "2026-07-08T12:00:00Z",
+          "v": 850.42
+        },
+        {
+          "t": "2026-07-09T12:00:00Z",
+          "v": 823.41
+        },
+        {
+          "t": "2026-07-10T12:00:00Z",
+          "v": 802.85
+        },
+        {
+          "t": "2026-07-11T12:00:00Z",
+          "v": 809.77
+        },
+        {
+          "t": "2026-07-12T12:00:00Z",
+          "v": 785.03
+        },
+        {
+          "t": "2026-07-13T12:00:00Z",
+          "v": 763.64
+        },
+        {
+          "t": "2026-07-14T12:00:00Z",
+          "v": 764.47
+        },
+        {
+          "t": "2026-07-15T12:00:00Z",
+          "v": 798.25
+        },
+        {
+          "t": "2026-07-16T12:00:00Z",
+          "v": 768.27
+        },
+        {
+          "t": "2026-07-17T12:00:00Z",
+          "v": 796.75
+        },
+        {
+          "t": "2026-07-18T12:00:00Z",
+          "v": 829.21
+        },
+        {
+          "t": "2026-07-19T12:00:00Z",
+          "v": 801.19
+        },
+        {
+          "t": "2026-07-20T12:00:00Z",
+          "v": 817.37
+        },
+        {
+          "t": "2026-07-21T12:00:00Z",
+          "v": 824.7
+        }
+      ]
+    },
+    {
+      "key": "site_adds",
+      "label": "Sites added",
+      "unit": "n",
+      "color": "#38bdf8",
+      "points": [
+        {
+          "t": "2026-07-07T12:00:00Z",
+          "v": 0.49
+        },
+        {
+          "t": "2026-07-08T12:00:00Z",
+          "v": 0.23
+        },
+        {
+          "t": "2026-07-09T12:00:00Z",
+          "v": 0.39
+        },
+        {
+          "t": "2026-07-10T12:00:00Z",
+          "v": 0.22
+        },
+        {
+          "t": "2026-07-11T12:00:00Z",
+          "v": 0.16
+        },
+        {
+          "t": "2026-07-12T12:00:00Z",
+          "v": 0.15
+        },
+        {
+          "t": "2026-07-13T12:00:00Z",
+          "v": 0.38
+        },
+        {
+          "t": "2026-07-14T12:00:00Z",
+          "v": 0.64
+        },
+        {
+          "t": "2026-07-15T12:00:00Z",
+          "v": 0.43
+        },
+        {
+          "t": "2026-07-16T12:00:00Z",
+          "v": 0.11
+        },
+        {
+          "t": "2026-07-17T12:00:00Z",
+          "v": 0.04
+        },
+        {
+          "t": "2026-07-18T12:00:00Z",
+          "v": 0.31
+        },
+        {
+          "t": "2026-07-19T12:00:00Z",
+          "v": 0.49
+        },
+        {
+          "t": "2026-07-20T12:00:00Z",
+          "v": 0.36
+        },
+        {
+          "t": "2026-07-21T12:00:00Z",
+          "v": 0.48
         }
       ]
     }
   ],
-  "funnels": [],
-  "segments": [],
-  "offers": [],
+  "funnels": [
+    {
+      "id": "energy_journey",
+      "label": "Energy \u2192 Bitcoin path",
+      "steps": [
+        {
+          "id": "map",
+          "label": "Map view",
+          "count": 620,
+          "hint": "Discovery"
+        },
+        {
+          "id": "site",
+          "label": "Site detail",
+          "count": 180,
+          "hint": "Evaluate"
+        },
+        {
+          "id": "partner",
+          "label": "Partner inquiry",
+          "count": 42,
+          "hint": "BD"
+        },
+        {
+          "id": "diligence",
+          "label": "Diligence pack",
+          "count": 18,
+          "hint": "Andrea"
+        },
+        {
+          "id": "live",
+          "label": "Miner online",
+          "count": 5,
+          "hint": "Conversion"
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "id": "by_region",
+      "label": "By region",
+      "rows": [
+        {
+          "id": "na",
+          "label": "North America",
+          "value": 4,
+          "meta": {}
+        },
+        {
+          "id": "eu",
+          "label": "Europe",
+          "value": 3,
+          "meta": {}
+        },
+        {
+          "id": "latam",
+          "label": "LatAm",
+          "value": 3,
+          "meta": {}
+        },
+        {
+          "id": "apac",
+          "label": "APAC",
+          "value": 2,
+          "meta": {}
+        }
+      ]
+    }
+  ],
+  "offers": [
+    {
+      "id": "energy_map",
+      "title": "Stranded energy map",
+      "for": [
+        "giveabit"
+      ],
+      "status": "beta",
+      "hint": "Public discovery"
+    },
+    {
+      "id": "btc_conversion",
+      "title": "Site \u2192 hashrate narrative",
+      "for": [
+        "hq"
+      ],
+      "status": "planned",
+      "hint": "Pitch for energy capital"
+    }
+  ],
   "education": [
     {
-      "id": "wire",
-      "title": "Publish live metrics",
-      "body": "Stranded should host /metrics.json (or CDN) matching gab.product-metrics.v1 so HQ cards stay honest.",
-      "action": "Add metrics route on stranded",
-      "severity": "plan"
+      "id": "mold_mwh",
+      "title": "MWh is the headline KPI",
+      "body": "840 MWh potential frames the energy thesis.",
+      "action": "Keep map fresh weekly",
+      "opportunity": "opportunity"
     }
   ],
   "links": [
     {
-      "label": "Schema",
-      "url": "/schemas/product-metrics.v1.schema.json"
+      "label": "Stranded",
+      "url": "https://stranded.giveabit.io"
     }
   ],
   "raw": {
-    "demo": true
+    "demo": true,
+    "enriched": true,
+    "schemaDepth": "full-v1",
+    "note": "HQ v3.1 depth pack \u2014 not fabricated as live production unless raw.demo=false"
   }
 }

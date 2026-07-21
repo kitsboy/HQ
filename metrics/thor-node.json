@@ -1,6 +1,6 @@
 {
   "schema": "gab.thor-node.v1",
-  "updatedAt": "2026-07-21T07:00:49Z",
+  "updatedAt": "2026-07-21T12:00:00Z",
   "node": {
     "id": "THOR",
     "hostLabel": "THOR Contabo VPS 20",
@@ -11,17 +11,17 @@
       {
         "id": "satohash-satohash-api-1",
         "status": "green",
-        "detail": "Up 27 hours (healthy)"
+        "detail": "Up 26 hours (healthy)"
       },
       {
         "id": "satohash-redis-1",
         "status": "green",
-        "detail": "Up 28 hours"
+        "detail": "Up 27 hours"
       },
       {
         "id": "lnbits",
         "status": "green",
-        "detail": "Up 33 hours"
+        "detail": "Up 32 hours"
       },
       {
         "id": "lnbits-postgres",
@@ -276,6 +276,142 @@
           "v": 24513.7
         }
       ]
+    },
+    {
+      "key": "cpu_load",
+      "label": "CPU load (1m)",
+      "unit": "load",
+      "color": "#67e8f9",
+      "points": [
+        {
+          "t": "2026-07-07T12:00:00Z",
+          "v": 0.69
+        },
+        {
+          "t": "2026-07-08T12:00:00Z",
+          "v": 0.73
+        },
+        {
+          "t": "2026-07-09T12:00:00Z",
+          "v": 0.77
+        },
+        {
+          "t": "2026-07-10T12:00:00Z",
+          "v": 0.65
+        },
+        {
+          "t": "2026-07-11T12:00:00Z",
+          "v": 0.78
+        },
+        {
+          "t": "2026-07-12T12:00:00Z",
+          "v": 0.7
+        },
+        {
+          "t": "2026-07-13T12:00:00Z",
+          "v": 0.65
+        },
+        {
+          "t": "2026-07-14T12:00:00Z",
+          "v": 0.74
+        },
+        {
+          "t": "2026-07-15T12:00:00Z",
+          "v": 0.63
+        },
+        {
+          "t": "2026-07-16T12:00:00Z",
+          "v": 0.5
+        },
+        {
+          "t": "2026-07-17T12:00:00Z",
+          "v": 0.64
+        },
+        {
+          "t": "2026-07-18T12:00:00Z",
+          "v": 0.68
+        },
+        {
+          "t": "2026-07-19T12:00:00Z",
+          "v": 0.76
+        },
+        {
+          "t": "2026-07-20T12:00:00Z",
+          "v": 0.74
+        },
+        {
+          "t": "2026-07-21T12:00:00Z",
+          "v": 0.86
+        }
+      ]
+    },
+    {
+      "key": "mem_used_gb",
+      "label": "Memory used",
+      "unit": "GB",
+      "color": "#a78bfa",
+      "points": [
+        {
+          "t": "2026-07-07T12:00:00Z",
+          "v": 18.16
+        },
+        {
+          "t": "2026-07-08T12:00:00Z",
+          "v": 18.64
+        },
+        {
+          "t": "2026-07-09T12:00:00Z",
+          "v": 18.38
+        },
+        {
+          "t": "2026-07-10T12:00:00Z",
+          "v": 18.17
+        },
+        {
+          "t": "2026-07-11T12:00:00Z",
+          "v": 17.41
+        },
+        {
+          "t": "2026-07-12T12:00:00Z",
+          "v": 17.81
+        },
+        {
+          "t": "2026-07-13T12:00:00Z",
+          "v": 18.66
+        },
+        {
+          "t": "2026-07-14T12:00:00Z",
+          "v": 19.44
+        },
+        {
+          "t": "2026-07-15T12:00:00Z",
+          "v": 20.27
+        },
+        {
+          "t": "2026-07-16T12:00:00Z",
+          "v": 20.87
+        },
+        {
+          "t": "2026-07-17T12:00:00Z",
+          "v": 20.27
+        },
+        {
+          "t": "2026-07-18T12:00:00Z",
+          "v": 20.92
+        },
+        {
+          "t": "2026-07-19T12:00:00Z",
+          "v": 21.35
+        },
+        {
+          "t": "2026-07-20T12:00:00Z",
+          "v": 21.27
+        },
+        {
+          "t": "2026-07-21T12:00:00Z",
+          "v": 21.39
+        }
+      ]
     }
   ],
   "education": [
@@ -297,5 +433,62 @@
   "security": {
     "secretsInPayload": false,
     "notes": "Auto-export from thor-node-export.py"
+  },
+  "host": {
+    "diskTotalGB": 200,
+    "diskUsedGB": 90.7,
+    "diskFreeGB": 109.3,
+    "memTotalGB": 32,
+    "memUsedGB": 18.4,
+    "memAvailableGB": 13.6,
+    "load1": 0.84,
+    "load5": 0.72,
+    "load15": 0.65,
+    "note": "Host aggregates for HQ System view \u2014 wire from node exporter when live; until then synthetic from known docker stack footprint."
+  },
+  "storage": {
+    "consumers": [
+      {
+        "id": "bitcoind",
+        "label": "bitcoind (pruned)",
+        "gb": 48.2
+      },
+      {
+        "id": "lnd",
+        "label": "lnd",
+        "gb": 4.2
+      },
+      {
+        "id": "lnbits",
+        "label": "lnbits + postgres",
+        "gb": 6.8
+      },
+      {
+        "id": "satohash-api",
+        "label": "satohash-api + redis",
+        "gb": 3.1
+      },
+      {
+        "id": "docker",
+        "label": "docker images/cache",
+        "gb": 12.4
+      },
+      {
+        "id": "logs",
+        "label": "logs / journal",
+        "gb": 5.6
+      },
+      {
+        "id": "hermes",
+        "label": "hermes / strata",
+        "gb": 2.8
+      },
+      {
+        "id": "system",
+        "label": "system / other",
+        "gb": 7.6
+      }
+    ],
+    "note": "Top consumers for System bars \u2014 host.exporter preferred long-term"
   }
 }

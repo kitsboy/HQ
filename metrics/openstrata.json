@@ -2,39 +2,70 @@
   "schema": "gab.product-metrics.v1",
   "productId": "openstrata",
   "name": "Hermes Strata",
-  "updatedAt": "2026-07-20T02:25:24.267Z",
+  "updatedAt": "2026-07-21T12:00:00Z",
   "window": {
-    "label": "7d"
+    "label": "7d",
+    "from": "2026-07-14T12:00:00Z",
+    "to": "2026-07-21T12:00:00Z"
   },
   "health": {
     "status": "green",
-    "message": "Demo envelope — wire live metrics.json on product origin",
-    "latencyMs": 350,
-    "uptimePct24h": 99,
+    "message": "Enriched demo envelope \u2014 replace with live metrics.json on product origin when ready",
+    "latencyMs": 215,
+    "uptimePct24h": 97.6,
     "dependencies": [
       {
         "id": "satohash",
         "status": "green",
         "detail": "OTS backbone available"
+      },
+      {
+        "id": "hq-status",
+        "status": "green",
+        "detail": "status.json pinger"
       }
     ]
   },
   "kpis": [
     {
       "key": "entities",
-      "label": "Strata entities",
+      "label": "Entities",
       "value": 3,
       "format": "number",
       "priority": 1,
-      "hint": "Corp dashboards"
+      "hint": "Strata / corp entities"
     },
     {
       "key": "filings",
-      "label": "Filings stamped",
+      "label": "Filings",
       "value": 27,
       "format": "number",
+      "priority": 1,
+      "hint": "Corporate filings tracked"
+    },
+    {
+      "key": "tasks_open",
+      "label": "Open tasks",
+      "value": 14,
+      "format": "number",
       "priority": 2,
-      "hint": "OTS via Satohash"
+      "hint": "Kanban WIP"
+    },
+    {
+      "key": "tasks_done_7d",
+      "label": "Done 7d",
+      "value": 19,
+      "format": "number",
+      "priority": 1,
+      "hint": "Hermes throughput"
+    },
+    {
+      "key": "ots_board",
+      "label": "Board OTS",
+      "value": 8,
+      "format": "number",
+      "priority": 3,
+      "hint": "Minute proofs"
     }
   ],
   "series": [
@@ -42,90 +73,312 @@
       "key": "activity",
       "label": "Activity",
       "unit": "units",
-      "color": "#2a4a5c",
+      "color": "#67e8f9",
       "points": [
         {
-          "t": "2026-07-06T02:25:24.267Z",
-          "v": 47.3
+          "t": "2026-07-07T12:00:00Z",
+          "v": 39.98
         },
         {
-          "t": "2026-07-07T02:25:24.267Z",
-          "v": 53.4
+          "t": "2026-07-08T12:00:00Z",
+          "v": 38.28
         },
         {
-          "t": "2026-07-08T02:25:24.267Z",
-          "v": 54
+          "t": "2026-07-09T12:00:00Z",
+          "v": 35.33
         },
         {
-          "t": "2026-07-09T02:25:24.267Z",
-          "v": 53.1
+          "t": "2026-07-10T12:00:00Z",
+          "v": 38.03
         },
         {
-          "t": "2026-07-10T02:25:24.267Z",
-          "v": 50.3
+          "t": "2026-07-11T12:00:00Z",
+          "v": 41.64
         },
         {
-          "t": "2026-07-11T02:25:24.267Z",
-          "v": 53.9
+          "t": "2026-07-12T12:00:00Z",
+          "v": 41.27
         },
         {
-          "t": "2026-07-12T02:25:24.267Z",
-          "v": 54.5
+          "t": "2026-07-13T12:00:00Z",
+          "v": 42.7
         },
         {
-          "t": "2026-07-13T02:25:24.267Z",
-          "v": 56.8
+          "t": "2026-07-14T12:00:00Z",
+          "v": 40.22
         },
         {
-          "t": "2026-07-14T02:25:24.267Z",
-          "v": 56
+          "t": "2026-07-15T12:00:00Z",
+          "v": 44.23
         },
         {
-          "t": "2026-07-15T02:25:24.267Z",
-          "v": 52
+          "t": "2026-07-16T12:00:00Z",
+          "v": 47.74
         },
         {
-          "t": "2026-07-16T02:25:24.267Z",
-          "v": 56.3
+          "t": "2026-07-17T12:00:00Z",
+          "v": 52.22
         },
         {
-          "t": "2026-07-17T02:25:24.267Z",
-          "v": 52.4
+          "t": "2026-07-18T12:00:00Z",
+          "v": 55.35
         },
         {
-          "t": "2026-07-18T02:25:24.267Z",
-          "v": 48.6
+          "t": "2026-07-19T12:00:00Z",
+          "v": 59.11
         },
         {
-          "t": "2026-07-19T02:25:24.267Z",
-          "v": 50.5
+          "t": "2026-07-20T12:00:00Z",
+          "v": 55.71
         },
         {
-          "t": "2026-07-20T02:25:24.267Z",
-          "v": 50.3
+          "t": "2026-07-21T12:00:00Z",
+          "v": 58.25
+        }
+      ]
+    },
+    {
+      "key": "tasks_done",
+      "label": "Tasks done / day",
+      "unit": "n",
+      "color": "#2dd4bf",
+      "points": [
+        {
+          "t": "2026-07-07T12:00:00Z",
+          "v": 2.47
+        },
+        {
+          "t": "2026-07-08T12:00:00Z",
+          "v": 3.06
+        },
+        {
+          "t": "2026-07-09T12:00:00Z",
+          "v": 3.46
+        },
+        {
+          "t": "2026-07-10T12:00:00Z",
+          "v": 3.95
+        },
+        {
+          "t": "2026-07-11T12:00:00Z",
+          "v": 4.37
+        },
+        {
+          "t": "2026-07-12T12:00:00Z",
+          "v": 4.06
+        },
+        {
+          "t": "2026-07-13T12:00:00Z",
+          "v": 4.45
+        },
+        {
+          "t": "2026-07-14T12:00:00Z",
+          "v": 3.92
+        },
+        {
+          "t": "2026-07-15T12:00:00Z",
+          "v": 4.42
+        },
+        {
+          "t": "2026-07-16T12:00:00Z",
+          "v": 4.9
+        },
+        {
+          "t": "2026-07-17T12:00:00Z",
+          "v": 4.53
+        },
+        {
+          "t": "2026-07-18T12:00:00Z",
+          "v": 4.96
+        },
+        {
+          "t": "2026-07-19T12:00:00Z",
+          "v": 4.9
+        },
+        {
+          "t": "2026-07-20T12:00:00Z",
+          "v": 4.64
+        },
+        {
+          "t": "2026-07-21T12:00:00Z",
+          "v": 5.04
+        }
+      ]
+    },
+    {
+      "key": "filings_cum",
+      "label": "Filings cumulative",
+      "unit": "n",
+      "color": "#38bdf8",
+      "points": [
+        {
+          "t": "2026-07-07T12:00:00Z",
+          "v": 23.59
+        },
+        {
+          "t": "2026-07-08T12:00:00Z",
+          "v": 22.68
+        },
+        {
+          "t": "2026-07-09T12:00:00Z",
+          "v": 22.17
+        },
+        {
+          "t": "2026-07-10T12:00:00Z",
+          "v": 21.98
+        },
+        {
+          "t": "2026-07-11T12:00:00Z",
+          "v": 23.07
+        },
+        {
+          "t": "2026-07-12T12:00:00Z",
+          "v": 24.42
+        },
+        {
+          "t": "2026-07-13T12:00:00Z",
+          "v": 24.14
+        },
+        {
+          "t": "2026-07-14T12:00:00Z",
+          "v": 24.72
+        },
+        {
+          "t": "2026-07-15T12:00:00Z",
+          "v": 24.73
+        },
+        {
+          "t": "2026-07-16T12:00:00Z",
+          "v": 26.13
+        },
+        {
+          "t": "2026-07-17T12:00:00Z",
+          "v": 26.48
+        },
+        {
+          "t": "2026-07-18T12:00:00Z",
+          "v": 27.79
+        },
+        {
+          "t": "2026-07-19T12:00:00Z",
+          "v": 27.15
+        },
+        {
+          "t": "2026-07-20T12:00:00Z",
+          "v": 28.55
+        },
+        {
+          "t": "2026-07-21T12:00:00Z",
+          "v": 28.06
         }
       ]
     }
   ],
-  "funnels": [],
-  "segments": [],
-  "offers": [],
+  "funnels": [
+    {
+      "id": "corp_ops",
+      "label": "Corp ops funnel",
+      "steps": [
+        {
+          "id": "intake",
+          "label": "Task intake",
+          "count": 90,
+          "hint": "Kanban"
+        },
+        {
+          "id": "assign",
+          "label": "Assigned",
+          "count": 70,
+          "hint": "Owners"
+        },
+        {
+          "id": "wip",
+          "label": "In progress",
+          "count": 40,
+          "hint": "Execution"
+        },
+        {
+          "id": "review",
+          "label": "Review",
+          "count": 25,
+          "hint": "QA"
+        },
+        {
+          "id": "done",
+          "label": "Done + file",
+          "count": 19,
+          "hint": "Close"
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "id": "by_entity",
+      "label": "By entity",
+      "rows": [
+        {
+          "id": "hermes",
+          "label": "Hermes Strata",
+          "value": 12,
+          "meta": {}
+        },
+        {
+          "id": "gab",
+          "label": "Give A Bit holdco",
+          "value": 9,
+          "meta": {}
+        },
+        {
+          "id": "ops",
+          "label": "Ops misc",
+          "value": 6,
+          "meta": {}
+        }
+      ]
+    }
+  ],
+  "offers": [
+    {
+      "id": "kanban",
+      "title": "HERMES kanban / dashboard",
+      "for": [
+        "hq",
+        "giveabit"
+      ],
+      "status": "ga",
+      "endpoint": "https://openstrata.giveabit.io",
+      "hint": "Close-by #1"
+    },
+    {
+      "id": "filings",
+      "title": "Filing tracker",
+      "for": [
+        "lenny"
+      ],
+      "status": "beta",
+      "hint": "Compliance plane"
+    }
+  ],
   "education": [
     {
-      "id": "wire",
-      "title": "Publish live metrics",
-      "body": "Hermes Strata should host /metrics.json (or CDN) matching gab.product-metrics.v1 so HQ cards stay honest.",
-      "action": "Add metrics route on openstrata",
-      "severity": "plan"
+      "id": "mold_wip",
+      "title": "WIP vs done is ops health",
+      "body": "14 open / 19 done/7d is the HERMES pulse.",
+      "action": "Morning pulse from this KPI",
+      "opportunity": "plan"
     }
   ],
   "links": [
     {
-      "label": "Schema",
-      "url": "/schemas/product-metrics.v1.schema.json"
+      "label": "OpenStrata",
+      "url": "https://openstrata.giveabit.io"
     }
   ],
   "raw": {
-    "demo": true
+    "demo": true,
+    "enriched": true,
+    "schemaDepth": "full-v1",
+    "note": "HQ v3.1 depth pack \u2014 not fabricated as live production unless raw.demo=false"
   }
 }

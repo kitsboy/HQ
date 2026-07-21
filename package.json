@@ -1,10 +1,10 @@
 {
   "name": "giveabit-hq",
   "private": true,
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Give A Bit HQ \u2014 ops glass with gate, vault keys suite, live metrics pipes, ops board",
   "scripts": {
-    "build": "mkdir -p public/metrics public/schemas public/docs public/handoff && cp control-panel.html public/index.html && cp hq.css hq.js public/ && cp projects.json agents.json tools.json status.example.json manifest.webmanifest public/ && cp pages/_headers pages/_redirects public/ && cp -R metrics/. public/metrics/ && cp -R schemas/. public/schemas/ && cp docs/*.md public/docs/ 2>/dev/null; cp handoff/state.json public/handoff/ 2>/dev/null; (test -f status.json && cp status.json public/ || true)",
+    "build": "mkdir -p public/metrics public/schemas public/docs/projects public/handoff && cp control-panel.html public/index.html && cp hq.css hq.js public/ && cp projects.json agents.json tools.json status.example.json manifest.webmanifest public/ && cp pages/_headers pages/_redirects public/ && cp -R metrics/. public/metrics/ && cp -R schemas/. public/schemas/ && cp docs/*.md public/docs/ 2>/dev/null; cp -R docs/projects/. public/docs/projects/ 2>/dev/null; cp handoff/state.json public/handoff/ 2>/dev/null; (test -f status.json && cp status.json public/ || true)",
     "deploy": "npm run build && wrangler pages deploy ./public --project-name=giveabit-hq",
     "preview": "python3 -m http.server 8765 --directory public"
   },

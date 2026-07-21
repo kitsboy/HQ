@@ -2,20 +2,27 @@
   "schema": "gab.product-metrics.v1",
   "productId": "katoa",
   "name": "Katoa",
-  "updatedAt": "2026-07-20T02:25:24.267Z",
+  "updatedAt": "2026-07-21T12:00:00Z",
   "window": {
-    "label": "7d"
+    "label": "7d",
+    "from": "2026-07-14T12:00:00Z",
+    "to": "2026-07-21T12:00:00Z"
   },
   "health": {
     "status": "green",
-    "message": "Demo envelope — wire live metrics.json on product origin",
-    "latencyMs": 350,
-    "uptimePct24h": 99,
+    "message": "Enriched demo envelope \u2014 replace with live metrics.json on product origin when ready",
+    "latencyMs": 230,
+    "uptimePct24h": 98.5,
     "dependencies": [
       {
         "id": "satohash",
         "status": "green",
         "detail": "OTS backbone available"
+      },
+      {
+        "id": "hq-status",
+        "status": "green",
+        "detail": "status.json pinger"
       }
     ]
   },
@@ -26,7 +33,9 @@
       "value": 88,
       "format": "number",
       "priority": 1,
-      "hint": "Lightning/Nostr creator accounts (demo)"
+      "hint": "Lightning/Nostr creator accounts",
+      "delta": 4,
+      "deltaUnit": "%"
     },
     {
       "key": "zaps",
@@ -34,8 +43,10 @@
       "value": 1204,
       "unit": "sats",
       "format": "sats",
-      "priority": 2,
-      "hint": "Social settlement plane"
+      "priority": 1,
+      "hint": "Social settlement plane",
+      "delta": 12,
+      "deltaUnit": "%"
     },
     {
       "key": "ots_docs",
@@ -44,6 +55,31 @@
       "format": "number",
       "priority": 1,
       "hint": "Family free proofs"
+    },
+    {
+      "key": "posts",
+      "label": "Posts 7d",
+      "value": 340,
+      "format": "number",
+      "priority": 2,
+      "hint": "Creator content velocity"
+    },
+    {
+      "key": "relays",
+      "label": "Relay reach",
+      "value": 6,
+      "format": "number",
+      "priority": 3,
+      "hint": "Nostr relay fan-out"
+    },
+    {
+      "key": "p50_zap",
+      "label": "Zap p50",
+      "value": 180,
+      "unit": "ms",
+      "format": "duration",
+      "priority": 4,
+      "hint": "Settlement latency"
     }
   ],
   "series": [
@@ -51,73 +87,347 @@
       "key": "activity",
       "label": "Activity",
       "unit": "units",
-      "color": "#1a5f7a",
+      "color": "#a78bfa",
       "points": [
         {
-          "t": "2026-07-06T02:25:24.267Z",
-          "v": 55.2
+          "t": "2026-07-07T12:00:00Z",
+          "v": 59.46
         },
         {
-          "t": "2026-07-07T02:25:24.267Z",
-          "v": 56.4
+          "t": "2026-07-08T12:00:00Z",
+          "v": 59.79
         },
         {
-          "t": "2026-07-08T02:25:24.267Z",
-          "v": 53.2
+          "t": "2026-07-09T12:00:00Z",
+          "v": 64.7
         },
         {
-          "t": "2026-07-09T02:25:24.267Z",
-          "v": 57.8
+          "t": "2026-07-10T12:00:00Z",
+          "v": 61.62
         },
         {
-          "t": "2026-07-10T02:25:24.267Z",
-          "v": 57.2
+          "t": "2026-07-11T12:00:00Z",
+          "v": 60.81
         },
         {
-          "t": "2026-07-11T02:25:24.267Z",
-          "v": 54.3
+          "t": "2026-07-12T12:00:00Z",
+          "v": 63.76
         },
         {
-          "t": "2026-07-12T02:25:24.267Z",
-          "v": 60
+          "t": "2026-07-13T12:00:00Z",
+          "v": 67.14
         },
         {
-          "t": "2026-07-13T02:25:24.267Z",
-          "v": 63.5
+          "t": "2026-07-14T12:00:00Z",
+          "v": 70.35
         },
         {
-          "t": "2026-07-14T02:25:24.267Z",
-          "v": 65
+          "t": "2026-07-15T12:00:00Z",
+          "v": 66.26
         },
         {
-          "t": "2026-07-15T02:25:24.267Z",
-          "v": 69.5
+          "t": "2026-07-16T12:00:00Z",
+          "v": 68.88
         },
         {
-          "t": "2026-07-16T02:25:24.267Z",
-          "v": 73.6
+          "t": "2026-07-17T12:00:00Z",
+          "v": 70.32
         },
         {
-          "t": "2026-07-17T02:25:24.267Z",
-          "v": 72.6
+          "t": "2026-07-18T12:00:00Z",
+          "v": 68.31
         },
         {
-          "t": "2026-07-18T02:25:24.267Z",
-          "v": 71.1
+          "t": "2026-07-19T12:00:00Z",
+          "v": 68.89
         },
         {
-          "t": "2026-07-19T02:25:24.267Z",
-          "v": 68
+          "t": "2026-07-20T12:00:00Z",
+          "v": 67.16
         },
         {
-          "t": "2026-07-20T02:25:24.267Z",
-          "v": 72.9
+          "t": "2026-07-21T12:00:00Z",
+          "v": 73.27
+        }
+      ]
+    },
+    {
+      "key": "zaps_daily",
+      "label": "Zaps / day",
+      "unit": "sats",
+      "color": "#e879f9",
+      "points": [
+        {
+          "t": "2026-07-07T12:00:00Z",
+          "v": 187.69
+        },
+        {
+          "t": "2026-07-08T12:00:00Z",
+          "v": 165.74
+        },
+        {
+          "t": "2026-07-09T12:00:00Z",
+          "v": 152.46
+        },
+        {
+          "t": "2026-07-10T12:00:00Z",
+          "v": 176.79
+        },
+        {
+          "t": "2026-07-11T12:00:00Z",
+          "v": 140.81
+        },
+        {
+          "t": "2026-07-12T12:00:00Z",
+          "v": 169.57
+        },
+        {
+          "t": "2026-07-13T12:00:00Z",
+          "v": 197.2
+        },
+        {
+          "t": "2026-07-14T12:00:00Z",
+          "v": 190.77
+        },
+        {
+          "t": "2026-07-15T12:00:00Z",
+          "v": 155.8
+        },
+        {
+          "t": "2026-07-16T12:00:00Z",
+          "v": 192.48
+        },
+        {
+          "t": "2026-07-17T12:00:00Z",
+          "v": 200.11
+        },
+        {
+          "t": "2026-07-18T12:00:00Z",
+          "v": 220.64
+        },
+        {
+          "t": "2026-07-19T12:00:00Z",
+          "v": 198.42
+        },
+        {
+          "t": "2026-07-20T12:00:00Z",
+          "v": 200.34
+        },
+        {
+          "t": "2026-07-21T12:00:00Z",
+          "v": 235.04
+        }
+      ]
+    },
+    {
+      "key": "creators_active",
+      "label": "Active creators",
+      "unit": "n",
+      "color": "#c084fc",
+      "points": [
+        {
+          "t": "2026-07-07T12:00:00Z",
+          "v": 22.61
+        },
+        {
+          "t": "2026-07-08T12:00:00Z",
+          "v": 21.47
+        },
+        {
+          "t": "2026-07-09T12:00:00Z",
+          "v": 20.31
+        },
+        {
+          "t": "2026-07-10T12:00:00Z",
+          "v": 21.27
+        },
+        {
+          "t": "2026-07-11T12:00:00Z",
+          "v": 21.52
+        },
+        {
+          "t": "2026-07-12T12:00:00Z",
+          "v": 22.49
+        },
+        {
+          "t": "2026-07-13T12:00:00Z",
+          "v": 22.35
+        },
+        {
+          "t": "2026-07-14T12:00:00Z",
+          "v": 22.76
+        },
+        {
+          "t": "2026-07-15T12:00:00Z",
+          "v": 22.39
+        },
+        {
+          "t": "2026-07-16T12:00:00Z",
+          "v": 24.25
+        },
+        {
+          "t": "2026-07-17T12:00:00Z",
+          "v": 23.1
+        },
+        {
+          "t": "2026-07-18T12:00:00Z",
+          "v": 23.19
+        },
+        {
+          "t": "2026-07-19T12:00:00Z",
+          "v": 24.21
+        },
+        {
+          "t": "2026-07-20T12:00:00Z",
+          "v": 25.6
+        },
+        {
+          "t": "2026-07-21T12:00:00Z",
+          "v": 24.5
+        }
+      ]
+    },
+    {
+      "key": "ots_daily",
+      "label": "OTS stamps / day",
+      "unit": "proofs",
+      "color": "#38bdf8",
+      "points": [
+        {
+          "t": "2026-07-07T12:00:00Z",
+          "v": 3.98
+        },
+        {
+          "t": "2026-07-08T12:00:00Z",
+          "v": 4.52
+        },
+        {
+          "t": "2026-07-09T12:00:00Z",
+          "v": 4.81
+        },
+        {
+          "t": "2026-07-10T12:00:00Z",
+          "v": 4.46
+        },
+        {
+          "t": "2026-07-11T12:00:00Z",
+          "v": 4.75
+        },
+        {
+          "t": "2026-07-12T12:00:00Z",
+          "v": 4.66
+        },
+        {
+          "t": "2026-07-13T12:00:00Z",
+          "v": 3.91
+        },
+        {
+          "t": "2026-07-14T12:00:00Z",
+          "v": 4.07
+        },
+        {
+          "t": "2026-07-15T12:00:00Z",
+          "v": 5.4
+        },
+        {
+          "t": "2026-07-16T12:00:00Z",
+          "v": 5.94
+        },
+        {
+          "t": "2026-07-17T12:00:00Z",
+          "v": 4.78
+        },
+        {
+          "t": "2026-07-18T12:00:00Z",
+          "v": 5.94
+        },
+        {
+          "t": "2026-07-19T12:00:00Z",
+          "v": 6.69
+        },
+        {
+          "t": "2026-07-20T12:00:00Z",
+          "v": 7.5
+        },
+        {
+          "t": "2026-07-21T12:00:00Z",
+          "v": 7.02
         }
       ]
     }
   ],
-  "funnels": [],
-  "segments": [],
+  "funnels": [
+    {
+      "id": "creator_journey",
+      "label": "Creator journey",
+      "steps": [
+        {
+          "id": "visit",
+          "label": "Visit katoa.org",
+          "count": 1200,
+          "hint": "Front door"
+        },
+        {
+          "id": "signup",
+          "label": "Creator signup",
+          "count": 220,
+          "hint": "Account"
+        },
+        {
+          "id": "first_post",
+          "label": "First post",
+          "count": 140,
+          "hint": "Activation"
+        },
+        {
+          "id": "first_zap",
+          "label": "First zap received",
+          "count": 88,
+          "hint": "Monetization"
+        },
+        {
+          "id": "ots",
+          "label": "Stamp release",
+          "count": 68,
+          "hint": "Satohash proof"
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "id": "by_medium",
+      "label": "By medium",
+      "rows": [
+        {
+          "id": "longform",
+          "label": "Longform",
+          "value": 40,
+          "meta": {
+            "offer": "articles"
+          }
+        },
+        {
+          "id": "micro",
+          "label": "Micro posts",
+          "value": 120,
+          "meta": {}
+        },
+        {
+          "id": "media",
+          "label": "Media",
+          "value": 48,
+          "meta": {}
+        },
+        {
+          "id": "zap_only",
+          "label": "Zap-only",
+          "value": 12,
+          "meta": {}
+        }
+      ]
+    }
+  ],
   "offers": [
     {
       "id": "creator_ots",
@@ -127,24 +437,57 @@
       ],
       "status": "beta",
       "hint": "Stamp releases"
+    },
+    {
+      "id": "zap_rail",
+      "title": "Zero-fee zap rail",
+      "for": [
+        "giveabit"
+      ],
+      "status": "ga",
+      "hint": "Lightning social settlement"
+    },
+    {
+      "id": "nostr_feed",
+      "title": "Nostr creator feed",
+      "for": [
+        "rosa",
+        "ziggy"
+      ],
+      "status": "ga",
+      "hint": "Community surface"
     }
   ],
   "education": [
     {
+      "id": "mold_zaps",
+      "title": "Zaps = social settlement",
+      "body": "Show 7d zap volume as creator economy health.",
+      "action": "Track zap \u0394 week over week",
+      "opportunity": "opportunity"
+    },
+    {
       "id": "wire",
       "title": "Publish live metrics",
-      "body": "Katoa should host /metrics.json (or CDN) matching gab.product-metrics.v1 so HQ cards stay honest.",
-      "action": "Add metrics route on katoa",
-      "severity": "plan"
+      "body": "Katoa should host /metrics.json.",
+      "action": "Add metrics route",
+      "opportunity": "plan"
     }
   ],
   "links": [
+    {
+      "label": "Katoa",
+      "url": "https://katoa.org"
+    },
     {
       "label": "Schema",
       "url": "/schemas/product-metrics.v1.schema.json"
     }
   ],
   "raw": {
-    "demo": true
+    "demo": true,
+    "enriched": true,
+    "schemaDepth": "full-v1",
+    "note": "HQ v3.1 depth pack \u2014 not fabricated as live production unless raw.demo=false"
   }
 }

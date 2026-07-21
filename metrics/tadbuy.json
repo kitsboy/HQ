@@ -2,20 +2,27 @@
   "schema": "gab.product-metrics.v1",
   "productId": "tadbuy",
   "name": "Tadbuy",
-  "updatedAt": "2026-07-20T02:25:24.267Z",
+  "updatedAt": "2026-07-21T12:00:00Z",
   "window": {
-    "label": "7d"
+    "label": "7d",
+    "from": "2026-07-14T12:00:00Z",
+    "to": "2026-07-21T12:00:00Z"
   },
   "health": {
     "status": "green",
-    "message": "Demo envelope — wire live metrics.json on product origin",
-    "latencyMs": 350,
-    "uptimePct24h": 99,
+    "message": "Enriched demo envelope \u2014 replace with live metrics.json on product origin when ready",
+    "latencyMs": 225,
+    "uptimePct24h": 97.9,
     "dependencies": [
       {
         "id": "satohash",
         "status": "green",
         "detail": "OTS backbone available"
+      },
+      {
+        "id": "hq-status",
+        "status": "green",
+        "detail": "status.json pinger"
       }
     ]
   },
@@ -26,15 +33,43 @@
       "value": 23,
       "format": "number",
       "priority": 1,
-      "hint": "Bitcoin-native ad buys"
+      "hint": "Active/completed ad campaigns"
     },
     {
       "key": "sats_spend",
-      "label": "Sats settled 7d",
+      "label": "Sats spend 7d",
       "value": 210000,
       "format": "sats",
+      "unit": "sats",
       "priority": 1,
-      "hint": "Lightning settlement plane"
+      "hint": "Ad settlement volume",
+      "delta": -3,
+      "deltaUnit": "%"
+    },
+    {
+      "key": "impressions",
+      "label": "Impressions 7d",
+      "value": 1240000,
+      "format": "number",
+      "priority": 2,
+      "hint": "Reach"
+    },
+    {
+      "key": "ctr",
+      "label": "CTR",
+      "value": 1.8,
+      "format": "percent",
+      "unit": "%",
+      "priority": 2,
+      "hint": "Click-through"
+    },
+    {
+      "key": "ots_receipts",
+      "label": "OTS receipts",
+      "value": 19,
+      "format": "number",
+      "priority": 3,
+      "hint": "Campaign proof stamps"
     }
   ],
   "series": [
@@ -42,90 +77,317 @@
       "key": "activity",
       "label": "Activity",
       "unit": "units",
-      "color": "#a32020",
+      "color": "#f472b6",
       "points": [
         {
-          "t": "2026-07-06T02:25:24.267Z",
-          "v": 51.3
+          "t": "2026-07-07T12:00:00Z",
+          "v": 49.84
         },
         {
-          "t": "2026-07-07T02:25:24.267Z",
-          "v": 51.3
+          "t": "2026-07-08T12:00:00Z",
+          "v": 46.12
         },
         {
-          "t": "2026-07-08T02:25:24.267Z",
-          "v": 55.3
+          "t": "2026-07-09T12:00:00Z",
+          "v": 42.73
         },
         {
-          "t": "2026-07-09T02:25:24.267Z",
-          "v": 61.3
+          "t": "2026-07-10T12:00:00Z",
+          "v": 37.43
         },
         {
-          "t": "2026-07-10T02:25:24.267Z",
-          "v": 66.2
+          "t": "2026-07-11T12:00:00Z",
+          "v": 40.26
         },
         {
-          "t": "2026-07-11T02:25:24.267Z",
-          "v": 70.1
+          "t": "2026-07-12T12:00:00Z",
+          "v": 34.99
         },
         {
-          "t": "2026-07-12T02:25:24.267Z",
-          "v": 74.3
+          "t": "2026-07-13T12:00:00Z",
+          "v": 32.76
         },
         {
-          "t": "2026-07-13T02:25:24.267Z",
-          "v": 77.7
+          "t": "2026-07-14T12:00:00Z",
+          "v": 27.36
         },
         {
-          "t": "2026-07-14T02:25:24.267Z",
-          "v": 74
+          "t": "2026-07-15T12:00:00Z",
+          "v": 27.08
         },
         {
-          "t": "2026-07-15T02:25:24.267Z",
-          "v": 77
+          "t": "2026-07-16T12:00:00Z",
+          "v": 32.11
         },
         {
-          "t": "2026-07-16T02:25:24.267Z",
-          "v": 74.8
+          "t": "2026-07-17T12:00:00Z",
+          "v": 32.49
         },
         {
-          "t": "2026-07-17T02:25:24.267Z",
-          "v": 69.7
+          "t": "2026-07-18T12:00:00Z",
+          "v": 27.17
         },
         {
-          "t": "2026-07-18T02:25:24.267Z",
-          "v": 75
+          "t": "2026-07-19T12:00:00Z",
+          "v": 27.26
         },
         {
-          "t": "2026-07-19T02:25:24.267Z",
-          "v": 81.6
+          "t": "2026-07-20T12:00:00Z",
+          "v": 31.48
         },
         {
-          "t": "2026-07-20T02:25:24.267Z",
-          "v": 82
+          "t": "2026-07-21T12:00:00Z",
+          "v": 26.3
+        }
+      ]
+    },
+    {
+      "key": "spend_daily",
+      "label": "Spend / day",
+      "unit": "sats",
+      "color": "#fb923c",
+      "points": [
+        {
+          "t": "2026-07-07T12:00:00Z",
+          "v": 22223.3
+        },
+        {
+          "t": "2026-07-08T12:00:00Z",
+          "v": 28736.04
+        },
+        {
+          "t": "2026-07-09T12:00:00Z",
+          "v": 27004.0
+        },
+        {
+          "t": "2026-07-10T12:00:00Z",
+          "v": 34952.73
+        },
+        {
+          "t": "2026-07-11T12:00:00Z",
+          "v": 36206.89
+        },
+        {
+          "t": "2026-07-12T12:00:00Z",
+          "v": 37627.43
+        },
+        {
+          "t": "2026-07-13T12:00:00Z",
+          "v": 29342.78
+        },
+        {
+          "t": "2026-07-14T12:00:00Z",
+          "v": 21818.48
+        },
+        {
+          "t": "2026-07-15T12:00:00Z",
+          "v": 24651.2
+        },
+        {
+          "t": "2026-07-16T12:00:00Z",
+          "v": 25825.28
+        },
+        {
+          "t": "2026-07-17T12:00:00Z",
+          "v": 22519.94
+        },
+        {
+          "t": "2026-07-18T12:00:00Z",
+          "v": 18213.72
+        },
+        {
+          "t": "2026-07-19T12:00:00Z",
+          "v": 21268.79
+        },
+        {
+          "t": "2026-07-20T12:00:00Z",
+          "v": 17924.1
+        },
+        {
+          "t": "2026-07-21T12:00:00Z",
+          "v": 13705.16
+        }
+      ]
+    },
+    {
+      "key": "campaigns_live",
+      "label": "Live campaigns",
+      "unit": "n",
+      "color": "#e879f9",
+      "points": [
+        {
+          "t": "2026-07-07T12:00:00Z",
+          "v": 7.11
+        },
+        {
+          "t": "2026-07-08T12:00:00Z",
+          "v": 7.46
+        },
+        {
+          "t": "2026-07-09T12:00:00Z",
+          "v": 7.36
+        },
+        {
+          "t": "2026-07-10T12:00:00Z",
+          "v": 8.39
+        },
+        {
+          "t": "2026-07-11T12:00:00Z",
+          "v": 9.44
+        },
+        {
+          "t": "2026-07-12T12:00:00Z",
+          "v": 8.26
+        },
+        {
+          "t": "2026-07-13T12:00:00Z",
+          "v": 8.55
+        },
+        {
+          "t": "2026-07-14T12:00:00Z",
+          "v": 8.7
+        },
+        {
+          "t": "2026-07-15T12:00:00Z",
+          "v": 7.74
+        },
+        {
+          "t": "2026-07-16T12:00:00Z",
+          "v": 7.83
+        },
+        {
+          "t": "2026-07-17T12:00:00Z",
+          "v": 7.84
+        },
+        {
+          "t": "2026-07-18T12:00:00Z",
+          "v": 6.96
+        },
+        {
+          "t": "2026-07-19T12:00:00Z",
+          "v": 6.6
+        },
+        {
+          "t": "2026-07-20T12:00:00Z",
+          "v": 5.57
+        },
+        {
+          "t": "2026-07-21T12:00:00Z",
+          "v": 4.95
         }
       ]
     }
   ],
-  "funnels": [],
-  "segments": [],
-  "offers": [],
+  "funnels": [
+    {
+      "id": "ad_journey",
+      "label": "Ad buy journey",
+      "steps": [
+        {
+          "id": "brief",
+          "label": "Campaign brief",
+          "count": 90,
+          "hint": "Intent"
+        },
+        {
+          "id": "fund",
+          "label": "Fund wallet",
+          "count": 55,
+          "hint": "Lightning"
+        },
+        {
+          "id": "flight",
+          "label": "Flight live",
+          "count": 23,
+          "hint": "Delivery"
+        },
+        {
+          "id": "report",
+          "label": "Report + OTS",
+          "count": 19,
+          "hint": "Proof"
+        },
+        {
+          "id": "reorder",
+          "label": "Reorder",
+          "count": 11,
+          "hint": "Retention"
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "id": "by_vertical",
+      "label": "By vertical",
+      "rows": [
+        {
+          "id": "btc",
+          "label": "Bitcoin brands",
+          "value": 9,
+          "meta": {}
+        },
+        {
+          "id": "creator",
+          "label": "Creators",
+          "value": 7,
+          "meta": {}
+        },
+        {
+          "id": "saas",
+          "label": "SaaS",
+          "value": 4,
+          "meta": {}
+        },
+        {
+          "id": "other",
+          "label": "Other",
+          "value": 3,
+          "meta": {}
+        }
+      ]
+    }
+  ],
+  "offers": [
+    {
+      "id": "btc_ads",
+      "title": "Bitcoin-native ad buys",
+      "for": [
+        "katoa",
+        "giveabit"
+      ],
+      "status": "beta",
+      "hint": "Lightning settled"
+    },
+    {
+      "id": "ots_receipt",
+      "title": "Campaign OTS receipts",
+      "for": [
+        "satohash"
+      ],
+      "status": "ga",
+      "hint": "Immutable spend proof"
+    }
+  ],
   "education": [
     {
-      "id": "wire",
-      "title": "Publish live metrics",
-      "body": "Tadbuy should host /metrics.json (or CDN) matching gab.product-metrics.v1 so HQ cards stay honest.",
-      "action": "Add metrics route on tadbuy",
-      "severity": "plan"
+      "id": "mold_spend",
+      "title": "Sats spend is GMV",
+      "body": "210k sats/7d for diligence revenue narrative.",
+      "action": "Track monthlyized GMV",
+      "opportunity": "opportunity"
     }
   ],
   "links": [
     {
-      "label": "Schema",
-      "url": "/schemas/product-metrics.v1.schema.json"
+      "label": "Tadbuy",
+      "url": "https://tadbuy.giveabit.io"
     }
   ],
   "raw": {
-    "demo": true
+    "demo": true,
+    "enriched": true,
+    "schemaDepth": "full-v1",
+    "note": "HQ v3.1 depth pack \u2014 not fabricated as live production unless raw.demo=false"
   }
 }

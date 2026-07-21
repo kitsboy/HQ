@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
-  Give A Bit HQ v3.0.0 — total visual & data overhaul.
-  PRESENTATION: 4 tinted themes (stone/slate/ink/aurora), 10 ops tabs, live JSON envelopes.
+  Give A Bit HQ v3.1.0 — depth pack.
+  15 tabs · full metrics envelopes · project MD packs · analytics/matrix/coverage.
   SECRETS: NEVER in this file. Vault localStorage key sovereign_deck_vault_v1 only.
   Assets: hq.css · hq.js
   Safe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first.
@@ -12,7 +12,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0c0618">
 <meta name="description" content="Give A Bit HQ — suite ops glass for Bitcoin products">
-<title>Give A Bit HQ v3.0</title>
+<title>Give A Bit HQ v3.1</title>
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,27 +23,24 @@
 </head>
 <body>
 <div id="app">
-  <!-- Top bar -->
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand">
         <div class="brand-mark" aria-hidden="true">G</div>
         <div class="brand-text">
           <h1>Give A Bit HQ</h1>
-          <p class="sub">Ops glass · suite sovereignty</p>
+          <p class="sub">Ops glass · depth pack v3.1</p>
         </div>
       </div>
-
       <div class="topbar-meta">
         <span id="vault-status" class="status-pill muted" data-tip="Browser Vault holds invoice keys only — never in git" data-tip-title="Vault">vault empty</span>
       </div>
-
       <div class="topbar-actions">
         <div class="theme-switch" role="group" aria-label="Theme">
-          <button type="button" class="theme-dot" data-theme-pick="stone" title="Stone — sunlit porcelain" aria-label="Stone theme"></button>
-          <button type="button" class="theme-dot" data-theme-pick="slate" title="Slate — glacier" aria-label="Slate theme"></button>
-          <button type="button" class="theme-dot" data-theme-pick="ink" title="Ink — midnight neon" aria-label="Ink theme"></button>
-          <button type="button" class="theme-dot" data-theme-pick="aurora" title="Aurora — violet nebula" aria-label="Aurora theme"></button>
+          <button type="button" class="theme-dot" data-theme-pick="stone" title="Stone" aria-label="Stone theme"></button>
+          <button type="button" class="theme-dot" data-theme-pick="slate" title="Slate" aria-label="Slate theme"></button>
+          <button type="button" class="theme-dot" data-theme-pick="ink" title="Ink" aria-label="Ink theme"></button>
+          <button type="button" class="theme-dot" data-theme-pick="aurora" title="Aurora" aria-label="Aurora theme"></button>
         </div>
         <button type="button" class="btn btn-ghost btn-icon" id="btn-vault" title="Vault (v)" aria-label="Open vault">
           <i class="fa-solid fa-key"></i>
@@ -53,7 +50,6 @@
         </button>
       </div>
     </div>
-
     <div class="ticker" aria-label="Live status ticker">
       <div class="ticker-track" id="ticker-track">
         <span class="ticker-item"><strong>HQ</strong> loading suite…</span>
@@ -61,14 +57,18 @@
     </div>
   </header>
 
-  <!-- Tabs -->
   <div class="nav-wrap">
     <nav class="nav-tabs" id="nav-tabs" role="tablist">
       <button type="button" class="nav-tab active" data-tab="cards" role="tab">Cards</button>
       <button type="button" class="nav-tab" data-tab="list" role="tab">List</button>
       <button type="button" class="nav-tab" data-tab="metrics" role="tab">Metrics</button>
+      <button type="button" class="nav-tab" data-tab="analytics" role="tab">Analytics</button>
       <button type="button" class="nav-tab" data-tab="pipeline" role="tab">Pipeline</button>
       <button type="button" class="nav-tab" data-tab="network" role="tab">Network</button>
+      <button type="button" class="nav-tab" data-tab="matrix" role="tab">Matrix</button>
+      <button type="button" class="nav-tab" data-tab="activity" role="tab">Activity</button>
+      <button type="button" class="nav-tab" data-tab="ecosystem" role="tab">Ecosystem</button>
+      <button type="button" class="nav-tab" data-tab="coverage" role="tab">Coverage</button>
       <button type="button" class="nav-tab" data-tab="system" role="tab">System</button>
       <button type="button" class="nav-tab" data-tab="wallets" role="tab">Wallets</button>
       <button type="button" class="nav-tab" data-tab="docs" role="tab">Docs</button>
@@ -80,26 +80,24 @@
   <main class="main" id="main-content">
     <div class="loading-state">
       <div class="spinner"></div>
-      <div>Booting HQ…</div>
+      <div>Booting HQ depth pack…</div>
     </div>
   </main>
 
   <footer class="site-footer">
-    <span id="hq-version">v3.0.0</span>
+    <span id="hq-version">v3.1.0</span>
     · build <span id="hq-build">—</span>
     · <span id="hq-origin"></span>
     · Safe Harbour · Give A Bit family · Bitcoin sovereignty first
   </footer>
 </div>
 
-<!-- Project detail drawer -->
 <div class="drawer-backdrop" id="drawer-backdrop"></div>
 <aside class="drawer" id="drawer" aria-label="Project detail">
   <div class="drawer-head" id="drawer-head"></div>
   <div class="drawer-body" id="drawer-body"></div>
 </aside>
 
-<!-- Vault modal -->
 <div class="modal-backdrop" id="vault-modal" role="dialog" aria-modal="true" aria-label="Vault">
   <div class="modal-card">
     <div class="mh">

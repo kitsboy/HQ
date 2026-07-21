@@ -2,20 +2,27 @@
   "schema": "gab.product-metrics.v1",
   "productId": "btcminiscript",
   "name": "BTC Miniscript",
-  "updatedAt": "2026-07-20T02:25:24.267Z",
+  "updatedAt": "2026-07-21T12:00:00Z",
   "window": {
-    "label": "7d"
+    "label": "7d",
+    "from": "2026-07-14T12:00:00Z",
+    "to": "2026-07-21T12:00:00Z"
   },
   "health": {
-    "status": "green",
-    "message": "Demo envelope — wire live metrics.json on product origin",
-    "latencyMs": 350,
-    "uptimePct24h": 99,
+    "status": "amber",
+    "message": "R&D not deployed \u2014 metrics are demo envelopes",
+    "latencyMs": 166,
+    "uptimePct24h": 99.1,
     "dependencies": [
       {
         "id": "satohash",
         "status": "green",
         "detail": "OTS backbone available"
+      },
+      {
+        "id": "hq-status",
+        "status": "green",
+        "detail": "status.json pinger"
       }
     ]
   },
@@ -26,7 +33,31 @@
       "value": 5,
       "format": "number",
       "priority": 1,
-      "hint": "R&D only"
+      "hint": "Miniscript tooling prototypes"
+    },
+    {
+      "key": "tests",
+      "label": "Policy tests",
+      "value": 48,
+      "format": "number",
+      "priority": 2,
+      "hint": "Descriptor/policy unit tests"
+    },
+    {
+      "key": "docs_pages",
+      "label": "Docs pages",
+      "value": 12,
+      "format": "number",
+      "priority": 2,
+      "hint": "R&D documentation"
+    },
+    {
+      "key": "commits_7d",
+      "label": "Commits 7d",
+      "value": 9,
+      "format": "number",
+      "priority": 1,
+      "hint": "R&D velocity"
     }
   ],
   "series": [
@@ -34,81 +65,296 @@
       "key": "activity",
       "label": "Activity",
       "unit": "units",
-      "color": "#5a574f",
+      "color": "#c084fc",
       "points": [
         {
-          "t": "2026-07-06T02:25:24.267Z",
-          "v": 51
+          "t": "2026-07-07T12:00:00Z",
+          "v": 20.98
         },
         {
-          "t": "2026-07-07T02:25:24.267Z",
-          "v": 55.5
+          "t": "2026-07-08T12:00:00Z",
+          "v": 20.47
         },
         {
-          "t": "2026-07-08T02:25:24.267Z",
-          "v": 59.2
+          "t": "2026-07-09T12:00:00Z",
+          "v": 22.6
         },
         {
-          "t": "2026-07-09T02:25:24.267Z",
-          "v": 57.4
+          "t": "2026-07-10T12:00:00Z",
+          "v": 22.67
         },
         {
-          "t": "2026-07-10T02:25:24.267Z",
-          "v": 62.5
+          "t": "2026-07-11T12:00:00Z",
+          "v": 26.03
         },
         {
-          "t": "2026-07-11T02:25:24.267Z",
-          "v": 57.5
+          "t": "2026-07-12T12:00:00Z",
+          "v": 24.24
         },
         {
-          "t": "2026-07-12T02:25:24.267Z",
-          "v": 57.1
+          "t": "2026-07-13T12:00:00Z",
+          "v": 27.13
         },
         {
-          "t": "2026-07-13T02:25:24.267Z",
-          "v": 51.7
+          "t": "2026-07-14T12:00:00Z",
+          "v": 25.81
         },
         {
-          "t": "2026-07-14T02:25:24.267Z",
-          "v": 54.2
+          "t": "2026-07-15T12:00:00Z",
+          "v": 23.59
         },
         {
-          "t": "2026-07-15T02:25:24.267Z",
-          "v": 56.7
+          "t": "2026-07-16T12:00:00Z",
+          "v": 23.68
         },
         {
-          "t": "2026-07-16T02:25:24.267Z",
-          "v": 61.6
+          "t": "2026-07-17T12:00:00Z",
+          "v": 24.27
         },
         {
-          "t": "2026-07-17T02:25:24.267Z",
-          "v": 63.4
+          "t": "2026-07-18T12:00:00Z",
+          "v": 26.6
         },
         {
-          "t": "2026-07-18T02:25:24.267Z",
-          "v": 58.9
+          "t": "2026-07-19T12:00:00Z",
+          "v": 28.25
         },
         {
-          "t": "2026-07-19T02:25:24.267Z",
-          "v": 55.4
+          "t": "2026-07-20T12:00:00Z",
+          "v": 31.46
         },
         {
-          "t": "2026-07-20T02:25:24.267Z",
-          "v": 56.1
+          "t": "2026-07-21T12:00:00Z",
+          "v": 33.51
+        }
+      ]
+    },
+    {
+      "key": "tests_cum",
+      "label": "Tests cumulative",
+      "unit": "n",
+      "color": "#a78bfa",
+      "points": [
+        {
+          "t": "2026-07-07T12:00:00Z",
+          "v": 38.86
+        },
+        {
+          "t": "2026-07-08T12:00:00Z",
+          "v": 39.2
+        },
+        {
+          "t": "2026-07-09T12:00:00Z",
+          "v": 42.86
+        },
+        {
+          "t": "2026-07-10T12:00:00Z",
+          "v": 46.41
+        },
+        {
+          "t": "2026-07-11T12:00:00Z",
+          "v": 48.12
+        },
+        {
+          "t": "2026-07-12T12:00:00Z",
+          "v": 50.13
+        },
+        {
+          "t": "2026-07-13T12:00:00Z",
+          "v": 48.73
+        },
+        {
+          "t": "2026-07-14T12:00:00Z",
+          "v": 52.26
+        },
+        {
+          "t": "2026-07-15T12:00:00Z",
+          "v": 53.36
+        },
+        {
+          "t": "2026-07-16T12:00:00Z",
+          "v": 55.49
+        },
+        {
+          "t": "2026-07-17T12:00:00Z",
+          "v": 55.49
+        },
+        {
+          "t": "2026-07-18T12:00:00Z",
+          "v": 57.86
+        },
+        {
+          "t": "2026-07-19T12:00:00Z",
+          "v": 59.37
+        },
+        {
+          "t": "2026-07-20T12:00:00Z",
+          "v": 58.58
+        },
+        {
+          "t": "2026-07-21T12:00:00Z",
+          "v": 60.81
+        }
+      ]
+    },
+    {
+      "key": "prototypes_cum",
+      "label": "Prototypes",
+      "unit": "n",
+      "color": "#e879f9",
+      "points": [
+        {
+          "t": "2026-07-07T12:00:00Z",
+          "v": 3.98
+        },
+        {
+          "t": "2026-07-08T12:00:00Z",
+          "v": 4.26
+        },
+        {
+          "t": "2026-07-09T12:00:00Z",
+          "v": 4.09
+        },
+        {
+          "t": "2026-07-10T12:00:00Z",
+          "v": 4.22
+        },
+        {
+          "t": "2026-07-11T12:00:00Z",
+          "v": 4.23
+        },
+        {
+          "t": "2026-07-12T12:00:00Z",
+          "v": 4.58
+        },
+        {
+          "t": "2026-07-13T12:00:00Z",
+          "v": 4.52
+        },
+        {
+          "t": "2026-07-14T12:00:00Z",
+          "v": 4.38
+        },
+        {
+          "t": "2026-07-15T12:00:00Z",
+          "v": 4.69
+        },
+        {
+          "t": "2026-07-16T12:00:00Z",
+          "v": 4.87
+        },
+        {
+          "t": "2026-07-17T12:00:00Z",
+          "v": 4.83
+        },
+        {
+          "t": "2026-07-18T12:00:00Z",
+          "v": 4.88
+        },
+        {
+          "t": "2026-07-19T12:00:00Z",
+          "v": 5.12
+        },
+        {
+          "t": "2026-07-20T12:00:00Z",
+          "v": 5.23
+        },
+        {
+          "t": "2026-07-21T12:00:00Z",
+          "v": 5.57
         }
       ]
     }
   ],
-  "funnels": [],
-  "segments": [],
-  "offers": [],
+  "funnels": [
+    {
+      "id": "rd_pipeline",
+      "label": "R&D pipeline",
+      "steps": [
+        {
+          "id": "idea",
+          "label": "Idea",
+          "count": 18,
+          "hint": "Backlog"
+        },
+        {
+          "id": "spike",
+          "label": "Spike",
+          "count": 12,
+          "hint": "Explore"
+        },
+        {
+          "id": "proto",
+          "label": "Prototype",
+          "count": 5,
+          "hint": "Build"
+        },
+        {
+          "id": "test",
+          "label": "Test pass",
+          "count": 4,
+          "hint": "Hardening"
+        },
+        {
+          "id": "docs",
+          "label": "Documented",
+          "count": 3,
+          "hint": "Ship readiness"
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "id": "by_area",
+      "label": "By research area",
+      "rows": [
+        {
+          "id": "policy",
+          "label": "Policy language",
+          "value": 2,
+          "meta": {}
+        },
+        {
+          "id": "wallet",
+          "label": "Wallet integrate",
+          "value": 1,
+          "meta": {}
+        },
+        {
+          "id": "edu",
+          "label": "Education",
+          "value": 1,
+          "meta": {}
+        },
+        {
+          "id": "other",
+          "label": "Other",
+          "value": 1,
+          "meta": {}
+        }
+      ]
+    }
+  ],
+  "offers": [
+    {
+      "id": "miniscript_rd",
+      "title": "Miniscript tooling R&D",
+      "for": [
+        "giveabit",
+        "satohash"
+      ],
+      "status": "planned",
+      "hint": "Not deployed \u2014 R&D only"
+    }
+  ],
   "education": [
     {
-      "id": "wire",
-      "title": "Publish live metrics",
-      "body": "BTC Miniscript should host /metrics.json (or CDN) matching gab.product-metrics.v1 so HQ cards stay honest.",
-      "action": "Add metrics route on btcminiscript",
-      "severity": "plan"
+      "id": "rd_status",
+      "title": "Not a live product yet",
+      "body": "btcminiscript is R&D \u2014 cards show amber deploy state intentionally.",
+      "action": "Keep metrics honest (demo OK)",
+      "opportunity": "info"
     }
   ],
   "links": [
@@ -118,6 +364,9 @@
     }
   ],
   "raw": {
-    "demo": true
+    "demo": true,
+    "enriched": true,
+    "schemaDepth": "full-v1",
+    "note": "HQ v3.1 depth pack \u2014 not fabricated as live production unless raw.demo=false"
   }
 }
