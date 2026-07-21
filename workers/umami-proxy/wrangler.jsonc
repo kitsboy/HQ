@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "giveabit-umami-proxy",
+  "main": "index.js",
+  "compatibility_date": "2026-07-21",
+  "workers_dev": true,
+  "routes": [
+    { "pattern": "analytics.giveabit.io", "custom_domain": true }
+  ]
+}

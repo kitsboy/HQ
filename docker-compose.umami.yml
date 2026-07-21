@@ -4,7 +4,7 @@ services:
     container_name: umami
     restart: unless-stopped
     ports:
-      - "127.0.0.1:3002:3000"
+      - "0.0.0.0:3002:3000"
     environment:
       DATABASE_URL: postgresql://umami:umami_local_only@172.18.0.2:5432/umami
       DATABASE_TYPE: postgresql
