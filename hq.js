@@ -2121,55 +2121,48 @@
   }
 
   /* ── Password gate ──
-     The unlock passphrase is baked into the site config (projects.json gate.passHash).
-     No localStorage hash to go stale, no legacy formats, no lockouts — if the page loads,
-     the passphrase works. Session flag only remembers the unlock per tab. */
+     Static known-answer check. The hash below is SHA-256("hq-gate·12991299").
+     No fetch, no storage of the secret, no async failure modes — one input, one compare. */
+  const GATE_PASS_HASH = "1188041c99cde3b92ce6897170a251f53147988bc35b5ae4f26d2e93c0617316";
   async function gateHash(text) {
     const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("hq-gate·" + text));
     return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
   }
-  async function bootGate() {
+  function gateShowApp() {
+    document.getElementById("gate").hidden = true;
+    document.getElementById("app").hidden = false;
+    init();
+  }
+  function bootGate() {
     const gate = document.getElementById("gate");
     const app = document.getElementById("app");
     if (!gate || !app) { init(); return; }
-    // fetch the configured hash (same static file the dashboard already loads)
-    let passHash = null;
     try {
-      const r = await fetch("/projects.json?t=" + Date.now());
-      if (r.ok) { const j = await r.json(); passHash = j && j.gate && j.gate.passHash; }
-    } catch { /* offline — fail open below */ }
-    if (!passHash) { app.hidden = false; gate.hidden = true; init(); return; }
-    // already unlocked this tab-session?
-    try {
-      if (sessionStorage.getItem(GATE_SESSION) === "1") { app.hidden = false; gate.hidden = true; init(); return; }
-    } catch { /* private mode — just ask again */ }
+      if (sessionStorage.getItem(GATE_SESSION) === "1") { gateShowApp(); return; }
+    } catch { /* private mode — ask every time */ }
     app.hidden = true;
     gate.hidden = false;
-    const sub = document.getElementById("gate-sub");
     const input = document.getElementById("gate-input");
-    const confirm = document.getElementById("gate-confirm");
     const btn = document.getElementById("gate-btn");
     const err = document.getElementById("gate-error");
-    sub.textContent = "Enter the HQ passphrase";
-    btn.textContent = "Unlock";
-    if (confirm) confirm.hidden = true;
     const attempt = async () => {
-      err.textContent = "";
+      const val = (input.value || "").trim();
+      if (!val) { err.textContent = "Type the passphrase"; return; }
       btn.disabled = true;
       try {
-        const val = input.value || "";
-        if (!val) { err.textContent = "Type the passphrase"; return; }
-        if ((await gateHash(val)) === passHash) {
+        if ((await gateHash(val)) === GATE_PASS_HASH) {
           try { sessionStorage.setItem(GATE_SESSION, "1"); } catch {}
-          gate.hidden = true; app.hidden = false;
-          init();
+          gateShowApp();
         } else {
           err.textContent = "Wrong passphrase";
-          input.select();
+          input.value = "";
+          input.focus();
         }
+      } catch (e) {
+        err.textContent = "Error: " + e.message;
       } finally { btn.disabled = false; }
     };
-    btn.onclick = attempt;
+    btn.addEventListener("click", attempt);
     input.addEventListener("keydown", (e) => { if (e.key === "Enter") attempt(); });
     input.focus();
   }
