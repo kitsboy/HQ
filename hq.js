@@ -56,7 +56,7 @@
     "CLOUDFLARE-ACCESS.md", "ECOSYSTEM-MAP.md", "HQ-GATE.md", "KIMI-GROK-HANDOFF.md",
     "KIMI-HANDOFF-2026-07-20-MEGA.md", "KIMI-HANDOFF-2026-07-20.md", "KIMI-HANDOFF.md",
     "LNBITS-CORS.md", "LNBITS-PROXY.md", "METRICS-SCHEMA.md", "THOR-NODE-JSON.md", "UPGRADES-100.md",
-    "ANALYTICS-PLAN.md", "DESIGN-CONTEXT.md", "AGENT-GUARDRAILS.md", "UMAMI-SETUP.md",
+    "ANALYTICS-PLAN.md", "DESIGN-CONTEXT.md", "AGENT-GUARDRAILS.md", "UMAMI-SETUP.md", "REF-PULLER.md",
   ];
 
   const FEATURES = [
@@ -86,6 +86,7 @@
     "Card depth gauges", "THOR host gauges", "Analytics plan doc",
     "Concert tab", "Portfolio time chart", "GitHub doc push", "Live API badge",
     "Umami analytics poller", "Visitor sparklines on cards", "Analytics tab table", "Umami docs",
+    "Ref-puller cron 5min", "Agent context ref files", "ref-summary.py loader",
     "HTML escape", "Isolated fetch", "Unavailable cards", "Theme flash",
     "Keyboard nav", "Diligence export", "Search filter", "Health filter",
     "Feature board 100", "Yolo money glow", "Safe Harbour", "No grey rule",
