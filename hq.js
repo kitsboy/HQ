@@ -45,6 +45,7 @@
     matrix: "#e879f9",
     activity: "#67e8f9",
     ecosystem: "#c084fc",
+    concert: "#ff8c00",
     coverage: "#38bdf8",
     system: "#2dd4bf",
     wallets: "#f59e0b",
@@ -86,6 +87,7 @@
     "Markdown editor", "Doc overrides", "Doc download", "Docs dirty badge",
     "Porcelain light theme", "Live pulse chip", "Auto data poll 5m",
     "Card depth gauges", "THOR host gauges", "Analytics plan doc",
+    "Concert tab", "Portfolio time chart", "GitHub doc push", "Live API badge",
     "HTML escape", "Isolated fetch", "Unavailable cards", "Theme flash",
     "Keyboard nav", "Diligence export", "Search filter", "Health filter",
     "Feature board 100", "Yolo money glow", "Safe Harbour", "No grey rule",
@@ -985,7 +987,7 @@
     const map = {
       cards: renderCards, list: renderList, metrics: renderMetrics, analytics: renderAnalytics,
       pipeline: renderPipeline, network: renderNetwork, matrix: renderMatrix, activity: renderActivity,
-      ecosystem: renderEcosystem, coverage: renderCoverage, system: renderSystem,
+      ecosystem: renderEcosystem, concert: renderConcert, coverage: renderCoverage, system: renderSystem,
       wallets: renderWallets, money: renderMoney, docs: renderDocs, agents: renderAgents, domains: renderDomains,
     };
     const fn = map[state.tab];
@@ -1781,6 +1783,53 @@
         <div class="feature-board">${FEATURES.map((f) => `<div class="feature-chip on">${esc(f)}</div>`).join("")}</div>
       </div>`;
     el.querySelectorAll("[data-open]").forEach((b) => b.addEventListener("click", () => openDrawer(b.dataset.open)));
+  }
+
+  /* === CONCERT (all-site KPI table) === */
+
+  function renderConcert() {
+    const el = document.getElementById("view-concert");
+    if (!el) return;
+    const allKpis = {};
+    const projects = state.projects.filter((p) => state.metrics[p.id] && state.metrics[p.id].ok);
+    if (!projects.length) { el.innerHTML = unavailableHTML("No concert data", "metrics/*.json", "Load metrics envelopes first"); return; }
+    projects.forEach((p) => {
+      const d = state.metrics[p.id].data;
+      (d.kpis || []).forEach((k) => {
+        if (!allKpis[k.key]) allKpis[k.key] = { key: k.key, label: k.label, format: k.format, values: {} };
+        allKpis[k.key].values[p.id] = { v: k.value, delta: k.delta, deltaUnit: k.deltaUnit };
+      });
+    });
+    const kpiKeys = Object.keys(allKpis);
+    const headerCells = projects.map((p) => `<th style="text-align:center;padding:0.35rem 0.4rem;border-bottom:2px solid ${escAttr(accentFor(p.id))}"><span style="color:${escAttr(accentFor(p.id))}">${esc(p.name)}</span></th>`).join("");
+    const bodyRows = kpiKeys.map((key) => {
+      const k = allKpis[key];
+      return `<tr style="border-bottom:1px solid var(--line)"><td class="mono" style="font-size:0.78rem;padding:0.4rem 0.5rem;white-space:nowrap;font-weight:500">${esc(k.label || k.key)}</td>${projects.map((p) => {
+        const val = k.values[p.id];
+        const display = val != null ? fmtNum(val.v, k.format) : "—";
+        const delta = val && val.delta != null ? (val.deltaUnit === "%" ? `${val.delta > 0 ? "+" : ""}${val.delta}%` : `${val.delta > 0 ? "+" : ""}${val.delta}`) : "";
+        return `<td style="${val ? "" : "color:var(--ink-faint);opacity:0.4"}">
+          <div class="mono" style="font-weight:600">${esc(display)}</div>
+          ${delta ? `<div class="mono" style="font-size:0.6rem;color:${val.delta > 0 ? "var(--green)" : val.delta < 0 ? "var(--red)" : "var(--ink-faint)"}">${esc(delta)}</div>` : ""}
+        </td>`;
+      }).join("")}</tr>`;
+    }).join("");
+    const catSorter = {};
+    projects.forEach((p) => { const c = p.category || "Other"; if (!catSorter[c]) catSorter[c] = []; catSorter[c].push(p); });
+    el.innerHTML = `
+      <h2 class="section-title">Concert <span class="accent-rule"></span></h2>
+      <p class="section-sub">All ${projects.length} product KPIs in one table · ${kpiKeys.length} metrics across ${projects.length} products</p>
+      <div class="table-wrap" style="overflow-x:auto">
+        <table class="data" style="min-width:max(600px,100%)">
+          <thead><tr><th style="text-align:left;min-width:130px">Metric</th>${headerCells}</tr></thead>
+          <tbody>${bodyRows || `<tr><td colspan="${projects.length + 1}" class="empty-state">No KPI data</td></tr>`}</tbody>
+        </table>
+      </div>
+      <div class="mt-3 flex gap-2 flex-wrap">${Object.entries(catSorter).map(([cat, projs]) =>
+        `<div class="panel" style="padding:0.5rem 0.7rem"><div class="mono" style="font-size:0.6rem;color:var(--ink-faint);margin-bottom:0.25rem">${esc(cat)}</div>${projs.map((p) => `<span class="chip" style="border-color:${escAttr(accentFor(p.id))}">${esc(p.name)}</span>`).join("")}</div>`
+      ).join("")}</div>
+      <p class="mono mt-2" style="font-size:0.6rem;color:var(--ink-faint)">All data from metrics/*.json envelopes · deltas shown where available</p>`;
+    bindTooltips();
   }
 
   /* ═══════════════ PIPELINE / NETWORK / SYSTEM ═══════════════ */
@@ -2912,7 +2961,7 @@
       if (e.target.matches("input,textarea,select")) return;
       const map = {
         1: "cards", 2: "list", 3: "metrics", 4: "analytics", 5: "pipeline",
-        6: "network", 7: "matrix", 8: "activity", 9: "ecosystem", 0: "coverage",
+        6: "network", 7: "matrix", 8: "activity", 9: "ecosystem", 0: "concert",
       };
       if (map[e.key]) setTab(map[e.key]);
       if (e.key === "r") bootstrap();
