@@ -35,7 +35,7 @@
       "repo": "giveabit",
       "url": "https://giveabit.io",
       "tagline": "Bitcoin Sovereignty, Education & Tools",
-      "pitch": "The family hub \u2014 education, tools, and the Give A Bit namespace.",
+      "pitch": "The family hub — education, tools, and the Give A Bit namespace.",
       "wallet": "giveabit_main",
       "deployed": true,
       "icon": "fa-solid fa-seedling",
@@ -60,7 +60,7 @@
       "repo": "satohash",
       "url": "https://satohash.io",
       "tagline": "Stamp Documents on Bitcoin. Immutable Proof.",
-      "pitch": "Shared OTS timestamp backbone \u2014 live API on THOR (api.satohash.io).",
+      "pitch": "Shared OTS timestamp backbone — live API on THOR (api.satohash.io).",
       "wallet": "satohash",
       "deployed": true,
       "icon": "fa-solid fa-stamp",
@@ -87,8 +87,8 @@
       "name": "Katoa",
       "repo": "katoa",
       "url": "https://katoa.org",
-      "tagline": "Zero-Fee Bitcoin Creator Platform \u00b7 Lightning & Nostr",
-      "pitch": "Creators on Lightning and Nostr \u2014 zero-fee rails.",
+      "tagline": "Zero-Fee Bitcoin Creator Platform · Lightning & Nostr",
+      "pitch": "Creators on Lightning and Nostr — zero-fee rails.",
       "wallet": "katoa",
       "deployed": true,
       "icon": "fa-solid fa-feather-pointed",
@@ -241,5 +241,9 @@
       "metricsKey": "btcminiscript",
       "metricsUrl": "/metrics/btcminiscript.json"
     }
-  ]
+  ],
+  "gate": {
+    "passHash": "1188041c99cde3b92ce6897170a251f53147988bc35b5ae4f26d2e93c0617316",
+    "hint": "8 digits, starts with 12"
+  }
 }

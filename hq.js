@@ -2120,54 +2120,29 @@
     loadAndShowDoc(state.selectedDoc);
   }
 
-  /* ── Password gate (casual client lock — vault keys stay browser-local regardless) ── */
-  /* Legacy v2.5 format: {v:1, salt(b64), hash(b64 PBKDF2 120k)} — still accepted so old passphrases keep working.
-     New format: hex SHA-256("hq-gate·"+pw). Reset link wipes the stored hash (vault keys are NOT touched). */
+  /* ── Password gate ──
+     The unlock passphrase is baked into the site config (projects.json gate.passHash).
+     No localStorage hash to go stale, no legacy formats, no lockouts — if the page loads,
+     the passphrase works. Session flag only remembers the unlock per tab. */
   async function gateHash(text) {
     const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("hq-gate·" + text));
     return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
-  }
-  function b64FromU8(u8) { let s = ""; u8.forEach((b) => s += String.fromCharCode(b)); return btoa(s); }
-  function u8FromB64(s) { const bin = atob(s); const u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return u; }
-  async function legacyGateHash(pw, saltB64) {
-    const enc = new TextEncoder();
-    const base = await crypto.subtle.importKey("raw", enc.encode(pw), "PBKDF2", false, ["deriveBits"]);
-    const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", salt: u8FromB64(saltB64), iterations: 120000, hash: "SHA-256" }, base, 256);
-    return b64FromU8(new Uint8Array(bits));
-  }
-  function gateStored() {
-    try {
-      const raw = localStorage.getItem(GATE_KEY);
-      if (!raw) return null;
-      if (raw.trim().startsWith("{")) return { kind: "legacy", json: JSON.parse(raw) };
-      return { kind: "hex", hash: raw.trim() };
-    } catch { return null; }
-  }
-  function gateLocked() {
-    const stored = gateStored();
-    if (!stored) return "setup";
-    try { return sessionStorage.getItem(GATE_SESSION) === "1" ? false : "locked"; } catch { return "locked"; }
-  }
-  function gateUnlockedSet() {
-    try { sessionStorage.setItem(GATE_SESSION, "1"); } catch {}
-  }
-  async function gateVerify(pw) {
-    const stored = gateStored();
-    if (!stored) return false;
-    if (stored.kind === "legacy") {
-      try {
-        const h = await legacyGateHash(pw, stored.json.salt);
-        return h === stored.json.hash;
-      } catch { return false; }
-    }
-    return (await gateHash(pw)) === stored.hash;
   }
   async function bootGate() {
     const gate = document.getElementById("gate");
     const app = document.getElementById("app");
     if (!gate || !app) { init(); return; }
-    const mode = gateLocked();
-    if (mode === false) { app.hidden = false; gate.hidden = true; init(); return; }
+    // fetch the configured hash (same static file the dashboard already loads)
+    let passHash = null;
+    try {
+      const r = await fetch("/projects.json?t=" + Date.now());
+      if (r.ok) { const j = await r.json(); passHash = j && j.gate && j.gate.passHash; }
+    } catch { /* offline — fail open below */ }
+    if (!passHash) { app.hidden = false; gate.hidden = true; init(); return; }
+    // already unlocked this tab-session?
+    try {
+      if (sessionStorage.getItem(GATE_SESSION) === "1") { app.hidden = false; gate.hidden = true; init(); return; }
+    } catch { /* private mode — just ask again */ }
     app.hidden = true;
     gate.hidden = false;
     const sub = document.getElementById("gate-sub");
@@ -2175,50 +2150,27 @@
     const confirm = document.getElementById("gate-confirm");
     const btn = document.getElementById("gate-btn");
     const err = document.getElementById("gate-error");
-    const reset = document.getElementById("gate-reset");
-    if (mode === "setup") {
-      sub.textContent = "First visit — create a passphrase for this ops glass";
-      confirm.hidden = false;
-      btn.textContent = "Create & enter";
-    } else {
-      sub.textContent = "Locked · enter your passphrase";
-      btn.textContent = "Unlock";
-    }
-    if (reset) reset.onclick = () => {
-      if (confirm("Reset the HQ passphrase? Your vault keys are NOT deleted — you will just set a new passphrase.")) {
-        try { localStorage.removeItem(GATE_KEY); sessionStorage.removeItem(GATE_SESSION); } catch {}
-        location.reload();
-      }
-    };
+    sub.textContent = "Enter the HQ passphrase";
+    btn.textContent = "Unlock";
+    if (confirm) confirm.hidden = true;
     const attempt = async () => {
       err.textContent = "";
       btn.disabled = true;
       try {
-        const val = input.value;
-        if (!val || val.length < 4) { err.textContent = "Passphrase needs 4+ characters"; return; }
-        if (mode === "setup") {
-          if (val !== confirm.value) { err.textContent = "Passphrases don't match"; return; }
-          try { localStorage.setItem(GATE_KEY, await gateHash(val)); } catch {}
-          gateUnlockedSet();
+        const val = input.value || "";
+        if (!val) { err.textContent = "Type the passphrase"; return; }
+        if ((await gateHash(val)) === passHash) {
+          try { sessionStorage.setItem(GATE_SESSION, "1"); } catch {}
           gate.hidden = true; app.hidden = false;
-          toast("Passphrase set · HQ unlocked", "ok");
           init();
         } else {
-          if (await gateVerify(val)) {
-            // upgrade legacy hash to new format silently
-            try { localStorage.setItem(GATE_KEY, await gateHash(val)); } catch {}
-            gateUnlockedSet();
-            gate.hidden = true; app.hidden = false;
-            init();
-          } else {
-            err.textContent = "Wrong passphrase · forgotten? use reset below";
-            input.select();
-          }
+          err.textContent = "Wrong passphrase";
+          input.select();
         }
       } finally { btn.disabled = false; }
     };
     btn.onclick = attempt;
-    [input, confirm].forEach((el) => el.addEventListener("keydown", (e) => { if (e.key === "Enter") attempt(); }));
+    input.addEventListener("keydown", (e) => { if (e.key === "Enter") attempt(); });
     input.focus();
   }
   function lockNow() {
@@ -2890,9 +2842,7 @@
       let idleTimer = null;
       const resetIdle = () => {
         if (idleTimer) clearTimeout(idleTimer);
-        idleTimer = setTimeout(() => {
-          if (gateStored()) { toast("Auto-locked after 30 min idle", "ok"); setTimeout(lockNow, 600); }
-        }, IDLE_LOCK_MS);
+        idleTimer = setTimeout(() => { toast("Auto-locked after 30 min idle", "ok"); setTimeout(lockNow, 600); }, IDLE_LOCK_MS);
       };
       ["click", "keydown", "mousemove", "touchstart", "scroll"].forEach((ev) =>
         document.addEventListener(ev, resetIdle, { passive: true }));
