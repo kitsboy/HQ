@@ -1976,6 +1976,10 @@
           <p class="mono mt-2" style="font-size:0.68rem;color:var(--ink-faint)">Live via Vault → LNbits proxy · invoice keys only · history in browser cache (${esc(BAL_HIST_KEY)})</p>
         </div>
         <div class="money-grid mt-3">
+            <div class="panel" style="padding:1rem">
+            <h3 class="display" style="margin:0 0 0.75rem;font-size:0.95rem">Portfolio over time</h3>
+            <div id="portfolio-timeseries"></div>
+          </div>
           <div class="panel" style="padding:1rem">
             <h3 class="display" style="margin:0 0 0.75rem;font-size:0.95rem">Allocation</h3>
             ${donutSegs.length ? donutChart(donutSegs, tot.ok ? fmtNum(tot.sats, "sats").replace(" sats","") : "—", "sats") : unavailableHTML("No balances", "Vault keys", "Add invoice keys to see allocation")}
@@ -2009,7 +2013,59 @@
     });
     document.getElementById("money-vault")?.addEventListener("click", openVaultModal);
     el.querySelectorAll("[data-project]").forEach((n) => n.addEventListener("click", () => openDrawer(n.dataset.project)));
+    renderPortfolioTimeSeries();
     bindTooltips();
+  }
+
+  function renderPortfolioTimeSeries() {
+    const el = document.getElementById("portfolio-timeseries");
+    if (!el) return;
+    const sorted = portfolioTotals().rows.filter((r) => r.status === "ok");
+    if (!sorted.length) { el.innerHTML = unavailableHTML("No wallet data", "wallet history"); return; }
+    // Collect all wallet histories
+    const wallets = sorted.map((r) => ({ wid: r.wid, label: r.p.name, color: accentFor(r.p.id), pts: balHistoryPoints(r.wid) }));
+    const allWithData = wallets.filter((w) => w.pts.length >= 2);
+    if (!allWithData.length) { el.innerHTML = `<p class="empty-state">Poll wallets a few times to build portfolio history</p>`; return; }
+    // Compute portfolio total per unique timestamp (sum across wallets at nearest point)
+    const allTs = new Set();
+    allWithData.forEach((w) => w.pts.forEach((p) => allTs.add(p.t)));
+    const sortedTs = [...allTs].sort();
+    const series = [];
+    // For wallets without history, their balance is the current polled value as constant
+    const currentSats = {};
+    sorted.forEach((r) => { currentSats[r.wid] = Number(r.sats); });
+    sortedTs.forEach((ts) => {
+      let total = 0;
+      allWithData.forEach((w) => {
+        // nearest point at or before this timestamp
+        let val = null;
+        for (let i = w.pts.length - 1; i >= 0; i--) {
+          if (w.pts[i].t <= ts) { val = Number(w.pts[i].v); break; }
+        }
+        total += val != null ? val : (currentSats[w.wid] || 0);
+      });
+      series.push({ t: ts, v: total });
+    });
+    // Also include current total as last point
+    const currentTotal = sorted.reduce((s, r) => s + Number(r.sats), 0);
+    const lastTs = sortedTs[sortedTs.length - 1];
+    if (series.length && series[series.length - 1].v !== currentTotal) series.push({ t: new Date().toISOString(), v: currentTotal });
+    const color = "#f59e0b";
+    if (series.length < 2) { el.innerHTML = `<p class="empty-state">Not enough data points yet — keep polling</p>`; return; }
+    // Render: big sparkline + time labels
+    const pts = series.map((p) => p.v);
+    const W = Math.min(780, el.clientWidth - 40 || 400);
+    el.innerHTML = `
+      <div class="flex justify-between mono" style="font-size:0.65rem;color:var(--ink-faint);margin-bottom:0.2rem">
+        <span>${esc(fmtTime(sortedTs[0]))}</span>
+        <span>now</span>
+      </div>
+      ${sparkline(pts, color, W, 64)}
+      <div class="flex justify-between mono" style="font-size:0.72rem;margin-top:0.25rem">
+        <span style="color:var(--ink-dim)">${esc(fmtNum(pts[0], "sats"))}</span>
+        <span style="color:var(--accent-theme);font-weight:600">${esc(fmtNum(pts[pts.length-1], "sats"))}</span>
+      </div>
+      <p class="mono mt-2" style="font-size:0.55rem;color:var(--ink-faint)">${allWithData.length}/${sorted.length} wallets with history · auto-updates every 60s</p>`;
   }
 
   function renderWallets() {
