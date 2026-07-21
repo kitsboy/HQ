@@ -1,3 +1,22 @@
+### 2026-07-21 — Kimi round 2 · HQ v3.5.0–4 (version auto-stamp, portfolio chart, live API badge, GH push, Concert tab)
+
+**What changed (THOR → `kitsboy/HQ` main):**
+- v3.5.0: `scripts/stamp-version.mjs` — reads package.json version, stamps into all 7 locations (title, subtitle, footer, HTML comment, hq.js header + HQ_VERSION, package.json). Single source of version truth. `npm run stamp` runs on every build and in GH Action.
+- v3.5.1: Portfolio over time chart in Money tab — aggregates all wallet history snapshots from localStorage into a combined portfolio-balance sparkline, with first/last sats labels
+- v3.5.2: live API badge on cards (green pulse pill vs "static" chip), satohash stamp hero counter when live API active
+- v3.5.3: "Push to GitHub" button in Docs editor — uses Vault GitHub PAT to push edited .md files via GH Contents API (GET SHA → PUT with commit message). Clears local override on success.
+- v3.5.4: Concert tab — all-project KPI comparison table (rows = metric keys, columns = projects, colored headers, delta indicators, category legend)
+
+**Key lesson:** GH Action deploy.yml has its OWN inline build step — any new asset (js/css/png) must be added there AND to package.json build, or the live site silently 404s it.
+
+**Key lesson #2:** Version strings were stale in 7 places (title said v3.2 long after code was at 3.4+). Now stamped from package.json — never manually update versions.
+
+**Still to do:** Cam re-adds Vault keys on prod if browser data was cleared · product live metrics beyond satohash · CF Web Analytics beacons per ANALYTICS-PLAN · Grok: do NOT touch gate.js or the design system without reading docs/AGENT-GUARDRAILS.md.
+
+**Next for Grok:** Read docs/AGENT-GUARDRAILS.md + DESIGN-CONTEXT.md + schemas/design-tokens.json BEFORE any HQ UI work. Additive changes only. Login smoke test mandatory after gate-adjacent edits. Version auto-stamp means just bump `package.json version` and run `npm run build`.
+
+---
+
 ### 2026-07-21 — Kimi goodbye · HQ v3.3 → v3.4.4 (gate fix saga + protection layer)
 
 **What changed (THOR → `kitsboy/HQ` main):**

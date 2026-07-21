@@ -10,7 +10,7 @@ _Updated: 2026-07-21 (goodbye — v3.4.4 gate fix + Vault v2 + ember theme + pro
 | Pages preview | https://giveabit-hq.pages.dev |
 | GitHub | https://github.com/kitsboy/HQ |
 | CF Pages project | `giveabit-hq` (account Kitsboy) |
-| App version | **v3.4.4** (gate build 2026-07-21c, `HQ_VERSION` in `hq.js`) |
+| App version | **v3.5.4** (stamp-package, gate build 2026-07-21c, `npm run stamp` auto-versioning) |
 | LNbits proxy Worker | `giveabit-lnbits-proxy` · https://giveabit-lnbits-proxy.kitsboy.workers.dev |
 | LNbits upstream (for Worker) | `http://api.satohash.io:5102` |
 | Health (proxy) | https://giveabit-lnbits-proxy.kitsboy.workers.dev/health |
@@ -55,11 +55,11 @@ _Updated: 2026-07-21 (goodbye — v3.4.4 gate fix + Vault v2 + ember theme + pro
 
 | Ver | What |
 |-----|------|
-| **v3.4.4** | Standalone `gate.js` + CI copy fix + no-cache headers — login bulletproof (puppeteer-verified live) |
-| **v3.4.2/3** | Gate iterations (config hash → static hash) |
-| **v3.4.1** | Legacy passphrase support, mobile, cross-browser, auto-lock |
-| **v3.4.0** | Gate restored, Vault v2 (Keys/Feeds/GitHub/Extra tabs + export/import), ember default theme, favicon, footer, link buttons, design tokens |
-| **v3.3.0** | Porcelain light theme, MD editor w/ browser overrides, live pulse 5m poll, radial gauges, THOR host vitals, ANALYTICS-PLAN |
+| **v3.5.4** | Concert tab — all-project KPI comparison table (rows=metrics × cols=projects) |
+| **v3.5.3** | Save edited docs to GitHub — Push to Git button in Docs editor via Vault PAT |
+| **v3.5.2** | Live API badge on cards (green pulse pill) + satohash stamp hero counter |
+| **v3.5.1** | Portfolio over time chart in Money tab (aggregates wallet history) |
+| **v3.5.0** | `scripts/stamp-version.mjs` — single source of version truth from package.json; all 7 stale version strings fixed; stamp runs on every build |
 | **v3.2.0** | LNbits money layer: balances on cards, Money cockpit, history sparklines, mega drawer |
 
 ## Secrets
