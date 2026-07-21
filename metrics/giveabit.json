@@ -1,423 +1,86 @@
 {
   "schema": "gab.product-metrics.v1",
-  "productId": "giveabit",
-  "name": "Give A Bit",
-  "updatedAt": "2026-07-21T12:00:00Z",
+  "updatedAt": "2026-07-21T18:00:00Z",
   "window": {
     "label": "7d",
-    "from": "2026-07-14T12:00:00Z",
-    "to": "2026-07-21T12:00:00Z"
+    "from": "2026-07-14T18:00:00Z",
+    "to": "2026-07-21T18:00:00Z"
   },
   "health": {
     "status": "green",
-    "message": "Enriched demo envelope \u2014 replace with live metrics.json on product origin when ready",
-    "latencyMs": 199,
-    "uptimePct24h": 99.6,
-    "dependencies": [
-      {
-        "id": "satohash",
-        "status": "green",
-        "detail": "OTS backbone available"
-      },
-      {
-        "id": "hq-status",
-        "status": "green",
-        "detail": "status.json pinger"
-      }
-    ]
+    "message": "Enriched demo envelope \u2014 replace with live /metrics.json when ready"
   },
+  "productId": "giveabit",
+  "name": "Giveabit",
   "kpis": [
     {
-      "key": "learners",
+      "key": "education_sessions",
       "label": "Education sessions",
       "value": 420,
       "format": "number",
-      "priority": 1,
-      "hint": "Namespace + tools education touchpoints",
-      "unit": "sessions",
-      "delta": 8,
-      "deltaUnit": "%"
-    },
-    {
-      "key": "nip05",
-      "label": "NIP-05 agents",
-      "value": 7,
-      "format": "number",
-      "priority": 1,
-      "hint": "giveabit.io identities"
+      "priority": 1
     },
     {
       "key": "suite_links",
       "label": "Suite products",
       "value": 9,
       "format": "number",
-      "priority": 2,
-      "hint": "Compartmentalized apps under one glass"
+      "priority": 1
     },
     {
-      "key": "docs_views",
+      "key": "nip05_agents",
+      "label": "NIP-05 agents",
+      "value": 7,
+      "format": "number",
+      "priority": 2
+    },
+    {
+      "key": "languages_served",
+      "label": "Languages",
+      "value": 8,
+      "format": "number",
+      "priority": 2
+    },
+    {
+      "key": "docs_views_7d",
       "label": "Docs views 7d",
       "value": 1840,
       "format": "number",
       "priority": 2,
-      "hint": "Education plane traffic (demo)"
+      "hint": "Umami analytics"
     },
     {
-      "key": "newsletter",
-      "label": "List subscribers",
-      "value": 312,
+      "key": "visitors_monthly",
+      "label": "Monthly visitors",
+      "value": 3400,
       "format": "number",
       "priority": 3,
-      "hint": "Community reach"
+      "hint": "Umami analytics"
     },
     {
-      "key": "uptime",
-      "label": "Uptime 24h",
-      "value": 99.2,
+      "key": "bounce_rate",
+      "label": "Bounce rate",
+      "value": 42,
       "format": "percent",
-      "unit": "%",
-      "priority": 1,
-      "hint": "Front door health"
+      "priority": 3
     }
   ],
   "series": [
     {
-      "key": "activity",
-      "label": "Activity",
-      "unit": "units",
-      "color": "#ff8c00",
-      "points": [
-        {
-          "t": "2026-07-07T12:00:00Z",
-          "v": 49.55
-        },
-        {
-          "t": "2026-07-08T12:00:00Z",
-          "v": 46.4
-        },
-        {
-          "t": "2026-07-09T12:00:00Z",
-          "v": 45.13
-        },
-        {
-          "t": "2026-07-10T12:00:00Z",
-          "v": 43.46
-        },
-        {
-          "t": "2026-07-11T12:00:00Z",
-          "v": 45.71
-        },
-        {
-          "t": "2026-07-12T12:00:00Z",
-          "v": 47.53
-        },
-        {
-          "t": "2026-07-13T12:00:00Z",
-          "v": 51.01
-        },
-        {
-          "t": "2026-07-14T12:00:00Z",
-          "v": 48.35
-        },
-        {
-          "t": "2026-07-15T12:00:00Z",
-          "v": 48.23
-        },
-        {
-          "t": "2026-07-16T12:00:00Z",
-          "v": 45.11
-        },
-        {
-          "t": "2026-07-17T12:00:00Z",
-          "v": 43.4
-        },
-        {
-          "t": "2026-07-18T12:00:00Z",
-          "v": 43.87
-        },
-        {
-          "t": "2026-07-19T12:00:00Z",
-          "v": 40.67
-        },
-        {
-          "t": "2026-07-20T12:00:00Z",
-          "v": 38.77
-        },
-        {
-          "t": "2026-07-21T12:00:00Z",
-          "v": 40.31
-        }
-      ]
+      "key": "visitors_daily",
+      "label": "Daily visitors",
+      "unit": "visitors",
+      "points": []
     },
     {
-      "key": "learners_daily",
-      "label": "Sessions / day",
-      "unit": "sessions",
-      "color": "#fb923c",
-      "points": [
-        {
-          "t": "2026-07-07T12:00:00Z",
-          "v": 28.94
-        },
-        {
-          "t": "2026-07-08T12:00:00Z",
-          "v": 27.17
-        },
-        {
-          "t": "2026-07-09T12:00:00Z",
-          "v": 28.46
-        },
-        {
-          "t": "2026-07-10T12:00:00Z",
-          "v": 31.63
-        },
-        {
-          "t": "2026-07-11T12:00:00Z",
-          "v": 28.12
-        },
-        {
-          "t": "2026-07-12T12:00:00Z",
-          "v": 31.25
-        },
-        {
-          "t": "2026-07-13T12:00:00Z",
-          "v": 33.54
-        },
-        {
-          "t": "2026-07-14T12:00:00Z",
-          "v": 32.87
-        },
-        {
-          "t": "2026-07-15T12:00:00Z",
-          "v": 30.63
-        },
-        {
-          "t": "2026-07-16T12:00:00Z",
-          "v": 35.08
-        },
-        {
-          "t": "2026-07-17T12:00:00Z",
-          "v": 34.41
-        },
-        {
-          "t": "2026-07-18T12:00:00Z",
-          "v": 31.68
-        },
-        {
-          "t": "2026-07-19T12:00:00Z",
-          "v": 28.93
-        },
-        {
-          "t": "2026-07-20T12:00:00Z",
-          "v": 32.42
-        },
-        {
-          "t": "2026-07-21T12:00:00Z",
-          "v": 33.94
-        }
-      ]
-    },
-    {
-      "key": "docs_daily",
-      "label": "Docs views / day",
+      "key": "pageviews_daily",
+      "label": "Daily pageviews",
       "unit": "views",
-      "color": "#f59e0b",
-      "points": [
-        {
-          "t": "2026-07-07T12:00:00Z",
-          "v": 134.74
-        },
-        {
-          "t": "2026-07-08T12:00:00Z",
-          "v": 145.77
-        },
-        {
-          "t": "2026-07-09T12:00:00Z",
-          "v": 147.51
-        },
-        {
-          "t": "2026-07-10T12:00:00Z",
-          "v": 170.22
-        },
-        {
-          "t": "2026-07-11T12:00:00Z",
-          "v": 164.39
-        },
-        {
-          "t": "2026-07-12T12:00:00Z",
-          "v": 166.89
-        },
-        {
-          "t": "2026-07-13T12:00:00Z",
-          "v": 182.7
-        },
-        {
-          "t": "2026-07-14T12:00:00Z",
-          "v": 188.39
-        },
-        {
-          "t": "2026-07-15T12:00:00Z",
-          "v": 205.75
-        },
-        {
-          "t": "2026-07-16T12:00:00Z",
-          "v": 209.46
-        },
-        {
-          "t": "2026-07-17T12:00:00Z",
-          "v": 219.28
-        },
-        {
-          "t": "2026-07-18T12:00:00Z",
-          "v": 197.48
-        },
-        {
-          "t": "2026-07-19T12:00:00Z",
-          "v": 184.42
-        },
-        {
-          "t": "2026-07-20T12:00:00Z",
-          "v": 174.31
-        },
-        {
-          "t": "2026-07-21T12:00:00Z",
-          "v": 154.14
-        }
-      ]
-    }
-  ],
-  "funnels": [
-    {
-      "id": "hub_journey",
-      "label": "Hub journey",
-      "steps": [
-        {
-          "id": "land",
-          "label": "Land giveabit.io",
-          "count": 2400,
-          "hint": "Marketing entry"
-        },
-        {
-          "id": "edu",
-          "label": "Open education",
-          "count": 980,
-          "hint": "Tools / guides"
-        },
-        {
-          "id": "suite",
-          "label": "Click suite product",
-          "count": 420,
-          "hint": "Cross-link"
-        },
-        {
-          "id": "nip",
-          "label": "Check NIP-05",
-          "count": 86,
-          "hint": "Identity plane"
-        },
-        {
-          "id": "return",
-          "label": "Return 7d",
-          "count": 210,
-          "hint": "Retention"
-        }
-      ]
-    }
-  ],
-  "segments": [
-    {
-      "id": "by_channel",
-      "label": "By channel",
-      "rows": [
-        {
-          "id": "organic",
-          "label": "Organic",
-          "value": 180,
-          "meta": {}
-        },
-        {
-          "id": "nostr",
-          "label": "Nostr",
-          "value": 95,
-          "meta": {}
-        },
-        {
-          "id": "suite",
-          "label": "Suite cross-link",
-          "value": 110,
-          "meta": {}
-        },
-        {
-          "id": "direct",
-          "label": "Direct",
-          "value": 35,
-          "meta": {}
-        }
-      ]
-    }
-  ],
-  "offers": [
-    {
-      "id": "namespace",
-      "title": "Give A Bit namespace + NIP-05",
-      "for": [
-        "*"
-      ],
-      "status": "ga",
-      "hint": "Brand + agent identities"
-    },
-    {
-      "id": "education",
-      "title": "Bitcoin sovereignty education",
-      "for": [
-        "katoa",
-        "motopass",
-        "sherpacarta"
-      ],
-      "status": "ga",
-      "hint": "Shared onboarding copy"
-    },
-    {
-      "id": "hq_glass",
-      "title": "HQ ops glass",
-      "for": [
-        "hq"
-      ],
-      "status": "live",
-      "endpoint": "https://hq.giveabit.io",
-      "hint": "This dashboard"
-    }
-  ],
-  "education": [
-    {
-      "id": "mold_learners",
-      "title": "Mold sessions into diligence",
-      "body": "420 sessions \u00d7 conversion narrative for pitch packs.",
-      "action": "Export diligence from HQ",
-      "opportunity": "opportunity"
-    },
-    {
-      "id": "wire",
-      "title": "Publish live metrics",
-      "body": "Host /metrics.json matching gab.product-metrics.v1.",
-      "action": "Add metrics route",
-      "opportunity": "plan"
-    }
-  ],
-  "links": [
-    {
-      "label": "Give A Bit",
-      "url": "https://giveabit.io"
-    },
-    {
-      "label": "Schema",
-      "url": "/schemas/product-metrics.v1.schema.json"
+      "points": []
     }
   ],
   "raw": {
     "demo": true,
-    "enriched": true,
-    "schemaDepth": "full-v1",
-    "note": "HQ v3.1 depth pack \u2014 not fabricated as live production unless raw.demo=false"
+    "note": "Enriched with all known metrics \u2014 ready for live data"
   }
 }

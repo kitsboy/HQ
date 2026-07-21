@@ -1,383 +1,57 @@
 {
   "schema": "gab.product-metrics.v1",
-  "productId": "sherpacarta",
-  "name": "SherpaCarta",
-  "updatedAt": "2026-07-21T12:00:00Z",
+  "updatedAt": "2026-07-21T18:00:00Z",
   "window": {
     "label": "7d",
-    "from": "2026-07-14T12:00:00Z",
-    "to": "2026-07-21T12:00:00Z"
+    "from": "2026-07-14T18:00:00Z",
+    "to": "2026-07-21T18:00:00Z"
   },
   "health": {
     "status": "green",
-    "message": "Enriched demo envelope \u2014 replace with live metrics.json on product origin when ready",
-    "latencyMs": 100,
-    "uptimePct24h": 99.7,
-    "dependencies": [
-      {
-        "id": "satohash",
-        "status": "green",
-        "detail": "OTS backbone available"
-      },
-      {
-        "id": "hq-status",
-        "status": "green",
-        "detail": "status.json pinger"
-      }
-    ]
+    "message": "Enriched demo envelope \u2014 replace with live /metrics.json when ready"
   },
+  "productId": "sherpacarta",
+  "name": "Sherpacarta",
   "kpis": [
     {
-      "key": "charters",
-      "label": "Charters",
-      "value": 18,
+      "key": "articles_total",
+      "label": "Charter articles",
+      "value": 114,
       "format": "number",
-      "priority": 1,
-      "hint": "Published governance charters"
+      "priority": 1
     },
     {
-      "key": "ots",
-      "label": "OTS anchors",
-      "value": 41,
-      "format": "number",
-      "priority": 1,
-      "hint": "On-chain governance proofs"
-    },
-    {
-      "key": "signers",
+      "key": "signers_total",
       "label": "Signers",
-      "value": 264,
+      "value": 230,
       "format": "number",
-      "priority": 2,
-      "hint": "Community signatories"
+      "priority": 2
     },
     {
-      "key": "proposals",
-      "label": "Proposals 7d",
-      "value": 6,
+      "key": "languages_served",
+      "label": "Languages",
+      "value": 7,
       "format": "number",
-      "priority": 2,
-      "hint": "Governance activity"
+      "priority": 2
     },
     {
-      "key": "relays",
-      "label": "Nostr relays",
-      "value": 5,
+      "key": "visitors_monthly",
+      "label": "Monthly visitors",
+      "value": 1200,
       "format": "number",
       "priority": 3,
-      "hint": "Publication fan-out"
-    }
-  ],
-  "series": [
-    {
-      "key": "activity",
-      "label": "Activity",
-      "unit": "units",
-      "color": "#fb923c",
-      "points": [
-        {
-          "t": "2026-07-07T12:00:00Z",
-          "v": 37.69
-        },
-        {
-          "t": "2026-07-08T12:00:00Z",
-          "v": 39.49
-        },
-        {
-          "t": "2026-07-09T12:00:00Z",
-          "v": 40.66
-        },
-        {
-          "t": "2026-07-10T12:00:00Z",
-          "v": 44.48
-        },
-        {
-          "t": "2026-07-11T12:00:00Z",
-          "v": 46.0
-        },
-        {
-          "t": "2026-07-12T12:00:00Z",
-          "v": 43.02
-        },
-        {
-          "t": "2026-07-13T12:00:00Z",
-          "v": 45.67
-        },
-        {
-          "t": "2026-07-14T12:00:00Z",
-          "v": 44.72
-        },
-        {
-          "t": "2026-07-15T12:00:00Z",
-          "v": 46.31
-        },
-        {
-          "t": "2026-07-16T12:00:00Z",
-          "v": 49.85
-        },
-        {
-          "t": "2026-07-17T12:00:00Z",
-          "v": 47.79
-        },
-        {
-          "t": "2026-07-18T12:00:00Z",
-          "v": 45.57
-        },
-        {
-          "t": "2026-07-19T12:00:00Z",
-          "v": 43.28
-        },
-        {
-          "t": "2026-07-20T12:00:00Z",
-          "v": 44.08
-        },
-        {
-          "t": "2026-07-21T12:00:00Z",
-          "v": 42.93
-        }
-      ]
+      "hint": "Umami"
     },
     {
-      "key": "signers_cum",
-      "label": "Signers cumulative",
-      "unit": "n",
-      "color": "#f59e0b",
-      "points": [
-        {
-          "t": "2026-07-07T12:00:00Z",
-          "v": 244.41
-        },
-        {
-          "t": "2026-07-08T12:00:00Z",
-          "v": 251.04
-        },
-        {
-          "t": "2026-07-09T12:00:00Z",
-          "v": 247.85
-        },
-        {
-          "t": "2026-07-10T12:00:00Z",
-          "v": 252.91
-        },
-        {
-          "t": "2026-07-11T12:00:00Z",
-          "v": 250.91
-        },
-        {
-          "t": "2026-07-12T12:00:00Z",
-          "v": 253.2
-        },
-        {
-          "t": "2026-07-13T12:00:00Z",
-          "v": 263.51
-        },
-        {
-          "t": "2026-07-14T12:00:00Z",
-          "v": 272.79
-        },
-        {
-          "t": "2026-07-15T12:00:00Z",
-          "v": 267.69
-        },
-        {
-          "t": "2026-07-16T12:00:00Z",
-          "v": 268.9
-        },
-        {
-          "t": "2026-07-17T12:00:00Z",
-          "v": 267.3
-        },
-        {
-          "t": "2026-07-18T12:00:00Z",
-          "v": 260.44
-        },
-        {
-          "t": "2026-07-19T12:00:00Z",
-          "v": 268.25
-        },
-        {
-          "t": "2026-07-20T12:00:00Z",
-          "v": 273.57
-        },
-        {
-          "t": "2026-07-21T12:00:00Z",
-          "v": 271.73
-        }
-      ]
-    },
-    {
-      "key": "ots_daily",
-      "label": "OTS / day",
-      "unit": "proofs",
-      "color": "#38bdf8",
-      "points": [
-        {
-          "t": "2026-07-07T12:00:00Z",
-          "v": 2.92
-        },
-        {
-          "t": "2026-07-08T12:00:00Z",
-          "v": 3.01
-        },
-        {
-          "t": "2026-07-09T12:00:00Z",
-          "v": 2.89
-        },
-        {
-          "t": "2026-07-10T12:00:00Z",
-          "v": 2.03
-        },
-        {
-          "t": "2026-07-11T12:00:00Z",
-          "v": 1.28
-        },
-        {
-          "t": "2026-07-12T12:00:00Z",
-          "v": 1.96
-        },
-        {
-          "t": "2026-07-13T12:00:00Z",
-          "v": 2.66
-        },
-        {
-          "t": "2026-07-14T12:00:00Z",
-          "v": 2.74
-        },
-        {
-          "t": "2026-07-15T12:00:00Z",
-          "v": 3.33
-        },
-        {
-          "t": "2026-07-16T12:00:00Z",
-          "v": 3.47
-        },
-        {
-          "t": "2026-07-17T12:00:00Z",
-          "v": 2.86
-        },
-        {
-          "t": "2026-07-18T12:00:00Z",
-          "v": 2.2
-        },
-        {
-          "t": "2026-07-19T12:00:00Z",
-          "v": 1.87
-        },
-        {
-          "t": "2026-07-20T12:00:00Z",
-          "v": 2.57
-        },
-        {
-          "t": "2026-07-21T12:00:00Z",
-          "v": 3.08
-        }
-      ]
-    }
-  ],
-  "funnels": [
-    {
-      "id": "charter_journey",
-      "label": "Charter journey",
-      "steps": [
-        {
-          "id": "read",
-          "label": "Read charter",
-          "count": 1100,
-          "hint": "Education"
-        },
-        {
-          "id": "sign",
-          "label": "Sign",
-          "count": 264,
-          "hint": "Consent"
-        },
-        {
-          "id": "ots",
-          "label": "OTS anchor",
-          "count": 41,
-          "hint": "Immutability"
-        },
-        {
-          "id": "propose",
-          "label": "Propose amend",
-          "count": 28,
-          "hint": "Governance"
-        },
-        {
-          "id": "ratify",
-          "label": "Ratify",
-          "count": 6,
-          "hint": "Decision"
-        }
-      ]
-    }
-  ],
-  "segments": [
-    {
-      "id": "by_doc",
-      "label": "By document type",
-      "rows": [
-        {
-          "id": "magna",
-          "label": "Magna Carta core",
-          "value": 1,
-          "meta": {}
-        },
-        {
-          "id": "amend",
-          "label": "Amendments",
-          "value": 8,
-          "meta": {}
-        },
-        {
-          "id": "local",
-          "label": "Local charters",
-          "value": 9,
-          "meta": {}
-        }
-      ]
-    }
-  ],
-  "offers": [
-    {
-      "id": "gov_charter",
-      "title": "Digital Magna Carta",
-      "for": [
-        "giveabit",
-        "motopass"
-      ],
-      "status": "ga",
-      "hint": "Governance backbone"
-    },
-    {
-      "id": "ots_gov",
-      "title": "Governance OTS",
-      "for": [
-        "satohash"
-      ],
-      "status": "ga",
-      "hint": "Court-admissible narrative"
-    }
-  ],
-  "education": [
-    {
-      "id": "mold_signers",
-      "title": "Signers = legitimacy",
-      "body": "264 signers is the social proof KPI.",
-      "action": "Publish signer growth sparkline",
-      "opportunity": "opportunity"
-    }
-  ],
-  "links": [
-    {
-      "label": "SherpaCarta",
-      "url": "https://sherpacarta.org"
+      "key": "donations_btc",
+      "label": "BTC donations",
+      "value": 0.15,
+      "format": "number",
+      "priority": 3
     }
   ],
   "raw": {
     "demo": true,
-    "enriched": true,
-    "schemaDepth": "full-v1",
-    "note": "HQ v3.1 depth pack \u2014 not fabricated as live production unless raw.demo=false"
+    "note": "Enriched with all known metrics \u2014 ready for live data"
   }
 }

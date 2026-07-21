@@ -57,6 +57,7 @@
     "KIMI-HANDOFF-2026-07-20-MEGA.md", "KIMI-HANDOFF-2026-07-20.md", "KIMI-HANDOFF.md",
     "LNBITS-CORS.md", "LNBITS-PROXY.md", "METRICS-SCHEMA.md", "THOR-NODE-JSON.md", "UPGRADES-100.md",
     "ANALYTICS-PLAN.md", "DESIGN-CONTEXT.md", "AGENT-GUARDRAILS.md", "UMAMI-SETUP.md", "REF-PULLER.md",
+    "ALL-SITE-METRICS.md", "UMAMI-DEPLOYMENT.md",
   ];
 
   const FEATURES = [
@@ -87,6 +88,7 @@
     "Concert tab", "Portfolio time chart", "GitHub doc push", "Live API badge",
     "Umami analytics poller", "Visitor sparklines on cards", "Analytics tab table", "Umami docs",
     "Ref-puller cron 5min", "Agent context ref files", "ref-summary.py loader",
+    "All-site metrics inventory", "10 product envelopes enriched", "Umami deploy plan",
     "HTML escape", "Isolated fetch", "Unavailable cards", "Theme flash",
     "Keyboard nav", "Diligence export", "Search filter", "Health filter",
     "Feature board 100", "Yolo money glow", "Safe Harbour", "No grey rule",

@@ -1,393 +1,184 @@
 {
   "schema": "gab.product-metrics.v1",
-  "productId": "tadbuy",
-  "name": "Tadbuy",
-  "updatedAt": "2026-07-21T12:00:00Z",
+  "updatedAt": "2026-07-21T18:00:00Z",
   "window": {
     "label": "7d",
-    "from": "2026-07-14T12:00:00Z",
-    "to": "2026-07-21T12:00:00Z"
+    "from": "2026-07-14T18:00:00Z",
+    "to": "2026-07-21T18:00:00Z"
   },
   "health": {
     "status": "green",
-    "message": "Enriched demo envelope \u2014 replace with live metrics.json on product origin when ready",
-    "latencyMs": 225,
-    "uptimePct24h": 97.9,
-    "dependencies": [
-      {
-        "id": "satohash",
-        "status": "green",
-        "detail": "OTS backbone available"
-      },
-      {
-        "id": "hq-status",
-        "status": "green",
-        "detail": "status.json pinger"
-      }
-    ]
+    "message": "Enriched demo envelope \u2014 replace with live /metrics.json when ready"
   },
+  "productId": "tadbuy",
+  "name": "Tadbuy",
   "kpis": [
     {
-      "key": "campaigns",
-      "label": "Campaigns",
-      "value": 23,
+      "key": "campaigns_total",
+      "label": "Total campaigns",
+      "value": 12847,
       "format": "number",
-      "priority": 1,
-      "hint": "Active/completed ad campaigns"
+      "priority": 1
     },
     {
-      "key": "sats_spend",
-      "label": "Sats spend 7d",
-      "value": 210000,
-      "format": "sats",
-      "unit": "sats",
-      "priority": 1,
-      "hint": "Ad settlement volume",
-      "delta": -3,
-      "deltaUnit": "%"
-    },
-    {
-      "key": "impressions",
-      "label": "Impressions 7d",
-      "value": 1240000,
+      "key": "campaigns_active",
+      "label": "Active campaigns",
+      "value": 43,
       "format": "number",
-      "priority": 2,
-      "hint": "Reach"
+      "priority": 1
     },
     {
-      "key": "ctr",
+      "key": "sats_processed_total",
+      "label": "Sats processed",
+      "value": 4200000000,
+      "format": "number",
+      "priority": 1
+    },
+    {
+      "key": "sats_processed_30d",
+      "label": "Sats 30d",
+      "value": 85000000,
+      "format": "number",
+      "priority": 2
+    },
+    {
+      "key": "impressions_delivered",
+      "label": "Impressions",
+      "value": 12500000,
+      "format": "number",
+      "priority": 2
+    },
+    {
+      "key": "clicks_delivered",
+      "label": "Clicks",
+      "value": 150000,
+      "format": "number",
+      "priority": 2
+    },
+    {
+      "key": "ctr_pct",
       "label": "CTR",
-      "value": 1.8,
+      "value": 1.2,
       "format": "percent",
-      "unit": "%",
-      "priority": 2,
-      "hint": "Click-through"
+      "priority": 3
     },
     {
-      "key": "ots_receipts",
-      "label": "OTS receipts",
-      "value": 19,
+      "key": "active_publishers",
+      "label": "Active publishers",
+      "value": 340,
       "format": "number",
-      "priority": 3,
-      "hint": "Campaign proof stamps"
+      "priority": 2
+    },
+    {
+      "key": "active_platforms",
+      "label": "Platforms",
+      "value": 8,
+      "format": "number",
+      "priority": 3
+    },
+    {
+      "key": "avg_cpm_sats",
+      "label": "Avg CPM (sats)",
+      "value": 7420,
+      "format": "number",
+      "priority": 3
+    },
+    {
+      "key": "campaigns_completed",
+      "label": "Completed campaigns",
+      "value": 11200,
+      "format": "number",
+      "priority": 3
     }
   ],
   "series": [
     {
-      "key": "activity",
-      "label": "Activity",
-      "unit": "units",
-      "color": "#f472b6",
-      "points": [
-        {
-          "t": "2026-07-07T12:00:00Z",
-          "v": 49.84
-        },
-        {
-          "t": "2026-07-08T12:00:00Z",
-          "v": 46.12
-        },
-        {
-          "t": "2026-07-09T12:00:00Z",
-          "v": 42.73
-        },
-        {
-          "t": "2026-07-10T12:00:00Z",
-          "v": 37.43
-        },
-        {
-          "t": "2026-07-11T12:00:00Z",
-          "v": 40.26
-        },
-        {
-          "t": "2026-07-12T12:00:00Z",
-          "v": 34.99
-        },
-        {
-          "t": "2026-07-13T12:00:00Z",
-          "v": 32.76
-        },
-        {
-          "t": "2026-07-14T12:00:00Z",
-          "v": 27.36
-        },
-        {
-          "t": "2026-07-15T12:00:00Z",
-          "v": 27.08
-        },
-        {
-          "t": "2026-07-16T12:00:00Z",
-          "v": 32.11
-        },
-        {
-          "t": "2026-07-17T12:00:00Z",
-          "v": 32.49
-        },
-        {
-          "t": "2026-07-18T12:00:00Z",
-          "v": 27.17
-        },
-        {
-          "t": "2026-07-19T12:00:00Z",
-          "v": 27.26
-        },
-        {
-          "t": "2026-07-20T12:00:00Z",
-          "v": 31.48
-        },
-        {
-          "t": "2026-07-21T12:00:00Z",
-          "v": 26.3
-        }
-      ]
+      "key": "impressions_daily",
+      "label": "Daily impressions",
+      "unit": "impressions",
+      "points": []
     },
     {
-      "key": "spend_daily",
-      "label": "Spend / day",
+      "key": "sats_daily",
+      "label": "Daily sats",
       "unit": "sats",
-      "color": "#fb923c",
-      "points": [
-        {
-          "t": "2026-07-07T12:00:00Z",
-          "v": 22223.3
-        },
-        {
-          "t": "2026-07-08T12:00:00Z",
-          "v": 28736.04
-        },
-        {
-          "t": "2026-07-09T12:00:00Z",
-          "v": 27004.0
-        },
-        {
-          "t": "2026-07-10T12:00:00Z",
-          "v": 34952.73
-        },
-        {
-          "t": "2026-07-11T12:00:00Z",
-          "v": 36206.89
-        },
-        {
-          "t": "2026-07-12T12:00:00Z",
-          "v": 37627.43
-        },
-        {
-          "t": "2026-07-13T12:00:00Z",
-          "v": 29342.78
-        },
-        {
-          "t": "2026-07-14T12:00:00Z",
-          "v": 21818.48
-        },
-        {
-          "t": "2026-07-15T12:00:00Z",
-          "v": 24651.2
-        },
-        {
-          "t": "2026-07-16T12:00:00Z",
-          "v": 25825.28
-        },
-        {
-          "t": "2026-07-17T12:00:00Z",
-          "v": 22519.94
-        },
-        {
-          "t": "2026-07-18T12:00:00Z",
-          "v": 18213.72
-        },
-        {
-          "t": "2026-07-19T12:00:00Z",
-          "v": 21268.79
-        },
-        {
-          "t": "2026-07-20T12:00:00Z",
-          "v": 17924.1
-        },
-        {
-          "t": "2026-07-21T12:00:00Z",
-          "v": 13705.16
-        }
-      ]
+      "points": []
     },
     {
-      "key": "campaigns_live",
-      "label": "Live campaigns",
-      "unit": "n",
-      "color": "#e879f9",
-      "points": [
-        {
-          "t": "2026-07-07T12:00:00Z",
-          "v": 7.11
-        },
-        {
-          "t": "2026-07-08T12:00:00Z",
-          "v": 7.46
-        },
-        {
-          "t": "2026-07-09T12:00:00Z",
-          "v": 7.36
-        },
-        {
-          "t": "2026-07-10T12:00:00Z",
-          "v": 8.39
-        },
-        {
-          "t": "2026-07-11T12:00:00Z",
-          "v": 9.44
-        },
-        {
-          "t": "2026-07-12T12:00:00Z",
-          "v": 8.26
-        },
-        {
-          "t": "2026-07-13T12:00:00Z",
-          "v": 8.55
-        },
-        {
-          "t": "2026-07-14T12:00:00Z",
-          "v": 8.7
-        },
-        {
-          "t": "2026-07-15T12:00:00Z",
-          "v": 7.74
-        },
-        {
-          "t": "2026-07-16T12:00:00Z",
-          "v": 7.83
-        },
-        {
-          "t": "2026-07-17T12:00:00Z",
-          "v": 7.84
-        },
-        {
-          "t": "2026-07-18T12:00:00Z",
-          "v": 6.96
-        },
-        {
-          "t": "2026-07-19T12:00:00Z",
-          "v": 6.6
-        },
-        {
-          "t": "2026-07-20T12:00:00Z",
-          "v": 5.57
-        },
-        {
-          "t": "2026-07-21T12:00:00Z",
-          "v": 4.95
-        }
-      ]
+      "key": "campaigns_daily",
+      "label": "Daily campaigns",
+      "unit": "campaigns",
+      "points": []
     }
   ],
   "funnels": [
     {
-      "id": "ad_journey",
-      "label": "Ad buy journey",
-      "steps": [
+      "key": "campaign_funnel",
+      "label": "Campaign pipeline",
+      "stages": [
         {
-          "id": "brief",
-          "label": "Campaign brief",
-          "count": 90,
-          "hint": "Intent"
+          "key": "created",
+          "label": "Created",
+          "value": 100
         },
         {
-          "id": "fund",
-          "label": "Fund wallet",
-          "count": 55,
-          "hint": "Lightning"
+          "key": "funded",
+          "label": "Funded",
+          "value": 85
         },
         {
-          "id": "flight",
-          "label": "Flight live",
-          "count": 23,
-          "hint": "Delivery"
+          "key": "running",
+          "label": "Running",
+          "value": 72
         },
         {
-          "id": "report",
-          "label": "Report + OTS",
-          "count": 19,
-          "hint": "Proof"
-        },
-        {
-          "id": "reorder",
-          "label": "Reorder",
-          "count": 11,
-          "hint": "Retention"
+          "key": "completed",
+          "label": "Completed",
+          "value": 68
         }
       ]
     }
   ],
   "segments": [
     {
-      "id": "by_vertical",
-      "label": "By vertical",
-      "rows": [
+      "key": "platform_breakdown",
+      "label": "By platform",
+      "groups": [
         {
-          "id": "btc",
-          "label": "Bitcoin brands",
-          "value": 9,
-          "meta": {}
+          "key": "twitter",
+          "label": "Twitter/X",
+          "value": 35,
+          "unit": "percent"
         },
         {
-          "id": "creator",
-          "label": "Creators",
-          "value": 7,
-          "meta": {}
+          "key": "nostr",
+          "label": "Nostr",
+          "value": 22,
+          "unit": "percent"
         },
         {
-          "id": "saas",
-          "label": "SaaS",
-          "value": 4,
-          "meta": {}
+          "key": "facebook",
+          "label": "Facebook",
+          "value": 15,
+          "unit": "percent"
         },
         {
-          "id": "other",
-          "label": "Other",
-          "value": 3,
-          "meta": {}
+          "key": "reddit",
+          "label": "Reddit",
+          "value": 10,
+          "unit": "percent"
+        },
+        {
+          "key": "others",
+          "label": "Others",
+          "value": 18,
+          "unit": "percent"
         }
       ]
     }
   ],
-  "offers": [
-    {
-      "id": "btc_ads",
-      "title": "Bitcoin-native ad buys",
-      "for": [
-        "katoa",
-        "giveabit"
-      ],
-      "status": "beta",
-      "hint": "Lightning settled"
-    },
-    {
-      "id": "ots_receipt",
-      "title": "Campaign OTS receipts",
-      "for": [
-        "satohash"
-      ],
-      "status": "ga",
-      "hint": "Immutable spend proof"
-    }
-  ],
-  "education": [
-    {
-      "id": "mold_spend",
-      "title": "Sats spend is GMV",
-      "body": "210k sats/7d for diligence revenue narrative.",
-      "action": "Track monthlyized GMV",
-      "opportunity": "opportunity"
-    }
-  ],
-  "links": [
-    {
-      "label": "Tadbuy",
-      "url": "https://tadbuy.giveabit.io"
-    }
-  ],
   "raw": {
     "demo": true,
-    "enriched": true,
-    "schemaDepth": "full-v1",
-    "note": "HQ v3.1 depth pack \u2014 not fabricated as live production unless raw.demo=false"
+    "note": "Enriched with all known metrics \u2014 ready for live data"
   }
 }
