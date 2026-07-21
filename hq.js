@@ -788,6 +788,65 @@
     chip.className = "status-pill sky";
   }
 
+  /* -- Umami analytics fetcher with cached auth token -- */
+  let _umamiToken = null;
+  let _umamiTokenExp = 0;
+
+  async function umamiLogin() {
+    if (_umamiToken && Date.now() < _umamiTokenExp) return _umamiToken;
+    try {
+      const f = state.feeds || {};
+      const url = f.umamiUrl || "http://127.0.0.1:3002";
+      const r = await fetch(url + "/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: f.umamiUser || "admin", password: f.umamiPass || "umami" }),
+      });
+      if (!r.ok) return null;
+      const j = await r.json();
+      _umamiToken = j.token;
+      _umamiTokenExp = Date.now() + 3600000;
+      return _umamiToken;
+    } catch { return null; }
+  }
+
+  async function fetchUmamiStats() {
+    const token = await umamiLogin();
+    if (!token) return;
+    state.analytics = state.analytics || {};
+    const base = (state.feeds && state.feeds.umamiUrl) || "http://127.0.0.1:3002";
+    const now = Date.now();
+    const dayAgo = now - 86400000;
+    const weekAgo = now - 604800000;
+    await Promise.all(state.projects.map(async (p) => {
+      const wid = p.umamiId;
+      if (!wid) return;
+      try {
+        const statsR = await fetch(base + "/api/websites/" + wid + "/stats?startAt=" + weekAgo + "&endAt=" + now, {
+          headers: { Authorization: "Bearer " + token },
+        });
+        if (!statsR.ok) return;
+        const stats = await statsR.json();
+        // Also get pageviews series for sparklines
+        const pvR = await fetch(base + "/api/websites/" + wid + "/pageviews?startAt=" + dayAgo + "&endAt=" + now + "&unit=hour", {
+          headers: { Authorization: "Bearer " + token },
+        });
+        const pvData = pvR.ok ? await pvR.json() : null;
+        state.analytics[p.id] = {
+          pageviews: stats.pageviews || 0,
+          visitors: stats.visitors || 0,
+          visits: stats.visits || 0,
+          bounces: stats.bounces || 0,
+          totaltime: stats.totaltime || 0,
+          bounceRate: stats.visits > 0 ? Math.round((stats.bounces / stats.visits) * 100) : 0,
+          pageviewSeries: pvData ? (pvData.pageviews || []).map(function(p) { return { t: p.x, v: p.y }; }) : [],
+          visitorSeries: pvData ? (pvData.sessions || []).map(function(p) { return { t: p.x, v: p.y }; }) : [],
+          updatedAt: new Date().toISOString(),
+        };
+      } catch { /* ignore one site failure */ }
+    }));
+  }
+
   async function refreshLiveData() {
     const [statusR, thorR] = await Promise.all([
       loadData("/status.json?t=" + Date.now()),
@@ -801,6 +860,8 @@
       const r = await loadFirst(p.metricsLiveCandidates);
       if (r.ok) state.metrics[p.id] = r;
     }));
+    // Umami analytics
+    await fetchUmamiStats();
     snapUptime();
     renderPortfolioStrip();
     renderTicker();
@@ -1145,6 +1206,7 @@
         ${data.raw && data.raw.demo ? `<span class="chip">demo</span>` : ""}
         ${(data.funnels || []).length ? `<span class="chip">${data.funnels.length} funnel</span>` : ""}
         ${(data.series || []).length ? `<span class="chip">${data.series.length} series</span>` : ""}
+        ${state.analytics && state.analytics[p.id] ? `<span class="status-pill sky" style="font-size:0.58rem;padding:0.1rem 0.35rem">${esc(fmtNum(state.analytics[p.id].visitors))} vis · ${esc(state.analytics[p.id].bounceRate)}% bnc</span>` : ""}
       </div>
       <div class="card-money-row">
         ${balanceChipHTML(p, { total: _tot.sats })}
@@ -1536,6 +1598,26 @@
             </div>` : `
             <div class="kpi-cell"><div class="label">${esc(p.name)}</div><div class="value">—</div></div>`).join("")}
           </div>
+        </div>
+        <div class="analytics-panel panel span-12">
+          <h3>Umami analytics · 7-day visitors</h3>
+          <div class="table-wrap" style="overflow-x:auto">
+            <table class="data" style="min-width:100%">
+              <thead><tr><th>Site</th><th>Visitors</th><th>Pageviews</th><th>Bounce</th><th>Visits</th><th style="text-align:right">Spark</th></tr></thead>
+              <tbody>${state.projects.map((p) => {
+                const a = state.analytics && state.analytics[p.id];
+                return `<tr style="border-bottom:1px solid var(--line)">
+                  <td style="color:${escAttr(accentFor(p.id))}"><strong>${esc(p.name)}</strong></td>
+                  <td class="mono">${a ? esc(fmtNum(a.visitors)) : "—"}</td>
+                  <td class="mono">${a ? esc(fmtNum(a.pageviews)) : "—"}</td>
+                  <td class="mono">${a ? esc(a.bounceRate + "%") : "—"}</td>
+                  <td class="mono">${a ? esc(fmtNum(a.visits)) : "—"}</td>
+                  <td style="text-align:right">${a && a.visitorSeries && a.visitorSeries.length ? sparkline(a.visitorSeries, accentFor(p.id), 120, 24) : ""}</td>
+                </tr>`;
+              }).join("")}</tbody>
+            </table>
+          </div>
+          <p class="mono mt-2" style="font-size:0.6rem;color:var(--ink-faint)">From Umami analytics on THOR · 7-day window · refreshes every 5 min</p>
         </div>
         <div class="analytics-panel panel span-12">
           <h3>Suite activity overlay (series[0] per product)</h3>

@@ -26,7 +26,8 @@
     "thorNodeUrl": "/metrics/thor-node.json",
     "thorNodeFallback": "https://raw.githubusercontent.com/kitsboy/HQ/main/metrics/thor-node.json",
     "metricsBase": "/metrics",
-    "lnbitsProxyUrl": "https://giveabit-lnbits-proxy.kitsboy.workers.dev"
+    "lnbitsProxyUrl": "https://giveabit-lnbits-proxy.kitsboy.workers.dev",
+    "umamiUrl": "http://127.0.0.1:3002"
   },
   "projects": [
     {
@@ -52,7 +53,8 @@
         "sherpacarta"
       ],
       "metricsKey": "giveabit",
-      "metricsUrl": "/metrics/giveabit.json"
+      "metricsUrl": "/metrics/giveabit.json",
+      "umamiId": "5f12ff2d-f1c5-4eb3-be57-43fe317ee2d2"
     },
     {
       "id": "satohash",
@@ -80,7 +82,8 @@
         "https://api.satohash.io/metrics.json",
         "https://api.satohash.io/api/public/status",
         "https://api.satohash.io/health"
-      ]
+      ],
+      "umamiId": "720524e7-b747-4f95-8ce6-1a20fd4a599f"
     },
     {
       "id": "katoa",
@@ -103,7 +106,8 @@
         "sherpacarta"
       ],
       "metricsKey": "katoa",
-      "metricsUrl": "/metrics/katoa.json"
+      "metricsUrl": "/metrics/katoa.json",
+      "umamiId": "fa7b78d8-b121-40ff-a139-8bfab40baec5"
     },
     {
       "id": "stranded",
@@ -125,7 +129,8 @@
         "giveabit"
       ],
       "metricsKey": "stranded",
-      "metricsUrl": "/metrics/stranded.json"
+      "metricsUrl": "/metrics/stranded.json",
+      "umamiId": "f07bb222-c151-4018-81d5-a021c0a0bbdb"
     },
     {
       "id": "tadbuy",
@@ -148,7 +153,8 @@
         "katoa"
       ],
       "metricsKey": "tadbuy",
-      "metricsUrl": "/metrics/tadbuy.json"
+      "metricsUrl": "/metrics/tadbuy.json",
+      "umamiId": "e75632e3-b6f4-4fa3-9ec5-8b3107adf783"
     },
     {
       "id": "motopass",
@@ -171,7 +177,8 @@
         "sherpacarta"
       ],
       "metricsKey": "motopass",
-      "metricsUrl": "/metrics/motopass.json"
+      "metricsUrl": "/metrics/motopass.json",
+      "umamiId": "dd982c5b-f27a-40e3-924b-4ea1e64d5f8a"
     },
     {
       "id": "sherpacarta",
@@ -195,7 +202,8 @@
         "motopass"
       ],
       "metricsKey": "sherpacarta",
-      "metricsUrl": "/metrics/sherpacarta.json"
+      "metricsUrl": "/metrics/sherpacarta.json",
+      "umamiId": "9b6f05bf-286e-4b21-9094-1d675f9b4442"
     },
     {
       "id": "openstrata",
@@ -217,7 +225,8 @@
         "giveabit"
       ],
       "metricsKey": "openstrata",
-      "metricsUrl": "/metrics/openstrata.json"
+      "metricsUrl": "/metrics/openstrata.json",
+      "umamiId": "b918844c-2503-4dcd-bef2-66c103a0ee13"
     },
     {
       "id": "btcminiscript",
@@ -239,7 +248,8 @@
         "giveabit"
       ],
       "metricsKey": "btcminiscript",
-      "metricsUrl": "/metrics/btcminiscript.json"
+      "metricsUrl": "/metrics/btcminiscript.json",
+      "umamiId": "b1e329e3-0064-40e6-bca4-c3cce1a1fe32"
     }
   ],
   "gate": {
