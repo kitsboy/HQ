@@ -1,6 +1,6 @@
 # HQ SOURCE OF TRUTH
 
-_Updated: 2026-07-21 (goodbye — v3.2.0 money pack + visual depth overhaul)_
+_Updated: 2026-07-21 (goodbye — v3.4.4 gate fix + Vault v2 + ember theme + protection layer)_
 
 ## Live
 
@@ -10,18 +10,29 @@ _Updated: 2026-07-21 (goodbye — v3.2.0 money pack + visual depth overhaul)_
 | Pages preview | https://giveabit-hq.pages.dev |
 | GitHub | https://github.com/kitsboy/HQ |
 | CF Pages project | `giveabit-hq` (account Kitsboy) |
-| App version | **v3.2.0** (`HQ_VERSION` in `hq.js`) |
+| App version | **v3.4.4** (gate build 2026-07-21c, `HQ_VERSION` in `hq.js`) |
 | LNbits proxy Worker | `giveabit-lnbits-proxy` · https://giveabit-lnbits-proxy.kitsboy.workers.dev |
 | LNbits upstream (for Worker) | `http://api.satohash.io:5102` |
 | Health (proxy) | https://giveabit-lnbits-proxy.kitsboy.workers.dev/health |
+
+## Login
+
+| What | Detail |
+|------|--------|
+| Gate | `gate.js` — standalone script, loaded before `hq.js` |
+| Passphrase | SHA-256 known-answer hash constant inside `gate.js` (Cam holds the passphrase) |
+| Session | `sessionStorage hq_gate_ok_v2` per tab · **L** locks · auto-lock after 30 min idle |
+| Recovery | Cam asks THOR to re-bake a new hash constant — no browser state can lock him out |
+| **Do not** | edit gate.js without running the login smoke test (see `docs/AGENT-GUARDRAILS.md`) |
 
 ## Code layout
 
 | Path | Role |
 |------|------|
-| `control-panel.html` | Thin shell (tabs, vault modal, drawer, CDN fonts) |
-| `hq.css` | Design system — 4 themes (stone/slate/ink/aurora), money pack, surfaces |
-| `hq.js` | App logic — data layer, tabs, LNbits money, drawer, charts |
+| `control-panel.html` | Thin shell (tabs, gate, vault modal, drawer, CDN fonts) |
+| `gate.js` | **Login — standalone, zero deps, never refactor casually** |
+| `hq.css` | Design system — 6 themes (ember default, porcelain, stone, slate, ink, aurora) |
+| `hq.js` | App logic — data layer, tabs, LNbits money, drawer, charts, MD editor, live pulse |
 | `workers/lnbits-proxy/` | Cloudflare Worker — balance proxy |
 | `projects.json` | Project registry + feeds (`lnbitsProxyUrl`, wallet ids) |
 | `agents.json` | Agent personas + NIP-05 |
@@ -29,21 +40,27 @@ _Updated: 2026-07-21 (goodbye — v3.2.0 money pack + visual depth overhaul)_
 | `metrics/*.json` | Product envelopes + `thor-node.json` + `ecosystem-map.json` |
 | `docs/projects/*.md` | Per-project data inventory packs |
 | `schemas/*.schema.json` | Metrics & node contracts |
+| `schemas/design-tokens.json` | **Design tokens — the visual contract** |
+| `docs/DESIGN-CONTEXT.md` | **Design system rules — read before any UI edit** |
+| `docs/AGENT-GUARDRAILS.md` | **Protection layer — mandatory for all agents** |
+| `docs/ANALYTICS-PLAN.md` | Suite analytics roll-out plan |
 | `status.json` | Uptime from pinger |
 | `scripts/status-ping.mjs` | Suite HTTP pinger |
 | `scripts/stamp-handoff.mjs` | Grok/Kimi handoff stamp |
-| `pages/_headers` `_redirects` | CF Pages edge |
-| `.github/workflows/deploy.yml` | Deploy on push (copies `hq.css`/`hq.js` + docs) |
+| `pages/_headers` `_redirects` | CF Pages edge (no-cache on HTML/JS) |
+| `.github/workflows/deploy.yml` | Deploy on push — **must copy gate.js + favicons** |
 | `.github/workflows/status-pinger.yml` | Status every 15m |
 
 ## Version history (recent)
 
 | Ver | What |
 |-----|------|
+| **v3.4.4** | Standalone `gate.js` + CI copy fix + no-cache headers — login bulletproof (puppeteer-verified live) |
+| **v3.4.2/3** | Gate iterations (config hash → static hash) |
+| **v3.4.1** | Legacy passphrase support, mobile, cross-browser, auto-lock |
+| **v3.4.0** | Gate restored, Vault v2 (Keys/Feeds/GitHub/Extra tabs + export/import), ember default theme, favicon, footer, link buttons, design tokens |
+| **v3.3.0** | Porcelain light theme, MD editor w/ browser overrides, live pulse 5m poll, radial gauges, THOR host vitals, ANALYTICS-PLAN |
 | **v3.2.0** | LNbits money layer: balances on cards, Money cockpit, history sparklines, mega drawer |
-| **v3.1.0** | Depth pack: enriched envelopes, project MD packs, Analytics/Matrix/Coverage |
-| **v3.0.0** | Visual overhaul: split SPA, 4 tinted themes, no B/W/grey |
-| **v2.7.0** | LNbits Cloudflare proxy for live balances |
 
 ## Secrets
 
@@ -51,7 +68,7 @@ _Updated: 2026-07-21 (goodbye — v3.2.0 money pack + visual depth overhaul)_
 |--------|--------|---------|
 | LNbits **invoice** keys | Browser Vault (or Worker `WALLETS_JSON`) | Balances |
 | HQ **proxy token** | Browser Vault (`proxyToken`) = Worker `PROXY_TOKEN` | Auth to proxy |
-| GitHub PAT | Browser Vault only (legacy GH write features) | Docs / private GH |
+| GitHub PAT | Browser Vault → GitHub tab (fine-grained, contents:write on HQ only) | Future save-to-git for edited docs |
 | Worker `LNBITS_BASE_URL` | CF Worker secret | Upstream LNbits |
 | Worker `PROXY_TOKEN` | CF Worker secret | Bearer for HQ |
 | `CLOUDFLARE_API_TOKEN` | GitHub Actions secrets | Deploy |

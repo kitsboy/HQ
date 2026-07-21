@@ -1,87 +1,91 @@
 {
-  "schema": "gab.handoff.v1",
-  "updatedAt": "2026-07-21T12:00:00.000Z",
-  "agents": {
-    "grok": {
-      "lastSeen": "2026-07-21T12:00:00.000Z",
-      "focus": "HQ",
-      "notes": [
-        {
-          "t": "2026-07-21T12:00:00.000Z",
-          "summary": "Goodbye 2026-07-21: HQ v3.2.0 money pack + v3.0/3.1 visual+depth overhaul pushed; docs/SOT refreshed"
-        },
-        {
-          "t": "2026-07-20T07:24:46.644Z",
-          "summary": "Goodbye 2026-07-20: HQ v2.7.0 + LNbits proxy live; Cam confirmed balances; docs+MASTER-BRAIN ingest updated"
-        }
-      ]
+ "schema": "gab.handoff.v1",
+ "updatedAt": "2026-07-21T17:14:53.000Z",
+ "agents": {
+  "grok": {
+   "lastSeen": "2026-07-21T12:00:00.000Z",
+   "focus": "HQ",
+   "notes": [
+    {
+     "t": "2026-07-21T12:00:00.000Z",
+     "summary": "Goodbye 2026-07-21: HQ v3.2.0 money pack + v3.0/3.1 visual+depth overhaul pushed; docs/SOT refreshed"
     },
-    "kimi": {
-      "lastSeen": "2026-07-20T04:20:00.000Z",
-      "focus": "satohash-vps",
-      "notes": [
-        {
-          "t": "2026-07-20T04:20:00.000Z",
-          "summary": "v5 API deployed on THOR. /metrics.json live. LNbits CORS path documented. HQ handoff updated."
-        }
-      ]
+    {
+     "t": "2026-07-20T07:24:46.644Z",
+     "summary": "Goodbye 2026-07-20: HQ v2.7.0 + LNbits proxy live; Cam confirmed balances; docs+MASTER-BRAIN ingest updated"
     }
+   ]
   },
-  "ownership": {
-    "kitsboy/HQ": "grok",
-    "kitsboy/satohash": "shared",
-    "metrics-schema": "grok-define / kimi-publish",
-    "thor-node-json": "nova-publish / grok-display",
-    "giveabit-lnbits-proxy": "grok",
-    "lnbits-proxy": "grok"
+  "kimi": {
+   "lastSeen": "2026-07-21T17:14:53.000Z",
+   "focus": "satohash-vps",
+   "notes": [
+    {
+     "t": "2026-07-21T17:14:53.000Z",
+     "summary": "Goodbye 2026-07-21: HQ v3.3\u2192v3.4.4 \u2014 gate.js standalone + CI copy fix (login verified live), Vault v2, ember theme, MD editor, gauges, live pulse, design tokens, AGENT-GUARDRAILS protection layer"
+    },
+    {
+     "t": "2026-07-20T04:20:00.000Z",
+     "summary": "v5 API deployed on THOR. /metrics.json live. LNbits CORS path documented. HQ handoff updated."
+    }
+   ]
+  }
+ },
+ "ownership": {
+  "kitsboy/HQ": "grok",
+  "kitsboy/satohash": "shared",
+  "metrics-schema": "grok-define / kimi-publish",
+  "thor-node-json": "nova-publish / grok-display",
+  "giveabit-lnbits-proxy": "grok",
+  "lnbits-proxy": "grok"
+ },
+ "blockers": [
+  {
+   "id": "lnbits-public-harden",
+   "owner": "nova",
+   "detail": "LNbits :5102 public HTTP \u2014 firewall/tunnel/HTTPS preferred"
   },
-  "blockers": [
-    {
-      "id": "lnbits-public-harden",
-      "owner": "nova",
-      "detail": "LNbits :5102 public HTTP — firewall/tunnel/HTTPS preferred"
-    },
-    {
-      "id": "thor-exporter",
-      "owner": "nova",
-      "detail": "live thor-node.json cron from bitcoind/lnd"
-    },
-    {
-      "id": "cf-access",
-      "owner": "cam",
-      "detail": "optional Access on hq.giveabit.io"
-    }
-  ],
-  "next": [
-    {
-      "id": "cam-vault-verify",
-      "owner": "cam",
-      "title": "Vault keys on hq.giveabit.io — confirm Money tab live"
-    },
-    {
-      "id": "wallets-json-optional",
-      "owner": "cam",
-      "title": "Optional: WALLETS_JSON on proxy (keys off browser)"
-    },
-    {
-      "id": "thor-exporter",
-      "owner": "nova",
-      "title": "Cron thor-node.json from bitcoind/lnd"
-    },
-    {
-      "id": "lnbits-harden",
-      "owner": "nova",
-      "title": "Harden public LNbits :5102"
-    },
-    {
-      "id": "product-metrics-live",
-      "owner": "kimi",
-      "title": "Live /metrics.json for remaining suite products"
-    },
-    {
-      "id": "cf-access",
-      "owner": "cam",
-      "title": "Enable CF Access on hq.giveabit.io (optional)"
-    }
-  ]
+  {
+   "id": "thor-exporter",
+   "owner": "nova",
+   "detail": "live thor-node.json cron from bitcoind/lnd"
+  },
+  {
+   "id": "cf-access",
+   "owner": "cam",
+   "detail": "optional Access on hq.giveabit.io"
+  }
+ ],
+ "next": [
+  {
+   "id": "cam-vault-verify",
+   "owner": "cam",
+   "title": "Vault keys on hq.giveabit.io \u2014 confirm Money tab live"
+  },
+  {
+   "id": "wallets-json-optional",
+   "owner": "cam",
+   "title": "Optional: WALLETS_JSON on proxy (keys off browser)"
+  },
+  {
+   "id": "thor-exporter",
+   "owner": "nova",
+   "title": "Cron thor-node.json from bitcoind/lnd"
+  },
+  {
+   "id": "lnbits-harden",
+   "owner": "nova",
+   "title": "Harden public LNbits :5102"
+  },
+  {
+   "id": "product-metrics-live",
+   "owner": "kimi",
+   "title": "Live /metrics.json for remaining suite products"
+  },
+  {
+   "id": "cf-access",
+   "owner": "cam",
+   "title": "Enable CF Access on hq.giveabit.io (optional)"
+  }
+ ]
 }

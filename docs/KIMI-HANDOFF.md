@@ -1,3 +1,21 @@
+### 2026-07-21 — Kimi goodbye · HQ v3.3 → v3.4.4 (gate fix saga + protection layer)
+
+**What changed (THOR → `kitsboy/HQ` main):**
+- v3.3: porcelain light theme, MD editor (browser overrides + download + revert), live pulse 5m auto-poll, radial gauges, THOR host vitals, docs/ANALYTICS-PLAN.md
+- v3.4.0: password gate restored, Vault v2 (Keys/Feeds/GitHub-PAT/Extra tabs, export/import, per-wallet live balances), ember warm-mid default theme, favicon from giveabit.io, comprehensive footer, card link buttons, SEO/OG meta, schemas/design-tokens.json + docs/DESIGN-CONTEXT.md
+- v3.4.1: legacy PBKDF2 passphrase support, mobile + cross-browser CSS, 30-min idle auto-lock
+- v3.4.2/3: gate moved to config hash then static hash (lockout fixes)
+- v3.4.4: **gate.js standalone script + GH Action now copies gate.js/favicons (the real root-cause fix) + no-cache headers** — puppeteer-verified live: wrong pass rejected, correct pass unlocks, 9 cards render
+- docs/AGENT-GUARDRAILS.md: protection layer — five commandments + pre-push checklist + incident table
+
+**Key lesson:** GH Action deploy.yml has its OWN inline build step — any new asset (js/css/png) must be added there AND to package.json build, or the live site silently 404s it.
+
+**Still to do:** Cam re-adds Vault keys on prod if browser data was cleared · product live metrics beyond satohash · CF Web Analytics beacons per ANALYTICS-PLAN · Grok: do NOT touch gate.js or the design system without reading docs/AGENT-GUARDRAILS.md.
+
+**Next for Grok:** Read docs/AGENT-GUARDRAILS.md + DESIGN-CONTEXT.md + schemas/design-tokens.json BEFORE any HQ UI work. Additive changes only. Login smoke test mandatory after gate-adjacent edits.
+
+---
+
 ### 2026-07-21 — Grok goodbye · HQ v3.2.0 money pack
 
 **What changed (M3 → `kitsboy/HQ` main):**

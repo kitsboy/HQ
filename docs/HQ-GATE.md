@@ -1,20 +1,34 @@
-# HQ Gate (password unlock)
+# HQ Gate (login)
 
-_Note 2026-07-21:_ The **v3.x shell** is vault-first and does not re-implement the full v2.x password gate UI. Use:
+**Current implementation: `gate.js` (v3.4.4+).** A standalone script loaded before `hq.js`.
 
-1. **Browser Vault** for invoice keys / proxy token (`v` key)  
-2. Optional **Cloudflare Access** in front of `hq.giveabit.io` (see `CLOUDFLARE-ACCESS.md`)  
+## How it works
 
-Legacy gate design (PBKDF2 session unlock + AES vault) lived in the pre-split monolith. Re-wire only if Cam prioritizes gate over CF Access.
+| Piece | Detail |
+|-------|--------|
+| Check | SHA-256(`"hq-gate·" + passphrase`) compared to a hash constant inside `gate.js` |
+| Storage | None for the secret. Only a per-tab `sessionStorage hq_gate_ok_v2` flag after unlock |
+| Lock | Press **L** or the lock icon; auto-locks after 30 min idle |
+| Recovery | The passphrase hash is re-baked into `gate.js` by THOR and pushed. Browser state can never lock Cam out |
+| Change passphrase | On THOR: `python3 -c "import hashlib;print(hashlib.sha256('hq-gate·NEWPASS'.encode()).hexdigest())"` → replace `GATE_HASH` in `gate.js` → push |
 
-## Intent (historical)
+## Hard rules for agents
 
-Operator password protects Vault secrets on the public URL after unlock. Metrics still load after unlock. Pair with Cloudflare Access for a true login wall.
+1. **Do not refactor gate.js.** Its simplicity is the security model — no fetch, no storage of secrets, no legacy formats.
+2. The GitHub Action build step (`.github/workflows/deploy.yml`) **must** copy `gate.js`. A missing copy = 404 = script blocked by `nosniff` = broken login on the live site (v3.4.4 incident).
+3. After ANY gate-adjacent edit, run the puppeteer login smoke test before pushing (see `docs/AGENT-GUARDRAILS.md`).
+4. `pages/_headers` sets `Cache-Control: no-cache` on HTML/JS so stale gates can't be served.
 
-## Operator tips
+## What the gate is NOT
 
-- Prefer invoice keys only  
-- Never commit passwords or vault dumps  
-- Rotate PROXY_TOKEN if leaked  
+- Not a server-side wall. A determined attacker can read the JS. For real access control, layer **Cloudflare Access** on top — see `docs/CLOUDFLARE-ACCESS.md`.
+- Not connected to the Vault. Vault keys (LNbits invoice keys, GitHub PAT) live separately in `localStorage sovereign_deck_vault_v1` and are never in git.
 
-Safe Harbour · Give A Bit family.
+## History
+
+| When | What |
+|------|------|
+| v2.5 | First gate — PBKDF2 hash in localStorage |
+| v3.0–3.2 | Gate dropped during redesign (public) |
+| v3.4.0 | Gate restored, new hash format → lockout incident |
+| v3.4.4 | Standalone gate.js + CI fix + no-cache — verified live |

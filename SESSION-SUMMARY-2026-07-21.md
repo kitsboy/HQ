@@ -1,42 +1,33 @@
-# Session Summary — 2026-07-21
+# SESSION SUMMARY — 2026-07-21 (HQ v3.3 → v3.4.4 · gate saga · protection layer)
 
-**Chat Topic:** Full HQ front-end reconstruction, data depth expansion, and LNbits money surfaces everywhere.
+## Shipped today (kitsboy/HQ main, live on hq.giveabit.io)
 
-## Key Things We Did
-- Rebuilt HQ as split SPA: `control-panel.html` + `hq.css` + `hq.js` (v3.0)
-- Enforced hard design rule: no pure black / white / greyscale; 4 tinted themes (ink default)
-- Enriched product metrics envelopes + THOR host/storage; added `docs/projects/*` packs (v3.1)
-- Added Analytics, Matrix, Activity, Ecosystem, Coverage tabs; depth scoring; full envelope render
-- Built LNbits money layer (v3.2): balances on cards, Money cockpit, history, mega drawer, auto-poll
-- Pushed to `origin/main`; updated SOT / README / handoff docs on goodbye
+| Version | Highlights |
+|---------|-----------|
+| v3.3.0 | Porcelain light theme · MD editor (browser overrides, download, revert, edited badge) · live pulse 5m auto-poll w/ countdown chip · radial depth gauges · THOR host vitals (disk/RAM/load/uptime + breakdown) · docs/ANALYTICS-PLAN.md |
+| v3.4.0 | Password gate restored · Vault v2 (Keys/Feeds/GitHub/Extra tabs, export/import JSON, per-wallet live balance labels) · ember warm-mid default theme (6 total) · favicon + apple-touch-icon from giveabit.io · comprehensive footer · card link buttons (site/metrics/brief) · SEO/OG + noindex · schemas/design-tokens.json + docs/DESIGN-CONTEXT.md |
+| v3.4.1 | Legacy PBKDF2 passphrase acceptance · mobile + cross-browser CSS · 30-min idle auto-lock |
+| v3.4.2–3 | Gate hash → projects.json config → static constant (lockout iterations) |
+| v3.4.4 | **Root-cause fix:** gate.js standalone script; GH Action copies gate.js + favicons; no-cache headers on HTML/JS; puppeteer login test PASSED against the live site |
 
-## What We Finished
-- [x] Visual overhaul (agency-quality surfaces, themes, components)
-- [x] Depth pack (data-rich metrics UI without inventing KPIs at render time)
-- [x] Money pack (LNbits visible far beyond a wallet list)
-- [x] Comprehensive project drawer (overview / money / metrics / stack / docs / related)
-- [x] Docs refresh for v3.2 (this goodbye)
+## The gate incident (full post-mortem)
 
-## What We Are Still Aiming to Finish
-- [ ] Cam: enter Vault keys on **hq.giveabit.io** and confirm live balances in UI
-- [ ] Optional: CF Access on HQ; `WALLETS_JSON` on Worker (keys off browser)
-- [ ] Nova: real `thor-node.json` cron from bitcoind/lnd; harden LNbits `:5102`
-- [ ] Kimi/products: live `/metrics.json` for non-satohash apps (replace demo envelopes)
-- [ ] Optional: re-wire password gate from v2.x into thin shell if still wanted
-- [ ] NEXT money: payment history, invoice create, bulk send (guarded)
+1. v3.4.0 stored the passphrase hash in localStorage under a new format → Cam's old hash unreadable → locked out.
+2. v3.4.1 accepted legacy format — but Cam's browser was serving cached old HTML.
+3. v3.4.2/3 moved the hash into projects.json / a constant — deployed code was correct but **the GH Action's inline build step never copied gate.js**, so the live page loaded HTML that referenced a 404 script (blocked by nosniff).
+4. v3.4.4 fixed the workflow + added no-cache headers + a build stamp on the lock screen. Verified live with puppeteer: wrong pass rejected, correct pass unlocks, 9 cards render.
 
-## Update / Status
-As of **2026-07-21**, HQ is **v3.2.0** on `kitsboy/HQ` `main`. Production should follow CF Pages deploy from push. Money needs Cam’s Vault on the production origin to light up live sats. Metrics depth and project docs are live from static JSON/MD. LNbits proxy Worker remains the balances path.
+**Lesson banked:** deploy.yml has its own build step — every new static asset must be added there AND package.json. Also: never blame cache without checking what the server actually serves.
 
-## Key Decisions / Notes
-- Default theme **ink** (midnight neon) for ops contrast
-- Green/amber/red reserved for health; project accents are fixed map
-- Balance history is **local browser cache**, not LNbits payment ledger
-- Password gate not re-implemented in v3 shell (vault-first; CF Access optional)
-- Never put secrets in git — Vault + Worker secrets only
+## Protection layer (new)
 
-## Mission Tie-in
-HQ stays the **glass**, not a mega-app: compartmentalized products, Satohash OTS backbone, Lightning on THOR, Safe Harbour · giveabit.io · Bitcoin sovereignty first.
+- `docs/AGENT-GUARDRAILS.md` — five commandments, pre-push checklist, incident table, safe-add recipes
+- `docs/DESIGN-CONTEXT.md` + `schemas/design-tokens.json` — the visual contract (6 themes, no B/W/grey, component rules)
+- SOURCE-OF-TRUTH.md updated with login section + new layout rows
+- docs/KIMI-HANDOFF.md updated for Grok
 
-## Recovery
-Use **/whatsup** in a new chat to load this summary and continue.
+## Cam state
+
+- Login: passphrase works (verified live). Hard refresh once to drop cached old page.
+- Vault: keys may need re-entry if browser data was cleared — Vault → Keys tab.
+- Next wants: analytics beacons (plan in docs/ANALYTICS-PLAN.md), more live metrics per product, save-edited-docs-to-git via Vault PAT.
