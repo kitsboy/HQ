@@ -1,0 +1,435 @@
+{
+  "schema": "gab.ecosystem-map.v1",
+  "updatedAt": "2026-07-21T04:37:42Z",
+  "projects": [
+    {
+      "id": "satohash",
+      "name": "Satohash",
+      "url": "satohash.io",
+      "api": "api.satohash.io",
+      "github": "kitsboy/satohash",
+      "version": "5.0.0-ELITE",
+      "status": "green",
+      "health": "200",
+      "lastCommit": "14c30cd docs: Kimi mega-handoff 2026-07-20 (ops, HQ v2.5, less-chat, memory) for Grok",
+      "synced": "synced",
+      "localOnThor": true
+    },
+    {
+      "id": "hq",
+      "name": "Hq",
+      "url": "hq.giveabit.io",
+      "api": "",
+      "github": "kitsboy/HQ",
+      "version": "2.7.0",
+      "status": "green",
+      "health": "200",
+      "lastCommit": "fa8bfa9 chore: refresh status.json + thor-node [skip deploy]",
+      "synced": "synced",
+      "localOnThor": true
+    },
+    {
+      "id": "giveabit",
+      "name": "Giveabit",
+      "url": "giveabit.io",
+      "api": "",
+      "github": "kitsboy/giveabit",
+      "version": "",
+      "status": "green",
+      "health": "200",
+      "lastCommit": "",
+      "synced": "offline",
+      "localOnThor": false
+    },
+    {
+      "id": "katoa",
+      "name": "Katoa",
+      "url": "katoa.org",
+      "api": "",
+      "github": "kitsboy/katoa",
+      "version": "",
+      "status": "green",
+      "health": "200",
+      "lastCommit": "",
+      "synced": "offline",
+      "localOnThor": false
+    },
+    {
+      "id": "stranded",
+      "name": "Stranded",
+      "url": "stranded.giveabit.io",
+      "api": "",
+      "github": "kitsboy/stranded",
+      "version": "",
+      "status": "green",
+      "health": "200",
+      "lastCommit": "",
+      "synced": "offline",
+      "localOnThor": false
+    },
+    {
+      "id": "tadbuy",
+      "name": "Tadbuy",
+      "url": "tadbuy.giveabit.io",
+      "api": "",
+      "github": "kitsboy/tadbuy",
+      "version": "",
+      "status": "green",
+      "health": "200",
+      "lastCommit": "",
+      "synced": "offline",
+      "localOnThor": false
+    },
+    {
+      "id": "motopass",
+      "name": "Motopass",
+      "url": "motopass.giveabit.io",
+      "api": "",
+      "github": "kitsboy/motopass",
+      "version": "",
+      "status": "green",
+      "health": "200",
+      "lastCommit": "",
+      "synced": "offline",
+      "localOnThor": false
+    },
+    {
+      "id": "sherpacarta",
+      "name": "Sherpacarta",
+      "url": "sherpacarta.org",
+      "api": "",
+      "github": "kitsboy/sherpacarta",
+      "version": "",
+      "status": "green",
+      "health": "200",
+      "lastCommit": "",
+      "synced": "offline",
+      "localOnThor": false
+    },
+    {
+      "id": "openstrata",
+      "name": "Openstrata",
+      "url": "openstrata.giveabit.io",
+      "api": "",
+      "github": "kitsboy/openstrata",
+      "version": "",
+      "status": "green",
+      "health": "200",
+      "lastCommit": "",
+      "synced": "offline",
+      "localOnThor": false
+    },
+    {
+      "id": "btcminiscript",
+      "name": "Btcminiscript",
+      "url": "",
+      "api": "",
+      "github": "kitsboy/btcminiscript",
+      "version": "",
+      "status": "red",
+      "health": "",
+      "lastCommit": "",
+      "synced": "offline",
+      "localOnThor": false
+    }
+  ],
+  "machines": [
+    {
+      "id": "thor",
+      "name": "THOR",
+      "role": "Orchestrator + Hermes + Master Brain",
+      "host": "Contabo VPS 20",
+      "status": "green",
+      "disk": "7% used",
+      "diskFree": "360G",
+      "mem": "2.7Gi used",
+      "memAvail": "5.0Gi",
+      "load": "1.19/1.11/0.70",
+      "uptime": "up 4 days, 3 hours, 41 minutes",
+      "lastSeen": "2026-07-21"
+    },
+    {
+      "id": "m3",
+      "name": "M3",
+      "role": "Code + Grok (Mac)",
+      "host": "Cams-Laptop",
+      "status": "green",
+      "lastPush": "2026-07-20",
+      "lastSeen": "2026-07-20"
+    },
+    {
+      "id": "m4",
+      "name": "M4",
+      "role": "DEPRECATED \u2014 reference only",
+      "host": "MacBook Air M4",
+      "status": "gray",
+      "lastSeen": "2026-07-17"
+    }
+  ],
+  "agents": [
+    {
+      "id": "kimi",
+      "name": "Kimi",
+      "role": "Orchestrator + Swarm Commander",
+      "host": "THOR",
+      "status": "green"
+    },
+    {
+      "id": "grok",
+      "name": "Grok",
+      "role": "Code + Git on M3",
+      "host": "M3",
+      "status": "green"
+    },
+    {
+      "id": "mimi",
+      "name": "Mimi",
+      "role": "Creative Director",
+      "host": "THOR",
+      "status": "green"
+    },
+    {
+      "id": "ziggy",
+      "name": "Ziggy",
+      "role": "DevOps + CI/CD",
+      "host": "THOR",
+      "status": "green"
+    },
+    {
+      "id": "rosa",
+      "name": "Rosa",
+      "role": "Chief Researcher",
+      "host": "THOR",
+      "status": "green"
+    },
+    {
+      "id": "andrea",
+      "name": "Andrea",
+      "role": "Bitcoin & Privacy",
+      "host": "THOR",
+      "status": "green"
+    },
+    {
+      "id": "lenny",
+      "name": "Lenny",
+      "role": "Legal & Safe Harbour",
+      "host": "THOR",
+      "status": "green"
+    }
+  ],
+  "automations": [
+    {
+      "name": "nightly-maintenance",
+      "schedule": "0 2 * * *",
+      "enabled": true,
+      "status": "ok",
+      "icon": "\ud83d\udfe2"
+    },
+    {
+      "name": "self-improve-loop",
+      "schedule": "30 2 * * *",
+      "enabled": true,
+      "status": "ok",
+      "icon": "\ud83d\udfe2"
+    },
+    {
+      "name": "morning-pulse",
+      "schedule": "7:30 daily",
+      "enabled": true,
+      "status": "error",
+      "icon": "\ud83d\udfe1"
+    },
+    {
+      "name": "github-scan",
+      "schedule": "every 6h",
+      "enabled": true,
+      "status": "ok",
+      "icon": "\ud83d\udfe2"
+    },
+    {
+      "name": "hq-status-refresh",
+      "schedule": "every 30m",
+      "enabled": true,
+      "status": "ok",
+      "icon": "\ud83d\udfe2"
+    },
+    {
+      "name": "thor-metrics-export",
+      "schedule": "every 1h",
+      "enabled": true,
+      "status": "ok",
+      "icon": "\ud83d\udfe2"
+    }
+  ],
+  "skills": [
+    {
+      "name": "auto-git-status",
+      "ageDays": 51,
+      "status": "aging",
+      "updated": "2026-05-30"
+    },
+    {
+      "name": "browser-harness",
+      "ageDays": 51,
+      "status": "aging",
+      "updated": "2026-05-30"
+    },
+    {
+      "name": "computer-use",
+      "ageDays": 0,
+      "status": "fresh",
+      "updated": "2026-07-20"
+    },
+    {
+      "name": "current-tasks",
+      "ageDays": 4,
+      "status": "fresh",
+      "updated": "2026-07-16"
+    },
+    {
+      "name": "deployment-workflow",
+      "ageDays": 7,
+      "status": "fresh",
+      "updated": "2026-07-13"
+    },
+    {
+      "name": "dogfood",
+      "ageDays": 29,
+      "status": "fresh",
+      "updated": "2026-06-21"
+    },
+    {
+      "name": "github-sync",
+      "ageDays": 18,
+      "status": "fresh",
+      "updated": "2026-07-02"
+    },
+    {
+      "name": "hermes-desktop-plugins",
+      "ageDays": 0,
+      "status": "fresh",
+      "updated": "2026-07-20"
+    },
+    {
+      "name": "kanban-worker",
+      "ageDays": 51,
+      "status": "aging",
+      "updated": "2026-05-30"
+    },
+    {
+      "name": "nova-product-management",
+      "ageDays": 6,
+      "status": "fresh",
+      "updated": "2026-07-14"
+    },
+    {
+      "name": "project-brief",
+      "ageDays": 6,
+      "status": "fresh",
+      "updated": "2026-07-14"
+    },
+    {
+      "name": "propagate-template",
+      "ageDays": 25,
+      "status": "fresh",
+      "updated": "2026-06-26"
+    },
+    {
+      "name": "quick-backup",
+      "ageDays": 25,
+      "status": "fresh",
+      "updated": "2026-06-26"
+    },
+    {
+      "name": "satohash-orchestrator",
+      "ageDays": 4,
+      "status": "fresh",
+      "updated": "2026-07-17"
+    },
+    {
+      "name": "task",
+      "ageDays": 47,
+      "status": "aging",
+      "updated": "2026-06-03"
+    },
+    {
+      "name": "yuanbao",
+      "ageDays": 4,
+      "status": "fresh",
+      "updated": "2026-07-17"
+    }
+  ],
+  "moneyStack": [
+    {
+      "id": "lnbits",
+      "name": "LNbits",
+      "type": "Lightning Wallet Backend",
+      "port": ":5102",
+      "cors": ":5103",
+      "status": "amber"
+    },
+    {
+      "id": "lnd",
+      "name": "LND",
+      "type": "Lightning Node (Neutrino)",
+      "status": "green",
+      "detail": "Up 34 hours (healthy)"
+    },
+    {
+      "id": "satohash-api",
+      "name": "Satohash API",
+      "type": "OpenTimestamps Backbone",
+      "url": "api.satohash.io/health",
+      "status": "green"
+    },
+    {
+      "id": "redis",
+      "name": "Redis",
+      "type": "Satohash Cache",
+      "status": "green",
+      "detail": "Up 24 hours"
+    },
+    {
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "type": "LNbits Database",
+      "status": "green",
+      "detail": "Up 2 days (healthy)"
+    }
+  ],
+  "recentActivity": [
+    {
+      "repo": "hq",
+      "commit": "fa8bfa9 chore: refresh status.json + thor-node [skip deploy]",
+      "timestamp": "2026-07-21"
+    },
+    {
+      "repo": "hq",
+      "commit": "d3f036a chore: refresh status.json + thor-node [skip deploy]",
+      "timestamp": "2026-07-21"
+    },
+    {
+      "repo": "hq",
+      "commit": "c8707ba fix(ci): use || true for optional file copies in bui",
+      "timestamp": "2026-07-21"
+    },
+    {
+      "repo": "satohash",
+      "commit": "14c30cd docs: Kimi mega-handoff 2026-07-20 (ops, HQ v2.5, le",
+      "timestamp": "2026-07-21"
+    },
+    {
+      "repo": "satohash",
+      "commit": "0810dff docs: Kimi ops-clean handoff 2026-07-20",
+      "timestamp": "2026-07-21"
+    }
+  ],
+  "metadata": {
+    "projectCount": 10,
+    "agentCount": 7,
+    "machineCount": 3,
+    "activeCrons": 28,
+    "skillCount": 16,
+    "vaultJournals": 116
+  }
+}
