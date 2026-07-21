@@ -2212,6 +2212,66 @@
     try { localStorage.setItem(DOC_OVERRIDES_KEY, JSON.stringify(o)); } catch {}
   }
 
+  /* ── GitHub save: push edited docs via GH API using Vault PAT ── */
+  async function saveDocToGitHub(fn, content) {
+    const v = state.vault || {};
+    const pat = v.ghPat;
+    const repo = v.ghRepo || "kitsboy/HQ";
+    const branch = v.ghBranch || "main";
+    if (!pat) { toast("No GitHub PAT in Vault → GitHub tab", "err"); return false; }
+    // docs are at repo root: docs/<fn>
+    const ghPath = "docs/" + fn;
+    const api = `https://api.github.com/repos/${encodeURIComponent(repo)}/contents/${encodeURIComponent(ghPath)}`;
+    const encodeB64 = (str) => {
+      try { return btoa(unescape(encodeURIComponent(str))); } catch { return btoa(str); }
+    };
+    try {
+      // 1. Get current file SHA
+      const getRes = await fetch(api + "?ref=" + encodeURIComponent(branch), {
+        headers: { Authorization: "Bearer " + pat },
+      });
+      let sha = null;
+      if (getRes.ok) {
+        const meta = await getRes.json();
+        sha = meta.sha;
+      } else if (getRes.status !== 404) {
+        const err = await getRes.text().catch(() => "unknown");
+        toast("GH fetch failed: " + err.slice(0, 120), "err");
+        return false;
+      }
+      // 2. PUT new content
+      const body = {
+        message: `docs(auto): ${fn} — edited from HQ v${HQ_VERSION}`,
+        content: encodeB64(content),
+        branch,
+      };
+      if (sha) body.sha = sha;
+      const putRes = await fetch(api, {
+        method: "PUT",
+        headers: {
+          Authorization: "Bearer " + pat,
+          "Content-Type": "application/json",
+          Accept: "application/vnd.github.v3+json",
+        },
+        body: JSON.stringify(body),
+      });
+      if (putRes.ok) {
+        toast("Pushed to GitHub: " + ghPath, "ok");
+        // clear local override since it's now on remote
+        clearDocOverride(fn);
+        state.docs[fn] = null; // force re-fetch next time
+        return true;
+      } else {
+        const err = await putRes.text().catch(() => "unknown");
+        toast("GH push failed: " + (err.slice(0, 160) || putRes.status), "err");
+        return false;
+      }
+    } catch (e) {
+      toast("GH error: " + e.message, "err");
+      return false;
+    }
+  }
+
   async function loadAndShowDoc(fn) {
     const viewer = document.getElementById("doc-viewer");
     if (!viewer) return;
@@ -2255,7 +2315,8 @@
           <button type="button" class="btn btn-primary btn-sm" id="doc-save-btn"><i class="fa-solid fa-floppy-disk"></i> Save (browser)</button>
           <button type="button" class="btn btn-ghost btn-sm" id="doc-preview-btn"><i class="fa-solid fa-eye"></i> Preview</button>
           ${ov ? `<button type="button" class="btn btn-ghost btn-sm" id="doc-revert-btn"><i class="fa-solid fa-rotate-left"></i> Revert to git</button>` : ""}
-          <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">Saves to browser override · download to commit via git</span>
+          <button type="button" class="btn btn-ghost btn-sm" id="doc-ghpush-btn"><i class="fa-brands fa-github"></i> Push to GitHub</button>
+          <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">Saves to browser override · GitHub push needs PAT in Vault → GitHub tab</span>
         </div>
       </div>`;
     const editBtn = document.getElementById("doc-edit-btn");
@@ -2290,6 +2351,13 @@
       a.download = fn.split("/").pop();
       a.click();
       setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    });
+    document.getElementById("doc-ghpush-btn")?.addEventListener("click", async () => {
+      const content = docOverrides()[fn] ? docOverrides()[fn].text : ((editor && editor.value) || source);
+      // save local first
+      saveDocOverride(fn, content);
+      await saveDocToGitHub(fn, content);
+      loadAndShowDoc(fn);
     });
     bindTooltips();
   }
