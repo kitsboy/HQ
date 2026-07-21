@@ -13,7 +13,7 @@
 /hq.js
   Cache-Control: no-cache, must-revalidate
 
-/gate.js
+/sw.js
   Cache-Control: no-cache, must-revalidate
 
 /hq.css

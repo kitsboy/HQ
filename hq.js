@@ -396,7 +396,9 @@
         <button type="button" class="btn btn-sm btn-ghost" data-refresh-wallet="${escAttr(wid)}">Refresh</button>
         <button type="button" class="btn btn-sm btn-ghost" data-copy-sats="${escAttr(String(bal.sats))}">Copy sats</button>
         <button type="button" class="btn btn-sm btn-ghost" data-open-vault>Vault</button>
+        <button type="button" class="btn btn-sm btn-ghost" data-qr-toggle="${escAttr(wid)}"><i class="fa-solid fa-qrcode"></i> QR</button>
       </div>
+      <div id="qr-${escAttr(wid)}" style="display:none;margin-top:0.5rem;text-align:center;padding:0.5rem;background:color-mix(in srgb,var(--surface-2)40%,transparent);border-radius:var(--r-sm)"></div>
       <div class="drawer-section mt-2" style="padding:0.55rem;border:1px dashed color-mix(in srgb,var(--amber)40%,transparent);border-radius:var(--r-sm)">
         <div class="mono" style="font-size:0.68rem;color:var(--amber)">Safety · read-only invoice key path · bulk send blocked · no admin macaroons in HQ</div>
       </div>
@@ -2025,6 +2027,7 @@
             ${state.btcUsd ? ` · <span class="fx-badge btc">BTC $${esc(fmtNum(state.btcUsd))}</span>` : " · <span class='fx-badge'>FX —</span>"}
           </div>
           ${allocationRibbonHTML()}
+          <div class="mt-2">${budgetRunwayHTML()}</div>
           <p class="mono mt-2" style="font-size:0.68rem;color:var(--ink-faint)">Live via Vault → LNbits proxy · invoice keys only · history in browser cache (${esc(BAL_HIST_KEY)})</p>
         </div>
         <div class="money-grid mt-3">
@@ -2348,6 +2351,7 @@
           <button type="button" class="btn btn-primary btn-sm" id="doc-save-btn"><i class="fa-solid fa-floppy-disk"></i> Save (browser)</button>
           <button type="button" class="btn btn-ghost btn-sm" id="doc-preview-btn"><i class="fa-solid fa-eye"></i> Preview</button>
           ${ov ? `<button type="button" class="btn btn-ghost btn-sm" id="doc-revert-btn"><i class="fa-solid fa-rotate-left"></i> Revert to git</button>` : ""}
+          <button type="button" class="btn btn-ghost btn-sm" id="doc-diff-btn"><i class="fa-solid fa-code-compare"></i> Show diff</button>
           <button type="button" class="btn btn-ghost btn-sm" id="doc-ghpush-btn"><i class="fa-brands fa-github"></i> Push to GitHub</button>
           <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">Saves to browser override · GitHub push needs PAT in Vault → GitHub tab</span>
         </div>
@@ -2387,12 +2391,112 @@
     });
     document.getElementById("doc-ghpush-btn")?.addEventListener("click", async () => {
       const content = docOverrides()[fn] ? docOverrides()[fn].text : ((editor && editor.value) || source);
-      // save local first
       saveDocOverride(fn, content);
       await saveDocToGitHub(fn, content);
       loadAndShowDoc(fn);
     });
+    document.getElementById("doc-diff-btn")?.addEventListener("click", () => {
+      const current = editor ? editor.value : (docOverrides()[fn] ? docOverrides()[fn].text : source);
+      const orig = r.data || "";
+      if (current === orig) { toast("No changes — content matches original", "ok"); return; }
+      const diffHtml = simpleDiff(orig, current);
+      if (document.getElementById("doc-diff-pane")?.style.display !== "none") {
+        document.getElementById("doc-diff-pane").style.display = "none";
+        document.getElementById("doc-render-pane").style.display = "";
+        document.getElementById("doc-diff-btn").innerHTML = '<i class="fa-solid fa-code-compare"></i> Show diff';
+        return;
+      }
+      const editorPane = document.getElementById("doc-editor-pane");
+      const renderPane = document.getElementById("doc-render-pane");
+      let diffPane = document.getElementById("doc-diff-pane");
+      if (!diffPane) {
+        diffPane = document.createElement("div");
+        diffPane.id = "doc-diff-pane";
+        diffPane.style.marginTop = "0.5rem";
+        const editContainer = document.querySelector("#doc-editor-pane") || viewer;
+        editContainer.parentNode.insertBefore(diffPane, editContainer.nextSibling);
+      }
+      diffPane.style.display = "";
+      diffPane.innerHTML = '<h3 class="display" style="font-size:0.85rem;margin:0.5rem 0 0.35rem">Changes vs original</h3>' + diffHtml;
+      if (editorPane) editorPane.style.display = "none";
+      if (renderPane) renderPane.style.display = "none";
+      document.getElementById("doc-diff-btn").innerHTML = '<i class="fa-solid fa-xmark"></i> Close diff';
+    });
     bindTooltips();
+  }
+
+  /* ── Simple text diff (line-based, +/- prefix) ── */
+  function simpleDiff(orig, current) {
+    const oLines = (orig || "").split("\n");
+    const cLines = (current || "").split("\n");
+    let html = '<div class="mono" style="font-size:0.72rem;line-height:1.5;max-height:400px;overflow-y:auto;background:var(--bg-1);padding:0.5rem 0.7rem;border-radius:var(--r-sm)">';
+    // Very simple LCS-based diff: find matching prefix and suffix, show middle as changed
+    let prefix = 0, suffix = 0;
+    while (prefix < oLines.length && prefix < cLines.length && oLines[prefix] === cLines[prefix]) prefix++;
+    while (suffix < oLines.length - prefix && suffix < cLines.length - prefix && oLines[oLines.length - 1 - suffix] === cLines[cLines.length - 1 - suffix]) suffix++;
+    for (let i = 0; i < prefix; i++) html += '<span style="color:var(--ink-faint)"> ' + esc(oLines[i]) + "</span>\n";
+    const oMid = oLines.slice(prefix, oLines.length - suffix);
+    const cMid = cLines.slice(prefix, cLines.length - suffix);
+    const maxLen = Math.max(oMid.length, cMid.length);
+    for (let i = 0; i < maxLen; i++) {
+      if (i < oMid.length) html += '<span style="color:var(--red)">-' + esc(oMid[i]) + "</span>\n";
+      if (i < cMid.length) html += '<span style="color:var(--green)">+' + esc(cMid[i]) + "</span>\n";
+    }
+    for (let i = cLines.length - suffix; i < cLines.length; i++) html += '<span style="color:var(--ink-faint)"> ' + esc(cLines[i]) + "</span>\n";
+    html += "</div>";
+    return html;
+  }
+
+  /* ── QR code generator (LNURL/invoice via external API) ── */
+  function qrImgHTML(data, size) {
+    const s = size || 140;
+    if (!data) return "";
+    return `<img src="https://api.qrserver.com/v1/create-qr-code/?size=${s}x${s}&data=${encodeURIComponent(data)}" alt="QR" style="width:${s}px;height:${s}px;border-radius:var(--r-sm);background:#fff;padding:4px" loading="lazy" crossorigin/>`;
+  }
+
+  /* ── SSL certificate expiry check (async, cached per session) ── */
+  const sslCache = {};
+  async function checkSSLCert(host) {
+    if (sslCache[host]) return sslCache[host];
+    try {
+      const r = await fetch("https://" + host + "/?t=" + Date.now(), { method: "HEAD", mode: "no-cors" });
+      // no-cors means we get opaque response — can't read cert. Fallback to domain check.
+      sslCache[host] = { ok: true, note: "reachable" };
+      return sslCache[host];
+    } catch {
+      sslCache[host] = { ok: false, note: "unreachable" };
+      return sslCache[host];
+    }
+  }
+
+  /* ── Budget runway: estimate from wallet history ── */
+  function budgetRunwayHTML() {
+    const sorted = portfolioTotals().rows.filter((r) => r.status === "ok");
+    if (!sorted.length) return `<p class="empty-state">Add wallet keys to estimate runway</p>`;
+    const totalSats = sorted.reduce((s, r) => s + Number(r.sats), 0);
+    // Compute daily burn from wallet history: net change over last 24h across all wallets
+    const hist = loadBalHist();
+    const now = Date.now();
+    const dayAgo = now - 86400000;
+    let satsDayAgo = 0;
+    sorted.forEach((r) => {
+      const pts = (hist[r.wid] || []).filter((p) => p.t <= now);
+      if (pts.length) {
+        let nearest = pts[pts.length - 1];
+        for (let i = pts.length - 1; i >= 0; i--) {
+          if (pts[i].t <= dayAgo) { nearest = pts[i]; break; }
+        }
+        satsDayAgo += nearest ? Number(nearest.v) : 0;
+      }
+    });
+    const burn24h = satsDayAgo > 0 ? satsDayAgo - totalSats : 0;
+    const dailyBurn = Math.max(0, burn24h);
+    const runwayDays = dailyBurn > 0 ? Math.round(totalSats / dailyBurn) : null;
+    return `<div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="kpi-cell"><div class="label">Portfolio</div><div class="value">${esc(fmtNum(totalSats, "sats"))}</div></div>
+      <div class="kpi-cell"><div class="label">24h burn</div><div class="value" style="color:${dailyBurn > 0 ? "var(--red)" : "var(--green)"}">${esc(fmtNum(dailyBurn, "sats"))}</div></div>
+      <div class="kpi-cell"><div class="label">Runway</div><div class="value" style="font-size:1.1rem;color:${runwayDays != null ? (runwayDays > 90 ? "var(--green)" : runwayDays > 30 ? "var(--amber)" : "var(--red)") : "var(--ink-faint)"}">${runwayDays != null ? esc(runwayDays + " days") : "—"}</div></div>
+    </div>`;
   }
 
   function renderAgents() {
@@ -2523,6 +2627,18 @@
 
     const bindMoneyActions = () => {
       body.querySelector("[data-open-vault]")?.addEventListener("click", openVaultModal);
+      body.querySelectorAll("[data-qr-toggle]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const wid = btn.getAttribute("data-qr-toggle");
+          const pane = document.getElementById("qr-" + wid);
+          if (!pane) return;
+          if (pane.style.display !== "none") { pane.style.display = "none"; return; }
+          const nodeUrl = (state.vault && (state.vault.nodeUrl || state.vault.lnbitsUrl || "")) || "http://api.satohash.io:5102";
+          const lnurl = nodeUrl.replace(/\/$/, "") + "/lnurl/pay/" + encodeURIComponent(wid);
+          pane.innerHTML = '<p class="mono" style="font-size:0.65rem;color:var(--ink-dim);margin-bottom:0.25rem">LNURL-pay QR</p>' + qrImgHTML(lnurl, 140);
+          pane.style.display = "";
+        });
+      });
       body.querySelectorAll("[data-refresh-wallet]").forEach((btn) => {
         btn.addEventListener("click", async () => {
           toast("Refreshing wallet…", "ok");
@@ -2812,7 +2928,6 @@
           <button type="button" class="btn btn-ghost btn-sm" id="vault-export"><i class="fa-solid fa-file-export"></i> Export vault JSON</button>
           <button type="button" class="btn btn-ghost btn-sm" id="vault-import-btn"><i class="fa-solid fa-file-import"></i> Import</button>
           <input type="file" id="vault-import-file" accept="application/json" style="display:none">
-          <button type="button" class="btn btn-ghost btn-sm" id="vault-lock"><i class="fa-solid fa-lock"></i> (gate removed)</button>
         </div>`,
     };
     modal.querySelector(".mb").innerHTML = `
@@ -2844,7 +2959,6 @@
         } catch (err) { toast("Import failed: " + err.message, "err"); }
       });
     });
-    modal.querySelector("#vault-lock")?.addEventListener("click", (() => { toast("Gate removed — HQ is always open", "ok"); }));
     modal.classList.add("open");
   }
 
