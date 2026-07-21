@@ -20,6 +20,7 @@ jobs:
 
       - name: Assemble public site
         run: |
+          npm run stamp
           mkdir -p public
           mkdir -p public/metrics public/schemas public/docs public/handoff
           cp control-panel.html public/index.html
