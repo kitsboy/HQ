@@ -4,7 +4,11 @@
   "description": "Suite ops, pitch, treasury, and health glass",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#b5b0a6",
-  "theme_color": "#c45f00",
-  "lang": "en"
+  "background_color": "#7a5a3a",
+  "theme_color": "#ff8c00",
+  "lang": "en",
+  "icons": [
+    { "src": "/favicon.png", "sizes": "120x120", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "120x120", "type": "image/png", "purpose": "any" }
+  ]
 }

@@ -5,6 +5,32 @@
 
 /* ─── THEMES (full palettes, never neutral greys) ─── */
 
+[data-theme="ember"] {
+  /* hearthglass · warm mid-tone bronze/amber — neither white nor dark */
+  --bg-0: #7a5a3a;
+  --bg-1: #6b4c30;
+  --bg-2: #5d4128;
+  --surface: #8a6844;
+  --surface-2: #94714c;
+  --surface-hi: #a07d54;
+  --surface-grad: linear-gradient(155deg, #9a744c 0%, #84603e 48%, #6e4e32 100%);
+  --surface-grad-2: linear-gradient(160deg, #a27c52 0%, #8a6642 55%, #765636 100%);
+  --ink: #fdf3e3;
+  --ink-dim: #f0d9b8;
+  --ink-faint: #d4b48c;
+  --line: rgba(255, 214, 150, 0.28);
+  --line-hi: rgba(255, 190, 100, 0.55);
+  --glow-soft: rgba(255, 170, 70, 0.22);
+  --shadow: rgba(60, 36, 14, 0.5);
+  --shine: rgba(255, 230, 190, 0.16);
+  --scroll-thumb: rgba(255, 200, 130, 0.5);
+  --void-grad: radial-gradient(ellipse 120% 80% at 12% -10%, #8a6640 0%, transparent 52%),
+               radial-gradient(ellipse 90% 70% at 88% 105%, #644628 0%, transparent 46%),
+               linear-gradient(165deg, #7a5a3a 0%, #6b4c30 42%, #5d4128 100%);
+  --accent-theme: #ffb347;
+  --accent-theme-2: #ff8c00;
+}
+
 [data-theme="porcelain"] {
   /* sunlit atelier · warm light, never white, never grey */
   --bg-0: #f2e9dc;
@@ -563,6 +589,7 @@ input:focus, textarea:focus, select:focus {
   box-shadow: 0 0 12px currentColor;
   transform: scale(1.08);
 }
+.theme-dot[data-theme-pick="ember"] { background: linear-gradient(135deg, #ffb347, #6b4c30); color: #ffb347; }
 .theme-dot[data-theme-pick="porcelain"] { background: linear-gradient(135deg, #f6ecda, #c98f2e); color: #d97706; }
 .theme-dot[data-theme-pick="stone"] { background: linear-gradient(135deg, #c47840, #5a3020); color: #c47840; }
 .theme-dot[data-theme-pick="slate"] { background: linear-gradient(135deg, #38bdf8, #0a3040); color: #38bdf8; }
@@ -3295,3 +3322,96 @@ table.data .name-cell {
 [data-theme="porcelain"] .topbar {
   backdrop-filter: blur(14px) saturate(1.1);
 }
+
+/* ─── v3.4: gate, footer, link buttons, ember legibility ─── */
+
+.gate {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--void-grad), var(--bg-0);
+  z-index: 300;
+  padding: 1rem;
+}
+.gate-card {
+  width: min(420px, 100%);
+  background: var(--surface-grad);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  padding: 2.25rem 2rem;
+  box-shadow: 0 24px 64px -24px var(--shadow), inset 0 1px 0 var(--shine);
+  text-align: center;
+}
+.gate-mark {
+  width: 56px; height: 56px;
+  font-size: 1.6rem;
+  margin: 0 auto 1rem;
+}
+.gate-card h1 { margin: 0 0 0.35rem; font-size: 1.5rem; }
+.gate-sub { color: var(--ink-dim); font-size: 0.85rem; margin: 0 0 1.25rem; }
+.gate-input {
+  width: 100%;
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  color: var(--ink);
+  padding: 0.7rem 0.9rem;
+  font-size: 0.95rem;
+  margin-bottom: 0.6rem;
+  font-family: var(--font-body);
+}
+.gate-input:focus { outline: none; border-color: var(--line-hi); box-shadow: 0 0 0 3px var(--glow-soft); }
+.gate-card .btn { width: 100%; margin-top: 0.35rem; }
+.gate-note { font-size: 0.72rem; color: var(--ink-faint); margin: 0.6rem 0 0; }
+#gate-error { color: var(--red); min-height: 1rem; }
+
+/* Comprehensive footer */
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.5rem 1.4rem;
+  border-top: 1px solid var(--line);
+  color: var(--ink-faint);
+  font-size: 0.75rem;
+}
+.footer-links { display: flex; gap: 0.9rem; flex-wrap: wrap; }
+.footer-links a { color: var(--ink-dim); text-decoration: none; border-bottom: 1px dotted var(--line-hi); }
+.footer-links a:hover { color: var(--accent-theme); }
+
+/* Link buttons on cards */
+.card-links { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.55rem; }
+.link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.68rem;
+  padding: 0.28rem 0.6rem;
+  border-radius: 99px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface-2) 70%, transparent);
+  color: var(--ink-dim);
+  text-decoration: none;
+  transition: all var(--dur) var(--ease-out);
+}
+.link-btn:hover {
+  border-color: var(--line-hi);
+  color: var(--ink);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -6px var(--shadow);
+}
+
+/* Ember theme contrast boosts */
+[data-theme="ember"] .card,
+[data-theme="ember"] .panel {
+  border-color: var(--line);
+  box-shadow: 0 2px 4px rgba(60,36,14,0.25), 0 14px 34px -18px rgba(60,36,14,0.55), inset 0 1px 0 var(--shine);
+}
+[data-theme="ember"] .topbar { backdrop-filter: blur(14px) saturate(1.15); }
+[data-theme="ember"] .chip { background: color-mix(in srgb, var(--bg-1) 55%, transparent); }
+[data-theme="ember"] .kpi-cell { background: color-mix(in srgb, var(--bg-1) 45%, transparent); }
+[data-theme="ember"] .metric-bar { background: color-mix(in srgb, var(--bg-1) 60%, transparent); }

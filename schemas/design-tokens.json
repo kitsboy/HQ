@@ -1,0 +1,60 @@
+{
+  "$schema": "gab.design-tokens.v1",
+  "name": "Give A Bit HQ Design Tokens",
+  "updated": "2026-07-21",
+  "color": {
+    "accent": {
+      "orange":  { "value": "#ff8c00", "use": "Give A Bit · money · primary CTA" },
+      "sky":     { "value": "#38bdf8", "use": "Satohash · pipes · info" },
+      "violet":  { "value": "#a78bfa", "use": "Katoa · metrics lab" },
+      "green":   { "value": "#22c55e", "use": "health ok (reserved for status)" },
+      "pink":    { "value": "#f472b6", "use": "Tadbuy · analytics" },
+      "amber":   { "value": "#f59e0b", "use": "warnings · FX" },
+      "red":     { "value": "#ef4444", "use": "errors (reserved for status)" },
+      "teal":    { "value": "#2dd4bf", "use": "Stranded · THOR · system" },
+      "fuchsia": { "value": "#e879f9", "use": "MotoPass · matrix" },
+      "cyan":    { "value": "#67e8f9", "use": "OpenStrata · activity" },
+      "warm":    { "value": "#fb923c", "use": "SherpaCarta · pipeline" },
+      "lilac":   { "value": "#c084fc", "use": "BTCminiscript · ecosystem" }
+    },
+    "rules": [
+      "No pure black (#000), no pure white (#fff), no neutral grey (R=G=B).",
+      "Green/amber/red are status semantics only — never project identity colors.",
+      "Every surface carries a tinted gradient + tinted border, never flat."
+    ]
+  },
+  "theme": {
+    "ember":     { "mood": "hearthglass — warm mid-tone bronze (DEFAULT)", "bg0": "#7a5a3a", "ink": "#fdf3e3", "accent": "#ffb347" },
+    "porcelain": { "mood": "sunlit atelier — warm light parchment",        "bg0": "#f2e9dc", "ink": "#352718", "accent": "#d97706" },
+    "stone":     { "mood": "warm dark clay/terracotta",                     "bg0": "#1a100c", "ink": "#f5e6d4", "accent": "#ff8c00" },
+    "slate":     { "mood": "glacier — deep cold blue-teal",                 "bg0": "#06141c", "ink": "#d4f0f8", "accent": "#38bdf8" },
+    "ink":       { "mood": "midnight neon — near-black purple",             "bg0": "#0c0618", "ink": "#ece4ff", "accent": "#a78bfa" },
+    "aurora":    { "mood": "violet nebula — glow-heavy magenta",            "bg0": "#100818", "ink": "#f8e8ff", "accent": "#f472b6" }
+  },
+  "font": {
+    "display": { "value": "'Syne', system-ui, sans-serif", "use": "headings, numbers, hero" },
+    "body":    { "value": "'Figtree', system-ui, sans-serif", "use": "UI text" },
+    "mono":    { "value": "'JetBrains Mono', ui-monospace, monospace", "use": "paths, keys, timestamps" }
+  },
+  "radius": { "xs": "6px", "sm": "10px", "md": "14px", "lg": "18px", "xl": "24px" },
+  "motion": {
+    "easeOut":   "cubic-bezier(0.22, 1, 0.36, 1)",
+    "easeSpring":"cubic-bezier(0.34, 1.4, 0.64, 1)",
+    "dur":       "220ms",
+    "durSlow":   "420ms"
+  },
+  "component": {
+    "card":       "left 4px project-accent border · surface gradient · hover lift+glow",
+    "panel":      "surface gradient · 1px tinted border · inner top shine",
+    "btnPrimary": "accent gradient fill · glow bloom on hover · press recede",
+    "btnGhost":   "transparent · tinted border · fill on hover",
+    "statusPill": "green/amber/red semantic · pulse on live status",
+    "gauge":      "SVG radial arc, 56px, project/status color",
+    "metricBar":  "gradient fill bar · colorClass green/amber/red thresholds",
+    "linkBtn":    "pill link, opens external, dotted icon prefix",
+    "chip":       "small tinted label, mono option",
+    "ticker":     "scrolling status strip, pause on hover",
+    "drawer":     "right slide-over XL · tabbed (overview/money/metrics/stack/docs/related)",
+    "gate":       "fullscreen lock · SHA-256 passphrase hash · session unlock"
+  }
+}

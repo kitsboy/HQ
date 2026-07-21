@@ -15,6 +15,8 @@
   const SNAP_KEY = "hq_uptime_snap_v1";
   const BAL_HIST_KEY = "hq_wallet_hist_v1";
   const DOC_OVERRIDES_KEY = "hq_doc_overrides_v1";
+  const GATE_KEY = "hq_gate_v1";
+  const GATE_SESSION = "hq_gate_session_v1";
   const BAL_POLL_MS = 60000;
   const DATA_POLL_MS = 300000;
 
@@ -55,7 +57,7 @@
     "CLOUDFLARE-ACCESS.md", "ECOSYSTEM-MAP.md", "HQ-GATE.md", "KIMI-GROK-HANDOFF.md",
     "KIMI-HANDOFF-2026-07-20-MEGA.md", "KIMI-HANDOFF-2026-07-20.md", "KIMI-HANDOFF.md",
     "LNBITS-CORS.md", "LNBITS-PROXY.md", "METRICS-SCHEMA.md", "THOR-NODE-JSON.md", "UPGRADES-100.md",
-    "ANALYTICS-PLAN.md",
+    "ANALYTICS-PLAN.md", "DESIGN-CONTEXT.md",
   ];
 
   const FEATURES = [
@@ -675,7 +677,7 @@
     setTimeout(() => { el.style.opacity = "0"; setTimeout(() => el.remove(), 300); }, 3200);
   }
   function setTheme(name) {
-    const t = ["porcelain", "stone", "slate", "ink", "aurora"].includes(name) ? name : "porcelain";
+    const t = ["ember", "porcelain", "stone", "slate", "ink", "aurora"].includes(name) ? name : "ember";
     document.body.classList.add("theme-switching");
     document.documentElement.setAttribute("data-theme", t);
     state.theme = t;
@@ -1076,8 +1078,21 @@
       </div>`;
     bindToolbar(renderCards);
     el.querySelectorAll("[data-project]").forEach((card) => {
-      card.addEventListener("click", () => openDrawer(card.dataset.project));
+      card.addEventListener("click", (e) => {
+        if (e.target.closest("[data-card-link]")) return; // let link buttons work
+        openDrawer(card.dataset.project);
+      });
     });
+    renderFooterLinks();
+  }
+
+  function renderFooterLinks() {
+    const el = document.getElementById("footer-links");
+    if (!el) return;
+    el.innerHTML = state.projects
+      .filter((p) => p.url)
+      .map((p) => `<a href="${escAttr(p.url)}" target="_blank" rel="noopener">${esc(p.name)}</a>`)
+      .join("");
   }
 
   function cardHTML(p) {
@@ -1136,6 +1151,11 @@
       <div class="card-kpis" style="grid-template-columns:repeat(${Math.min(3, Math.max(2, kpis.length))},1fr)">${kpiHtml}</div>
       ${sparks ? `<div class="card-sparks">${sparks}</div>` : ""}
       ${deps.length ? `<div class="card-deps">${deps.slice(0, 4).map((d) => statusPill(d.status, d.id)).join("")}</div>` : ""}
+      <div class="card-links">
+        ${p.url ? `<a class="link-btn" href="${escAttr(p.url)}" target="_blank" rel="noopener" data-card-link><i class="fa-solid fa-arrow-up-right-from-square"></i> site</a>` : ""}
+        <a class="link-btn" href="/metrics/${escAttr(p.metricsKey || p.id)}.json" target="_blank" rel="noopener" data-card-link><i class="fa-solid fa-database"></i> metrics</a>
+        <a class="link-btn" href="/docs/projects/${escAttr(p.id)}.md" target="_blank" rel="noopener" data-card-link><i class="fa-solid fa-file-lines"></i> brief</a>
+      </div>
       <div class="card-foot">
         <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">${esc(fmtTime(data.updatedAt))}</span>
         <span class="mono" style="font-size:0.62rem;color:var(--ink-faint)">${(data.kpis || []).length} KPI · doc ${(state.projectDocs[p.id] && state.projectDocs[p.id].ok) ? "✓" : "—"}</span>
@@ -2099,6 +2119,75 @@
     loadAndShowDoc(state.selectedDoc);
   }
 
+  /* ── Password gate (casual client lock — vault keys stay browser-local regardless) ── */
+  async function gateHash(text) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("hq-gate·" + text));
+    return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+  }
+  function gateLocked() {
+    try {
+      const stored = localStorage.getItem(GATE_KEY);
+      if (!stored) return "setup"; // first visit — create passphrase
+      return sessionStorage.getItem(GATE_SESSION) === stored ? false : "locked";
+    } catch { return false; }
+  }
+  async function bootGate() {
+    const gate = document.getElementById("gate");
+    const app = document.getElementById("app");
+    if (!gate || !app) { init(); return; }
+    const mode = gateLocked();
+    if (mode === false) { app.hidden = false; gate.hidden = true; init(); return; }
+    app.hidden = true;
+    gate.hidden = false;
+    const title = document.getElementById("gate-title");
+    const sub = document.getElementById("gate-sub");
+    const input = document.getElementById("gate-input");
+    const confirm = document.getElementById("gate-confirm");
+    const btn = document.getElementById("gate-btn");
+    const err = document.getElementById("gate-error");
+    if (mode === "setup") {
+      sub.textContent = "First visit — create a passphrase for this ops glass";
+      confirm.hidden = false;
+      btn.textContent = "Create & enter";
+    } else {
+      sub.textContent = "Locked · enter your passphrase";
+      btn.textContent = "Unlock";
+    }
+    const attempt = async () => {
+      err.textContent = "";
+      const val = input.value;
+      if (!val || val.length < 4) { err.textContent = "Passphrase needs 4+ characters"; return; }
+      if (mode === "setup") {
+        if (val !== confirm.value) { err.textContent = "Passphrases don't match"; return; }
+        const h = await gateHash(val);
+        try {
+          localStorage.setItem(GATE_KEY, h);
+          sessionStorage.setItem(GATE_SESSION, h);
+        } catch {}
+        gate.hidden = true; app.hidden = false;
+        toast("Passphrase set · HQ unlocked", "ok");
+        init();
+      } else {
+        const h = await gateHash(val);
+        if (h === localStorage.getItem(GATE_KEY)) {
+          try { sessionStorage.setItem(GATE_SESSION, h); } catch {}
+          gate.hidden = true; app.hidden = false;
+          init();
+        } else {
+          err.textContent = "Wrong passphrase";
+          input.select();
+        }
+      }
+    };
+    btn.onclick = attempt;
+    [input, confirm].forEach((el) => el.addEventListener("keydown", (e) => { if (e.key === "Enter") attempt(); }));
+    input.focus();
+  }
+  function lockNow() {
+    try { sessionStorage.removeItem(GATE_SESSION); } catch {}
+    location.reload();
+  }
+
   /* ── Doc overrides: browser-local edits of any .md ── */
   function docOverrides() {
     try { return JSON.parse(localStorage.getItem(DOC_OVERRIDES_KEY) || "{}") || {}; } catch { return {}; }
@@ -2577,39 +2666,105 @@
     if (!modal) return;
     const v = state.vault || {};
     const keys = v.keys || v.wallets || {};
-    const fields = state.projects.map((p) => {
+    const tabNames = [["keys", "Keys"], ["feeds", "Feeds & pipes"], ["github", "GitHub"], ["extra", "Extra"]];
+    if (!state.vaultTab) state.vaultTab = "keys";
+    const walletFields = state.projects.map((p) => {
       const wid = p.wallet || p.id;
-      return `<div class="field"><label>${esc(p.name)} · ${esc(wid)}</label>
+      const bal = state.wallets[wid];
+      const balTxt = bal && bal.ok ? `${fmtNum(bal.sats, "sats")} sats` : bal && bal.stale ? "stale" : "";
+      return `<div class="field"><label>${esc(p.name)} · ${esc(wid)} ${balTxt ? `<span class="mono" style="color:var(--amber)">${esc(balTxt)}</span>` : ""}</label>
         <input type="password" data-wallet-key="${escAttr(wid)}" value="${escAttr(keys[wid] || "")}" placeholder="invoice key only" autocomplete="off"/></div>`;
     }).join("");
+    const panes = {
+      keys: `
+        <div class="field"><label>LNbits proxy URL</label>
+          <input id="vault-proxy-url" value="${escAttr(v.proxyUrl || v.lnbitsProxyUrl || "https://giveabit-lnbits-proxy.kitsboy.workers.dev")}"/></div>
+        <div class="field"><label>Proxy token</label>
+          <input id="vault-proxy-token" type="password" value="${escAttr(v.proxyToken || "")}" autocomplete="off"/></div>
+        <div class="field"><label>Upstream node URL</label>
+          <input id="vault-node-url" value="${escAttr(v.nodeUrl || "http://api.satohash.io:5102")}"/></div>
+        <div class="field"><label><input type="checkbox" id="vault-use-proxy" ${v.useProxy !== false ? "checked" : ""}/> Use proxy</label></div>
+        <h3 class="display" style="font-size:0.95rem;margin:1rem 0 0.5rem">Invoice keys (per wallet)</h3>${walletFields}`,
+      feeds: `
+        <p style="font-size:0.8rem;color:var(--ink-faint)">Override metric/status feeds. Leave blank to use projects.json defaults.</p>
+        <div class="field"><label>status.json URL</label><input id="vault-feed-status" value="${escAttr((v.feeds || {}).statusJsonUrl || "")}" placeholder="/status.json"/></div>
+        <div class="field"><label>THOR node URL</label><input id="vault-feed-thor" value="${escAttr((v.feeds || {}).thorNodeUrl || "")}" placeholder="/metrics/thor-node.json"/></div>
+        <div class="field"><label>Satohash metrics URL</label><input id="vault-feed-sato" value="${escAttr((v.feeds || {}).satohashMetricsUrl || "")}" placeholder="https://api.satohash.io/metrics.json"/></div>
+        <div class="field"><label>CoinGecko price URL</label><input id="vault-feed-fx" value="${escAttr((v.feeds || {}).fxUrl || "")}" placeholder="https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"/></div>`,
+      github: `
+        <p style="font-size:0.8rem;color:var(--ink-faint)">Optional — used for future save-to-git of edited docs. Fine-grained PAT, contents:write on kitsboy/HQ only. Never leaves this browser.</p>
+        <div class="field"><label>GitHub PAT</label><input id="vault-gh-pat" type="password" value="${escAttr(v.ghPat || "")}" autocomplete="off" placeholder="github_pat_…"/></div>
+        <div class="field"><label>Repo (owner/name)</label><input id="vault-gh-repo" value="${escAttr(v.ghRepo || "kitsboy/HQ")}"/></div>
+        <div class="field"><label>Branch</label><input id="vault-gh-branch" value="${escAttr(v.ghBranch || "main")}"/></div>`,
+      extra: `
+        <div class="field"><label>Notes (free text, browser-local)</label><textarea id="vault-notes" class="md-editor" style="min-height:140px">${esc(v.notes || "")}</textarea></div>
+        <div class="flex gap-2 mt-2 flex-wrap">
+          <button type="button" class="btn btn-ghost btn-sm" id="vault-export"><i class="fa-solid fa-file-export"></i> Export vault JSON</button>
+          <button type="button" class="btn btn-ghost btn-sm" id="vault-import-btn"><i class="fa-solid fa-file-import"></i> Import</button>
+          <input type="file" id="vault-import-file" accept="application/json" style="display:none">
+          <button type="button" class="btn btn-ghost btn-sm" id="vault-lock"><i class="fa-solid fa-lock"></i> Lock HQ now</button>
+        </div>`,
+    };
     modal.querySelector(".mb").innerHTML = `
-      <p style="font-size:0.8rem;color:var(--ink-faint);margin:0 0 1rem">Keys stay in <span class="mono">${esc(VAULT_KEY)}</span> on this origin. Never commit secrets.</p>
-      <div class="field"><label>LNbits proxy URL</label>
-        <input id="vault-proxy-url" value="${escAttr(v.proxyUrl || v.lnbitsProxyUrl || "https://giveabit-lnbits-proxy.kitsboy.workers.dev")}"/></div>
-      <div class="field"><label>Proxy token</label>
-        <input id="vault-proxy-token" type="password" value="${escAttr(v.proxyToken || "")}" autocomplete="off"/></div>
-      <div class="field"><label>Upstream node URL</label>
-        <input id="vault-node-url" value="${escAttr(v.nodeUrl || "http://api.satohash.io:5102")}"/></div>
-      <div class="field"><label><input type="checkbox" id="vault-use-proxy" ${v.useProxy !== false ? "checked" : ""}/> Use proxy</label></div>
-      <h3 class="display" style="font-size:0.95rem;margin:1rem 0 0.5rem">Invoice keys</h3>${fields}`;
+      <p style="font-size:0.8rem;color:var(--ink-faint);margin:0 0 0.75rem">Keys stay in <span class="mono">${esc(VAULT_KEY)}</span> on this origin. Never commit secrets.</p>
+      <div class="drawer-tabs" style="margin-bottom:0.85rem">${tabNames.map(([id, label]) =>
+        `<button type="button" class="drawer-tab ${state.vaultTab === id ? "active" : ""}" data-vtab="${id}">${label}</button>`).join("")}</div>
+      <div id="vault-pane">${panes[state.vaultTab] || panes.keys}</div>`;
+    modal.querySelectorAll("[data-vtab]").forEach((b) => {
+      b.addEventListener("click", () => { state.vaultTab = b.dataset.vtab; openVaultModal(); });
+    });
+    modal.querySelector("#vault-export")?.addEventListener("click", () => {
+      const blob = new Blob([JSON.stringify(state.vault || {}, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "hq-vault-export.json";
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    });
+    modal.querySelector("#vault-import-btn")?.addEventListener("click", () => modal.querySelector("#vault-import-file")?.click());
+    modal.querySelector("#vault-import-file")?.addEventListener("change", (e) => {
+      const f = e.target.files && e.target.files[0];
+      if (!f) return;
+      f.text().then((txt) => {
+        try {
+          const parsed = JSON.parse(txt);
+          saveVault(parsed);
+          toast("Vault imported", "ok");
+          openVaultModal();
+        } catch (err) { toast("Import failed: " + err.message, "err"); }
+      });
+    });
+    modal.querySelector("#vault-lock")?.addEventListener("click", lockNow);
     modal.classList.add("open");
   }
 
   function saveVaultFromModal() {
     const modal = document.getElementById("vault-modal");
     if (!modal) return;
-    const keys = {};
+    const v = state.vault || {};
+    const keys = { ...(v.keys || v.wallets || {}) };
     modal.querySelectorAll("[data-wallet-key]").forEach((inp) => {
       const k = inp.value.trim();
-      if (k) keys[inp.dataset.walletKey] = k;
+      if (k) keys[inp.dataset.walletKey] = k; else delete keys[inp.dataset.walletKey];
+    });
+    const feeds = { ...(v.feeds || {}) };
+    const feedMap = { statusJsonUrl: "vault-feed-status", thorNodeUrl: "vault-feed-thor", satohashMetricsUrl: "vault-feed-sato", fxUrl: "vault-feed-fx" };
+    Object.entries(feedMap).forEach(([k, id]) => {
+      const el = document.getElementById(id);
+      if (el) { const val = el.value.trim(); if (val) feeds[k] = val; else delete feeds[k]; }
     });
     saveVault({
-      ...state.vault,
+      ...v,
       keys,
-      proxyUrl: document.getElementById("vault-proxy-url")?.value.trim() || "",
-      proxyToken: document.getElementById("vault-proxy-token")?.value.trim() || "",
-      nodeUrl: document.getElementById("vault-node-url")?.value.trim() || "",
-      useProxy: !!document.getElementById("vault-use-proxy")?.checked,
+      proxyUrl: document.getElementById("vault-proxy-url")?.value.trim() ?? (v.proxyUrl || ""),
+      proxyToken: document.getElementById("vault-proxy-token")?.value.trim() ?? (v.proxyToken || ""),
+      nodeUrl: document.getElementById("vault-node-url")?.value.trim() ?? (v.nodeUrl || ""),
+      useProxy: document.getElementById("vault-use-proxy") ? !!document.getElementById("vault-use-proxy").checked : v.useProxy,
+      ghPat: document.getElementById("vault-gh-pat")?.value.trim() ?? (v.ghPat || ""),
+      ghRepo: document.getElementById("vault-gh-repo")?.value.trim() || (v.ghRepo || ""),
+      ghBranch: document.getElementById("vault-gh-branch")?.value.trim() || (v.ghBranch || ""),
+      notes: document.getElementById("vault-notes")?.value ?? (v.notes || ""),
+      feeds,
     });
     modal.classList.remove("open");
     refreshWallets().then(() => {
@@ -2653,7 +2808,7 @@
 
   function init() {
     state.vault = loadVault();
-    try { state.theme = localStorage.getItem(THEME_KEY) || "porcelain"; } catch { state.theme = "porcelain"; }
+    try { state.theme = localStorage.getItem(THEME_KEY) || "ember"; } catch { state.theme = "ember"; }
     try { state.tab = localStorage.getItem(TAB_KEY) || "cards"; } catch { state.tab = "cards"; }
     setTheme(state.theme);
 
@@ -2666,6 +2821,7 @@
     });
     document.getElementById("btn-refresh")?.addEventListener("click", () => { toast("Refreshing…", "ok"); bootstrap(); });
     document.getElementById("btn-vault")?.addEventListener("click", openVaultModal);
+    document.getElementById("btn-lock")?.addEventListener("click", lockNow);
     document.getElementById("vault-save")?.addEventListener("click", saveVaultFromModal);
     document.getElementById("vault-cancel")?.addEventListener("click", () => {
       document.getElementById("vault-modal")?.classList.remove("open");
@@ -2684,6 +2840,7 @@
       if (map[e.key]) setTab(map[e.key]);
       if (e.key === "r") bootstrap();
       if (e.key === "v") openVaultModal();
+      if (e.key === "l" || e.key === "L") lockNow();
       if (e.key === "e") exportDiligence();
       if (e.key === "m") setTab("money");
       if (e.key === "w") setTab("wallets");
@@ -2721,6 +2878,6 @@
     } catch { /* ignore */ }
   }
 
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
-  else init();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bootGate);
+  else bootGate();
 })();

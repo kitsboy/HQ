@@ -6,7 +6,7 @@
   Assets: hq.css · hq.js
   Safe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first.
 -->
-<html lang="en" data-theme="porcelain">
+<html lang="en" data-theme="ember">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +14,13 @@
 <meta name="description" content="Give A Bit HQ — suite ops glass for Bitcoin products">
 <title>Give A Bit HQ v3.2</title>
 <link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:title" content="Give A Bit HQ — Suite Ops Glass">
+<meta property="og:description" content="Live metrics, money, docs and ops for the Give A Bit family of Bitcoin products.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hq.giveabit.io">
+<meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
@@ -22,7 +29,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js" defer></script>
 </head>
 <body>
-<div id="app">
+<div id="app" hidden>
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand">
@@ -38,6 +45,7 @@
       </div>
       <div class="topbar-actions">
         <div class="theme-switch" role="group" aria-label="Theme">
+          <button type="button" class="theme-dot" data-theme-pick="ember" title="Ember (warm mid)" aria-label="Ember theme"></button>
           <button type="button" class="theme-dot" data-theme-pick="porcelain" title="Porcelain (light)" aria-label="Porcelain theme"></button>
           <button type="button" class="theme-dot" data-theme-pick="stone" title="Stone" aria-label="Stone theme"></button>
           <button type="button" class="theme-dot" data-theme-pick="slate" title="Slate" aria-label="Slate theme"></button>
@@ -46,6 +54,9 @@
         </div>
         <button type="button" class="btn btn-ghost btn-icon" id="btn-vault" title="Vault (v)" aria-label="Open vault">
           <i class="fa-solid fa-key"></i>
+        </button>
+        <button type="button" class="btn btn-ghost btn-icon" id="btn-lock" title="Lock HQ (L)" aria-label="Lock HQ">
+          <i class="fa-solid fa-lock"></i>
         </button>
         <button type="button" class="btn btn-primary btn-sm" id="btn-refresh" title="Refresh (r)">
           <i class="fa-solid fa-arrows-rotate"></i> Refresh
@@ -88,10 +99,12 @@
   </main>
 
   <footer class="site-footer">
-    <span id="hq-version">v3.2.0</span>
-    · build <span id="hq-build">—</span>
-    · <span id="hq-origin"></span>
-    · Safe Harbour · Give A Bit family · Bitcoin sovereignty first
+    <div>
+      <strong id="hq-version">v3.4.0</strong> · build <span id="hq-build">—</span> · <span id="hq-origin"></span>
+      <div style="margin-top:0.25rem">Safe Harbour · Give A Bit family · Bitcoin sovereignty first</div>
+    </div>
+    <div class="footer-links" id="footer-links"></div>
+    <div class="mono" style="font-size:0.68rem">gate <span class="mono">L</span> · vault <span class="mono">v</span> · refresh <span class="mono">r</span></div>
   </footer>
 </div>
 
@@ -112,6 +125,19 @@
       <button type="button" class="btn btn-ghost" onclick="document.getElementById('vault-modal').classList.remove('open')">Cancel</button>
       <button type="button" class="btn btn-primary" id="vault-save">Save vault</button>
     </div>
+  </div>
+</div>
+
+<div id="gate" class="gate" hidden>
+  <div class="gate-card">
+    <div class="brand-mark gate-mark" aria-hidden="true">G</div>
+    <h1 class="display" id="gate-title">Give A Bit HQ</h1>
+    <p class="gate-sub" id="gate-sub">Ops glass for the family · set a passphrase to begin</p>
+    <input type="password" id="gate-input" class="gate-input" placeholder="passphrase" autocomplete="current-password">
+    <input type="password" id="gate-confirm" class="gate-input" placeholder="confirm passphrase" autocomplete="new-password" hidden>
+    <button type="button" class="btn btn-primary" id="gate-btn">Unlock</button>
+    <p class="gate-note" id="gate-error"></p>
+    <p class="gate-note">Casual lock on a public URL · keys live only in this browser's vault · <span class="mono">L</span> locks any time</p>
   </div>
 </div>
 
