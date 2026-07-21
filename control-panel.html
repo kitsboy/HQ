@@ -1,769 +1,124 @@
 <!DOCTYPE html>
 <!--
-  Give A Bit HQ v2.7.0 — ops + presentation shell for the suite.
-  PRESENTATION: Pitch mode (P), diligence pack export, investor metrics strip,
-    suite map, satohash backbone callout, NIP-05 agent checks, export deck md.
-  FEEDS (optional, Vault/config): status.json uptime, api.satohash.io/health,
-    projects.json + agents.json registry, GitHub Contents + Actions, LNbits balances.
+  Give A Bit HQ v3.0.0 — total visual & data overhaul.
+  PRESENTATION: 4 tinted themes (stone/slate/ink/aurora), 10 ops tabs, live JSON envelopes.
   SECRETS: NEVER in this file. Vault localStorage key sovereign_deck_vault_v1 only.
+  Assets: hq.css · hq.js
   Safe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first.
 -->
-<html lang="en" data-theme="stone" data-density="comfy">
+<html lang="en" data-theme="ink">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Give A Bit HQ v2.7.0</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0c0618">
+<meta name="description" content="Give A Bit HQ — suite ops glass for Bitcoin products">
+<title>Give A Bit HQ v3.0</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="hq.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js" defer></script>
 </head>
-<body class="min-h-screen">
+<body>
+<div id="app">
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">G</div>
+        <div class="brand-text">
+          <h1>Give A Bit HQ</h1>
+          <p class="sub">Ops glass · suite sovereignty</p>
+        </div>
+      </div>
 
-<!-- HQ GATE v2.5 — password wall (client-side; pair with CF Access for enterprise) -->
-<div id="hq-gate" class="hidden" role="dialog" aria-modal="true" aria-label="HQ unlock">
-  <div class="gate-card glass">
-    <div class="accent-bar" style="margin:-28px -24px 18px;border-radius:8px 8px 0 0"></div>
-    <div class="flex items-center gap-2 mb-1">
-      <div class="icon-box"><i class="fa-solid fa-shield-halved"></i></div>
-      <div>
-        <h1 id="gate-title">Unlock Give A Bit HQ</h1>
-        <div class="text-[10px] mono text-[var(--ink-faint)]">v2.6.0 · keys stay in this browser</div>
+      <div class="topbar-meta">
+        <span id="vault-status" class="status-pill muted" data-tip="Browser Vault holds invoice keys only — never in git" data-tip-title="Vault">vault empty</span>
+      </div>
+
+      <div class="topbar-actions">
+        <div class="theme-switch" role="group" aria-label="Theme">
+          <button type="button" class="theme-dot" data-theme-pick="stone" title="Stone — sunlit porcelain" aria-label="Stone theme"></button>
+          <button type="button" class="theme-dot" data-theme-pick="slate" title="Slate — glacier" aria-label="Slate theme"></button>
+          <button type="button" class="theme-dot" data-theme-pick="ink" title="Ink — midnight neon" aria-label="Ink theme"></button>
+          <button type="button" class="theme-dot" data-theme-pick="aurora" title="Aurora — violet nebula" aria-label="Aurora theme"></button>
+        </div>
+        <button type="button" class="btn btn-ghost btn-icon" id="btn-vault" title="Vault (v)" aria-label="Open vault">
+          <i class="fa-solid fa-key"></i>
+        </button>
+        <button type="button" class="btn btn-primary btn-sm" id="btn-refresh" title="Refresh (r)">
+          <i class="fa-solid fa-arrows-rotate"></i> Refresh
+        </button>
       </div>
     </div>
-    <p class="sub" id="gate-sub">Operator password protects Vault secrets on the public URL. Metrics still load after unlock. Pair with Cloudflare Access for a true login wall.</p>
-    <div id="gate-setup" class="hidden">
-      <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Create password</label>
-      <input id="gate-pw1" type="password" class="w-full rounded px-3 py-2 text-sm mono mb-2" placeholder="min 8 chars" autocomplete="new-password">
-      <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Confirm</label>
-      <input id="gate-pw2" type="password" class="w-full rounded px-3 py-2 text-sm mono mb-2" placeholder="repeat" autocomplete="new-password">
-      <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Hint (optional, public)</label>
-      <input id="gate-hint" class="w-full rounded px-3 py-2 text-sm mb-2" placeholder="e.g. phrase from Safe Harbour sticky">
-      <button type="button" onclick="Gate.setup()" class="btn-brand rounded w-full py-2.5 text-sm">Set password & enter</button>
+
+    <div class="ticker" aria-label="Live status ticker">
+      <div class="ticker-track" id="ticker-track">
+        <span class="ticker-item"><strong>HQ</strong> loading suite…</span>
+      </div>
     </div>
-    <div id="gate-unlock">
-      <label class="text-[10px] mono uppercase text-[var(--ink-faint)] block mb-1">Password</label>
-      <input id="gate-pw" type="password" class="w-full rounded px-3 py-2 text-sm mono mb-2" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')Gate.unlock()">
-      <div class="text-[11px] text-[var(--ink-faint)] mb-2 mono" id="gate-hint-show"></div>
-      <button type="button" onclick="Gate.unlock()" class="btn-brand rounded w-full py-2.5 text-sm mb-2">Unlock</button>
-      <button type="button" onclick="Gate.resetPrompt()" class="btn-ghost rounded w-full py-2 text-xs">Forgot — wipe gate & vault on this browser</button>
+  </header>
+
+  <!-- Tabs -->
+  <div class="nav-wrap">
+    <nav class="nav-tabs" id="nav-tabs" role="tablist">
+      <button type="button" class="nav-tab active" data-tab="cards" role="tab">Cards</button>
+      <button type="button" class="nav-tab" data-tab="list" role="tab">List</button>
+      <button type="button" class="nav-tab" data-tab="metrics" role="tab">Metrics</button>
+      <button type="button" class="nav-tab" data-tab="pipeline" role="tab">Pipeline</button>
+      <button type="button" class="nav-tab" data-tab="network" role="tab">Network</button>
+      <button type="button" class="nav-tab" data-tab="system" role="tab">System</button>
+      <button type="button" class="nav-tab" data-tab="wallets" role="tab">Wallets</button>
+      <button type="button" class="nav-tab" data-tab="docs" role="tab">Docs</button>
+      <button type="button" class="nav-tab" data-tab="agents" role="tab">Agents</button>
+      <button type="button" class="nav-tab" data-tab="domains" role="tab">Domains</button>
+    </nav>
+  </div>
+
+  <main class="main" id="main-content">
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <div>Booting HQ…</div>
     </div>
-    <div class="gate-err" id="gate-err"></div>
-    <div class="text-[10px] text-[var(--ink-faint)] mt-3 leading-relaxed">
-      <strong>ELI16:</strong> Like a lock on your ops toolbox. Public people see the lock; you type the code; your LNbits/GitHub keys live only in this browser’s Vault (never in git).
+  </main>
+
+  <footer class="site-footer">
+    <span id="hq-version">v3.0.0</span>
+    · build <span id="hq-build">—</span>
+    · <span id="hq-origin"></span>
+    · Safe Harbour · Give A Bit family · Bitcoin sovereignty first
+  </footer>
+</div>
+
+<!-- Project detail drawer -->
+<div class="drawer-backdrop" id="drawer-backdrop"></div>
+<aside class="drawer" id="drawer" aria-label="Project detail">
+  <div class="drawer-head" id="drawer-head"></div>
+  <div class="drawer-body" id="drawer-body"></div>
+</aside>
+
+<!-- Vault modal -->
+<div class="modal-backdrop" id="vault-modal" role="dialog" aria-modal="true" aria-label="Vault">
+  <div class="modal-card">
+    <div class="mh">
+      <h2>Vault</h2>
+      <button type="button" class="btn btn-icon btn-ghost" id="vault-cancel" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="mb"></div>
+    <div class="mf">
+      <button type="button" class="btn btn-ghost" onclick="document.getElementById('vault-modal').classList.remove('open')">Cancel</button>
+      <button type="button" class="btn btn-primary" id="vault-save">Save vault</button>
     </div>
   </div>
 </div>
 
-<div class="accent-bar"></div>
+<div id="toast-stack" aria-live="polite"></div>
 
-<!-- TOPBAR -->
-<div class="topbar">
-  <div class="max-w-[1680px] mx-auto px-3 py-2 flex items-center gap-3 text-xs mono overflow-x-auto">
-    <div class="flex items-center gap-2 shrink-0">
-      <div class="icon-box sm" style="background:var(--orange);color:#fff"><i class="fa-solid fa-bolt"></i></div>
-      <div>
-        <div class="font-semibold text-[13px] leading-none" style="font-family:'IBM Plex Sans'">Give A Bit HQ</div>
-        <div class="text-[10px] text-[var(--ink-faint)]">v2.7.0 · command deck · live proxy · <span id="hq-version-top" class="version-chip">v2.7.0</span></div>
-      </div>
-    </div>
-    <div class="divider"></div>
-    <div id="hb-thor" class="flex items-center gap-1.5 shrink-0"><span class="dot dot-gray"></span>THOR</div>
-    <div id="hb-lnbits" class="flex items-center gap-1.5 shrink-0"><span class="dot dot-gray"></span>LNbits</div>
-    <div id="hb-lnd" class="flex items-center gap-1.5 shrink-0"><span class="dot dot-gray"></span>LND</div>
-    <div id="hb-github" class="flex items-center gap-1.5 shrink-0"><span class="dot dot-gray"></span>GitHub <span id="gh-rate" class="text-[var(--ink-faint)]"></span></div>
-    <div id="hb-satohash" class="flex items-center gap-1.5 shrink-0" title="Satohash API · api.satohash.io/health"><span class="dot dot-gray"></span>Satohash</div>
-    <div class="divider"></div>
-    <span id="btc-price-top" class="shrink-0">BTC $—</span>
-    <span id="net-status" class="status-pill gray shrink-0">online</span>
-    <span id="gate-lock-chip" class="status-pill green shrink-0 lock-chip" onclick="Gate.lock()" data-tip="Click to lock HQ on this tab. Password required again." data-tip-title="Session lock">unlocked</span>
-    <span id="vault-status" class="status-pill gray shrink-0" data-tip="How many secrets are saved in this browser Vault (never in git)." data-tip-title="Vault" data-tip-advice="Open Config (v) to paste LNbits invoice keys + GitHub PAT.">vault empty</span>
-    <span id="grok-top-chip" class="status-pill gray shrink-0" title="SuperGrok weekly usage — edit in Vault">Grok —</span>
-    <span id="clock" class="text-[var(--ink-faint)] shrink-0"></span>
-    <div class="ml-auto flex items-center gap-1.5 shrink-0">
-      <span id="cache-age" class="text-[var(--ink-faint)] hidden sm:inline"></span>
-      <span id="last-refresh" class="text-[var(--ink-faint)]">not synced</span>
-      <button onclick="UI.cycleTheme()" class="btn-ghost rounded px-2 py-1" data-tip="Theme" title="Theme">◐</button>
-      <button onclick="UI.cycleDensity()" class="btn-ghost rounded px-2 py-1" title="Density"> dens</button>
-      <button onclick="UI.toggleLog()" class="btn-ghost rounded px-2 py-1" title="Event log"><i class="fa-solid fa-bell text-[10px]"></i></button>
-      <button onclick="Pitch.open()" class="btn-accent rounded px-2 py-1" title="Pitch mode (P)">Pitch</button>
-      <button onclick="exportDiligence()" class="btn-ghost rounded px-2 py-1" title="Diligence pack">Diligence</button>
-      <button onclick="UI.help()" class="btn-ghost rounded px-2 py-1" title="Help">?</button>
-      <button onclick="Dash.refreshAll(true)" class="btn-ghost rounded px-2 py-1" title="Refresh (r)"><i class="fa-solid fa-rotate-right text-[10px]"></i></button>
-      <button onclick="Vault.openModal()" class="btn-ghost rounded px-2 py-1" title="Vault (v)"><i class="fa-solid fa-key text-[10px]"></i> Vault</button>
-    </div>
-  </div>
-</div>
-<div id="sys-banner" class="hidden max-w-[1680px] mx-auto px-3 pt-2"></div>
-<div id="cors-banner" class="hidden max-w-[1680px] mx-auto px-3 pt-2"></div>
-<div id="stale-banner" class="hidden max-w-[1680px] mx-auto px-3 pt-2"></div>
-<div id="offline-banner" class="hidden max-w-[1680px] mx-auto px-3 pt-2"><div class="stale-banner mono">You are offline — showing cache where available.</div></div>
-<div id="log-panel" class="hidden max-w-[1680px] mx-auto px-3 pt-2"></div>
-
-<!-- PORTFOLIO -->
-<div class="max-w-[1680px] mx-auto px-3 pt-4">
-  <div class="glass rounded p-4 pad-d">
-    <div class="flex flex-wrap gap-5 items-end justify-between">
-      <div>
-        <div class="text-[10px] mono uppercase tracking-[0.16em] text-[var(--ink-faint)] mb-1.5 opacity-90">Collective balance</div>
-        <div class="flex items-baseline gap-2 flex-wrap">
-          <span id="total-sats" class="text-4xl font-bold mono">—</span>
-          <span class="text-sm mono text-[var(--ink-faint)]">sats</span>
-          <span id="total-usd" class="text-lg mono text-[var(--ink-dim)]">$—</span>
-        </div>
-        <div class="mt-2 flex flex-wrap gap-1.5 items-center">
-          <span id="portfolio-count" class="status-pill">0/9 synced</span>
-          <span id="portfolio-health" class="status-pill">health —</span>
-          <span id="portfolio-live" class="status-pill">live —</span>
-          <span id="portfolio-issues" class="status-pill gray">issues —</span>
-          <span id="visible-count" class="status-pill gray">showing 9</span>
-          <span id="fav-count" class="status-pill gray">0 pinned</span>
-          <span id="total-delta" class="delta-flat">Δ —</span>
-        </div>
-        <canvas id="spark-total" class="spark mt-2" width="220" height="36"></canvas>
-      </div>
-      <div class="flex gap-3 flex-wrap">
-        <div class="chart-box" style="width:160px;height:160px"><canvas id="chart-donut"></canvas></div>
-        <div class="min-w-[200px] flex-1 max-w-xs">
-          <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-1.5">Allocation</div>
-          <div id="bal-bars" class="space-y-1"></div>
-        </div>
-        <div class="grid grid-cols-2 gap-1.5 text-xs mono w-[200px]">
-          <div class="metric"><div class="text-[10px] text-[var(--ink-faint)] uppercase">Projects</div><div class="text-lg font-semibold" id="stat-projects">9</div></div>
-          <div class="metric"><div class="text-[10px] text-[var(--ink-faint)] uppercase">Agents</div><div class="text-lg font-semibold" id="stat-agents">7</div></div>
-          <div class="metric"><div class="text-[10px] text-[var(--ink-faint)] uppercase">BTC</div><div class="font-semibold" id="btc-price-label">—</div></div>
-          <div class="metric"><div class="text-[10px] text-[var(--ink-faint)] uppercase">Avg health</div><div class="font-semibold" id="stat-health">—</div></div>
-        </div>
-        <div class="glass-2 rounded p-3 min-w-[220px] flex-1 max-w-sm" id="grok-usage-card">
-          <div class="flex items-center justify-between mb-2">
-            <div class="text-[10px] mono uppercase tracking-[0.12em] text-[var(--ink-faint)]">xAI · SuperGrok</div>
-            <button type="button" onclick="GrokUsage.openEdit()" class="btn-ghost rounded px-1.5 py-0.5 text-[10px]">Edit</button>
-          </div>
-          <div class="mb-2.5">
-            <div class="flex justify-between text-xs mono mb-1">
-              <span>Weekly SuperGrok</span>
-              <span id="grok-week-pct" class="font-semibold">—</span>
-            </div>
-            <div class="bar-track h-2"><div id="grok-week-bar" class="bar-fill" style="width:0%;background:var(--orange)"></div></div>
-            <div id="grok-week-reset" class="text-[10px] mono text-[var(--ink-faint)] mt-1">Resets —</div>
-          </div>
-          <div>
-            <div class="flex justify-between text-xs mono mb-1">
-              <span>Grok Build</span>
-              <span id="grok-build-pct" class="font-semibold">—</span>
-            </div>
-            <div class="bar-track h-2"><div id="grok-build-bar" class="bar-fill" style="width:0%;background:var(--sky)"></div></div>
-          </div>
-          <div class="mt-2 flex justify-between text-[10px] mono text-[var(--ink-faint)]">
-            <span id="nous-credits">Nous —</span>
-            <span id="grok-usage-src">local</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="mt-3 pt-3 border-t border-[var(--line)] grid grid-cols-2 sm:grid-cols-4 gap-3">
-      <div class="flex items-center gap-2"><span class="dot dot-green"></span><div><div class="text-[10px] mono text-[var(--ink-faint)] uppercase">Live</div><div class="font-semibold mono" id="count-green">—</div></div></div>
-      <div class="flex items-center gap-2"><span class="dot dot-amber"></span><div><div class="text-[10px] mono text-[var(--ink-faint)] uppercase">Pending</div><div class="font-semibold mono" id="count-amber">—</div></div></div>
-      <div class="flex items-center gap-2"><span class="dot dot-red"></span><div><div class="text-[10px] mono text-[var(--ink-faint)] uppercase">Attention</div><div class="font-semibold mono" id="count-red">—</div></div></div>
-      <div class="flex items-center gap-2"><span class="dot dot-gray"></span><div><div class="text-[10px] mono text-[var(--ink-faint)] uppercase">Pre-MVP</div><div class="font-semibold mono" id="count-gray">—</div></div></div>
-    </div>
-    <div class="mt-3 pt-3 border-t border-[var(--line)]">
-      <div class="flex items-center justify-between mb-2">
-        <div class="text-[10px] mono uppercase tracking-[0.12em] text-[var(--ink-faint)]">Connection hub · click to open</div>
-        <div class="text-[10px] mono text-[var(--ink-faint)]" id="conn-summary">—</div>
-      </div>
-      <div class="conn-hub" id="conn-hub"></div>
-      <div class="sync-rail" id="sync-rail"></div>
-      <div id="suite-status-strip" class="mt-2 flex flex-wrap gap-1.5" title="Best-effort live probes + optional status.json"></div>
-
-
-    <div class="mt-3 pt-3 border-t border-[var(--line)]">
-      <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
-        <div class="text-[10px] mono uppercase tracking-[0.12em] text-[var(--ink-faint)]">Close-by URLs</div>
-        <span class="text-[10px] mono text-[var(--ink-faint)]">always handy · open in new tab</span>
-      </div>
-      <div id="quick-urls" class="quick-urls"></div>
-    </div>
-
-    <div class="mt-3 pt-3 border-t border-[var(--line)] grid grid-cols-1 lg:grid-cols-3 gap-3">
-      <div class="glass-2 rounded p-3">
-        <div class="panel-title">Tools hub</div>
-        <div id="tools-hub" class="tools-strip"></div>
-      </div>
-      <div class="glass-2 rounded p-3">
-        <div class="panel-title flex justify-between"><span>Ops notes (local)</span><button type="button" class="btn-ghost rounded px-1 text-[10px]" onclick="OpsNotes.save()">Save</button></div>
-        <textarea id="ops-notes" class="rounded px-2 py-1.5 mono" placeholder="Standup, blockers, reminders…"></textarea>
-      </div>
-      <div class="glass-2 rounded p-3">
-        <div class="panel-title">Node plane (read-only TBD)</div>
-        <div id="node-panel" class="text-xs mono text-[var(--ink-dim)] space-y-1">
-          <div>Bitcoin: <span id="node-btc">— pruned full node planned</span></div>
-          <div>LND: <span id="node-lnd">— channels feed not wired</span></div>
-          <div class="text-[var(--ink-faint)]">Never store macaroons in HQ HTML.</div>
-        </div>
-        <div class="panel-title mt-3">Identity score</div>
-        <div id="identity-score" class="text-sm mono font-semibold">—</div>
-        <div class="panel-title mt-3">Grok countdown</div>
-        <div id="grok-countdown" class="text-sm mono font-semibold">—</div>
-      </div>
-    </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- TICKER -->
-<div class="max-w-[1680px] mx-auto px-3 mt-2">
-  <div class="glass rounded py-1.5 overflow-hidden"><div id="ticker" class="ticker-track px-3 mono text-xs text-[var(--ink-dim)]"></div></div>
-</div>
-
-<!-- NAV -->
-<div class="max-w-[1680px] mx-auto px-3 mt-4 flex flex-wrap items-center gap-2 justify-between">
-  <div class="flex flex-wrap items-center gap-0.5 glass rounded p-0.5" id="view-tabs">
-    <button class="view-tab tab-active px-2.5 py-1.5 rounded text-sm" data-view="grid">Cards</button>
-    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="list">List</button>
-    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="pipeline">Pipeline</button>
-    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="metrics">Metrics</button>
-    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="analytics">Analytics</button>
-    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="network">Network</button>
-    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="activity">Activity</button>
-    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="matrix">Matrix</button>
-    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="wallets">Wallets</button>
-    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="docs">Docs</button>
-    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="agents">Agents</button>
-    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="opsboard">Ops board</button>
-    <button class="view-tab px-2.5 py-1.5 rounded text-sm text-[var(--ink-dim)]" data-view="domains">Domains</button>
-  </div>
-  <div class="flex items-center gap-1.5 flex-wrap">
-    <input id="global-search" placeholder="Filter… /" class="rounded pl-2 pr-2 py-1.5 text-sm w-44" oninput="Dash.applyFilters()">
-    <button data-filter="all" class="filter-chip chip chip-active">All</button>
-    <button data-filter="attention" class="filter-chip chip">Attention</button>
-    <button data-filter="recent" class="filter-chip chip">Recent</button>
-    <button data-filter="stale" class="filter-chip chip">Stale</button>
-    <button data-filter="pinned" class="filter-chip chip">Pinned</button>
-    <select id="sort-select" onchange="Dash.applyFilters()" class="rounded px-2 py-1.5 text-xs mono">
-      <option value="balance">Balance ↓</option>
-      <option value="name">Name</option>
-      <option value="updated">Updated</option>
-      <option value="health">Health</option>
-      <option value="category">Category</option>
-    </select>
-  </div>
-</div>
-
-<!-- VIEWS -->
-<div class="max-w-[1680px] mx-auto px-3 mt-3 pb-4">
-  <div id="view-grid" class="view-panel grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
-  <div id="view-list" class="view-panel hidden glass rounded overflow-hidden">
-    <div class="overflow-x-auto max-h-[70vh]">
-      <table class="w-full text-sm min-w-[1000px]">
-        <thead class="text-[10px] mono uppercase text-[var(--ink-faint)] border-b border-[var(--line)]">
-          <tr>
-            <th class="text-left px-3 py-2">★</th>
-            <th class="text-left px-3 py-2">Project</th>
-            <th class="text-left px-3 py-2">Status</th>
-            <th class="text-left px-3 py-2">Balance</th>
-            <th class="text-left px-3 py-2">USD</th>
-            <th class="text-left px-3 py-2">Commit</th>
-            <th class="text-left px-3 py-2">CI</th>
-            <th class="text-left px-3 py-2">Updated</th>
-            <th class="text-left px-3 py-2">Health</th>
-            <th class="text-left px-3 py-2">Wallet</th>
-            <th class="text-right px-3 py-2">Links</th>
-          </tr>
-        </thead>
-        <tbody id="list-body" class="mono text-xs"></tbody>
-      </table>
-    </div>
-  </div>
-  <div id="view-pipeline" class="view-panel hidden space-y-2"></div>
-  <div id="view-metrics" class="view-panel hidden">
-    <div class="metrics-lab">
-      <div class="glass rounded p-3">
-        <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Products + node</div>
-        <div id="ml-nav" class="ml-nav space-y-0.5"></div>
-      </div>
-      <div class="glass rounded p-4 min-h-[70vh]">
-        <div id="ml-body"><div class="text-sm text-[var(--ink-faint)]">Loading metrics lab…</div></div>
-      </div>
-    </div>
-  </div>
-  <div id="view-analytics" class="view-panel hidden grid grid-cols-1 lg:grid-cols-2 gap-3">
-    <div class="glass rounded p-3 lg:col-span-2">
-      <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2" data-tip="Live pipes HQ is sucking right now — status pinger, Satohash API, THOR node, CoinGecko, GitHub, LNbits." data-tip-title="Data pipes" data-tip-advice="Green = responding. Amber = demo/fallback. Red = fix CORS, DNS, or Vault keys.">Live pipes board</div>
-      <div id="pipes-board" class="pipe-board"></div>
-      <div id="advice-rail" class="advice-rail"></div>
-    </div>
-    <div class="glass rounded p-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2" data-tip="Wallet sats per product from LNbits invoice keys in Vault." data-tip-title="Balance ranking" data-tip-advice="Empty bars usually mean Vault keys missing or LNbits CORS — not a bug in the chart.">Balance ranking</div><div class="chart-box" style="height:220px"><canvas id="chart-rank"></canvas></div></div>
-    <div class="glass rounded p-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2" data-tip="Composite health: live site + GitHub + CI + wallet." data-tip-title="Health" data-tip-advice="Push red projects first. Open drawer for the failing signal.">Health by project</div><div class="chart-box" style="height:220px"><canvas id="chart-health"></canvas></div></div>
-    <div class="glass rounded p-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2" data-tip="HTTP latency from status.json pinger (ms).">Suite latency</div><div id="latency-bars" class="max-h-[220px] overflow-y-auto"></div></div>
-    <div class="glass rounded p-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2" data-tip="Local refresh snapshots of total portfolio sats.">Portfolio history</div><div class="chart-box" style="height:200px"><canvas id="chart-hist"></canvas></div></div>
-    <div class="glass rounded p-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Category mix</div><div class="chart-box" style="height:200px"><canvas id="chart-cat"></canvas></div></div>
-    <div class="glass rounded p-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2" data-tip="Uptime share from StatusHistory local snapshots.">Suite uptime pulse</div><div class="chart-box" style="height:200px"><canvas id="chart-uptime"></canvas></div></div>
-    <div class="glass rounded p-3 lg:col-span-2"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">KPI strip</div><div id="kpi-strip" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2"></div></div>
-    <div class="glass rounded p-3 lg:col-span-2"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2" data-tip="Merged live Satohash series when metrics.json is reachable.">Satohash stamp velocity (live or cache)</div><div id="sato-series" class="grid grid-cols-1 md:grid-cols-2 gap-2"></div></div>
-  </div>
-  <div id="view-network" class="view-panel hidden">
-    <div class="glass rounded p-3">
-      <div class="flex justify-between items-center mb-2">
-        <div class="text-[10px] mono uppercase text-[var(--ink-faint)]">Ecosystem graph · click node for detail</div>
-        <button onclick="Net.redraw()" class="btn-ghost rounded px-2 py-1 text-xs">Redraw</button>
-      </div>
-      <svg id="net-svg" class="net-svg" viewBox="0 0 900 420"></svg>
-    </div>
-  </div>
-  <div id="view-activity" class="view-panel hidden">
-    <div class="glass rounded p-3">
-      <div class="flex flex-wrap gap-2 mb-3 items-center">
-        <div class="text-[10px] mono uppercase text-[var(--ink-faint)]">Cross-project activity</div>
-        <select id="act-filter" onchange="renderActivity()" class="rounded px-2 py-1 text-xs mono ml-auto">
-          <option value="all">All projects</option>
-        </select>
-      </div>
-      <div id="activity-feed" class="space-y-1.5 max-h-[65vh] overflow-y-auto"></div>
-    </div>
-  </div>
-  <div id="view-matrix" class="view-panel hidden">
-    <div class="glass rounded p-3 overflow-x-auto">
-      <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Status matrix</div>
-      <div id="matrix-table"></div>
-    </div>
-  </div>
-  <div id="view-wallets" class="view-panel hidden">
-    <div class="glass rounded overflow-hidden">
-      <table class="w-full text-sm">
-        <thead class="text-[10px] mono uppercase text-[var(--ink-faint)] bg-[var(--panel-2)]">
-          <tr>
-            <th class="text-left px-3 py-2">Project</th>
-            <th class="text-left px-3 py-2">Wallet slot</th>
-            <th class="text-left px-3 py-2">Key</th>
-            <th class="text-left px-3 py-2">Balance</th>
-            <th class="text-left px-3 py-2">USD</th>
-            <th class="text-left px-3 py-2">Share</th>
-          </tr>
-        </thead>
-        <tbody id="wallet-body" class="mono text-xs"></tbody>
-      </table>
-    </div>
-  </div>
-  <div id="view-docs" class="view-panel hidden grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-2.5">
-    <div class="glass rounded p-2 max-h-[75vh] overflow-y-auto">
-      <div class="text-[10px] mono uppercase text-[var(--ink-faint)] px-2 py-2">Files</div>
-      <div id="file-tree"></div>
-    </div>
-    <div class="glass rounded p-4 min-h-[75vh] flex flex-col">
-      <div id="doc-empty" class="flex-1 flex flex-col items-center justify-center text-center text-[var(--ink-faint)] gap-2">
-        <p class="text-sm text-[var(--ink-dim)]">Select a file to read or edit.</p>
-        <p class="text-xs">Saves use GitHub API + Vault PAT only.</p>
-      </div>
-      <div id="doc-loaded" class="hidden flex-1 flex flex-col">
-        <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
-          <div>
-            <div id="doc-path" class="mono text-sm font-medium"></div>
-            <div id="doc-meta" class="mono text-[11px] text-[var(--ink-faint)]"></div>
-          </div>
-          <div class="flex gap-1 flex-wrap">
-            <button id="doc-mode-view" onclick="Docs.setMode('view')" class="chip chip-active">Preview</button>
-            <button id="doc-mode-edit" onclick="Docs.setMode('edit')" class="chip">Edit</button>
-            <a id="doc-history" href="#" target="_blank" rel="noopener" class="btn-ghost rounded px-2 py-1 text-xs">History</a>
-            <a id="doc-github" href="#" target="_blank" rel="noopener" class="btn-ghost rounded px-2 py-1 text-xs">GitHub</a>
-            <button id="doc-diff" onclick="DocsX.showDiff()" class="hidden btn-ghost rounded px-2 py-1 text-xs">Diff</button>
-            <button id="doc-save" onclick="Docs.save()" class="hidden btn-brand rounded px-2 py-1 text-xs">Save to GitHub</button>
-          </div>
-        </div>
-        <div id="doc-dirty" class="hidden text-[10px] mono text-[var(--amber)] mb-1">Unsaved edits</div>
-        <div id="doc-diff-panel" class="hidden diff-box mb-2"></div>
-        <div id="doc-view" class="md-body flex-1 overflow-y-auto"></div>
-        <textarea id="doc-edit" class="hidden flex-1 mono text-sm rounded p-3 resize-none" spellcheck="false" oninput="Docs.onEdit()"></textarea>
-      </div>
-    </div>
-  </div>
-  <div id="view-agents" class="view-panel hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
-  <div id="view-opsboard" class="view-panel hidden space-y-3">
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
-      <div class="glass rounded p-3">
-        <div class="panel-title">Budget runway (local)</div>
-        <p class="text-[11px] text-[var(--ink-faint)] mb-2">Monthly sats burn — browser only.</p>
-        <div class="flex gap-2 mb-2">
-          <input id="budget-monthly" type="number" class="flex-1 rounded px-2 py-1.5 text-sm mono" placeholder="sats / month">
-          <button class="btn-ghost rounded px-2 text-xs" onclick="BudgetRunway.save()">Save</button>
-        </div>
-        <div id="budget-panel" class="text-xs mono text-[var(--ink-dim)]">—</div>
-      </div>
-      <div class="glass rounded p-3">
-        <div class="panel-title">Competitor watch</div>
-        <textarea id="competitor-notes" class="w-full rounded px-2 py-1.5 mono text-xs" rows="5" placeholder="Name · note · URL"></textarea>
-        <button class="btn-ghost rounded px-2 py-1 text-xs mt-1" onclick="LocalBoards.saveCompetitors()">Save</button>
-      </div>
-      <div class="glass rounded p-3">
-        <div class="panel-title">Legal / board</div>
-        <div class="text-xs text-[var(--ink-faint)] mb-2">Safe Harbour · diligence pack · entity docs</div>
-        <button class="btn-brand rounded px-2 py-1 text-xs" onclick="exportBoardPack()">Assemble board pack</button>
-      </div>
-    </div>
-    <div class="glass rounded p-3">
-      <div class="panel-title">Shipped upgrades (v2.5.1)</div>
-      <div id="upgrades-shipped" class="upgrade-grid"></div>
-    </div>
-  </div>
-  <div id="view-domains" class="view-panel hidden">
-    <div class="glass rounded p-3">
-      <div class="flex justify-between mb-2"><div class="panel-title mb-0">Domain inventory</div>
-      <button class="btn-ghost rounded px-2 py-1 text-xs" onclick="DomainInventory.render()">Refresh</button></div>
-      <div id="domain-table" class="text-sm"></div>
-    </div>
-  </div>
-
-</div>
-
-<div class="max-w-[1680px] mx-auto px-3 site-footer">
-  <div class="ver-line flex flex-wrap justify-between gap-2">
-    <span class="mono">
-      Give A Bit HQ
-      · <span class="version-chip" id="hq-version">v2.7.0</span>
-      · build <span id="hq-build">—</span>
-      · <span id="hq-origin" class="text-[var(--ink-faint)]"></span>
-      · credentials only in localStorage · Safe Harbour
-    </span>
-    <span class="mono flex flex-wrap gap-2">
-      <span><kbd class="kbd">/</kbd> search</span>
-      <span><kbd class="kbd">v</kbd> vault</span>
-      <span><kbd class="kbd">P</kbd> pitch</span>
-      <span><kbd class="kbd">r</kbd> refresh</span>
-      <span><kbd class="kbd">?</kbd> help</span>
-    </span>
-  </div>
-</div>
-
-<!-- FLOAT BAR -->
-<div class="fixed bottom-3 left-1/2 -translate-x-1/2 z-40 w-[min(96vw,820px)]">
-  <div class="glass flex flex-wrap gap-1.5 justify-center items-center">
-    <button onclick="Bulk.open('send')" class="btn-brand rounded px-2.5 py-1.5 text-xs">Bulk Send</button>
-    <button onclick="Bulk.open('readme')" class="btn-ghost rounded px-2.5 py-1.5 text-xs">README</button>
-    <button onclick="exportReport()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Export TXT</button>
-    <button onclick="exportJSON()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Export JSON</button>
-    <button onclick="exportDiligence()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Diligence</button>
-    <button onclick="exportWalletsCSV()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">CSV wallets</button>
-    <button onclick="exportBoardPack()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Board pack</button>
-    <button onclick="InvoiceUI.open()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Invoice</button>
-    <button onclick="Pitch.open()" class="btn-accent rounded px-2.5 py-1.5 text-xs">Pitch</button>
-    <button onclick="Vault.openModal()" class="btn-ghost rounded px-2.5 py-1.5 text-xs">Config</button>
-  </div>
-</div>
-
-<div id="pitch-root" class="pitch-root hidden"></div>
-<div id="toast-stack" class="fixed top-14 right-3 z-[100] flex flex-col gap-1.5 items-end"></div>
-<div id="drawer-backdrop" class="hidden fixed inset-0 z-50 modal-backdrop" onclick="Drawer.close(event)">
-  <div id="drawer" class="slide-in absolute right-0 top-0 h-full w-[min(96vw,640px)] glass rounded-l overflow-y-auto p-4 border-l border-[var(--line)]" onclick="event.stopPropagation()"></div>
-</div>
-<div id="bulk-backdrop" class="hidden fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4" onclick="Bulk.close(event)">
-  <div id="bulk-modal" class="pop-in glass rounded w-full max-w-lg p-4" onclick="event.stopPropagation()"></div>
-</div>
-<div id="vault-backdrop" class="hidden fixed inset-0 z-50 modal-backdrop flex" onclick="Vault.closeModal(event)">
-  <div class="vault-modal pop-in" role="dialog" aria-modal="true" aria-labelledby="vault-title" onclick="event.stopPropagation()">
-    <!-- HEADER (sticky) -->
-    <div class="vault-modal-head">
-      <div class="min-w-0">
-        <h2 id="vault-title">Credential Vault</h2>
-        <p class="sub" data-tip="Vault is encrypted at rest with your HQ password (AES-GCM) when a gate password is set. Still never put secrets in git." data-tip-title="Credential Vault" data-tip-advice="Invoice keys = read balances. Never paste admin macaroons.">
-          Browser-only · AES when gated · never committed · <span class="mono">sovereign_deck_vault_v1</span>
-        </p>
-      </div>
-      <button type="button" onclick="Vault.closeModal()" class="btn-ghost w-9 h-9 rounded shrink-0" aria-label="Close vault">✕</button>
-    </div>
-
-    <!-- SCORE -->
-    <div class="vault-modal-score">
-      <div id="vault-scorecard" class="vault-score">
-        <div class="ring" id="vault-score-ring">0%</div>
-        <div class="flex-1 min-w-0">
-          <div class="text-xs font-semibold mb-1">Vault health</div>
-          <div class="vault-check" id="vault-checklist"></div>
-        </div>
-        <div class="text-right text-[10px] mono text-[var(--ink-faint)] shrink-0" id="vault-origin-note"></div>
-      </div>
-    </div>
-
-    <!-- TABS -->
-    <div class="vault-modal-tabs vault-tabs" role="tablist">
-      <button type="button" class="vault-tab on" data-vtab="keys" onclick="Vault.tab('keys')">Keys</button>
-      <button type="button" class="vault-tab" data-vtab="node" onclick="Vault.tab('node')">Node &amp; FX</button>
-      <button type="button" class="vault-tab" data-vtab="feeds" onclick="Vault.tab('feeds')">Feeds</button>
-      <button type="button" class="vault-tab" data-vtab="ai" onclick="Vault.tab('ai')">AI usage</button>
-      <button type="button" class="vault-tab" data-vtab="extra" onclick="Vault.tab('extra')">Security</button>
-    </div>
-
-    <!-- SCROLLABLE BODY -->
-    <div class="vault-modal-body" id="vault-modal-body">
-
-      <!-- KEYS -->
-      <div class="vault-pane on" id="vp-keys" role="tabpanel">
-        <div class="vault-section">
-          <div class="vault-section-title">GitHub PAT</div>
-          <div class="vault-field">
-            <label data-tip="Fine-grained PAT with Contents R/W + Actions R + Metadata R for private repos." data-tip-title="GitHub PAT" data-tip-advice="Public repos work without PAT; private need it.">Token</label>
-            <div class="flex gap-2">
-              <input id="vault-gh-token" type="password" class="flex-1 rounded px-3 py-2 text-sm mono" placeholder="ghp_… or github_pat_…" autocomplete="off" spellcheck="false">
-              <button type="button" class="btn-ghost rounded px-2.5 text-xs" onclick="VaultX.toggleVis('vault-gh-token',this)" title="Show/hide">👁</button>
-              <button type="button" class="btn-ghost rounded px-2.5 text-xs" onclick="VaultX.testGithub()">Test</button>
-            </div>
-            <div class="key-mask mt-1" id="vault-gh-mask">not set</div>
-          </div>
-        </div>
-        <div class="vault-section">
-          <div class="flex justify-between items-baseline gap-2 mb-1">
-            <div class="vault-section-title mb-0 border-0 pb-0" style="border:0;padding:0">LNbits invoice keys</div>
-            <span class="text-[10px] mono text-[var(--ink-faint)]" id="vault-node-note"></span>
-          </div>
-          <p class="text-[11px] text-[var(--ink-faint)] mb-2">Prefer invoice/read keys. Mark <span class="ro-badge">RO</span> to block spend flows for that slot.</p>
-          <div id="vault-wallet-rows" class="mb-2"></div>
-          <div class="vault-actions">
-            <button type="button" class="btn-ghost rounded px-2.5 py-1.5 text-xs" onclick="VaultX.testLNbits()">Test node</button>
-            <button type="button" class="btn-ghost rounded px-2.5 py-1.5 text-xs" onclick="VaultX.diagnoseAll()">Diagnose all</button>
-            <button type="button" class="btn-ghost rounded px-2.5 py-1.5 text-xs" onclick="document.getElementById('vault-bulk-paste').classList.toggle('hidden')">Bulk paste</button>
-          </div>
-          <div id="vault-bulk-paste" class="hidden mb-2">
-            <textarea id="vault-bulk-text" class="w-full rounded px-2 py-1.5 mono text-xs" rows="3" placeholder="wallet_id=key per line&#10;giveabit_main=…&#10;satohash=…"></textarea>
-            <button type="button" class="btn-ghost rounded px-2 py-1 text-xs mt-1" onclick="VaultX.applyBulk()">Apply paste</button>
-          </div>
-          <div id="vault-test-out" class="vault-test-out hidden"></div>
-        </div>
-      </div>
-
-      <!-- NODE & FX (was vp-keys-b) -->
-      <div class="vault-pane" id="vp-node" role="tabpanel">
-        <div class="vault-section">
-          <div class="vault-section-title">Node connection</div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div class="vault-field sm:col-span-2">
-              <label data-tip="Cloudflare Worker that calls LNbits server-side so browser CORS is not needed." data-tip-title="LNbits proxy" data-tip-advice="docs/LNBITS-PROXY.md — live balances without Tailscale CORS">LNbits proxy URL (recommended)</label>
-              <input id="vault-proxy-url" class="w-full rounded px-3 py-2 text-sm mono" placeholder="https://giveabit-lnbits-proxy.kitsboy.workers.dev">
-              <div class="hint mt-1">Default: https://giveabit-lnbits-proxy.kitsboy.workers.dev</div>
-            </div>
-            <div class="vault-field sm:col-span-2">
-              <label>Proxy token (Bearer)</label>
-              <div class="flex gap-2">
-                <input id="vault-proxy-token" type="password" class="flex-1 rounded px-3 py-2 text-sm mono" placeholder="from Worker PROXY_TOKEN secret" autocomplete="off">
-                <button type="button" class="btn-ghost rounded px-2 text-xs" onclick="VaultX.toggleVis('vault-proxy-token',this)">👁</button>
-              </div>
-            </div>
-            <div class="vault-field sm:col-span-2">
-              <label class="flex items-center gap-2 normal-case tracking-normal text-xs" style="text-transform:none;letter-spacing:0">
-                <input type="checkbox" id="vault-use-proxy" checked> Use proxy for live balances (skip browser CORS)
-              </label>
-            </div>
-            <div class="vault-field sm:col-span-2">
-              <label data-tip="LNbits base URL reachable from THIS browser. Public or Tailscale Funnel + CORS." data-tip-title="Node URL" data-tip-advice="If balances empty: docs/LNBITS-CORS.md">LNbits node URL (upstream for proxy / direct fallback)</label>
-              <input id="vault-node-url" class="w-full rounded px-3 py-2 text-sm mono" placeholder="https://….ts.net">
-            </div>
-            <div class="vault-field">
-              <label>FX source</label>
-              <select id="vault-fx-source" class="w-full rounded px-3 py-2 text-sm mono" onchange="VaultX.onFxChange()">
-                <option value="coingecko">CoinGecko</option>
-                <option value="manual">Manual</option>
-              </select>
-            </div>
-            <div class="vault-field">
-              <label>Manual BTC/USD</label>
-              <input id="vault-manual-btc" type="number" class="w-full rounded px-3 py-2 text-sm mono" placeholder="100000">
-            </div>
-            <div class="vault-field">
-              <label>Refresh interval (sec)</label>
-              <select id="vault-refresh" class="w-full rounded px-3 py-2 text-sm mono">
-                <option value="30">30</option>
-                <option value="60" selected>60</option>
-                <option value="120">120</option>
-                <option value="300">300</option>
-              </select>
-            </div>
-            <div class="vault-field sm:col-span-2">
-              <label>status.json URL (optional)</label>
-              <input id="vault-status-url" class="w-full rounded px-3 py-2 text-sm mono" placeholder="https://…/status.json or /status.json">
-            </div>
-            <div class="vault-field">
-              <label>Satohash API base</label>
-              <input id="vault-satohash-api" class="w-full rounded px-3 py-2 text-sm mono" placeholder="https://api.satohash.io">
-            </div>
-            <div class="vault-field">
-              <label>NIP-05 JSON URL</label>
-              <input id="vault-nip05-url" class="w-full rounded px-3 py-2 text-sm mono" placeholder="https://giveabit.io/.well-known/nostr.json">
-            </div>
-          </div>
-        </div>
-        <!-- keep hidden keys-b id for any legacy refs -->
-        <div id="vp-keys-b" class="hidden" aria-hidden="true"></div>
-      </div>
-
-      <!-- FEEDS -->
-      <div class="vault-pane" id="vp-feeds" role="tabpanel">
-        <div class="vault-section">
-          <div class="vault-section-title">Data pipes</div>
-          <p class="text-[11px] text-[var(--ink-faint)] mb-3">Override defaults. Leave blank for built-ins.</p>
-          <div class="vault-field">
-            <label>status.json URL</label>
-            <input id="vault-status-url-b" class="w-full rounded px-3 py-2 text-sm mono" placeholder="/status.json">
-          </div>
-          <div class="vault-field">
-            <label>Satohash API base</label>
-            <input id="vault-satohash-api-b" class="w-full rounded px-3 py-2 text-sm mono" placeholder="https://api.satohash.io">
-          </div>
-          <div class="vault-field">
-            <label>Satohash metrics URL</label>
-            <input id="vault-satohash-metrics" class="w-full rounded px-3 py-2 text-sm mono" placeholder="https://api.satohash.io/metrics.json">
-          </div>
-          <div class="vault-field">
-            <label>THOR node JSON URL</label>
-            <input id="vault-thor-node" class="w-full rounded px-3 py-2 text-sm mono" placeholder="/metrics/thor-node.json">
-          </div>
-          <div class="vault-field">
-            <label>NIP-05 JSON URL</label>
-            <input id="vault-nip05-url-b" class="w-full rounded px-3 py-2 text-sm mono" placeholder="https://giveabit.io/.well-known/nostr.json">
-          </div>
-          <div class="vault-field">
-            <label>Metrics base (static cache)</label>
-            <input id="vault-metrics-base" class="w-full rounded px-3 py-2 text-sm mono" placeholder="/metrics">
-          </div>
-        </div>
-      </div>
-
-      <!-- AI -->
-      <div class="vault-pane" id="vp-ai" role="tabpanel">
-        <div class="vault-section">
-          <div class="vault-section-title">xAI SuperGrok / Grok Build</div>
-          <p class="text-[11px] text-[var(--ink-faint)] mb-3">No public API — paste from your xAI account. Stored only in this browser.</p>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div class="vault-field">
-              <label>Weekly SuperGrok % used</label>
-              <input id="vault-grok-week" type="number" min="0" max="100" step="0.1" class="w-full rounded px-3 py-2 text-sm mono" placeholder="16">
-            </div>
-            <div class="vault-field">
-              <label>Grok Build % used</label>
-              <input id="vault-grok-build" type="number" min="0" max="100" step="0.1" class="w-full rounded px-3 py-2 text-sm mono" placeholder="16">
-            </div>
-            <div class="vault-field sm:col-span-2">
-              <label>Weekly limit resets (local time)</label>
-              <input id="vault-grok-reset" type="datetime-local" class="w-full rounded px-3 py-2 text-sm mono">
-            </div>
-            <div class="vault-field sm:col-span-2">
-              <label>Nous credits (optional label)</label>
-              <input id="vault-nous" class="w-full rounded px-3 py-2 text-sm mono" placeholder="not set">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SECURITY / EXTRA -->
-      <div class="vault-pane" id="vp-extra" role="tabpanel">
-        <div class="vault-section">
-          <div class="vault-section-title">Optional labels</div>
-          <p class="text-[11px] text-[var(--ink-faint)] mb-3">Still browser-local. Never store LND macaroons here.</p>
-          <div class="vault-field">
-            <label>Cloudflare account note</label>
-            <input id="vault-cf-note" class="w-full rounded px-3 py-2 text-sm mono" placeholder="account id last4 / project giveabit-hq">
-          </div>
-          <div class="vault-field">
-            <label>Extra API key A (label:value)</label>
-            <input id="vault-extra-a" type="password" class="w-full rounded px-3 py-2 text-sm mono" placeholder="e.g. family:sk_…">
-          </div>
-          <div class="vault-field">
-            <label>Extra API key B</label>
-            <input id="vault-extra-b" type="password" class="w-full rounded px-3 py-2 text-sm mono" placeholder="optional">
-          </div>
-          <div class="vault-field">
-            <label>Operator telegram / contact</label>
-            <input id="vault-contact" class="w-full rounded px-3 py-2 text-sm" placeholder="@…">
-          </div>
-          <div class="vault-actions">
-            <button type="button" onclick="Vault.exportEnc()" class="btn-ghost rounded px-3 py-2 text-xs">Export vault JSON</button>
-            <label class="btn-ghost rounded px-3 py-2 text-xs cursor-pointer">Import JSON
-              <input type="file" accept="application/json" class="hidden" onchange="Vault.importEnc(event)">
-            </label>
-          </div>
-        </div>
-        <div class="vault-section">
-          <div class="vault-section-title">Security</div>
-          <div class="glass-2 rounded p-3 space-y-2.5">
-            <label class="flex items-center gap-2 text-xs"><input type="checkbox" id="vault-block-bulk-send"> Block Bulk Send globally</label>
-            <label class="flex items-center gap-2 text-xs"><input type="checkbox" id="vault-prefer-live" checked> Prefer live metrics when available</label>
-            <div class="grid grid-cols-2 gap-2">
-              <div class="vault-field mb-0">
-                <label>Grok warn %</label>
-                <input id="vault-grok-warn" type="number" class="w-full rounded px-2 py-1.5 text-xs mono" value="75">
-              </div>
-              <div class="vault-field mb-0">
-                <label>Grok crit %</label>
-                <input id="vault-grok-crit" type="number" class="w-full rounded px-2 py-1.5 text-xs mono" value="90">
-              </div>
-            </div>
-            <div class="vault-field mb-0">
-              <label>Type WIPE to enable wipe button</label>
-              <input id="vault-wipe-confirm" class="w-full rounded px-2 py-1.5 text-xs mono" placeholder="WIPE" autocomplete="off">
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /vault-modal-body -->
-
-    <!-- FOOTER — always visible -->
-    <div class="vault-modal-foot">
-      <span class="hint" id="vault-foot-hint">Scroll tabs · Save stores on this origin only</span>
-      <button type="button" onclick="Vault.closeModal()" class="btn-ghost rounded px-4 py-2.5 text-sm">Cancel</button>
-      <button type="button" onclick="VaultX.safeClear()" class="btn-ghost rounded px-4 py-2.5 text-sm text-[var(--red)]">Wipe</button>
-      <button type="button" onclick="Vault.save()" class="btn-brand rounded text-sm" id="vault-save-btn">
-        <i class="fa-solid fa-floppy-disk text-[11px] mr-1.5"></i>Save vault
-      </button>
-    </div>
-  </div>
-</div>
-<div id="grok-edit-backdrop" class="hidden fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4" onclick="if(event.target.id==='grok-edit-backdrop')GrokUsage.closeEdit()">
-  <div class="pop-in glass rounded w-full max-w-sm p-4" onclick="event.stopPropagation()">
-    <div class="flex justify-between mb-2">
-      <h3 class="font-semibold text-sm">Update Grok usage</h3>
-      <button class="btn-ghost rounded px-2" onclick="GrokUsage.closeEdit()">✕</button>
-    </div>
-    <p class="text-[11px] text-[var(--ink-faint)] mb-3">From xAI account → Usage. Saved in Vault on this site only.</p>
-    <label class="text-[10px] mono text-[var(--ink-faint)]">Weekly SuperGrok %</label>
-    <input id="grok-edit-week" type="number" min="0" max="100" step="0.1" class="w-full rounded px-2 py-1.5 text-sm mono mb-2">
-    <label class="text-[10px] mono text-[var(--ink-faint)]">Grok Build %</label>
-    <input id="grok-edit-build" type="number" min="0" max="100" step="0.1" class="w-full rounded px-2 py-1.5 text-sm mono mb-2">
-    <label class="text-[10px] mono text-[var(--ink-faint)]">Resets</label>
-    <input id="grok-edit-reset" type="datetime-local" class="w-full rounded px-2 py-1.5 text-sm mono mb-3">
-    <button onclick="GrokUsage.saveEdit()" class="btn-brand rounded w-full py-2 text-sm">Save</button>
-  </div>
-</div>
-<div id="search-overlay" class="hidden fixed inset-0 z-[60] modal-backdrop flex items-start justify-center pt-20 px-4" onclick="Search.close(event)">
-  <div class="pop-in glass rounded w-full max-w-xl p-1" onclick="event.stopPropagation()">
-    <div class="flex items-center gap-2 px-3 py-2 border-b border-[var(--line)]">
-      <input id="overlay-search-input" placeholder="Jump to project, agent, file, view…" class="flex-1 bg-transparent border-0 py-1" oninput="Search.run(this.value)">
-      <kbd class="kbd">esc</kbd>
-    </div>
-    <div id="overlay-results" class="max-h-80 overflow-y-auto p-1"></div>
-  </div>
-</div>
-
-<div id="invoice-backdrop" class="hidden fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4" onclick="if(event.target.id==='invoice-backdrop')InvoiceUI.close()">
-  <div class="pop-in glass rounded w-full max-w-md p-4" onclick="event.stopPropagation()">
-    <div class="flex justify-between mb-2"><h3 class="font-semibold text-sm">Create invoice (preview)</h3>
-      <button class="btn-ghost rounded px-2" onclick="InvoiceUI.close()">✕</button></div>
-    <p class="text-[11px] text-[var(--ink-faint)] mb-3">Type INVOICE to arm. RO wallets blocked. POST not auto-fired until CORS+policy ok.</p>
-    <select id="inv-wallet" class="w-full rounded px-2 py-1.5 text-sm mono mb-2"></select>
-    <input id="inv-sats" type="number" min="1" class="w-full rounded px-2 py-1.5 text-sm mono mb-2" placeholder="sats">
-    <input id="inv-memo" class="w-full rounded px-2 py-1.5 text-sm mono mb-2" placeholder="memo">
-    <div id="inv-preview" class="invoice-preview mb-2 hidden"></div>
-    <input id="inv-confirm" class="w-full rounded px-2 py-1.5 text-sm mono mb-3" placeholder="type INVOICE" autocomplete="off">
-    <button onclick="InvoiceUI.create()" class="btn-brand rounded w-full py-2 text-sm">Create invoice</button>
-  </div>
-</div>
-
-<div id="help-backdrop" class="hidden fixed inset-0 z-[70] modal-backdrop flex items-center justify-center p-4" onclick="if(event.target.id==='help-backdrop')this.classList.add('hidden')">
-  <div class="pop-in glass rounded w-full max-w-md p-4">
-    <div class="flex justify-between mb-3"><h2 class="font-semibold">Keyboard & tips</h2><button class="btn-ghost rounded px-2" onclick="document.getElementById('help-backdrop').classList.add('hidden')">✕</button></div>
-    <div class="help-grid mono text-[var(--ink-dim)]" id="help-body"></div>
-  </div>
-</div>
-
-<script src="hq.js"></script>
+<script>
+  document.getElementById("hq-origin").textContent = location.origin || "file";
+</script>
+<script src="hq.js" defer></script>
 </body>
 </html>

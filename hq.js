@@ -1,3467 +1,2035 @@
-/* Give A Bit HQ v2.7.0 — secrets only in localStorage (sovereign_deck_vault_v1) */
-const HQ_VERSION = 'v2.7.0';
-const HQ_BUILD_ISO = null; // filled at boot
-const VIEWS = ['grid','list','pipeline','metrics','analytics','network','activity','matrix','wallets','docs','agents','opsboard','domains'];
-
-const state = {
-  projects:{}, view:'grid', filter:'all', ghRateRemaining:null, branches:{}, treeIndex:{},
-  pins: new Set(), history:[], log:[], theme:'stone', density:'comfy', refreshSec:60,
-  feeds:{}, nip05:{}, statusFeed:null, satohash:null, registryLoaded:false, corsHint:false
-};
-let PROJECTS = [];
-let AGENTS = [];
-let DOC_FILES = ['README.md','AGENTS.md','GROK-SESSION-PROTOCOL.md','SOURCE-OF-TRUTH.md','DILIGENCE.md','EXEC-SUMMARY.md','CHANGELOG.md','CONTRIBUTING.md','MARKETING-ONELINER.md','docs/KIMI-HANDOFF.md'];
-let GH_OWNER = 'kitsboy';
-let BRANCH_DEFAULTS = { openstrata: 'talent' };
-const FEEDS_DEFAULT = {
-  statusJsonUrl: '/status.json',
-  statusJsonFallback: 'https://raw.githubusercontent.com/kitsboy/HQ/main/status.json',
-  satohashHealthUrl: 'https://api.satohash.io/health',
-  satohashMetricsUrl: 'https://api.satohash.io/metrics.json',
-  nip05Url: 'https://giveabit.io/.well-known/nostr.json',
-  thorNodeUrl: '/metrics/thor-node.json',
-  metricsBase: '/metrics',
-  lnbitsProxyUrl: 'https://giveabit-lnbits-proxy.kitsboy.workers.dev'
-};
-
-let btcUsdPrice = null;
-let refreshTimer = null;
-
-
-/* ---------- REGISTRY (projects.json / agents.json) ---------- */
-const FALLBACK = {
-  projects: [
-    {id:'giveabit',name:'Give A Bit',repo:'giveabit',url:'https://giveabit.io',tagline:'Bitcoin Sovereignty, Education & Tools',pitch:'The family hub — education, tools, and the Give A Bit namespace.',wallet:'giveabit_main',deployed:true,icon:'fa-solid fa-seedling',category:'Foundation',color:'#c45f00',stack:['Nostr','Lightning','Education'],related:['satohash','katoa','sherpacarta'],backbone:false},
-    {id:'satohash',name:'Satohash',repo:'satohash',url:'https://satohash.io',tagline:'Stamp Documents on Bitcoin. Immutable Proof.',pitch:'Shared OTS timestamp backbone for the suite — free internal, public API planned.',wallet:'satohash',deployed:true,icon:'fa-solid fa-stamp',category:'Proof',color:'#8a5a00',stack:['Bitcoin','OpenTimestamps'],related:['giveabit'],backbone:true},
-    {id:'katoa',name:'Katoa',repo:'katoa',url:'https://katoa.org',tagline:'Zero-Fee Bitcoin Creator Platform · Lightning & Nostr',pitch:'Creators on Lightning and Nostr — zero-fee rails.',wallet:'katoa',deployed:true,icon:'fa-solid fa-feather-pointed',category:'Creator',color:'#1a5f7a',stack:['Lightning','Nostr'],related:['giveabit','sherpacarta']},
-    {id:'stranded',name:'Stranded',repo:'stranded',url:'https://stranded.giveabit.io',tagline:'Stranded Energy, Bitcoin Access, Stranded Value',pitch:'Unlock stranded energy with Bitcoin access.',wallet:'stranded',deployed:true,icon:'fa-solid fa-bolt-lightning',category:'Energy',color:'#1f6b3a',stack:['Energy','Bitcoin'],related:['giveabit']},
-    {id:'tadbuy',name:'Tadbuy',repo:'tadbuy',url:'https://tadbuy.giveabit.io',tagline:'Bitcoin-Native Ad Buying Platform',pitch:'Ad buys settled in Bitcoin and Lightning.',wallet:'tadbuy',deployed:true,icon:'fa-solid fa-bullhorn',category:'Ads',color:'#a32020',stack:['Ads','Lightning'],related:['giveabit','katoa']},
-    {id:'motopass',name:'MotoPass',repo:'motopass',url:'https://motopass.giveabit.io',tagline:'Bitcoin Sovereign Passports & Residency',pitch:'Sovereign passports and residency programs.',wallet:'motopass',deployed:true,icon:'fa-solid fa-passport',category:'Identity',color:'#5c3d7a',stack:['Identity','Travel'],related:['giveabit','sherpacarta']},
-    {id:'sherpacarta',name:'SherpaCarta',repo:'sherpacarta',url:'https://sherpacarta.org',tagline:'Global Digital Magna Carta for the 21st Century',pitch:'Governance charter for digital citizens.',wallet:'sherpacarta',deployed:true,icon:'fa-solid fa-scroll',category:'Governance',color:'#6b4f2a',stack:['Nostr','Governance'],related:['giveabit','katoa','motopass']},
-    {id:'openstrata',name:'Hermes Strata',repo:'openstrata',url:'https://openstrata.giveabit.io',tagline:'Sovereign Strata Corporation Dashboard',pitch:'Corporate strata dashboard for sovereign ops.',wallet:'openstrata',deployed:true,icon:'fa-solid fa-building-columns',category:'Corp',color:'#2a4a5c',stack:['Corp','Dashboard'],related:['giveabit']},
-    {id:'btcminiscript',name:'BTC Miniscript',repo:'btcminiscript',url:null,tagline:'Miniscript tooling R&D',pitch:'R&D on Bitcoin Miniscript tooling.',wallet:'kimi',deployed:false,icon:'fa-solid fa-flask',category:'R&D',color:'#5a574f',stack:['Bitcoin','Miniscript'],related:['giveabit']},
-  ],
-  agents: [
-    {name:'Andrea',role:'Ops & Diligence',motto:'Trust, but verify on-chain.',nip05:'andrea@giveabit.io',repo:'giveabit',file:'agents/ANDREA.md',color:'#1f6b3a',lead:false},
-    {name:'Kimi',role:'Lead Orchestrator',motto:'Ship sovereign, ship often.',nip05:'kimi@giveabit.io',repo:'giveabit',file:'agents/KIMI.md',color:'#c45f00',lead:true},
-    {name:'Lenny',role:'Legal & Compliance',motto:'Freedom needs a paper trail.',nip05:'lenny@giveabit.io',repo:'giveabit',file:'agents/LENNY.md',color:'#5c3d7a',lead:false},
-    {name:'Mimi',role:'Design & Brand',motto:'Clarity is the brand.',nip05:'mimi@giveabit.io',repo:'giveabit',file:'agents/MIMI.md',color:'#a32020',lead:false},
-    {name:'Nova',role:'Infra & Deploys',motto:'Green means go.',nip05:'nova@giveabit.io',repo:'giveabit',file:'agents/NOVA.md',color:'#1a5f7a',lead:false},
-    {name:'Rosa',role:'Community & Nostr',motto:'Sovereignty is social.',nip05:'rosa@giveabit.io',repo:'giveabit',file:'agents/ROSA.md',color:'#8a5a00',lead:false},
-    {name:'Ziggy',role:'Growth & Marketing',motto:'Every sat tells a story.',nip05:'ziggy@giveabit.io',repo:'giveabit',file:'agents/ZIGGY.md',color:'#2a4a5c',lead:false},
-  ]
-};
-
-async function loadRegistry(){
-  try{
-    const [pr, ar] = await Promise.all([
-      fetch('projects.json?t='+Date.now()).then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch('agents.json?t='+Date.now()).then(r=>r.ok?r.json():null).catch(()=>null),
-    ]);
-    if(pr && pr.projects){
-      PROJECTS = pr.projects;
-      if(pr.ghOwner) GH_OWNER = pr.ghOwner;
-      if(pr.branchDefaults) BRANCH_DEFAULTS = pr.branchDefaults;
-      if(pr.docFiles) DOC_FILES = pr.docFiles;
-      if(pr.feeds) state.feeds = Object.assign({}, FEEDS_DEFAULT, pr.feeds);
-      state.registryLoaded = true;
-    } else {
-      PROJECTS = FALLBACK.projects.slice();
-      state.feeds = Object.assign({}, FEEDS_DEFAULT);
-    }
-    if(ar && ar.agents){
-      AGENTS = ar.agents;
-      if(ar.nip05Url) state.feeds.nip05Url = ar.nip05Url;
-    } else AGENTS = FALLBACK.agents.slice();
-  }catch(e){
-    PROJECTS = FALLBACK.projects.slice();
-    AGENTS = FALLBACK.agents.slice();
-    state.feeds = Object.assign({}, FEEDS_DEFAULT);
-  }
-  if(!PROJECTS.length){ PROJECTS = FALLBACK.projects.slice(); AGENTS = FALLBACK.agents.slice(); }
-}
-
-/* ---------- EXTERNAL FEEDS (public only) ---------- */
-/*
- * Optional status.json (Vault statusJsonUrl or projects.json feeds.statusJsonUrl).
- * Expected shape (see status.example.json):
- * {
- *   "updatedAt": "ISO-8601",
- *   "sites": {
- *     "<projectId>": { "ok": true|false, "ms": 140, "status": 200 }
- *   },
- *   "node": { "bitcoin": { "ok": null }, "lnd": { "ok": null } }  // optional; never secrets
- * }
- * When set, site ok/status/ms paint liveReachable + statusHttp/statusMs on project cards.
- * Empty URL = client-side checkLive only (no-cors best-effort).
+/**
+ * Give A Bit HQ v3.0.0 — ops glass
+ * All metric values rendered from disk/network JSON. Zero hardcoded KPIs.
+ * Hard rule: no black / white / grey in the visual system (see hq.css).
  */
-const Feeds = {
-  async all(){
-    await Promise.all([this.statusJson(), this.satohashHealth(), this.verifyNip05(false), MetricsEngine.loadAll()]);
-    this.renderBanners();
-    this.paintHealthBar();
-  },
-  statusUrls(){
-    const urls = [];
-    const vault = (Vault.data.statusJsonUrl || '').trim();
-    const feed = (state.feeds.statusJsonUrl || FEEDS_DEFAULT.statusJsonUrl || '').trim();
-    const fallback = (state.feeds.statusJsonFallback || FEEDS_DEFAULT.statusJsonFallback || '').trim();
-    // Prefer same-origin /status.json, then vault override, then GitHub raw
-    if(feed) urls.push(feed);
-    if(vault && !urls.includes(vault)) urls.push(vault);
-    if(fallback && !urls.includes(fallback)) urls.push(fallback);
-    // absolute pages / custom domain
-    try{
-      const abs = new URL('/status.json', location.href).href;
-      if(!urls.includes(abs) && !urls.includes('/status.json')) urls.unshift('/status.json');
-    }catch(_){}
-    return [...new Set(urls.filter(Boolean))];
-  },
-  async statusJson(){
-    const urls = this.statusUrls();
-    if(!urls.length){ state.statusFeed = null; return; }
-    let lastErr = null;
-    for(const url of urls){
-      try{
-        const join = url.includes('?') ? '&' : (url.startsWith('http') || url.startsWith('/') ? '?' : '?');
-        const r = await fetch(url + join + 't=' + Date.now(), { cache:'no-store' });
-        if(!r.ok) throw new Error('status '+r.status);
-        state.statusFeed = await r.json();
-        state.statusFeed._loadedFrom = url;
-        const sites = state.statusFeed.sites || {};
-        PROJECTS.forEach(p=>{
-          const s = sites[p.id] || sites[p.repo];
-          if(!s || s.note === 'not-deployed') return;
-          const d = state.projects[p.id] || (state.projects[p.id]={id:p.id});
-          d.statusHttp = s.status;
-          d.statusMs = s.ms;
-          if(typeof s.ok === 'boolean'){
-            d.liveReachable = s.ok;
-            d.statusSource = 'status.json';
-          }
-        });
-        // merge satohash metrics from pinger if present
-        if(state.statusFeed.feeds?.satohashApi){
-          const api = state.statusFeed.feeds.satohashApi;
-          if(!state.satohash) state.satohash = {};
-          if(api.ok != null) state.satohash = Object.assign({}, state.satohash, { ok: api.ok, status: api.status, base: (api.healthUrl||'').replace(/\/health$/,'') });
-        }
-        if(state.statusFeed.feeds?.satohashMetrics){
-          state.satohash = Object.assign({}, state.satohash || {}, { metrics: state.statusFeed.feeds.satohashMetrics });
-        }
-        return;
-      }catch(e){ lastErr = e; }
-    }
-    state.statusFeed = { error: lastErr?.message || 'status.json unavailable' };
-  },
-  async satohashHealth(){
-    // Probe Satohash API backbone (default https://api.satohash.io/health) + optional /metrics.
-    const base = (Vault.data.satohashApi || state.feeds.satohashHealthUrl?.replace(/\/health$/,'') || 'https://api.satohash.io').replace(/\/$/,'');
-    const metricsUrl = state.feeds.satohashMetricsUrl || Vault.data.satohashMetricsUrl || (base + '/metrics.json');
-    try{
-      const r = await fetch(base + '/health', { mode:'cors', cache:'no-store' });
-      if(!r.ok) throw new Error('http '+r.status);
-      let body = null;
-      try{ body = await r.json(); }catch(_){ body = { raw: true }; }
-      state.satohash = Object.assign({}, state.satohash || {}, { ok:true, status:r.status, body, base });
-    }catch(e){
-      state.satohash = Object.assign({}, state.satohash || {}, { ok:false, error: e.message, base });
-    }
-    // Best-effort metrics (CORS may block; status-pinger embeds metrics into status.json)
-    try{
-      const r = await fetch(metricsUrl, { mode:'cors', cache:'no-store' });
-      if(r.ok){
-        const ct = r.headers.get('content-type')||'';
-        const metrics = ct.includes('json') ? await r.json() : { text: await r.text() };
-        state.satohash = Object.assign({}, state.satohash || {}, { metrics });
+(function () {
+  "use strict";
+
+  const HQ_VERSION = "3.0.0";
+  const BUILD_TS = new Date().toISOString();
+  const VAULT_KEY = "sovereign_deck_vault_v1";
+  const THEME_KEY = "hq_theme_v3";
+  const TAB_KEY = "hq_tab_v3";
+
+  /* ─── Project accent map (avoid green/amber/red for identity) ─── */
+  const PROJECT_ACCENTS = {
+    giveabit: "#ff8c00",
+    satohash: "#38bdf8",
+    katoa: "#a78bfa",
+    stranded: "#2dd4bf",
+    tadbuy: "#f472b6",
+    motopass: "#e879f9",
+    sherpacarta: "#fb923c",
+    openstrata: "#67e8f9",
+    btcminiscript: "#c084fc",
+    "thor-node": "#2dd4bf",
+  };
+
+  const TAB_ACCENTS = {
+    cards: "#ff8c00",
+    list: "#38bdf8",
+    metrics: "#a78bfa",
+    pipeline: "#f472b6",
+    network: "#2dd4bf",
+    system: "#67e8f9",
+    wallets: "#f59e0b",
+    docs: "#e879f9",
+    agents: "#fb923c",
+    domains: "#c084fc",
+  };
+
+  const DOCS_CATALOG = [
+    "CLOUDFLARE-ACCESS.md",
+    "ECOSYSTEM-MAP.md",
+    "HQ-GATE.md",
+    "KIMI-GROK-HANDOFF.md",
+    "KIMI-HANDOFF-2026-07-20-MEGA.md",
+    "KIMI-HANDOFF-2026-07-20.md",
+    "KIMI-HANDOFF.md",
+    "LNBITS-CORS.md",
+    "LNBITS-PROXY.md",
+    "METRICS-SCHEMA.md",
+    "THOR-NODE-JSON.md",
+    "UPGRADES-100.md",
+  ];
+
+  /* ═══════════════════════════════════════
+     DATA LAYER — fetch + escape + boundary
+     ═══════════════════════════════════════ */
+
+  function esc(s) {
+    if (s == null) return "";
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function escAttr(s) {
+    return esc(s).replace(/`/g, "&#96;");
+  }
+
+  /**
+   * Shared data loader. Every call is isolated — one failure never throws out.
+   * @returns {{ ok: boolean, data: any, error: string|null, path: string, status: number|null }}
+   */
+  async function loadData(path, opts = {}) {
+    const url = path;
+    try {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), opts.timeout || 12000);
+      const res = await fetch(url, {
+        signal: ctrl.signal,
+        cache: opts.cache || "no-cache",
+        mode: opts.mode || "cors",
+        headers: opts.headers || {},
+      });
+      clearTimeout(t);
+      if (!res.ok) {
+        return {
+          ok: false,
+          data: null,
+          error: `HTTP ${res.status} ${res.statusText || ""}`.trim(),
+          path: url,
+          status: res.status,
+        };
       }
-    }catch(_){ /* ignore — offline or CORS */ }
-  },
-  paintHealthBar(){
-    const sh = state.satohash;
-    setHealthDot('hb-satohash', sh ? (sh.ok ? 'green' : 'red') : 'gray');
-    const el = document.getElementById('hb-satohash');
-    if(el){
-      const tip = sh
-        ? (sh.ok ? `Satohash API OK · ${sh.base||'api.satohash.io'}/health` : `Satohash API offline · ${sh.error||'n/a'}`)
-        : 'Satohash API · not checked';
-      el.title = tip;
-    }
-  },
-  async verifyNip05(manual){
-    const url = (Vault.data.nip05Url || state.feeds.nip05Url || FEEDS_DEFAULT.nip05Url);
-    try{
-      const r = await fetch(url + (url.includes('?')?'&':'?')+'t='+Date.now(), { cache:'no-store' });
-      if(!r.ok) throw new Error('http '+r.status);
-      const j = await r.json();
-      const names = (j.names || j);
-      state.nip05 = { ok:true, url, names: typeof names === 'object' ? names : {}, raw:j };
-      this.renderNip05();
-      if(manual) toast('NIP-05 re-checked','success');
-    }catch(e){
-      state.nip05 = { ok:false, error:e.message, url };
-      this.renderNip05();
-      if(manual) toast('NIP-05 failed: '+e.message,'error');
-    }
-  },
-  renderNip05(){
-    const panel = document.getElementById('nip05-panel');
-    const list = document.getElementById('nip05-list');
-    if(!panel||!list) return;
-    panel.classList.remove('hidden');
-    const names = state.nip05.names || {};
-    list.innerHTML = AGENTS.map(a=>{
-      const local = (a.nip05||'').split('@')[0];
-      const has = state.nip05.ok && names && (names[local] != null || names[a.nip05] != null);
-      return `<div class="nip-row">
-        <div><span class="font-semibold">${a.name}</span> <span class="mono text-[10px] text-[var(--ink-faint)]">${a.nip05}</span>
-        ${a.lead?'<span class="status-pill amber ml-1">lead</span>':''}</div>
-        <span class="status-pill ${has?'green':state.nip05.ok?'red':'gray'}">${has?'verified':state.nip05.ok?'missing':'unchecked'}</span>
-      </div>`;
-    }).join('') + (state.nip05.ok?'':`<div class="text-[11px] text-[var(--ink-faint)]">Could not load ${state.nip05.url||'NIP-05'} — ${state.nip05.error||''}</div>`);
-  },
-  renderBanners(){
-    const bb = document.getElementById('backbone-banner');
-    if(bb){
-      const sh = state.satohash || {};
-      const health = sh.ok === true ? `API health: OK (${sh.status||200})` : sh.ok === false ? `API health: offline (${sh.error||'n/a'})` : 'API health: not checked';
-      const m = sh.metrics || {};
-      const metricBits = [];
-      // Flexible metric keys (whatever satohash publishes)
-      const pick = (...keys)=>{ for(const k of keys){ if(m[k]!=null && m[k]!=='') return m[k]; if(m.data && m.data[k]!=null) return m.data[k]; } return null; };
-      const stamps = pick('stamps_today','stampsToday','stamps_24h','total_stamps','stamps');
-      const pending = pick('pending','pending_stamps','pendingCount');
-      const confirmed = pick('confirmed','confirmed_stamps','confirmedCount');
-      if(stamps!=null) metricBits.push(`stamps: ${stamps}`);
-      if(pending!=null) metricBits.push(`pending: ${pending}`);
-      if(confirmed!=null) metricBits.push(`confirmed: ${confirmed}`);
-      const metricsLine = metricBits.length ? ` · <span class="mono">${metricBits.join(' · ')}</span>` : (m && Object.keys(m).length ? ` · <span class="mono">metrics loaded</span>` : ' · metrics pending (API or status-pinger)');
-      const statusAge = state.statusFeed?.updatedAt ? ` · status ${fmt.timeAgo(state.statusFeed.updatedAt)}` : '';
-      bb.innerHTML = `<strong style="color:var(--orange-2)">Satohash backbone</strong> — Shared OpenTimestamps for the suite · free internal · public API at <span class="mono">api.satohash.io</span>. Bitcoin node verifies; LND settles. <span class="mono">· ${health}</span>${metricsLine}<span class="mono">${statusAge}</span>`;
-    }
-    const fs = document.getElementById('feeds-status');
-    if(fs){
-      const parts = [];
-      parts.push(state.registryLoaded ? 'registry: projects.json' : 'registry: embedded fallback');
-      if(state.statusFeed && !state.statusFeed.error){
-        parts.push('status.json: ok' + (state.statusFeed._loadedFrom ? ' ('+state.statusFeed._loadedFrom+')' : ''));
-      } else if(state.statusFeed?.error){
-        parts.push('status.json: '+state.statusFeed.error);
-      } else {
-        parts.push('status.json: waiting for pinger');
+      const ct = (res.headers.get("content-type") || "").toLowerCase();
+      if (opts.asText || ct.includes("text/") || path.endsWith(".md")) {
+        const text = await res.text();
+        return { ok: true, data: text, error: null, path: url, status: res.status };
       }
-      parts.push(state.satohash?.ok ? 'satohash: ok' : 'satohash: offline/pending');
-      parts.push(state.satohash?.metrics ? 'metrics: yes' : 'metrics: —');
-      parts.push(state.nip05?.ok ? 'nip-05: ok' : 'nip-05: pending/err');
-      fs.textContent = parts.join(' · ');
+      try {
+        const data = await res.json();
+        return { ok: true, data, error: null, path: url, status: res.status };
+      } catch (parseErr) {
+        return {
+          ok: false,
+          data: null,
+          error: `JSON parse failed: ${parseErr.message}`,
+          path: url,
+          status: res.status,
+        };
+      }
+    } catch (err) {
+      return {
+        ok: false,
+        data: null,
+        error: err.name === "AbortError" ? "Request timed out" : err.message || String(err),
+        path: url,
+        status: null,
+      };
     }
-    // CORS / wallet connectivity banner
-    const keys = Object.values(Vault.data.wallets||{}).filter(v=>v&&v.length>10).length;
-    const anyOk = Object.values(state.projects).some(p=>p.walletOk);
-    const kinds = Object.values(state.projects).map(p=>p.walletErrorKind).filter(Boolean);
-    const corsLikely = kinds.includes('cors') || (keys>0 && !anyOk && !kinds.includes('auth'));
-    const authLikely = kinds.includes('auth');
-    const cors = document.getElementById('cors-banner');
-    if(cors){
-      if(keys>0 && !anyOk){
-        cors.classList.remove('hidden');
-        const node = (Vault.data.nodeUrl||'').replace(/\/$/,'');
-        const origin = location.origin;
-        const title = authLikely
-          ? 'Wallet keys rejected (401/403) — check invoice key / wallet slot name'
-          : 'Wallet keys are in Vault but balances are empty — CORS or network';
-        const fix = authLikely
-          ? `Re-copy <strong>Invoice/read</strong> key for each wallet in LNbits. Slot names in Vault must match projects (e.g. <span class="mono">satohash</span>).`
-          : `HQ at <span class="mono">${origin}</span> calls <span class="mono">${node}/api/v1/wallet</span>. The browser blocks that unless LNbits/Caddy sends CORS allowing this origin.`;
-        cors.innerHTML = `<div class="cors-banner">
-          <div class="font-semibold mb-1">${title}</div>
-          <div class="text-[11px] leading-relaxed mb-2">${fix} <strong>Do not</strong> paste keys into HTML/git.</div>
-          <div class="text-[10px] mono mb-2">Fix: set <strong>LNbits proxy URL + proxy token</strong> in Vault (Node tab) — Worker bypasses CORS. Or allow origin on node: <strong>${origin}</strong></div>
-          <div class="flex flex-wrap gap-2">
-            <button type="button" class="btn-brand rounded px-2 py-1 text-xs" onclick="LNbitsHelp.diagnose()">Test connection</button>
-            <button type="button" class="btn-ghost rounded px-2 py-1 text-xs" onclick="Vault.openModal(); setTimeout(()=>Vault.tab&&Vault.tab('node'),50)">Open Vault proxy</button>
-            <a class="btn-ghost rounded px-2 py-1 text-xs" href="/docs/LNBITS-CORS.md" target="_blank" rel="noopener">CORS fix guide</a>
-            <button type="button" class="btn-ghost rounded px-2 py-1 text-xs" onclick="Vault.openModal()">Open Vault (node URL)</button>
-          </div>
-          <pre id="lnbits-diag" class="hidden mt-2 p-2 glass-2 rounded text-[10px] mono overflow-auto max-h-40"></pre>
+  }
+
+  /** Try multiple candidate URLs; return first ok. */
+  async function loadFirst(paths) {
+    let last = null;
+    for (const p of paths) {
+      if (!p) continue;
+      const r = await loadData(p);
+      last = r;
+      if (r.ok) return r;
+    }
+    return last || { ok: false, data: null, error: "No paths", path: paths[0] || "?", status: null };
+  }
+
+  function unavailableHTML(title, path, detail) {
+    return `<div class="unavailable-card">
+      <div class="icon"><i class="fa-solid fa-satellite-dish"></i></div>
+      <h4>${esc(title || "Data unavailable")}</h4>
+      <p>${esc(detail || "This source could not be loaded. Other panels still work.")}</p>
+      <div class="path">${esc(path || "—")}</div>
+    </div>`;
+  }
+
+  /* ═══════════════════════════════════════
+     FORMATTERS
+     ═══════════════════════════════════════ */
+
+  function fmtNum(n, format) {
+    if (n == null || Number.isNaN(Number(n))) return "—";
+    const v = Number(n);
+    if (format === "sats" || format === "sat") {
+      if (Math.abs(v) >= 1e8) return (v / 1e8).toFixed(4) + " ₿";
+      return Math.round(v).toLocaleString() + " sats";
+    }
+    if (format === "percent") return (Math.round(v * 10) / 10) + "%";
+    if (format === "duration") {
+      if (v >= 1000) return (v / 1000).toFixed(2) + "s";
+      return Math.round(v) + "ms";
+    }
+    if (Math.abs(v) >= 1e9) return (v / 1e9).toFixed(2) + "B";
+    if (Math.abs(v) >= 1e6) return (v / 1e6).toFixed(2) + "M";
+    if (Math.abs(v) >= 1e4) return (v / 1e3).toFixed(1) + "k";
+    if (Number.isInteger(v)) return v.toLocaleString();
+    return (Math.round(v * 100) / 100).toLocaleString();
+  }
+
+  function fmtMs(ms) {
+    if (ms == null || Number.isNaN(Number(ms))) return "—";
+    return Math.round(Number(ms)) + "ms";
+  }
+
+  function fmtTime(iso) {
+    if (!iso) return "—";
+    try {
+      const d = new Date(iso);
+      if (Number.isNaN(d.getTime())) return String(iso);
+      return d.toLocaleString(undefined, {
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } catch {
+      return esc(String(iso));
+    }
+  }
+
+  function healthClass(status) {
+    const s = String(status || "unknown").toLowerCase();
+    if (s === "green" || s === "ok" || s === "healthy" || s === "up") return "green";
+    if (s === "amber" || s === "yellow" || s === "degraded" || s === "warn") return "amber";
+    if (s === "red" || s === "down" || s === "error" || s === "critical") return "red";
+    return "muted";
+  }
+
+  function accentFor(id) {
+    return PROJECT_ACCENTS[id] || "#a78bfa";
+  }
+
+  /* ═══════════════════════════════════════
+     REUSABLE UI COMPONENTS
+     ═══════════════════════════════════════ */
+
+  function statusPill(status, label) {
+    const cls = healthClass(status);
+    const text = label || cls;
+    const pulse = cls === "red" || cls === "amber" ? " pulse" : "";
+    return `<span class="status-pill ${cls}"><span class="status-dot ${cls}${pulse}"></span>${esc(text)}</span>`;
+  }
+
+  function statusDot(status) {
+    const cls = healthClass(status);
+    const pulse = cls === "red" || cls === "amber" || cls === "green" ? " pulse" : "";
+    return `<span class="status-dot ${cls}${pulse}" title="${esc(cls)}"></span>`;
+  }
+
+  function iconBadge(iconClass, color) {
+    return `<div class="icon-badge" style="--badge-c:${escAttr(color)}"><i class="${escAttr(iconClass || "fa-solid fa-cube")}"></i></div>`;
+  }
+
+  function metricBar(pct, colorClass, extraStyle) {
+    const p = Math.max(0, Math.min(100, Number(pct) || 0));
+    const cls = colorClass || "";
+    return `<div class="metric-bar ${escAttr(cls)}" ${extraStyle ? `style="${escAttr(extraStyle)}"` : ""}><span style="width:${p}%"></span></div>`;
+  }
+
+  function hbarChart(rows, color) {
+    if (!rows || !rows.length) return `<p class="empty-state">No series</p>`;
+    const max = Math.max(...rows.map((r) => Number(r.value) || 0), 1);
+    return rows
+      .map((r) => {
+        const pct = ((Number(r.value) || 0) / max) * 100;
+        return `<div class="hbar-row">
+          <span class="name" data-tip="${escAttr(r.label)}">${esc(r.label)}</span>
+          <div class="metric-bar" style="--bar-c:${escAttr(color || r.color || "#38bdf8")}"><span style="width:${pct}%"></span></div>
+          <span class="val">${esc(r.display != null ? r.display : fmtNum(r.value))}</span>
         </div>`;
-        state.corsHint = true;
-      } else {
-        cors.classList.add('hidden');
-        state.corsHint = false;
-      }
-    }
+      })
+      .join("");
   }
-};
 
-/* ---------- PITCH MODE ---------- */
-const Pitch = {
-  open(){
-    document.body.classList.add('pitch-active');
-    const root = document.getElementById('pitch-root');
-    root.classList.remove('hidden');
-    let total=0, live=0, health=0, issues=0, ciOk=0, ciFail=0;
-    PROJECTS.forEach(p=>{
-      const d=state.projects[p.id]||{};
-      if(d.walletOk) total+=d.balanceSats||0;
-      if(d.liveReachable) live++;
-      health+=healthScore(d);
-      issues+=d.issues||0;
-      if(d.actionsStatus==='success') ciOk++;
-      if(d.actionsStatus==='failure') ciFail++;
+  function sparkline(points, color, w, h) {
+    const W = w || 120;
+    const H = h || 36;
+    const vals = (points || [])
+      .map((p) => (typeof p === "number" ? p : p && p.v != null ? Number(p.v) : null))
+      .filter((v) => v != null && !Number.isNaN(v));
+    if (vals.length < 2) {
+      return `<svg class="sparkline" viewBox="0 0 ${W} ${H}" aria-hidden="true"><line x1="4" y1="${H / 2}" x2="${W - 4}" y2="${H / 2}" stroke="${escAttr(color || "#38bdf8")}" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.4"/></svg>`;
+    }
+    const min = Math.min(...vals);
+    const max = Math.max(...vals);
+    const range = max - min || 1;
+    const pad = 2;
+    const coords = vals.map((v, i) => {
+      const x = pad + (i / (vals.length - 1)) * (W - pad * 2);
+      const y = pad + (1 - (v - min) / range) * (H - pad * 2);
+      return [x, y];
     });
-    const avg = Math.round(health/Math.max(PROJECTS.length,1));
-    const usd = btcUsdPrice?fmt.usd(total/1e8*btcUsdPrice):'$—';
-    root.innerHTML = `
-      <div class="pitch-hero">
-        <div class="flex justify-between items-start mb-6 flex-wrap gap-3">
-          <div>
-            <div class="text-[11px] mono uppercase tracking-[0.16em] text-[var(--ink-faint)]">Give A Bit · Safe Harbour</div>
-            <h1 class="text-3xl font-bold mt-1" style="font-family:'IBM Plex Sans'">Bitcoin sovereignty suite</h1>
-            <p class="text-sm text-[var(--ink-dim)] mt-2 max-w-xl">Compartmentalized products. One ops glass. Lightning wallets · GitHub ship path · OpenTimestamps backbone · named Nostr operators.</p>
-          </div>
-          <div class="flex gap-2">
-            <button onclick="Pitch.copyDeck()" class="btn-brand rounded px-3 py-2 text-sm">Copy deck MD</button>
-            <button onclick="exportDiligence()" class="btn-ghost rounded px-3 py-2 text-sm">Diligence pack</button>
-            <button onclick="window.print()" class="btn-ghost rounded px-3 py-2 text-sm">Print / PDF</button>
-            <button onclick="Pitch.close()" class="btn-ghost rounded px-3 py-2 text-sm">Exit (Esc)</button>
-          </div>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
-          <div class="pitch-metric"><div class="big">${fmt.sats(total)}</div><div class="lbl">Treasury sats</div></div>
-          <div class="pitch-metric"><div class="big">${usd}</div><div class="lbl">USD (spot)</div></div>
-          <div class="pitch-metric"><div class="big">${live}/${PROJECTS.filter(p=>p.deployed).length}</div><div class="lbl">Live sites</div></div>
-          <div class="pitch-metric"><div class="big">${avg}</div><div class="lbl">Avg health</div></div>
-          <div class="pitch-metric"><div class="big">${GrokUsage.get().weekPct}%</div><div class="lbl">SuperGrok week</div></div>
-          <div class="pitch-metric"><div class="big">${GrokUsage.get().buildPct}%</div><div class="lbl">Grok Build</div></div>
-        </div>
-        <div class="text-xs mono text-[var(--ink-faint)] mb-6">${GrokUsage.formatReset(GrokUsage.get().resetAt)} · CI ${ciOk}/${ciFail} · issues ${issues}</div>
-        <div class="backbone-banner mb-5"><strong>Satohash</strong> — shared OpenTimestamps backbone for the family · free internal · public API planned · Bitcoin node verifies, LND settles.</div>
-        <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Suite map</div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
-          ${PROJECTS.map(p=>{
-            const d=state.projects[p.id]||{}; const s=statusMeta(d.status);
-            return `<div class="pitch-card" style="--pc:${p.color}">
-              <div class="flex justify-between items-start gap-2">
-                <h3>${p.name}</h3>
-                <span class="status-pill ${s.dot}">${s.label}</span>
-              </div>
-              <p>${p.pitch||p.tagline}</p>
-              <div class="mt-2 text-[10px] mono text-[var(--ink-faint)]">${p.category}${p.backbone?' · BACKBONE':''} · ${d.walletOk?fmt.sats(d.balanceSats)+' sats':'—'}</div>
-            </div>`;
-          }).join('')}
-        </div>
-        <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Operators (NIP-05)</div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mb-6">
-          ${AGENTS.map(a=>{
-            const local=(a.nip05||'').split('@')[0];
-            const names=state.nip05.names||{};
-            const has=state.nip05.ok && names[local]!=null;
-            return `<div class="pitch-card" style="--pc:${a.color}">
-              <h3>${a.name}${a.lead?' · Lead':''}</h3>
-              <p>${a.role} — ${a.motto}</p>
-              <div class="mt-2 mono text-[10px]">${a.nip05} · ${has?'✓': '·'}</div>
-            </div>`;
-          }).join('')}
-        </div>
-        <p class="text-xs text-[var(--ink-faint)] mono">Safe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first · Generated ${new Date().toISOString()}</p>
-      </div>`;
-  },
-  close(){
-    document.body.classList.remove('pitch-active');
-    document.getElementById('pitch-root').classList.add('hidden');
-  },
-  copyDeck(){
-    let total=0; PROJECTS.forEach(p=>{ const d=state.projects[p.id]||{}; if(d.walletOk) total+=d.balanceSats||0; });
-    const lines = [
-      '# Give A Bit — Suite Deck',
-      '',
-      `Generated: ${new Date().toISOString()}`,
-      `Treasury: ${fmt.sats(total)} sats` + (btcUsdPrice?` (${fmt.usd(total/1e8*btcUsdPrice)})`:''),
-      '',
-      '## Products',
-      ...PROJECTS.map(p=>{
-        const d=state.projects[p.id]||{};
-        return `- **${p.name}** — ${p.pitch||p.tagline} _(status: ${statusMeta(d.status).label})_`;
-      }),
-      '',
-      '## Backbone',
-      '- **Satohash** — OpenTimestamps for the suite; free internal; public API planned',
-      '',
-      '## Operators',
-      ...AGENTS.map(a=>`- ${a.name} (${a.role}) — \`${a.nip05}\`${a.lead?' **Lead**':''}`),
-      '',
-      'Safe Harbour · Give A Bit family · Bitcoin sovereignty first.',
-    ];
-    navigator.clipboard?.writeText(lines.join('\n')).then(()=>toast('Deck markdown copied','success'));
+    const line = coords.map((c, i) => (i === 0 ? `M${c[0]},${c[1]}` : `L${c[0]},${c[1]}`)).join(" ");
+    const area = `${line} L${coords[coords.length - 1][0]},${H} L${coords[0][0]},${H} Z`;
+    const c = color || "#38bdf8";
+    return `<svg class="sparkline" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
+      <path class="fill" d="${area}" fill="${escAttr(c)}"/>
+      <path class="stroke" d="${line}" stroke="${escAttr(c)}"/>
+    </svg>`;
   }
-};
 
-function exportDiligence(){
-  let total=0;
-  const rows = PROJECTS.map(p=>{
-    const d=state.projects[p.id]||{};
-    if(d.walletOk) total+=d.balanceSats||0;
-    const docs = DOC_FILES.map(f=>`  - [ ] ${f}`).join('\n');
-    return [
-      `## ${p.name}`,
-      `- Repo: kitsboy/${p.repo}`,
-      `- URL: ${p.url||'n/a'}`,
-      `- Category: ${p.category}`,
-      `- Status: ${statusMeta(d.status).label}`,
-      `- Health: ${healthScore(d)}/100`,
-      `- Live: ${d.liveReachable===true?'yes':d.liveReachable===false?'no':'n/a'}${d.statusMs!=null?' ('+d.statusMs+'ms)':''}`,
-      `- Wallet: ${d.walletOk?fmt.sats(d.balanceSats)+' sats':'not synced'}`,
-      `- Last commit: ${fmt.short(d.sha)} — ${(d.commitMsg||'—').replace(/\n/g,' ')}`,
-      `- CI: ${fmt.actions(d.actionsStatus)}`,
-      `- Language: ${d.language||'—'} · Issues: ${d.issues??'—'}`,
-      `- Pitch: ${p.pitch||p.tagline}`,
-      `- Docs checklist:`,
-      docs,
-      ''
-    ].join('\n');
-  }).join('\n');
-  const nip = AGENTS.map(a=>{
-    const local=(a.nip05||'').split('@')[0];
-    const names=state.nip05.names||{};
-    const has=state.nip05.ok && names[local]!=null;
-    return `- ${a.nip05}: ${has?'VERIFIED':'unchecked/missing'}`;
-  }).join('\n');
-  const md = [
-    '# Give A Bit — Diligence Pack',
-    `Generated: ${new Date().toString()}`,
-    '',
-    '## Portfolio snapshot',
-    `- Total sats: ${fmt.sats(total)}`,
-    `- USD: ${btcUsdPrice?fmt.usd(total/1e8*btcUsdPrice):'—'}`,
-    `- BTC/USD: ${btcUsdPrice||'—'}`,
-    `- Projects: ${PROJECTS.length} · Agents: ${AGENTS.length}`,
-    `- Satohash API: ${state.satohash?.ok?'healthy':'offline/unknown'}`,
-    `- status.json: ${state.statusFeed && !state.statusFeed.error ? 'loaded' : 'not configured or error'}`,
-    '',
-    '## NIP-05',
-    nip,
-    '',
-    '## Per-project',
-    rows,
-    '---',
-    'Safe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first.',
-    'Secrets are never included in this pack.',
-  ].join('\n');
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([md],{type:'text/markdown'}));
-  a.download=`giveabit-diligence-${new Date().toISOString().slice(0,10)}.md`;
-  a.click();
-  toast('Diligence pack downloaded','success');
-}
-
-
-
-
-/* ---------- PRODUCT METRICS + THOR NODE LAB ---------- */
-const MetricsEngine = {
-  cache: {}, // productId -> envelope
-  thor: null,
-  selected: 'satohash',
-  async loadAll(){
-    const base = (state.feeds.metricsBase || '/metrics').replace(/\/$/,'');
-    await Promise.all(PROJECTS.map(async p=>{
-      const url = p.metricsUrl || `${base}/${p.id}.json`;
-      try{
-        const r = await fetch(url + (url.includes('?')?'&':'?') + 't=' + Date.now(), { cache:'no-store' });
-        if(!r.ok) throw new Error('http '+r.status);
-        const j = await r.json();
-        // live candidates for satohash
-        if(p.id==='satohash' && p.metricsLiveCandidates){
-          for(const live of p.metricsLiveCandidates){
-            try{
-              const lr = await fetch(live, { mode:'cors', cache:'no-store' });
-              if(lr.ok){
-                const body = await lr.json().catch(()=>({}));
-                j.raw = Object.assign({}, j.raw||{}, { liveProbe: { url: live, body } });
-                j.health = j.health || {};
-                if(live.includes('health') || live.includes('status')){
-                  j.health.message = (j.health.message||'') + ' · live probe OK';
-                }
-                break;
-              }
-            }catch(_){}
-          }
-        }
-        this.cache[p.id] = j;
-        const d = state.projects[p.id] || (state.projects[p.id]={id:p.id});
-        d.metrics = j;
-      }catch(e){
-        this.cache[p.id] = null;
-      }
-    }));
-    // THOR
-    const urls = [
-      Vault.data.thorNodeUrl,
-      state.feeds.thorNodeUrl,
-      '/metrics/thor-node.json',
-      state.feeds.thorNodeFallback,
-      'https://raw.githubusercontent.com/kitsboy/HQ/main/metrics/thor-node.json'
-    ].filter(Boolean);
-    for(const u of [...new Set(urls)]){
-      try{
-        const r = await fetch(u + (String(u).includes('?')?'&':'?') + 't=' + Date.now(), { cache:'no-store' });
-        if(!r.ok) continue;
-        this.thor = await r.json();
-        break;
-      }catch(_){}
+  function trendChart(series, color) {
+    const W = 480;
+    const H = 160;
+    const pts = (series && series.points) || [];
+    const vals = pts.map((p) => Number(p.v)).filter((v) => !Number.isNaN(v));
+    if (vals.length < 2) {
+      return `<div class="chart-box panel">${unavailableHTML("No time series", series && series.key ? series.key : "series", "Need at least 2 points.")}</div>`;
     }
-    this.renderNav();
-    if(state.view==='metrics') this.renderBody();
-    this.paintThorSummary();
-  },
-  topKpis(env, n=3){
-    if(!env || !env.kpis) return [];
-    return [...env.kpis].sort((a,b)=>(a.priority||9)-(b.priority||9)).slice(0,n);
-  },
-  fmtVal(kpi){
-    if(!kpi) return '—';
-    const v = kpi.value;
-    if(kpi.format==='percent') return v + (kpi.unit && kpi.unit!=='%' ? kpi.unit : '%');
-    if(kpi.format==='sats') return (typeof fmt!=='undefined'?fmt.sats(v):v) + ' sats';
-    if(typeof v==='number') return new Intl.NumberFormat('en-US',{maximumFractionDigits:1}).format(v) + (kpi.unit? ' '+kpi.unit : '');
-    return String(v) + (kpi.unit? ' '+kpi.unit : '');
-  },
-  renderNav(){
-    const nav = document.getElementById('ml-nav');
-    if(!nav) return;
-    const items = [
-      { id: 'satohash', label: '★ Satohash backbone', color: '#8a5a00' },
-      { id: '__thor__', label: '⚡ THOR node', color: '#1f6b3a' },
-      ...PROJECTS.filter(p=>p.id!=='satohash').map(p=>({ id:p.id, label:p.name, color:p.color }))
-    ];
-    nav.innerHTML = items.map(it => {
-      const env = it.id==='__thor__' ? this.thor : this.cache[it.id];
-      const st = it.id==='__thor__' ? (this.thor?.node?.status||'unknown') : (env?.health?.status||'unknown');
-      const active = this.selected===it.id;
-      return `<button type="button" class="chip ${active?'chip-active':''}" style="border-left:3px solid ${it.color}" onclick="MetricsEngine.select('${it.id}')">
-        <span class="dot dot-${st==='green'?'green':st==='red'?'red':st==='amber'?'amber':'gray'}" style="width:7px;height:7px"></span>
-        ${it.label}
-      </button>`;
-    }).join('');
-  },
-  select(id){
-    this.selected = id;
-    this.renderNav();
-    this.renderBody();
-    if(state.view!=='metrics') switchView('metrics');
-  },
-  sparkline(series, w=280, h=56){
-    if(!series || !series.points || series.points.length<2) return '';
-    const pts = series.points;
-    const vs = pts.map(p=>p.v);
-    const min = Math.min(...vs), max = Math.max(...vs), span = (max-min)||1;
-    const path = pts.map((p,i)=>{
-      const x = (i/(pts.length-1))*w;
-      const y = h - ((p.v-min)/span)* (h-4) - 2;
-      return (i?'L':'M')+x.toFixed(1)+','+y.toFixed(1);
-    }).join(' ');
-    const color = series.color || 'var(--orange)';
-    const last = pts[pts.length-1];
-    return `<div class="mb-2" title="${series.label}: ${last.v} ${series.unit||''}">
-      <div class="flex justify-between text-[10px] mono text-[var(--ink-faint)] mb-0.5"><span>${series.label}</span><span>${last.v}${series.unit?' '+series.unit:''}</span></div>
-      <svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" class="block">
-        <path d="${path}" fill="none" stroke="${color}" stroke-width="2" vector-effect="non-scaling-stroke"/>
+    const min = Math.min(...vals);
+    const max = Math.max(...vals);
+    const range = max - min || 1;
+    const padL = 36;
+    const padR = 8;
+    const padT = 12;
+    const padB = 22;
+    const coords = vals.map((v, i) => {
+      const x = padL + (i / (vals.length - 1)) * (W - padL - padR);
+      const y = padT + (1 - (v - min) / range) * (H - padT - padB);
+      return [x, y];
+    });
+    const line = coords.map((c, i) => (i === 0 ? `M${c[0]},${c[1]}` : `L${c[0]},${c[1]}`)).join(" ");
+    const area = `${line} L${coords[coords.length - 1][0]},${H - padB} L${coords[0][0]},${H - padB} Z`;
+    const c = color || (series && series.color) || "#38bdf8";
+    const gridYs = [0, 0.5, 1].map((t) => {
+      const y = padT + t * (H - padT - padB);
+      const val = max - t * range;
+      return `<line class="grid-line" x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}"/>
+        <text class="axis-label" x="4" y="${y + 3}">${esc(fmtNum(val))}</text>`;
+    }).join("");
+    return `<div class="chart-box panel">
+      <div class="flex justify-between items-center mb-2">
+        <strong style="font-family:var(--font-display)">${esc(series.label || series.key || "Trend")}</strong>
+        <span class="mono" style="font-size:0.68rem;color:var(--ink-faint)">${esc(series.unit || "")}</span>
+      </div>
+      <svg class="chart-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+        ${gridYs}
+        <path d="${area}" fill="${escAttr(c)}" opacity="0.15"/>
+        <path d="${line}" fill="none" stroke="${escAttr(c)}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>`;
-  },
-  renderBody(){
-    const body = document.getElementById('ml-body');
-    if(!body) return;
-    if(this.selected==='__thor__'){ body.innerHTML = this.renderThor(); return; }
-    const env = this.cache[this.selected];
-    const p = PROJECTS.find(x=>x.id===this.selected);
-    if(!env){
-      body.innerHTML = `<div class="text-sm text-[var(--ink-dim)]">No metrics envelope for <span class="mono">${this.selected}</span>. Add <span class="mono">/metrics/${this.selected}.json</span> or live publisher.</div>`;
-      return;
-    }
-    const demo = env.raw?.demo === true;
-    const kpis = [...(env.kpis||[])].sort((a,b)=>(a.priority||9)-(b.priority||9));
-    const health = env.health || {};
-    body.innerHTML = `
-      ${demo?`<div class="demo-banner mono">DEMO ENVELOPE — structure is live for HQ; replace with product publisher (<span class="mono">raw.demo:false</span>). See docs/METRICS-SCHEMA.md · Kimi: satohash GET /metrics.json</div>`:''}
-      <div class="flex flex-wrap justify-between gap-2 mb-3">
-        <div>
-          <h2 class="text-xl font-bold" style="color:${p?.color||'inherit'}">${env.name||this.selected}</h2>
-          <div class="text-xs mono text-[var(--ink-faint)]">${env.schema||''} · updated ${env.updatedAt?fmt.timeAgo(env.updatedAt):'—'} · window ${env.window?.label||'—'}</div>
-        </div>
-        <div class="status-pill ${health.status||'gray'}">${health.status||'unknown'}</div>
-      </div>
-      <p class="text-sm text-[var(--ink-dim)] mb-3" title="Health message">${health.message||''}</p>
-      <div class="ml-kpi-grid mb-4">
-        ${kpis.map(k=>`
-          <div class="ml-kpi" title="${(k.hint||k.label||'').replace(/"/g,'&quot;')}">
-            <div class="v">${this.fmtVal(k)}</div>
-            <div class="l">${k.label}</div>
-            ${k.delta!=null?`<div class="d ${k.delta>=0?'up':'dn'}">${k.delta>=0?'+':''}${k.delta}${k.deltaUnit||''}</div>`:''}
-          </div>`).join('')}
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-        ${(env.series||[]).map(s=>`<div class="glass-2 rounded p-2">${this.sparkline(s)}</div>`).join('')||'<div class="text-xs text-[var(--ink-faint)]">No series</div>'}
-      </div>
-      ${(env.funnels||[]).map(f=>{
-        const max = Math.max(1, ...f.steps.map(s=>s.count));
-        return `<div class="mb-4"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">${f.label}</div>
-          ${f.steps.map(s=>`<div class="ml-funnel-step" title="${(s.hint||'').replace(/"/g,'&quot;')}">
-            <div class="w-28 text-xs truncate">${s.label}</div>
-            <div class="flex-1 bg-[var(--void-2)] rounded-sm overflow-hidden"><div class="ml-funnel-bar" style="width:${(s.count/max)*100}%;background:${p?.color||'var(--orange)'}"></div></div>
-            <div class="w-12 text-right mono text-xs">${s.count}</div>
-          </div>`).join('')}
-        </div>`;
-      }).join('')}
-      ${(env.segments||[]).map(seg=>`
-        <div class="mb-4"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">${seg.label}</div>
-          <div class="space-y-1">${(seg.rows||[]).map(r=>{
-            const max = Math.max(1, ...seg.rows.map(x=>x.value));
-            return `<div class="flex items-center gap-2 text-xs" title="${JSON.stringify(r.meta||{}).replace(/"/g,'&quot;')}">
-              <span class="w-28 truncate">${r.label}</span>
-              <div class="flex-1 bar-track"><div class="bar-fill" style="width:${(r.value/max)*100}%;background:${p?.color||'var(--ink)'}"></div></div>
-              <span class="mono w-14 text-right">${r.value}</span>
-            </div>`;
-          }).join('')}</div>
-        </div>`).join('')}
-      <div class="mb-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Offers (what this product gives the suite)</div>
-        <div class="space-y-1">${(env.offers||[]).map(o=>`
-          <div class="glass-2 rounded px-2 py-1.5 text-xs" title="${(o.hint||'').replace(/"/g,'&quot;')}">
-            <strong>${o.title}</strong> <span class="status-pill gray">${o.status||''}</span>
-            <div class="mono text-[10px] text-[var(--ink-faint)]">${o.endpoint||''} · for ${(o.for||[]).join(', ')}</div>
-          </div>`).join('')||'<div class="text-[var(--ink-faint)] text-xs">—</div>'}
-      </div>
-      <div><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">How to mold this data</div>
-        ${(env.education||[]).map(e=>`
-          <div class="ml-edu ${e.severity||'info'}">
-            <div class="font-semibold text-sm">${e.title}</div>
-            <div class="text-xs text-[var(--ink-dim)] mt-1">${e.body}</div>
-            ${e.action?`<div class="text-[10px] mono mt-1 text-[var(--orange-2)]">→ ${e.action}</div>`:''}
-          </div>`).join('')||'<div class="text-xs text-[var(--ink-faint)]">—</div>'}
-      </div>
-      <div class="mt-3 flex flex-wrap gap-2">${(env.links||[]).map(l=>`<a class="btn-ghost rounded px-2 py-1 text-xs" href="${l.url}" target="_blank" rel="noopener">${l.label}</a>`).join('')}</div>
-    `;
-  },
-  renderThor(){
-    const t = this.thor;
-    if(!t) return `<div class="demo-banner">No THOR snapshot loaded. See docs/THOR-NODE-JSON.md — place metrics/thor-node.json or set Vault thor URL.</div>`;
-    const b = t.bitcoin||{}, l = t.lightning||{}, n = t.node||{};
-    const demo = true; // example file is demo-shaped
-    return `
-      <div class="demo-banner mono">THOR snapshot schema <span class="mono">gab.thor-node.v1</span> — ${t.security?.secretsInPayload===false?'no secrets in payload ✓':'check security'} · Nova: publish live from node cron</div>
-      <div class="flex justify-between mb-3">
-        <div>
-          <h2 class="text-xl font-bold">${n.id||'THOR'} · ${n.hostLabel||''}</h2>
-          <div class="text-xs mono text-[var(--ink-faint)]">${t.schema} · ${t.updatedAt?fmt.timeAgo(t.updatedAt):'—'} · stack ${n.stack||'—'}</div>
-        </div>
-        <span class="status-pill ${n.status||'gray'}">${n.status||'unknown'}</span>
-      </div>
-      <div class="thor-grid mb-4">
-        <div class="glass-2 rounded p-3">
-          <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Bitcoin</div>
-          <div class="space-y-1 text-xs mono">
-            <div title="Chain tip height">blocks: <strong>${b.blocks??'—'}</strong> / headers ${b.headers??'—'}</div>
-            <div title="Pruned full node keeps verify capability with less disk">pruned: <strong>${b.pruned?'yes':'no'}</strong> · disk ${b.sizeOnDiskGB??'—'} GB</div>
-            <div title="Mempool pressure context for fees">mempool: ${b.mempoolTx??'—'} tx · ${b.mempoolMB??'—'} MB</div>
-            <div>connections: ${b.connections??'—'} · ibd: ${b.ibd?'yes':'no'}</div>
-            <div class="text-[var(--ink-faint)]">${b.hint||''}</div>
-          </div>
-        </div>
-        <div class="glass-2 rounded p-3">
-          <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Lightning (LND)</div>
-          <div class="space-y-1 text-xs mono">
-            <div title="Active payment channels">channels: <strong>${l.numActiveChannels??'—'}</strong> active · ${l.numInactiveChannels??0} inactive</div>
-            <div title="Local sats available to send">local: <strong>${typeof fmt!=='undefined'?fmt.sats(l.totalLocalBalanceSats):l.totalLocalBalanceSats}</strong> sats</div>
-            <div title="Remote sats (inbound liquidity)">remote: ${typeof fmt!=='undefined'?fmt.sats(l.totalRemoteBalanceSats):l.totalRemoteBalanceSats} sats</div>
-            <div title="Total capacity">capacity: ${typeof fmt!=='undefined'?fmt.sats(l.totalCapacitySats):l.totalCapacitySats} sats</div>
-            <div>peers: ${l.numPeers??'—'} · sync chain/graph: ${l.syncedToChain?'✓':'✗'}/${l.syncedToGraph?'✓':'✗'}</div>
-            <div class="text-[var(--ink-faint)]">${l.hint||''}</div>
-          </div>
-        </div>
-      </div>
-      <div class="thor-grid mb-4">
-        <div class="glass-2 rounded p-3">
-          <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">System Health · Disk</div>
-          <div class="space-y-1 text-xs mono">
-            ${t.system?`
-            <div title="Total disk capacity">disk: <strong>${t.system.disk.totalGB} GB</strong></div>
-            <div title="Used vs free">used: <strong>${t.system.disk.usedGB} GB</strong> · free: ${t.system.disk.freeGB} GB</div>
-            <div class="bar-track mt-1 mb-1"><div class="bar-fill" style="width:${t.system.disk.usedPercent}%;background:${t.system.disk.usedPercent>80?'var(--red)':t.system.disk.usedPercent>60?'var(--amber)':'var(--green)'}"></div></div>
-            <div class="text-[var(--ink-faint)]">${t.system.disk.usedPercent}% used · mount ${t.system.disk.mount}</div>
-            <div class="mt-2 text-[var(--ink-faint)] text-[10px]">top consumers:</div>
-            ${Object.entries(t.system.breakdownGB||{}).slice(0,5).map(([k,v])=>`<div class="flex justify-between"><span>${k.replace(/_/g,' ')}</span><span>${v} GB</span></div>`).join('')}
-            `:'<div class="text-[var(--ink-faint)]">no system metrics loaded</div>'}
-          </div>
-        </div>
-        <div class="glass-2 rounded p-3">
-          <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">System Health · Memory & CPU</div>
-          <div class="space-y-1 text-xs mono">
-            ${t.system?`
-            <div title="RAM total">memory: <strong>${t.system.memory.totalGB} GB</strong></div>
-            <div title="Used vs available">used: <strong>${t.system.memory.usedGB} GB</strong> · available: ${t.system.memory.availableGB} GB</div>
-            <div class="bar-track mt-1 mb-1"><div class="bar-fill" style="width:${Math.round((t.system.memory.usedGB/t.system.memory.totalGB)*100)}%;background:${(t.system.memory.usedGB/t.system.memory.totalGB)>0.8?'var(--red)':(t.system.memory.usedGB/t.system.memory.totalGB)>0.6?'var(--amber)':'var(--green)'}"></div></div>
-            <div class="text-[var(--ink-faint)]">${Math.round((t.system.memory.usedGB/t.system.memory.totalGB)*100)}% used</div>
-            <div class="mt-2">load: ${t.system.cpu.loadAvg1m} / ${t.system.cpu.loadAvg5m} / ${t.system.cpu.loadAvg15m}</div>
-            <div class="text-[var(--ink-faint)]">uptime ${t.system.cpu.uptimeDays} days · Docker build cache ${t.system.docker.buildCacheGB} GB</div>
-            `:'<div class="text-[var(--ink-faint)]">no system metrics loaded</div>'}
-          </div>
-        </div>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-        ${(t.series||[]).map(s=>`<div class="glass-2 rounded p-2">${this.sparkline(s)}</div>`).join('')}
-      </div>
-      <div class="mb-3"><div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Services</div>
-        <div class="flex flex-wrap gap-1">${(n.services||[]).map(s=>`<span class="status-pill ${s.status||'gray'}" title="${(s.detail||'').replace(/"/g,'&quot;')}">${s.id}: ${s.status}</span>`).join('')}</div>
-      </div>
-      <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-2">Mold / educate</div>
-      ${(t.education||[]).map(e=>`<div class="ml-edu ${e.severity||'info'}"><div class="font-semibold text-sm">${e.title}</div><div class="text-xs text-[var(--ink-dim)] mt-1">${e.body}</div>${e.action?`<div class="text-[10px] mono mt-1 text-[var(--orange-2)]">→ ${e.action}</div>`:''}</div>`).join('')}
-    `;
-  },
-  paintThorSummary(){
-    const t = this.thor;
-    const btc = document.getElementById('node-btc');
-    const lnd = document.getElementById('node-lnd');
-    if(!t) return;
-    const b = t.bitcoin||{}, l = t.lightning||{};
-    if(btc) btc.textContent = `${b.ok?'ok':'?'} blocks ${b.blocks??'—'} pruned=${b.pruned?'yes':'no'}`;
-    if(lnd) lnd.textContent = `${l.ok?'ok':'?'} ch ${l.numActiveChannels??'—'} local ${typeof fmt!=='undefined'?fmt.sats(l.totalLocalBalanceSats):l.totalLocalBalanceSats||'—'} sats`;
-  },
-  cardKpisHtml(projectId){
-    const env = this.cache[projectId];
-    if(!env) return '';
-    const kpis = this.topKpis(env, 3);
-    if(!kpis.length) return '';
-    return `<div class="card-kpis">${kpis.map(k=>`
-      <div class="ck" title="${(k.hint||k.label||'').replace(/"/g,'&quot;')}">
-        <div class="cv">${this.fmtVal(k)}</div>
-        <div class="cl">${k.label}</div>
-      </div>`).join('')}</div>`;
   }
-};
 
+  function donutChart(segments, centerLabel, centerSub) {
+    const segs = (segments || []).filter((s) => Number(s.value) > 0);
+    const total = segs.reduce((a, s) => a + Number(s.value), 0) || 1;
+    const R = 54;
+    const C = 2 * Math.PI * R;
+    let offset = 0;
+    const circles = segs
+      .map((s) => {
+        const frac = Number(s.value) / total;
+        const dash = frac * C;
+        const gap = C - dash;
+        const el = `<circle cx="70" cy="70" r="${R}" fill="none" stroke="${escAttr(s.color || "#38bdf8")}"
+          stroke-width="16" stroke-dasharray="${dash} ${gap}" stroke-dashoffset="${-offset}"
+          transform="rotate(-90 70 70)" style="filter:drop-shadow(0 0 4px ${escAttr(s.color || "#38bdf8")})"/>`;
+        offset += dash;
+        return el;
+      })
+      .join("");
+    return `<div class="donut-wrap">
+      <svg viewBox="0 0 140 140">
+        <circle cx="70" cy="70" r="${R}" fill="none" stroke="#3a2860" stroke-width="16" opacity="0.55"/>
+        ${circles}
+      </svg>
+      <div class="donut-center">
+        <div class="big">${esc(centerLabel || "")}</div>
+        <div class="sm">${esc(centerSub || "")}</div>
+      </div>
+    </div>`;
+  }
 
-/* ---------- TOOLS + NOTES + ALERTS + BTC 24h ---------- */
-const LNbitsHelp = {
-  async diagnose(){
-    let pre = document.getElementById('lnbits-diag');
-    // ensure banner visible so pre exists
-    const cors = document.getElementById('cors-banner');
-    if(cors && !pre){
-      cors.classList.remove('hidden');
-      if(!cors.innerHTML.includes('lnbits-diag')){
-        cors.innerHTML = `<div class="cors-banner">
-          <div class="font-semibold mb-1">LNbits diagnose</div>
-          <pre id="lnbits-diag" class="mt-2 p-2 glass-2 rounded text-[10px] mono overflow-auto max-h-56"></pre>
+  function funnelHTML(funnel, color) {
+    if (!funnel || !funnel.steps || !funnel.steps.length) return "";
+    const max = Math.max(...funnel.steps.map((s) => Number(s.count) || 0), 1);
+    const c = color || "#a78bfa";
+    const steps = funnel.steps
+      .map((s) => {
+        const pct = Math.max(8, ((Number(s.count) || 0) / max) * 100);
+        return `<div class="funnel-step" style="--funnel-c:${escAttr(c)}" data-tip="${escAttr(s.hint || s.label)}">
+          <div class="bar" style="width:${pct}%"></div>
+          <div class="inner">
+            <span>${esc(s.label || s.id)}</span>
+            <span class="count">${esc(fmtNum(s.count))}</span>
+          </div>
         </div>`;
-      }
-      pre = document.getElementById('lnbits-diag');
-    }
-    if(pre){ pre.classList.remove('hidden'); pre.textContent = 'Testing from this browser…'; }
-    toast('Testing LNbits from this browser…','info');
+      })
+      .join("");
+    return `<div class="funnel">
+      <div class="block-title" style="font-family:var(--font-display);font-weight:700;margin-bottom:0.55rem">${esc(funnel.label || funnel.id || "Funnel")}</div>
+      ${steps}
+    </div>`;
+  }
 
-    const origin = location.origin;
-    const node = (Vault.data.nodeUrl||'').replace(/\/$/,'');
-    const wallets = PROJECTS.reduce((a,p)=>{ if(p.wallet && !a.includes(p.wallet)) a.push(p.wallet); return a; },[]);
-    const withKey = wallets.filter(w=>Vault.hasWallet(w));
-    const lines = [
-      'LNbits diagnose (this browser only)',
-      'origin:  '+origin,
-      'node:    '+node,
-      'proxy:   '+(LNbitsData.proxyUrl()||'(not set)')+(LNbitsData.useProxy()?' · ACTIVE':' · inactive — set proxy token in Vault'),
-      'keys:    '+withKey.length,
-      '',
-    ];
-    let anyOk=false, sawCors=false, sawAuth=false, sawNet=false;
-    if(!withKey.length){
-      lines.push('No keys to test — open Vault (v) and paste invoice keys.');
+  function kpiCell(kpi) {
+    if (!kpi) return "";
+    const delta =
+      kpi.delta != null
+        ? `<div class="delta ${Number(kpi.delta) >= 0 ? "up" : "down"}">${Number(kpi.delta) >= 0 ? "▲" : "▼"} ${esc(String(kpi.delta))}${esc(kpi.deltaUnit || "")}</div>`
+        : "";
+    return `<div class="kpi-cell" data-tip="${escAttr(kpi.hint || kpi.label)}" data-tip-title="${escAttr(kpi.label)}">
+      <div class="label">${esc(kpi.label || kpi.key)}</div>
+      <div class="value">${esc(fmtNum(kpi.value, kpi.format))}${kpi.unit && kpi.format !== "sats" && kpi.format !== "percent" ? `<span class="unit">${esc(kpi.unit)}</span>` : ""}</div>
+      ${delta}
+    </div>`;
+  }
+
+  /* ═══════════════════════════════════════
+     APP STATE
+     ═══════════════════════════════════════ */
+
+  const state = {
+    theme: "ink",
+    tab: "cards",
+    projects: [],
+    agents: [],
+    tools: null,
+    status: null,
+    metrics: {}, // id -> { ok, data, path, error }
+    thor: null,
+    btcUsd: null,
+    wallets: {},
+    docs: {}, // filename -> { ok, data, path }
+    selectedMetricsId: null,
+    selectedDoc: null,
+    vault: {},
+    loading: true,
+    loadErrors: [],
+  };
+
+  /* ═══════════════════════════════════════
+     VAULT (localStorage — never secrets in git)
+     ═══════════════════════════════════════ */
+
+  function loadVault() {
+    try {
+      const raw = localStorage.getItem(VAULT_KEY);
+      if (!raw) return {};
+      const v = JSON.parse(raw);
+      return v && typeof v === "object" ? v : {};
+    } catch {
+      return {};
+    }
+  }
+
+  function saveVault(v) {
+    try {
+      localStorage.setItem(VAULT_KEY, JSON.stringify(v || {}));
+      state.vault = v || {};
+      toast("Vault saved on this browser", "ok");
+    } catch (e) {
+      toast("Vault save failed: " + e.message, "err");
+    }
+  }
+
+  /* ═══════════════════════════════════════
+     TOAST / THEME / TABS
+     ═══════════════════════════════════════ */
+
+  function toast(msg, kind) {
+    const stack = document.getElementById("toast-stack");
+    if (!stack) return;
+    const el = document.createElement("div");
+    el.className = "toast " + (kind || "");
+    el.textContent = msg;
+    stack.appendChild(el);
+    setTimeout(() => {
+      el.style.opacity = "0";
+      setTimeout(() => el.remove(), 300);
+    }, 3200);
+  }
+
+  function setTheme(name) {
+    const t = ["stone", "slate", "ink", "aurora"].includes(name) ? name : "ink";
+    document.body.classList.add("theme-switching");
+    document.documentElement.setAttribute("data-theme", t);
+    state.theme = t;
+    try {
+      localStorage.setItem(THEME_KEY, t);
+    } catch {}
+    document.querySelectorAll(".theme-dot").forEach((d) => {
+      d.classList.toggle("active", d.dataset.themePick === t);
+    });
+    setTimeout(() => document.body.classList.remove("theme-switching"), 560);
+  }
+
+  function setTab(name) {
+    if (!TAB_ACCENTS[name]) name = "cards";
+    state.tab = name;
+    try {
+      localStorage.setItem(TAB_KEY, name);
+    } catch {}
+    document.querySelectorAll(".nav-tab").forEach((btn) => {
+      const on = btn.dataset.tab === name;
+      btn.classList.toggle("active", on);
+      if (on) btn.style.setProperty("--tab-accent", TAB_ACCENTS[name]);
+    });
+    document.querySelectorAll(".view").forEach((v) => {
+      v.classList.toggle("active", v.id === "view-" + name);
+    });
+    renderActiveTab();
+  }
+
+  /* ═══════════════════════════════════════
+     BOOTSTRAP DATA
+     ═══════════════════════════════════════ */
+
+  async function bootstrap() {
+    state.loading = true;
+    state.loadErrors = [];
+    renderLoadingShell();
+
+    const projectsR = await loadData("/projects.json");
+    const agentsR = await loadData("/agents.json");
+    const toolsR = await loadData("/tools.json");
+    const statusR = await loadData("/status.json");
+
+    if (projectsR.ok && projectsR.data && Array.isArray(projectsR.data.projects)) {
+      state.projects = projectsR.data.projects;
     } else {
-      for(const w of withKey){
-        try{
-          const data = await LNbitsData.wallet(w);
-          const sats = Math.floor((data.balance||0)/1000);
-          lines.push(`OK   wallet=${w} balance=${sats} sats name=${data.name||'—'}`);
-          anyOk = true;
-        }catch(e){
-          const kind = e.kind || LNbitsData.lastError?.kind || 'error';
-          const msg = e.message || String(e);
-          lines.push(`FAIL wallet=${w} kind=${kind} msg=${msg}`);
-          if(kind==='cors') sawCors=true;
-          if(kind==='auth') sawAuth=true;
-          if(kind==='network') sawNet=true;
-          // CORS usually fails the same for all — still try a couple then stop if pure cors
-          if(kind==='cors' && withKey.indexOf(w)>=0){ /* continue one more optional */ }
+      state.projects = [];
+      state.loadErrors.push(projectsR);
+    }
+
+    if (agentsR.ok && agentsR.data && Array.isArray(agentsR.data.agents)) {
+      state.agents = agentsR.data.agents;
+    } else {
+      state.agents = [];
+      state.loadErrors.push(agentsR);
+    }
+
+    if (toolsR.ok) state.tools = toolsR.data;
+    else {
+      state.tools = null;
+      state.loadErrors.push(toolsR);
+    }
+
+    if (statusR.ok) state.status = statusR.data;
+    else {
+      state.status = null;
+      state.loadErrors.push(statusR);
+    }
+
+    // Metrics per project (isolated)
+    const metricsJobs = state.projects.map(async (p) => {
+      const key = p.metricsKey || p.id;
+      const candidates = [];
+      if (p.metricsLiveCandidates) candidates.push(...p.metricsLiveCandidates);
+      if (p.metricsUrl) candidates.push(p.metricsUrl);
+      candidates.push(`/metrics/${key}.json`);
+      const r = await loadFirst(candidates);
+      state.metrics[p.id] = r;
+      if (!r.ok) state.loadErrors.push(r);
+    });
+
+    // THOR
+    const thorJob = (async () => {
+      const feeds = projectsR.ok && projectsR.data && projectsR.data.feeds ? projectsR.data.feeds : {};
+      const r = await loadFirst([
+        feeds.thorNodeUrl,
+        "/metrics/thor-node.json",
+        feeds.thorNodeFallback,
+      ]);
+      state.thor = r;
+      state.metrics["thor-node"] = r;
+      if (!r.ok) state.loadErrors.push(r);
+    })();
+
+    // BTC price (optional, CoinGecko)
+    const priceJob = (async () => {
+      try {
+        const r = await loadData(
+          "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd",
+          { timeout: 8000 }
+        );
+        if (r.ok && r.data && r.data.bitcoin && r.data.bitcoin.usd) {
+          state.btcUsd = r.data.bitcoin.usd;
         }
+      } catch {
+        /* ignore */
       }
+    })();
+
+    await Promise.all([...metricsJobs, thorJob, priceJob]);
+
+    // Wallet balances if vault configured
+    await refreshWallets();
+
+    state.loading = false;
+    if (!state.selectedMetricsId) {
+      state.selectedMetricsId = state.projects[0] ? state.projects[0].id : "thor-node";
     }
-    lines.push('');
-    lines.push('If kind=cors: add Access-Control-Allow-Origin for your HQ origin on the node.');
-    lines.push('  Allow: '+origin+'  (and https://giveabit-hq.pages.dev if used)');
-    lines.push('If kind=auth: wrong/expired X-Api-Key or wrong wallet.');
-    lines.push('If kind=network: node URL unreachable from the public internet (Tailscale-only host).');
-    lines.push('Guide: docs/LNBITS-CORS.md');
-    if(sawCors){
-      lines.push('');
-      lines.push('Your result looks like CORS: browser blocked reading the LNbits response.');
-      lines.push('Nova: Caddy/LNbits must send Access-Control-Allow-Origin: '+origin);
-    }
-    if(pre) pre.textContent = lines.join('\n');
-    if(anyOk) toast('LNbits OK for at least one wallet','success');
-    else if(sawCors) toast('CORS block — node must allow '+origin,'error');
-    else toast('LNbits still failing — see diagnose panel','error');
-    return lines.join('\n');
+
+    renderChrome();
+    renderTicker();
+    setTab(state.tab);
+    document.getElementById("hq-version").textContent = `v${HQ_VERSION}`;
+    document.getElementById("hq-build").textContent = BUILD_TS.slice(0, 16).replace("T", " ") + "Z";
   }
-};
 
-const QuickUrls = {
-  // Built-in close-by list; tools.json "closeby" group can extend/override order
-  defaults: [
-    { name:'HERMES Dashboard / Kanban', url:'https://openstrata.giveabit.io', primary:true, tip:'Hermes Strata ops · kanban / corp dashboard' },
-    { name:'HQ', url:'https://hq.giveabit.io', tip:'This glass' },
-    { name:'Satohash', url:'https://satohash.io', tip:'OTS backbone SPA' },
-    { name:'Satohash API', url:'https://api.satohash.io/health', tip:'Health probe' },
-    { name:'Satohash metrics', url:'https://api.satohash.io/metrics.json', tip:'Live product metrics' },
-    { name:'Give A Bit', url:'https://giveabit.io', tip:'Brand + NIP-05' },
-    { name:'LNbits (node)', url:'https://vmi3446772.tailb672ac.ts.net', tip:'THOR LNbits — needs Tailscale or public proxy' },
-    { name:'CORS guide', url:'/docs/LNBITS-CORS.md', tip:'Empty balances? Fix here' },
-    { name:'GitHub kitsboy', url:'https://github.com/kitsboy', tip:'Code truth' },
-    { name:'HQ Actions', url:'https://github.com/kitsboy/HQ/actions', tip:'Deploy + pinger' },
-    { name:'Cloudflare', url:'https://dash.cloudflare.com', tip:'Pages + DNS + Access' },
-    { name:'xAI / Grok', url:'https://grok.com', tip:'Usage → paste % in Vault' },
-    { name:'status.json', url:'/status.json', tip:'Suite pinger feed' },
-    { name:'Handoff', url:'/handoff/state.json', tip:'Grok↔Kimi state' },
-  ],
-  render(){
-    const el = document.getElementById('quick-urls');
-    if(!el) return;
-    let links = this.defaults.slice();
-    // prepend/merge tools.json closeby group if present
-    try{
-      const g = (ToolsHub.data && ToolsHub.data.groups || []).find(x=>x.id==='closeby');
-      if(g && g.links && g.links.length){
-        const extra = g.links.map(l=>({ name:l.name, url:l.url, tip:l.tip, primary:!!l.primary }));
-        // put tools.json first (user-configured), then defaults not already listed
-        const seen = new Set(extra.map(x=>x.url));
-        links = extra.concat(links.filter(d=>!seen.has(d.url)));
-      }
-    }catch(_){}
-    el.innerHTML = links.map(l=>`
-      <a class="quick-url ${l.primary?'primary':''}" href="${l.url}" target="_blank" rel="noopener"
-         title="${(l.tip||l.name).replace(/"/g,'&quot;')}" data-tip="${(l.tip||'').replace(/"/g,'&quot;')}" data-tip-title="${l.name.replace(/"/g,'&quot;')}">
-        <span class="ico">${l.primary?'★':'↗'}</span>${l.name}
-      </a>`).join('');
-  }
-};
+  async function refreshWallets() {
+    state.wallets = {};
+    const v = state.vault || {};
+    const keys = v.keys || v.wallets || {};
+    const proxyUrl = (v.proxyUrl || v.lnbitsProxyUrl || "").replace(/\/$/, "");
+    const proxyToken = v.proxyToken || "";
+    const useProxy = v.useProxy !== false && proxyUrl;
+    const nodeUrl = (v.nodeUrl || v.lnbitsUrl || "").replace(/\/$/, "");
 
-function stampVersion(){
-  const v = (typeof HQ_VERSION==='string' ? HQ_VERSION : 'v?');
-  const build = new Date().toISOString().slice(0,16).replace('T',' ');
-  const set = (id, text)=>{ const el=document.getElementById(id); if(el) el.textContent=text; };
-  set('hq-version', v);
-  set('hq-version-top', v);
-  set('hq-build', build);
-  const orig = document.getElementById('hq-origin');
-  if(orig) orig.textContent = location.origin;
-  document.querySelectorAll('[data-hq-ver]').forEach(el=>{ el.textContent = v; });
-  document.title = 'Give A Bit HQ '+v;
-  console.log('%cGive A Bit HQ '+v+' · build '+build+' · '+location.origin,'color:#c45f00;font-weight:bold');
-}
+    const entries = Object.entries(keys).filter(([, k]) => k && String(k).trim());
+    if (!entries.length) return;
 
-const ToolsHub = {
-  data: null,
-  async load(){
-    try{
-      const r = await fetch('tools.json?t='+Date.now());
-      if(r.ok) this.data = await r.json();
-    }catch(_){}
-    this.render();
-  },
-  render(){
-    const el = document.getElementById('tools-hub');
-    if(!el) return;
-    const groups = (this.data && this.data.groups) || [];
-    if(typeof QuickUrls!=='undefined') QuickUrls.render();
-    if(!groups.length){
-      el.innerHTML = '<span class="text-[var(--ink-faint)] text-xs">tools.json not loaded</span>';
-      return;
-    }
-    // skip closeby group in tools hub (shown in Close-by URLs panel)
-    const show = groups.filter(g=>g.id!=='closeby');
-    el.innerHTML = show.map(g => `
-      <div class="w-full">
-        <div class="text-[9px] mono text-[var(--ink-faint)] mb-1">${g.label}</div>
-        <div class="tools-strip">${(g.links||[]).map(l =>
-          `<a href="${l.url}" target="_blank" rel="noopener">${l.name}</a>`
-        ).join('')}</div>
-      </div>`).join('');
-  }
-};
-
-const OpsNotes = {
-  KEY: 'hq_ops_notes_v1',
-  load(){
-    const el = document.getElementById('ops-notes');
-    if(!el) return;
-    el.value = localStorage.getItem(this.KEY) || '';
-  },
-  save(){
-    const el = document.getElementById('ops-notes');
-    if(!el) return;
-    localStorage.setItem(this.KEY, el.value);
-    toast('Ops notes saved locally','success');
-  }
-};
-
-const StatusHistory = {
-  KEY: 'hq_status_hist_v1',
-  pushSnapshot(){
-    try{
-      let live=0, total=0, issues=0;
-      PROJECTS.forEach(p=>{
-        const d=state.projects[p.id]||{};
-        if(p.deployed){ total++; if(d.liveReachable) live++; }
-        issues += d.issues||0;
-      });
-      const row = { ts: Date.now(), live, total, issues, sats: PROJECTS.reduce((a,p)=>a+((state.projects[p.id]||{}).balanceSats||0),0) };
-      let hist = [];
-      try{ hist = JSON.parse(localStorage.getItem(this.KEY)||'[]'); }catch(_){}
-      hist.push(row);
-      if(hist.length > 96) hist = hist.slice(-96);
-      localStorage.setItem(this.KEY, JSON.stringify(hist));
-      state.statusHist = hist;
-    }catch(_){}
-  },
-  uptimePct(){
-    const hist = state.statusHist || [];
-    if(hist.length < 2) return null;
-    const recent = hist.slice(-24);
-    const scores = recent.map(h => h.total ? h.live/h.total : 0);
-    return Math.round(1000 * scores.reduce((a,b)=>a+b,0) / scores.length) / 10;
-  }
-};
-
-const Alerts = {
-  check(){
-    const g = GrokUsage.get();
-    if(g.weekPct >= 90) toast('SuperGrok weekly usage ≥ 90%','error');
-    else if(g.weekPct >= 75) toast('SuperGrok weekly usage ≥ 75%','info');
-    // stale status feed
-    if(state.statusFeed?.updatedAt){
-      const age = Date.now() - new Date(state.statusFeed.updatedAt).getTime();
-      const ban = document.getElementById('stale-banner');
-      if(ban){
-        if(age > 45*60*1000){
-          ban.classList.remove('hidden');
-          ban.innerHTML = `<div class="stale-banner mono">status.json is ${fmt.timeAgo(state.statusFeed.updatedAt)} old — pinger may be queued. Client probes still apply.</div>`;
-        } else ban.classList.add('hidden');
-      }
-    }
-  }
-};
-
-// extend CoinGecko for 24h change
-const Market = {
-  async fetch(){
-    try{
-      const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
-      const j = await r.json();
-      btcUsdPrice = j.bitcoin.usd;
-      state.btcChange24h = j.bitcoin.usd_24h_change;
-      const s = '$'+new Intl.NumberFormat('en-US',{maximumFractionDigits:0}).format(btcUsdPrice);
-      const top = document.getElementById('btc-price-top'); if(top) top.textContent = 'BTC '+s;
-      const lab = document.getElementById('btc-price-label'); if(lab) lab.textContent = s;
-      const ch = document.getElementById('btc-chg');
-      if(ch && state.btcChange24h != null){
-        const v = state.btcChange24h;
-        ch.textContent = (v>=0?'+':'')+v.toFixed(2)+'% 24h';
-        ch.className = 'mono hidden sm:inline '+(v>=0?'btc-chg-up':'btc-chg-dn');
-      }
-    }catch(e){}
-  }
-};
-
-// monkey-patch UI methods after UI defined - inject into UI object via string replace later
-
-/* ---------- UI chrome ---------- */
-const UI = {
-
-  toggleFocus(){
-    document.documentElement.classList.toggle('focus-mode');
-    toast(document.documentElement.classList.contains('focus-mode')?'Focus mode on':'Focus mode off','info');
-  },
-  copyShare(){
-    const url = location.origin + location.pathname;
-    navigator.clipboard?.writeText(url).then(()=>toast('Copied '+url,'success')).catch(()=>toast(url,'info'));
-  },
-  cycleTheme(){
-    const t = ['stone','slate','ink'];
-    const i = t.indexOf(document.documentElement.dataset.theme||'stone');
-    const n = t[(i+1)%t.length];
-    document.documentElement.dataset.theme = n;
-    state.theme = n;
-    localStorage.setItem('hq_theme', n);
-    toast('Theme: '+n,'info');
-    Charts.all();
-  },
-  cycleDensity(){
-    const n = (document.documentElement.dataset.density||'comfy')==='comfy'?'compact':'comfy';
-    document.documentElement.dataset.density = n;
-    localStorage.setItem('hq_density', n);
-    toast('Density: '+n,'info');
-  },
-  toggleLog(){
-    const el = document.getElementById('log-panel');
-    el.classList.toggle('hidden');
-    if(!el.classList.contains('hidden')){
-      el.innerHTML = `<div class="glass rounded p-2 text-xs mono space-y-1">${(state.log.slice(-20).reverse().map(l=>`<div class="text-[var(--ink-dim)]"><span class="text-[var(--ink-faint)]">${l.t}</span> ${l.msg}</div>`).join('')||'<div class="text-[var(--ink-faint)]">No events yet</div>')}</div>`;
-    }
-  },
-  help(){
-    document.getElementById('help-body').innerHTML = [
-      ['/','Command search'],['g','Cards'],['l','List'],['p','Pipeline'],['y','Analytics'],['k','Metrics lab'],
-      ['n','Network'],['t','Activity'],['m','Matrix'],['w','Wallets'],['d','Docs'],['a','Agents'],
-      ['r','Refresh'],['v','Vault'],['?','This help'],['P','Pitch mode'],['esc','Close overlays'],
-    ].map(([k,v])=>`<span class="k">${k}</span><span>${v}</span>`).join('');
-    document.getElementById('help-backdrop').classList.remove('hidden');
-  },
-  clock(){
-    const el = document.getElementById('clock');
-    if(el) el.textContent = new Date().toLocaleTimeString();
-  }
-};
-
-function toast(msg, kind='info'){
-  const colors = {success:'var(--green)',error:'var(--red)',info:'var(--orange)'};
-  const el = document.createElement('div');
-  el.className = 'toast glass rounded px-3 py-2 text-sm max-w-xs border';
-  el.style.borderColor = colors[kind]||colors.info;
-  el.textContent = msg;
-  document.getElementById('toast-stack').appendChild(el);
-  setTimeout(()=>el.remove(),4000);
-  const t = new Date().toLocaleTimeString();
-  state.log.push({t,msg,kind});
-  if(state.log.length>50) state.log.shift();
-}
-
-const fmt = {
-  sats(n){ return n==null?'—':new Intl.NumberFormat('en-US').format(Math.round(n)); },
-  usd(n){ return n==null?'$—':'$'+new Intl.NumberFormat('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n); },
-  usdFromSats(s){ return (s==null||btcUsdPrice==null)?null:s/1e8*btcUsdPrice; },
-  timeAgo(iso){
-    if(!iso) return '—';
-    const s = Math.floor((Date.now()-new Date(iso))/1000);
-    if(s<60) return s+'s';
-    if(s<3600) return Math.floor(s/60)+'m';
-    if(s<86400) return Math.floor(s/3600)+'h';
-    if(s<86400*30) return Math.floor(s/86400)+'d';
-    return Math.floor(s/86400/30)+'mo';
-  },
-  short(sha){ return sha?sha.slice(0,7):'—'; },
-  actions(st){
-    if(!st) return '—';
-    if(st==='success') return 'ok';
-    if(st==='failure') return 'fail';
-    if(st==='in_progress'||st==='queued') return '…';
-    return st;
-  }
-};
-
-/* ---------- GROK / SUPERGROK USAGE (manual — no public API) ---------- */
-const GrokUsage = {
-  // Defaults from Cam's account snapshot (overwritten when Vault is saved)
-  defaults: {
-    weekPct: 16,
-    buildPct: 16,
-    // July 26, 2026 3:03 PM — local; stored as ISO when saved
-    resetAt: '2026-07-26T15:03:00',
-    nous: '',
-  },
-  get(){
-    const g = (Vault.data && Vault.data.grok) || {};
-    return {
-      weekPct: g.weekPct != null ? Number(g.weekPct) : this.defaults.weekPct,
-      buildPct: g.buildPct != null ? Number(g.buildPct) : this.defaults.buildPct,
-      resetAt: g.resetAt || this.defaults.resetAt,
-      nous: g.nous != null ? g.nous : this.defaults.nous,
-      updatedAt: g.updatedAt || null,
-    };
-  },
-  set( partial ){
-    Vault.data.grok = Object.assign({}, this.get(), partial, { updatedAt: new Date().toISOString() });
-    Vault.persist();
-    this.render();
-  },
-  barColor(pct){
-    if(pct >= 90) return 'var(--red)';
-    if(pct >= 70) return 'var(--amber)';
-    return 'var(--orange)';
-  },
-  formatReset(iso){
-    if(!iso) return 'Resets —';
-    try{
-      const d = new Date(iso);
-      if(isNaN(d.getTime())) return 'Resets '+iso;
-      return 'Resets '+d.toLocaleString(undefined, { dateStyle:'medium', timeStyle:'short' });
-    }catch(_){ return 'Resets '+iso; }
-  },
-  toLocalInput(iso){
-    if(!iso) return '';
-    const d = new Date(iso);
-    if(isNaN(d.getTime())) return '';
-    const pad = n => String(n).padStart(2,'0');
-    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-  },
-  fromLocalInput(v){
-    if(!v) return '';
-    const d = new Date(v);
-    return isNaN(d.getTime()) ? v : d.toISOString();
-  },
-  updateCountdown(){
-    const el = document.getElementById('grok-countdown');
-    if(!el) return;
-    const g = this.get();
-    const t = new Date(g.resetAt).getTime();
-    if(isNaN(t)){ el.textContent = '—'; return; }
-    const ms = t - Date.now();
-    if(ms <= 0){ el.textContent = 'Reset due — update % in Edit'; el.style.color='var(--amber)'; return; }
-    const d = Math.floor(ms/86400000), h = Math.floor((ms%86400000)/3600000), m = Math.floor((ms%3600000)/60000);
-    el.textContent = (d?d+'d ':'')+h+'h '+m+'m to reset';
-    el.style.color = '';
-  },
-  render(){
-    const g = this.get();
-    this.updateCountdown();
-    const w = Math.max(0, Math.min(100, g.weekPct));
-    const b = Math.max(0, Math.min(100, g.buildPct));
-    const set = (id, text)=>{ const el=document.getElementById(id); if(el) el.textContent=text; };
-    set('grok-week-pct', w + '% used');
-    set('grok-build-pct', b + '% used');
-    set('grok-week-reset', this.formatReset(g.resetAt));
-    const wb = document.getElementById('grok-week-bar');
-    const bb = document.getElementById('grok-build-bar');
-    if(wb){ wb.style.width = w+'%'; wb.style.background = this.barColor(w); }
-    if(bb){ bb.style.width = b+'%'; bb.style.background = b>=90?'var(--red)':b>=70?'var(--amber)':'var(--sky)'; }
-    const chip = document.getElementById('grok-top-chip');
-    if(chip){
-      chip.textContent = `Grok ${w}%`;
-      chip.className = 'status-pill shrink-0 ' + (w>=90?'red':w>=70?'amber':'green');
-      chip.title = `SuperGrok weekly ${w}% · Build ${b}% · ${this.formatReset(g.resetAt)}`;
-    }
-    const nous = document.getElementById('nous-credits');
-    if(nous) nous.textContent = g.nous ? ('Nous '+g.nous) : 'Nous —';
-    const src = document.getElementById('grok-usage-src');
-    if(src) src.textContent = g.updatedAt ? ('saved '+fmt.timeAgo(g.updatedAt)) : 'default';
-  },
-  openEdit(){
-    const g = this.get();
-    document.getElementById('grok-edit-week').value = g.weekPct;
-    document.getElementById('grok-edit-build').value = g.buildPct;
-    document.getElementById('grok-edit-reset').value = this.toLocalInput(g.resetAt);
-    document.getElementById('grok-edit-backdrop').classList.remove('hidden');
-  },
-  closeEdit(){ document.getElementById('grok-edit-backdrop').classList.add('hidden'); },
-  saveEdit(){
-    const weekPct = parseFloat(document.getElementById('grok-edit-week').value);
-    const buildPct = parseFloat(document.getElementById('grok-edit-build').value);
-    const resetAt = this.fromLocalInput(document.getElementById('grok-edit-reset').value);
-    this.set({
-      weekPct: isNaN(weekPct) ? 0 : weekPct,
-      buildPct: isNaN(buildPct) ? 0 : buildPct,
-      resetAt: resetAt || this.defaults.resetAt,
-    });
-    this.closeEdit();
-    toast('Grok usage updated','success');
-  },
-  fillVaultForm(){
-    const g = this.get();
-    const w = document.getElementById('vault-grok-week');
-    const b = document.getElementById('vault-grok-build');
-    const r = document.getElementById('vault-grok-reset');
-    const n = document.getElementById('vault-nous');
-    if(w) w.value = g.weekPct;
-    if(b) b.value = g.buildPct;
-    if(r) r.value = this.toLocalInput(g.resetAt);
-    if(n) n.value = g.nous || '';
-  },
-  readVaultForm(){
-    const weekPct = parseFloat(document.getElementById('vault-grok-week')?.value);
-    const buildPct = parseFloat(document.getElementById('vault-grok-build')?.value);
-    const resetAt = this.fromLocalInput(document.getElementById('vault-grok-reset')?.value || '');
-    const nous = document.getElementById('vault-nous')?.value?.trim() || '';
-    return {
-      weekPct: isNaN(weekPct) ? this.defaults.weekPct : weekPct,
-      buildPct: isNaN(buildPct) ? this.defaults.buildPct : buildPct,
-      resetAt: resetAt || this.defaults.resetAt,
-      nous,
-      updatedAt: new Date().toISOString(),
-    };
-  }
-};
-
-/* ---------- VAULT (same key as v1) ---------- */
-const Vault = {
-  KEY: 'sovereign_deck_vault_v1',
-  data: { ghToken:'', nodeUrl:'http://api.satohash.io:5102', wallets:{}, fxSource:'coingecko', refreshSec:60, statusJsonUrl:'', satohashApi:'https://api.satohash.io', nip05Url:'https://giveabit.io/.well-known/nostr.json', grok:null, lnbitsProxyUrl:'https://giveabit-lnbits-proxy.kitsboy.workers.dev', proxyToken:'', useProxy:true },
-  load(){
-    try{ const raw=localStorage.getItem(this.KEY); if(raw) this.data=Object.assign(this.data,JSON.parse(raw)); }catch(e){}
-    try{
-      const pins = JSON.parse(localStorage.getItem('hq_pins')||'[]');
-      state.pins = new Set(pins);
-      state.theme = localStorage.getItem('hq_theme')||'stone';
-      state.density = localStorage.getItem('hq_density')||'comfy';
-      document.documentElement.dataset.theme = state.theme;
-      document.documentElement.dataset.density = state.density;
-      const hist = JSON.parse(localStorage.getItem('hq_hist')||'[]');
-      state.history = hist;
-    }catch(e){}
-  },
-  persist(){ localStorage.setItem(this.KEY, JSON.stringify(this.data)); },
-  openModal(){
-    document.getElementById('vault-backdrop').classList.remove('hidden');
-    document.getElementById('vault-gh-token').value = this.data.ghToken||'';
-    document.getElementById('vault-node-url').value = this.data.nodeUrl||'';
-    const pu=document.getElementById('vault-proxy-url'); if(pu) pu.value=this.data.lnbitsProxyUrl||(state.feeds&&state.feeds.lnbitsProxyUrl)||'';
-    const pt=document.getElementById('vault-proxy-token'); if(pt) pt.value=this.data.proxyToken||'';
-    const up=document.getElementById('vault-use-proxy'); if(up) up.checked=this.data.useProxy!==false;
-    document.getElementById('vault-fx-source').value = this.data.fxSource||'coingecko';
-    document.getElementById('vault-refresh').value = String(this.data.refreshSec||60);
-    const su=document.getElementById('vault-status-url'); if(su) su.value=this.data.statusJsonUrl||'';
-    const sa=document.getElementById('vault-satohash-api'); if(sa) sa.value=this.data.satohashApi||'https://api.satohash.io';
-    const nu=document.getElementById('vault-nip05-url'); if(nu) nu.value=this.data.nip05Url||FEEDS_DEFAULT.nip05Url;
-    document.getElementById('vault-node-note').textContent = this.data.nodeUrl||'';
-    GrokUsage.fillVaultForm();
-    const wallets = PROJECTS.reduce((a,p)=>{ if(!a.includes(p.wallet)) a.push(p.wallet); return a; },[]);
-    document.getElementById('vault-wallet-rows').innerHTML = wallets.map(w=>`
-      <div class="flex gap-2 items-center">
-        <span class="mono text-xs w-28 truncate text-[var(--ink-dim)]">${w}</span>
-        <input type="password" data-wallet-key="${w}" value="${this.data.wallets[w]||''}" placeholder="X-Api-Key" class="flex-1 rounded px-2 py-1.5 text-xs mono">
-      </div>`).join('');
-  },
-  closeModal(e){ if(e && e.target && e.target.id!=='vault-backdrop') return; document.getElementById('vault-backdrop').classList.add('hidden'); },
-  save(){
-    this.data.ghToken = document.getElementById('vault-gh-token').value.trim();
-    this.data.nodeUrl = document.getElementById('vault-node-url').value.trim()||this.data.nodeUrl;
-    const pu=document.getElementById('vault-proxy-url'); if(pu) this.data.lnbitsProxyUrl=pu.value.trim();
-    const pt=document.getElementById('vault-proxy-token'); if(pt) this.data.proxyToken=pt.value.trim();
-    const up=document.getElementById('vault-use-proxy'); if(up) this.data.useProxy=!!up.checked;
-    this.data.fxSource = document.getElementById('vault-fx-source').value;
-    this.data.refreshSec = parseInt(document.getElementById('vault-refresh').value,10)||60;
-    const su=document.getElementById('vault-status-url'); if(su) this.data.statusJsonUrl=su.value.trim();
-    const sa=document.getElementById('vault-satohash-api'); if(sa) this.data.satohashApi=sa.value.trim()||'https://api.satohash.io';
-    const n5=document.getElementById('vault-nip05-url'); if(n5) this.data.nip05Url=n5.value.trim()||FEEDS_DEFAULT.nip05Url;
-    document.querySelectorAll('[data-wallet-key]').forEach(inp=>{ this.data.wallets[inp.dataset.walletKey]=inp.value.trim(); });
-    this.data.grok = GrokUsage.readVaultForm();
-    this.persist();
-    this.updateStatusChip();
-    GrokUsage.render();
-    document.getElementById('vault-backdrop').classList.add('hidden');
-    toast('Vault saved locally','success');
-    scheduleRefresh();
-    Dash.refreshAll();
-  },
-  clear(){
-    if(!confirm('Wipe vault on this browser? (also clears Grok usage numbers)')) return;
-    localStorage.removeItem(this.KEY);
-    this.data = { ghToken:'', nodeUrl:'http://api.satohash.io:5102', wallets:{}, fxSource:'coingecko', refreshSec:60, statusJsonUrl:'', satohashApi:'https://api.satohash.io', nip05Url:'https://giveabit.io/.well-known/nostr.json', grok:null, lnbitsProxyUrl:'https://giveabit-lnbits-proxy.kitsboy.workers.dev', proxyToken:'', useProxy:true };
-    toast('Vault wiped','error');
-    this.updateStatusChip();
-    GrokUsage.render();
-    this.openModal();
-  },
-  hasWallet(w){ return !!(this.data.wallets[w]&&this.data.wallets[w].length>10); },
-  hasGh(){ return !!(this.data.ghToken&&this.data.ghToken.length>10); },
-  keyCount(){ return Object.values(this.data.wallets||{}).filter(v=>v&&v.length>10).length+(this.hasGh()?1:0); },
-  updateStatusChip(){
-    const el=document.getElementById('vault-status'); if(!el) return;
-    const n=this.keyCount();
-    el.textContent = n?`vault ${n} set`:'vault empty';
-    el.className = 'status-pill shrink-0 '+(n?'green':'gray');
-  }
-};
-
-function ghAuthHeader(){
-  if(!Vault.hasGh()) return {};
-  const t=Vault.data.ghToken;
-  return { Authorization: (t.startsWith('github_pat_')?'Bearer ':'token ')+t };
-}
-function decodeGitHubContent(b64){
-  const clean=(b64||'').replace(/\n/g,'');
-  const bin=atob(clean); const bytes=new Uint8Array(bin.length);
-  for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
-  return new TextDecoder().decode(bytes);
-}
-function encodeGitHubContent(text){
-  const bytes=new TextEncoder().encode(text); let bin='';
-  bytes.forEach(b=>bin+=String.fromCharCode(b)); return btoa(bin);
-}
-
-const GitHubData = {
-  async defaultBranch(repo){
-    if(state.branches[repo]) return state.branches[repo];
-    if(BRANCH_DEFAULTS[repo]) state.branches[repo]=BRANCH_DEFAULTS[repo];
-    try{
-      const r=await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}`,{headers:{Accept:'application/vnd.github+json',...ghAuthHeader()}});
-      this._trackRate(r);
-      if(r.ok){ const j=await r.json(); state.branches[repo]=j.default_branch||BRANCH_DEFAULTS[repo]||'main'; return state.branches[repo]; }
-    }catch(e){}
-    state.branches[repo]=BRANCH_DEFAULTS[repo]||'main';
-    return state.branches[repo];
-  },
-  async branchInfo(repo){
-    const branch=await this.defaultBranch(repo);
-    const r=await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}/branches/${encodeURIComponent(branch)}`,{headers:{Accept:'application/vnd.github+json',...ghAuthHeader()}});
-    this._trackRate(r);
-    if(!r.ok) throw new Error('gh '+r.status);
-    return r.json();
-  },
-
-  async repoMeta(repo){
-    try{
-      const r=await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}`,{headers:{Accept:'application/vnd.github+json',...ghAuthHeader()}});
-      this._trackRate(r);
-      if(!r.ok) return null;
-      const j=await r.json();
-      state.branches[repo]=j.default_branch||BRANCH_DEFAULTS[repo]||'main';
-      return {
-        language:j.language, stars:j.stargazers_count||0, issues:j.open_issues_count||0,
-        updated:j.pushed_at||j.updated_at, homepage:j.homepage, private:j.private,
-        desc:j.description, defaultBranch:j.default_branch
-      };
-    }catch(e){ return null; }
-  },
-  async lastRun(repo){
-    try{
-      const r=await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}/actions/runs?per_page=1`,{headers:{Accept:'application/vnd.github+json',...ghAuthHeader()}});
-      this._trackRate(r);
-      if(!r.ok) return null;
-      const j=await r.json();
-      return (j.workflow_runs&&j.workflow_runs[0])||null;
-    }catch(e){ return null; }
-  },
-  async readFile(repo, path){
-    const branch=await this.defaultBranch(repo);
-    if(Vault.hasGh()){
-      const api=`https://api.github.com/repos/${GH_OWNER}/${repo}/contents/${path.split('/').map(encodeURIComponent).join('/')}?ref=${encodeURIComponent(branch)}`;
-      const r=await fetch(api,{headers:{Accept:'application/vnd.github+json',...ghAuthHeader()}});
-      this._trackRate(r);
-      if(r.status===404) throw new Error(`not found: ${path} on ${branch}`);
-      if(r.status===401||r.status===403) throw new Error('GitHub auth failed — check PAT in Vault');
-      if(!r.ok) throw new Error('gh '+r.status);
-      const j=await r.json();
-      if(Array.isArray(j)) throw new Error('path is a directory');
-      if(j.encoding==='base64'&&j.content) return decodeGitHubContent(j.content);
-      throw new Error('empty content');
-    }
-    const raw=`https://raw.githubusercontent.com/${GH_OWNER}/${repo}/${branch}/${path}?t=${Date.now()}`;
-    const r=await fetch(raw);
-    if(!r.ok) throw new Error(`not found (add PAT for private repos): ${path} on ${branch}`);
-    return r.text();
-  },
-  async writeFile(repo, path, content, message){
-    if(!Vault.hasGh()) throw new Error('No GitHub token in vault');
-    const branch=await this.defaultBranch(repo);
-    const apiPath=path.split('/').map(encodeURIComponent).join('/');
-    const api=`https://api.github.com/repos/${GH_OWNER}/${repo}/contents/${apiPath}`;
-    const headers={Accept:'application/vnd.github+json','Content-Type':'application/json',...ghAuthHeader()};
-    let sha=null;
-    try{
-      const cur=await fetch(`${api}?ref=${encodeURIComponent(branch)}`,{headers});
-      this._trackRate(cur);
-      if(cur.ok){ const j=await cur.json(); sha=j.sha; }
-    }catch(e){}
-    const body={ message: message||`docs: update ${path} via Give A Bit HQ`, content: encodeGitHubContent(content), branch };
-    if(sha) body.sha=sha;
-    const res=await fetch(api,{method:'PUT',headers,body:JSON.stringify(body)});
-    this._trackRate(res);
-    if(res.status===409) throw new Error('conflict — re-open file and retry');
-    if(res.status===401||res.status===403) throw new Error('auth failed — need contents:write on '+repo);
-    if(!res.ok) throw new Error('save failed: '+(await res.text()).slice(0,160));
-    delete state.treeIndex[repo];
-    return res.json();
-  },
-  async treePaths(repo){
-    if(state.treeIndex[repo]) return state.treeIndex[repo];
-    try{
-      const b=await this.branchInfo(repo);
-      const treeSha=b.commit?.commit?.tree?.sha;
-      const r=await fetch(`https://api.github.com/repos/${GH_OWNER}/${repo}/git/trees/${treeSha}?recursive=1`,{headers:{Accept:'application/vnd.github+json',...ghAuthHeader()}});
-      this._trackRate(r);
-      if(!r.ok) throw new Error('tree');
-      const j=await r.json();
-      state.treeIndex[repo]=new Set((j.tree||[]).filter(t=>t.type==='blob').map(t=>t.path));
-      return state.treeIndex[repo];
-    }catch(e){ state.treeIndex[repo]=new Set(); return state.treeIndex[repo]; }
-  },
-  markPath(repo,path){ if(!state.treeIndex[repo]) state.treeIndex[repo]=new Set(); state.treeIndex[repo].add(path); },
-  _trackRate(r){
-    const rem=r.headers.get('x-ratelimit-remaining');
-    if(rem===null) return;
-    state.ghRateRemaining=rem;
-    const el=document.getElementById('gh-rate'); if(el) el.textContent=`(${rem} left)`;
-    const ban=document.getElementById('sys-banner'); if(!ban) return;
-    if(+rem<15 && +rem>0){ ban.classList.remove('hidden'); ban.innerHTML=`<div class="banner-warn mono">GitHub rate low (${rem})</div>`; }
-    else if(+rem===0){ ban.classList.remove('hidden'); ban.innerHTML=`<div class="banner-err mono">GitHub rate exhausted</div>`; }
-    else { ban.classList.add('hidden'); ban.innerHTML=''; }
-  }
-};
-
-const LNbitsData = {
-  lastError: null,
-  proxyUrl(){
-    const v = (Vault.data.lnbitsProxyUrl || (state.feeds && state.feeds.lnbitsProxyUrl) || FEEDS_DEFAULT.lnbitsProxyUrl || '').trim().replace(/\/$/,'');
-    return v;
-  },
-  useProxy(){
-    if(Vault.data.useProxy === false) return false;
-    const url = this.proxyUrl();
-    const tok = (Vault.data.proxyToken || '').trim();
-    return !!(url && tok);
-  },
-  async wallet(walletKey){
-    // Prefer Cloudflare Worker proxy (fixes CORS). Falls back to direct LNbits.
-    if(this.useProxy()){
-      return this.walletViaProxy(walletKey);
-    }
-    if(!Vault.hasWallet(walletKey)) return null;
-    const base = (Vault.data.nodeUrl||'').replace(/\/$/,'');
-    const url = `${base}/api/v1/wallet`;
-    try{
-      const r = await fetch(url, {
-        headers: { 'X-Api-Key': Vault.data.wallets[walletKey], 'Accept': 'application/json' },
-        mode: 'cors',
-        cache: 'no-store',
-      });
-      if(!r.ok){
-        const err = new Error('HTTP '+r.status);
-        err.code = r.status;
-        err.kind = r.status===401||r.status===403 ? 'auth' : 'http';
-        throw err;
-      }
-      this.lastError = null;
-      return r.json();
-    }catch(e){
-      const kind = e.kind || (e.name==='TypeError' || /failed to fetch|networkerror|cors/i.test(String(e.message||e)) ? 'cors' : 'network');
-      this.lastError = { kind, message: e.message||String(e), url, origin: location.origin, at: Date.now(), via:'direct' };
-      const err = new Error(e.message||'fetch failed');
-      err.kind = kind;
-      throw err;
-    }
-  },
-  async walletViaProxy(walletKey){
-    const proxy = this.proxyUrl();
-    const token = (Vault.data.proxyToken||'').trim();
-    const node = (Vault.data.nodeUrl||'').replace(/\/$/,'');
-    const key = (Vault.data.wallets||{})[walletKey];
-    if(!key || key.length<8){
-      const err = new Error('no wallet key'); err.kind='nokey'; throw err;
-    }
-    const url = `${proxy}/balance/${encodeURIComponent(walletKey)}`;
-    try{
-      const headers = {
-        'Authorization': 'Bearer '+token,
-        'Accept': 'application/json',
-        'X-Api-Key': key,
-      };
-      if(node) headers['X-LNbits-Base'] = node;
-      const r = await fetch(url, { headers, mode:'cors', cache:'no-store' });
-      const body = await r.json().catch(()=>({}));
-      if(!r.ok || body.ok === false){
-        const err = new Error(body.error || ('proxy HTTP '+r.status));
-        err.code = r.status;
-        err.kind = body.kind || (r.status===401||r.status===403 ? 'auth' : 'http');
-        throw err;
-      }
-      this.lastError = null;
-      // Normalize to LNbits shape
-      return {
-        name: body.name,
-        balance: body.balance != null ? body.balance : (body.balanceSats != null ? body.balanceSats * 1000 : 0),
-      };
-    }catch(e){
-      if(e.kind){ this.lastError={ kind:e.kind, message:e.message, url, origin:location.origin, at:Date.now(), via:'proxy' }; throw e; }
-      const kind = e.name==='TypeError' || /failed to fetch|networkerror|cors/i.test(String(e.message||e)) ? 'network' : 'error';
-      this.lastError = { kind, message: e.message||String(e), url, origin: location.origin, at: Date.now(), via:'proxy' };
-      const err = new Error(e.message||'proxy failed');
-      err.kind = kind;
-      throw err;
-    }
-  },
-  async diagnose(){
-    const base = (Vault.data.nodeUrl||'').replace(/\/$/,'');
-    const origin = location.origin;
-    const report = {
-      origin,
-      nodeUrl: base,
-      proxyUrl: this.proxyUrl() || null,
-      useProxy: this.useProxy(),
-      keys: 0,
-      sample: null,
-      mode: this.useProxy() ? 'proxy' : 'direct',
-    };
-    const wallets = PROJECTS.reduce((a,p)=>{ if(p.wallet && !a.includes(p.wallet)) a.push(p.wallet); return a; },[]);
-    for(const w of wallets){
-      if(!Vault.hasWallet(w)) continue;
-      report.keys++;
-      try{
-        const data = await this.wallet(w);
-        report.sample = { wallet: w, ok: true, balanceSats: Math.floor((data.balance||0)/1000), name: data.name, via: report.mode };
-        break;
-      }catch(e){
-        report.sample = { wallet: w, ok: false, kind: e.kind||LNbitsData.lastError?.kind||'error', message: e.message, via: report.mode };
-        // keep going through wallets for proxy; for cors-direct stop early
-        if(report.sample.kind==='cors' && report.mode==='direct') break;
-      }
-    }
-    return report;
-  }
-};
-
-async function checkLive(url){
-  if(!url) return {ok:false};
-  try{ await fetch(url,{method:'GET',mode:'no-cors',cache:'no-store'}); return {ok:true}; }
-  catch(e){ return {ok:false}; }
-}
-
-function healthScore(d){
-  let s=50;
-  if(d.status==='green') s+=40; else if(d.status==='amber') s+=10; else if(d.status==='red') s-=40;
-  if(d.walletOk) s+=10;
-  if(d.actionsStatus==='success') s+=10; else if(d.actionsStatus==='failure') s-=20;
-  if(d.liveReachable) s+=5;
-  return Math.max(0,Math.min(100,s));
-}
-function computeStatus(p,d){
-  if(!p.deployed) return 'gray';
-  if(d.liveReachable===false) return 'red';
-  if(d.actionsStatus==='failure') return 'red';
-  if(d.actionsStatus==='in_progress'||d.actionsStatus==='queued') return 'amber';
-  if(d.ghOk===false) return 'amber';
-  return 'green';
-}
-function statusMeta(status){
-  return {green:{dot:'green',label:'Live'},amber:{dot:'amber',label:'Pending'},red:{dot:'red',label:'Down'},gray:{dot:'gray',label:'Pre-MVP'}}[status]||{dot:'gray',label:'?'};
-}
-function setHealthDot(id,color){ const el=document.getElementById(id)?.querySelector('.dot'); if(el) el.className=`dot dot-${color}`; }
-function healthColor(score){ if(score>=80) return 'var(--green)'; if(score>=50) return 'var(--amber)'; return 'var(--red)'; }
-function copyText(t,label){ if(!t||t==='—')return; navigator.clipboard?.writeText(t).then(()=>toast('Copied '+(label||t),'success')); }
-function togglePin(id,e){
-  e?.stopPropagation();
-  if(state.pins.has(id)) state.pins.delete(id); else state.pins.add(id);
-  localStorage.setItem('hq_pins', JSON.stringify([...state.pins]));
-  Dash.render();
-  Dash.applyFilters();
-  document.getElementById('fav-count').textContent = state.pins.size+' pinned';
-}
-
-/* ---------- CHARTS (canvas, no deps) ---------- */
-const Charts = {
-  clear(c){ const ctx=c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height); return ctx; },
-  ink(){ return getComputedStyle(document.documentElement).getPropertyValue('--ink').trim()||'#121210'; },
-  dim(){ return getComputedStyle(document.documentElement).getPropertyValue('--ink-faint').trim()||'#5a574f'; },
-  donut(){
-    const c=document.getElementById('chart-donut'); if(!c) return;
-    c.width=160; c.height=160;
-    const ctx=this.clear(c);
-    const bars=PROJECTS.map(p=>({name:p.name,sats:(state.projects[p.id]||{}).balanceSats||0,color:p.color}));
-    const total=bars.reduce((a,b)=>a+b.sats,0)||1;
-    let a=-Math.PI/2;
-    const cx=80,cy=80,r=62,ri=38;
-    bars.forEach(b=>{
-      const slice=(b.sats/total)*Math.PI*2;
-      ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,a,a+slice); ctx.closePath();
-      ctx.fillStyle=b.color||this.ink(); ctx.globalAlpha=b.sats?0.9:0.25; ctx.fill(); ctx.globalAlpha=1;
-      a+=slice;
-    });
-    ctx.globalCompositeOperation='destination-out';
-    ctx.beginPath(); ctx.arc(cx,cy,ri,0,Math.PI*2); ctx.fill();
-    ctx.globalCompositeOperation='source-over';
-    ctx.fillStyle=this.ink(); ctx.font='600 11px IBM Plex Mono'; ctx.textAlign='center';
-    ctx.fillText(total>1?fmt.sats(total):'—',cx,cy+4);
-  },
-  spark(canvasId, series, color){
-    const c=document.getElementById(canvasId); if(!c||!series.length) return;
-    const ctx=this.clear(c);
-    const w=c.width,h=c.height,pad=2;
-    const min=Math.min(...series), max=Math.max(...series);
-    const span=(max-min)||1;
-    ctx.strokeStyle=color||this.ink(); ctx.lineWidth=1.5; ctx.beginPath();
-    series.forEach((v,i)=>{
-      const x=pad+(i/(series.length-1||1))*(w-pad*2);
-      const y=h-pad-((v-min)/span)*(h-pad*2);
-      i?ctx.lineTo(x,y):ctx.moveTo(x,y);
-    });
-    ctx.stroke();
-  },
-  bars(canvasId, items, key, colorFn){
-    const c=document.getElementById(canvasId); if(!c) return;
-    const dpr=window.devicePixelRatio||1;
-    const cssW=c.parentElement.clientWidth||400, cssH=220;
-    c.width=cssW*dpr; c.height=cssH*dpr; c.style.width=cssW+'px'; c.style.height=cssH+'px';
-    const ctx=c.getContext('2d'); ctx.scale(dpr,dpr); ctx.clearRect(0,0,cssW,cssH);
-    const max=Math.max(1,...items.map(i=>i[key]||0));
-    const rowH=cssH/Math.max(items.length,1);
-    items.forEach((it,i)=>{
-      const y=i*rowH+4;
-      const bw=((it[key]||0)/max)*(cssW-90);
-      ctx.fillStyle=colorFn?colorFn(it):this.ink();
-      ctx.globalAlpha=0.85; ctx.fillRect(80,y,bw,rowH-8); ctx.globalAlpha=1;
-      ctx.fillStyle=this.dim(); ctx.font='11px IBM Plex Mono'; ctx.textAlign='left';
-      ctx.fillText(it.name.slice(0,10),4,y+rowH/2+3);
-      ctx.textAlign='right'; ctx.fillStyle=this.ink();
-      ctx.fillText(key==='health'?String(it[key]||0):fmt.sats(it[key]||0),cssW-4,y+rowH/2+3);
-    });
-  },
-  cats(){
-    const c=document.getElementById('chart-cat'); if(!c) return;
-    const map={};
-    PROJECTS.forEach(p=>{ map[p.category]=(map[p.category]||0)+1; });
-    const items=Object.entries(map).map(([name,n])=>({name,n,color:PROJECTS.find(p=>p.category===name)?.color||'#666'}));
-    const dpr=window.devicePixelRatio||1;
-    const cssW=c.parentElement.clientWidth||400, cssH=200;
-    c.width=cssW*dpr; c.height=cssH*dpr; c.style.width=cssW+'px'; c.style.height=cssH+'px';
-    const ctx=c.getContext('2d'); ctx.scale(dpr,dpr); ctx.clearRect(0,0,cssW,cssH);
-    const max=Math.max(1,...items.map(i=>i.n));
-    const bw=(cssW-20)/items.length;
-    items.forEach((it,i)=>{
-      const h=(it.n/max)*(cssH-40);
-      ctx.fillStyle=it.color; ctx.fillRect(10+i*bw+4,cssH-20-h,bw-12,h);
-      ctx.fillStyle=this.dim(); ctx.font='10px IBM Plex Mono'; ctx.textAlign='center';
-      ctx.fillText(it.name.slice(0,8),10+i*bw+bw/2,cssH-6);
-      ctx.fillStyle=this.ink(); ctx.fillText(String(it.n),10+i*bw+bw/2,cssH-24-h);
-    });
-  },
-  hist(){
-    const c=document.getElementById('chart-hist'); if(!c) return;
-    const series=state.history.map(h=>h.total);
-    if(series.length<2){ const ctx=this.clear(c); ctx.fillStyle=this.dim(); ctx.font='12px IBM Plex Mono'; ctx.fillText('Snapshots build as you refresh…',12,40); return; }
-    const dpr=window.devicePixelRatio||1;
-    const cssW=c.parentElement.clientWidth||400, cssH=200;
-    c.width=cssW*dpr; c.height=cssH*dpr; c.style.width=cssW+'px'; c.style.height=cssH+'px';
-    const ctx=c.getContext('2d'); ctx.scale(dpr,dpr); ctx.clearRect(0,0,cssW,cssH);
-    const min=Math.min(...series), max=Math.max(...series), span=(max-min)||1;
-    ctx.strokeStyle=this.ink(); ctx.lineWidth=2; ctx.beginPath();
-    series.forEach((v,i)=>{
-      const x=10+(i/(series.length-1))*(cssW-20);
-      const y=cssH-20-((v-min)/span)*(cssH-40);
-      i?ctx.lineTo(x,y):ctx.moveTo(x,y);
-    });
-    ctx.stroke();
-  },
-  all(){
-    this.donut();
-    const rank=PROJECTS.map(p=>({name:p.name,sats:(state.projects[p.id]||{}).balanceSats||0,color:p.color})).sort((a,b)=>b.sats-a.sats);
-    this.bars('chart-rank',rank,'sats',it=>it.color);
-    const health=PROJECTS.map(p=>({name:p.name,health:healthScore(state.projects[p.id]||{}),color:p.color}));
-    this.bars('chart-health',health,'health',it=>it.color);
-    this.cats();
-    this.hist();
-    this.spark('spark-total', state.history.map(h=>h.total).concat([
-      PROJECTS.reduce((a,p)=>a+((state.projects[p.id]||{}).balanceSats||0),0)
-    ].filter((x,i,arr)=>i<arr.length)), getComputedStyle(document.documentElement).getPropertyValue('--orange').trim());
-  }
-};
-
-/* ---------- NET GRAPH ---------- */
-const Net = {
-  redraw(){
-    const svg=document.getElementById('net-svg'); if(!svg) return;
-    const W=900,H=420,cx=W/2,cy=H/2;
-    const n=PROJECTS.length;
-    const nodes=PROJECTS.map((p,i)=>{
-      const ang=-Math.PI/2+(i/n)*Math.PI*2;
-      const rad=p.id==='giveabit'?0:165;
-      return {id:p.id,p,x:cx+Math.cos(ang)*rad,y:cy+Math.sin(ang)*rad};
-    });
-    const hub=nodes.find(n=>n.id==='giveabit'); if(hub){ hub.x=cx; hub.y=cy; }
-    const drawn=new Set();
-    let edges='';
-    PROJECTS.forEach(p=>{
-      (p.related||[]).forEach(rid=>{
-        const key=[p.id,rid].sort().join('>');
-        if(drawn.has(key)) return; drawn.add(key);
-        const a=nodes.find(n=>n.id===p.id), b=nodes.find(n=>n.id===rid);
-        if(!a||!b) return;
-        const mx=(a.x+b.x)/2, my=(a.y+b.y)/2;
-        edges+=`<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="${p.color}" stroke-opacity="0.35" stroke-width="2"/>`;
-        edges+=`<text class="edge-label" x="${mx}" y="${my-4}" text-anchor="middle">link</text>`;
-      });
-    });
-    const dots=nodes.map(n=>{
-      const d=state.projects[n.id]||{};
-      const s=statusMeta(d.status||'gray');
-      const r=n.id==='giveabit'?30:20+(d.walletOk?Math.min(8,(d.balanceSats||0)/50000):0);
-      const ring=d.liveReachable?'#1f6b3a':d.ghOk?'#8a5a00':'#666';
-      return `<g style="cursor:pointer" onclick="Drawer.open('${n.id}')">
-        <circle cx="${n.x}" cy="${n.y}" r="${r+4}" fill="none" stroke="${ring}" stroke-width="2" opacity="0.7"/>
-        <circle cx="${n.x}" cy="${n.y}" r="${r}" fill="${n.p.color}" opacity="0.95" stroke="#121210" stroke-width="1"/>
-        <text x="${n.x}" y="${n.y+4}" text-anchor="middle" font-size="10" font-family="IBM Plex Sans" font-weight="600" fill="#fff">${n.p.name.slice(0,8)}</text>
-        <text x="${n.x}" y="${n.y+r+12}" text-anchor="middle" font-size="8" font-family="IBM Plex Mono" fill="#333">${d.language||'—'} · ${s.label}</text>
-        <title>${n.p.name}
-${s.label} · ${d.walletOk?fmt.sats(d.balanceSats)+' sats':'no wallet'}
-${(n.p.related||[]).length} connections · ${d.issues||0} issues</title>
-      </g>`;
-    }).join('');
-    svg.innerHTML = edges+dots;
-  }
-};
-
-/* ---------- DASH ---------- */
-const Dash = {
-  async refreshAll(manual=false){
-    setHealthDot('hb-github', navigator.onLine?'amber':'red');
-    document.getElementById('net-status').textContent = navigator.onLine?'online':'offline';
-    document.getElementById('net-status').className = 'status-pill shrink-0 '+(navigator.onLine?'green':'red');
-    if(manual) toast('Refreshing…','info');
-    await this.fetchPrice();
-    await Promise.all(PROJECTS.map(p=>this.refreshProject(p)));
-    await Feeds.all();
-    try{ await MetricsEngine.loadAll(); }catch(_e){}
-    try{ Pipes.render(); }catch(_e){}
-    // recompute status after status.json may have set liveReachable
-    PROJECTS.forEach(p=>{ const d=state.projects[p.id]; if(d) d.status=computeStatus(p,d); });
-    this.snapshot();
-    StatusHistory.pushSnapshot();
-    Alerts.check();
-    paintNodePanel();
-    paintIdentityScore();
-    scheduleRefreshEta();
-    this.render();
-    this.renderPortfolio();
-    this.renderTicker();
-    this.renderInvestorStrip();
-    Charts.all();
-    if(state.view==='network') Net.redraw();
-    if(state.view==='activity') renderActivity();
-    if(state.view==='matrix') renderMatrix();
-    if(state.view==='wallets') renderWallets();
-    if(state.view==='analytics') Charts.all();
-    setHealthDot('hb-github','green');
-    setHealthDot('hb-lnbits', Object.values(state.projects).some(p=>p.walletOk)?'green':(Vault.keyCount()>1?'red':'gray'));
-    setHealthDot('hb-thor','amber');
-    setHealthDot('hb-lnd','gray');
-    Feeds.paintHealthBar();
-    document.getElementById('last-refresh').textContent='synced '+new Date().toLocaleTimeString();
-    this.cache();
-  },
-  async fetchPrice(){
-    if(Vault.data.fxSource!=='coingecko') return;
-    try{
-      const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
-      const j=await r.json(); btcUsdPrice=j.bitcoin.usd;
-      const s='$'+new Intl.NumberFormat('en-US',{maximumFractionDigits:0}).format(btcUsdPrice);
-      document.getElementById('btc-price-top').textContent='BTC '+s;
-      document.getElementById('btc-price-label').textContent=s;
-    }catch(e){}
-  },
-  async refreshProject(p){
-    const d=state.projects[p.id]||{}; d.id=p.id; d.prevSats=d.balanceSats;
-    // Parallel: meta + branch + actions + live + wallet
-    const tasks = [
-      GitHubData.repoMeta(p.repo).then(m=>{ if(m){ d.language=m.language; d.stars=m.stars; d.issues=m.issues; d.repoUpdated=m.updated; d.repoPrivate=m.private; d.repoDesc=m.desc; } }).catch(()=>{}),
-      GitHubData.branchInfo(p.repo).then(b=>{
-        d.sha=b.commit.sha; d.commitMsg=b.commit.commit.message.split('\n')[0];
-        d.commitDate=b.commit.commit.committer.date; d.author=b.commit.commit.author?.name||'—'; d.ghOk=true;
-      }).catch(()=>{ d.ghOk=false; }),
-      GitHubData.lastRun(p.repo).then(run=>{
-        d.actionsStatus=run?(run.conclusion||run.status):null;
-        d.actionsName=run?.name; d.actionsUrl=run?.html_url;
-      }).catch(()=>{ d.actionsStatus=null; }),
-    ];
-    if(p.deployed&&p.url) tasks.push(checkLive(p.url).then(l=>{ d.liveReachable=l.ok; }));
-    else d.liveReachable=null;
-    if(Vault.hasWallet(p.wallet)){
-      tasks.push(LNbitsData.wallet(p.wallet).then(w=>{
-        d.balanceMsat=w.balance; d.balanceSats=Math.floor(w.balance/1000); d.walletName=w.name; d.walletOk=true; d.walletError=false; d.walletErrorKind=null;
-      }).catch((e)=>{ d.walletOk=false; d.walletError=true; d.walletErrorKind=e.kind||LNbitsData.lastError?.kind||'error'; }));
-    } else { d.walletOk=false; d.walletError=false; }
-    await Promise.all(tasks);
-    d.status=computeStatus(p,d);
-    d.linkScore = [d.ghOk, d.walletOk, d.liveReachable===true, !!d.actionsStatus, (p.related||[]).length>0].filter(Boolean).length;
-    state.projects[p.id]=d;
-  },
-  snapshot(){
-    const total=PROJECTS.reduce((a,p)=>a+((state.projects[p.id]||{}).balanceSats||0),0);
-    state.history.push({ts:Date.now(),total,price:btcUsdPrice});
-    if(state.history.length>48) state.history=state.history.slice(-48);
-    localStorage.setItem('hq_hist', JSON.stringify(state.history));
-  },
-  render(){
-    renderGrid(); renderList(); renderPipeline(); renderAgents(); renderDocTree();
-    this.applyFilters();
-  },
-  renderPortfolio(){
-    let total=0,synced=0,healthSum=0,liveCount=0;
-    const counts={green:0,amber:0,red:0,gray:0};
-    const bars=[];
-    PROJECTS.forEach(p=>{
-      const d=state.projects[p.id]||{};
-      if(d.walletOk){ total+=d.balanceSats||0; synced++; }
-      if(d.liveReachable) liveCount++;
-      healthSum+=healthScore(d);
-      counts[d.status||'gray']=(counts[d.status||'gray']||0)+1;
-      bars.push({name:p.name,sats:d.balanceSats||0,ok:!!d.walletOk,color:p.color});
-    });
-    document.getElementById('total-sats').textContent=fmt.sats(total);
-    document.getElementById('total-usd').textContent=btcUsdPrice?fmt.usd(total/1e8*btcUsdPrice):'$—';
-    document.getElementById('portfolio-count').textContent=`${synced}/${PROJECTS.length} synced`;
-    document.getElementById('portfolio-health').textContent=`health ${Math.round(healthSum/PROJECTS.length)}`;
-    document.getElementById('portfolio-live').textContent=`${liveCount} live`;
-    document.getElementById('stat-projects').textContent=PROJECTS.length;
-    document.getElementById('stat-agents').textContent=AGENTS.length;
-    document.getElementById('stat-health').textContent=Math.round(healthSum/PROJECTS.length);
-    document.getElementById('count-green').textContent=counts.green;
-    document.getElementById('count-amber').textContent=counts.amber;
-    document.getElementById('count-red').textContent=counts.red;
-    document.getElementById('count-gray').textContent=counts.gray;
-    document.getElementById('fav-count').textContent=state.pins.size+' pinned';
-    const issuesTot=PROJECTS.reduce((a,p)=>a+((state.projects[p.id]||{}).issues||0),0);
-    const pi=document.getElementById('portfolio-issues'); if(pi) pi.textContent=issuesTot+' issues';
-    // portfolio delta vs previous snapshot
-    const deltaEl=document.getElementById('total-delta');
-    if(deltaEl){
-      const prev=state.history.length>=2?state.history[state.history.length-2].total:null;
-      if(prev!=null){
-        const diff=total-prev;
-        deltaEl.textContent=(diff>0?'Δ +':diff<0?'Δ ':'Δ ')+fmt.sats(diff)+' sats';
-        deltaEl.className=diff>0?'delta-up':diff<0?'delta-dn':'delta-flat';
-      } else deltaEl.textContent='Δ —';
-    }
-    renderConnHub();
-    Vault.updateStatusChip();
-    const max=Math.max(1,...bars.map(b=>b.sats));
-    document.getElementById('bal-bars').innerHTML=bars.map(b=>`
-      <div class="flex items-center gap-2 text-[11px] mono">
-        <span class="w-20 truncate text-[var(--ink-faint)]">${b.name}</span>
-        <div class="flex-1 bar-track"><div class="bar-fill" style="width:${(b.sats/max*100)||0}%;background:${b.color||'var(--ink)'};opacity:${b.ok?1:.35}"></div></div>
-        <span class="w-14 text-right">${fmt.sats(b.sats)}</span>
-      </div>`).join('');
-    // KPI strip
-    const kpis=[
-      ['Total sats',fmt.sats(total)],['USD',btcUsdPrice?fmt.usd(total/1e8*btcUsdPrice):'—'],
-      ['Synced',`${synced}/${PROJECTS.length}`],['Live',String(liveCount)],
-      ['Avg health',String(Math.round(healthSum/PROJECTS.length))],['Vault keys',String(Vault.keyCount())],
-      ['GH left',state.ghRateRemaining??'—'],['Pins',String(state.pins.size)],
-    ];
-    const ks=document.getElementById('kpi-strip');
-    if(ks) ks.innerHTML=kpis.map(([l,v])=>`<div class="metric"><div class="text-[10px] text-[var(--ink-faint)] uppercase">${l}</div><div class="font-semibold mono text-sm mt-0.5">${v}</div></div>`).join('');
-  },
-  renderInvestorStrip(){
-    const el=document.getElementById('investor-strip'); if(!el) return;
-    let total=0,live=0,health=0,issues=0,ciOk=0,ciFail=0,synced=0;
-    PROJECTS.forEach(p=>{
-      const d=state.projects[p.id]||{};
-      if(d.walletOk){ total+=d.balanceSats||0; synced++; }
-      if(d.liveReachable) live++;
-      health+=healthScore(d);
-      issues+=d.issues||0;
-      if(d.actionsStatus==='success') ciOk++;
-      if(d.actionsStatus==='failure') ciFail++;
-    });
-    const avg=Math.round(health/Math.max(PROJECTS.length,1));
-    const up = StatusHistory.uptimePct();
-    const g = GrokUsage.get();
-    const cells=[
-      ['Treasury',fmt.sats(total)+' sats'],
-      ['USD',btcUsdPrice?fmt.usd(total/1e8*btcUsdPrice):'—'],
-      ['Live',`${live}/${PROJECTS.filter(p=>p.deployed).length}`],
-      ['Health',String(avg)],
-      ['CI ok/fail',`${ciOk}/${ciFail}`],
-      ['Issues',String(issues)],
-      ['SuperGrok',g.weekPct+'%'],
-      ['Uptime pulse', up!=null ? up+'%' : '—'],
-    ];
-    el.innerHTML=cells.map(([l,v])=>`<div class="metric"><div class="text-[10px] text-[var(--ink-faint)] uppercase">${l}</div><div class="big mt-0.5">${v}</div></div>`).join('');
-  },
-  renderTicker(){
-    const items=PROJECTS.map(p=>{
-      const d=state.projects[p.id]||{}; const s=statusMeta(d.status);
-      return `<span class="inline-flex items-center gap-1.5"><span class="dot dot-${s.dot}"></span><strong>${p.name}</strong> <span class="text-[var(--ink-faint)]">${d.walletOk?fmt.sats(d.balanceSats)+' sats':(Vault.hasWallet(p.wallet)?'err':'no key')}</span> · ${fmt.actions(d.actionsStatus)} · ${fmt.timeAgo(d.commitDate)}</span>`;
-    });
-    document.getElementById('ticker').innerHTML=items.concat(items).join('<span class="text-[var(--ink-faint)] mx-1">·</span>');
-  },
-  applyFilters(){
-    const q=(document.getElementById('global-search').value||'').toLowerCase().trim();
-    const f=state.filter, sortBy=document.getElementById('sort-select').value;
-    let list=PROJECTS.filter(p=>{
-      const d=state.projects[p.id]||{};
-      if(q && !(p.name.toLowerCase().includes(q)||p.tagline.toLowerCase().includes(q)||(p.category||'').toLowerCase().includes(q)||p.repo.toLowerCase().includes(q)||(p.stack||[]).some(s=>s.toLowerCase().includes(q)))) return false;
-      if(f==='attention') return d.status==='red'||d.status==='amber'||(d.walletOk&&d.balanceSats===0);
-      if(f==='recent') return d.commitDate&&(Date.now()-new Date(d.commitDate))<7*86400*1000;
-      if(f==='stale') return d.commitDate&&(Date.now()-new Date(d.commitDate))>30*86400*1000;
-      if(f==='pinned') return state.pins.has(p.id);
-      return true;
-    });
-    list.sort((a,b)=>{
-      const da=state.projects[a.id]||{}, db=state.projects[b.id]||{};
-      if(sortBy==='balance') return (db.balanceSats||0)-(da.balanceSats||0);
-      if(sortBy==='name') return a.name.localeCompare(b.name);
-      if(sortBy==='updated') return new Date(db.commitDate||0)-new Date(da.commitDate||0);
-      if(sortBy==='health') return healthScore(db)-healthScore(da);
-      if(sortBy==='category') return (a.category||'').localeCompare(b.category||'');
-      return 0;
-    });
-    const ids=list.map(p=>p.id);
-    document.querySelectorAll('[data-project-card]').forEach(el=>el.style.display=ids.includes(el.dataset.projectCard)?'':'none');
-    document.querySelectorAll('[data-project-row]').forEach(el=>el.style.display=ids.includes(el.dataset.projectRow)?'':'none');
-    document.querySelectorAll('[data-project-pipe]').forEach(el=>el.style.display=ids.includes(el.dataset.projectPipe)?'':'none');
-    const vc=document.getElementById('visible-count'); if(vc) vc.textContent=`showing ${ids.length}`;
-  },
-  cache(){ try{ localStorage.setItem('sovereign_deck_cache', JSON.stringify({projects:state.projects,price:btcUsdPrice,ts:Date.now()})); }catch(e){} },
-  loadCache(){
-    try{
-      const raw=localStorage.getItem('sovereign_deck_cache');
-      if(raw){ const j=JSON.parse(raw); state.projects=j.projects||{}; btcUsdPrice=j.price;
-        const age=document.getElementById('cache-age'); if(age&&j.ts){ age.textContent='cache '+fmt.timeAgo(new Date(j.ts).toISOString()); age.classList.remove('hidden'); }
-      }
-    }catch(e){}
-  }
-};
-
-
-function renderConnHub(){
-  const hub=document.getElementById('conn-hub');
-  const rail=document.getElementById('sync-rail');
-  if(!hub) return;
-  // Ensure satohash ↔ giveabit related edge for suite graph (backbone link)
-  const sh=PROJECTS.find(p=>p.id==='satohash');
-  if(sh && Array.isArray(sh.related) && !sh.related.includes('giveabit')) sh.related.push('giveabit');
-  const gab=PROJECTS.find(p=>p.id==='giveabit');
-  if(gab && Array.isArray(gab.related) && !gab.related.includes('satohash')) gab.related.push('satohash');
-  const edges=PROJECTS.reduce((a,p)=>a+(p.related||[]).length,0);
-  const langs={};
-  let ghOk=0,wOk=0,live=0,ciOk=0;
-  PROJECTS.forEach(p=>{
-    const d=state.projects[p.id]||{};
-    if(d.ghOk) ghOk++;
-    if(d.walletOk) wOk++;
-    if(d.liveReachable) live++;
-    if(d.actionsStatus==='success') ciOk++;
-    if(d.language) langs[d.language]=(langs[d.language]||0)+1;
-  });
-  const shOk = state.satohash?.ok === true;
-  const cs=document.getElementById('conn-summary');
-  if(cs) cs.textContent=`${edges} links · ${Object.keys(langs).length} languages · ${ghOk} gh · proof plane: Satohash`;
-  const proofCard = `<div class="conn-card" style="border-top:3px solid #8a5a00;cursor:pointer" onclick="window.open('https://satohash.io','_blank')" title="Shared OTS backbone for the suite">
-      <div class="lbl">Proof plane</div>
-      <div class="val">Satohash</div>
-      <div class="sub mono">${shOk?'API health OK':'API offline/pending'} · api.satohash.io</div>
-      <div class="link-row mt-1.5">
-        <span class="rel-chip" onclick="event.stopPropagation();Drawer.open('satohash')"><span class="rel-dot" style="background:#8a5a00"></span>Satohash</span>
-        <span class="rel-chip" onclick="event.stopPropagation();Drawer.open('giveabit')"><span class="rel-dot" style="background:#c45f00"></span>Give A Bit</span>
-      </div>
-    </div>`;
-  hub.innerHTML=proofCard+PROJECTS.map(p=>{
-    const d=state.projects[p.id]||{};
-    const rel=(p.related||[]).length;
-    return `<div class="conn-card" style="border-top:3px solid ${p.color}" onclick="Drawer.open('${p.id}')">
-      <div class="lbl">${p.category}${p.backbone?' · BACKBONE':''}</div>
-      <div class="val">${p.name}</div>
-      <div class="sub">${d.language||'—'} · ${rel} links · ${d.walletOk?fmt.sats(d.balanceSats)+'s':'wallet —'}</div>
-      <div class="link-row mt-1.5">${(p.related||[]).slice(0,3).map(rid=>{
-        const rp=PROJECTS.find(x=>x.id===rid);
-        return rp?`<span class="rel-chip" onclick="event.stopPropagation();Drawer.open('${rid}')"><span class="rel-dot" style="background:${rp.color}"></span>${rp.name}</span>`:'';
-      }).join('')}</div>
-    </div>`;
-  }).join('');
-  if(rail){
-    rail.innerHTML=`
-      <div class="sync-cell"><span class="n" style="color:var(--green)">${live}</span>live sites</div>
-      <div class="sync-cell"><span class="n" style="color:${shOk?'var(--green)':'var(--amber)'}">${shOk?'ok':'—'}</span>satohash api</div>
-      <div class="sync-cell"><span class="n">${ghOk}</span>github ok</div>
-      <div class="sync-cell"><span class="n">${wOk}</span>wallets</div>
-      <div class="sync-cell"><span class="n">${ciOk}</span>ci green</div>
-      <div class="sync-cell"><span class="n">${edges}</span>graph edges</div>
-      <div class="sync-cell"><span class="n">${Vault.keyCount()}</span>vault keys</div>
-      <div class="sync-cell"><span class="n">${state.ghRateRemaining??'—'}</span>gh left</div>`;
-  }
-  const strip=document.getElementById('suite-status-strip');
-  if(strip){
-    strip.innerHTML=PROJECTS.map(p=>{
-      const d=state.projects[p.id]||{};
-      const s=statusMeta(d.status||'gray');
-      const liveLabel = d.liveReachable===true ? 'live' : d.liveReachable===false ? 'down' : (p.deployed?'…':'n/a');
-      const src = d.statusSource==='status.json' ? 'feed' : 'probe';
-      return `<button type="button" class="status-pill ${s.dot}" style="cursor:pointer" onclick="Drawer.open('${p.id}')" title="${p.url||'no url'} · ${src}">
-        <span class="dot dot-${s.dot}" style="width:6px;height:6px"></span>${p.name} · ${liveLabel}
-      </button>`;
-    }).join('');
-  }
-}
-
-
-function paintNodePanel(){
-  const n = state.statusFeed?.node;
-  const btc = document.getElementById('node-btc');
-  const lnd = document.getElementById('node-lnd');
-  if(btc){
-    if(n?.bitcoin && n.bitcoin.ok != null) btc.textContent = `${n.bitcoin.ok?'ok':'down'} height ${n.bitcoin.height??'—'} pruned=${n.bitcoin.pruned??'?'}`;
-    else btc.textContent = '— pruned full node planned (read-only feed)';
-  }
-  if(lnd){
-    if(n?.lnd && n.lnd.ok != null) lnd.textContent = `${n.lnd.ok?'ok':'down'} channels ${n.lnd.channels??'—'}`;
-    else lnd.textContent = '— channels feed not wired (no macaroons in HTML)';
-  }
-}
-function paintIdentityScore(){
-  const el = document.getElementById('identity-score');
-  if(!el) return;
-  const names = state.nip05.names || {};
-  let ok = 0;
-  AGENTS.forEach(a=>{
-    const local = (a.nip05||'').split('@')[0];
-    if(state.nip05.ok && names[local] != null) ok++;
-  });
-  el.textContent = state.nip05.ok ? `${ok}/${AGENTS.length} NIP-05 verified` : 'NIP-05 unchecked';
-  el.style.color = ok === AGENTS.length ? 'var(--green)' : (ok>0 ? 'var(--amber)' : 'var(--ink-faint)');
-}
-let _refreshEtaTimer = null;
-function scheduleRefreshEta(){
-  const sec = Vault.data.refreshSec || 60;
-  let left = sec;
-  const el = document.getElementById('refresh-eta');
-  if(_refreshEtaTimer) clearInterval(_refreshEtaTimer);
-  const tick = ()=>{
-    if(el){ el.textContent = 'next '+left+'s'; el.classList.remove('hidden'); }
-    left--;
-    if(left < 0) left = Vault.data.refreshSec || 60;
-  };
-  tick();
-  _refreshEtaTimer = setInterval(tick, 1000);
-}
-function exportWalletsCSV(){
-  const rows = [['project','wallet','configured','sats','usd','language','status','latency_ms']];
-  PROJECTS.forEach(p=>{
-    const d = state.projects[p.id]||{};
-    const usd = d.walletOk && btcUsdPrice ? (d.balanceSats/1e8*btcUsdPrice).toFixed(2) : '';
-    rows.push([p.name,p.wallet,Vault.hasWallet(p.wallet)?'yes':'no',d.walletOk?d.balanceSats:'',usd,d.language||'',statusMeta(d.status).label,d.statusMs??'']);
-  });
-  const csv = rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  a.download = `giveabit-wallets-${new Date().toISOString().slice(0,10)}.csv`;
-  a.click();
-  toast('Wallets CSV exported','success');
-}
-function latencyBadge(d){
-  if(d.statusMs == null) return '';
-  const ms = d.statusMs;
-  const cls = !d.liveReachable ? 'dead' : ms < 400 ? 'fast' : ms < 1200 ? 'slow' : 'dead';
-  return `<span class="latency-badge ${cls}" title="HTTP ${d.statusHttp??'?'}> · ${d.statusSource||'probe'}">${ms}ms</span>`;
-}
-
-
-function renderGrid(){
-  document.getElementById('view-grid').innerHTML=PROJECTS.map(p=>{
-    const d=state.projects[p.id]||{}; const s=statusMeta(d.status); const hs=healthScore(d);
-    const usd=d.walletOk?fmt.usd(fmt.usdFromSats(d.balanceSats)):'$—';
-    const pin=state.pins.has(p.id);
-    const steps=[{ok:!!d.sha},{ok:d.actionsStatus==='success',amber:d.actionsStatus==='in_progress'||d.actionsStatus==='queued'},{ok:d.status==='green'},{ok:d.liveReachable===true}];
-    return `<div data-project-card="${p.id}" class="glass glass-hover rounded p-3.5 cursor-pointer flex flex-col gap-2.5 card-border" style="--pc:${p.color}" onclick="Drawer.open('${p.id}')">
-      <div class="flex justify-between gap-2">
-        <div class="flex items-center gap-2 min-w-0">
-          <div class="icon-box sm" style="background:${p.color}"><i class="${p.icon}"></i></div>
-          <div class="min-w-0"><div class="font-semibold text-[14px]">${p.name}</div>
-          <div class="text-[10px] mono text-[var(--ink-faint)]">${p.category} · ${p.repo}</div></div>
-        </div>
-        <div class="flex items-center gap-1">
-          <button class="pin-star ${pin?'on':''}" onclick="togglePin('${p.id}',event)" title="Pin">★</button>
-          <span class="status-pill ${s.dot}"><span class="dot dot-${s.dot}" style="width:6px;height:6px"></span>${s.label}</span>
-          <div class="health-ring" style="color:${healthColor(hs)};border-color:${healthColor(hs)}">${hs}</div>
-        </div>
-      </div>
-      <p class="text-xs text-[var(--ink-dim)] line-clamp-2">${p.tagline}</p>
-      <div class="flex flex-wrap gap-1 items-center">
-        ${d.language?`<span class="lang-badge">${d.language}</span>`:''}
-        ${(p.stack||[]).map(t=>`<span class="chip" style="cursor:default">${t}</span>`).join('')}
-        ${d.issues!=null?`<span class="status-pill gray">${d.issues} iss</span>`:''}
-        ${(d.stars!=null&&d.stars>0)?`<span class="status-pill gray">★${d.stars}</span>`:''}
-      </div>
-      <div class="flex flex-wrap gap-1">${(p.related||[]).map(rid=>{const rp=PROJECTS.find(x=>x.id===rid);return rp?`<span class="rel-chip" onclick="event.stopPropagation();Drawer.open('${rid}')"><span class="rel-dot" style="background:${rp.color}"></span>${rp.name}</span>`:''}).join('')}</div>
-      ${MetricsEngine.cardKpisHtml(p.id)}
-      <div class="text-[10px] mono mt-1"><button type="button" class="underline text-[var(--ink-faint)]" onclick="event.stopPropagation();MetricsEngine.select('${p.id}')">open metrics →</button></div>
-      <div class="grid grid-cols-2 gap-1.5">
-        <div class="metric"><div class="text-[9px] mono uppercase text-[var(--ink-faint)]">Balance</div>
-          <div class="mono font-semibold">${d.walletOk?fmt.sats(d.balanceSats):'—'} <span class="text-[9px] text-[var(--ink-faint)]">sats</span></div>
-          <div class="text-[10px] mono text-[var(--ink-faint)]">${usd}</div></div>
-        <div class="metric"><div class="text-[9px] mono uppercase text-[var(--ink-faint)]">Commit</div>
-          <div class="mono font-semibold cursor-copy" onclick="event.stopPropagation();copyText('${d.sha||''}','SHA')">${fmt.short(d.sha)}</div>
-          <div class="text-[10px] mono text-[var(--ink-faint)] truncate">${(d.commitMsg||'—').slice(0,28)}</div></div>
-      </div>
-      <div class="flex gap-1">
-        <span class="status-pill ${Vault.hasWallet(p.wallet)?(d.walletOk?'green':'red'):'gray'}">${Vault.hasWallet(p.wallet)?(d.walletOk?'wallet':'w err'):'no key'}</span>
-        <span class="status-pill ${d.liveReachable?'green':d.liveReachable===false?'red':'gray'}">${d.liveReachable?'live':d.liveReachable===false?'down':'—'}</span>
-        ${latencyBadge(d)}
-        <span class="status-pill ${d.actionsStatus==='success'?'green':d.actionsStatus==='failure'?'red':'gray'}">ci ${fmt.actions(d.actionsStatus)}</span>
-      </div>
-      <div class="flex gap-1">${steps.map((st,i)=>`<div class="flex-1 h-1 rounded-sm ${st.ok?'pipe-ok':st.amber?'pipe-amb':'pipe-bad'}" title="${['Commit','CI','Deploy','Live'][i]}"></div>`).join('')}</div>
-      <div class="pt-2 border-t border-[var(--line)] flex justify-between text-[10px] mono text-[var(--ink-faint)]">
-        <span>${fmt.timeAgo(d.commitDate)}${d.author?' · '+d.author:''}</span>
-        ${p.url?`<a href="${p.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="underline text-[var(--ink)]">open</a>`:'<span>dev</span>'}
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function renderList(){
-  document.getElementById('list-body').innerHTML=PROJECTS.map(p=>{
-    const d=state.projects[p.id]||{}; const s=statusMeta(d.status); const hs=healthScore(d);
-    const usd=d.walletOk&&btcUsdPrice?fmt.usd(fmt.usdFromSats(d.balanceSats)):'—';
-    const pin=state.pins.has(p.id);
-    return `<tr data-project-row="${p.id}" class="border-t border-[var(--line)] row-h cursor-pointer" onclick="Drawer.open('${p.id}')">
-      <td class="px-3 py-2"><button class="pin-star ${pin?'on':''}" onclick="togglePin('${p.id}',event)">★</button></td>
-      <td class="px-3 py-2"><div class="font-medium" style="border-left:3px solid ${p.color};padding-left:6px">${p.name}</div><div class="text-[10px] text-[var(--ink-faint)]">${p.category} · ${p.repo}</div></td>
-      <td class="px-3 py-2"><span class="status-pill ${s.dot}">${s.label}</span></td>
-      <td class="px-3 py-2 font-semibold">${d.walletOk?fmt.sats(d.balanceSats):'—'}</td>
-      <td class="px-3 py-2">${usd}</td>
-      <td class="px-3 py-2"><div onclick="event.stopPropagation();copyText('${d.sha||''}')">${fmt.short(d.sha)}</div><div class="text-[10px] text-[var(--ink-faint)] truncate max-w-[120px]">${d.commitMsg||'—'}</div></td>
-      <td class="px-3 py-2">${fmt.actions(d.actionsStatus)}</td>
-      <td class="px-3 py-2">${fmt.timeAgo(d.commitDate)}</td>
-      <td class="px-3 py-2" style="color:${healthColor(hs)};font-weight:600">${hs}</td>
-      <td class="px-3 py-2">${Vault.hasWallet(p.wallet)?(d.walletOk?'ok':'err'):'—'}</td>
-      <td class="px-3 py-2 text-right">${p.url?`<a href="${p.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="underline">site</a>`:''}
-        <a href="https://github.com/${GH_OWNER}/${p.repo}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="underline text-[var(--ink-faint)] ml-1">gh</a></td>
-    </tr>`;
-  }).join('');
-}
-
-function renderPipeline(){
-  document.getElementById('view-pipeline').innerHTML=PROJECTS.map(p=>{
-    const d=state.projects[p.id]||{}; const s=statusMeta(d.status);
-    const steps=[
-      {label:'Commit',ok:!!d.sha,detail:fmt.short(d.sha)},
-      {label:'Actions',ok:d.actionsStatus==='success',amber:d.actionsStatus==='in_progress'||d.actionsStatus==='queued',detail:fmt.actions(d.actionsStatus)},
-      {label:'Deployed',ok:d.status==='green',detail:s.label},
-      {label:'Live',ok:d.liveReachable===true,detail:d.liveReachable?'ok':d.liveReachable===false?'down':'n/a'},
-    ];
-    return `<div data-project-pipe="${p.id}" class="glass rounded p-3 flex flex-wrap gap-3 items-center cursor-pointer glass-hover card-border" style="--pc:${p.color}" onclick="Drawer.open('${p.id}')">
-      <div class="w-40"><div class="font-semibold text-sm flex items-center gap-2"><span class="dot dot-${s.dot}"></span>${p.name}</div>
-      <div class="text-[10px] mono text-[var(--ink-faint)] truncate">${d.commitMsg||'—'}</div></div>
-      <div class="flex flex-1 gap-1 min-w-[240px]">${steps.map((st,i)=>`
-        <div class="flex-1 text-center"><div class="h-2 rounded-sm mb-1 ${st.ok?'pipe-ok':st.amber?'pipe-amb':'pipe-bad'}"></div>
-        <div class="text-[9px] mono">${st.label}</div><div class="text-[9px] mono text-[var(--ink-faint)]">${st.detail}</div></div>`).join('')}</div>
-      <div class="mono text-sm font-semibold">${d.walletOk?fmt.sats(d.balanceSats)+' sats':'—'}</div>
-    </div>`;
-  }).join('');
-}
-
-function renderAgents(){
-  document.getElementById('view-agents').innerHTML=AGENTS.map(a=>{
-    const local=(a.nip05||'').split('@')[0];
-    const names=state.nip05.names||{};
-    const has=state.nip05.ok && names[local]!=null;
-    return `
-    <div class="glass glass-hover rounded p-3.5 cursor-pointer card-border" style="--pc:${a.color}" onclick="Docs.openAgent('${a.repo}','${a.file}','${a.name}')">
-      <div class="flex items-center gap-2.5 mb-2">
-        <div class="icon-box" style="background:${a.color}">${a.name[0]}</div>
-        <div><div class="font-semibold">${a.name}${a.lead?' <span class="status-pill amber">lead</span>':''}</div>
-        <div class="text-xs text-[var(--ink-dim)]">${a.role}</div></div>
-      </div>
-      <p class="text-sm text-[var(--ink-dim)] mb-2">"${a.motto}"</p>
-      <div class="flex justify-between text-[11px] mono pt-2 border-t border-[var(--line)]">
-        <span class="text-[var(--ink-faint)]">${a.nip05}</span>
-        <span class="status-pill ${has?'green':'gray'}">${has?'nip-05':'?'}</span>
-      </div>
-      <div class="text-[10px] mono text-[var(--ink-faint)] mt-1">${a.file} · edit →</div>
-    </div>`;}).join('');
-}
-
-function renderActivity(){
-  const filter=document.getElementById('act-filter')?.value||'all';
-  const sel=document.getElementById('act-filter');
-  if(sel && sel.options.length<=1){
-    PROJECTS.forEach(p=>{ const o=document.createElement('option'); o.value=p.id; o.textContent=p.name; sel.appendChild(o); });
-  }
-  let items=PROJECTS.map(p=>{
-    const d=state.projects[p.id]||{};
-    return {p,d,ts:d.commitDate?new Date(d.commitDate).getTime():0};
-  }).filter(x=>x.ts);
-  if(filter!=='all') items=items.filter(x=>x.p.id===filter);
-  items.sort((a,b)=>b.ts-a.ts);
-  document.getElementById('activity-feed').innerHTML=items.map(({p,d})=>`
-    <div class="flex gap-3 items-start p-2 rounded glass-2 cursor-pointer" onclick="Drawer.open('${p.id}')">
-      <div class="w-2 h-2 rounded-full mt-1.5 shrink-0" style="background:${p.color}"></div>
-      <div class="min-w-0 flex-1">
-        <div class="text-sm"><strong>${p.name}</strong> <span class="mono text-[10px] text-[var(--ink-faint)]">${fmt.short(d.sha)}</span></div>
-        <div class="text-xs text-[var(--ink-dim)] truncate">${d.commitMsg||'—'}</div>
-        <div class="text-[10px] mono text-[var(--ink-faint)]">${fmt.timeAgo(d.commitDate)} · ${d.author||''} · ${new Date(d.commitDate).toLocaleString()}</div>
-      </div>
-      <span class="status-pill ${statusMeta(d.status).dot}">${statusMeta(d.status).label}</span>
-    </div>`).join('')||'<div class="text-xs text-[var(--ink-faint)] p-4">No commit data yet — refresh.</div>';
-}
-
-function renderMatrix(){
-  const cols=['Live','GitHub','CI','Wallet','Deploy','Latency','Health'];
-  let html=`<table class="w-full text-xs mono min-w-[700px]"><thead><tr><th class="text-left p-2">Project</th>${cols.map(c=>`<th class="p-2 text-center">${c}</th>`).join('')}</tr></thead><tbody>`;
-  PROJECTS.forEach(p=>{
-    const d=state.projects[p.id]||{}; const hs=healthScore(d);
-    const cell=(ok,label,col)=>`<td class="p-1"><div class="matrix-cell" style="background:${ok==null?'var(--panel-2)':ok?'rgba(31,107,58,.2)':ok===false?'rgba(163,32,32,.15)':'rgba(138,90,0,.15)'};color:${ok?'var(--green)':ok===false?'var(--red)':'var(--ink-dim)'}">${label}</div></td>`;
-    html+=`<tr class="border-t border-[var(--line)] cursor-pointer" onclick="Drawer.open('${p.id}')">
-      <td class="p-2 font-semibold" style="border-left:3px solid ${p.color};padding-left:8px">${p.name}</td>
-      ${cell(d.liveReachable,d.liveReachable?'up':d.liveReachable===false?'down':'—')}
-      ${cell(d.ghOk,d.ghOk?'ok':'err')}
-      ${cell(d.actionsStatus==='success'?true:d.actionsStatus==='failure'?false:null,fmt.actions(d.actionsStatus))}
-      ${cell(Vault.hasWallet(p.wallet)?d.walletOk:null,Vault.hasWallet(p.wallet)?(d.walletOk?'ok':'err'):'—')}
-      ${cell(p.deployed,p.deployed?'yes':'no')}
-      <td class="p-1"><div class="matrix-cell">${d.statusMs!=null?(d.statusMs+'ms'):'—'}</div></td>
-      <td class="p-1"><div class="matrix-cell" style="color:${healthColor(hs)}">${hs}</div></td>
-    </tr>`;
-  });
-  html+='</tbody></table>';
-  document.getElementById('matrix-table').innerHTML=html;
-}
-
-function renderWallets(){
-  const total=PROJECTS.reduce((a,p)=>a+((state.projects[p.id]||{}).balanceSats||0),0)||1;
-  document.getElementById('wallet-body').innerHTML=PROJECTS.map(p=>{
-    const d=state.projects[p.id]||{};
-    const sats=d.balanceSats||0;
-    const pct=Math.round((sats/total)*100);
-    return `<tr class="border-t border-[var(--line)] row-h">
-      <td class="px-3 py-2 font-medium" style="border-left:3px solid ${p.color};padding-left:8px">${p.name}</td>
-      <td class="px-3 py-2">${p.wallet}</td>
-      <td class="px-3 py-2">${Vault.hasWallet(p.wallet)?'<span class="status-pill green">set</span>':'<span class="status-pill gray">empty</span>'}${Vault.isReadOnly&&Vault.isReadOnly(p.wallet)?' <span class="ro-badge">RO</span>':''}</td>
-      <td class="px-3 py-2 font-semibold">${d.walletOk?fmt.sats(sats):'—'}${d.prevSats!=null&&d.walletOk?` <span class="text-[10px] ${sats>=(d.prevSats||0)?'delta-up':'delta-dn'}">(${sats-(d.prevSats||0)>=0?'+':''}${fmt.sats(sats-(d.prevSats||0))})</span>`:''}</td>
-      <td class="px-3 py-2">${d.walletOk&&btcUsdPrice?fmt.usd(fmt.usdFromSats(sats)):'—'}</td>
-      <td class="px-3 py-2 w-40"><div class="bar-track"><div class="bar-fill" style="width:${d.walletOk?pct:0}%;background:${p.color}"></div></div><span class="text-[10px] text-[var(--ink-faint)]">${d.walletOk?pct+'%':'—'}</span></td>
-    </tr>`;
-  }).join('');
-}
-
-function docStub(projectName,path,agentMeta){
-  if(agentMeta) return `# ${agentMeta.name}\n\n**Role:** ${agentMeta.role}\n\n**Motto:** ${agentMeta.motto}\n\n**NIP-05:** \`${agentMeta.nip05}\`\n\n## Notes\n\n_Edit from Give A Bit HQ._\n\n---\nSafe Harbour · Part of the Give A Bit family.\n`;
-  const base=path.split('/').pop().replace(/\.md$/i,'');
-  return `# ${base}\n\n> **${projectName}** · \`${path}\`\n\n## Summary\n\n_TODO_\n\n---\nSafe Harbour · Part of the Give A Bit family.\n`;
-}
-
-function renderDocTree(){
-  document.getElementById('file-tree').innerHTML=PROJECTS.map(p=>{
-    const agents=p.repo==='giveabit'?AGENTS.map(a=>`
-      <button data-doc-path="${a.file}" data-doc-repo="${p.repo}" onclick="Docs.open('${p.repo}','${a.file}','${p.name}',{agent:'${a.name}'})" class="w-full flex items-center gap-2 px-2 py-1 rounded text-left text-xs mono text-[var(--ink-dim)] hover:bg-[var(--void-2)]">
-        <span class="w-3 text-center text-[9px]" id="mark-${p.repo}-${a.file.replace(/[\/.]/g,'_')}">·</span>${a.file}
-      </button>`).join(''):'';
-    return `<div>
-      <button onclick="toggleTree('${p.id}')" class="w-full flex justify-between px-2 py-1.5 rounded text-sm hover:bg-[var(--void-2)]">
-        <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full" style="background:${p.color}"></span>${p.name}</span>
-        <i class="fa-solid fa-chevron-down text-[9px] text-[var(--ink-faint)]" id="chev-${p.id}"></i>
-      </button>
-      <div id="tree-${p.id}" class="pl-3 space-y-0.5 hidden">
-        ${DOC_FILES.map(f=>`<button data-doc-path="${f}" data-doc-repo="${p.repo}" onclick="Docs.open('${p.repo}','${f}','${p.name}')" class="w-full flex items-center gap-2 px-2 py-1 rounded text-left text-xs mono text-[var(--ink-dim)] hover:bg-[var(--void-2)]">
-          <span class="w-3 text-center text-[9px]" id="mark-${p.repo}-${f.replace(/[\/.]/g,'_')}">·</span>${f}
-        </button>`).join('')}
-        ${agents?`<div class="text-[9px] mono uppercase text-[var(--ink-faint)] px-2 pt-2">Agents</div>${agents}`:''}
-      </div>
-    </div>`;
-  }).join('');
-}
-
-async function toggleTree(id){
-  const t=document.getElementById('tree-'+id); const c=document.getElementById('chev-'+id);
-  const open=t.classList.contains('hidden');
-  t.classList.toggle('hidden');
-  if(c) c.style.transform=t.classList.contains('hidden')?'':'rotate(180deg)';
-  if(open){ const p=PROJECTS.find(x=>x.id===id); if(p&&Vault.hasGh()) await markTreeFiles(p.repo); }
-}
-async function markTreeFiles(repo){
-  try{
-    const paths=await GitHubData.treePaths(repo);
-    document.querySelectorAll(`[id^="mark-${repo}-"]`).forEach(el=>{
-      const path=el.closest('button')?.dataset?.docPath; if(!path) return;
-      const ok=paths.has(path);
-      el.textContent=ok?'●':'○';
-      el.style.color=ok?'var(--green)':'var(--ink-faint)';
-    });
-  }catch(e){}
-}
-
-const Docs = {
-  current:null, rawText:'', dirty:false,
-  open(repo,path,projectName,opts){
-    switchView('docs');
-    const agent=opts?.agent?AGENTS.find(a=>a.name===opts.agent):(path.startsWith('agents/')?AGENTS.find(a=>a.file===path):null);
-    this.current={repo,path,projectName,isNew:false,agent};
-    this.dirty=false;
-    document.getElementById('doc-dirty').classList.add('hidden');
-    document.getElementById('doc-empty').classList.add('hidden');
-    document.getElementById('doc-loaded').classList.remove('hidden');
-    document.getElementById('doc-path').textContent=`${projectName} / ${path}`;
-    document.getElementById('doc-meta').textContent='loading…';
-    document.getElementById('doc-view').innerHTML='<div class="skel"></div><div class="skel"></div><div class="skel"></div>';
-    this.setMode('view');
-    if(!Vault.hasGh()){
-      document.getElementById('doc-view').innerHTML=`<div class="text-sm"><p class="font-semibold mb-2">GitHub token required</p><button onclick="Vault.openModal()" class="btn-brand rounded px-3 py-1.5 text-xs">Open Vault</button></div>`;
-      return;
-    }
-    GitHubData.defaultBranch(repo).then(branch=>{
-      this.current.branch=branch;
-      document.getElementById('doc-history').href=`https://github.com/${GH_OWNER}/${repo}/commits/${branch}/${path}`;
-      document.getElementById('doc-github').href=`https://github.com/${GH_OWNER}/${repo}/blob/${branch}/${path}`;
-      return GitHubData.readFile(repo,path).then(text=>({text,branch}));
-    }).then(({text,branch})=>{
-      this.rawText=text; this.current.isNew=false; this.current.branch=branch;
-      document.getElementById('doc-view').innerHTML=marked.parse(text);
-      document.getElementById('doc-edit').value=text;
-      document.getElementById('doc-meta').textContent=`${text.split('\n').length} lines · ${(text.length/1024).toFixed(1)} KB · ${GH_OWNER}/${repo}@${branch}`;
-      GitHubData.markPath(repo,path); markTreeFiles(repo);
-    }).catch(err=>{
-      const msg=err?.message||'';
-      if(/not found/i.test(msg)){
-        const stub=docStub(projectName,path,agent);
-        this.current.isNew=true; this.rawText='';
-        document.getElementById('doc-edit').value=stub;
-        document.getElementById('doc-meta').textContent=`missing · create & save`;
-        document.getElementById('doc-view').innerHTML=`<div class="text-sm text-[var(--ink-dim)]"><p class="font-semibold text-[var(--ink)] mb-2">File not on GitHub yet</p>
-          <p class="text-xs mono mb-2">${path}</p>
-          <button onclick="Docs.setMode('edit')" class="btn-brand rounded px-3 py-1.5 text-xs mr-1">Edit draft</button>
-          <button onclick="Docs.save()" class="btn-ghost rounded px-3 py-1.5 text-xs">Create on GitHub</button>
-          <pre class="mt-3 p-2 glass-2 rounded text-xs overflow-auto max-h-40">${stub.replace(/</g,'&lt;')}</pre></div>`;
-      } else {
-        document.getElementById('doc-view').innerHTML=`<div class="text-[var(--red)] text-sm">${msg}</div>`;
-      }
-    });
-  },
-  openAgent(repo,file,name){ const p=PROJECTS.find(x=>x.repo===repo); this.open(repo,file,p?.name||repo,{agent:name}); },
-  setMode(mode){
-    document.getElementById('doc-mode-view').classList.toggle('chip-active',mode==='view');
-    document.getElementById('doc-mode-edit').classList.toggle('chip-active',mode==='edit');
-    document.getElementById('doc-view').classList.toggle('hidden',mode!=='view');
-    document.getElementById('doc-edit').classList.toggle('hidden',mode!=='edit');
-    const show=mode==='edit'||!!this.current?.isNew;
-    document.getElementById('doc-save').classList.toggle('hidden',!show);
-    if(mode==='view'&&document.getElementById('doc-edit').value)
-      document.getElementById('doc-view').innerHTML=marked.parse(document.getElementById('doc-edit').value);
-  },
-  onEdit(){
-    if(!this.current) return;
-    this.dirty=document.getElementById('doc-edit').value!==this.rawText;
-    document.getElementById('doc-dirty').classList.toggle('hidden',!this.dirty&&!this.current.isNew);
-  },
-  async save(){
-    if(!this.current||!Vault.hasGh()){ toast('Need Vault PAT','error'); return; }
-    const content=document.getElementById('doc-edit').value;
-    if(!content.trim()){ toast('Empty file','error'); return; }
-    const {repo,path,isNew,branch}=this.current;
-    if(!confirm(`${isNew?'Create':'Update'} ${path} on ${GH_OWNER}/${repo}@${branch||'default'}?`)) return;
-    const btn=document.getElementById('doc-save'); btn.disabled=true; btn.textContent='Saving…';
-    try{
-      const result=await GitHubData.writeFile(repo,path,content, isNew?`docs: create ${path} via Give A Bit HQ`:`docs: update ${path} via Give A Bit HQ`);
-      this.rawText=content; this.current.isNew=false; this.dirty=false;
-      document.getElementById('doc-dirty').classList.add('hidden');
-      document.getElementById('doc-view').innerHTML=marked.parse(content);
-      document.getElementById('doc-meta').textContent=`saved · ${GH_OWNER}/${repo}`;
-      delete state.treeIndex[repo]; markTreeFiles(repo);
-      toast('Saved '+path,'success');
-      if(result?.content?.html_url) document.getElementById('doc-github').href=result.content.html_url;
-      this.setMode('view');
-    }catch(e){ toast('Save failed: '+e.message,'error'); }
-    btn.disabled=false; btn.textContent='Save to GitHub';
-  }
-};
-
-const Drawer = {
-  open(id){
-    const p=PROJECTS.find(x=>x.id===id); const d=state.projects[id]||{}; const s=statusMeta(d.status); const hs=healthScore(d);
-    const usd=d.walletOk&&btcUsdPrice?fmt.usd(fmt.usdFromSats(d.balanceSats)):'$—';
-    document.getElementById('drawer').innerHTML=`
-      <div class="flex justify-between mb-3">
-        <div class="flex gap-2 items-center">
-          <div class="icon-box" style="background:${p.color}"><i class="${p.icon}"></i></div>
-          <div><h2 class="text-lg font-bold">${p.name}</h2>
-          <div class="flex gap-1.5 items-center text-xs"><span class="status-pill ${s.dot}">${s.label}</span><span class="text-[var(--ink-faint)]">${p.category}</span>
-          <button class="pin-star ${state.pins.has(id)?'on':''}" onclick="togglePin('${id}',event)">★</button></div></div>
-        </div>
-        <button onclick="Drawer.close({target:{id:'drawer-backdrop'}})" class="btn-ghost w-8 h-8 rounded">✕</button>
-      </div>
-      <p class="text-sm text-[var(--ink-dim)] mb-3">${p.tagline}</p>
-      <div class="flex flex-wrap gap-1 mb-3">${(p.stack||[]).map(t=>`<span class="chip">${t}</span>`).join('')}</div>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 mb-3">
-        <div class="metric text-center"><div class="text-[9px] mono text-[var(--ink-faint)]">SATS</div><div class="font-semibold mono">${d.walletOk?fmt.sats(d.balanceSats):'—'}</div><div class="text-[10px]">${usd}</div></div>
-        <div class="metric text-center"><div class="text-[9px] mono text-[var(--ink-faint)]">HEALTH</div><div class="font-semibold mono" style="color:${healthColor(hs)}">${hs}</div></div>
-        <div class="metric text-center"><div class="text-[9px] mono text-[var(--ink-faint)]">COMMIT</div><div class="font-semibold mono">${fmt.timeAgo(d.commitDate)}</div></div>
-        <div class="metric text-center"><div class="text-[9px] mono text-[var(--ink-faint)]">CI</div><div class="font-semibold mono">${fmt.actions(d.actionsStatus)}</div></div>
-      </div>
-      ${p.url?`<a href="${p.url}" target="_blank" rel="noopener" class="btn-brand rounded px-3 py-2 text-sm flex justify-center mb-3">Open site</a>`:''}
-      <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-1">Signals</div>
-      <div class="flex flex-wrap gap-1 mb-2">
-        ${d.language?`<span class="lang-badge">${d.language}</span>`:''}
-        <span class="status-pill gray">${d.issues??0} open issues</span>
-        <span class="status-pill gray">★ ${d.stars??0}</span>
-        <span class="status-pill gray">links ${(p.related||[]).length}</span>
-        <span class="status-pill ${d.repoPrivate?'amber':'green'}">${d.repoPrivate?'private':'public'}</span>
-      </div>
-      <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-1">Related projects</div>
-      <div class="flex flex-wrap gap-1 mb-3">${(p.related||[]).map(rid=>{const rp=PROJECTS.find(x=>x.id===rid);return rp?`<button class="rel-chip" onclick="Drawer.open('${rid}')"><span class="rel-dot" style="background:${rp.color}"></span>${rp.name}</button>`:''}).join('')||'<span class="text-xs text-[var(--ink-faint)]">—</span>'}</div>
-      <div class="link-row mb-3">
-        ${p.url?`<a class="btn-ghost rounded px-2 py-1 text-xs" href="${p.url}" target="_blank" rel="noopener">Live</a>`:''}
-        <a class="btn-ghost rounded px-2 py-1 text-xs" href="https://github.com/${GH_OWNER}/${p.repo}" target="_blank" rel="noopener">GitHub</a>
-        <a class="btn-ghost rounded px-2 py-1 text-xs" href="https://github.com/${GH_OWNER}/${p.repo}/issues" target="_blank" rel="noopener">Issues</a>
-        ${d.actionsUrl?`<a class="btn-ghost rounded px-2 py-1 text-xs" href="${d.actionsUrl}" target="_blank" rel="noopener">CI run</a>`:''}
-        <button class="btn-ghost rounded px-2 py-1 text-xs" onclick="Docs.open('${p.repo}','README.md','${p.name}');Drawer.close({target:{id:'drawer-backdrop'}})">README</button>
-        <button class="btn-ghost rounded px-2 py-1 text-xs" onclick="switchView('network')">Network</button>
-      </div>
-      <div class="glass-2 rounded p-3 text-sm mb-3">
-        <div class="detail-row"><span class="text-[var(--ink-faint)]">Wallet</span><span class="mono">${p.wallet}</span></div>
-        <div class="detail-row"><span class="text-[var(--ink-faint)]">Vault</span><span class="mono">${Vault.hasWallet(p.wallet)?'set':'empty'}</span></div>
-        <div class="detail-row"><span class="text-[var(--ink-faint)]">Repo</span><span class="mono">${GH_OWNER}/${p.repo}</span></div>
-        <div class="detail-row"><span class="text-[var(--ink-faint)]">SHA</span><span class="mono cursor-copy" onclick="copyText('${d.sha||''}')">${fmt.short(d.sha)}</span></div>
-        <div class="detail-row"><span class="text-[var(--ink-faint)]">Message</span><span class="mono truncate max-w-[220px]">${d.commitMsg||'—'}</span></div>
-        <div class="flex gap-1 mt-2">
-          <a href="https://github.com/${GH_OWNER}/${p.repo}" target="_blank" rel="noopener" class="btn-ghost rounded flex-1 py-1.5 text-xs text-center">Repo</a>
-          ${d.actionsUrl?`<a href="${d.actionsUrl}" target="_blank" rel="noopener" class="btn-ghost rounded flex-1 py-1.5 text-xs text-center">Last CI</a>`:''}
-        </div>
-      </div>
-      <div class="text-[10px] mono uppercase text-[var(--ink-faint)] mb-1">Editable docs</div>
-      <div class="grid grid-cols-2 gap-1">${DOC_FILES.map(f=>`<button onclick="Docs.open('${p.repo}','${f}','${p.name}');Drawer.close({target:{id:'drawer-backdrop'}})" class="btn-ghost rounded px-2 py-1.5 text-[10px] mono truncate text-left">${f}</button>`).join('')}</div>`;
-    document.getElementById('drawer-backdrop').classList.remove('hidden');
-  },
-  close(e){ if(e.target.id==='drawer-backdrop') document.getElementById('drawer-backdrop').classList.add('hidden'); }
-};
-
-const Bulk = {
-  open(kind){
-    const bodies={
-      send:`<h2 class="font-semibold mb-2">Bulk Send</h2><p class="text-xs text-[var(--ink-faint)] mb-3">Not wired for real payments — needs type-SEND confirm later.</p>
-        <input id="bulk-amount" type="number" placeholder="sats each" class="w-full rounded px-3 py-2 mb-2 text-sm mono">
-        <button onclick="toast('Bulk Send not auto-firing — by design','info')" class="btn-brand rounded w-full py-2 text-sm">Review</button>`,
-      readme:`<h2 class="font-semibold mb-2">Bulk README</h2>
-        <textarea id="bulk-footer" rows="3" class="w-full rounded px-3 py-2 mb-2 text-xs mono" placeholder="Footer to append"></textarea>
-        <button onclick="Bulk.confirm('readme')" class="btn-brand rounded w-full py-2 text-sm">Apply to ${PROJECTS.length} repos</button>`
-    };
-    document.getElementById('bulk-modal').innerHTML=(bodies[kind]||'')+`<div id="bulk-progress" class="mt-3"></div>`;
-    document.getElementById('bulk-backdrop').classList.remove('hidden');
-  },
-  close(e){ if(!e||e.target.id==='bulk-backdrop') document.getElementById('bulk-backdrop').classList.add('hidden'); },
-  async confirm(kind){
-    if(kind!=='readme') return;
-    if(!Vault.hasGh()){ toast('Need GitHub PAT','error'); return; }
-    if(!confirm('Append footer to all READMEs?')) return;
-    const footer=document.getElementById('bulk-footer').value||'\n\n---\nSafe Harbour · Part of the Give A Bit family.\n';
-    const prog=document.getElementById('bulk-progress'); let done=0;
-    for(const p of PROJECTS){
-      try{
-        const existing=await GitHubData.readFile(p.repo,'README.md').catch(()=>null);
-        if(existing!==null) await GitHubData.writeFile(p.repo,'README.md',existing+footer,'docs: bulk footer via Give A Bit HQ');
-      }catch(e){ console.warn(p.id,e); }
-      done++; prog.innerHTML=`<div class="bar-track"><div class="bar-fill" style="width:${done/PROJECTS.length*100}%"></div></div><div class="text-[10px] mono">${done}/${PROJECTS.length}</div>`;
-    }
-    toast('Bulk README done','success');
-  }
-};
-
-const Search = {
-  open(){ document.getElementById('search-overlay').classList.remove('hidden'); document.getElementById('overlay-search-input').focus(); },
-  close(e){ if(!e||e.target.id==='search-overlay') document.getElementById('search-overlay').classList.add('hidden'); },
-  run(q){
-    q=(q||'').toLowerCase().trim(); const results=[];
-    if(q){
-      VIEWS.forEach(v=>{ if(v.includes(q)) results.push({type:'View',label:v,action:()=>switchView(v)}); });
-      PROJECTS.forEach(p=>{ if(p.name.toLowerCase().includes(q)||p.category.toLowerCase().includes(q)) results.push({type:'Project',label:p.name,action:()=>Drawer.open(p.id)}); });
-      AGENTS.forEach(a=>{ if(a.name.toLowerCase().includes(q)||a.role.toLowerCase().includes(q)) results.push({type:'Agent',label:a.name,action:()=>Docs.openAgent(a.repo,a.file,a.name)}); });
-      PROJECTS.forEach(p=>DOC_FILES.forEach(f=>{ if(f.toLowerCase().includes(q)||p.name.toLowerCase().includes(q)) results.push({type:'File',label:p.name+' / '+f,action:()=>Docs.open(p.repo,f,p.name)}); }));
-    }
-    this._results=results;
-    document.getElementById('overlay-results').innerHTML=results.slice(0,24).map((r,i)=>`
-      <button class="w-full text-left px-3 py-2 rounded hover:bg-[var(--void-2)] flex justify-between text-sm" onclick="Search.pick(${i})">
-        <span>${r.label}</span><span class="text-[10px] mono text-[var(--ink-faint)]">${r.type}</span>
-      </button>`).join('')||'<div class="text-xs text-[var(--ink-faint)] p-4 text-center">Type to search…</div>';
-  },
-  pick(i){ this._results[i].action(); this.close(); }
-};
-
-function exportReport(){
-  let total=0;
-  const rows=PROJECTS.map(p=>{ const d=state.projects[p.id]||{}; total+=d.balanceSats||0;
-    return `${p.name}\t${p.category}\t${statusMeta(d.status).label}\t${d.walletOk?d.balanceSats:'—'}\t${fmt.short(d.sha)}\t${healthScore(d)}\t${d.commitDate||''}`; }).join('\n');
-  const report=`GIVE A BIT HQ v2 REPORT\n${new Date()}\\nTotal: ${fmt.sats(total)} sats\n\n${rows}\n`;
-  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([report],{type:'text/plain'}));
-  a.download=`giveabit-hq-${new Date().toISOString().slice(0,10)}.txt`; a.click(); toast('Exported TXT','success');
-}
-function exportJSON(){
-  const payload={ generated:new Date().toISOString(), btcUsdPrice, projects:PROJECTS.map(p=>({...p, live:state.projects[p.id]||{}})), history:state.history };
-  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));
-  a.download=`giveabit-hq-${new Date().toISOString().slice(0,10)}.json`; a.click(); toast('Exported JSON','success');
-}
-
-function switchView(view){
-  state.view=view;
-  document.querySelectorAll('.view-tab').forEach(t=>{
-    const on=t.dataset.view===view;
-    t.classList.toggle('tab-active',on);
-    t.classList.toggle('text-[var(--ink-dim)]',!on);
-  });
-  document.querySelectorAll('.view-panel').forEach(p=>p.classList.add('hidden'));
-  const el=document.getElementById('view-'+view); if(el) el.classList.remove('hidden');
-  if(view==='analytics') Charts.all();
-  if(view==='metrics') MetricsEngine.renderBody();
-  if(view==='network') Net.redraw();
-  if(view==='activity') renderActivity();
-  if(view==='matrix') renderMatrix();
-  if(view==='wallets') renderWallets();
-}
-
-function scheduleRefresh(){
-  if(refreshTimer) clearInterval(refreshTimer);
-  const sec=Vault.data.refreshSec||60;
-  refreshTimer=setInterval(()=>Dash.refreshAll(), sec*1000);
-}
-
-function isTyping(){ const t=document.activeElement?.tagName; return t==='INPUT'||t==='TEXTAREA'||t==='SELECT'; }
-document.querySelectorAll('.view-tab').forEach(t=>t.addEventListener('click',()=>switchView(t.dataset.view)));
-document.querySelectorAll('.filter-chip').forEach(c=>c.addEventListener('click',()=>{
-  document.querySelectorAll('.filter-chip').forEach(x=>x.classList.remove('chip-active'));
-  c.classList.add('chip-active'); state.filter=c.dataset.filter; Dash.applyFilters();
-}));
-document.addEventListener('keydown',e=>{
-  if(e.key==='/'&&!isTyping()){ e.preventDefault(); Search.open(); }
-  if(e.key==='Escape'){ Search.close({target:{id:'search-overlay'}}); Drawer.close({target:{id:'drawer-backdrop'}}); Bulk.close({target:{id:'bulk-backdrop'}}); Vault.closeModal({target:{id:'vault-backdrop'}}); document.getElementById('help-backdrop').classList.add('hidden'); Pitch.close(); }
-  if(isTyping()) return;
-  const map={g:'grid',l:'list',p:'pipeline',y:'analytics',k:'metrics',n:'network',t:'activity',m:'matrix',w:'wallets',d:'docs',a:'agents'};
-  if(map[e.key]) switchView(map[e.key]);
-  if(e.key==='r'){ e.preventDefault(); Dash.refreshAll(true); }
-  if(e.key==='v') Vault.openModal();
-  if(e.key==='?') UI.help();
-  if(e.key==='P') Pitch.open();
-});
-
-
-/* ========== HQ v2.5: Gate · Tips · Pipes · Live metrics merge ========== */
-const Tips = {
-  el: null,
-  init(){
-    if(this.el) return;
-    this.el = document.createElement('div');
-    this.el.className = 'tip-bubble';
-    this.el.id = 'tip-bubble';
-    document.body.appendChild(this.el);
-    document.addEventListener('pointerover', (e)=>{
-      const t = e.target.closest('[data-tip]');
-      if(!t) return;
-      const tip = t.getAttribute('data-tip');
-      if(!tip) return;
-      const title = t.getAttribute('data-tip-title') || '';
-      const advice = t.getAttribute('data-tip-advice') || '';
-      this.show(e.clientX, e.clientY, tip, title, advice);
-    });
-    document.addEventListener('pointermove', (e)=>{
-      if(this.el.classList.contains('show')) this.pos(e.clientX, e.clientY);
-    });
-    document.addEventListener('pointerout', (e)=>{
-      if(e.target.closest('[data-tip]')) this.hide();
-    });
-  },
-  show(x,y,body,title,advice){
-    this.el.innerHTML = (title?('<div class="tip-title">'+title+'</div>'):'') +
-      '<div>'+body+'</div>' +
-      (advice?('<div class="tip-advice">💡 '+advice+'</div>'):'');
-    this.el.classList.add('show');
-    this.pos(x,y);
-  },
-  pos(x,y){
-    const pad=14, w=this.el.offsetWidth||280, h=this.el.offsetHeight||80;
-    let left=x+pad, top=y+pad;
-    if(left+w > innerWidth-8) left = x-w-pad;
-    if(top+h > innerHeight-8) top = y-h-pad;
-    this.el.style.left = Math.max(8,left)+'px';
-    this.el.style.top = Math.max(8,top)+'px';
-  },
-  hide(){ this.el.classList.remove('show'); }
-};
-
-const Gate = {
-  KEY: 'hq_gate_v1',
-  SESSION: 'hq_gate_session_v1',
-  _key: null,
-  cfg(){
-    try{ return JSON.parse(localStorage.getItem(this.KEY)||'null'); }catch(_){ return null; }
-  },
-  isUnlocked(){ return sessionStorage.getItem(this.SESSION)==='1'; },
-  async sha(buf){
-    const h = await crypto.subtle.digest('SHA-256', buf);
-    return [...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,'0')).join('');
-  },
-  b64(u8){ let s=''; u8.forEach(b=>s+=String.fromCharCode(b)); return btoa(s); },
-  unb64(s){ const bin=atob(s); const u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) u[i]=bin.charCodeAt(i); return u; },
-  async deriveBits(pw, saltU8){
-    const enc = new TextEncoder();
-    const base = await crypto.subtle.importKey('raw', enc.encode(pw), 'PBKDF2', false, ['deriveBits','deriveKey']);
-    return crypto.subtle.deriveBits({name:'PBKDF2', salt:saltU8, iterations:120000, hash:'SHA-256'}, base, 256);
-  },
-  async deriveKey(pw, saltU8){
-    const enc = new TextEncoder();
-    const base = await crypto.subtle.importKey('raw', enc.encode(pw), 'PBKDF2', false, ['deriveKey']);
-    return crypto.subtle.deriveKey({name:'PBKDF2', salt:saltU8, iterations:120000, hash:'SHA-256'}, base, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']);
-  },
-  async setup(){
-    const p1 = document.getElementById('gate-pw1').value;
-    const p2 = document.getElementById('gate-pw2').value;
-    const hint = document.getElementById('gate-hint').value.trim();
-    const err = document.getElementById('gate-err');
-    if(!p1 || p1.length < 8){ err.textContent = 'Password min 8 characters'; return; }
-    if(p1 !== p2){ err.textContent = 'Passwords do not match'; return; }
-    const salt = crypto.getRandomValues(new Uint8Array(16));
-    const bits = new Uint8Array(await this.deriveBits(p1, salt));
-    const hash = await this.sha(bits);
-    localStorage.setItem(this.KEY, JSON.stringify({ v:1, salt: this.b64(salt), hash, hint }));
-    this._key = await this.deriveKey(p1, salt);
-    sessionStorage.setItem(this.SESSION, '1');
-    err.textContent = '';
-    toast('HQ password set — session unlocked','success');
-    this.hide();
-    await bootAfterGate();
-  },
-  async unlock(){
-    const cfg = this.cfg();
-    const err = document.getElementById('gate-err');
-    if(!cfg){ err.textContent = 'No password configured'; return; }
-    const pw = document.getElementById('gate-pw').value;
-    if(!pw){ err.textContent = 'Enter password'; return; }
-    try{
-      const salt = this.unb64(cfg.salt);
-      const bits = new Uint8Array(await this.deriveBits(pw, salt));
-      const hash = await this.sha(bits);
-      if(hash !== cfg.hash){ err.textContent = 'Wrong password'; return; }
-      this._key = await this.deriveKey(pw, salt);
-      sessionStorage.setItem(this.SESSION, '1');
-      err.textContent = '';
-      this.hide();
-      await bootAfterGate();
-    }catch(e){ err.textContent = 'Unlock failed: '+(e.message||e); }
-  },
-  lock(){
-    sessionStorage.removeItem(this.SESSION);
-    this._key = null;
-    this.show();
-    toast('HQ locked','info');
-  },
-  resetPrompt(){
-    if(!confirm('Wipe gate password AND vault secrets on THIS browser? Cannot undo.')) return;
-    localStorage.removeItem(this.KEY);
-    localStorage.removeItem(Vault.KEY);
-    localStorage.removeItem(Vault.KEY_ENC);
-    sessionStorage.removeItem(this.SESSION);
-    this._key = null;
-    location.reload();
-  },
-  show(){
-    document.body.classList.add('hq-locked');
-    const g = document.getElementById('hq-gate');
-    g.classList.remove('hidden');
-    const cfg = this.cfg();
-    const setup = document.getElementById('gate-setup');
-    const unlock = document.getElementById('gate-unlock');
-    if(!cfg){
-      document.getElementById('gate-title').textContent = 'Create HQ password';
-      document.getElementById('gate-sub').textContent = 'First visit on this browser: set a password so Vault keys stay private on the public site.';
-      setup.classList.remove('hidden'); unlock.classList.add('hidden');
-    } else {
-      document.getElementById('gate-title').textContent = 'Unlock Give A Bit HQ';
-      document.getElementById('gate-sub').textContent = 'Operator password protects Vault secrets. Metrics and graphs load after unlock.';
-      setup.classList.add('hidden'); unlock.classList.remove('hidden');
-      const hs = document.getElementById('gate-hint-show');
-      hs.textContent = cfg.hint ? ('Hint: '+cfg.hint) : '';
-      setTimeout(()=>document.getElementById('gate-pw') && document.getElementById('gate-pw').focus(), 100);
-    }
-    const chip = document.getElementById('gate-lock-chip');
-    if(chip){ chip.textContent='locked'; chip.className='status-pill red shrink-0 lock-chip'; }
-  },
-  hide(){
-    document.body.classList.remove('hq-locked');
-    document.getElementById('hq-gate').classList.add('hidden');
-    const chip = document.getElementById('gate-lock-chip');
-    if(chip){ chip.textContent='unlocked'; chip.className='status-pill green shrink-0 lock-chip'; }
-  },
-  async ensure(){
-    if(this.isUnlocked()){
-      this.hide();
-      return true;
-    }
-    this.show();
-    return false;
-  }
-};
-
-Vault.KEY_ENC = 'sovereign_deck_vault_enc_v1';
-Vault.tab = function(name){
-  document.querySelectorAll('.vault-tab').forEach(b=>b.classList.toggle('on', b.dataset.vtab===name));
-  document.querySelectorAll('.vault-pane').forEach(p=>p.classList.remove('on'));
-  const map = { keys:'vp-keys', node:'vp-node', feeds:'vp-feeds', ai:'vp-ai', extra:'vp-extra' };
-  const id = map[name] || ('vp-'+name);
-  const p = document.getElementById(id);
-  if(p) p.classList.add('on');
-  // scroll body to top on tab change
-  const body = document.getElementById('vault-modal-body');
-  if(body) body.scrollTop = 0;
-  const hint = document.getElementById('vault-foot-hint');
-  if(hint){
-    const labels = { keys:'Keys · invoice + GitHub', node:'Node URL · FX · refresh', feeds:'Metrics pipes', ai:'SuperGrok usage', extra:'Security · import/export' };
-    hint.textContent = (labels[name]||'Vault') + ' · Save is always on this bar';
-  }
-};
-(function wrapVault(){
-  const _open = Vault.openModal.bind(Vault);
-  Vault.openModal = function(){
-    if(!Gate.isUnlocked()){ Gate.show(); toast('Unlock HQ first','info'); return; }
-    _open();
-    const sync = (id, val)=>{ const el=document.getElementById(id); if(el) el.value = val||''; };
-    sync('vault-status-url-b', this.data.statusJsonUrl);
-    sync('vault-satohash-api-b', this.data.satohashApi);
-    sync('vault-nip05-url-b', this.data.nip05Url);
-    sync('vault-satohash-metrics', this.data.satohashMetricsUrl||'https://api.satohash.io/metrics.json');
-    sync('vault-thor-node', this.data.thorNodeUrl||'/metrics/thor-node.json');
-    sync('vault-metrics-base', this.data.metricsBase||'/metrics');
-    sync('vault-cf-note', this.data.cfNote);
-    sync('vault-extra-a', this.data.extraA);
-    sync('vault-extra-b', this.data.extraB);
-    sync('vault-contact', this.data.contact);
-    this.tab('keys');
-  };
-  const _save = Vault.save.bind(Vault);
-  Vault.save = async function(){
-    const pick = (ids)=>{
-      for(const id of ids){ const el=document.getElementById(id); if(el && el.value.trim()) return el.value.trim(); }
-      const el=document.getElementById(ids[0]); return el?el.value.trim():'';
-    };
-    this.data.statusJsonUrl = pick(['vault-status-url','vault-status-url-b']);
-    this.data.satohashApi = pick(['vault-satohash-api','vault-satohash-api-b'])||'https://api.satohash.io';
-    this.data.nip05Url = pick(['vault-nip05-url','vault-nip05-url-b'])||FEEDS_DEFAULT.nip05Url;
-    const sm=document.getElementById('vault-satohash-metrics'); if(sm) this.data.satohashMetricsUrl=sm.value.trim()||'https://api.satohash.io/metrics.json';
-    const th=document.getElementById('vault-thor-node'); if(th) this.data.thorNodeUrl=th.value.trim()||'/metrics/thor-node.json';
-    const mb=document.getElementById('vault-metrics-base'); if(mb) this.data.metricsBase=mb.value.trim()||'/metrics';
-    const cf=document.getElementById('vault-cf-note'); if(cf) this.data.cfNote=cf.value.trim();
-    const ea=document.getElementById('vault-extra-a'); if(ea) this.data.extraA=ea.value.trim();
-    const eb=document.getElementById('vault-extra-b'); if(eb) this.data.extraB=eb.value.trim();
-    const ct=document.getElementById('vault-contact'); if(ct) this.data.contact=ct.value.trim();
-    _save();
-    await this.persistEnc();
-  };
-})();
-Vault.persistEnc = async function(){
-  try{
-    if(!Gate._key) return;
-    const iv = crypto.getRandomValues(new Uint8Array(12));
-    const pt = new TextEncoder().encode(JSON.stringify(this.data));
-    const ct = new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM', iv}, Gate._key, pt));
-    localStorage.setItem(this.KEY_ENC, JSON.stringify({ v:1, iv: Gate.b64(iv), ct: Gate.b64(ct) }));
-  }catch(e){ console.warn('vault enc', e); }
-};
-Vault.loadEnc = async function(){
-  try{
-    if(!Gate._key) return false;
-    const raw = localStorage.getItem(this.KEY_ENC); if(!raw) return false;
-    const j = JSON.parse(raw);
-    const iv = Gate.unb64(j.iv);
-    const ct = Gate.unb64(j.ct);
-    const pt = await crypto.subtle.decrypt({name:'AES-GCM', iv}, Gate._key, ct);
-    const data = JSON.parse(new TextDecoder().decode(pt));
-    this.data = Object.assign(this.data, data);
-    this.persist();
-    return true;
-  }catch(e){ console.warn('vault dec', e); return false; }
-};
-Vault.exportEnc = function(){
-  const blob = { exportedAt: new Date().toISOString(), note: 'Contains secrets — store offline', vault: this.data };
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([JSON.stringify(blob,null,2)],{type:'application/json'}));
-  a.download='hq-vault-export-'+new Date().toISOString().slice(0,10)+'.json';
-  a.click();
-  toast('Vault exported — keep offline','info');
-};
-Vault.importEnc = function(ev){
-  const f = ev.target.files && ev.target.files[0]; if(!f) return;
-  const r = new FileReader();
-  r.onload = ()=>{
-    try{
-      const j = JSON.parse(r.result);
-      const data = j.vault || j;
-      if(!data || typeof data !== 'object') throw new Error('bad file');
-      this.data = Object.assign(this.data, data);
-      this.persist();
-      this.openModal();
-      toast('Vault imported — click Save','success');
-    }catch(e){ toast('Import failed: '+e.message,'error'); }
-  };
-  r.readAsText(f);
-};
-
-(function wrapMetrics(){
-  const _meLoad = MetricsEngine.loadAll.bind(MetricsEngine);
-  MetricsEngine.loadAll = async function(){
-    await _meLoad();
-    const p = PROJECTS.find(x=>x.id==='satohash');
-    if(p){
-      const candidates = [
-        Vault.data.satohashMetricsUrl,
-        'https://api.satohash.io/metrics.json',
-        ...(p.metricsLiveCandidates||[]),
-        '/metrics/satohash.json'
-      ].filter(Boolean);
-      for(const url of [...new Set(candidates)]){
-        try{
-          const r = await fetch(url + (url.includes('?')?'&':'?') + 't=' + Date.now(), { mode:'cors', cache:'no-store' });
-          if(!r.ok) continue;
-          const body = await r.json();
-          if(body && (body.schema==='gab.product-metrics.v1' || body.kpis || body.productId==='satohash')){
-            body.raw = Object.assign({}, body.raw||{}, { source: url, live: true });
-            if(String(url).includes('api.satohash.io')) body.raw.demo = false;
-            this.cache.satohash = body;
-            const d = state.projects.satohash || (state.projects.satohash={id:'satohash'});
-            d.metrics = body;
-            break;
+    await Promise.all(
+      entries.map(async ([walletId, apiKey]) => {
+        try {
+          let url, headers;
+          if (useProxy) {
+            url = `${proxyUrl}/balance/${encodeURIComponent(walletId)}`;
+            headers = {
+              Authorization: `Bearer ${proxyToken}`,
+              "X-Api-Key": apiKey,
+            };
+            // Some proxy designs use wallet key in body/header differently
+            if (!proxyToken) {
+              headers = { "X-Api-Key": apiKey };
+            }
+          } else if (nodeUrl) {
+            url = `${nodeUrl}/api/v1/wallet`;
+            headers = { "X-Api-Key": apiKey };
+          } else {
+            state.wallets[walletId] = {
+              ok: false,
+              error: "Configure proxy or node URL in Vault",
+              path: "vault://node",
+            };
+            return;
           }
-        }catch(_){}
+          const r = await loadData(url, { headers, timeout: 10000 });
+          if (r.ok && r.data) {
+            const bal =
+              r.data.balance != null
+                ? r.data.balance
+                : r.data.sats != null
+                  ? r.data.sats
+                  : r.data.amount != null
+                    ? r.data.amount
+                    : null;
+            // LNbits returns msats often
+            let sats = bal;
+            if (sats != null && Math.abs(sats) > 1e7 && !r.data.sats) {
+              // likely msats
+              if (r.data.balance != null) sats = Math.floor(Number(r.data.balance) / 1000);
+            }
+            state.wallets[walletId] = {
+              ok: true,
+              sats,
+              name: r.data.name || walletId,
+              path: r.path,
+            };
+          } else {
+            state.wallets[walletId] = {
+              ok: false,
+              error: r.error,
+              path: r.path,
+            };
+          }
+        } catch (e) {
+          state.wallets[walletId] = { ok: false, error: e.message, path: walletId };
+        }
+      })
+    );
+  }
+
+  /* ═══════════════════════════════════════
+     CHROME / TICKER
+     ═══════════════════════════════════════ */
+
+  function renderLoadingShell() {
+    const main = document.getElementById("main-content");
+    if (main) {
+      main.innerHTML = `<div class="loading-state"><div class="spinner"></div><div>Loading suite registry & metrics…</div></div>`;
+    }
+  }
+
+  function renderChrome() {
+    // Rebuild main views structure once
+    const main = document.getElementById("main-content");
+    if (!main) return;
+    main.innerHTML = `
+      <div class="portfolio-strip" id="portfolio-strip"></div>
+      <div id="view-cards" class="view"></div>
+      <div id="view-list" class="view"></div>
+      <div id="view-metrics" class="view"></div>
+      <div id="view-pipeline" class="view"></div>
+      <div id="view-network" class="view"></div>
+      <div id="view-system" class="view"></div>
+      <div id="view-wallets" class="view"></div>
+      <div id="view-docs" class="view"></div>
+      <div id="view-agents" class="view"></div>
+      <div id="view-domains" class="view"></div>
+    `;
+    renderPortfolioStrip();
+    updateVaultChip();
+  }
+
+  function renderPortfolioStrip() {
+    const el = document.getElementById("portfolio-strip");
+    if (!el) return;
+    const sites = (state.status && state.status.sites) || {};
+    const total = state.projects.length;
+    let up = 0,
+      down = 0,
+      unk = 0;
+    state.projects.forEach((p) => {
+      const s = sites[p.id];
+      if (!s || s.ok == null) unk++;
+      else if (s.ok) up++;
+      else down++;
+    });
+    const health = state.thor && state.thor.ok && state.thor.data && state.thor.data.node
+      ? state.thor.data.node.status
+      : "unknown";
+    let portfolioSats = 0;
+    let walletOk = 0;
+    Object.values(state.wallets).forEach((w) => {
+      if (w.ok && w.sats != null) {
+        portfolioSats += Number(w.sats) || 0;
+        walletOk++;
+      }
+    });
+    const usd =
+      state.btcUsd && portfolioSats
+        ? "$" + ((portfolioSats / 1e8) * state.btcUsd).toFixed(2)
+        : walletOk
+          ? "—"
+          : "Vault";
+
+    el.innerHTML = `
+      <div class="stat panel">
+        <div class="l">Suite sites</div>
+        <div class="v" style="color:var(--green)">${up}<span style="font-size:0.85rem;color:var(--ink-faint)">/${total}</span></div>
+      </div>
+      <div class="stat panel">
+        <div class="l">Attention</div>
+        <div class="v" style="color:${down ? "var(--red)" : "var(--ink-faint)"}">${down}</div>
+      </div>
+      <div class="stat panel">
+        <div class="l">THOR</div>
+        <div class="v" style="font-size:1.1rem">${statusPill(health, health)}</div>
+      </div>
+      <div class="stat panel">
+        <div class="l">Portfolio</div>
+        <div class="v" style="font-size:1.15rem">${walletOk ? esc(fmtNum(portfolioSats, "sats")) : "—"}</div>
+        <div class="mono" style="font-size:0.72rem;color:var(--ink-faint)">${esc(usd)}${state.btcUsd ? ` · BTC $${esc(fmtNum(state.btcUsd))}` : ""}</div>
+      </div>
+    `;
+  }
+
+  function updateVaultChip() {
+    const chip = document.getElementById("vault-status");
+    if (!chip) return;
+    const v = state.vault || {};
+    const keys = v.keys || v.wallets || {};
+    const n = Object.values(keys).filter((k) => k && String(k).trim()).length;
+    chip.textContent = n ? `vault ${n} keys` : "vault empty";
+    chip.className = "status-pill " + (n ? "sky" : "muted");
+  }
+
+  function renderTicker() {
+    const track = document.getElementById("ticker-track");
+    if (!track) return;
+    const items = [];
+    const sites = (state.status && state.status.sites) || {};
+    const updated = state.status && state.status.updatedAt ? fmtTime(state.status.updatedAt) : "—";
+    items.push(`<span class="ticker-item"><strong>status.json</strong> updated ${esc(updated)}</span>`);
+
+    state.projects.forEach((p) => {
+      const s = sites[p.id];
+      const m = state.metrics[p.id];
+      const health =
+        m && m.ok && m.data && m.data.health
+          ? m.data.health.status
+          : s && s.ok === true
+            ? "green"
+            : s && s.ok === false
+              ? "red"
+              : "unknown";
+      const lat = s && s.ms != null ? `${s.ms}ms` : m && m.ok && m.data && m.data.health ? fmtMs(m.data.health.latencyMs) : "—";
+      items.push(
+        `<span class="ticker-item">${statusDot(health)} <strong>${esc(p.name)}</strong> ${esc(lat)}</span>`
+      );
+    });
+
+    if (state.thor && state.thor.ok && state.thor.data) {
+      const t = state.thor.data;
+      const b = t.bitcoin || {};
+      const l = t.lightning || {};
+      items.push(
+        `<span class="ticker-item">${statusDot(t.node && t.node.status)} <strong>THOR</strong> block ${esc(fmtNum(b.blocks))} · ch ${esc(fmtNum(l.numActiveChannels))} · local ${esc(fmtNum(l.totalLocalBalanceSats, "sats"))}</span>`
+      );
+    }
+
+    items.push(
+      `<span class="ticker-item"><strong>HQ</strong> v${esc(HQ_VERSION)} · Safe Harbour · Bitcoin sovereignty first</span>`
+    );
+
+    // duplicate for seamless loop
+    const html = items.join("") + items.join("");
+    track.innerHTML = html;
+  }
+
+  function renderActiveTab() {
+    const map = {
+      cards: renderCards,
+      list: renderList,
+      metrics: renderMetrics,
+      pipeline: renderPipeline,
+      network: renderNetwork,
+      system: renderSystem,
+      wallets: renderWallets,
+      docs: renderDocs,
+      agents: renderAgents,
+      domains: renderDomains,
+    };
+    const fn = map[state.tab];
+    if (fn) {
+      try {
+        fn();
+      } catch (e) {
+        const el = document.getElementById("view-" + state.tab);
+        if (el) {
+          el.innerHTML = unavailableHTML("Tab render error", state.tab, e.message);
+        }
+        console.error(e);
       }
     }
-    this.renderNav();
-    if(state.view==='metrics') this.renderBody();
-    this.paintThorSummary();
-    try{ Pipes.render(); }catch(_){}
-  };
-  const _spark = MetricsEngine.sparkline.bind(MetricsEngine);
-  MetricsEngine.sparkline = function(series, w=280, h=56){
-    if(!series || !series.points || series.points.length<2) return '';
+    bindTooltips();
+  }
+
+  /* ═══════════════════════════════════════
+     PROJECT HELPERS
+     ═══════════════════════════════════════ */
+
+  function projectHealth(p) {
+    const m = state.metrics[p.id];
+    if (m && m.ok && m.data && m.data.health && m.data.health.status) {
+      return m.data.health.status;
+    }
+    const s = state.status && state.status.sites && state.status.sites[p.id];
+    if (s) {
+      if (s.ok === true) return "green";
+      if (s.ok === false) return "red";
+      if (s.note === "not-deployed") return "amber";
+    }
+    if (p.deployed === false) return "amber";
+    return "unknown";
+  }
+
+  function topKpis(metricsData, n) {
+    if (!metricsData || !Array.isArray(metricsData.kpis)) return [];
+    return [...metricsData.kpis]
+      .sort((a, b) => (a.priority || 99) - (b.priority || 99))
+      .slice(0, n || 3);
+  }
+
+  function primarySeries(metricsData) {
+    if (!metricsData || !Array.isArray(metricsData.series) || !metricsData.series.length) return null;
+    return metricsData.series[0];
+  }
+
+  function seriesPoints(series, maxN) {
+    if (!series || !series.points) return [];
     const pts = series.points;
-    const vs = pts.map(p=>p.v);
-    const min = Math.min(...vs), max = Math.max(...vs), span = (max-min)||1;
-    const coords = pts.map((p,i)=>{
-      const x = (i/(pts.length-1))*w;
-      const y = h - ((p.v-min)/span)* (h-4) - 2;
-      return [x,y];
-    });
-    const path = coords.map((c,i)=>(i?'L':'M')+c[0].toFixed(1)+','+c[1].toFixed(1)).join(' ');
-    const area = path + ' L'+w+','+h+' L0,'+h+' Z';
-    const color = series.color || 'var(--orange)';
-    const last = pts[pts.length-1];
-    const tip = series.label+': '+last.v+' '+(series.unit||'')+' · '+pts.length+' pts';
-    return '<div class="mb-2 area-spark" data-tip="'+tip+'" data-tip-title="'+series.label+'" data-tip-advice="Rising slope = growth. Flat + high pending = calendar/fee pressure.">'+
-      '<div class="flex justify-between text-[10px] mono text-[var(--ink-faint)] mb-0.5"><span>'+series.label+'</span><span>'+last.v+(series.unit?(' '+series.unit):'')+'</span></div>'+
-      '<svg width="100%" height="'+h+'" viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none" class="block">'+
-      '<path class="area" d="'+area+'" fill="'+color+'"/>'+
-      '<path d="'+path+'" fill="none" stroke="'+color+'" stroke-width="2" vector-effect="non-scaling-stroke"/>'+
-      '</svg></div>';
-  };
-})();
-
-const Pipes = {
-  render(){
-    const board = document.getElementById('pipes-board');
-    const advice = document.getElementById('advice-rail');
-    if(!board) return;
-    const sites = (state.statusFeed && state.statusFeed.sites) || {};
-    const liveN = Object.values(sites).filter(s=>s && s.ok).length;
-    const siteN = Object.values(sites).filter(s=>s && s.ok!=null).length;
-    const sato = MetricsEngine.cache.satohash;
-    const thor = MetricsEngine.thor;
-    const apiOk = !!(state.satohash && (state.satohash.ok || state.satohash.metrics || (state.statusFeed && state.statusFeed.feeds && state.statusFeed.feeds.satohashApi && state.statusFeed.feeds.satohashApi.ok)));
-    const wallets = PROJECTS.filter(p=>Vault.hasWallet(p.wallet)).length;
-    const walletOk = PROJECTS.filter(p=>(state.projects[p.id]||{}).walletOk).length;
-    const cards = [
-      { n:'Suite sites', v: liveN+'/'+(siteN||PROJECTS.filter(p=>p.deployed).length), s: 'status.json', ok: liveN>0, tip:'Public product uptime from pinger', advice:'Red site → check CF Pages deploy' },
-      { n:'Satohash API', v: apiOk?'live':'—', s: Vault.data.satohashApi||'api.satohash.io', ok: apiOk, tip:'Proof plane health', advice:'curl /health must 200' },
-      { n:'Metrics env', v: sato?((sato.raw && (sato.raw.live || (sato.raw.source||'').includes('api')))?'LIVE':'cache'):'none', s: (sato && sato.schema)||'—', ok: !!sato, tip:'gab.product-metrics.v1 envelope', advice:'Prefer metrics.json over demo' },
-      { n:'THOR node', v: (thor && thor.node && thor.node.status)||'—', s: (thor && thor.node && thor.node.hostLabel)||'snapshot', ok: !!(thor && thor.node && thor.node.status==='green'), tip:'Node aggregates JSON', advice:'Cron exporter keeps this fresh' },
-      { n:'Vault keys', v: wallets+' set', s: walletOk+' balances', ok: wallets>0, tip:'LNbits invoice keys in browser', advice:'CORS if keys set but sats empty' },
-      { n:'GitHub', v: Vault.hasGh()?'PAT':'public', s: state.ghRateRemaining!=null?('rate '+state.ghRateRemaining):'—', ok: true, tip:'Commits + CI + docs', advice:'PAT unlocks private + higher rate' },
-      { n:'BTC FX', v: btcUsdPrice?('$'+(btcUsdPrice/1000).toFixed(1)+'k'):'—', s: (state.btcChange24h!=null?((state.btcChange24h>=0?'+':'')+state.btcChange24h.toFixed(2)+'%'):'CoinGecko'), ok: !!btcUsdPrice, tip:'Portfolio USD conversion', advice:'Manual FX in Vault if CG blocked' },
-      { n:'Uptime pulse', v: (StatusHistory.uptimePct()!=null?StatusHistory.uptimePct()+'%':'—'), s: ((state.statusHist||[]).length)+' snaps', ok: true, tip:'Local suite live ratio history', advice:'Keep HQ open to accumulate' },
-    ];
-    board.innerHTML = cards.map(c=>
-      '<div class="pipe-card" data-tip="'+c.tip+'" data-tip-title="'+c.n+'" data-tip-advice="'+c.advice+'">'+
-      '<div class="pn"><span class="dot '+(c.ok?'dot-green':'dot-amber')+'" style="width:7px;height:7px;margin-right:4px"></span>'+c.n+'</div>'+
-      '<div class="pv">'+c.v+'</div><div class="ps">'+c.s+'</div></div>'
-    ).join('');
-    if(advice){
-      const items = [];
-      if(wallets>0 && walletOk===0) items.push({t:'LNbits CORS', b:'Keys are set but no balances. Fix Access-Control-Allow-Origin for hq.giveabit.io on the node proxy.', c:'risk'});
-      if(!apiOk) items.push({t:'Satohash API', b:'Health not green from this browser. Check api.satohash.io/health and CORS.', c:'risk'});
-      if(sato && sato.raw && sato.raw.demo) items.push({t:'Demo metrics', b:'Satohash envelope still demo-shaped. Live metrics.json should set raw.demo=false.', c:'sky'});
-      if(apiOk && sato && !(sato.raw && sato.raw.demo)) items.push({t:'Proof plane live', b:'Satohash metrics flowing. Mold stamps_total + confirm_rate into investor pitch.', c:'ok'});
-      if(!Vault.hasGh()) items.push({t:'Add GitHub PAT', b:'Unlocks Actions status, private docs edit, higher API rate.', c:'sky'});
-      if(!items.length) items.push({t:'All pipes quiet', b:'Suite looks healthy. Use Pitch (P) for partner view; Metrics (k) for deep KPIs.', c:'ok'});
-      advice.innerHTML = items.map(i=>'<div class="advice-card '+i.c+'"><h4>'+i.t+'</h4><p>'+i.b+'</p></div>').join('');
-    }
-    const lb = document.getElementById('latency-bars');
-    if(lb){
-      const rows = Object.entries(sites).filter((pair)=>pair[1] && pair[1].ms!=null).sort((a,b)=>(b[1].ms||0)-(a[1].ms||0));
-      const max = Math.max(1, ...rows.map(pair=>pair[1].ms||0));
-      lb.innerHTML = rows.map(pair=>{
-        const id=pair[0], s=pair[1];
-        const p = PROJECTS.find(x=>x.id===id);
-        const col = s.ok ? (s.ms<500?'var(--green)':s.ms<1200?'var(--amber)':'var(--red)') : 'var(--red)';
-        return '<div class="latency-row" data-tip="'+(s.url||id)+' · HTTP '+(s.status||'—')+' · '+s.ms+'ms" data-tip-title="'+(p?p.name:id)+'" data-tip-advice="'+(s.ok?'Latency under 500ms is great for pitch.':'Site failed ping — check deploy.')+'">'+
-          '<span class="nm">'+(p?p.name:id)+'</span>'+
-          '<div class="trk"><div class="fl" style="width:'+((s.ms/max)*100)+'%;background:'+col+'"></div></div>'+
-          '<span class="mono w-12 text-right">'+s.ms+'ms</span></div>';
-      }).join('') || '<div class="text-xs text-[var(--ink-faint)]">No status.json latency yet — wait for pinger.</div>';
-    }
-    const ss = document.getElementById('sato-series');
-    if(ss && sato){
-      ss.innerHTML = (sato.series||[]).slice(0,4).map(s=>'<div class="glass-2 rounded p-2">'+MetricsEngine.sparkline(s, 320, 64)+'</div>').join('')
-        || '<div class="text-xs text-[var(--ink-faint)]">No series in envelope</div>';
-    }
+    if (pts.length <= (maxN || 15)) return pts;
+    return pts.slice(-maxN);
   }
-};
 
-(function wrapCharts(){
-  const _all = Charts.all.bind(Charts);
-  Charts.uptime = function(){
-    const c=document.getElementById('chart-uptime'); if(!c) return;
-    const hist = state.statusHist || [];
-    const ctx=c.getContext('2d');
-    const dpr=window.devicePixelRatio||1;
-    const W=c.clientWidth||300, H=c.clientHeight||200;
-    c.width=W*dpr; c.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
-    ctx.clearRect(0,0,W,H);
-    const faint=getComputedStyle(document.documentElement).getPropertyValue('--ink-faint').trim();
-    if(hist.length<2){
-      ctx.fillStyle=faint; ctx.font='12px IBM Plex Sans'; ctx.fillText('Collecting local uptime snapshots…', 12, H/2);
+  /** Prefer project accent when series color is greyscale / missing. */
+  function seriesColor(series, fallbackId) {
+    const c = series && series.color;
+    if (c && !isNearGrey(c)) return c;
+    return accentFor(fallbackId || "giveabit");
+  }
+
+  /* ═══════════════════════════════════════
+     CARDS TAB
+     ═══════════════════════════════════════ */
+
+  function renderCards() {
+    const el = document.getElementById("view-cards");
+    if (!el) return;
+    if (!state.projects.length) {
+      el.innerHTML = unavailableHTML(
+        "No projects loaded",
+        "/projects.json",
+        state.loadErrors.find((e) => e.path && e.path.includes("projects"))?.error || "Registry empty"
+      );
       return;
     }
-    const pts = hist.slice(-48).map(h=>({ v: h.total? (h.live/h.total)*100 : 0 }));
-    const green=getComputedStyle(document.documentElement).getPropertyValue('--green').trim()||'#1f6b3a';
-    ctx.strokeStyle=green; ctx.lineWidth=2; ctx.beginPath();
-    pts.forEach((p,i)=>{
-      const x=(i/(pts.length-1))*(W-20)+10;
-      const y=H-12-(p.v/100)*(H-24);
-      if(i) ctx.lineTo(x,y); else ctx.moveTo(x,y);
+    el.innerHTML = `<div class="cards-grid">${state.projects.map(cardHTML).join("")}</div>`;
+    el.querySelectorAll("[data-project]").forEach((card) => {
+      card.addEventListener("click", () => openDrawer(card.dataset.project));
     });
-    ctx.stroke();
-    const y99=H-12-(0.99)*(H-24);
-    ctx.strokeStyle='rgba(0,0,0,.2)'; ctx.setLineDash([4,4]); ctx.beginPath(); ctx.moveTo(10,y99); ctx.lineTo(W-10,y99); ctx.stroke(); ctx.setLineDash([]);
-    ctx.fillStyle=faint; ctx.font='10px IBM Plex Mono'; ctx.fillText('99%', 12, y99-4);
-    const last=pts[pts.length-1].v;
-    ctx.font='bold 14px IBM Plex Mono'; ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--ink').trim();
-    ctx.fillText(last.toFixed(1)+'% live', Math.max(12,W-110), 20);
-  };
-  Charts.all = function(){
-    _all();
-    this.uptime();
-    try{ Pipes.render(); }catch(_){}
-  };
-})();
+  }
 
-(function wrapTools(){
-  ToolsHub.render = function(){
-    const el = document.getElementById('tools-hub');
-    if(!el) return;
-    const groups = (this.data && this.data.groups) || [];
-    if(!groups.length){
-      el.innerHTML = '<span class="text-[var(--ink-faint)] text-xs">tools.json not loaded</span>';
+  function cardHTML(p) {
+    const color = accentFor(p.id);
+    const m = state.metrics[p.id];
+    const health = projectHealth(p);
+    if (!m || !m.ok) {
+      return `<article class="card" style="--card-accent:${escAttr(color)}" data-project="${escAttr(p.id)}">
+        <div class="card-head">
+          ${iconBadge(p.icon, color)}
+          <div class="grow">
+            <h3>${esc(p.name)}</h3>
+            <p class="tagline">${esc(p.tagline || p.pitch || "")}</p>
+          </div>
+          ${statusPill(health, health)}
+        </div>
+        ${unavailableHTML("Metrics unavailable", m ? m.path : `/metrics/${p.id}.json`, m ? m.error : "Not loaded")}
+      </article>`;
+    }
+    const data = m.data;
+    const kpis = topKpis(data, 3);
+    const series = primarySeries(data);
+    const pts = seriesPoints(series, 15);
+    const kpiHtml = [0, 1, 2]
+      .map((i) => {
+        const k = kpis[i];
+        if (!k) return `<div class="mini"><div class="l">—</div><div class="v">—</div></div>`;
+        return `<div class="mini" data-tip="${escAttr(k.hint || k.label)}"><div class="l">${esc(k.label)}</div><div class="v">${esc(fmtNum(k.value, k.format))}</div></div>`;
+      })
+      .join("");
+
+    return `<article class="card" style="--card-accent:${escAttr(color)}" data-project="${escAttr(p.id)}">
+      <div class="card-head">
+        ${iconBadge(p.icon, color)}
+        <div class="grow">
+          <h3>${esc(p.name)}</h3>
+          <p class="tagline">${esc(p.tagline || p.pitch || "")}</p>
+        </div>
+        ${statusPill(health, health)}
+      </div>
+      <div class="card-kpis">${kpiHtml}</div>
+      <div class="card-foot">
+        <div class="card-spark">${sparkline(pts, color)}</div>
+        <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">${esc(fmtTime(data.updatedAt))}</span>
+      </div>
+    </article>`;
+  }
+
+  /* ═══════════════════════════════════════
+     LIST TAB
+     ═══════════════════════════════════════ */
+
+  function renderList() {
+    const el = document.getElementById("view-list");
+    if (!el) return;
+    if (!state.projects.length) {
+      el.innerHTML = unavailableHTML("No projects", "/projects.json");
       return;
     }
-    el.innerHTML = groups.map(g =>
-      '<div class="w-full" data-tip="'+(g.tip||'')+'" data-tip-title="'+g.label+'">'+
-      '<div class="text-[9px] mono text-[var(--ink-faint)] mb-1">'+g.label+'</div>'+
-      '<div class="tools-strip">'+(g.links||[]).map(l =>
-        '<a href="'+l.url+'" target="_blank" rel="noopener" data-tip="'+(l.tip||l.name)+'" data-tip-title="'+l.name+'" data-tip-advice="'+(g.tip||'External tool')+'">'+l.name+'</a>'
-      ).join('')+'</div></div>'
-    ).join('');
-  };
-})();
+    const sites = (state.status && state.status.sites) || {};
+    const rows = state.projects
+      .map((p) => {
+        const color = accentFor(p.id);
+        const m = state.metrics[p.id];
+        const health = projectHealth(p);
+        const s = sites[p.id] || {};
+        const kpis = m && m.ok ? topKpis(m.data, 3) : [];
+        const kpiStr = kpis.map((k) => `${k.label}: ${fmtNum(k.value, k.format)}`).join(" · ") || "—";
+        return `<tr style="--row-accent:${escAttr(color)}" data-project="${escAttr(p.id)}">
+          <td><div class="name-cell"><div class="icon-badge" style="width:28px;height:28px;font-size:0.75rem;--badge-c:${escAttr(color)}"><i class="${escAttr(p.icon || "fa-solid fa-cube")}"></i></div>${esc(p.name)}</div></td>
+          <td>${esc(p.category || "—")}</td>
+          <td>${statusPill(health, health)}</td>
+          <td class="mono">${s.ms != null ? esc(fmtMs(s.ms)) : "—"}</td>
+          <td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" data-tip="${escAttr(kpiStr)}">${esc(kpiStr)}</td>
+          <td>${p.url ? `<a href="${escAttr(p.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${esc(p.url.replace(/^https?:\/\//, ""))}</a>` : "—"}</td>
+        </tr>`;
+      })
+      .join("");
 
-UI.help = function(){
-  document.getElementById('help-body').innerHTML = [
-    ['/','Command search'],['g','Cards'],['l','List'],['p','Pipeline'],['y','Analytics + pipes'],['k','Metrics lab'],
-    ['n','Network'],['t','Activity'],['m','Matrix'],['w','Wallets'],['d','Docs'],['a','Agents'],
-    ['r','Refresh all pipes'],['v','Vault (keys)'],['P','Pitch mode'],['L','Lock HQ session'],
-    ['?','This help'],['esc','Close overlays'],
-    ['tip','Hover almost anything for advice'],
-  ].map(pair=>'<span class="k">'+pair[0]+'</span><span>'+pair[1]+'</span>').join('');
-  document.getElementById('help-backdrop').classList.remove('hidden');
-};
-
-document.addEventListener('keydown', e=>{
-  if(typeof isTyping==='function' && isTyping()) return;
-  if(e.key==='L' && !e.metaKey && !e.ctrlKey){ e.preventDefault(); Gate.lock(); }
-});
-
-let _booted = false;
-async function bootAfterGate(){
-  if(_booted) return;
-  _booted = true;
-  await Vault.loadEnc();
-  Vault.updateStatusChip();
-  await loadRegistry();
-  Dash.loadCache();
-  Dash.render();
-  Dash.renderPortfolio();
-  Dash.renderTicker();
-  if(typeof Dash.renderInvestorStrip==='function') Dash.renderInvestorStrip();
-  GrokUsage.render();
-  OpsNotes.load();
-  ToolsHub.load();
-  try{ state.statusHist = JSON.parse(localStorage.getItem(StatusHistory.KEY)||'[]'); }catch(_){ state.statusHist=[]; }
-  Charts.all();
-  UI.clock(); setInterval(UI.clock,1000);
-  setInterval(()=>{ if(GrokUsage.updateCountdown) GrokUsage.updateCountdown(); }, 30000);
-  window.addEventListener('online', ()=>{ const b=document.getElementById('offline-banner'); if(b) b.classList.add('hidden'); toast('Back online','success'); });
-  window.addEventListener('offline', ()=>{ const b=document.getElementById('offline-banner'); if(b) b.classList.remove('hidden'); });
-  if(!navigator.onLine){ const b=document.getElementById('offline-banner'); if(b) b.classList.remove('hidden'); }
-  if(typeof stampVersion==='function') stampVersion();
-  else {
-    const build = document.getElementById('hq-build');
-    if(build) build.textContent = new Date().toISOString().slice(0,16).replace('T',' ');
+    el.innerHTML = `<div class="table-wrap"><table class="data">
+      <thead><tr>
+        <th>Project</th><th>Category</th><th>Health</th><th>Latency</th><th>KPIs</th><th>URL</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>`;
+    el.querySelectorAll("tbody tr").forEach((tr) => {
+      tr.addEventListener("click", () => openDrawer(tr.dataset.project));
+    });
   }
-  if(typeof QuickUrls!=='undefined') QuickUrls.render();
-  await Dash.refreshAll();
-  try{ await MetricsEngine.loadAll(); }catch(_){}
-  GrokUsage.render();
-  Pipes.render();
-  scheduleRefresh();
-  scheduleRefreshEta();
-  if(!Vault.hasGh() && Vault.keyCount()===0) setTimeout(()=>toast('Open Vault (v) to paste keys · hover chips for tips','info'),700);
-  console.log('%cGive A Bit HQ v2.5.3 — gate + tips + live pipes','color:#c45f00;font-weight:bold');
-}
 
+  /* ═══════════════════════════════════════
+     METRICS TAB
+     ═══════════════════════════════════════ */
 
-/* ---------- v2.5.1 KEYS + OPS EXTENSIONS ---------- */
-function escHtml(s){ return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-const VaultX = {
-  paintScore(){
-    const wallets = PROJECTS.reduce((a,p)=>{ if(p.wallet&&!a.includes(p.wallet)) a.push(p.wallet); return a; },[]);
-    const setW = wallets.filter(w=>Vault.hasWallet(w)).length;
-    const checks = [
-      [Vault.hasGh(), 'GitHub PAT'],
-      [!!(Vault.data.nodeUrl&&Vault.data.nodeUrl.length>8), 'Node URL'],
-      [setW>0, setW+'/'+wallets.length+' wallet keys'],
-      [!!Vault.data.satohashApi, 'Satohash API'],
-      [!!Gate.isUnlocked && Gate.isUnlocked(), 'Gate unlocked'],
+  function renderMetrics() {
+    const el = document.getElementById("view-metrics");
+    if (!el) return;
+    const nodes = [
+      ...state.projects.map((p) => ({ id: p.id, name: p.name, icon: p.icon, color: accentFor(p.id) })),
+      { id: "thor-node", name: "THOR Node", icon: "fa-solid fa-server", color: accentFor("thor-node") },
     ];
-    const score = Math.round(100*checks.filter(c=>c[0]).length/checks.length);
-    const ring=document.getElementById('vault-score-ring');
-    if(ring){ ring.textContent=score+'%'; ring.style.borderColor=score>=80?'var(--green)':score>=50?'var(--amber)':'var(--red)'; ring.style.color=ring.style.borderColor; }
-    const cl=document.getElementById('vault-checklist');
-    if(cl) cl.innerHTML=checks.map(([ok,l])=>`<span class="${ok?'ok':'miss'}">${ok?'✓':'○'} ${l}</span>`).join('');
-    const on=document.getElementById('vault-origin-note'); if(on) on.innerHTML='origin<br><span class="mono">'+location.origin+'</span>';
-    const gm=document.getElementById('vault-gh-mask'); if(gm) gm.textContent=this.mask(Vault.data.ghToken);
-  },
-  mask(val){
-    if(!val||val.length<8) return val?'•••• set':'not set';
-    return '••••'+val.slice(-4)+' · '+val.length+' chars';
-  },
-  toggleVis(id, btn){
-    const el=document.getElementById(id); if(!el) return;
-    el.type = el.type==='password'?'text':'password';
-    if(btn) btn.textContent = el.type==='password'?'👁':'🙈';
-  },
-  toggleRowVis(btn){
-    const row=btn.closest('.vault-row')||btn.parentElement;
-    const inp=row?.querySelector('input[data-wallet-key]');
-    if(!inp) return;
-    inp.type=inp.type==='password'?'text':'password';
-    btn.textContent=inp.type==='password'?'👁':'🙈';
-  },
-  onFxChange(){
-    const fx=document.getElementById('vault-fx-source')?.value;
-    const man=document.getElementById('vault-manual-btc');
-    if(man) man.disabled = fx!=='manual';
-  },
-  renderWallets(){
-    if(!Vault.data.walletRO) Vault.data.walletRO={};
-    const wallets = PROJECTS.reduce((a,p)=>{ if(p.wallet&&!a.includes(p.wallet)) a.push(p.wallet); return a; },[]);
-    const el=document.getElementById('vault-wallet-rows'); if(!el) return;
-    el.innerHTML = wallets.map(w=>{
-      const val=Vault.data.wallets[w]||'';
-      const set=Vault.hasWallet(w);
-      const ro=!!Vault.data.walletRO[w];
-      return `<div class="vault-row">
-        <span class="mono text-xs truncate" title="${w}">${w}</span>
-        <input type="password" data-wallet-key="${w}" value="${String(val).replace(/"/g,'&quot;')}" placeholder="X-Api-Key" class="rounded px-2 py-1.5 text-xs mono" autocomplete="off">
-        <button type="button" class="btn-ghost rounded px-1.5 text-[10px]" onclick="VaultX.toggleRowVis(this)">👁</button>
-        <label class="text-[10px] mono flex items-center gap-1"><input type="checkbox" data-wallet-ro="${w}" ${ro?'checked':''}> RO</label>
-        <span class="key-mask">${set?this.mask(val):'empty'}</span>
+    if (!state.selectedMetricsId || !nodes.find((n) => n.id === state.selectedMetricsId)) {
+      state.selectedMetricsId = nodes[0] ? nodes[0].id : null;
+    }
+    const nav = nodes
+      .map((n) => {
+        const m = state.metrics[n.id];
+        const h =
+          n.id === "thor-node"
+            ? m && m.ok && m.data && m.data.node
+              ? m.data.node.status
+              : "unknown"
+            : projectHealth(state.projects.find((p) => p.id === n.id) || { id: n.id });
+        return `<button type="button" class="metrics-nav-item ${state.selectedMetricsId === n.id ? "active" : ""}"
+          style="--nav-c:${escAttr(n.color)}" data-mid="${escAttr(n.id)}">
+          ${statusDot(h)}
+          <i class="${escAttr(n.icon)}" style="color:${escAttr(n.color)};width:1rem"></i>
+          <span>${esc(n.name)}</span>
+        </button>`;
+      })
+      .join("");
+
+    el.innerHTML = `<div class="metrics-layout">
+      <nav class="metrics-nav panel">${nav}</nav>
+      <div class="metrics-detail panel" id="metrics-detail"></div>
+    </div>`;
+
+    el.querySelectorAll("[data-mid]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        state.selectedMetricsId = btn.dataset.mid;
+        renderMetrics();
+      });
+    });
+    renderMetricsDetail();
+  }
+
+  function renderMetricsDetail() {
+    const el = document.getElementById("metrics-detail");
+    if (!el) return;
+    const id = state.selectedMetricsId;
+    if (id === "thor-node") {
+      el.innerHTML = thorDashboardHTML();
+      return;
+    }
+    const p = state.projects.find((x) => x.id === id);
+    const color = accentFor(id);
+    const m = state.metrics[id];
+    if (!p) {
+      el.innerHTML = unavailableHTML("Unknown project", id);
+      return;
+    }
+    if (!m || !m.ok) {
+      el.innerHTML = `
+        <div class="metrics-detail-head" style="--detail-c:${escAttr(color)}">
+          ${iconBadge(p.icon, color)}
+          <div class="grow"><h2 class="display" style="margin:0;font-size:1.25rem">${esc(p.name)}</h2>
+          <p style="margin:0.25rem 0 0;color:var(--ink-faint);font-size:0.85rem">${esc(p.pitch || p.tagline || "")}</p></div>
+        </div>
+        ${unavailableHTML("Metrics unavailable", m ? m.path : `/metrics/${id}.json`, m ? m.error : "Not loaded")}`;
+      return;
+    }
+    const data = m.data;
+    const health = data.health || {};
+    const kpis = topKpis(data, 8);
+    const seriesBlocks = (data.series || [])
+      .map((s) => {
+        const pts = seriesPoints(s, 15);
+        const sc = seriesColor(s, id);
+        return `<div>
+          <div class="flex justify-between items-center mb-2">
+            <span style="font-weight:600;font-size:0.85rem">${esc(s.label || s.key)}</span>
+            ${sparkline(pts, sc, 160, 40)}
+          </div>
+          ${trendChart(s, sc)}
+        </div>`;
+      })
+      .join("");
+
+    const funnels = (data.funnels || []).map((f) => funnelHTML(f, color)).join("");
+    const offers = (data.offers || [])
+      .map(
+        (o) => `<div class="chip" data-tip="${escAttr(o.hint || "")}" style="border-color:color-mix(in srgb, ${escAttr(color)} 40%, transparent)">
+        ${esc(o.title || o.id)} · ${esc(o.status || "")}
+      </div>`
+      )
+      .join("");
+
+    const deps = (health.dependencies || [])
+      .map((d) => `${statusPill(d.status, d.id)} `)
+      .join("");
+
+    el.innerHTML = `
+      <div class="metrics-detail-head" style="--detail-c:${escAttr(color)}">
+        ${iconBadge(p.icon, color)}
+        <div class="grow">
+          <div class="flex items-center gap-2 flex-wrap">
+            <h2 class="display" style="margin:0;font-size:1.25rem">${esc(data.name || p.name)}</h2>
+            ${statusPill(health.status || projectHealth(p))}
+          </div>
+          <p style="margin:0.35rem 0 0;color:var(--ink-dim);font-size:0.85rem">${esc(p.pitch || p.tagline || health.message || "")}</p>
+          <div class="flex flex-wrap gap-1 mt-2" style="font-size:0.72rem;color:var(--ink-faint)" class="mono">
+            <span class="mono">updated ${esc(fmtTime(data.updatedAt))}</span>
+            ${health.latencyMs != null ? `<span class="mono">· pong ${esc(fmtMs(health.latencyMs))}</span>` : ""}
+            ${health.uptimePct24h != null ? `<span class="mono">· uptime ${esc(fmtNum(health.uptimePct24h))}%</span>` : ""}
+            ${p.url ? `· <a href="${escAttr(p.url)}" target="_blank" rel="noopener">${esc(p.url.replace(/^https?:\/\//, ""))}</a>` : ""}
+          </div>
+        </div>
+      </div>
+      <div class="detail-blocks">
+        <section>
+          <div class="block-title">KPIs</div>
+          <div class="kpi-grid">${kpis.map(kpiCell).join("") || "<p class='empty-state'>No KPIs in envelope</p>"}</div>
+        </section>
+        ${deps ? `<section><div class="block-title">Dependencies</div><div class="flex flex-wrap gap-1">${deps}</div></section>` : ""}
+        ${seriesBlocks ? `<section><div class="block-title">Trends (15-day)</div><div class="detail-blocks">${seriesBlocks}</div></section>` : ""}
+        ${funnels ? `<section><div class="block-title">Funnels</div>${funnels}</section>` : ""}
+        ${offers ? `<section><div class="block-title">Offers to suite</div><div class="stack-chips">${offers}</div></section>` : ""}
+        <section>
+          <div class="block-title">From projects.json</div>
+          <p style="color:var(--ink-dim);font-size:0.85rem;margin:0">${esc(p.pitch || "—")}</p>
+          <div class="stack-chips mt-2">${(p.stack || []).map((s) => `<span class="chip">${esc(s)}</span>`).join("")}</div>
+          ${(p.related || []).length ? `<p class="mt-2" style="font-size:0.8rem;color:var(--ink-faint)">Related: ${p.related.map((r) => esc(r)).join(", ")}</p>` : ""}
+        </section>
+        <p class="mono" style="font-size:0.65rem;color:var(--ink-faint)">Source: ${esc(m.path)}</p>
       </div>`;
-    }).join('');
-  },
-  testOut(msg){
-    const el=document.getElementById('vault-test-out'); if(!el) return;
-    el.classList.remove('hidden');
-    el.textContent=(el.textContent?el.textContent+'\n':'')+msg;
-  },
-  async testGithub(){
-    const tok=(document.getElementById('vault-gh-token')?.value||Vault.data.ghToken||'').trim();
-    if(tok.length<10){ this.testOut('GitHub: no token'); return; }
-    try{
-      const r=await fetch('https://api.github.com/user',{headers:{Accept:'application/vnd.github+json',Authorization:(tok.startsWith('github_pat_')?'Bearer ':'token ')+tok}});
-      if(!r.ok){ this.testOut('GitHub: HTTP '+r.status); return; }
-      const j=await r.json();
-      this.testOut('GitHub: OK · @'+(j.login||'?')+' · scopes '+(r.headers.get('x-oauth-scopes')||'n/a'));
-    }catch(e){ this.testOut('GitHub: '+e.message); }
-  },
-  async testLNbits(){
-    document.querySelectorAll('[data-wallet-key]').forEach(inp=>{ if(inp.value.trim()) Vault.data.wallets[inp.dataset.walletKey]=inp.value.trim(); });
-    const node=(document.getElementById('vault-node-url')?.value||Vault.data.nodeUrl||'').replace(/\/$/,'');
-    const wallets=PROJECTS.reduce((a,p)=>{ if(p.wallet&&!a.includes(p.wallet)) a.push(p.wallet); return a; },[]);
-    const found=wallets.find(w=>Vault.hasWallet(w));
-    if(!found){ this.testOut('LNbits: no wallet key'); return; }
-    try{
-      const r=await fetch(node+'/api/v1/wallet',{headers:{'X-Api-Key':Vault.data.wallets[found],'Accept':'application/json'},mode:'cors',cache:'no-store'});
-      if(!r.ok){ this.testOut('LNbits: HTTP '+r.status+' on '+found); return; }
-      const j=await r.json();
-      this.testOut('LNbits: OK · '+found+' · '+Math.floor((j.balance||0)/1000)+' sats');
-    }catch(e){
-      const kind=/failed to fetch|networkerror|cors/i.test(String(e.message||e))?'cors':'network';
-      this.testOut('LNbits: '+kind+' · '+location.origin+' → '+node);
+  }
+
+  function thorDashboardHTML() {
+    const m = state.thor || state.metrics["thor-node"];
+    const color = accentFor("thor-node");
+    if (!m || !m.ok) {
+      return unavailableHTML("THOR node unavailable", m ? m.path : "/metrics/thor-node.json", m ? m.error : "Not loaded");
     }
-  },
-  async diagnoseAll(){
-    document.querySelectorAll('[data-wallet-key]').forEach(inp=>{ Vault.data.wallets[inp.dataset.walletKey]=inp.value.trim(); });
-    const node=(document.getElementById('vault-node-url')?.value||Vault.data.nodeUrl||'').replace(/\/$/,'');
-    this.testOut('— diagnose · '+location.origin+' → '+node);
-    const wallets=PROJECTS.reduce((a,p)=>{ if(p.wallet&&!a.includes(p.wallet)) a.push(p.wallet); return a; },[]);
-    for(const w of wallets){
-      if(!Vault.hasWallet(w)){ this.testOut(w+': no key'); continue; }
-      if(VaultX.isRO(w)) this.testOut(w+': RO');
-      try{
-        const r=await fetch(node+'/api/v1/wallet',{headers:{'X-Api-Key':Vault.data.wallets[w],'Accept':'application/json'},mode:'cors',cache:'no-store'});
-        if(!r.ok){ this.testOut(w+': http '+r.status); continue; }
-        const j=await r.json();
-        this.testOut(w+': ok · '+Math.floor((j.balance||0)/1000)+' sats');
-      }catch(e){
-        const kind=/failed to fetch|networkerror|cors/i.test(String(e.message||e))?'cors':'network';
-        this.testOut(w+': '+kind);
-        if(kind==='cors') break;
-      }
+    const d = m.data;
+    const node = d.node || {};
+    const btc = d.bitcoin || {};
+    const ln = d.lightning || {};
+    const services = node.services || [];
+
+    // Disk: bitcoin size vs prune target (real data only)
+    const diskUsed = Number(btc.sizeOnDiskGB) || 0;
+    const diskTarget = Number(btc.pruneTargetGB) || 0;
+    let diskPctUsed = diskTarget > 0 ? (diskUsed / diskTarget) * 100 : null;
+    let diskFreePct = diskPctUsed != null ? Math.max(0, 100 - diskPctUsed) : null;
+    let diskBarClass = "green";
+    if (diskPctUsed != null) {
+      if (diskPctUsed >= 90) diskBarClass = "red";
+      else if (diskPctUsed >= 75) diskBarClass = "amber";
     }
-    this.testOut('— end');
-  },
-  applyBulk(){
-    const raw=document.getElementById('vault-bulk-text')?.value||'';
-    let n=0;
-    const wallets=PROJECTS.reduce((a,p)=>{ if(p.wallet&&!a.includes(p.wallet)) a.push(p.wallet); return a; },[]);
-    raw.split(/\n/).forEach(line=>{
-      line=line.trim(); if(!line||line.startsWith('#')) return;
-      const m=line.match(/^([a-zA-Z0-9_\-]+)\s*[=:]\s*(.+)$/);
-      if(!m) return;
-      if(wallets.includes(m[1].trim()) && m[2].trim().length>5){ Vault.data.wallets[m[1].trim()]=m[2].trim(); n++; }
+
+    // Memory / CPU not in schema → unavailable cards
+    const memHTML = unavailableHTML(
+      "Memory telemetry",
+      "/metrics/thor-node.json → host.memory",
+      "Not present in gab.thor-node.v1 snapshot. Wire host exporter when ready."
+    );
+    const cpuSeries = (d.series || []).find((s) => /cpu|load/i.test(s.key || ""));
+    const cpuHTML = cpuSeries
+      ? trendChart(cpuSeries, color)
+      : unavailableHTML(
+          "CPU load sparkline",
+          "/metrics/thor-node.json → series[cpu_load]",
+          "No CPU/load series in current snapshot. Showing channel series below when present."
+        );
+
+    // Storage consumers: only bitcoin disk from real data; no fabricated top-8
+    const storageRows = [];
+    if (diskUsed > 0) {
+      storageRows.push({ label: "bitcoind (pruned)", value: diskUsed, display: diskUsed.toFixed(1) + " GB" });
+    }
+    if (btc.mempoolMB != null) {
+      storageRows.push({
+        label: "mempool",
+        value: Number(btc.mempoolMB) / 1024,
+        display: Number(btc.mempoolMB).toFixed(1) + " MB",
+      });
+    }
+    const storageHTML = storageRows.length
+      ? hbarChart(storageRows, color)
+      : unavailableHTML(
+          "Top storage consumers",
+          "/metrics/thor-node.json → storage.consumers",
+          "Full host breakdown not in envelope. Bitcoin disk shown when available."
+        );
+
+    const svcPills = services
+      .map((s) => statusPill(s.status, s.id.replace(/^satohash-/, "").slice(0, 28)))
+      .join("");
+
+    const seriesHTML = (d.series || [])
+      .map((s) => {
+        const pts = seriesPoints(s, 15);
+        const sc = seriesColor(s, "thor-node");
+        return `<div class="mb-3">
+          <div class="flex justify-between mb-1"><span style="font-weight:600;font-size:0.85rem">${esc(s.label || s.key)}</span>${sparkline(pts, sc, 140, 36)}</div>
+          ${trendChart(s, sc)}
+        </div>`;
+      })
+      .join("");
+
+    return `
+      <div class="metrics-detail-head" style="--detail-c:${escAttr(color)}">
+        ${iconBadge("fa-solid fa-server", color)}
+        <div class="grow">
+          <div class="flex items-center gap-2 flex-wrap">
+            <h2 class="display" style="margin:0;font-size:1.25rem">${esc(node.id || "THOR")}</h2>
+            ${statusPill(node.status || "unknown")}
+          </div>
+          <p style="margin:0.35rem 0 0;color:var(--ink-dim);font-size:0.85rem">${esc(node.hostLabel || "")} · ${esc(node.region || "")}</p>
+          <p class="mono" style="margin:0.25rem 0 0;font-size:0.72rem;color:var(--ink-faint)">${esc(node.stack || "")}</p>
+        </div>
+      </div>
+      <div class="system-grid">
+        <div class="system-panel panel">
+          <h3><i class="fa-solid fa-hard-drive" style="color:var(--teal)"></i> Bitcoin disk</h3>
+          ${
+            diskPctUsed != null
+              ? `<div class="flex justify-between mb-1" style="font-size:0.8rem">
+                  <span>${esc(diskUsed.toFixed(1))} / ${esc(diskTarget)} GB prune target</span>
+                  <span class="status-pill ${diskBarClass}">${esc(diskFreePct.toFixed(0))}% free</span>
+                </div>
+                ${metricBar(diskPctUsed, diskBarClass + " lg")}`
+              : unavailableHTML("Disk metrics", "bitcoin.sizeOnDiskGB", "Missing size fields")
+          }
+          <p class="mt-2 mono" style="font-size:0.68rem;color:var(--ink-faint)">${esc(btc.hint || "Pruned full node disk footprint")}</p>
+        </div>
+        <div class="system-panel panel">
+          <h3><i class="fa-brands fa-bitcoin" style="color:var(--orange)"></i> Bitcoin</h3>
+          <div class="kpi-grid">
+            <div class="kpi-cell"><div class="label">Blocks</div><div class="value">${esc(fmtNum(btc.blocks))}</div></div>
+            <div class="kpi-cell"><div class="label">Mempool</div><div class="value">${esc(fmtNum(btc.mempoolTx))}</div></div>
+            <div class="kpi-cell"><div class="label">Pruned</div><div class="value" style="font-size:1rem">${btc.pruned ? "yes" : "no"}</div></div>
+            <div class="kpi-cell"><div class="label">Peers</div><div class="value">${esc(fmtNum(btc.connections))}</div></div>
+          </div>
+        </div>
+        <div class="system-panel panel">
+          <h3><i class="fa-solid fa-bolt" style="color:var(--amber)"></i> Lightning</h3>
+          <div class="kpi-grid">
+            <div class="kpi-cell"><div class="label">Channels</div><div class="value">${esc(fmtNum(ln.numActiveChannels))}</div></div>
+            <div class="kpi-cell"><div class="label">Local</div><div class="value" style="font-size:1rem">${esc(fmtNum(ln.totalLocalBalanceSats, "sats"))}</div></div>
+            <div class="kpi-cell"><div class="label">Remote</div><div class="value" style="font-size:1rem">${esc(fmtNum(ln.totalRemoteBalanceSats, "sats"))}</div></div>
+            <div class="kpi-cell"><div class="label">Peers</div><div class="value">${esc(fmtNum(ln.numPeers))}</div></div>
+          </div>
+        </div>
+        <div class="system-panel panel">
+          <h3><i class="fa-brands fa-docker" style="color:var(--sky)"></i> Docker services</h3>
+          <div class="svc-pills">${svcPills || "<span class='chip'>none listed</span>"}</div>
+        </div>
+        <div class="system-panel panel">
+          <h3>Storage consumers</h3>
+          ${storageHTML}
+        </div>
+        <div class="system-panel panel">
+          <h3>Memory</h3>
+          ${memHTML}
+        </div>
+        <div class="system-panel panel" style="grid-column:1/-1">
+          <h3>CPU / load</h3>
+          ${cpuHTML}
+          ${seriesHTML}
+        </div>
+      </div>
+      <p class="mono mt-2" style="font-size:0.65rem;color:var(--ink-faint)">Source: ${esc(m.path)} · updated ${esc(fmtTime(d.updatedAt))}</p>`;
+  }
+
+  /* ═══════════════════════════════════════
+     PIPELINE TAB
+     ═══════════════════════════════════════ */
+
+  function renderPipeline() {
+    const el = document.getElementById("view-pipeline");
+    if (!el) return;
+    // Aggregate product funnels + deployment pipeline stages from live data
+    const cards = state.projects
+      .map((p) => {
+        const color = accentFor(p.id);
+        const m = state.metrics[p.id];
+        const s = (state.status && state.status.sites && state.status.sites[p.id]) || {};
+        const health = projectHealth(p);
+        const stages = [
+          { label: "Repo", done: !!p.repo, warn: false },
+          { label: "Deployed", done: !!p.deployed, warn: p.deployed === false },
+          { label: "Live HTTP", done: s.ok === true, warn: s.ok === false, off: s.ok == null && !p.deployed },
+          {
+            label: "Metrics",
+            done: m && m.ok,
+            warn: m && !m.ok,
+          },
+        ];
+        const stageHtml = stages
+          .map((st) => {
+            const cls = st.off ? "off" : st.warn ? "warn" : st.done ? "done" : "";
+            return `<div class="pipe-stage ${cls}">
+              <div class="sl">${esc(st.label)}</div>
+              <div class="sv">${st.off ? "—" : st.done ? "✓" : st.warn ? "!" : "·"}</div>
+            </div>`;
+          })
+          .join("");
+
+        let funnelBlock = "";
+        if (m && m.ok && m.data && m.data.funnels && m.data.funnels.length) {
+          funnelBlock = `<div class="mt-3">${m.data.funnels.map((f) => funnelHTML(f, color)).join("")}</div>`;
+        }
+
+        return `<div class="pipe-card panel" style="border-left:4px solid ${escAttr(color)}">
+          <h3>${statusDot(health)} ${esc(p.name)}
+            <span class="mono" style="font-size:0.68rem;font-weight:400;color:var(--ink-faint);margin-left:auto">${s.ms != null ? esc(fmtMs(s.ms)) : ""}</span>
+          </h3>
+          <div class="pipe-stages">${stageHtml}</div>
+          ${funnelBlock}
+        </div>`;
+      })
+      .join("");
+
+    el.innerHTML = `
+      <h2 class="section-title">Pipeline <span class="accent-rule"></span></h2>
+      <p class="section-sub">Deploy path + product funnels from live envelopes (only where data exists).</p>
+      <div class="pipeline-grid">${cards || unavailableHTML("No projects", "/projects.json")}</div>`;
+  }
+
+  /* ═══════════════════════════════════════
+     NETWORK TAB
+     ═══════════════════════════════════════ */
+
+  function renderNetwork() {
+    const el = document.getElementById("view-network");
+    if (!el) return;
+
+    const connections = buildConnections();
+    const W = 800;
+    const H = 400;
+    const cx = W / 2;
+    const cy = H / 2;
+    // Hub = HQ center, peripherals around
+    const hub = { x: cx, y: cy, label: "HQ", sub: "glass", color: "#ff8c00", status: "green" };
+    const n = connections.length;
+    const nodes = connections.map((c, i) => {
+      const ang = -Math.PI / 2 + (i / n) * Math.PI * 2;
+      const r = 150 + (i % 2) * 28;
+      return {
+        ...c,
+        x: cx + Math.cos(ang) * r,
+        y: cy + Math.sin(ang) * r,
+      };
     });
-    this.renderWallets();
-    toast(n?('Applied '+n+' keys — Save vault'):'No matching lines','info');
-  },
-  isRO(w){ return !!(Vault.data.walletRO&&Vault.data.walletRO[w]); },
-  readSecurity(){
-    if(!Vault.data.walletRO) Vault.data.walletRO={};
-    document.querySelectorAll('[data-wallet-ro]').forEach(cb=>{ Vault.data.walletRO[cb.dataset.walletRo]=!!cb.checked; });
-    const bbs=document.getElementById('vault-block-bulk-send'); if(bbs) Vault.data.blockBulkSend=bbs.checked;
-    const pl=document.getElementById('vault-prefer-live'); if(pl) Vault.data.preferLiveMetrics=pl.checked;
-    const gw=document.getElementById('vault-grok-warn'); if(gw) Vault.data.grokWarn=parseInt(gw.value,10)||75;
-    const gc=document.getElementById('vault-grok-crit'); if(gc) Vault.data.grokCrit=parseInt(gc.value,10)||90;
-    const mb=document.getElementById('vault-manual-btc'); if(mb) Vault.data.manualBtc=mb.value?Number(mb.value):null;
-    if(Vault.data.fxSource==='manual' && Vault.data.manualBtc) btcUsdPrice=Number(Vault.data.manualBtc);
-  },
-  fillSecurity(){
-    const bbs=document.getElementById('vault-block-bulk-send'); if(bbs) bbs.checked=!!Vault.data.blockBulkSend;
-    const pl=document.getElementById('vault-prefer-live'); if(pl) pl.checked=Vault.data.preferLiveMetrics!==false;
-    const gw=document.getElementById('vault-grok-warn'); if(gw) gw.value=Vault.data.grokWarn??75;
-    const gc=document.getElementById('vault-grok-crit'); if(gc) gc.value=Vault.data.grokCrit??90;
-    const mb=document.getElementById('vault-manual-btc'); if(mb) mb.value=Vault.data.manualBtc??'';
-    const wipe=document.getElementById('vault-wipe-confirm'); if(wipe) wipe.value='';
-    this.onFxChange();
-  },
-  safeClear(){
-    const conf=document.getElementById('vault-wipe-confirm')?.value?.trim();
-    if(conf!=='WIPE'){ toast('Type WIPE in More keys / Security','error'); Vault.tab('extra'); return; }
-    Vault.clear();
-  }
-};
 
-// wrap openModal/save for RO + scorecard
-(function(){
-  const _open = Vault.openModal.bind(Vault);
-  Vault.openModal = function(){
-    _open();
-    VaultX.renderWallets();
-    VaultX.fillSecurity();
-    VaultX.paintScore();
-    const tout=document.getElementById('vault-test-out'); if(tout){ tout.classList.add('hidden'); tout.textContent=''; }
-  };
-  const _save = Vault.save.bind(Vault);
-  Vault.save = async function(){
-    VaultX.readSecurity();
-    document.querySelectorAll('[data-wallet-key]').forEach(inp=>{ Vault.data.wallets[inp.dataset.walletKey]=inp.value.trim(); });
-    const btn = document.getElementById('vault-save-btn');
-    if(btn){ btn.disabled=true; btn.innerHTML='<i class="fa-solid fa-spinner fa-spin text-[11px] mr-1.5"></i>Saving…'; }
-    try{
-      await _save();
-      VaultX.paintScore();
-      if(btn){ btn.innerHTML='<i class="fa-solid fa-check text-[11px] mr-1.5"></i>Saved'; }
-    }catch(e){
-      if(btn){ btn.innerHTML='<i class="fa-solid fa-floppy-disk text-[11px] mr-1.5"></i>Save vault'; }
-      throw e;
-    }finally{
-      if(btn){
-        btn.disabled=false;
-        setTimeout(()=>{ if(btn) btn.innerHTML='<i class="fa-solid fa-floppy-disk text-[11px] mr-1.5"></i>Save vault'; }, 1600);
+    const edges = nodes
+      .map((node) => {
+        const c = healthClass(node.status);
+        const stroke =
+          c === "green" ? "#22c55e" : c === "amber" ? "#f59e0b" : c === "red" ? "#ef4444" : "#a78bfa";
+        return `<path class="edge" d="M${hub.x},${hub.y} Q${(hub.x + node.x) / 2 + 20},${(hub.y + node.y) / 2 - 30} ${node.x},${node.y}"
+          stroke="${stroke}" stroke-dasharray="${node.ok ? "0" : "4 4"}"/>`;
+      })
+      .join("");
+
+    const nodeEls =
+      `<g>
+        <circle class="node-ring" cx="${hub.x}" cy="${hub.y}" r="36" stroke="#ff8c00" style="filter:drop-shadow(0 0 12px #ff8c00)"/>
+        <text class="node-label" x="${hub.x}" y="${hub.y + 4}">HQ</text>
+      </g>` +
+      nodes
+        .map((node) => {
+          const stroke = node.color || "#38bdf8";
+          return `<g>
+            <circle class="node-ring" cx="${node.x}" cy="${node.y}" r="28" stroke="${escAttr(stroke)}"
+              style="filter:drop-shadow(0 0 8px ${escAttr(stroke)})"/>
+            <circle cx="${node.x + 18}" cy="${node.y - 18}" r="5" fill="${escAttr(
+            healthClass(node.status) === "green"
+              ? "#22c55e"
+              : healthClass(node.status) === "amber"
+                ? "#f59e0b"
+                : healthClass(node.status) === "red"
+                  ? "#ef4444"
+                  : "#a78bfa"
+          )}"/>
+            <text class="node-label" x="${node.x}" y="${node.y - 2}">${esc(node.short || node.label).slice(0, 10)}</text>
+            <text class="node-sub" x="${node.x}" y="${node.y + 12}">${esc(node.latency || "—")}</text>
+          </g>`;
+        })
+        .join("");
+
+    const list = connections
+      .map((c) => {
+        const latPct = c.ms != null ? Math.min(100, (c.ms / 2000) * 100) : 0;
+        const barCls =
+          c.ms == null ? "violet" : c.ms < 300 ? "green" : c.ms < 800 ? "amber" : "red";
+        return `<div class="conn-card panel" style="border-left:3px solid ${escAttr(c.color)}">
+          <div class="top">
+            <span class="name">${statusDot(c.status)} ${esc(c.label)}</span>
+            <span class="mono" style="font-size:0.72rem">${esc(c.latency || "—")}</span>
+          </div>
+          <div class="path">${esc(c.path)}</div>
+          ${metricBar(latPct, barCls)}
+          ${!c.ok ? `<p class="mt-1 mono" style="font-size:0.65rem;color:var(--amber)">${esc(c.error || "unavailable")}</p>` : ""}
+        </div>`;
+      })
+      .join("");
+
+    el.innerHTML = `
+      <h2 class="section-title">Network <span class="accent-rule"></span></h2>
+      <p class="section-sub">Live data pipes — status from real fetches + status.json latency.</p>
+      <div class="network-canvas panel">
+        <svg class="network-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">
+          ${edges}${nodeEls}
+        </svg>
+      </div>
+      <div class="conn-list">${list}</div>`;
+  }
+
+  function buildConnections() {
+    const sites = (state.status && state.status.sites) || {};
+    const feeds = (state.status && state.status.feeds) || {};
+    const list = [];
+
+    // Satohash API
+    const sh = feeds.satohashApi || {};
+    list.push({
+      label: "Satohash API",
+      short: "API",
+      path: sh.healthUrl || "https://api.satohash.io/health",
+      ok: sh.ok === true,
+      status: sh.ok === true ? "green" : sh.ok === false ? "red" : "unknown",
+      ms: sh.ms,
+      latency: sh.ms != null ? fmtMs(sh.ms) : "—",
+      color: accentFor("satohash"),
+      error: sh.ok === false ? `HTTP ${sh.status}` : null,
+    });
+
+    // status.json self
+    list.push({
+      label: "status.json",
+      short: "status",
+      path: "/status.json",
+      ok: !!state.status,
+      status: state.status ? "green" : "red",
+      ms: null,
+      latency: state.status && state.status.updatedAt ? fmtTime(state.status.updatedAt) : "—",
+      color: "#ff8c00",
+      error: state.status ? null : "not loaded",
+    });
+
+    // Product metrics
+    state.projects.forEach((p) => {
+      const m = state.metrics[p.id];
+      const s = sites[p.id] || {};
+      list.push({
+        label: `${p.name} metrics`,
+        short: p.id.slice(0, 8),
+        path: m ? m.path : `/metrics/${p.id}.json`,
+        ok: m && m.ok,
+        status: m && m.ok ? "green" : "red",
+        ms: s.ms,
+        latency: s.ms != null ? fmtMs(s.ms) : m && m.ok && m.data && m.data.health ? fmtMs(m.data.health.latencyMs) : "—",
+        color: accentFor(p.id),
+        error: m && !m.ok ? m.error : null,
+      });
+    });
+
+    // THOR
+    const t = state.thor;
+    list.push({
+      label: "THOR node JSON",
+      short: "THOR",
+      path: t ? t.path : "/metrics/thor-node.json",
+      ok: t && t.ok,
+      status: t && t.ok && t.data && t.data.node ? t.data.node.status : t && t.ok ? "green" : "red",
+      ms: null,
+      latency: t && t.ok && t.data ? fmtTime(t.data.updatedAt) : "—",
+      color: accentFor("thor-node"),
+      error: t && !t.ok ? t.error : null,
+    });
+
+    // CoinGecko (if we tried)
+    list.push({
+      label: "CoinGecko BTC",
+      short: "FX",
+      path: "https://api.coingecko.com/api/v3/simple/price",
+      ok: state.btcUsd != null,
+      status: state.btcUsd != null ? "green" : "amber",
+      ms: null,
+      latency: state.btcUsd != null ? `$${fmtNum(state.btcUsd)}` : "—",
+      color: "#f59e0b",
+      error: state.btcUsd == null ? "price not loaded" : null,
+    });
+
+    return list;
+  }
+
+  /* ═══════════════════════════════════════
+     SYSTEM TAB
+     ═══════════════════════════════════════ */
+
+  function renderSystem() {
+    const el = document.getElementById("view-system");
+    if (!el) return;
+    el.innerHTML = `
+      <h2 class="section-title">System · THOR <span class="accent-rule"></span></h2>
+      <p class="section-sub">Dedicated ops surface for the node plane (same live envelope as Metrics → THOR).</p>
+      <div class="panel" style="padding:1rem">${thorDashboardHTML()}</div>`;
+  }
+
+  /* ═══════════════════════════════════════
+     WALLETS TAB
+     ═══════════════════════════════════════ */
+
+  function renderWallets() {
+    const el = document.getElementById("view-wallets");
+    if (!el) return;
+    const v = state.vault || {};
+    const keys = v.keys || v.wallets || {};
+    const projectWallets = state.projects.map((p) => ({
+      id: p.wallet || p.id,
+      project: p,
+      color: accentFor(p.id),
+    }));
+
+    // unique wallet ids
+    const seen = new Set();
+    const list = [];
+    projectWallets.forEach((w) => {
+      if (seen.has(w.id)) return;
+      seen.add(w.id);
+      list.push(w);
+    });
+
+    if (!Object.keys(keys).length && !Object.keys(state.wallets).length) {
+      el.innerHTML = `
+        <h2 class="section-title">Wallets <span class="accent-rule"></span></h2>
+        <div class="panel" style="padding:1.5rem;text-align:center">
+          <p style="color:var(--ink-dim)">No invoice keys in browser Vault yet.</p>
+          <p class="mono" style="font-size:0.75rem;color:var(--ink-faint);margin:0.5rem 0 1rem">Secrets never ship in git · key: ${esc(VAULT_KEY)}</p>
+          <button type="button" class="btn btn-primary" id="open-vault-wallets"><i class="fa-solid fa-key"></i> Open Vault</button>
+        </div>
+        <div class="wallets-grid mt-3">
+          ${list
+            .map(
+              (w) => `<div class="wallet-card panel" style="border-left:4px solid ${escAttr(w.color)}">
+              <div class="flex items-center gap-2">${iconBadge(w.project.icon, w.color)}
+                <div><strong>${esc(w.project.name)}</strong><div class="mono" style="font-size:0.68rem;color:var(--ink-faint)">${esc(w.id)}</div></div>
+              </div>
+              <div class="bal">—</div>
+              <div class="usd">key not set</div>
+            </div>`
+            )
+            .join("")}
+        </div>`;
+      const b = document.getElementById("open-vault-wallets");
+      if (b) b.addEventListener("click", openVaultModal);
+      return;
+    }
+
+    const cards = list
+      .map((w) => {
+        const bal = state.wallets[w.id];
+        const hasKey = !!(keys[w.id] && String(keys[w.id]).trim());
+        if (!hasKey) {
+          return `<div class="wallet-card panel" style="border-left:4px solid ${escAttr(w.color)}">
+            <div class="flex items-center gap-2">${iconBadge(w.project.icon, w.color)}
+              <div><strong>${esc(w.project.name)}</strong><div class="mono" style="font-size:0.68rem;color:var(--ink-faint)">${esc(w.id)}</div></div>
+            </div>
+            <div class="bal">—</div>
+            <div class="usd">no key in vault</div>
+          </div>`;
+        }
+        if (!bal) {
+          return `<div class="wallet-card panel" style="border-left:4px solid ${escAttr(w.color)}">
+            <div class="flex items-center gap-2">${iconBadge(w.project.icon, w.color)}
+              <div><strong>${esc(w.project.name)}</strong></div>
+            </div>
+            <div class="bal">…</div>
+            <div class="usd">pending</div>
+          </div>`;
+        }
+        if (!bal.ok) {
+          return `<div class="wallet-card panel" style="border-left:4px solid ${escAttr(w.color)}">
+            <div class="flex items-center gap-2">${iconBadge(w.project.icon, w.color)}
+              <div><strong>${esc(w.project.name)}</strong></div>
+            </div>
+            ${unavailableHTML("Balance unavailable", bal.path || w.id, bal.error)}
+          </div>`;
+        }
+        const usd =
+          state.btcUsd && bal.sats != null
+            ? "$" + ((Number(bal.sats) / 1e8) * state.btcUsd).toFixed(2)
+            : "";
+        return `<div class="wallet-card panel" style="border-left:4px solid ${escAttr(w.color)}">
+          <div class="flex items-center gap-2">${iconBadge(w.project.icon, w.color)}
+            <div><strong>${esc(w.project.name)}</strong>
+              <div class="mono" style="font-size:0.68rem;color:var(--ink-faint)">${esc(bal.name || w.id)}</div>
+            </div>
+          </div>
+          <div class="bal">${esc(fmtNum(bal.sats, "sats"))}</div>
+          <div class="usd">${esc(usd)}</div>
+          ${metricBar(Math.min(100, Math.log10((Number(bal.sats) || 1) + 1) * 15), "", `--bar-c:${w.color}`)}
+        </div>`;
+      })
+      .join("");
+
+    el.innerHTML = `
+      <div class="flex justify-between items-center flex-wrap gap-2 mb-3">
+        <h2 class="section-title" style="margin:0">Wallets <span class="accent-rule"></span></h2>
+        <button type="button" class="btn btn-ghost" id="open-vault-wallets2"><i class="fa-solid fa-key"></i> Vault</button>
+      </div>
+      <div class="wallets-grid">${cards}</div>`;
+    const b = document.getElementById("open-vault-wallets2");
+    if (b) b.addEventListener("click", openVaultModal);
+  }
+
+  /* ═══════════════════════════════════════
+     DOCS TAB
+     ═══════════════════════════════════════ */
+
+  function renderDocs() {
+    const el = document.getElementById("view-docs");
+    if (!el) return;
+    if (!state.selectedDoc) state.selectedDoc = DOCS_CATALOG[0];
+
+    const list = DOCS_CATALOG.map((fn) => {
+      const cached = state.docs[fn];
+      const preview =
+        cached && cached.ok && typeof cached.data === "string"
+          ? cached.data.split("\n").find((l) => l.trim() && !l.startsWith("#")) || ""
+          : "";
+      return `<button type="button" class="doc-item ${state.selectedDoc === fn ? "active" : ""}" data-doc="${escAttr(fn)}">
+        <div class="fn">${esc(fn)}</div>
+        ${preview ? `<div class="preview">${esc(preview.slice(0, 80))}</div>` : ""}
+      </button>`;
+    }).join("");
+
+    el.innerHTML = `<div class="docs-layout">
+      <nav class="docs-list panel">${list}</nav>
+      <div class="doc-viewer panel" id="doc-viewer"><div class="loading-state"><div class="spinner"></div></div></div>
+    </div>`;
+
+    el.querySelectorAll("[data-doc]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        state.selectedDoc = btn.dataset.doc;
+        renderDocs();
+      });
+    });
+    loadAndShowDoc(state.selectedDoc);
+  }
+
+  async function loadAndShowDoc(fn) {
+    const viewer = document.getElementById("doc-viewer");
+    if (!viewer) return;
+    if (!state.docs[fn]) {
+      const r = await loadData("/docs/" + fn, { asText: true });
+      state.docs[fn] = r;
+    }
+    const r = state.docs[fn];
+    if (!r.ok) {
+      viewer.innerHTML = unavailableHTML("Doc unavailable", r.path, r.error);
+      return;
+    }
+    const md = r.data || "";
+    let html = "";
+    try {
+      if (typeof marked !== "undefined") {
+        marked.setOptions({ breaks: true, gfm: true });
+        html = marked.parse(md);
+      } else {
+        html = `<pre class="mono">${esc(md)}</pre>`;
       }
+    } catch (e) {
+      html = `<pre class="mono">${esc(md)}</pre>`;
     }
-  };
-  Vault.isReadOnly = function(w){ return VaultX.isRO(w); };
-  const _chip = Vault.updateStatusChip.bind(Vault);
-  Vault.updateStatusChip = function(){
-    _chip();
-    const el=document.getElementById('vault-status');
-    if(!el) return;
-    const ro=Object.values(Vault.data.walletRO||{}).filter(Boolean).length;
-    if(ro && this.keyCount()) el.textContent = el.textContent + ' · '+ro+' RO';
-  };
-})();
+    // TOC from headings
+    const toc = [];
+    const htmlWithIds = html.replace(/<h([23])>(.*?)<\/h\1>/gi, (_, level, text) => {
+      const id = "h-" + text.replace(/<[^>]+>/g, "").replace(/\s+/g, "-").toLowerCase().slice(0, 40);
+      toc.push({ level, id, text: text.replace(/<[^>]+>/g, "") });
+      return `<h${level} id="${escAttr(id)}">${text}</h${level}>`;
+    });
+    const tocHtml =
+      toc.length > 2
+        ? `<div class="doc-toc">${toc.map((t) => `<a href="#${escAttr(t.id)}">${esc(t.text)}</a>`).join("")}</div>`
+        : "";
 
-const InvoiceUI = {
-  open(){
-    if(Vault.data.blockBulkSend){ toast('Spend flows blocked in Vault','error'); return; }
-    if(typeof Gate!=='undefined' && Gate.isUnlocked && !Gate.isUnlocked()){ toast('Unlock HQ first','info'); return; }
-    const sel=document.getElementById('inv-wallet');
-    if(sel){
-      sel.innerHTML=PROJECTS.map(p=>{
-        const ro=Vault.isReadOnly?.(p.wallet);
-        const has=Vault.hasWallet(p.wallet);
-        return `<option value="${p.wallet}" ${!has||ro?'disabled':''}>${p.name} · ${p.wallet}${ro?' (RO)':!has?' (no key)':''}</option>`;
-      }).join('');
+    viewer.innerHTML = `
+      <div class="flex justify-between items-center mb-2">
+        <h2 class="display" style="margin:0;font-size:1.1rem">${esc(fn)}</h2>
+        <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">${esc(r.path)}</span>
+      </div>
+      ${tocHtml}
+      <div class="md-body">${htmlWithIds}</div>`;
+  }
+
+  /* ═══════════════════════════════════════
+     AGENTS TAB
+     ═══════════════════════════════════════ */
+
+  function renderAgents() {
+    const el = document.getElementById("view-agents");
+    if (!el) return;
+    if (!state.agents.length) {
+      el.innerHTML = unavailableHTML("Agents unavailable", "/agents.json");
+      return;
     }
-    document.getElementById('inv-preview')?.classList.add('hidden');
-    const c=document.getElementById('inv-confirm'); if(c) c.value='';
-    document.getElementById('invoice-backdrop').classList.remove('hidden');
-  },
-  close(){ document.getElementById('invoice-backdrop').classList.add('hidden'); },
-  async create(){
-    const wallet=document.getElementById('inv-wallet')?.value;
-    const sats=parseInt(document.getElementById('inv-sats')?.value,10);
-    const memo=(document.getElementById('inv-memo')?.value||'HQ invoice').trim();
-    const conf=(document.getElementById('inv-confirm')?.value||'').trim();
-    if(!wallet||!Vault.hasWallet(wallet)){ toast('Pick wallet with key','error'); return; }
-    if(Vault.isReadOnly?.(wallet)){ toast('Wallet is RO','error'); return; }
-    if(!sats||sats<1){ toast('Enter sats','error'); return; }
-    if(conf!=='INVOICE'){ toast('Type INVOICE to arm','error'); return; }
-    const prev=document.getElementById('inv-preview');
-    if(prev){
-      prev.classList.remove('hidden');
-      prev.textContent='PREVIEW\nwallet: '+wallet+'\namount: '+sats+' sats\nmemo: '+memo+'\nnode: '+(Vault.data.nodeUrl||'')+'\n\nPOST not auto-fired.';
+    // Map agent colors away from pure grey — use project palette if needed
+    const cards = state.agents
+      .map((a) => {
+        let c = a.color || "#a78bfa";
+        // if grey-ish from JSON, retint
+        if (isNearGrey(c)) c = "#a78bfa";
+        const initials = (a.name || "?").slice(0, 2).toUpperCase();
+        return `<article class="agent-card panel" style="--agent-c:${escAttr(c)};border-left:4px solid ${escAttr(c)}">
+          ${a.lead ? `<div class="lead-badge"><span class="status-pill violet">lead</span></div>` : ""}
+          <div class="agent-avatar">${esc(initials)}</div>
+          <h3>${esc(a.name)}</h3>
+          <div class="role">${esc(a.role || "")}</div>
+          <p class="motto">“${esc(a.motto || "")}”</p>
+          <div class="mono" style="font-size:0.72rem;color:var(--ink-faint)">${esc(a.nip05 || "")}</div>
+          <div class="mono mt-1" style="font-size:0.65rem;color:var(--ink-faint)">${esc(a.file || "")}</div>
+        </article>`;
+      })
+      .join("");
+
+    el.innerHTML = `
+      <h2 class="section-title">Agents <span class="accent-rule"></span></h2>
+      <p class="section-sub">Personas from agents.json · NIP-05 identities on giveabit.io</p>
+      <div class="agents-grid">${cards}</div>`;
+  }
+
+  function isNearGrey(hex) {
+    try {
+      const h = hex.replace("#", "");
+      if (h.length < 6) return false;
+      const r = parseInt(h.slice(0, 2), 16);
+      const g = parseInt(h.slice(2, 4), 16);
+      const b = parseInt(h.slice(4, 6), 16);
+      return Math.max(r, g, b) - Math.min(r, g, b) < 18;
+    } catch {
+      return false;
     }
-    toast('Invoice preview only','info');
   }
-};
 
-const DomainInventory = {
-  render(){
-    const el=document.getElementById('domain-table'); if(!el) return;
-    const rows=[
-      ...PROJECTS.filter(p=>p.url).map(p=>{
-        const d=state.projects[p.id]||{};
-        let host='—'; try{ host=new URL(p.url).host; }catch(_){ host=p.url; }
-        return {name:p.name,host,url:p.url,live:d.liveReachable,ms:d.statusMs,color:p.color};
-      }),
-      {name:'HQ',host:'hq.giveabit.io',url:'https://hq.giveabit.io',live:true,ms:null,color:'#c45f00'},
-      {name:'HQ Pages',host:'giveabit-hq.pages.dev',url:'https://giveabit-hq.pages.dev',live:true,ms:null,color:'#8a5a00'},
-      {name:'Satohash API',host:'api.satohash.io',url:'https://api.satohash.io/health',live:state.satohash?.ok,ms:null,color:'#8a5a00'},
-    ];
-    el.innerHTML=rows.map(r=>`<div class="domain-row">
-      <div><span class="font-semibold" style="border-left:3px solid ${r.color};padding-left:6px">${r.name}</span>
-      <div class="mono text-[10px] text-[var(--ink-faint)]">${r.host}</div></div>
-      <div class="text-right mono text-xs">
-        <span class="status-pill ${r.live===true?'green':r.live===false?'red':'gray'}">${r.live===true?'up':r.live===false?'down':'—'}</span>
-        ${r.ms!=null?'<span class="latency-badge">'+r.ms+'ms</span>':''}
-        <a class="underline ml-1" href="${r.url}" target="_blank" rel="noopener">open</a>
-      </div></div>`).join('');
-  }
-};
+  /* ═══════════════════════════════════════
+     DOMAINS TAB
+     ═══════════════════════════════════════ */
 
-const BudgetRunway = {
-  KEY:'hq_budget_monthly_sats',
-  load(){ const el=document.getElementById('budget-monthly'); if(el) el.value=localStorage.getItem(this.KEY)||''; this.render(); },
-  save(){ const el=document.getElementById('budget-monthly'); if(!el) return; localStorage.setItem(this.KEY, el.value||''); toast('Budget saved','success'); this.render(); },
-  render(){
-    const el=document.getElementById('budget-panel'); if(!el) return;
-    const monthly=parseFloat(localStorage.getItem(this.KEY)||'0')||0;
-    const total=PROJECTS.reduce((a,p)=>a+((state.projects[p.id]||{}).balanceSats||0),0);
-    const months=monthly>0?(total/monthly):null;
-    const usdM=monthly&&btcUsdPrice?fmt.usd(monthly/1e8*btcUsdPrice):'—';
-    const pct=monthly>0?Math.min(100,Math.round((total/(monthly*12))*100)):0;
-    el.innerHTML=`<div>Treasury: <strong>${fmt.sats(total)}</strong> sats</div>
-      <div>Burn: <strong>${fmt.sats(monthly)}</strong> /mo (${usdM})</div>
-      <div>Runway: <strong>${months!=null?months.toFixed(1)+' mo':'set burn'}</strong></div>
-      <div class="budget-bar mt-2"><div class="budget-fill" style="width:${pct}%"></div></div>`;
-  }
-};
+  function renderDomains() {
+    const el = document.getElementById("view-domains");
+    if (!el) return;
+    const rows = [];
 
-const LocalBoards = {
-  KEY_COMP:'hq_competitor_notes_v1',
-  load(){ const el=document.getElementById('competitor-notes'); if(el) el.value=localStorage.getItem(this.KEY_COMP)||''; },
-  saveCompetitors(){ const el=document.getElementById('competitor-notes'); if(!el) return; localStorage.setItem(this.KEY_COMP, el.value); toast('Saved','success'); }
-};
-
-const UpgradesBoard = {
-  items:[
-    ['Gate password + AES vault','security'],['Hover tips system','ux'],['Live metrics pipes','metrics'],
-    ['Vault health scorecard','keys'],['Show/hide + last-4 masks','keys'],['Per-wallet RO flags','keys'],
-    ['Test GH / Test LNbits / Diagnose','keys'],['Bulk paste keys','keys'],['Manual BTC FX','keys'],
-    ['Block Bulk Send + WIPE gate','keys'],['Import/export vault','keys'],['Ops board + Domains','ops'],
-    ['Budget runway','ops'],['Board pack export','pitch'],['Invoice preview gate','ln'],['Docs Diff','docs'],
-  ],
-  render(){
-    const el=document.getElementById('upgrades-shipped'); if(!el) return;
-    el.innerHTML=this.items.map(([t,tag])=>`<div class="upgrade-card"><h4>${t}</h4><p class="mono">${tag} · SHIPPED</p></div>`).join('');
-  }
-};
-
-function exportBoardPack(){
-  let total=0,live=0,health=0,issues=0;
-  PROJECTS.forEach(p=>{ const d=state.projects[p.id]||{}; if(d.walletOk) total+=d.balanceSats||0; if(d.liveReachable) live++; health+=healthScore(d); issues+=d.issues||0; });
-  const avg=Math.round(health/Math.max(PROJECTS.length,1));
-  const g=typeof GrokUsage!=='undefined'?GrokUsage.get():{weekPct:'—',buildPct:'—'};
-  const lines=[
-    '# Give A Bit — Board pack',
-    'Generated: '+new Date().toISOString(),
-    'HQ: '+location.origin,
-    '',
-    '## Snapshot',
-    '- Treasury: '+fmt.sats(total)+' sats',
-    '- Live: '+live+'/'+PROJECTS.filter(p=>p.deployed).length,
-    '- Health: '+avg,
-    '- Issues: '+issues,
-    '- SuperGrok: '+g.weekPct+'% · Build: '+g.buildPct+'%',
-    '- Vault keys: '+Vault.keyCount()+' (secrets omitted)',
-    '',
-    '## Products',
-    ...PROJECTS.map(p=>{ const d=state.projects[p.id]||{}; return '- **'+p.name+'**: '+statusMeta(d.status).label+' · '+(d.walletOk?fmt.sats(d.balanceSats)+' sats':'—')+' · '+(p.url||''); }),
-    '',
-    '## Blockers',
-    '- THOR thor-node.json cron (Nova)',
-    '- CF Access on hq.giveabit.io (Cam)',
-    '',
-    'Safe Harbour · Give A Bit family',
-  ];
-  const md=lines.join('\n');
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([md],{type:'text/markdown'}));
-  a.download='giveabit-board-pack-'+new Date().toISOString().slice(0,10)+'.md';
-  a.click();
-  navigator.clipboard?.writeText(md).then(()=>toast('Board pack ready','success')).catch(()=>toast('Board pack downloaded','success'));
-}
-
-const DocsX = {
-  showDiff(){
-    if(!Docs.current) return;
-    const next=document.getElementById('doc-edit').value||'';
-    const prev=Docs.rawText||'';
-    const a=prev.split('\n'), b=next.split('\n');
-    const max=Math.max(a.length,b.length);
-    const out=[];
-    for(let i=0;i<max;i++){
-      if(a[i]===b[i]) continue;
-      if(a[i]!=null && b[i]==null) out.push('<span class="diff-del">- '+escHtml(a[i])+'</span>');
-      else if(a[i]==null && b[i]!=null) out.push('<span class="diff-add">+ '+escHtml(b[i])+'</span>');
-      else { out.push('<span class="diff-del">- '+escHtml(a[i])+'</span>'); out.push('<span class="diff-add">+ '+escHtml(b[i])+'</span>'); }
-    }
-    const panel=document.getElementById('doc-diff-panel');
-    if(!panel) return;
-    panel.classList.remove('hidden');
-    panel.innerHTML=out.length?out.slice(0,400).join('\n'):'<span class="text-[var(--ink-faint)]">No line changes</span>';
-  }
-};
-
-// Docs setMode show diff btn
-(function(){
-  if(typeof Docs==='undefined') return;
-  const _set=Docs.setMode.bind(Docs);
-  Docs.setMode=function(mode){
-    _set(mode);
-    const show=mode==='edit'||!!this.current?.isNew;
-    const dd=document.getElementById('doc-diff'); if(dd) dd.classList.toggle('hidden',!show);
-    const dp=document.getElementById('doc-diff-panel'); if(dp && mode!=='edit') dp.classList.add('hidden');
-  };
-})();
-
-// Bulk send guards
-(function(){
-  if(typeof Bulk==='undefined') return;
-  const _open=Bulk.open.bind(Bulk);
-  Bulk.open=function(kind){
-    if(kind==='send' && Vault.data.blockBulkSend){ toast('Bulk Send blocked in Vault','error'); return; }
-    if(kind==='send'){
-      const allRo=PROJECTS.every(p=>Vault.isReadOnly?.(p.wallet));
-      if(allRo){ toast('All wallets RO','error'); return; }
-    }
-    return _open(kind);
-  };
-})();
-
-// switchView hooks
-(function(){
-  const _sv=switchView;
-  window.switchView=function(view){
-    _sv(view);
-    if(view==='opsboard'){ BudgetRunway.render(); LocalBoards.load(); UpgradesBoard.render(); }
-    if(view==='domains') DomainInventory.render();
-  };
-})();
-
-// Alerts thresholds
-(function(){
-  if(typeof Alerts==='undefined') return;
-  const _c=Alerts.check.bind(Alerts);
-  Alerts.check=function(){
-    const g=GrokUsage.get();
-    const warn=Vault.data.grokWarn||75, crit=Vault.data.grokCrit||90;
-    // prevent double spam: temporarily force defaults path by calling original only for stale
-    if(g.weekPct>=crit) toast('SuperGrok ≥ '+crit+'%','error');
-    else if(g.weekPct>=warn) toast('SuperGrok ≥ '+warn+'%','info');
-    if(state.statusFeed?.updatedAt){
-      const age=Date.now()-new Date(state.statusFeed.updatedAt).getTime();
-      const ban=document.getElementById('stale-banner');
-      if(ban){
-        if(age>45*60*1000){ ban.classList.remove('hidden'); ban.innerHTML='<div class="stale-banner mono">status.json is '+fmt.timeAgo(state.statusFeed.updatedAt)+' old</div>'; }
-        else ban.classList.add('hidden');
+    state.projects.forEach((p) => {
+      if (p.url) {
+        const s = (state.status && state.status.sites && state.status.sites[p.id]) || {};
+        rows.push({
+          name: p.name,
+          url: p.url,
+          group: "Suite",
+          color: accentFor(p.id),
+          status: s.ok === true ? "green" : s.ok === false ? "red" : p.deployed === false ? "amber" : "unknown",
+          ms: s.ms,
+          tip: p.tagline || "",
+        });
       }
+    });
+
+    if (state.tools && Array.isArray(state.tools.groups)) {
+      state.tools.groups.forEach((g) => {
+        (g.links || []).forEach((link) => {
+          if (!link.url) return;
+          // skip duplicates already in suite
+          if (rows.some((r) => r.url === link.url)) return;
+          rows.push({
+            name: link.name,
+            url: link.url,
+            group: g.label || g.id,
+            color: "#a78bfa",
+            status: "unknown",
+            ms: null,
+            tip: link.tip || "",
+          });
+        });
+      });
     }
-  };
-})();
 
-// RO badges in wallets if renderWallets exists - monkey patch after render
-(function(){
-  const _rw=typeof renderWallets==='function'?renderWallets:null;
-  if(!_rw) return;
-  window.renderWallets=function(){
-    _rw();
-    // inject RO badges via re-query - simple re-render of key column not easy; skip if already has
-  };
-})();
+    if (!rows.length) {
+      el.innerHTML = unavailableHTML("No domains", "/tools.json + /projects.json");
+      return;
+    }
 
-// keyboard extras
-document.addEventListener('keydown', e=>{
-  if(typeof isTyping==='function' && isTyping()) return;
-  if(e.key==='o') switchView('opsboard');
-  if(e.key==='D') switchView('domains');
-  if(e.key==='i') InvoiceUI.open();
-  if(e.key==='f') UI.toggleFocus?.();
-  if(e.key==='s') UI.copyShare?.();
-});
+    const tr = rows
+      .map(
+        (r) => `<tr style="--row-accent:${escAttr(r.color)}">
+        <td><strong style="color:var(--ink)">${esc(r.name)}</strong></td>
+        <td><span class="chip">${esc(r.group)}</span></td>
+        <td>${statusPill(r.status, r.status)}</td>
+        <td class="mono">${r.ms != null ? esc(fmtMs(r.ms)) : "—"}</td>
+        <td><a href="${escAttr(r.url)}" target="_blank" rel="noopener" data-tip="${escAttr(r.tip)}">${esc(r.url)}</a></td>
+      </tr>`
+      )
+      .join("");
 
-// enhance help
-const _help = UI.help;
-UI.help = function(){
-  document.getElementById('help-body').innerHTML = [
-    ['/','Command search'],['g','Cards'],['l','List'],['p','Pipeline'],['y','Analytics + pipes'],['k','Metrics lab'],
-    ['n','Network'],['t','Activity'],['m','Matrix'],['w','Wallets'],['d','Docs'],['a','Agents'],
-    ['o','Ops board'],['D','Domains'],['r','Refresh'],['v','Vault'],['i','Invoice'],['P','Pitch'],
-    ['L','Lock HQ'],['f','Focus'],['s','Share URL'],['?','Help'],['esc','Close'],
-  ].map(pair=>'<span class="k">'+pair[0]+'</span><span>'+pair[1]+'</span>').join('');
-  document.getElementById('help-backdrop').classList.remove('hidden');
-};
+    el.innerHTML = `
+      <h2 class="section-title">Domains <span class="accent-rule"></span></h2>
+      <p class="section-sub">URLs from projects.json and tools.json</p>
+      <div class="table-wrap"><table class="data">
+        <thead><tr><th>Name</th><th>Group</th><th>Status</th><th>Latency</th><th>URL</th></tr></thead>
+        <tbody>${tr}</tbody>
+      </table></div>`;
+  }
 
-// bootAfterGate extras
-const _bag = bootAfterGate;
-bootAfterGate = async function(){
-  await _bag();
-  try{ BudgetRunway.load(); LocalBoards.load(); UpgradesBoard.render(); }catch(_){}
-  console.log('%cGive A Bit HQ v2.5.3 — gate + vault keys + ops board','color:#c45f00;font-weight:bold');
-};
+  /* ═══════════════════════════════════════
+     DRAWER
+     ═══════════════════════════════════════ */
 
+  function openDrawer(projectId) {
+    const p = state.projects.find((x) => x.id === projectId);
+    if (!p) return;
+    const color = accentFor(p.id);
+    const m = state.metrics[p.id];
+    const health = projectHealth(p);
+    const backdrop = document.getElementById("drawer-backdrop");
+    const drawer = document.getElementById("drawer");
+    const body = document.getElementById("drawer-body");
+    const head = document.getElementById("drawer-head");
+    if (!drawer || !body || !head) return;
 
-/* BOOT v2.5 — gate first */
-(async function boot(){
-  if(typeof stampVersion==='function') stampVersion();
-  Tips.init();
-  Vault.load();
-  if(typeof QuickUrls!=='undefined') QuickUrls.render();
-  const ok = await Gate.ensure();
-  if(ok) await bootAfterGate();
+    head.innerHTML = `
+      ${iconBadge(p.icon, color)}
+      <div class="grow">
+        <div class="flex items-center gap-2 flex-wrap">
+          <strong class="display" style="font-size:1.1rem">${esc(p.name)}</strong>
+          ${statusPill(health)}
+        </div>
+        <div class="mono" style="font-size:0.68rem;color:var(--ink-faint);margin-top:0.2rem">${esc(p.category || "")} · ${esc(p.repo || "")}</div>
+      </div>
+      <button type="button" class="btn btn-icon btn-ghost" id="drawer-close" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    `;
+
+    let metricsBlock = "";
+    if (m && m.ok) {
+      const kpis = topKpis(m.data, 6);
+      const series = primarySeries(m.data);
+      metricsBlock = `
+        <h4>KPIs</h4>
+        <div class="kpi-grid">${kpis.map(kpiCell).join("")}</div>
+        ${series ? `<h4>Trend</h4>${sparkline(seriesPoints(series, 15), color, 280, 48)}${trendChart(series, color)}` : ""}
+        ${m.data.funnels && m.data.funnels.length ? `<h4>Funnel</h4>${m.data.funnels.map((f) => funnelHTML(f, color)).join("")}` : ""}
+      `;
+    } else {
+      metricsBlock = unavailableHTML("Metrics", m ? m.path : `/metrics/${p.id}.json`, m ? m.error : "");
+    }
+
+    const s = (state.status && state.status.sites && state.status.sites[p.id]) || {};
+
+    body.innerHTML = `
+      <p style="color:var(--ink-dim);font-size:0.9rem;margin:0">${esc(p.pitch || p.tagline || "")}</p>
+      <div class="stack-chips mt-2">${(p.stack || []).map((t) => `<span class="chip">${esc(t)}</span>`).join("")}</div>
+      <h4>Live status</h4>
+      <div class="kpi-grid">
+        <div class="kpi-cell"><div class="label">HTTP</div><div class="value" style="font-size:1rem">${s.status != null ? esc(String(s.status)) : "—"}</div></div>
+        <div class="kpi-cell"><div class="label">Latency</div><div class="value" style="font-size:1rem">${s.ms != null ? esc(fmtMs(s.ms)) : "—"}</div></div>
+        <div class="kpi-cell"><div class="label">Deployed</div><div class="value" style="font-size:1rem">${p.deployed ? "yes" : "no"}</div></div>
+      </div>
+      ${metricsBlock}
+      <h4>Links</h4>
+      <div class="flex flex-wrap gap-2">
+        ${p.url ? `<a class="btn btn-sm btn-primary" href="${escAttr(p.url)}" target="_blank" rel="noopener">Open site</a>` : ""}
+        <button type="button" class="btn btn-sm btn-ghost" data-goto-metrics="${escAttr(p.id)}">Metrics lab</button>
+      </div>
+    `;
+
+    backdrop.classList.add("open");
+    drawer.classList.add("open");
+    document.getElementById("drawer-close")?.addEventListener("click", closeDrawer);
+    backdrop.onclick = closeDrawer;
+    body.querySelector("[data-goto-metrics]")?.addEventListener("click", () => {
+      closeDrawer();
+      state.selectedMetricsId = p.id;
+      setTab("metrics");
+    });
+    bindTooltips();
+  }
+
+  function closeDrawer() {
+    document.getElementById("drawer-backdrop")?.classList.remove("open");
+    document.getElementById("drawer")?.classList.remove("open");
+  }
+
+  /* ═══════════════════════════════════════
+     VAULT MODAL
+     ═══════════════════════════════════════ */
+
+  function openVaultModal() {
+    const modal = document.getElementById("vault-modal");
+    if (!modal) return;
+    const v = state.vault || {};
+    const keys = v.keys || v.wallets || {};
+    const fields = state.projects
+      .map((p) => {
+        const wid = p.wallet || p.id;
+        return `<div class="field">
+          <label>${esc(p.name)} · ${esc(wid)}</label>
+          <input type="password" data-wallet-key="${escAttr(wid)}" value="${escAttr(keys[wid] || "")}" placeholder="invoice key only" autocomplete="off"/>
+        </div>`;
+      })
+      .join("");
+
+    modal.querySelector(".mb").innerHTML = `
+      <p style="font-size:0.8rem;color:var(--ink-faint);margin:0 0 1rem">Keys stay in <span class="mono">${esc(VAULT_KEY)}</span> on this origin only. Never commit secrets.</p>
+      <div class="field">
+        <label>LNbits proxy URL</label>
+        <input id="vault-proxy-url" value="${escAttr(v.proxyUrl || v.lnbitsProxyUrl || "https://giveabit-lnbits-proxy.kitsboy.workers.dev")}"/>
+        <div class="hint">Preferred balance path (v2.7+)</div>
+      </div>
+      <div class="field">
+        <label>Proxy token</label>
+        <input id="vault-proxy-token" type="password" value="${escAttr(v.proxyToken || "")}" autocomplete="off"/>
+      </div>
+      <div class="field">
+        <label>Upstream node URL (fallback)</label>
+        <input id="vault-node-url" value="${escAttr(v.nodeUrl || "http://api.satohash.io:5102")}"/>
+      </div>
+      <div class="field">
+        <label><input type="checkbox" id="vault-use-proxy" ${v.useProxy !== false ? "checked" : ""}/> Use proxy</label>
+      </div>
+      <h3 class="display" style="font-size:0.95rem;margin:1rem 0 0.5rem">Invoice keys</h3>
+      ${fields}
+    `;
+    modal.classList.add("open");
+  }
+
+  function saveVaultFromModal() {
+    const modal = document.getElementById("vault-modal");
+    if (!modal) return;
+    const keys = {};
+    modal.querySelectorAll("[data-wallet-key]").forEach((inp) => {
+      const k = inp.value.trim();
+      if (k) keys[inp.dataset.walletKey] = k;
+    });
+    const next = {
+      ...state.vault,
+      keys,
+      proxyUrl: document.getElementById("vault-proxy-url")?.value.trim() || "",
+      proxyToken: document.getElementById("vault-proxy-token")?.value.trim() || "",
+      nodeUrl: document.getElementById("vault-node-url")?.value.trim() || "",
+      useProxy: !!document.getElementById("vault-use-proxy")?.checked,
+    };
+    saveVault(next);
+    modal.classList.remove("open");
+    refreshWallets().then(() => {
+      renderPortfolioStrip();
+      updateVaultChip();
+      if (state.tab === "wallets") renderWallets();
+    });
+  }
+
+  /* ═══════════════════════════════════════
+     TOOLTIPS
+     ═══════════════════════════════════════ */
+
+  let tipEl = null;
+  function bindTooltips() {
+    if (!tipEl) {
+      tipEl = document.createElement("div");
+      tipEl.className = "tip-bubble";
+      document.body.appendChild(tipEl);
+    }
+    document.querySelectorAll("[data-tip]").forEach((el) => {
+      if (el._tipBound) return;
+      el._tipBound = true;
+      el.addEventListener("mouseenter", (e) => {
+        const t = el.getAttribute("data-tip");
+        if (!t) return;
+        const title = el.getAttribute("data-tip-title");
+        tipEl.innerHTML = (title ? `<div class="tt">${esc(title)}</div>` : "") + esc(t);
+        tipEl.classList.add("show");
+        moveTip(e);
+      });
+      el.addEventListener("mousemove", moveTip);
+      el.addEventListener("mouseleave", () => tipEl.classList.remove("show"));
+    });
+  }
+
+  function moveTip(e) {
+    if (!tipEl) return;
+    const x = Math.min(e.clientX + 14, window.innerWidth - 290);
+    const y = Math.min(e.clientY + 14, window.innerHeight - 80);
+    tipEl.style.left = x + "px";
+    tipEl.style.top = y + "px";
+  }
+
+  /* ═══════════════════════════════════════
+     INIT
+     ═══════════════════════════════════════ */
+
+  function init() {
+    state.vault = loadVault();
+    try {
+      state.theme = localStorage.getItem(THEME_KEY) || "ink";
+    } catch {
+      state.theme = "ink";
+    }
+    try {
+      state.tab = localStorage.getItem(TAB_KEY) || "cards";
+    } catch {
+      state.tab = "cards";
+    }
+    setTheme(state.theme);
+
+    // Nav
+    document.querySelectorAll(".nav-tab").forEach((btn) => {
+      btn.style.setProperty("--tab-accent", TAB_ACCENTS[btn.dataset.tab] || "#ff8c00");
+      btn.addEventListener("click", () => setTab(btn.dataset.tab));
+    });
+
+    // Theme
+    document.querySelectorAll(".theme-dot").forEach((d) => {
+      d.addEventListener("click", () => setTheme(d.dataset.themePick));
+    });
+
+    document.getElementById("btn-refresh")?.addEventListener("click", () => {
+      toast("Refreshing…", "ok");
+      bootstrap();
+    });
+    document.getElementById("btn-vault")?.addEventListener("click", openVaultModal);
+    document.getElementById("vault-save")?.addEventListener("click", saveVaultFromModal);
+    document.getElementById("vault-cancel")?.addEventListener("click", () => {
+      document.getElementById("vault-modal")?.classList.remove("open");
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeDrawer();
+        document.getElementById("vault-modal")?.classList.remove("open");
+      }
+      if (e.target.matches("input,textarea,select")) return;
+      const map = {
+        1: "cards",
+        2: "list",
+        3: "metrics",
+        4: "pipeline",
+        5: "network",
+        6: "system",
+        7: "wallets",
+        8: "docs",
+        9: "agents",
+        0: "domains",
+      };
+      if (map[e.key]) setTab(map[e.key]);
+      if (e.key === "r") bootstrap();
+      if (e.key === "v") openVaultModal();
+    });
+
+    bootstrap();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 })();
