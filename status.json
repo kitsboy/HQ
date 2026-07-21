@@ -1,53 +1,53 @@
 {
-  "updatedAt": "2026-07-21T18:30:27.015Z",
+  "updatedAt": "2026-07-21T19:00:25.451Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 837,
+      "ms": 314,
       "url": "https://giveabit.io"
     },
     "satohash": {
       "ok": true,
       "status": 200,
-      "ms": 274,
+      "ms": 185,
       "url": "https://satohash.io"
     },
     "katoa": {
       "ok": true,
       "status": 200,
-      "ms": 202,
+      "ms": 187,
       "url": "https://katoa.org"
     },
     "stranded": {
       "ok": true,
       "status": 200,
-      "ms": 203,
+      "ms": 298,
       "url": "https://stranded.giveabit.io"
     },
     "tadbuy": {
       "ok": true,
       "status": 200,
-      "ms": 175,
+      "ms": 249,
       "url": "https://tadbuy.giveabit.io"
     },
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 215,
+      "ms": 172,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 235,
+      "ms": 349,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
       "ok": true,
       "status": 200,
-      "ms": 317,
+      "ms": 188,
       "url": "https://openstrata.giveabit.io"
     },
     "btcminiscript": {
@@ -59,600 +59,12 @@
   },
   "feeds": {
     "satohashApi": {
-      "ok": true,
-      "status": 200,
-      "ms": 50,
+      "ok": false,
+      "status": 502,
+      "ms": 32,
       "healthUrl": "https://api.satohash.io/health"
     },
-    "satohashMetrics": {
-      "schema": "gab.product-metrics.v1",
-      "productId": "satohash",
-      "name": "Satohash",
-      "updatedAt": "2026-07-21T18:30:27.002Z",
-      "window": {
-        "label": "7d",
-        "from": "2026-07-14T18:30:27.002Z",
-        "to": "2026-07-21T18:30:27.002Z"
-      },
-      "health": {
-        "status": "green",
-        "message": "API healthy — uses demo time series until real stamp history accumulates",
-        "latencyMs": 42,
-        "uptimePct24h": 99.9,
-        "dependencies": [
-          {
-            "id": "opentimestamps-calendars",
-            "status": "green",
-            "detail": "Calendar attestations available"
-          },
-          {
-            "id": "bitcoin-anchor",
-            "status": "amber",
-            "detail": "Confirmations lag mempool — normal"
-          },
-          {
-            "id": "api.satohash.io",
-            "status": "green",
-            "detail": "API serving locally"
-          },
-          {
-            "id": "nostr-relays",
-            "status": "green",
-            "detail": "Identity / NIP surfaces OK"
-          }
-        ]
-      },
-      "kpis": [
-        {
-          "key": "stamps_total",
-          "label": "Stamps (all time)",
-          "value": 3,
-          "unit": "proofs",
-          "format": "number",
-          "priority": 1,
-          "hint": "Total OpenTimestamps receipts issued through Satohash plane."
-        },
-        {
-          "key": "stamps_24h",
-          "label": "Stamps 24h",
-          "value": 0,
-          "unit": "proofs",
-          "delta": 0,
-          "deltaUnit": "%",
-          "format": "number",
-          "priority": 1,
-          "hint": "Daily stamping velocity."
-        },
-        {
-          "key": "pending",
-          "label": "Pending confirm",
-          "value": 0,
-          "unit": "proofs",
-          "format": "number",
-          "priority": 2,
-          "hint": "Waiting on calendar → Bitcoin confirmation."
-        },
-        {
-          "key": "confirmed",
-          "label": "Confirmed 7d",
-          "value": 3,
-          "unit": "proofs",
-          "format": "number",
-          "priority": 2,
-          "hint": "Fully Bitcoin-anchored proofs in window."
-        },
-        {
-          "key": "confirm_rate",
-          "label": "Confirm rate",
-          "value": 100,
-          "unit": "%",
-          "format": "percent",
-          "priority": 1,
-          "hint": "confirmed / (confirmed+failed) in window. Target ≥ 95%."
-        },
-        {
-          "key": "family_free",
-          "label": "Family free stamps",
-          "value": 0,
-          "unit": "proofs",
-          "format": "number",
-          "priority": 3,
-          "hint": "Internal suite usage — tracked via client_id after launch."
-        },
-        {
-          "key": "api_clients",
-          "label": "Active API clients",
-          "value": 0,
-          "unit": "clients",
-          "format": "number",
-          "priority": 3,
-          "hint": "Distinct client_id consumers of the proof plane."
-        },
-        {
-          "key": "p50_ms",
-          "label": "Stamp p50",
-          "value": 820,
-          "unit": "ms",
-          "format": "duration",
-          "priority": 4,
-          "hint": "Median stamp API latency."
-        },
-        {
-          "key": "p95_ms",
-          "label": "Stamp p95",
-          "value": 2400,
-          "unit": "ms",
-          "format": "duration",
-          "priority": 4,
-          "hint": "Tail latency."
-        },
-        {
-          "key": "fee_sat_vb",
-          "label": "Mempool fee hint",
-          "value": 4,
-          "unit": "sat/vB",
-          "format": "number",
-          "priority": 5,
-          "hint": "Context for anchoring cost narrative."
-        }
-      ],
-      "series": [
-        {
-          "key": "stamps_daily",
-          "label": "Stamps / day",
-          "unit": "proofs",
-          "color": "#8a5a00",
-          "points": [
-            {
-              "t": "2026-07-07T18:30:27.002Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-08T18:30:27.002Z",
-              "v": 4
-            },
-            {
-              "t": "2026-07-09T18:30:27.002Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-10T18:30:27.002Z",
-              "v": 3
-            },
-            {
-              "t": "2026-07-11T18:30:27.002Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-12T18:30:27.002Z",
-              "v": 5
-            },
-            {
-              "t": "2026-07-13T18:30:27.002Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-14T18:30:27.002Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-15T18:30:27.002Z",
-              "v": 2
-            },
-            {
-              "t": "2026-07-16T18:30:27.002Z",
-              "v": 3
-            },
-            {
-              "t": "2026-07-17T18:30:27.002Z",
-              "v": 2
-            },
-            {
-              "t": "2026-07-18T18:30:27.002Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-19T18:30:27.002Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-20T18:30:27.002Z",
-              "v": 5
-            },
-            {
-              "t": "2026-07-21T18:30:27.002Z",
-              "v": 1
-            }
-          ]
-        },
-        {
-          "key": "confirmed_daily",
-          "label": "Confirmed / day",
-          "unit": "proofs",
-          "color": "#1f6b3a",
-          "points": [
-            {
-              "t": "2026-07-07T18:30:27.002Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-08T18:30:27.002Z",
-              "v": 3
-            },
-            {
-              "t": "2026-07-09T18:30:27.002Z",
-              "v": 4
-            },
-            {
-              "t": "2026-07-10T18:30:27.002Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-11T18:30:27.002Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-12T18:30:27.002Z",
-              "v": 2
-            },
-            {
-              "t": "2026-07-13T18:30:27.002Z",
-              "v": 3
-            },
-            {
-              "t": "2026-07-14T18:30:27.002Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-15T18:30:27.002Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-16T18:30:27.002Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-17T18:30:27.002Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-18T18:30:27.002Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-19T18:30:27.002Z",
-              "v": 2
-            },
-            {
-              "t": "2026-07-20T18:30:27.002Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-21T18:30:27.002Z",
-              "v": 1
-            }
-          ]
-        },
-        {
-          "key": "pending_depth",
-          "label": "Pending depth",
-          "unit": "proofs",
-          "color": "#c45f00",
-          "points": [
-            {
-              "t": "2026-07-07T18:30:27.002Z",
-              "v": 47
-            },
-            {
-              "t": "2026-07-08T18:30:27.002Z",
-              "v": 46
-            },
-            {
-              "t": "2026-07-09T18:30:27.002Z",
-              "v": 48
-            },
-            {
-              "t": "2026-07-10T18:30:27.002Z",
-              "v": 45
-            },
-            {
-              "t": "2026-07-11T18:30:27.002Z",
-              "v": 37
-            },
-            {
-              "t": "2026-07-12T18:30:27.002Z",
-              "v": 43
-            },
-            {
-              "t": "2026-07-13T18:30:27.002Z",
-              "v": 41
-            },
-            {
-              "t": "2026-07-14T18:30:27.002Z",
-              "v": 48
-            },
-            {
-              "t": "2026-07-15T18:30:27.002Z",
-              "v": 41
-            },
-            {
-              "t": "2026-07-16T18:30:27.002Z",
-              "v": 43
-            },
-            {
-              "t": "2026-07-17T18:30:27.002Z",
-              "v": 44
-            },
-            {
-              "t": "2026-07-18T18:30:27.002Z",
-              "v": 35
-            },
-            {
-              "t": "2026-07-19T18:30:27.002Z",
-              "v": 40
-            },
-            {
-              "t": "2026-07-20T18:30:27.002Z",
-              "v": 49
-            },
-            {
-              "t": "2026-07-21T18:30:27.002Z",
-              "v": 44
-            }
-          ]
-        },
-        {
-          "key": "family_share",
-          "label": "Family free %",
-          "unit": "%",
-          "color": "#1a5f7a",
-          "points": [
-            {
-              "t": "2026-07-07T18:30:27.002Z",
-              "v": 23
-            },
-            {
-              "t": "2026-07-08T18:30:27.002Z",
-              "v": 24
-            },
-            {
-              "t": "2026-07-09T18:30:27.002Z",
-              "v": 24
-            },
-            {
-              "t": "2026-07-10T18:30:27.002Z",
-              "v": 22
-            },
-            {
-              "t": "2026-07-11T18:30:27.002Z",
-              "v": 25
-            },
-            {
-              "t": "2026-07-12T18:30:27.002Z",
-              "v": 22
-            },
-            {
-              "t": "2026-07-13T18:30:27.002Z",
-              "v": 23
-            },
-            {
-              "t": "2026-07-14T18:30:27.002Z",
-              "v": 20
-            },
-            {
-              "t": "2026-07-15T18:30:27.002Z",
-              "v": 23
-            },
-            {
-              "t": "2026-07-16T18:30:27.002Z",
-              "v": 22
-            },
-            {
-              "t": "2026-07-17T18:30:27.002Z",
-              "v": 20
-            },
-            {
-              "t": "2026-07-18T18:30:27.002Z",
-              "v": 24
-            },
-            {
-              "t": "2026-07-19T18:30:27.002Z",
-              "v": 23
-            },
-            {
-              "t": "2026-07-20T18:30:27.002Z",
-              "v": 25
-            },
-            {
-              "t": "2026-07-21T18:30:27.002Z",
-              "v": 21
-            }
-          ]
-        }
-      ],
-      "funnels": [
-        {
-          "id": "stamp_journey",
-          "label": "Stamp journey",
-          "steps": [
-            {
-              "id": "hash_local",
-              "label": "Local hash",
-              "count": 210,
-              "hint": "File never leaves device"
-            },
-            {
-              "id": "submit",
-              "label": "Submit stamp",
-              "count": 0,
-              "hint": "API or UI"
-            },
-            {
-              "id": "calendar",
-              "label": "Calendar attested",
-              "count": 0,
-              "hint": "OTS calendars"
-            },
-            {
-              "id": "bitcoin",
-              "label": "Bitcoin confirmed",
-              "count": 0,
-              "hint": "On-chain anchor"
-            },
-            {
-              "id": "verify",
-              "label": "User verified",
-              "count": 2,
-              "hint": "Return verify flow"
-            }
-          ]
-        }
-      ],
-      "segments": [
-        {
-          "id": "by_client",
-          "label": "By suite client_id (family free)",
-          "rows": [
-            {
-              "id": "motopass",
-              "label": "MotoPass",
-              "value": 0,
-              "meta": {
-                "offer": "passport/docs proofs"
-              }
-            },
-            {
-              "id": "katoa",
-              "label": "Katoa",
-              "value": 0,
-              "meta": {
-                "offer": "creator attestations"
-              }
-            },
-            {
-              "id": "giveabit",
-              "label": "Give A Bit",
-              "value": 0,
-              "meta": {
-                "offer": "education demos"
-              }
-            },
-            {
-              "id": "sherpacarta",
-              "label": "SherpaCarta",
-              "value": 0,
-              "meta": {
-                "offer": "governance docs"
-              }
-            },
-            {
-              "id": "public",
-              "label": "Public / other",
-              "value": 3,
-              "meta": {
-                "offer": "open stamping"
-              }
-            }
-          ]
-        }
-      ],
-      "offers": [
-        {
-          "id": "ots_stamp",
-          "title": "OpenTimestamps stamp API",
-          "for": [
-            "motopass",
-            "katoa",
-            "giveabit",
-            "sherpacarta",
-            "tadbuy",
-            "stranded",
-            "openstrata"
-          ],
-          "status": "internal",
-          "endpoint": "POST /api/stamp",
-          "hint": "Family free internal; public rate limits planned"
-        },
-        {
-          "id": "ots_verify",
-          "title": "Proof verify",
-          "for": [
-            "*"
-          ],
-          "status": "ga",
-          "endpoint": "GET /verify/:id",
-          "hint": "Court-admissible narrative"
-        },
-        {
-          "id": "public_status",
-          "title": "Public status",
-          "for": [
-            "hq"
-          ],
-          "status": "beta",
-          "endpoint": "GET /api/public/status",
-          "hint": "Wire live into HQ when API up"
-        },
-        {
-          "id": "metrics_v1",
-          "title": "Product metrics v1",
-          "for": [
-            "hq"
-          ],
-          "status": "live",
-          "endpoint": "GET /metrics.json",
-          "hint": "Published by satohash API origin"
-        }
-      ],
-      "education": [
-        {
-          "id": "mold_velocity",
-          "title": "Mold stamps/day into capacity",
-          "body": "Show 7d average × 30 as \"monthly proof capacity\" for diligence packs.",
-          "action": "Add monthly projection KPI when live API lands",
-          "severity": "plan"
-        },
-        {
-          "id": "mold_confirm",
-          "title": "Confirm rate is trust",
-          "body": "If confirm_rate < 95%, lead with calendar redundancy.",
-          "action": "Alert HQ when confirm_rate drops below 92%",
-          "severity": "risk"
-        },
-        {
-          "id": "mold_family",
-          "title": "Family free = suite moat",
-          "body": "Segment chart proves Satohash is infrastructure, not a silo.",
-          "action": "Pitch mode callout: \"Shared OTS backbone\"",
-          "severity": "opportunity"
-        },
-        {
-          "id": "mold_latency",
-          "title": "SLA table from p50/p95",
-          "body": "Publish internal SLOs: p50 < 1s, p95 < 3s for stamp accept.",
-          "action": "Export SLO table into diligence pack",
-          "severity": "info"
-        }
-      ],
-      "links": [
-        {
-          "label": "Satohash live",
-          "url": "https://satohash.io"
-        },
-        {
-          "label": "API",
-          "url": "https://api.satohash.io"
-        },
-        {
-          "label": "Schema",
-          "url": "/schemas/product-metrics.v1.schema.json"
-        }
-      ],
-      "raw": {
-        "demo": false,
-        "note": "Live metrics from satohash API"
-      }
-    }
+    "satohashMetrics": null
   },
   "node": {
     "bitcoin": {
