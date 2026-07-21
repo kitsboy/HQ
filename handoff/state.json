@@ -1,6 +1,6 @@
 {
  "schema": "gab.handoff.v1",
- "updatedAt": "2026-07-21T18:13:33.000Z",
+ "updatedAt": "2026-07-21T18:40:32.000Z",
  "agents": {
   "grok": {
    "lastSeen": "2026-07-21T12:00:00.000Z",
@@ -17,9 +17,13 @@
    ]
   },
   "kimi": {
-   "lastSeen": "2026-07-21T18:13:33.000Z",
+   "lastSeen": "2026-07-21T18:40:32.000Z",
    "focus": "satohash-vps",
    "notes": [
+    {
+     "t": "2026-07-21T18:40:32.000Z",
+     "summary": "v3.8.0: Umami CE deployed (Docker, 200MB RAM, shares Postgres), all 9 sites registered, HQ polls per-site analytics every 5 min \u2014 visitors/pageviews/bounce/sparklines on cards + Analytics tab + docs/UMAMI-SETUP.md"
+    },
     {
      "t": "2026-07-21T18:13:33.000Z",
      "summary": "v3.7.0: THOR auto-collector cron, diff-before-save, QR pay links, budget runway, PWA service worker, vault cleaned"

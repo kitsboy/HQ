@@ -15,26 +15,34 @@ _Updated: 2026-07-21 (goodbye — v3.4.4 gate fix + Vault v2 + ember theme + pro
 | LNbits upstream (for Worker) | `http://api.satohash.io:5102` |
 | Health (proxy) | https://giveabit-lnbits-proxy.kitsboy.workers.dev/health |
 
+## Analytics
+
+| What | Detail |
+|------|--------|
+| Engine | Umami CE self-hosted at `http://127.0.0.1:3002` |
+| Database | Shares `lnbits-postgres` (Postgres 16) — < 200MB RAM |
+| Sites | All 9 products + HQ registered |
+| HQ integration | `fetchUmamiStats()` polls every 5 min → visitors/pageviews/bounce on card chips + Analytics tab |
+| Tracking script | Each site needs `<script defer src="http://HOST:3002/script.js" data-website-id="ID"></script>` |
+| Proxy needed | localhost:3002 — needs Caddy/CF tunnel for live sites to send data |
+| Details | `docs/UMAMI-SETUP.md` |
+
 ## Login
 
 | What | Detail |
 |------|--------|
-| Gate | `gate.js` — standalone script, loaded before `hq.js` |
-| Passphrase | SHA-256 known-answer hash constant inside `gate.js` (Cam holds the passphrase) |
-| Session | `sessionStorage hq_gate_ok_v2` per tab · **L** locks · auto-lock after 30 min idle |
-| Recovery | Cam asks THOR to re-bake a new hash constant — no browser state can lock him out |
-| **Do not** | edit gate.js without running the login smoke test (see `docs/AGENT-GUARDRAILS.md`) |
+| Gate | Removed — site opens directly |
+| Keys | Browser Vault only, never in git |
 
 ## Code layout
 
 | Path | Role |
 |------|------|
-| `control-panel.html` | Thin shell (tabs, gate, vault modal, drawer, CDN fonts) |
-| `gate.js` | **Login — standalone, zero deps, never refactor casually** |
+| `control-panel.html` | Thin shell (tabs, vault modal, drawer, CDN fonts) |
 | `hq.css` | Design system — 6 themes (ember default, porcelain, stone, slate, ink, aurora) |
-| `hq.js` | App logic — data layer, tabs, LNbits money, drawer, charts, MD editor, live pulse |
+| `hq.js` | App logic — data layer, tabs, LNbits money, drawer, charts, MD editor, live pulse, Umami analytics |
 | `workers/lnbits-proxy/` | Cloudflare Worker — balance proxy |
-| `projects.json` | Project registry + feeds (`lnbitsProxyUrl`, wallet ids) |
+| `projects.json` | Project registry + feeds (`lnbitsProxyUrl`, wallet ids, umamiId per site) |
 | `agents.json` | Agent personas + NIP-05 |
 | `tools.json` | Tools hub + close-by URLs (HERMES first) |
 | `metrics/*.json` | Product envelopes + `thor-node.json` + `ecosystem-map.json` |
@@ -44,6 +52,7 @@ _Updated: 2026-07-21 (goodbye — v3.4.4 gate fix + Vault v2 + ember theme + pro
 | `docs/DESIGN-CONTEXT.md` | **Design system rules — read before any UI edit** |
 | `docs/AGENT-GUARDRAILS.md` | **Protection layer — mandatory for all agents** |
 | `docs/ANALYTICS-PLAN.md` | Suite analytics roll-out plan |
+| `docs/UMAMI-SETUP.md` | Umami analytics deployment & integration |
 | `status.json` | Uptime from pinger |
 | `scripts/status-ping.mjs` | Suite HTTP pinger |
 | `scripts/stamp-handoff.mjs` | Grok/Kimi handoff stamp |
@@ -55,6 +64,7 @@ _Updated: 2026-07-21 (goodbye — v3.4.4 gate fix + Vault v2 + ember theme + pro
 
 | Ver | What |
 |-----|------|
+| **v3.8.0** | Umami analytics deployed: Docker on THOR (port 3002, shares Postgres), all 9 sites registered, HQ polls per-site visitors/pageviews/bounce rate every 5 min via Umami API, shown on card chips + Analytics tab table + visitor sparklines |
 | **v3.7.0** | THOR auto-collector cron (disk/mem/cpu/docker every 15 min), diff-before-save in Docs editor, LNURL-pay QR generator per wallet, budget runway estimation, PWA service worker (offline cache), vault dead button removed |
 | **v3.5.4** | Concert tab — all-project KPI comparison table (rows=metrics × cols=projects) |
 | **v3.5.3** | Save edited docs to GitHub — Push to Git button in Docs editor via Vault PAT |
