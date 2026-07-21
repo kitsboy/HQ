@@ -1,342 +1,306 @@
 {
- "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-21T20:45:29.000Z",
- "node": {
-  "id": "THOR",
-  "hostLabel": "THOR Contabo VPS 20",
-  "stack": "Docker \u00b7 LND Neutrino \u00b7 LNbits \u00b7 satohash-api \u00b7 Hermes",
-  "region": "EU Contabo",
-  "status": "amber",
-  "services": [
-   {
-    "id": "umami",
+  "schema": "gab.thor-node.v1",
+  "updatedAt": "2026-07-21T21:00:30Z",
+  "node": {
+    "id": "THOR",
+    "hostLabel": "THOR Contabo VPS 20",
+    "stack": "Docker \u00b7 LND Neutrino \u00b7 LNbits \u00b7 satohash-api \u00b7 Hermes",
+    "region": "EU Contabo",
     "status": "green",
-    "detail": "Up (running)"
-   },
-   {
-    "id": "satohash-satohash-api-1",
-    "status": "healthy",
-    "detail": "Up (healthy)"
-   },
-   {
-    "id": "satohash-redis-1",
-    "status": "green",
-    "detail": "Up (running)"
-   },
-   {
-    "id": "lnbits",
-    "status": "green",
-    "detail": "Up (running)"
-   },
-   {
-    "id": "lnbits-postgres",
-    "status": "healthy",
-    "detail": "Up (healthy)"
-   },
-   {
-    "id": "lnd",
-    "status": "healthy",
-    "detail": "Up (healthy)"
-   }
-  ]
- },
- "bitcoin": {
-  "ok": true,
-  "chain": "main",
-  "blocks": 903421,
-  "headers": 903421,
-  "verificationProgress": 0.99999,
-  "pruned": true,
-  "pruneTargetGB": 50,
-  "sizeOnDiskGB": 48.2,
-  "difficulty": 112000000000000,
-  "mempoolTx": 18420,
-  "mempoolMB": 42,
-  "minRelayFeeSatVb": 1,
-  "connections": 12,
-  "ibd": false,
-  "hint": "Pruned full node: sovereignty + verify path. Not archival."
- },
- "lightning": {
-  "ok": true,
-  "implementation": "lnd",
-  "syncedToChain": true,
-  "syncedToGraph": true,
-  "numPeers": 8,
-  "numActiveChannels": 6,
-  "numInactiveChannels": 1,
-  "numPendingChannels": 0,
-  "totalLocalBalanceSats": 2450000,
-  "totalRemoteBalanceSats": 1820000,
-  "totalCapacitySats": 4270000,
-  "aliasPublic": "THOR-GAB",
-  "pubkeyPrefix": "02a1b2c3d4e5",
-  "hint": "Settlement plane for LNbits wallets. Never expose macaroons to HQ HTML."
- },
- "lnbits": {
-  "ok": true,
-  "hint": "CORS proxy :5103 for hq.giveabit.io"
- },
- "series": [
-  {
-   "key": "channels_active",
-   "label": "Active channels",
-   "unit": "n",
-   "color": "#1f6b3a",
-   "points": [
+    "services": [
+      {
+        "id": "umami",
+        "status": "green",
+        "detail": "Up 15 minutes"
+      },
+      {
+        "id": "satohash-satohash-api-1",
+        "status": "green",
+        "detail": "Up 41 hours (healthy)"
+      },
+      {
+        "id": "satohash-redis-1",
+        "status": "green",
+        "detail": "Up 42 hours"
+      },
+      {
+        "id": "lnbits",
+        "status": "green",
+        "detail": "Up 47 hours"
+      },
+      {
+        "id": "lnbits-postgres",
+        "status": "green",
+        "detail": "Up 2 days (healthy)"
+      },
+      {
+        "id": "lnd",
+        "status": "green",
+        "detail": "Up 2 days (healthy)"
+      }
+    ]
+  },
+  "bitcoin": {
+    "ok": true,
+    "chain": "main",
+    "blocks": 903421,
+    "headers": 903421,
+    "verificationProgress": 0.99999,
+    "pruned": true,
+    "pruneTargetGB": 50,
+    "sizeOnDiskGB": 48.2,
+    "difficulty": 112000000000000,
+    "mempoolTx": 18420,
+    "mempoolMB": 42,
+    "minRelayFeeSatVb": 1,
+    "connections": 12,
+    "ibd": false,
+    "hint": "Pruned full node: sovereignty + verify path. Not archival."
+  },
+  "lightning": {
+    "ok": true,
+    "implementation": "lnd",
+    "syncedToChain": true,
+    "syncedToGraph": true,
+    "numPeers": 8,
+    "numActiveChannels": 6,
+    "numInactiveChannels": 1,
+    "numPendingChannels": 0,
+    "totalLocalBalanceSats": 2450000,
+    "totalRemoteBalanceSats": 1820000,
+    "totalCapacitySats": 4270000,
+    "aliasPublic": "THOR-GAB",
+    "pubkeyPrefix": "02a1b2c3d4e5",
+    "hint": "Settlement plane for LNbits wallets. Never expose macaroons to HQ HTML."
+  },
+  "lnbits": {
+    "ok": true,
+    "hint": "CORS proxy :5103 for hq.giveabit.io"
+  },
+  "series": [
     {
-     "t": "2026-07-06T02:25:24.267Z",
-     "v": 6
+      "key": "channels_active",
+      "label": "Active channels",
+      "unit": "n",
+      "color": "#1f6b3a",
+      "points": [
+        {
+          "t": "2026-07-06T02:25:24.267Z",
+          "v": 6
+        },
+        {
+          "t": "2026-07-07T02:25:24.267Z",
+          "v": 6.2
+        },
+        {
+          "t": "2026-07-08T02:25:24.267Z",
+          "v": 6
+        },
+        {
+          "t": "2026-07-09T02:25:24.267Z",
+          "v": 6.3
+        },
+        {
+          "t": "2026-07-10T02:25:24.267Z",
+          "v": 6.8
+        },
+        {
+          "t": "2026-07-11T02:25:24.267Z",
+          "v": 7.1
+        },
+        {
+          "t": "2026-07-12T02:25:24.267Z",
+          "v": 6.7
+        },
+        {
+          "t": "2026-07-13T02:25:24.267Z",
+          "v": 7.1
+        },
+        {
+          "t": "2026-07-14T02:25:24.267Z",
+          "v": 7.2
+        },
+        {
+          "t": "2026-07-15T02:25:24.267Z",
+          "v": 7.1
+        },
+        {
+          "t": "2026-07-16T02:25:24.267Z",
+          "v": 7.3
+        },
+        {
+          "t": "2026-07-17T02:25:24.267Z",
+          "v": 7.3
+        },
+        {
+          "t": "2026-07-18T02:25:24.267Z",
+          "v": 7.8
+        },
+        {
+          "t": "2026-07-19T02:25:24.267Z",
+          "v": 7.6
+        },
+        {
+          "t": "2026-07-20T02:25:24.267Z",
+          "v": 7.6
+        }
+      ]
     },
     {
-     "t": "2026-07-07T02:25:24.267Z",
-     "v": 6.2
+      "key": "local_sats",
+      "label": "Local balance",
+      "unit": "sats",
+      "color": "#c45f00",
+      "points": [
+        {
+          "t": "2026-07-06T02:25:24.267Z",
+          "v": 2369289.8
+        },
+        {
+          "t": "2026-07-07T02:25:24.267Z",
+          "v": 2364857.6
+        },
+        {
+          "t": "2026-07-08T02:25:24.267Z",
+          "v": 2384525.1
+        },
+        {
+          "t": "2026-07-09T02:25:24.267Z",
+          "v": 2427041.8
+        },
+        {
+          "t": "2026-07-10T02:25:24.267Z",
+          "v": 2437673.2
+        },
+        {
+          "t": "2026-07-11T02:25:24.267Z",
+          "v": 2412800.7
+        },
+        {
+          "t": "2026-07-12T02:25:24.267Z",
+          "v": 2380120.6
+        },
+        {
+          "t": "2026-07-13T02:25:24.267Z",
+          "v": 2374022.4
+        },
+        {
+          "t": "2026-07-14T02:25:24.267Z",
+          "v": 2410739.5
+        },
+        {
+          "t": "2026-07-15T02:25:24.267Z",
+          "v": 2407255.2
+        },
+        {
+          "t": "2026-07-16T02:25:24.267Z",
+          "v": 2438128.3
+        },
+        {
+          "t": "2026-07-17T02:25:24.267Z",
+          "v": 2438831.1
+        },
+        {
+          "t": "2026-07-18T02:25:24.267Z",
+          "v": 2417591.5
+        },
+        {
+          "t": "2026-07-19T02:25:24.267Z",
+          "v": 2422518.4
+        },
+        {
+          "t": "2026-07-20T02:25:24.267Z",
+          "v": 2440211.4
+        }
+      ]
     },
     {
-     "t": "2026-07-08T02:25:24.267Z",
-     "v": 6
-    },
-    {
-     "t": "2026-07-09T02:25:24.267Z",
-     "v": 6.3
-    },
-    {
-     "t": "2026-07-10T02:25:24.267Z",
-     "v": 6.8
-    },
-    {
-     "t": "2026-07-11T02:25:24.267Z",
-     "v": 7.1
-    },
-    {
-     "t": "2026-07-12T02:25:24.267Z",
-     "v": 6.7
-    },
-    {
-     "t": "2026-07-13T02:25:24.267Z",
-     "v": 7.1
-    },
-    {
-     "t": "2026-07-14T02:25:24.267Z",
-     "v": 7.2
-    },
-    {
-     "t": "2026-07-15T02:25:24.267Z",
-     "v": 7.1
-    },
-    {
-     "t": "2026-07-16T02:25:24.267Z",
-     "v": 7.3
-    },
-    {
-     "t": "2026-07-17T02:25:24.267Z",
-     "v": 7.3
-    },
-    {
-     "t": "2026-07-18T02:25:24.267Z",
-     "v": 7.8
-    },
-    {
-     "t": "2026-07-19T02:25:24.267Z",
-     "v": 7.6
-    },
-    {
-     "t": "2026-07-20T02:25:24.267Z",
-     "v": 7.6
+      "key": "mempool_tx",
+      "label": "Mempool txs",
+      "unit": "n",
+      "color": "#8a5a00",
+      "points": [
+        {
+          "t": "2026-07-06T02:25:24.267Z",
+          "v": 17864.7
+        },
+        {
+          "t": "2026-07-07T02:25:24.267Z",
+          "v": 17974.7
+        },
+        {
+          "t": "2026-07-08T02:25:24.267Z",
+          "v": 17492
+        },
+        {
+          "t": "2026-07-09T02:25:24.267Z",
+          "v": 17537.9
+        },
+        {
+          "t": "2026-07-10T02:25:24.267Z",
+          "v": 16680.9
+        },
+        {
+          "t": "2026-07-11T02:25:24.267Z",
+          "v": 17437.9
+        },
+        {
+          "t": "2026-07-12T02:25:24.267Z",
+          "v": 17101.2
+        },
+        {
+          "t": "2026-07-13T02:25:24.267Z",
+          "v": 16481
+        },
+        {
+          "t": "2026-07-14T02:25:24.267Z",
+          "v": 17937.1
+        },
+        {
+          "t": "2026-07-15T02:25:24.267Z",
+          "v": 18955.4
+        },
+        {
+          "t": "2026-07-16T02:25:24.267Z",
+          "v": 19449.3
+        },
+        {
+          "t": "2026-07-17T02:25:24.267Z",
+          "v": 20492.1
+        },
+        {
+          "t": "2026-07-18T02:25:24.267Z",
+          "v": 22104.9
+        },
+        {
+          "t": "2026-07-19T02:25:24.267Z",
+          "v": 23114.9
+        },
+        {
+          "t": "2026-07-20T02:25:24.267Z",
+          "v": 24513.7
+        }
+      ]
     }
-   ]
-  },
-  {
-   "key": "local_sats",
-   "label": "Local balance",
-   "unit": "sats",
-   "color": "#c45f00",
-   "points": [
+  ],
+  "education": [
     {
-     "t": "2026-07-06T02:25:24.267Z",
-     "v": 2369289.8
+      "id": "less-chat",
+      "title": "Read OPS-PULSE before chatting",
+      "body": "Morning pulse + this snapshot cover 90% of status questions.",
+      "action": "Only open Hermes when pulse shows red",
+      "severity": "plan"
     },
     {
-     "t": "2026-07-07T02:25:24.267Z",
-     "v": 2364857.6
-    },
-    {
-     "t": "2026-07-08T02:25:24.267Z",
-     "v": 2384525.1
-    },
-    {
-     "t": "2026-07-09T02:25:24.267Z",
-     "v": 2427041.8
-    },
-    {
-     "t": "2026-07-10T02:25:24.267Z",
-     "v": 2437673.2
-    },
-    {
-     "t": "2026-07-11T02:25:24.267Z",
-     "v": 2412800.7
-    },
-    {
-     "t": "2026-07-12T02:25:24.267Z",
-     "v": 2380120.6
-    },
-    {
-     "t": "2026-07-13T02:25:24.267Z",
-     "v": 2374022.4
-    },
-    {
-     "t": "2026-07-14T02:25:24.267Z",
-     "v": 2410739.5
-    },
-    {
-     "t": "2026-07-15T02:25:24.267Z",
-     "v": 2407255.2
-    },
-    {
-     "t": "2026-07-16T02:25:24.267Z",
-     "v": 2438128.3
-    },
-    {
-     "t": "2026-07-17T02:25:24.267Z",
-     "v": 2438831.1
-    },
-    {
-     "t": "2026-07-18T02:25:24.267Z",
-     "v": 2417591.5
-    },
-    {
-     "t": "2026-07-19T02:25:24.267Z",
-     "v": 2422518.4
-    },
-    {
-     "t": "2026-07-20T02:25:24.267Z",
-     "v": 2440211.4
+      "id": "macaroon",
+      "title": "Never publish admin macaroons",
+      "body": "THOR JSON is aggregates only.",
+      "action": "Invoice keys stay in browser Vault",
+      "severity": "risk"
     }
-   ]
-  },
-  {
-   "key": "mempool_tx",
-   "label": "Mempool txs",
-   "unit": "n",
-   "color": "#8a5a00",
-   "points": [
-    {
-     "t": "2026-07-06T02:25:24.267Z",
-     "v": 17864.7
-    },
-    {
-     "t": "2026-07-07T02:25:24.267Z",
-     "v": 17974.7
-    },
-    {
-     "t": "2026-07-08T02:25:24.267Z",
-     "v": 17492
-    },
-    {
-     "t": "2026-07-09T02:25:24.267Z",
-     "v": 17537.9
-    },
-    {
-     "t": "2026-07-10T02:25:24.267Z",
-     "v": 16680.9
-    },
-    {
-     "t": "2026-07-11T02:25:24.267Z",
-     "v": 17437.9
-    },
-    {
-     "t": "2026-07-12T02:25:24.267Z",
-     "v": 17101.2
-    },
-    {
-     "t": "2026-07-13T02:25:24.267Z",
-     "v": 16481
-    },
-    {
-     "t": "2026-07-14T02:25:24.267Z",
-     "v": 17937.1
-    },
-    {
-     "t": "2026-07-15T02:25:24.267Z",
-     "v": 18955.4
-    },
-    {
-     "t": "2026-07-16T02:25:24.267Z",
-     "v": 19449.3
-    },
-    {
-     "t": "2026-07-17T02:25:24.267Z",
-     "v": 20492.1
-    },
-    {
-     "t": "2026-07-18T02:25:24.267Z",
-     "v": 22104.9
-    },
-    {
-     "t": "2026-07-19T02:25:24.267Z",
-     "v": 23114.9
-    },
-    {
-     "t": "2026-07-20T02:25:24.267Z",
-     "v": 24513.7
-    }
-   ]
+  ],
+  "security": {
+    "secretsInPayload": false,
+    "notes": "Auto-export from thor-node-export.py"
   }
- ],
- "education": [
-  {
-   "id": "less-chat",
-   "title": "Read OPS-PULSE before chatting",
-   "body": "Morning pulse + this snapshot cover 90% of status questions.",
-   "action": "Only open Hermes when pulse shows red",
-   "severity": "plan"
-  },
-  {
-   "id": "macaroon",
-   "title": "Never publish admin macaroons",
-   "body": "THOR JSON is aggregates only.",
-   "action": "Invoice keys stay in browser Vault",
-   "severity": "risk"
-  }
- ],
- "security": {
-  "secretsInPayload": false,
-  "notes": "Auto-export from thor-node-export.py"
- },
- "system": {
-  "disk": {
-   "totalGB": 387,
-   "usedGB": 29,
-   "freeGB": 359,
-   "usedPercent": 8,
-   "mount": "/"
-  },
-  "memory": {
-   "totalGB": 7.8,
-   "usedGB": 3.6,
-   "freeGB": 1.9,
-   "availableGB": 4.2
-  },
-  "cpu": {
-   "loadAvg1m": 0.89,
-   "loadAvg5m": 0.61,
-   "loadAvg15m": 0.49,
-   "uptimeDays": 4
-  },
-  "docker": {
-   "images": 7,
-   "containers": 6,
-   "running": 6,
-   "buildCacheGB": 3.911
-  },
-  "breakdownGB": {
-   "MASTER-BRAIN_vault": 1.2,
-   "Hermes_skills_config": 0.6103515625,
-   "satohash_repo": 0.0205078125,
-   "HQ_repo": 0.00830078125,
-   "Docker_volumes": 5.0,
-   "other_system": 39.2,
-   "Docker_images": 2.6
-  }
- }
 }
