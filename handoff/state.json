@@ -1,6 +1,6 @@
 {
  "schema": "gab.handoff.v1",
- "updatedAt": "2026-07-21T18:40:32.000Z",
+ "updatedAt": "2026-07-21T23:53:53.000Z",
  "agents": {
   "grok": {
    "lastSeen": "2026-07-21T12:00:00.000Z",
@@ -14,12 +14,17 @@
      "t": "2026-07-20T07:24:46.644Z",
      "summary": "Goodbye 2026-07-20: HQ v2.7.0 + LNbits proxy live; Cam confirmed balances; docs+MASTER-BRAIN ingest updated"
     }
-   ]
+   ],
+   "nextAction": "Verify Katoa npm run generate-metrics. Then improve Tadbuy live campaign counts."
   },
   "kimi": {
    "lastSeen": "2026-07-21T18:40:32.000Z",
    "focus": "satohash-vps",
    "notes": [
+    {
+     "t": "2026-07-21T23:53:53.000Z",
+     "summary": "Session 3 complete: v3.5\u2192v3.15. All 8 products have live /metrics.json + Umami. CF Analytics pipe live. LNbits invoice proxy. Tooltips everywhere. Push alerts via Telegram. Katoa generator pushed to repo. Next: Cam add Vault keys, Grok verify Katoa generator."
+    },
     {
      "t": "2026-07-21T21:27:28.000Z",
      "summary": "Session done: All 8 products have Umami+metrics. Next: Tadbuy live campaign data (Grok), then CF Web Analytics (Cam dashboard). docs/NEXT-STEPS.md created."
@@ -48,7 +53,8 @@
      "t": "2026-07-20T04:20:00.000Z",
      "summary": "v5 API deployed on THOR. /metrics.json live. LNbits CORS path documented. HQ handoff updated."
     }
-   ]
+   ],
+   "lastRun": "2026-07-21T23:53:53.000Z"
   }
  },
  "ownership": {

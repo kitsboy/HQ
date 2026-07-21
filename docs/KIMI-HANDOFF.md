@@ -1,6 +1,29 @@
-### 2026-07-21 — Kimi round 2 · HQ v3.5.0–4 (version auto-stamp, portfolio chart, live API badge, GH push, Concert tab)
+### 2026-07-21 — Kimi round 3 · HQ v3.5.0 → v3.15.0 (full suite metrics pipe + CF Analytics + tooltips)
 
 **What changed (THOR → `kitsboy/HQ` main):**
+- v3.6–3.11: Gate removed, Umami deployed (Docker on THOR :3002), CF Worker proxy at `analytics.giveabit.io`, ref-puller cron (5 min), GROK-BOOT.md in all 9 repos, all products wired with live `/metrics.json` endpoints
+- v3.12: All 8 products registered as live metric candidates in projects.json — HQ polls every 5 min
+- v3.13: LNbits invoice history proxy (`/invoices/:walletId`), Invoices button in drawer
+- v3.14: CF Web Analytics pipeline (GraphQL API → THOR cron → metrics/cf-analytics.json → Analytics tab). 4 zones: giveabit.io (19,661 pv), katoa.org (7,616 pv), satohash.io (4,524 pv), sherpacarta.org (4,036 pv) — 7-day
+- v3.15: Tooltips on EVERY metric, chip, badge, filter, and tab — hover to understand what each means
+- Push alerts: `suite-health-alert` cron every 15 min via Telegram (silent when green)
+- Katoa `scripts/generate-metrics.ts` pushed to repo — counts creators, wishlists, sats from app data
+
+**Key lessons:**
+- Tadbuy already had a full metrics pipeline (`generate-metrics` runs on build) — Grok confirmed it works
+- CF GraphQL API needs zone-level Analytics permissions; `httpRequests1dGroups` works with the "Read analytics and logs" token
+- Hardcoding API tokens in scripts is blocked by GitHub secret scanning — store in `~/.hermes/cf-token.env` instead
+- Umami proxy `analytics.giveabit.io` works via CF Worker proxying to `http://api.satohash.io:3002` (raw IPs cause Cloudflare 1003)
+
+**Still to do:**
+- Cam: add LNbits wallet invoice keys to HQ Vault (press v → Keys tab)
+- Cam: Vault LNbits proxy token (from Worker env)
+- Grok: verify Katoa `npm run generate-metrics` runs clean
+- Grok: consider Tadbuy live campaign counts (already working, but could be richer)
+
+**Next for Grok:** Read docs/AGENT-GUARDRAILS.md + ALL-SITE-METRICS.md + UMAMI-DEPLOYMENT.md. Priority: verify Katoa metrics generator runs. Then improve Tadbuy live campaign data. All 8 products now have Umami tracking + /metrics.json.
+
+---
 - v3.5.0: `scripts/stamp-version.mjs` — reads package.json version, stamps into all 7 locations (title, subtitle, footer, HTML comment, hq.js header + HQ_VERSION, package.json). Single source of version truth. `npm run stamp` runs on every build and in GH Action.
 - v3.5.1: Portfolio over time chart in Money tab — aggregates all wallet history snapshots from localStorage into a combined portfolio-balance sparkline, with first/last sats labels
 - v3.5.2: live API badge on cards (green pulse pill vs "static" chip), satohash stamp hero counter when live API active
