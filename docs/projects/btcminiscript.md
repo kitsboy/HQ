@@ -1,5 +1,7 @@
 # BTC Miniscript
 
+_HQ v3.2 surfaces this pack in Docs + drawer docs tab._
+
 > Miniscript tooling research — not a live product surface yet.
 
 | | |

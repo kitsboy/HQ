@@ -1,26 +1,18 @@
 {
   "schema": "gab.handoff.v1",
-  "updatedAt": "2026-07-20T07:24:46.000Z",
+  "updatedAt": "2026-07-21T12:00:00.000Z",
   "agents": {
     "grok": {
-      "lastSeen": "2026-07-20T07:24:46.000Z",
+      "lastSeen": "2026-07-21T12:00:00.000Z",
       "focus": "HQ",
       "notes": [
         {
+          "t": "2026-07-21T12:00:00.000Z",
+          "summary": "Goodbye 2026-07-21: HQ v3.2.0 money pack + v3.0/3.1 visual+depth overhaul pushed; docs/SOT refreshed"
+        },
+        {
           "t": "2026-07-20T07:24:46.644Z",
           "summary": "Goodbye 2026-07-20: HQ v2.7.0 + LNbits proxy live; Cam confirmed balances; docs+MASTER-BRAIN ingest updated"
-        },
-        {
-          "t": "2026-07-20T06:32:45.496Z",
-          "summary": "v2.5.1: keys vault scorecard/RO/tests/diagnose/bulk+ops board/domains/board pack/invoice/docs diff on gated HQ"
-        },
-        {
-          "t": "2026-07-20T04:06:23.434Z",
-          "summary": "Goodbye 2026-07-20: docs refresh, CORS path documented, metrics/THOR/handoff live; Nova must fix LNbits CORS for hq + pages.dev"
-        },
-        {
-          "t": "2026-07-20T02:27:51.464Z",
-          "summary": "Metrics lab v1: suite envelopes, THOR panel, schemas, handoff docs; awaiting Kimi live satohash /metrics.json"
         }
       ]
     },
@@ -30,7 +22,7 @@
       "notes": [
         {
           "t": "2026-07-20T04:20:00.000Z",
-          "summary": "v5 API deployed on THOR (git pull + docker rebuild). /metrics.json live (gab.product-metrics.v1). LNbits CORS configured (Caddy :5103). All docs pushed to kitsboy/satohash. HQ handoff updated."
+          "summary": "v5 API deployed on THOR. /metrics.json live. LNbits CORS path documented. HQ handoff updated."
         }
       ]
     }
@@ -47,12 +39,12 @@
     {
       "id": "lnbits-public-harden",
       "owner": "nova",
-      "detail": "LNbits :5102 public HTTP \u2014 firewall/tunnel/HTTPS preferred"
+      "detail": "LNbits :5102 public HTTP — firewall/tunnel/HTTPS preferred"
     },
     {
       "id": "thor-exporter",
       "owner": "nova",
-      "detail": "live thor-node.json cron"
+      "detail": "live thor-node.json cron from bitcoind/lnd"
     },
     {
       "id": "cf-access",
@@ -61,6 +53,11 @@
     }
   ],
   "next": [
+    {
+      "id": "cam-vault-verify",
+      "owner": "cam",
+      "title": "Vault keys on hq.giveabit.io — confirm Money tab live"
+    },
     {
       "id": "wallets-json-optional",
       "owner": "cam",
@@ -75,6 +72,11 @@
       "id": "lnbits-harden",
       "owner": "nova",
       "title": "Harden public LNbits :5102"
+    },
+    {
+      "id": "product-metrics-live",
+      "owner": "kimi",
+      "title": "Live /metrics.json for remaining suite products"
     },
     {
       "id": "cf-access",

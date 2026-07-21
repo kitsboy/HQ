@@ -17,41 +17,41 @@
 
 ---
 
-## Latest Session Summary (from 2026-07-20 goodbye — Grok / HQ)
+## Latest Session Summary (from 2026-07-21 goodbye — Grok / HQ)
 
-**Chat topic:** HQ mega upgrades + visual pack + live LNbits via Cloudflare Worker proxy.
+**Chat topic:** Full HQ visual reconstruction + depth pack + LNbits money everywhere.
 
 ### Finished in this session
-- HQ **v2.5.x → v2.7.0** shipped and deployed to `hq.giveabit.io`
-- Vault sticky footer, keys UX, Ops board, Domains, board pack, invoice gate, docs Diff
-- **v2.6.0** ~50 visual upgrades (depth, frosted chrome, cards, pills)
-- Footer always stamps **version + build time + origin**
-- Close-by URLs panel (HERMES Dashboard/Kanban first)
-- **giveabit-lnbits-proxy** Worker live: https://giveabit-lnbits-proxy.kitsboy.workers.dev
-- Upstream: `http://api.satohash.io:5102` (Workers cannot use Tailscale / bare IP)
-- Cam confirmed: **balances live**, treasury visible, more BTC than hour prior; no issues
-- Docs: `LNBITS-PROXY.md`, SOT, README path update
+- **v3.0.0** Visual overhaul: `hq.css` + `hq.js` + thin shell; 4 tinted themes (ink default); no B/W/grey  
+- **v3.1.0** Depth pack: enriched product metrics, THOR host/storage UI, `docs/projects/*`, 15+ tabs (Analytics/Matrix/Coverage/Ecosystem/Activity)  
+- **v3.2.0** Money pack: LNbits balances on cards/list/matrix/analytics; Money cockpit; history sparklines; portfolio ribbon; mega drawer (overview/money/metrics/stack/docs/related); 60s auto-poll  
+- Pushed to `origin/main` (latest money commit family includes `116fbc9` / rebased tip)  
+- Docs refreshed: SOT, README, ECOSYSTEM-MAP, LNBITS-PROXY, METRICS-SCHEMA, THOR-NODE-JSON, UPGRADES-100  
 
 ### Still to do
-- **Optional Cam:** move keys to Worker `WALLETS_JSON`; rotate PROXY_TOKEN if needed  
-- **Nova:** harden public `:5102` (firewall / Tunnel+HTTPS); cron `thor-node.json`  
-- **Cam:** CF Access optional on `hq.giveabit.io`  
-- **Grok/Kimi:** deeper satohash public feeds in HQ UI  
+- **Cam:** Vault keys on production HQ to verify live money UI; optional CF Access; optional `WALLETS_JSON`  
+- **Nova:** real `thor-node.json` cron (host/storage from node, not snapshot); harden LNbits `:5102`  
+- **Kimi:** keep satohash live metrics; other products publish real `/metrics.json`  
+- **Grok:** optional re-wire password gate if desired; payment history when LNbits API ready  
 
 ### Next for Kimi
-1. Integrate this summary into MASTER-BRAIN / Kanban on M4 (clean bullets only — no raw chats)  
-2. Keep satohash `metrics.json` live (`raw.demo: false`)  
-3. Note HQ balances path is **proxy**, not browser→Tailscale CORS  
-4. Educate Hermes: `docs/LNBITS-PROXY.md` + `SOURCE-OF-TRUTH.md`  
+1. Integrate this summary into MASTER-BRAIN / Kanban (clean bullets only)  
+2. Confirm HQ v3.2 on `hq.giveabit.io` after CF deploy  
+3. Keep satohash `metrics.json` live  
+4. Educate Hermes: money path = Vault → proxy Worker → LNbits  
 
-### Next for Grok (future chat)
-- Prefer live satohash envelope when `raw.demo !== true`  
-- Optional WALLETS_JSON server keys path  
-- Keep maps/SOT current  
+### Next for Grok
+- Verify deploy green; smoke money surfaces with Cam’s Vault  
+- Prefer live product envelopes over demo  
 
 ### Next for Nova
-- `thor-node.json` cron from bitcoind/lnd (no macaroons)  
-- Prefer locking down LNbits public port after proxy proven  
+- Cron real thor-node aggregates  
+- Harden public LNbits HTTP  
+
+---
+
+## Prior: 2026-07-20 goodbye (v2.7) — abbreviated
+- LNbits proxy live; Cam confirmed balances; v2.5–2.7 vault/visual path  
 
 ---
 

@@ -1,5 +1,7 @@
 # MotoPass
 
+_HQ v3.2 surfaces this pack in Docs + drawer docs tab._
+
 > Sovereign passports & residency; document OTS without biometrics upload.
 
 | | |

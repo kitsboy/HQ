@@ -1,5 +1,7 @@
 # SherpaCarta
 
+_HQ v3.2 surfaces this pack in Docs + drawer docs tab._
+
 > Digital Magna Carta; signer social proof; OTS-anchored charters.
 
 | | |

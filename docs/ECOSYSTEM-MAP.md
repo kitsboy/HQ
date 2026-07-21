@@ -1,6 +1,6 @@
 # Give A Bit — Ecosystem map
 
-_Last update: 2026-07-20 (v2.7 LNbits proxy)_
+_Last update: 2026-07-21 (HQ v3.2.0 money pack)_
 
 ## Domains
 
@@ -15,7 +15,7 @@ _Last update: 2026-07-20 (v2.7 LNbits proxy)_
 | motopass.giveabit.io | MotoPass | Identity / residency |
 | sherpacarta.org | SherpaCarta | Governance |
 | openstrata.giveabit.io | Hermes Strata | Corp / **HERMES dashboard · kanban** |
-| **hq.giveabit.io** | **HQ** | Ops + pitch glass **v2.7** |
+| **hq.giveabit.io** | **HQ** | Ops glass **v3.2** (cards, metrics, money) |
 | giveabit-hq.pages.dev | HQ | CF Pages (same app) |
 | giveabit-lnbits-proxy.kitsboy.workers.dev | HQ | LNbits **balance proxy** Worker |
 
@@ -26,25 +26,33 @@ HQ · satohash · giveabit · katoa · stranded · tadbuy · motopass · sherpac
 ## Data planes
 
 ```text
-Products  --metrics.json-->  HQ Metrics lab + cards
+Products  --metrics.json-->  HQ Metrics lab + cards + depth score
 Products  --status pings-->  status.json --> HQ matrix/latency
 Suite     --OTS family---->  Satohash backbone
-THOR      --thor-node.json->  HQ node pane (read-only)
+THOR      --thor-node.json->  HQ System + Metrics → THOR
 Browser Vault --proxy token + invoice keys--> CF Worker --> LNbits :5102
+              --> Money cockpit + card balances + drawer money tab
+ecosystem-map.json --> HQ Ecosystem tab
+docs/projects/*.md --> Docs tab + drawer docs
 (Direct browser → Tailscale LNbits still CORS-blocked; use proxy)
 ```
 
 ## Money / identity / node
 
 - **Money:** LNbits multi-wallet on THOR; HQ via **Cloudflare LNbits proxy** + invoice keys  
+  - Surfaces: Money tab, Wallets, product cards, list, matrix, analytics, drawer  
+  - Local history: `hq_wallet_hist_v1` (sparklines / Δ only — not payment history)  
 - **Identity:** `giveabit.io/.well-known/nostr.json`  
-- **Node:** bitcoind pruned + LND + LNbits; never macaroons in HQ  
-- **Proxy docs:** `docs/LNBITS-PROXY.md`  
+- **Node:** `gab.thor-node.v1` — bitcoin, lightning, services; optional host/storage  
 
-## Handoff
+## HQ tabs (v3.2)
 
-`docs/KIMI-GROK-HANDOFF.md` · `handoff/state.json` · stamp via `scripts/stamp-handoff.mjs`
+Cards · List · Metrics · Analytics · Pipeline · Network · Matrix · Activity · Ecosystem · Coverage · System · Money · Wallets · Docs · Agents · Domains
 
-## Vault map
+## Design
 
-`~/MASTER-BRAIN/Obsidian/01-Architecture/Folder-Map.md` — full THOR path topology.
+Four tinted themes (stone / slate / **ink** / aurora). No pure black, white, or greyscale pixels.
+
+## Machine map file
+
+Live machine knowledge tree: `/metrics/ecosystem-map.json` (schema `gab.ecosystem-map.v1`).

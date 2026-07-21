@@ -1,5 +1,7 @@
 # Hermes Strata
 
+_HQ v3.2 surfaces this pack in Docs + drawer docs tab._
+
 > Strata dashboard / HERMES kanban; filings and board OTS.
 
 | | |

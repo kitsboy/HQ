@@ -1,5 +1,7 @@
 # Tadbuy
 
+_HQ v3.2 surfaces this pack in Docs + drawer docs tab._
+
 > Ad buys settled in sats; campaign OTS receipts.
 
 | | |

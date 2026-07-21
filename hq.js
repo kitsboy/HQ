@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.2.0 — depth pack
+ * Give A Bit HQ v3.2.0 — money + depth pack
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).

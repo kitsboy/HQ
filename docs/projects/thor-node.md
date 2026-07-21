@@ -1,5 +1,7 @@
 # THOR Node
 
+_HQ v3.2 surfaces this pack in Docs + drawer docs tab._
+
 > Bitcoin pruned full node + LND + LNbits + satohash-api on Contabo.
 
 | | |

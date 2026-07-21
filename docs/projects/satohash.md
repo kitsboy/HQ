@@ -1,5 +1,7 @@
 # Satohash
 
+_HQ v3.2 surfaces this pack in Docs + drawer docs tab._
+
 > Shared OpenTimestamps backbone — stamps, verify, family-free suite proofs.
 
 | | |

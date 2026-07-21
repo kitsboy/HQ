@@ -44,7 +44,25 @@ npx wrangler secret put WALLETS_JSON        # {"giveabit_main":"…","satohash":
 | **Node URL** | Still used as `X-LNbits-Base` override / fallback display |
 | **Wallet keys** | Invoice keys (unless using `WALLETS_JSON` only) |
 
-When proxy URL + token are set, HQ **prefers the proxy** for balances (realtime polls still use Vault refresh interval).
+When proxy URL + token are set, HQ **prefers the proxy** for balances.
+
+### HQ v3.2 money surfaces
+
+After Vault save, balances appear on:
+
+| Surface | What |
+|---------|------|
+| **Money** tab | Portfolio totem, allocation donut, history threads, wealth ladder |
+| **Wallets** tab | Per-wallet hero cards + sparklines |
+| **Product cards** | Sat pill + portfolio share filament |
+| **List / Matrix** | Balance column |
+| **Analytics** | Suite money panel |
+| **Drawer → money** | Sats cascade, share %, local history chart |
+| Portfolio strip | Total sats/USD + allocation ribbon |
+
+Auto-poll every **60s** when keys exist. History cache: browser `localStorage` key `hq_wallet_hist_v1` (local only — not LNbits payment history).
+
+Wallet id mapping comes from `projects.json` → `wallet` (e.g. giveabit → `giveabit_main`).
 
 ## API
 

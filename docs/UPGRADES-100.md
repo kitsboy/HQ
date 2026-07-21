@@ -1,23 +1,32 @@
-**v2.5 SHIPPED:** password gate, tip system, pipes board, metrics.json live merge, vault tabs, latency/uptime charts, AES vault export.
+**v3.2 SHIPPED (2026-07-21):** Money pack — LNbits on cards/list/matrix/analytics, Money cockpit, history sparklines, mega drawer, 60s poll.  
+**v3.1 SHIPPED:** Depth pack — enriched envelopes, project MD packs, Analytics/Matrix/Coverage/Activity/Ecosystem.  
+**v3.0 SHIPPED:** Split SPA (`hq.css`/`hq.js`), 4 tinted themes (no B/W/grey), ink default.  
+**v2.7 SHIPPED:** LNbits Cloudflare proxy Worker.
 
 # Give A Bit HQ — 100 upgrades map
 
-Legend: **SHIPPED** in this pass · **LIVE** already in HQ · **NEXT** data/product dependency
+Legend: **SHIPPED** · **LIVE** in current HQ · **NEXT** data/product dependency
 
-## Vault / keys (v2.5.1 on top of gate)
-- Health scorecard · show/hide · last-4 masks · bulk paste
-- Test GitHub · Test LNbits · Diagnose all wallets
-- Per-wallet RO · block Bulk Send · wipe requires WIPE
-- Manual BTC FX · Grok warn/crit · prefer live metrics
-- Ops board · Domains · board pack · invoice preview · docs Diff
+## v3.x glass (current)
+- SHIPPED Split shell: `control-panel.html` + `hq.css` + `hq.js`
+- SHIPPED Themes stone/slate/**ink**/aurora (fully tinted; no pure black/white/grey)
+- SHIPPED Depth score + dual sparklines + full envelope lab
+- SHIPPED `docs/projects/*` packs + Coverage inventory tab
+- SHIPPED Money tab + balances on cards + portfolio allocation ribbon
+- SHIPPED Drawer: overview · money · metrics · stack · docs · related
+- SHIPPED Local wallet history cache (`hq_wallet_hist_v1`) + Δ
 
-## v2.6–v2.7 (2026-07-20)
-- SHIPPED Visual upgrade pack (~50 surface/chrome/card/nav polish)
-- SHIPPED Footer always stamps HQ_VERSION + build + origin
-- SHIPPED Close-by URLs (HERMES first)
+## Vault / keys
+- LIVE Invoice keys + proxy token in browser Vault
 - SHIPPED LNbits Cloudflare proxy Worker (live balances, CORS bypass)
 - SHIPPED Vault proxy URL / token / use-proxy toggle
+- LIVE 60s auto-poll when keys present
+- NEXT Server-side `WALLETS_JSON` (keys off browser)
+- NEXT Per-wallet RO / block Bulk Send UI re-wire
 
+## v2.6–v2.7 notes (still valid)
+- Footer stamps HQ_VERSION + build time + origin
+- Close-by URLs (HERMES first)
 
 ## A. Presentation & pitch (1–12)
 1. LIVE Pitch mode (`P`)
@@ -53,17 +62,17 @@ Legend: **SHIPPED** in this pass · **LIVE** already in HQ · **NEXT** data/prod
 
 ## C. Money / Lightning (29–40)
 29. LIVE Multi-wallet balances (Vault)
-30. LIVE Portfolio sats + USD + allocation
-31. LIVE Wallet Δ vs previous cache
-32. LIVE Wallets view share bars
-33. SHIPPED Portfolio 24h placeholder + history sparkline
-34. NEXT LNbits payment history / true 24h Δ
-35. NEXT LNURL pay links list
-36. NEXT Invoice create (confirm gate)
-37. NEXT Bulk Send type-SEND
-38. NEXT Read-only key enforcement UI
-39. NEXT Signing proxy (keys off browser)
-40. NEXT Cross-wallet fund flow diagram
+30. LIVE Portfolio sats + USD + **allocation ribbon** (v3.2)
+31. LIVE Wallet Δ vs previous **local** cache (v3.2)
+32. LIVE Wallets view share bars + sparklines (v3.2)
+33. LIVE History thread sparklines on Money tab (v3.2)
+34. LIVE Balances on product cards + list + matrix (v3.2)
+35. LIVE Money cockpit tab + wealth ladder (v3.2)
+36. LIVE Drawer money tab · sats cascade · share % (v3.2)
+37. NEXT LNbits **payment** history / true 24h P&L (needs API)
+38. NEXT LNURL pay links list
+39. NEXT Invoice create (confirm gate) · Bulk Send type-SEND
+40. NEXT Signing proxy / WALLETS_JSON only (keys off browser)
 
 ## D. GitHub / ship path (41–52)
 41. LIVE Branch + last commit

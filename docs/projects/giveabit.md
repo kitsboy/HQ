@@ -1,5 +1,7 @@
 # Give A Bit
 
+_HQ v3.2 surfaces this pack in Docs + drawer docs tab._
+
 > Bitcoin sovereignty education, NIP-05 namespace, suite front door.
 
 | | |

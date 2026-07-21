@@ -1,5 +1,7 @@
 # Stranded
 
+_HQ v3.2 surfaces this pack in Docs + drawer docs tab._
+
 > Map stranded energy sites; path to hashrate conversion.
 
 | | |

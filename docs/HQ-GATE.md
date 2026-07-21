@@ -1,22 +1,20 @@
-# HQ password gate (v2.5)
+# HQ Gate (password unlock)
 
-ELI16: A lock on the ops dashboard. Public URL can stay public; without the password you only see the lock screen.
+_Note 2026-07-21:_ The **v3.x shell** is vault-first and does not re-implement the full v2.x password gate UI. Use:
 
-## What it is
-- First visit → **create password** (min 8 chars) + optional hint
-- Later visits → unlock once per browser tab session
-- Press **L** or click **unlocked** chip → lock again
-- Vault keys only after unlock
+1. **Browser Vault** for invoice keys / proxy token (`v` key)  
+2. Optional **Cloudflare Access** in front of `hq.giveabit.io` (see `CLOUDFLARE-ACCESS.md`)  
 
-## What it is NOT
-- Not Cloudflare Access (enterprise login). For that see `CLOUDFLARE-ACCESS.md`.
-- Not server-side auth. Determined users can still read static JS. Gate stops casual visitors and shoulder-surfing.
+Legacy gate design (PBKDF2 session unlock + AES vault) lived in the pre-split monolith. Re-wire only if Cam prioritizes gate over CF Access.
 
-## Best practice
-1. Set a strong gate password on https://hq.giveabit.io
-2. Paste LNbits **invoice** keys + GitHub PAT in Vault
-3. Optionally enable CF Access for your email
-4. Never put admin macaroons in the Vault
+## Intent (historical)
 
-## Wipe
-Gate screen → “Forgot — wipe gate & vault on this browser”
+Operator password protects Vault secrets on the public URL after unlock. Metrics still load after unlock. Pair with Cloudflare Access for a true login wall.
+
+## Operator tips
+
+- Prefer invoice keys only  
+- Never commit passwords or vault dumps  
+- Rotate PROXY_TOKEN if leaked  
+
+Safe Harbour · Give A Bit family.

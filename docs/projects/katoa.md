@@ -1,5 +1,7 @@
 # Katoa
 
+_HQ v3.2 surfaces this pack in Docs + drawer docs tab._
+
 > Zero-fee Lightning + Nostr creators; zaps and OTS release attestations.
 
 | | |

@@ -20,12 +20,18 @@ GET https://<product-origin>/metrics.json
 
 Required fields: `schema`, `productId`, `updatedAt`, `health`, `kpis`.
 
-## How HQ loads metrics
+## How HQ loads metrics (v3.1+)
 
 1. `projects.json` → `metricsUrl` (e.g. `/metrics/satohash.json`)
 2. Optional live candidates (satohash API) when CORS allows
-3. Card shows top 3 KPIs + health
-4. **Metrics** view = full lab (series, funnels, segments, education)
+3. Fallback static `/metrics/<id>.json`
+4. **Cards:** top KPIs + dual sparklines + depth score + LNbits sat pill (v3.2)
+5. **Metrics** view = full lab (all KPIs, multi-series, funnels, segments, offers, education)
+6. **Coverage** tab = field-by-field inventory of what each product publishes
+7. **Analytics** = cross-suite charts from envelopes + status.json + money
+8. Per-product briefs: `docs/projects/<id>.md`
+
+Missing/malformed files never blank the page — isolated fetch + “unavailable” card with path.
 
 ## Molding guidance (operators)
 

@@ -1,3 +1,19 @@
+### 2026-07-21 — Grok goodbye · HQ v3.2.0 money pack
+
+**What changed (M3 → `kitsboy/HQ` main):**
+- v3.0 visual rebuild (`hq.css` / `hq.js`, 4 themes, no B/W/grey)
+- v3.1 depth pack (envelopes, project MD packs, Analytics/Matrix/Coverage/…)
+- v3.2 money pack (LNbits on cards, Money cockpit, drawer money, history cache, 60s poll)
+- Docs: SOURCE-OF-TRUTH, README, ECOSYSTEM-MAP, LNBITS-PROXY, METRICS-SCHEMA, THOR-NODE, UPGRADES-100
+
+**Finished:** Full glass redesign + money surfaces without dropping metrics depth.
+
+**Still to do:** Cam Vault on prod · Nova thor-node cron + LNbits harden · product live metrics · optional gate re-wire.
+
+**Next for Kimi:** Ingest into MASTER-BRAIN / Kanban; confirm hq.giveabit.io deploy; Hermes notes money = proxy path.
+
+---
+
 ### 2026-07-21 — Aider auto-session [6c6c407]
 
 **What changed:**
