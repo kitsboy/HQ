@@ -1,0 +1,172 @@
+{
+  "schema": "giveabit.cf-analytics.v1",
+  "updatedAt": "2026-07-21T22:23:59.439514+00:00",
+  "window": {
+    "label": "7d",
+    "from": "2026-07-14T22:23:59.439548+00:00",
+    "to": "2026-07-21T22:23:59.439565+00:00"
+  },
+  "zones": {
+    "giveabit": {
+      "domain": "giveabit.io",
+      "requests_7d": 66812,
+      "pageviews_7d": 19661,
+      "uniques_7d": 5620,
+      "bytes_7d": 852298510,
+      "daily": [
+        {
+          "date": "2026-07-15",
+          "pageviews": 3456,
+          "uniques": 1698
+        },
+        {
+          "date": "2026-07-16",
+          "pageviews": 1664,
+          "uniques": 1328
+        },
+        {
+          "date": "2026-07-17",
+          "pageviews": 595,
+          "uniques": 454
+        },
+        {
+          "date": "2026-07-18",
+          "pageviews": 1341,
+          "uniques": 879
+        },
+        {
+          "date": "2026-07-19",
+          "pageviews": 1647,
+          "uniques": 570
+        },
+        {
+          "date": "2026-07-20",
+          "pageviews": 10958,
+          "uniques": 691
+        }
+      ]
+    },
+    "satohash": {
+      "domain": "satohash.io",
+      "requests_7d": 9562,
+      "pageviews_7d": 4524,
+      "uniques_7d": 2410,
+      "bytes_7d": 84111421,
+      "daily": [
+        {
+          "date": "2026-07-15",
+          "pageviews": 1484,
+          "uniques": 1392
+        },
+        {
+          "date": "2026-07-16",
+          "pageviews": 208,
+          "uniques": 260
+        },
+        {
+          "date": "2026-07-17",
+          "pageviews": 249,
+          "uniques": 326
+        },
+        {
+          "date": "2026-07-18",
+          "pageviews": 160,
+          "uniques": 238
+        },
+        {
+          "date": "2026-07-19",
+          "pageviews": 143,
+          "uniques": 87
+        },
+        {
+          "date": "2026-07-20",
+          "pageviews": 2280,
+          "uniques": 107
+        }
+      ]
+    },
+    "katoa": {
+      "domain": "katoa.org",
+      "requests_7d": 12033,
+      "pageviews_7d": 7616,
+      "uniques_7d": 771,
+      "bytes_7d": 54779557,
+      "daily": [
+        {
+          "date": "2026-07-15",
+          "pageviews": 475,
+          "uniques": 124
+        },
+        {
+          "date": "2026-07-16",
+          "pageviews": 543,
+          "uniques": 132
+        },
+        {
+          "date": "2026-07-17",
+          "pageviews": 798,
+          "uniques": 137
+        },
+        {
+          "date": "2026-07-18",
+          "pageviews": 2639,
+          "uniques": 125
+        },
+        {
+          "date": "2026-07-19",
+          "pageviews": 455,
+          "uniques": 114
+        },
+        {
+          "date": "2026-07-20",
+          "pageviews": 2706,
+          "uniques": 139
+        }
+      ]
+    },
+    "sherpacarta": {
+      "domain": "sherpacarta.org",
+      "requests_7d": 7092,
+      "pageviews_7d": 4036,
+      "uniques_7d": 1203,
+      "bytes_7d": 157830034,
+      "daily": [
+        {
+          "date": "2026-07-15",
+          "pageviews": 488,
+          "uniques": 258
+        },
+        {
+          "date": "2026-07-16",
+          "pageviews": 331,
+          "uniques": 219
+        },
+        {
+          "date": "2026-07-17",
+          "pageviews": 439,
+          "uniques": 248
+        },
+        {
+          "date": "2026-07-18",
+          "pageviews": 310,
+          "uniques": 224
+        },
+        {
+          "date": "2026-07-19",
+          "pageviews": 227,
+          "uniques": 156
+        },
+        {
+          "date": "2026-07-20",
+          "pageviews": 2241,
+          "uniques": 98
+        }
+      ]
+    }
+  },
+  "total": {
+    "requests_7d": 95499,
+    "pageviews_7d": 35837,
+    "uniques_7d": 10004
+  }
+}

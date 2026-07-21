@@ -1,0 +1,4 @@
+# Local env files — never commit
+*-token.env
+*.env
+cf-token.env

@@ -1647,8 +1647,37 @@
               }).join("")}</tbody>
             </table>
           </div>
-          <p class="mono mt-2" style="font-size:0.6rem;color:var(--ink-faint)">CF Web Analytics available via Cloudflare dashboard → Analytics & Logs → Web Analytics</p>
+          <p class="mono mt-2" style="font-size:0.6rem;color:var(--ink-faint)">CF Web Analytics via GraphQL API · refreshed every 30 min via THOR cron</p>
         </div>
+        ${(() => {
+          const cf = state.cfAnalytics;
+          if (!cf || !cf.zones) return '';
+          const zones = Object.values(cf.zones).filter(z => z && z.pageviews_7d != null);
+          const total = cf.total || {};
+          return `<div class="analytics-panel panel span-12">
+            <h3>Cloudflare Web Analytics <span class="chip" style="font-size:0.6rem">7-day</span></h3>
+            <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:0.5rem">
+              ${[
+                { label: 'Total pageviews', value: total.pageviews_7d, color: 'sky' },
+                { label: 'Total uniques', value: total.uniques_7d, color: 'violet' },
+                { label: 'Total requests', value: total.requests_7d, color: 'ink-dim' },
+              ].map(s => `<div class="stat" style="flex:1;min-width:120px;padding:0.5rem;background:color-mix(in srgb,var(--${s.color})20%,transparent);border-radius:var(--r-sm)">
+                <div class="stat-value" style="font-size:1.1rem;font-weight:600">${esc(fmtNum(s.value))}</div>
+                <div class="stat-label" style="font-size:0.6rem;color:var(--ink-faint)">${esc(s.label)}</div>
+              </div>`).join("")}
+            </div>
+            <div class="table-wrap">
+              <table class="data" style="min-width:100%">
+                <thead><tr><th>Domain</th><th>Pageviews</th><th>Uniques</th><th>Daily trend</th></tr></thead>
+                <tbody>${zones.sort((a,b) => (b.pageviews_7d||0) - (a.pageviews_7d||0)).map(z => {
+                  const d = (z.daily || []).slice(-5);
+                  const trend = d.length ? d.map(dd => '<span style="display:inline-block;width:6px;height:' + Math.min(24, Math.max(2, Math.round(dd.pageviews/50))) + 'px;background:var(--sky);margin:0 1px;border-radius:1px;vertical-align:bottom"></span>').join("") : '';
+                  return `<tr><td style="font-weight:500">${esc(z.domain)}</td><td>${esc(fmtNum(z.pageviews_7d))}</td><td>${esc(fmtNum(z.uniques_7d))}</td><td style="line-height:24px;height:28px">${trend}</td></tr>`;
+                }).join("")}</tbody>
+              </table>
+            </div>
+          </div>`;
+        })()}
         <div class="analytics-panel panel span-12">
           <h3>Suite activity overlay (series[0] per product)</h3>
           ${suiteSeries.length ? multiSeriesChart(suiteSeries, "suite") : unavailableHTML("Series", "metrics/*/series")}
