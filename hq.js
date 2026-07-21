@@ -2120,54 +2120,18 @@
     loadAndShowDoc(state.selectedDoc);
   }
 
-  /* ── Password gate ──
-     Static known-answer check. The hash below is SHA-256("hq-gate·12991299").
-     No fetch, no storage of the secret, no async failure modes — one input, one compare. */
-  const GATE_PASS_HASH = "1188041c99cde3b92ce6897170a251f53147988bc35b5ae4f26d2e93c0617316";
-  async function gateHash(text) {
-    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("hq-gate·" + text));
-    return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
-  }
-  function gateShowApp() {
-    document.getElementById("gate").hidden = true;
-    document.getElementById("app").hidden = false;
-    init();
-  }
-  function bootGate() {
-    const gate = document.getElementById("gate");
+  /* ── App boot: gate.js handles the lock screen; we init when app is visible ── */
+  function bootWhenUnlocked() {
     const app = document.getElementById("app");
-    if (!gate || !app) { init(); return; }
-    try {
-      if (sessionStorage.getItem(GATE_SESSION) === "1") { gateShowApp(); return; }
-    } catch { /* private mode — ask every time */ }
-    app.hidden = true;
-    gate.hidden = false;
-    const input = document.getElementById("gate-input");
-    const btn = document.getElementById("gate-btn");
-    const err = document.getElementById("gate-error");
-    const attempt = async () => {
-      const val = (input.value || "").trim();
-      if (!val) { err.textContent = "Type the passphrase"; return; }
-      btn.disabled = true;
-      try {
-        if ((await gateHash(val)) === GATE_PASS_HASH) {
-          try { sessionStorage.setItem(GATE_SESSION, "1"); } catch {}
-          gateShowApp();
-        } else {
-          err.textContent = "Wrong passphrase";
-          input.value = "";
-          input.focus();
-        }
-      } catch (e) {
-        err.textContent = "Error: " + e.message;
-      } finally { btn.disabled = false; }
-    };
-    btn.addEventListener("click", attempt);
-    input.addEventListener("keydown", (e) => { if (e.key === "Enter") attempt(); });
-    input.focus();
+    if (app && !app.hidden) { init(); return; }
+    // poll until gate.js reveals the app (session unlock or passphrase)
+    const t = setInterval(() => {
+      const a = document.getElementById("app");
+      if (a && !a.hidden) { clearInterval(t); init(); }
+    }, 250);
   }
   function lockNow() {
-    try { sessionStorage.removeItem(GATE_SESSION); } catch {}
+    try { sessionStorage.removeItem("hq_gate_ok_v2"); sessionStorage.removeItem(GATE_SESSION); } catch {}
     location.reload();
   }
 
@@ -2872,6 +2836,6 @@
     } catch { /* ignore */ }
   }
 
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bootGate);
-  else bootGate();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bootWhenUnlocked);
+  else bootWhenUnlocked();
 })();

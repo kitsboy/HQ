@@ -132,7 +132,8 @@
   <div class="gate-card">
     <div class="brand-mark gate-mark" aria-hidden="true">G</div>
     <h1 class="display" id="gate-title">Give A Bit HQ</h1>
-    <p class="gate-sub" id="gate-sub">Ops glass for the family · set a passphrase to begin</p>
+    <p class="gate-sub" id="gate-sub">Ops glass for the family · enter passphrase</p>
+    <p class="gate-note mono" style="font-size:0.6rem">gate build 2026-07-21c</p>
     <input type="password" id="gate-input" class="gate-input" placeholder="passphrase" autocomplete="current-password">
     <input type="password" id="gate-confirm" class="gate-input" placeholder="confirm passphrase" autocomplete="new-password" hidden>
     <button type="button" class="btn btn-primary" id="gate-btn">Unlock</button>
@@ -146,6 +147,7 @@
 <script>
   document.getElementById("hq-origin").textContent = location.origin || "file";
 </script>
-<script src="hq.js" defer></script>
+<script src="gate.js?v=2026-07-21c"></script>
+<script src="hq.js?v=2026-07-21c" defer></script>
 </body>
 </html>
