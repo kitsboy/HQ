@@ -1001,10 +1001,10 @@
     const usd = fmtUsd(satsToUsd(tot.sats));
 
     el.innerHTML = `
-      <div class="stat panel"><div class="l">Suite live</div><div class="v" style="color:var(--green)">${up}<span style="font-size:0.85rem;color:var(--ink-faint)">/${total}</span></div></div>
-      <div class="stat panel"><div class="l">Attention</div><div class="v" style="color:${down ? "var(--red)" : "var(--ink-faint)"}">${down}</div></div>
-      <div class="stat panel"><div class="l">THOR</div><div class="v" style="font-size:1.05rem">${statusPill(health, health)}</div></div>
-      <div class="stat panel"><div class="l">Data depth</div><div class="v" style="color:${escAttr(depthColor(avgDepth))}">${avgDepth}<span style="font-size:0.75rem;color:var(--ink-faint)">/100</span></div></div>
+      <div class="stat panel" data-tip="How many suite sites returned HTTP 200 in the last health check. Out of ${total} total sites, ${up} are responding." style="cursor:help"><div class="l">Suite live</div><div class="v" style="color:var(--green)">${up}<span style="font-size:0.85rem;color:var(--ink-faint)">/${total}</span></div></div>
+      <div class="stat panel" data-tip="Sites that are down, timing out, or have failing metrics. 0 = everything running smoothly." style="cursor:help"><div class="l">Attention</div><div class="v" style="color:${down ? "var(--red)" : "var(--ink-faint)"}">${down}</div></div>
+      <div class="stat panel" data-tip="THOR VPS health: green = all services (Docker, Postgres, LNbits, LND, Umami) running and responding. amber = one or more degraded. red = unreachable." style="cursor:help"><div class="l">THOR</div><div class="v" style="font-size:1.05rem">${statusPill(health, health)}</div></div>
+      <div class="stat panel" data-tip="How much data HQ has collected for each product (0-100). 100 = every product has live /metrics.json, wallet data, Umami analytics, AND CF Web Analytics feeding in. 0 = demo/empty." style="cursor:help"><div class="l">Data depth</div><div class="v" style="color:${escAttr(depthColor(avgDepth))}">${avgDepth}<span style="font-size:0.75rem;color:var(--ink-faint)">/100</span></div></div>
       <div class="stat panel money-hero" style="cursor:pointer;min-width:200px" id="btn-goto-money" data-tip="Open money cockpit">
         <div class="l">Portfolio · LNbits</div>
         <div class="money-hero-total" style="font-size:1.15rem">${tot.ok ? esc(fmtNum(tot.sats, "sats")) : "—"}</div>
@@ -1039,7 +1039,7 @@
       const health = projectHealth(p);
       const depth = m && m.ok ? depthScore(m.data, false) : 0;
       const lat = s && s.ms != null ? `${s.ms}ms` : "—";
-      items.push(`<span class="ticker-item">${statusDot(health)} <strong>${esc(p.name)}</strong> ${esc(lat)} · depth ${depth}</span>`);
+      items.push(`<span class="ticker-item" data-tip="${esc(p.name)}: ${status === 'green' ? 'responding normally' : status === 'amber' ? 'degraded' : 'down'} · latency ${lat} · data depth ${depth}/100">${statusDot(health)} <strong>${esc(p.name)}</strong> ${esc(lat)} · depth ${depth}</span>`);
     });
     if (state.thor && state.thor.ok && state.thor.data) {
       const t = state.thor.data;
@@ -1111,10 +1111,10 @@
   function toolbarHTML(showDepthFilter) {
     return `<div class="toolbar">
       <input type="search" id="hq-search" placeholder="Search projects…" value="${escAttr(state.search)}"/>
-      <button type="button" class="btn btn-sm ${state.filter === "all" ? "btn-primary" : "btn-ghost"}" data-filter="all">All</button>
-      <button type="button" class="btn btn-sm ${state.filter === "green" ? "btn-primary" : "btn-ghost"}" data-filter="green">Green</button>
-      <button type="button" class="btn btn-sm ${state.filter === "attention" ? "btn-primary" : "btn-ghost"}" data-filter="attention">Attention</button>
-      ${showDepthFilter !== false ? `<button type="button" class="btn btn-sm ${state.filter === "deep" ? "btn-primary" : "btn-ghost"}" data-filter="deep">Deep data</button>` : ""}
+      <button type="button" class="btn btn-sm ${state.filter === "all" ? "btn-primary" : "btn-ghost"}" data-filter="all" data-tip="Show all products regardless of health status">All</button>
+      <button type="button" class="btn btn-sm ${state.filter === "green" ? "btn-primary" : "btn-ghost"}" data-filter="green" data-tip="Only show products with green health (all endpoints responding)">Green</button>
+      <button type="button" class="btn btn-sm ${state.filter === "attention" ? "btn-primary" : "btn-ghost"}" data-filter="attention" data-tip="Only show products that need attention — down, timing out, or missing data">Attention</button>
+      ${showDepthFilter !== false ? `<button type="button" class="btn btn-sm ${state.filter === "deep" ? "btn-primary" : "btn-ghost"}" data-filter="deep" data-tip="Only show products with rich data (funnels, series, segments — not just KPIs)">Deep data</button>` : ""}
       <button type="button" class="btn btn-sm btn-ghost" id="btn-export-2"><i class="fa-solid fa-file-export"></i> Diligence</button>
     </div>`;
   }
@@ -1206,17 +1206,17 @@
       </div>
       <div class="card-meta-row">
         <span class="depth-gauge" data-tip="Envelope depth ${depth}/100 — how much of gab.product-metrics.v1 this product fills">${gaugeHTML(depth, depthColor(depth), "depth")}</span>
-        <span class="chip">${esc(p.category || "—")}</span>
-        ${s.ms != null ? `<span class="chip mono">${esc(fmtMs(s.ms))}</span>` : ""}
-        ${m && m.path && /^https?:\/\//i.test(m.path) ? `<span class="status-pill green pulse" style="font-size:0.6rem;padding:0.15rem 0.4rem">live API</span>` : `<span class="chip">static</span>`}
-        ${data.raw && data.raw.demo ? `<span class="chip">demo</span>` : ""}
-        ${(data.funnels || []).length ? `<span class="chip">${data.funnels.length} funnel</span>` : ""}
-        ${(data.series || []).length ? `<span class="chip">${data.series.length} series</span>` : ""}
-        ${state.analytics && state.analytics[p.id] ? `<span class="status-pill sky" style="font-size:0.58rem;padding:0.1rem 0.35rem">${esc(fmtNum(state.analytics[p.id].visitors))} vis · ${esc(state.analytics[p.id].bounceRate)}% bnc</span>` : ""}
+        <span class="chip" data-tip="Product category — determines color and section placement on the board">${esc(p.category || "—")}</span>
+        ${s.ms != null ? `<span class="chip mono" data-tip="Response time for the last health check ping — lower is faster">${esc(fmtMs(s.ms))}</span>` : ""}
+        ${m && m.path && /^https?:\/\//i.test(m.path) ? `<span class="status-pill green pulse" style="font-size:0.6rem;padding:0.15rem 0.4rem" data-tip="HQ fetches this product's data live from its own server or CF Pages URL">live API</span>` : `<span class="chip" data-tip="Data comes from a static file on HQ — not live from the product site">static</span>`}
+        ${data.raw && data.raw.demo ? `<span class="chip" data-tip="This envelope contains demo/placeholder data — not real product metrics. Replaced when the product ships a live /metrics.json">demo</span>` : ""}
+        ${(data.funnels || []).length ? `<span class="chip" data-tip="${data.funnels.length} conversion funnel(s) showing how users flow through stages (e.g. visit → create → fund)">${data.funnels.length} funnel</span>` : ""}
+        ${(data.series || []).length ? `<span class="chip" data-tip="${data.series.length} time-series dataset(s) for sparklines and charts (e.g. daily visitors, sats over time)">${data.series.length} series</span>` : ""}
+        ${state.analytics && state.analytics[p.id] ? `<span class="status-pill sky" style="font-size:0.58rem;padding:0.1rem 0.35rem" data-tip="Real-time analytics from Umami on THOR: ${esc(fmtNum(state.analytics[p.id].visitors))} visitors in last 7 days, ${state.analytics[p.id].bounceRate}% bounce rate">${esc(fmtNum(state.analytics[p.id].visitors))} vis · ${esc(state.analytics[p.id].bounceRate)}% bnc</span>` : ""}
       </div>
       <div class="card-money-row">
         ${balanceChipHTML(p, { total: _tot.sats })}
-        <span class="ln-badge" style="margin-left:auto;font-size:0.58rem">LNbits</span>
+        <span class="ln-badge" style="margin-left:auto;font-size:0.58rem" data-tip="Lightning wallet balance via LNbits proxy — shows sats in this product's wallet when Vault has the invoice key">LNbits</span>
       </div>
       <div class="card-share-filament" style="height:3px;border-radius:99px;margin:0.35rem 0 0.55rem;background:linear-gradient(90deg,${escAttr(color)} ${_share}%, color-mix(in srgb, var(--surface-2) 80%, transparent) 0)"></div>
       ${p.id === "satohash" && m && m.ok && /^https?:\/\//i.test(m.path) ? `<div class="card-hero-kpi" style="display:flex;align-items:center;gap:0.6rem;margin:0.35rem 0 0.4rem;padding:0.3rem 0.5rem;background:color-mix(in srgb,var(--surface-2)50%,transparent);border-radius:var(--r-sm)">
