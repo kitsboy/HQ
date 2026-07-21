@@ -21,6 +21,10 @@
    "focus": "satohash-vps",
    "notes": [
     {
+     "t": "2026-07-21T19:15:25.000Z",
+     "summary": "v3.9.0: Ref-puller system \u2014 auto-pulls ref/ docs from 9 repos every 5 min. Seed ref/ files created. Tadbuy ARCHITECTURE.md documents all metrics and integrations. Cron running."
+    },
+    {
      "t": "2026-07-21T18:40:32.000Z",
      "summary": "v3.8.0: Umami CE deployed (Docker, 200MB RAM, shares Postgres), all 9 sites registered, HQ polls per-site analytics every 5 min \u2014 visitors/pageviews/bounce/sparklines on cards + Analytics tab + docs/UMAMI-SETUP.md"
     },

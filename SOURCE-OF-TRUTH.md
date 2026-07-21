@@ -64,6 +64,7 @@ _Updated: 2026-07-21 (goodbye — v3.4.4 gate fix + Vault v2 + ember theme + pro
 
 | Ver | What |
 |-----|------|
+| **v3.9.0** | Ref-puller system: auto-pulls `ref/` docs from all 9 suite repos via GitHub API every 5 min; sparse-checkout (only `ref/` folder); seed files for HQ/tadbuy/satohash; docs/REF-PULLER.md; Hermes skill |
 | **v3.8.0** | Umami analytics deployed: Docker on THOR (port 3002, shares Postgres), all 9 sites registered, HQ polls per-site visitors/pageviews/bounce rate every 5 min via Umami API, shown on card chips + Analytics tab table + visitor sparklines |
 | **v3.7.0** | THOR auto-collector cron (disk/mem/cpu/docker every 15 min), diff-before-save in Docs editor, LNURL-pay QR generator per wallet, budget runway estimation, PWA service worker (offline cache), vault dead button removed |
 | **v3.5.4** | Concert tab — all-project KPI comparison table (rows=metrics × cols=projects) |
