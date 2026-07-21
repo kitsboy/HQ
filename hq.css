@@ -5,6 +5,32 @@
 
 /* ─── THEMES (full palettes, never neutral greys) ─── */
 
+[data-theme="porcelain"] {
+  /* sunlit atelier · warm light, never white, never grey */
+  --bg-0: #f2e9dc;
+  --bg-1: #ece1d0;
+  --bg-2: #e4d6c2;
+  --surface: #fbf5ea;
+  --surface-2: #f6eddd;
+  --surface-hi: #fffaf0;
+  --surface-grad: linear-gradient(155deg, #fffaf0 0%, #f6ecda 48%, #efe2cc 100%);
+  --surface-grad-2: linear-gradient(160deg, #fff6e8 0%, #f4e9d4 55%, #ecdfc6 100%);
+  --ink: #352718;
+  --ink-dim: #6b543c;
+  --ink-faint: #96805f;
+  --line: rgba(146, 96, 32, 0.22);
+  --line-hi: rgba(196, 116, 24, 0.45);
+  --glow-soft: rgba(224, 138, 40, 0.16);
+  --shadow: rgba(120, 80, 30, 0.28);
+  --shine: rgba(255, 255, 255, 0.55);
+  --scroll-thumb: rgba(180, 130, 70, 0.5);
+  --void-grad: radial-gradient(ellipse 120% 80% at 12% -10%, #fdf3e0 0%, transparent 52%),
+               radial-gradient(ellipse 90% 70% at 88% 105%, #f0dfc2 0%, transparent 46%),
+               linear-gradient(165deg, #f2e9dc 0%, #eee2cd 42%, #eadcc4 100%);
+  --accent-theme: #d97706;
+  --accent-theme-2: #b45309;
+}
+
 [data-theme="stone"] {
   /* sunlit porcelain · warm clay / terracotta */
   --bg-0: #1a100c;
@@ -537,6 +563,7 @@ input:focus, textarea:focus, select:focus {
   box-shadow: 0 0 12px currentColor;
   transform: scale(1.08);
 }
+.theme-dot[data-theme-pick="porcelain"] { background: linear-gradient(135deg, #f6ecda, #c98f2e); color: #d97706; }
 .theme-dot[data-theme-pick="stone"] { background: linear-gradient(135deg, #c47840, #5a3020); color: #c47840; }
 .theme-dot[data-theme-pick="slate"] { background: linear-gradient(135deg, #38bdf8, #0a3040); color: #38bdf8; }
 .theme-dot[data-theme-pick="ink"] { background: linear-gradient(135deg, #a78bfa, #1a0e30); color: #a78bfa; }
@@ -3191,3 +3218,80 @@ table.data .name-cell {
   }
 }
 
+
+/* ─── v3.3 additions: gauges, md editor, depth-gauge on cards ─── */
+
+.gauge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  position: relative;
+  width: 72px;
+}
+.gauge svg { width: 56px; height: 56px; transform: rotate(-90deg); }
+.gauge-track {
+  fill: none;
+  stroke: var(--surface-2);
+  stroke-width: 6;
+}
+.gauge-arc {
+  fill: none;
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.6s var(--ease-out);
+}
+.gauge-num {
+  position: absolute;
+  top: 20px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--ink);
+}
+.gauge-num small { font-size: 0.55rem; color: var(--ink-faint); font-weight: 500; }
+.gauge-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.gauge-row {
+  display: flex;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+.depth-gauge .gauge { width: 52px; }
+.depth-gauge .gauge svg { width: 40px; height: 40px; }
+.depth-gauge .gauge-num { top: 12px; font-size: 0.62rem; }
+.depth-gauge .gauge-label { display: none; }
+
+.md-editor {
+  width: 100%;
+  min-height: 420px;
+  resize: vertical;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 0.85rem 1rem;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  font-family: var(--font-mono);
+}
+.md-editor:focus {
+  outline: none;
+  border-color: var(--line-hi);
+  box-shadow: 0 0 0 3px var(--glow-soft);
+}
+
+/* Porcelain light-theme legibility tweaks */
+[data-theme="porcelain"] .card,
+[data-theme="porcelain"] .panel,
+[data-theme="porcelain"] .stat {
+  box-shadow: 0 1px 2px rgba(120, 80, 30, 0.10), 0 8px 24px -12px rgba(120, 80, 30, 0.22);
+}
+[data-theme="porcelain"] .topbar {
+  backdrop-filter: blur(14px) saturate(1.1);
+}

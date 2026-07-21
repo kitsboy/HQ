@@ -7,14 +7,16 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.2.0";
+  const HQ_VERSION = "3.3.0";
   const BUILD_TS = new Date().toISOString();
   const VAULT_KEY = "sovereign_deck_vault_v1";
   const THEME_KEY = "hq_theme_v3";
   const TAB_KEY = "hq_tab_v3";
   const SNAP_KEY = "hq_uptime_snap_v1";
   const BAL_HIST_KEY = "hq_wallet_hist_v1";
+  const DOC_OVERRIDES_KEY = "hq_doc_overrides_v1";
   const BAL_POLL_MS = 60000;
+  const DATA_POLL_MS = 300000;
 
   const PROJECT_ACCENTS = {
     giveabit: "#ff8c00",
@@ -53,6 +55,7 @@
     "CLOUDFLARE-ACCESS.md", "ECOSYSTEM-MAP.md", "HQ-GATE.md", "KIMI-GROK-HANDOFF.md",
     "KIMI-HANDOFF-2026-07-20-MEGA.md", "KIMI-HANDOFF-2026-07-20.md", "KIMI-HANDOFF.md",
     "LNBITS-CORS.md", "LNBITS-PROXY.md", "METRICS-SCHEMA.md", "THOR-NODE-JSON.md", "UPGRADES-100.md",
+    "ANALYTICS-PLAN.md",
   ];
 
   const FEATURES = [
@@ -77,6 +80,9 @@
     "Latency rank", "KPI heat", "Coverage scores", "Data inventory",
     "Activity feed", "Ecosystem map", "Wallets vault", "Balance bars",
     "Docs browser", "Project MD packs", "Agents personas", "Domains table",
+    "Markdown editor", "Doc overrides", "Doc download", "Docs dirty badge",
+    "Porcelain light theme", "Live pulse chip", "Auto data poll 5m",
+    "Card depth gauges", "THOR host gauges", "Analytics plan doc",
     "HTML escape", "Isolated fetch", "Unavailable cards", "Theme flash",
     "Keyboard nav", "Diligence export", "Search filter", "Health filter",
     "Feature board 100", "Yolo money glow", "Safe Harbour", "No grey rule",
@@ -426,6 +432,20 @@
     const p = Math.max(0, Math.min(100, Number(pct) || 0));
     return `<div class="metric-bar ${escAttr(colorClass || "")}" ${extraStyle ? `style="${escAttr(extraStyle)}"` : ""}><span style="width:${p}%"></span></div>`;
   }
+  function gaugeHTML(pct, color, label, sub) {
+    const p = Math.max(0, Math.min(100, Number(pct) || 0));
+    const R = 30, C = 2 * Math.PI * R;
+    const off = C * (1 - p / 100);
+    return `<div class="gauge" data-tip="${escAttr(sub || label)}">
+      <svg viewBox="0 0 72 72" aria-hidden="true">
+        <circle class="gauge-track" cx="36" cy="36" r="${R}"></circle>
+        <circle class="gauge-arc" cx="36" cy="36" r="${R}" stroke="${escAttr(color)}"
+          stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}"></circle>
+      </svg>
+      <div class="gauge-num">${Math.round(p)}<small>%</small></div>
+      <div class="gauge-label">${esc(label)}</div>
+    </div>`;
+  }
   function hbarChart(rows, color) {
     if (!rows || !rows.length) return `<p class="empty-state">No rows</p>`;
     const max = Math.max(...rows.map((r) => Number(r.value) || 0), 1);
@@ -655,7 +675,7 @@
     setTimeout(() => { el.style.opacity = "0"; setTimeout(() => el.remove(), 300); }, 3200);
   }
   function setTheme(name) {
-    const t = ["stone", "slate", "ink", "aurora"].includes(name) ? name : "ink";
+    const t = ["porcelain", "stone", "slate", "ink", "aurora"].includes(name) ? name : "porcelain";
     document.body.classList.add("theme-switching");
     document.documentElement.setAttribute("data-theme", t);
     state.theme = t;
@@ -752,6 +772,36 @@
     if (ver) ver.textContent = `v${HQ_VERSION}`;
     const b = document.getElementById("hq-build");
     if (b) b.textContent = BUILD_TS.slice(0, 16).replace("T", " ") + "Z";
+  }
+
+  /* ── Live pulse: light refresh of status + thor + live metric candidates ── */
+  function updateLiveChip() {
+    const chip = document.getElementById("live-poll-chip");
+    if (!chip) return;
+    const left = Math.max(0, Math.round(((state.nextDataPoll || Date.now()) - Date.now()) / 1000));
+    const mm = Math.floor(left / 60), ss = String(left % 60).padStart(2, "0");
+    chip.textContent = `live ${mm}:${ss}`;
+    chip.className = "status-pill sky";
+  }
+
+  async function refreshLiveData() {
+    const [statusR, thorR] = await Promise.all([
+      loadData("/status.json?t=" + Date.now()),
+      loadFirst([(state.feeds || {}).thorNodeUrl, "/metrics/thor-node.json?t=" + Date.now(), (state.feeds || {}).thorNodeFallback]),
+    ]);
+    if (statusR.ok) state.status = statusR.data;
+    if (thorR.ok) { state.thor = thorR; state.metrics["thor-node"] = thorR; }
+    // live metric candidates only (satohash API etc.) — static files change with git
+    await Promise.all(state.projects.map(async (p) => {
+      if (!p.metricsLiveCandidates || !p.metricsLiveCandidates.length) return;
+      const r = await loadFirst(p.metricsLiveCandidates);
+      if (r.ok) state.metrics[p.id] = r;
+    }));
+    snapUptime();
+    renderPortfolioStrip();
+    renderTicker();
+    renderActiveTab();
+    toast("Live data refreshed", "ok");
   }
 
   function snapUptime() {
@@ -1071,7 +1121,7 @@
         ${statusPill(health)}
       </div>
       <div class="card-meta-row">
-        <span class="depth-badge" style="--depth-c:${escAttr(depthColor(depth))}" data-tip="How complete this product's metrics envelope is for HQ charts">depth ${depth}</span>
+        <span class="depth-gauge" data-tip="Envelope depth ${depth}/100 — how much of gab.product-metrics.v1 this product fills">${gaugeHTML(depth, depthColor(depth), "depth")}</span>
         <span class="chip">${esc(p.category || "—")}</span>
         ${s.ms != null ? `<span class="chip mono">${esc(fmtMs(s.ms))}</span>` : ""}
         ${data.raw && data.raw.demo ? `<span class="chip">demo</span>` : `<span class="chip" style="border-color:color-mix(in srgb,var(--green)40%,transparent)">live</span>`}
@@ -1247,12 +1297,18 @@
     if (!m || !m.ok) return unavailableHTML("THOR unavailable", m ? m.path : "/metrics/thor-node.json", m ? m.error : "");
     const d = m.data;
     const node = d.node || {}, btc = d.bitcoin || {}, ln = d.lightning || {}, host = d.host || {};
+    const sys = d.system || {};
     const services = node.services || [];
     const consumers = (d.storage && d.storage.consumers) || [];
 
-    // Disk: prefer host, else bitcoin prune target
-    let diskUsed = host.diskUsedGB != null ? Number(host.diskUsedGB) : Number(btc.sizeOnDiskGB) || 0;
-    let diskTotal = host.diskTotalGB != null ? Number(host.diskTotalGB) : Number(btc.pruneTargetGB) || 0;
+    // Disk: prefer host, then system.disk, else bitcoin prune target
+    const sysDisk = sys.disk || {}, sysMem = sys.memory || {}, sysCpu = sys.cpu || {};
+    let diskUsed = host.diskUsedGB != null ? Number(host.diskUsedGB)
+      : sysDisk.usedGB != null ? Number(sysDisk.usedGB)
+      : Number(btc.sizeOnDiskGB) || 0;
+    let diskTotal = host.diskTotalGB != null ? Number(host.diskTotalGB)
+      : sysDisk.totalGB != null ? Number(sysDisk.totalGB)
+      : Number(btc.pruneTargetGB) || 0;
     let diskPct = diskTotal > 0 ? (diskUsed / diskTotal) * 100 : null;
     let freePct = diskPct != null ? Math.max(0, 100 - diskPct) : null;
     let diskCls = "green";
@@ -1260,12 +1316,20 @@
       if (diskPct >= 90) diskCls = "red";
       else if (diskPct >= 75) diskCls = "amber";
     }
-    const memPct = host.memTotalGB ? (Number(host.memUsedGB) / Number(host.memTotalGB)) * 100 : null;
+    const memUsedGB = host.memUsedGB != null ? Number(host.memUsedGB) : sysMem.usedGB != null ? Number(sysMem.usedGB) : null;
+    const memTotalGB = host.memTotalGB != null ? Number(host.memTotalGB) : sysMem.totalGB != null ? Number(sysMem.totalGB) : null;
+    const memPct = memTotalGB ? (memUsedGB / memTotalGB) * 100 : null;
     let memCls = "green";
     if (memPct != null) {
       if (memPct >= 90) memCls = "red";
       else if (memPct >= 75) memCls = "amber";
     }
+    const load1 = host.load1 != null ? Number(host.load1) : sysCpu.loadAvg1m != null ? Number(sysCpu.loadAvg1m) : null;
+    const load5 = host.load5 != null ? Number(host.load5) : sysCpu.loadAvg5m != null ? Number(sysCpu.loadAvg5m) : null;
+    const load15 = host.load15 != null ? Number(host.load15) : sysCpu.loadAvg15m != null ? Number(sysCpu.loadAvg15m) : null;
+    const cpuPct = load1 != null ? Math.min(100, (load1 / 4) * 100) : null; // 4 vCPU assumption, labelled
+    const hostBreakdown = sys.breakdownGB || null;
+    const sysDocker = sys.docker || null;
     const storageRows = consumers.length
       ? [...consumers].sort((a, b) => Number(b.gb) - Number(a.gb)).slice(0, 8).map((c) => ({
           label: c.label || c.id, value: Number(c.gb), display: Number(c.gb).toFixed(1) + " GB",
@@ -1330,6 +1394,17 @@
           </div>
           <div class="mt-2">${metricBar(ln.totalCapacitySats ? (Number(ln.totalLocalBalanceSats) / Number(ln.totalCapacitySats)) * 100 : 0, "orange", "--bar-c:#ff8c00")}
             <div class="mono" style="font-size:0.65rem;color:var(--ink-faint);margin-top:0.25rem">local share of capacity</div></div>
+        </div>
+        <div class="system-panel panel">
+          <h3><i class="fa-solid fa-gauge-high" style="color:var(--sky)"></i> Host vitals</h3>
+          <div class="gauge-row">
+            ${diskPct != null ? gaugeHTML(diskPct, diskCls === "green" ? "#2dd4bf" : diskCls === "amber" ? "#f59e0b" : "#ef4444", "disk", `${diskUsed.toFixed(1)} / ${diskTotal} GB used`) : ""}
+            ${memPct != null ? gaugeHTML(memPct, memCls === "green" ? "#a78bfa" : memCls === "amber" ? "#f59e0b" : "#ef4444", "memory", `${memUsedGB} / ${memTotalGB} GB used`) : ""}
+            ${cpuPct != null ? gaugeHTML(cpuPct, "#38bdf8", "load", `load ${load1} / ${load5} / ${load15} · 4 vCPU share`) : ""}
+            ${sysCpu.uptimeDays != null ? gaugeHTML(Math.min(100, (Number(sysCpu.uptimeDays) / 30) * 100), "#22c55e", "uptime", `${sysCpu.uptimeDays} days up (30d = 100%)`) : ""}
+          </div>
+          ${hostBreakdown ? `<div class="mt-2">${hbarChart(Object.entries(hostBreakdown).map(([k, v]) => ({ label: k.replace(/_/g, " "), value: Number(v), display: Number(v).toFixed(1) + " GB" })), "#2dd4bf")}</div>` : ""}
+          ${sysDocker ? `<p class="mono mt-2" style="font-size:0.68rem;color:var(--ink-dim)">docker: ${esc(sysDocker.containers)} containers · ${esc(sysDocker.images)} images · ${esc(fmtNum(sysDocker.buildCacheGB))} GB cache</p>` : ""}
         </div>
         <div class="system-panel panel">
           <h3><i class="fa-brands fa-docker" style="color:var(--sky)"></i> Docker (${services.length})</h3>
@@ -2024,6 +2099,21 @@
     loadAndShowDoc(state.selectedDoc);
   }
 
+  /* ── Doc overrides: browser-local edits of any .md ── */
+  function docOverrides() {
+    try { return JSON.parse(localStorage.getItem(DOC_OVERRIDES_KEY) || "{}") || {}; } catch { return {}; }
+  }
+  function saveDocOverride(fn, text) {
+    const o = docOverrides();
+    o[fn] = { text, savedAt: new Date().toISOString() };
+    try { localStorage.setItem(DOC_OVERRIDES_KEY, JSON.stringify(o)); } catch (e) { toast("Override save failed: " + e.message, "err"); }
+  }
+  function clearDocOverride(fn) {
+    const o = docOverrides();
+    delete o[fn];
+    try { localStorage.setItem(DOC_OVERRIDES_KEY, JSON.stringify(o)); } catch {}
+  }
+
   async function loadAndShowDoc(fn) {
     const viewer = document.getElementById("doc-viewer");
     if (!viewer) return;
@@ -2031,11 +2121,14 @@
     if (!state.docs[fn]) state.docs[fn] = await loadData(path, { asText: true });
     const r = state.docs[fn];
     if (!r.ok) { viewer.innerHTML = unavailableHTML("Doc unavailable", r.path, r.error); return; }
+    const overrides = docOverrides();
+    const ov = overrides[fn];
+    const source = ov ? ov.text : (r.data || "");
     let html = "";
     try {
-      if (typeof marked !== "undefined") { marked.setOptions({ breaks: true, gfm: true }); html = marked.parse(r.data || ""); }
-      else html = `<pre class="mono">${esc(r.data)}</pre>`;
-    } catch { html = `<pre class="mono">${esc(r.data)}</pre>`; }
+      if (typeof marked !== "undefined") { marked.setOptions({ breaks: true, gfm: true }); html = marked.parse(source); }
+      else html = `<pre class="mono">${esc(source)}</pre>`;
+    } catch { html = `<pre class="mono">${esc(source)}</pre>`; }
     const toc = [];
     const withIds = html.replace(/<h([23])>(.*?)<\/h\1>/gi, (_, level, text) => {
       const plain = text.replace(/<[^>]+>/g, "");
@@ -2044,12 +2137,63 @@
       return `<h${level} id="${escAttr(id)}">${text}</h${level}>`;
     });
     viewer.innerHTML = `
-      <div class="flex justify-between items-center mb-2">
-        <h2 class="display" style="margin:0;font-size:1.1rem">${esc(fn)}</h2>
-        <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">${esc(r.path)}</span>
+      <div class="flex justify-between items-center mb-2 flex-wrap gap-2">
+        <h2 class="display" style="margin:0;font-size:1.1rem">${esc(fn)}
+          ${ov ? `<span class="status-pill amber" data-tip="Edited locally — overrides the file from git" data-tip-title="Local override">edited</span>` : ""}
+        </h2>
+        <div class="flex items-center gap-2">
+          <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">${esc(r.path)}${ov ? " · local " + esc(fmtTime(ov.savedAt)) : ""}</span>
+          <button type="button" class="btn btn-ghost btn-sm" id="doc-edit-btn"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+          <button type="button" class="btn btn-ghost btn-sm" id="doc-download-btn" title="Download .md"><i class="fa-solid fa-download"></i></button>
+        </div>
       </div>
-      ${toc.length > 2 ? `<div class="doc-toc">${toc.map((t) => `<a href="#${escAttr(t.id)}">${esc(t.text)}</a>`).join("")}</div>` : ""}
-      <div class="md-body">${withIds}</div>`;
+      <div id="doc-render-pane">
+        ${toc.length > 2 ? `<div class="doc-toc">${toc.map((t) => `<a href="#${escAttr(t.id)}">${esc(t.text)}</a>`).join("")}</div>` : ""}
+        <div class="md-body">${withIds}</div>
+      </div>
+      <div id="doc-editor-pane" style="display:none">
+        <textarea id="doc-editor" class="md-editor mono" spellcheck="false">${esc(source)}</textarea>
+        <div class="flex items-center gap-2 mt-2 flex-wrap">
+          <button type="button" class="btn btn-primary btn-sm" id="doc-save-btn"><i class="fa-solid fa-floppy-disk"></i> Save (browser)</button>
+          <button type="button" class="btn btn-ghost btn-sm" id="doc-preview-btn"><i class="fa-solid fa-eye"></i> Preview</button>
+          ${ov ? `<button type="button" class="btn btn-ghost btn-sm" id="doc-revert-btn"><i class="fa-solid fa-rotate-left"></i> Revert to git</button>` : ""}
+          <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">Saves to browser override · download to commit via git</span>
+        </div>
+      </div>`;
+    const editBtn = document.getElementById("doc-edit-btn");
+    const editorPane = document.getElementById("doc-editor-pane");
+    const renderPane = document.getElementById("doc-render-pane");
+    const editor = document.getElementById("doc-editor");
+    editBtn?.addEventListener("click", () => {
+      const editing = editorPane.style.display !== "none";
+      editorPane.style.display = editing ? "none" : "";
+      renderPane.style.display = editing ? "" : "none";
+      editBtn.innerHTML = editing ? `<i class="fa-solid fa-pen-to-square"></i> Edit` : `<i class="fa-solid fa-xmark"></i> Close editor`;
+    });
+    document.getElementById("doc-save-btn")?.addEventListener("click", () => {
+      saveDocOverride(fn, editor.value);
+      toast("Saved local override for " + fn, "ok");
+      loadAndShowDoc(fn);
+    });
+    document.getElementById("doc-preview-btn")?.addEventListener("click", () => {
+      saveDocOverride(fn, editor.value);
+      loadAndShowDoc(fn);
+      document.getElementById("doc-edit-btn")?.click();
+    });
+    document.getElementById("doc-revert-btn")?.addEventListener("click", () => {
+      clearDocOverride(fn);
+      toast("Reverted " + fn + " to git version", "ok");
+      loadAndShowDoc(fn);
+    });
+    document.getElementById("doc-download-btn")?.addEventListener("click", () => {
+      const blob = new Blob([docOverrides()[fn] ? docOverrides()[fn].text : source], { type: "text/markdown" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = fn.split("/").pop();
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    });
+    bindTooltips();
   }
 
   function renderAgents() {
@@ -2206,11 +2350,21 @@
 
     if (state.drawerTab === "docs") {
       const pd = state.projectDocs[p.id];
-      if (pd && pd.ok) {
+      const fn = `projects/${p.id}.md`;
+      const ov = docOverrides()[fn];
+      const src = ov ? ov.text : (pd && pd.ok ? pd.data : null);
+      if (src != null) {
         try {
-          body.innerHTML = `<div class="doc-mini">${typeof marked !== "undefined" ? marked.parse(pd.data) : `<pre>${esc(pd.data)}</pre>`}</div>
-            <p class="mono mt-2" style="font-size:0.65rem;color:var(--ink-faint)">${esc(pd.path)}</p>`;
-        } catch { body.innerHTML = `<pre>${esc(pd.data)}</pre>`; }
+          body.innerHTML = `${ov ? `<p><span class="status-pill amber">edited locally</span></p>` : ""}
+            <div class="doc-mini">${typeof marked !== "undefined" ? marked.parse(src) : `<pre>${esc(src)}</pre>`}</div>
+            <p class="mono mt-2" style="font-size:0.65rem;color:var(--ink-faint)">${esc(pd ? pd.path : "/docs/" + fn)}</p>
+            <button type="button" class="btn btn-ghost btn-sm mt-2" id="drawer-doc-edit"><i class="fa-solid fa-pen-to-square"></i> Edit in Docs tab</button>`;
+          body.querySelector("#drawer-doc-edit")?.addEventListener("click", () => {
+            closeDrawer();
+            state.selectedDoc = fn;
+            setTab("docs");
+          });
+        } catch { body.innerHTML = `<pre>${esc(src)}</pre>`; }
       } else {
         body.innerHTML = unavailableHTML("Project doc", pd ? pd.path : `/docs/projects/${p.id}.md`, pd ? pd.error : "");
       }
@@ -2499,7 +2653,7 @@
 
   function init() {
     state.vault = loadVault();
-    try { state.theme = localStorage.getItem(THEME_KEY) || "ink"; } catch { state.theme = "ink"; }
+    try { state.theme = localStorage.getItem(THEME_KEY) || "porcelain"; } catch { state.theme = "porcelain"; }
     try { state.tab = localStorage.getItem(TAB_KEY) || "cards"; } catch { state.tab = "cards"; }
     setTheme(state.theme);
 
@@ -2536,6 +2690,18 @@
     });
 
     bootstrap();
+    // Live pulse: refresh status + thor + live metrics every 5 min, countdown chip
+    try {
+      state.nextDataPoll = Date.now() + DATA_POLL_MS;
+      if (window.__hqDataPoll) clearInterval(window.__hqDataPoll);
+      window.__hqDataPoll = setInterval(async () => {
+        state.nextDataPoll = Date.now() + DATA_POLL_MS;
+        await refreshLiveData();
+      }, DATA_POLL_MS);
+      if (window.__hqPulseTick) clearInterval(window.__hqPulseTick);
+      window.__hqPulseTick = setInterval(updateLiveChip, 1000);
+      updateLiveChip();
+    } catch { /* ignore */ }
     // LNbits auto-poll — money surfaces stay live
     try {
       if (window.__hqBalPoll) clearInterval(window.__hqBalPoll);
