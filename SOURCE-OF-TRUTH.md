@@ -55,6 +55,7 @@ _Updated: 2026-07-21 (goodbye — v3.4.4 gate fix + Vault v2 + ember theme + pro
 
 | Ver | What |
 |-----|------|
+| **v3.7.0** | THOR auto-collector cron (disk/mem/cpu/docker every 15 min), diff-before-save in Docs editor, LNURL-pay QR generator per wallet, budget runway estimation, PWA service worker (offline cache), vault dead button removed |
 | **v3.5.4** | Concert tab — all-project KPI comparison table (rows=metrics × cols=projects) |
 | **v3.5.3** | Save edited docs to GitHub — Push to Git button in Docs editor via Vault PAT |
 | **v3.5.2** | Live API badge on cards (green pulse pill) + satohash stamp hero counter |

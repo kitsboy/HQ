@@ -1,6 +1,6 @@
 {
  "schema": "gab.handoff.v1",
- "updatedAt": "2026-07-21T17:41:45.000Z",
+ "updatedAt": "2026-07-21T18:13:33.000Z",
  "agents": {
   "grok": {
    "lastSeen": "2026-07-21T12:00:00.000Z",
@@ -17,9 +17,13 @@
    ]
   },
   "kimi": {
-   "lastSeen": "2026-07-21T17:41:45.000Z",
+   "lastSeen": "2026-07-21T18:13:33.000Z",
    "focus": "satohash-vps",
    "notes": [
+    {
+     "t": "2026-07-21T18:13:33.000Z",
+     "summary": "v3.7.0: THOR auto-collector cron, diff-before-save, QR pay links, budget runway, PWA service worker, vault cleaned"
+    },
     {
      "t": "2026-07-21T17:41:45.000Z",
      "summary": "Round 2: v3.5.0-4 \u2014 version auto-stamp, portfolio time chart, live API badge on cards, GitHub doc push from editor, Concert all-KPI comparison tab"
