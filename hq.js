@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.1.0 — depth pack
+ * Give A Bit HQ v3.2.0 — depth pack
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
@@ -7,12 +7,14 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.1.0";
+  const HQ_VERSION = "3.2.0";
   const BUILD_TS = new Date().toISOString();
   const VAULT_KEY = "sovereign_deck_vault_v1";
   const THEME_KEY = "hq_theme_v3";
   const TAB_KEY = "hq_tab_v3";
   const SNAP_KEY = "hq_uptime_snap_v1";
+  const BAL_HIST_KEY = "hq_wallet_hist_v1";
+  const BAL_POLL_MS = 60000;
 
   const PROJECT_ACCENTS = {
     giveabit: "#ff8c00",
@@ -41,6 +43,7 @@
     coverage: "#38bdf8",
     system: "#2dd4bf",
     wallets: "#f59e0b",
+    money: "#ff8c00",
     docs: "#e879f9",
     agents: "#fb923c",
     domains: "#c084fc",
@@ -53,6 +56,17 @@
   ];
 
   const FEATURES = [
+    "LNbits live balances", "Proxy wallet fetch", "Vault invoice keys", "Balance on cards",
+    "Sat pill chips", "Pulse money dots", "Share filament", "Portfolio allocation ribbon",
+    "Dual ticker sats+USD", "Δ whisper cache", "History thread sparklines", "Money drawer tab",
+    "Sats cascade", "Wallet identity block", "Portfolio totem", "Wealth ladder rank",
+    "Money cockpit tab", "Allocation donut", "Compare bars wallets", "FX badge CoinGecko",
+    "Stale balance fade", "Auto-poll 60s", "Batch /balances API", "Per-wallet path display",
+    "Copy balance action", "Refresh single wallet", "RO safety strip", "Empty vault beckon",
+    "Card money row", "List balance column", "Matrix money cell", "Analytics money panel",
+    "Activity balance events", "Diligence wallet lines", "Network money status", "Depth + money",
+    "Project comprehensive drawer", "Drawer overview", "Drawer money", "Drawer metrics",
+    "Drawer stack", "Drawer docs", "Drawer related", "Drawer XL width",
     "4 tinted themes", "Portfolio strip", "Live ticker", "Pause-on-hover ticker",
     "Product cards", "KPI rows", "Dual sparklines", "Depth badges", "Status pills",
     "List table", "Metrics lab", "Multi-series charts", "Funnels", "Segments",
@@ -63,19 +77,10 @@
     "Latency rank", "KPI heat", "Coverage scores", "Data inventory",
     "Activity feed", "Ecosystem map", "Wallets vault", "Balance bars",
     "Docs browser", "Project MD packs", "Agents personas", "Domains table",
-    "Detail drawer", "Drawer docs tab", "Drawer metrics", "HTML escape",
-    "Isolated fetch", "Unavailable cards", "Theme flash", "Keyboard nav",
-    "Diligence export", "Search filter", "Health filter", "Refresh all",
-    "CoinGecko FX", "status.json", "ecosystem-map.json", "tools.json hub",
-    "Related chips", "Uptime snapshot", "Sparkline 15d", "Trend charts",
-    "Donut charts", "H-bar charts", "Metric bars", "Icon badges",
-    "Tooltip bubbles", "Toast stack", "Vault modal", "Proxy balances",
-    "Accent per project", "No grey rule", "Accent series fallback", "Agent recolor",
-    "Section dividers", "Loading states", "Empty states", "Sticky nav",
-    "Responsive grid", "Mobile tabs scroll", "Offer grid", "Segment bars",
-    "Dependency pills", "Window labels", "Source paths", "Schema labels",
-    "Pitch strip KPIs", "Suite uptime", "Attention count", "THOR badge",
-    "Build stamp", "Safe Harbour", "Per-project docs", "Coverage tab",
+    "HTML escape", "Isolated fetch", "Unavailable cards", "Theme flash",
+    "Keyboard nav", "Diligence export", "Search filter", "Health filter",
+    "Feature board 100", "Yolo money glow", "Safe Harbour", "No grey rule",
+    "Comprehensive project drawer",
   ];
 
   /* ═══════════════ DATA LAYER ═══════════════ */
@@ -222,6 +227,185 @@
     if (score >= 35) return "#f59e0b";
     return "#f472b6";
   }
+
+  /* ═══════════════ MONEY / LNBITS LAYER ═══════════════ */
+
+  function walletIdFor(p) {
+    return (p && (p.wallet || p.id)) || null;
+  }
+
+  function vaultKeys() {
+    const v = state.vault || {};
+    return v.keys || v.wallets || {};
+  }
+
+  function hasVaultKey(walletId) {
+    const k = vaultKeys()[walletId];
+    return !!(k && String(k).trim());
+  }
+
+  function portfolioTotals() {
+    let sats = 0, ok = 0, err = 0, empty = 0, pending = 0;
+    const rows = [];
+    state.projects.forEach((p) => {
+      const wid = walletIdFor(p);
+      if (!wid) return;
+      const bal = state.wallets[wid];
+      if (!hasVaultKey(wid)) { empty++; rows.push({ p, wid, bal: null, status: "empty" }); return; }
+      if (!bal) { pending++; rows.push({ p, wid, bal: null, status: "pending" }); return; }
+      if (bal.ok && bal.sats != null) {
+        ok++; sats += Number(bal.sats) || 0;
+        rows.push({ p, wid, bal, status: "ok", sats: Number(bal.sats) || 0 });
+      } else {
+        err++;
+        rows.push({ p, wid, bal, status: "err" });
+      }
+    });
+    return { sats, ok, err, empty, pending, rows };
+  }
+
+  function satsToUsd(sats) {
+    if (state.btcUsd == null || sats == null || Number.isNaN(Number(sats))) return null;
+    return (Number(sats) / 1e8) * state.btcUsd;
+  }
+
+  function fmtUsd(n) {
+    if (n == null || Number.isNaN(Number(n))) return "—";
+    return "$" + Number(n).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function loadBalHist() {
+    try { return JSON.parse(localStorage.getItem(BAL_HIST_KEY) || "{}") || {}; }
+    catch { return {}; }
+  }
+
+  function saveBalHist(hist) {
+    try { localStorage.setItem(BAL_HIST_KEY, JSON.stringify(hist)); } catch {}
+  }
+
+  function pushBalSnapshot(walletId, sats) {
+    if (walletId == null || sats == null) return;
+    const hist = loadBalHist();
+    if (!hist[walletId]) hist[walletId] = [];
+    const arr = hist[walletId];
+    const last = arr[arr.length - 1];
+    // de-dupe identical consecutive within 30s
+    if (last && last.v === sats && Date.now() - last.t < 30000) return;
+    arr.push({ t: Date.now(), v: Number(sats) });
+    while (arr.length > 48) arr.shift();
+    hist[walletId] = arr;
+    saveBalHist(hist);
+  }
+
+  function balHistoryPoints(walletId) {
+    const hist = loadBalHist();
+    return (hist[walletId] || []).map((x) => ({ t: new Date(x.t).toISOString(), v: x.v }));
+  }
+
+  function balDelta(walletId) {
+    const pts = loadBalHist()[walletId] || [];
+    if (pts.length < 2) return null;
+    const a = pts[pts.length - 2].v;
+    const b = pts[pts.length - 1].v;
+    if (a === 0) return { abs: b - a, pct: null };
+    return { abs: b - a, pct: ((b - a) / Math.abs(a)) * 100 };
+  }
+
+  function walletSharePct(sats, total) {
+    if (!total || sats == null) return 0;
+    return Math.max(0, Math.min(100, (Number(sats) / total) * 100));
+  }
+
+  function balanceChipHTML(p, opts) {
+    opts = opts || {};
+    const wid = walletIdFor(p);
+    const color = accentFor(p.id);
+    if (!wid) return `<span class="balance-chip empty">no wallet</span>`;
+    if (!hasVaultKey(wid)) {
+      return `<span class="balance-chip empty" data-tip="Set invoice key in Vault for ${escAttr(wid)}" data-tip-title="LNbits">⚡ —</span>`;
+    }
+    const bal = state.wallets[wid];
+    if (!bal) return `<span class="balance-chip pending pulse">⚡ …</span>`;
+    if (!bal.ok) {
+      return `<span class="balance-chip err" data-tip="${escAttr(bal.error || "fail")} · ${escAttr(bal.path || "")}">⚡ err</span>`;
+    }
+    const delta = balDelta(wid);
+    const dHtml = delta && delta.abs
+      ? `<span class="wallet-delta ${delta.abs >= 0 ? "up" : "down"}">${delta.abs >= 0 ? "▲" : "▼"}${delta.pct != null ? Math.abs(delta.pct).toFixed(1) + "%" : fmtNum(Math.abs(delta.abs))}</span>`
+      : "";
+    const share = opts.total ? walletSharePct(bal.sats, opts.total) : null;
+    return `<span class="balance-chip ok" style="--chip-c:${escAttr(color)}" data-tip="${escAttr(wid)} · ${escAttr(bal.name || "")}${share != null ? " · " + share.toFixed(1) + "% portfolio" : ""}" data-tip-title="LNbits">
+      <span class="status-dot green pulse"></span>
+      <span class="sats-ticker">${esc(fmtNum(bal.sats, "sats"))}</span>
+      ${dHtml}
+    </span>`;
+  }
+
+  function moneyBlockHTML(p) {
+    const wid = walletIdFor(p);
+    const color = accentFor(p.id);
+    const tot = portfolioTotals();
+    if (!wid) return unavailableHTML("No wallet mapping", "projects.json → wallet");
+    if (!hasVaultKey(wid)) {
+      return `<div class="drawer-money-block panel">
+        <div class="ln-badge">LNbits</div>
+        <p style="color:var(--ink-dim);font-size:0.85rem">No invoice key for <span class="mono">${esc(wid)}</span>.</p>
+        <button type="button" class="btn btn-sm btn-primary mt-2" data-open-vault>Open Vault</button>
+      </div>`;
+    }
+    const bal = state.wallets[wid];
+    if (!bal) return `<div class="drawer-money-block panel"><div class="loading-state"><div class="spinner"></div>Fetching balance…</div></div>`;
+    if (!bal.ok) {
+      return `<div class="drawer-money-block panel">${unavailableHTML("Balance unavailable", bal.path || wid, bal.error)}
+        <button type="button" class="btn btn-sm btn-ghost mt-2" data-refresh-wallet="${escAttr(wid)}">Retry</button></div>`;
+    }
+    const usd = satsToUsd(bal.sats);
+    const pts = balHistoryPoints(wid);
+    const delta = balDelta(wid);
+    const share = walletSharePct(bal.sats, tot.sats);
+    const histSeries = { key: "bal", label: "Balance history", unit: "sats", points: pts, color };
+    return `<div class="drawer-money-block panel yolo-glow" style="--card-accent:${escAttr(color)};border-left:4px solid ${escAttr(color)}">
+      <div class="flex justify-between items-center flex-wrap gap-2">
+        <div class="ln-badge">⚡ LNbits</div>
+        <span class="snap-pill mono">${esc(fmtTime(new Date().toISOString()))}</span>
+      </div>
+      <div class="money-hero mt-2">
+        <div class="money-hero-total sats-ticker">${esc(fmtNum(bal.sats, "sats"))}</div>
+        <div class="money-hero-usd">${esc(fmtUsd(usd))}${state.btcUsd ? ` · <span class="fx-badge">BTC $${esc(fmtNum(state.btcUsd))}</span>` : ""}</div>
+        ${delta ? `<div class="money-hero-delta ${delta.abs >= 0 ? "up" : "down"}">${delta.abs >= 0 ? "+" : ""}${esc(fmtNum(delta.abs, "sats"))}${delta.pct != null ? ` (${delta.pct >= 0 ? "+" : ""}${delta.pct.toFixed(2)}%)` : ""} vs prior poll</div>` : `<div class="money-hero-delta">No prior snapshot yet — history builds as you poll</div>`}
+      </div>
+      <div class="kpi-grid mt-2">
+        <div class="kpi-cell"><div class="label">Wallet id</div><div class="value" style="font-size:0.85rem">${esc(wid)}</div></div>
+        <div class="kpi-cell"><div class="label">API name</div><div class="value" style="font-size:0.85rem">${esc(bal.name || "—")}</div></div>
+        <div class="kpi-cell"><div class="label">Portfolio share</div><div class="value" style="font-size:1rem">${esc(share.toFixed(1))}%</div></div>
+        <div class="kpi-cell"><div class="label">BTC</div><div class="value" style="font-size:0.9rem">${esc((Number(bal.sats)/1e8).toFixed(8))}</div></div>
+      </div>
+      <div class="mt-2">${metricBar(share, "", `--bar-c:${color}`)}<div class="mono" style="font-size:0.65rem;color:var(--ink-faint);margin-top:0.25rem">share of suite portfolio</div></div>
+      <h4 class="mt-3">History thread (local cache)</h4>
+      <div class="history-strip">${pts.length >= 2 ? sparkline(pts, color, 320, 48) + trendChart(histSeries, color) : `<p class="mono" style="font-size:0.75rem;color:var(--ink-faint)">Need 2+ polls for sparkline · ${pts.length} point(s)</p>`}</div>
+      <p class="mono mt-2" style="font-size:0.65rem;color:var(--ink-faint)">Source ${esc(bal.path || "—")} · invoice key only · never admin</p>
+      <div class="flex flex-wrap gap-2 mt-2">
+        <button type="button" class="btn btn-sm btn-ghost" data-refresh-wallet="${escAttr(wid)}">Refresh</button>
+        <button type="button" class="btn btn-sm btn-ghost" data-copy-sats="${escAttr(String(bal.sats))}">Copy sats</button>
+        <button type="button" class="btn btn-sm btn-ghost" data-open-vault>Vault</button>
+      </div>
+      <div class="drawer-section mt-2" style="padding:0.55rem;border:1px dashed color-mix(in srgb,var(--amber)40%,transparent);border-radius:var(--r-sm)">
+        <div class="mono" style="font-size:0.68rem;color:var(--amber)">Safety · read-only invoice key path · bulk send blocked · no admin macaroons in HQ</div>
+      </div>
+    </div>`;
+  }
+
+  function allocationRibbonHTML() {
+    const tot = portfolioTotals();
+    if (!tot.sats) return `<div class="money-alloc"><div class="money-alloc-item" style="flex:1;background:color-mix(in srgb,var(--violet)25%,transparent)" data-tip="Add Vault keys to see allocation"></div></div>`;
+    const parts = tot.rows.filter((r) => r.status === "ok").sort((a, b) => b.sats - a.sats);
+    return `<div class="money-alloc" role="img" aria-label="Portfolio allocation">${parts.map((r) => {
+      const pct = walletSharePct(r.sats, tot.sats);
+      return `<div class="money-alloc-item" style="flex:${Math.max(pct, 1.5)};background:${escAttr(accentFor(r.p.id))}" data-tip="${escAttr(r.p.name)} · ${escAttr(fmtNum(r.sats, "sats"))} · ${pct.toFixed(1)}%" data-tip-title="Share"></div>`;
+    }).join("")}</div>`;
+  }
+
+
 
   /* ═══════════════ COMPONENTS ═══════════════ */
 
@@ -585,20 +769,25 @@
   }
 
   async function refreshWallets() {
+    const prev = { ...state.wallets };
     state.wallets = {};
     const v = state.vault || {};
     const keys = v.keys || v.wallets || {};
-    const proxyUrl = (v.proxyUrl || v.lnbitsProxyUrl || "").replace(/\/$/, "");
+    const proxyUrl = (v.proxyUrl || v.lnbitsProxyUrl || (state.feeds && state.feeds.lnbitsProxyUrl) || "").replace(/\/$/, "");
     const proxyToken = v.proxyToken || "";
     const useProxy = v.useProxy !== false && proxyUrl;
     const nodeUrl = (v.nodeUrl || v.lnbitsUrl || "").replace(/\/$/, "");
     const entries = Object.entries(keys).filter(([, k]) => k && String(k).trim());
+
     await Promise.all(entries.map(async ([walletId, apiKey]) => {
       try {
         let url, headers;
         if (useProxy) {
           url = `${proxyUrl}/balance/${encodeURIComponent(walletId)}`;
-          headers = proxyToken ? { Authorization: `Bearer ${proxyToken}`, "X-Api-Key": apiKey } : { "X-Api-Key": apiKey };
+          headers = proxyToken
+            ? { Authorization: `Bearer ${proxyToken}`, "X-Api-Key": apiKey }
+            : { "X-Api-Key": apiKey };
+          if (nodeUrl) headers["X-LNbits-Base"] = nodeUrl;
         } else if (nodeUrl) {
           url = `${nodeUrl}/api/v1/wallet`;
           headers = { "X-Api-Key": apiKey };
@@ -608,14 +797,43 @@
         }
         const r = await loadData(url, { headers, timeout: 10000 });
         if (r.ok && r.data) {
-          let sats = r.data.balance != null ? r.data.balance : r.data.sats != null ? r.data.sats : r.data.amount;
-          if (sats != null && r.data.balance != null && Math.abs(sats) > 1e7) sats = Math.floor(Number(sats) / 1000);
-          state.wallets[walletId] = { ok: true, sats, name: r.data.name || walletId, path: r.path };
+          let sats =
+            r.data.balanceSats != null
+              ? r.data.balanceSats
+              : r.data.sats != null
+                ? r.data.sats
+                : r.data.balance != null
+                  ? r.data.balance
+                  : r.data.amount;
+          // LNbits returns msats often
+          if (sats != null && r.data.balance != null && r.data.balanceSats == null && Math.abs(Number(sats)) > 1e7) {
+            sats = Math.floor(Number(sats) / 1000);
+          }
+          sats = Number(sats);
+          state.wallets[walletId] = {
+            ok: true,
+            sats,
+            name: r.data.name || walletId,
+            path: r.path,
+            polledAt: Date.now(),
+          };
+          pushBalSnapshot(walletId, sats);
         } else {
-          state.wallets[walletId] = { ok: false, error: r.error, path: r.path };
+          // keep previous good balance as stale if any
+          const old = prev[walletId];
+          if (old && old.ok) {
+            state.wallets[walletId] = { ...old, ok: false, stale: true, error: r.error, path: r.path };
+          } else {
+            state.wallets[walletId] = { ok: false, error: r.error, path: r.path };
+          }
         }
       } catch (e) {
-        state.wallets[walletId] = { ok: false, error: e.message, path: walletId };
+        const old = prev[walletId];
+        if (old && old.ok) {
+          state.wallets[walletId] = { ...old, ok: false, stale: true, error: e.message, path: walletId };
+        } else {
+          state.wallets[walletId] = { ok: false, error: e.message, path: walletId };
+        }
       }
     }));
   }
@@ -652,28 +870,31 @@
     });
     const health = state.thor && state.thor.ok && state.thor.data && state.thor.data.node
       ? state.thor.data.node.status : "unknown";
-    let portfolioSats = 0, walletOk = 0;
-    Object.values(state.wallets).forEach((w) => {
-      if (w.ok && w.sats != null) { portfolioSats += Number(w.sats) || 0; walletOk++; }
-    });
+    const tot = portfolioTotals();
     const avgDepth = state.projects.length
       ? Math.round(state.projects.reduce((a, p) => {
           const m = state.metrics[p.id];
           return a + (m && m.ok ? depthScore(m.data, false) : 0);
         }, 0) / state.projects.length)
       : 0;
-    const usd = state.btcUsd && portfolioSats ? "$" + ((portfolioSats / 1e8) * state.btcUsd).toFixed(2) : walletOk ? "—" : "Vault";
+    const usd = fmtUsd(satsToUsd(tot.sats));
 
     el.innerHTML = `
       <div class="stat panel"><div class="l">Suite live</div><div class="v" style="color:var(--green)">${up}<span style="font-size:0.85rem;color:var(--ink-faint)">/${total}</span></div></div>
       <div class="stat panel"><div class="l">Attention</div><div class="v" style="color:${down ? "var(--red)" : "var(--ink-faint)"}">${down}</div></div>
       <div class="stat panel"><div class="l">THOR</div><div class="v" style="font-size:1.05rem">${statusPill(health, health)}</div></div>
       <div class="stat panel"><div class="l">Data depth</div><div class="v" style="color:${escAttr(depthColor(avgDepth))}">${avgDepth}<span style="font-size:0.75rem;color:var(--ink-faint)">/100</span></div></div>
-      <div class="stat panel"><div class="l">Portfolio</div><div class="v" style="font-size:1.1rem">${walletOk ? esc(fmtNum(portfolioSats, "sats")) : "—"}</div>
-        <div class="mono" style="font-size:0.72rem;color:var(--ink-faint)">${esc(usd)}${state.btcUsd ? ` · BTC $${esc(fmtNum(state.btcUsd))}` : ""}</div></div>
+      <div class="stat panel money-hero" style="cursor:pointer;min-width:200px" id="btn-goto-money" data-tip="Open money cockpit">
+        <div class="l">Portfolio · LNbits</div>
+        <div class="money-hero-total" style="font-size:1.15rem">${tot.ok ? esc(fmtNum(tot.sats, "sats")) : "—"}</div>
+        <div class="money-hero-usd">${esc(usd)} · ${tot.ok} wallets${state.btcUsd ? ` · <span class="fx-badge">BTC $${esc(fmtNum(state.btcUsd))}</span>` : ""}</div>
+        ${allocationRibbonHTML()}
+      </div>
       <div class="stat panel" style="cursor:pointer" id="btn-export-diligence"><div class="l">Diligence</div><div class="v" style="font-size:0.95rem">Export MD</div></div>
     `;
     document.getElementById("btn-export-diligence")?.addEventListener("click", exportDiligence);
+    document.getElementById("btn-goto-money")?.addEventListener("click", () => setTab("money"));
+    bindTooltips();
   }
 
   function updateVaultChip() {
@@ -712,7 +933,7 @@
       cards: renderCards, list: renderList, metrics: renderMetrics, analytics: renderAnalytics,
       pipeline: renderPipeline, network: renderNetwork, matrix: renderMatrix, activity: renderActivity,
       ecosystem: renderEcosystem, coverage: renderCoverage, system: renderSystem,
-      wallets: renderWallets, docs: renderDocs, agents: renderAgents, domains: renderDomains,
+      wallets: renderWallets, money: renderMoney, docs: renderDocs, agents: renderAgents, domains: renderDomains,
     };
     const fn = map[state.tab];
     if (!fn) return;
@@ -821,6 +1042,7 @@
           <div class="grow"><h3>${esc(p.name)}</h3><p class="tagline">${esc(p.tagline || "")}</p></div>
           ${statusPill(health)}
         </div>
+        <div class="card-money-row">${balanceChipHTML(p, { total: portfolioTotals().sats })}</div>
         ${unavailableHTML("Metrics unavailable", m ? m.path : `/metrics/${p.id}.json`, m ? m.error : "")}
       </article>`;
     }
@@ -836,6 +1058,9 @@
       `<div class="spark-block"><div class="sl">${esc(ser.label || ser.key)}</div>${sparkline(seriesPoints(ser, 15), seriesColor(ser, p.id))}</div>`
     ).join("");
 
+    const _tot = portfolioTotals();
+    const _bal = state.wallets[walletIdFor(p)];
+    const _share = _bal && _bal.ok ? walletSharePct(_bal.sats, _tot.sats) : 0;
     return `<article class="card" style="--card-accent:${escAttr(color)}" data-project="${escAttr(p.id)}">
       <div class="card-head">
         ${iconBadge(p.icon, color)}
@@ -853,6 +1078,11 @@
         ${(data.funnels || []).length ? `<span class="chip">${data.funnels.length} funnel</span>` : ""}
         ${(data.series || []).length ? `<span class="chip">${data.series.length} series</span>` : ""}
       </div>
+      <div class="card-money-row">
+        ${balanceChipHTML(p, { total: _tot.sats })}
+        <span class="ln-badge" style="margin-left:auto;font-size:0.58rem">LNbits</span>
+      </div>
+      <div class="card-share-filament" style="height:3px;border-radius:99px;margin:0.35rem 0 0.55rem;background:linear-gradient(90deg,${escAttr(color)} ${_share}%, color-mix(in srgb, var(--surface-2) 80%, transparent) 0)"></div>
       <div class="card-kpis" style="grid-template-columns:repeat(${Math.min(3, Math.max(2, kpis.length))},1fr)">${kpiHtml}</div>
       ${sparks ? `<div class="card-sparks">${sparks}</div>` : ""}
       ${deps.length ? `<div class="card-deps">${deps.slice(0, 4).map((d) => statusPill(d.status, d.id)).join("")}</div>` : ""}
@@ -881,6 +1111,7 @@
         <td><div class="name-cell"><div class="icon-badge" style="width:28px;height:28px;font-size:0.75rem;--badge-c:${escAttr(color)}"><i class="${escAttr(p.icon || "fa-solid fa-cube")}"></i></div>${esc(p.name)}</div></td>
         <td>${esc(p.category || "—")}</td>
         <td>${statusPill(health)}</td>
+        <td>${balanceChipHTML(p, { total: portfolioTotals().sats })}</td>
         <td class="mono">${s.ms != null ? esc(fmtMs(s.ms)) : "—"}</td>
         <td><span class="depth-badge" style="--depth-c:${escAttr(depthColor(depth))}">${depth}</span></td>
         <td class="mono" style="font-size:0.72rem">${m && m.ok ? (m.data.kpis || []).length + " / " + (m.data.series || []).length + " / " + (m.data.funnels || []).length : "—"}</td>
@@ -890,7 +1121,7 @@
     }).join("");
     el.innerHTML = `${toolbarHTML()}
       <div class="table-wrap"><table class="data">
-        <thead><tr><th>Project</th><th>Cat</th><th>Health</th><th>Latency</th><th>Depth</th><th>K/S/F</th><th>KPIs</th><th>URL</th></tr></thead>
+        <thead><tr><th>Project</th><th>Cat</th><th>Health</th><th>Balance</th><th>Latency</th><th>Depth</th><th>K/S/F</th><th>KPIs</th><th>URL</th></tr></thead>
         <tbody>${rows}</tbody>
       </table></div>
       <p class="mono mt-2" style="font-size:0.65rem;color:var(--ink-faint)">K/S/F = KPI count / series count / funnel count from live envelope</p>`;
@@ -1208,6 +1439,18 @@
           ${suiteSeries.length ? multiSeriesChart(suiteSeries, "suite") : unavailableHTML("Series", "metrics/*/series")}
         </div>
         <div class="analytics-panel panel span-12">
+          <h3>LNbits portfolio · money</h3>
+          <div class="money-hero panel" style="margin-bottom:0.75rem">
+            <div class="money-hero-total">${esc(fmtNum(portfolioTotals().sats, "sats"))}</div>
+            <div class="money-hero-usd">${esc(fmtUsd(satsToUsd(portfolioTotals().sats)))} · ${portfolioTotals().ok} wallets with balance</div>
+            ${allocationRibbonHTML()}
+          </div>
+          <div class="money-grid">
+            ${hbarChart(portfolioTotals().rows.filter(r=>r.status==="ok").map(r=>({label:r.p.name,value:r.sats,display:fmtNum(r.sats,"sats"),color:accentFor(r.p.id)})), "#ff8c00")}
+            <div class="cards-grid">${state.projects.map(p=>`<div class="project-wealth-tile panel" style="border-left:3px solid ${escAttr(accentFor(p.id))}">${esc(p.name)}<div class="mt-1">${balanceChipHTML(p,{total:portfolioTotals().sats})}</div></div>`).join("")}</div>
+          </div>
+        </div>
+        <div class="analytics-panel panel span-12">
           <h3>All product funnels</h3>
           <div class="pipeline-grid">${state.projects.map((p) => {
             const m = state.metrics[p.id];
@@ -1226,7 +1469,7 @@
     const el = document.getElementById("view-matrix");
     if (!el) return;
     const sites = (state.status && state.status.sites) || {};
-    const cols = ["Health", "HTTP", "ms", "Deploy", "Depth", "KPIs", "Series", "Funnel", "Seg", "Offers", "Doc", "Demo"];
+    const cols = ["Health", "Balance", "HTTP", "ms", "Deploy", "Depth", "KPIs", "Series", "Funnel", "Seg", "Offers", "Doc", "Demo"];
     const head = `<div class="matrix-cell head">Project</div>${cols.map((c) => `<div class="matrix-cell head">${esc(c)}</div>`).join("")}`;
     const rows = state.projects.map((p) => {
       const m = state.metrics[p.id];
@@ -1235,6 +1478,7 @@
       const depth = d ? depthScore(d, false) : 0;
       const cells = [
         statusPill(projectHealth(p)),
+        balanceChipHTML(p, { total: portfolioTotals().sats }),
         s.status != null ? esc(String(s.status)) : "—",
         s.ms != null ? esc(fmtMs(s.ms)) : "—",
         p.deployed ? statusPill("green", "yes") : statusPill("amber", "no"),
@@ -1579,49 +1823,172 @@
       <div class="panel" style="padding:1rem">${thorDashboardHTML()}</div>`;
   }
 
-  /* ═══════════════ WALLETS / DOCS / AGENTS / DOMAINS ═══════════════ */
+  /* ═══════════════ WALLETS / MONEY / DOCS / AGENTS / DOMAINS ═══════════════ */
+
+  function renderMoney() {
+    const el = document.getElementById("view-money");
+    if (!el) return;
+    const tot = portfolioTotals();
+    const sorted = tot.rows.slice().sort((a, b) => (b.sats || 0) - (a.sats || 0));
+    const donutSegs = sorted.filter((r) => r.status === "ok").map((r) => ({
+      value: r.sats, color: accentFor(r.p.id), label: r.p.name,
+    }));
+    const histAll = sorted.filter((r) => r.status === "ok").slice(0, 6).map((r) => {
+      const pts = balHistoryPoints(r.wid);
+      return `<div class="wallet-hero-card panel" style="border-left:4px solid ${escAttr(accentFor(r.p.id))}">
+        <div class="flex justify-between"><strong>${esc(r.p.name)}</strong>${balanceChipHTML(r.p, { total: tot.sats })}</div>
+        <div class="wallet-spark mt-2">${pts.length >= 2 ? sparkline(pts, accentFor(r.p.id), 200, 40) : `<span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">history building…</span>`}</div>
+      </div>`;
+    }).join("");
+
+    const ladder = sorted.map((r, i) => {
+      const share = r.status === "ok" ? walletSharePct(r.sats, tot.sats) : 0;
+      return `<div class="wealth-ladder panel" style="--card-accent:${escAttr(accentFor(r.p.id))}">
+        <div class="flex items-center gap-2">
+          <span class="mono" style="color:var(--ink-faint);width:1.5rem">#${i + 1}</span>
+          ${iconBadge(r.p.icon, accentFor(r.p.id))}
+          <div class="grow">
+            <strong>${esc(r.p.name)}</strong>
+            <div class="mono" style="font-size:0.65rem;color:var(--ink-faint)">${esc(r.wid)}</div>
+          </div>
+          ${balanceChipHTML(r.p, { total: tot.sats })}
+        </div>
+        <div class="mt-2">${metricBar(share, "", `--bar-c:${accentFor(r.p.id)}`)}</div>
+        <div class="flex justify-between mono" style="font-size:0.65rem;color:var(--ink-faint);margin-top:0.25rem">
+          <span>${share.toFixed(1)}% share</span>
+          <span>${r.status === "ok" ? esc(fmtUsd(satsToUsd(r.sats))) : r.status}</span>
+        </div>
+      </div>`;
+    }).join("");
+
+    el.innerHTML = `
+      <div class="flex justify-between items-center flex-wrap gap-2 mb-3">
+        <h2 class="section-title" style="margin:0">Money · LNbits <span class="accent-rule"></span></h2>
+        <div class="flex gap-2">
+          <button type="button" class="btn btn-ghost btn-sm" id="money-refresh"><i class="fa-solid fa-bolt"></i> Poll wallets</button>
+          <button type="button" class="btn btn-ghost btn-sm" id="money-vault"><i class="fa-solid fa-key"></i> Vault</button>
+        </div>
+      </div>
+      <div class="money-cockpit">
+        <div class="money-hero panel yolo-glow">
+          <div class="ln-badge">Portfolio totem</div>
+          <div class="money-hero-total">${tot.ok ? esc(fmtNum(tot.sats, "sats")) : "—"}</div>
+          <div class="money-hero-usd">${esc(fmtUsd(satsToUsd(tot.sats)))} · ${tot.ok} ok · ${tot.empty} empty · ${tot.err} err
+            ${state.btcUsd ? ` · <span class="fx-badge btc">BTC $${esc(fmtNum(state.btcUsd))}</span>` : " · <span class='fx-badge'>FX —</span>"}
+          </div>
+          ${allocationRibbonHTML()}
+          <p class="mono mt-2" style="font-size:0.68rem;color:var(--ink-faint)">Live via Vault → LNbits proxy · invoice keys only · history in browser cache (${esc(BAL_HIST_KEY)})</p>
+        </div>
+        <div class="money-grid mt-3">
+          <div class="panel" style="padding:1rem">
+            <h3 class="display" style="margin:0 0 0.75rem;font-size:0.95rem">Allocation</h3>
+            ${donutSegs.length ? donutChart(donutSegs, tot.ok ? fmtNum(tot.sats, "sats").replace(" sats","") : "—", "sats") : unavailableHTML("No balances", "Vault keys", "Add invoice keys to see allocation")}
+            <div class="mt-2">${hbarChart(donutSegs.map((s) => ({ label: s.label, value: s.value, display: fmtNum(s.value, "sats"), color: s.color })), "#ff8c00")}</div>
+          </div>
+          <div class="panel" style="padding:1rem">
+            <h3 class="display" style="margin:0 0 0.75rem;font-size:0.95rem">History threads</h3>
+            <div class="money-grid">${histAll || `<p class="empty-state">Poll wallets to build history</p>`}</div>
+          </div>
+        </div>
+        <h3 class="display mt-3" style="font-size:1rem">Wealth ladder</h3>
+        <div class="pipeline-grid mt-2">${ladder || unavailableHTML("No wallets", "projects.json")}</div>
+        <div class="panel mt-3" style="padding:1rem">
+          <h3 class="display" style="margin:0 0 0.5rem;font-size:0.95rem">Project wealth tiles</h3>
+          <div class="cards-grid">${state.projects.map((proj) => {
+            const c = accentFor(proj.id);
+            return `<div class="project-wealth-tile panel" style="border-left:4px solid ${escAttr(c)};cursor:pointer" data-project="${escAttr(proj.id)}">
+              <div class="flex items-center gap-2">${iconBadge(proj.icon, c)}<div><strong>${esc(proj.name)}</strong><div class="mono" style="font-size:0.65rem;color:var(--ink-faint)">${esc(walletIdFor(proj))}</div></div></div>
+              <div class="mt-2">${balanceChipHTML(proj, { total: tot.sats })}</div>
+            </div>`;
+          }).join("")}</div>
+        </div>
+      </div>`;
+    document.getElementById("money-refresh")?.addEventListener("click", async () => {
+      toast("Polling LNbits…", "ok");
+      await refreshWallets();
+      renderPortfolioStrip();
+      updateVaultChip();
+      renderMoney();
+      if (state.tab === "cards") renderCards();
+    });
+    document.getElementById("money-vault")?.addEventListener("click", openVaultModal);
+    el.querySelectorAll("[data-project]").forEach((n) => n.addEventListener("click", () => openDrawer(n.dataset.project)));
+    bindTooltips();
+  }
 
   function renderWallets() {
     const el = document.getElementById("view-wallets");
     if (!el) return;
-    const keys = (state.vault || {}).keys || (state.vault || {}).wallets || {};
+    // Full money cockpit also lives on Money tab; Wallets is the classic grid + quick jump
+    const tot = portfolioTotals();
+    const keys = vaultKeys();
     const list = [];
     const seen = new Set();
     state.projects.forEach((p) => {
-      const id = p.wallet || p.id;
+      const id = walletIdFor(p);
       if (seen.has(id)) return;
       seen.add(id);
       list.push({ id, project: p, color: accentFor(p.id) });
     });
     const cards = list.map((w) => {
       const bal = state.wallets[w.id];
-      const hasKey = !!(keys[w.id] && String(keys[w.id]).trim());
+      const hasKey = hasVaultKey(w.id);
+      const pts = balHistoryPoints(w.id);
+      const share = bal && bal.ok ? walletSharePct(bal.sats, tot.sats) : 0;
       if (!hasKey) {
-        return `<div class="wallet-card panel" style="border-left:4px solid ${escAttr(w.color)}">
+        return `<div class="wallet-hero-card panel" style="border-left:4px solid ${escAttr(w.color)};cursor:pointer" data-project="${escAttr(w.project.id)}">
           <div class="flex items-center gap-2">${iconBadge(w.project.icon, w.color)}
             <div><strong>${esc(w.project.name)}</strong><div class="mono" style="font-size:0.68rem;color:var(--ink-faint)">${esc(w.id)}</div></div></div>
-          <div class="bal">—</div><div class="usd">no key in vault</div></div>`;
+          <div class="bal">—</div><div class="usd">no key in vault</div>
+          <div class="balance-chip empty mt-2">Set invoice key</div>
+        </div>`;
       }
-      if (!bal || !bal.ok) {
-        return `<div class="wallet-card panel" style="border-left:4px solid ${escAttr(w.color)}">
+      if (!bal || (!bal.ok && !bal.stale)) {
+        return `<div class="wallet-hero-card panel" style="border-left:4px solid ${escAttr(w.color)};cursor:pointer" data-project="${escAttr(w.project.id)}">
           <div class="flex items-center gap-2">${iconBadge(w.project.icon, w.color)}<div><strong>${esc(w.project.name)}</strong></div></div>
-          ${unavailableHTML("Balance", bal ? bal.path : w.id, bal ? bal.error : "pending")}</div>`;
+          ${unavailableHTML("Balance", bal ? bal.path : w.id, bal ? bal.error : "pending")}
+        </div>`;
       }
-      const usd = state.btcUsd && bal.sats != null ? "$" + ((Number(bal.sats) / 1e8) * state.btcUsd).toFixed(2) : "";
-      return `<div class="wallet-card panel" style="border-left:4px solid ${escAttr(w.color)}">
+      const sats = bal.sats;
+      const usd = fmtUsd(satsToUsd(sats));
+      const delta = balDelta(w.id);
+      return `<div class="wallet-hero-card panel yolo-glow" style="border-left:4px solid ${escAttr(w.color)};cursor:pointer" data-project="${escAttr(w.project.id)}">
         <div class="flex items-center gap-2">${iconBadge(w.project.icon, w.color)}
-          <div><strong>${esc(w.project.name)}</strong><div class="mono" style="font-size:0.68rem;color:var(--ink-faint)">${esc(bal.name || w.id)}</div></div></div>
-        <div class="bal">${esc(fmtNum(bal.sats, "sats"))}</div><div class="usd">${esc(usd)}</div>
-        ${metricBar(Math.min(100, Math.log10((Number(bal.sats) || 1) + 1) * 15), "", `--bar-c:${w.color}`)}
+          <div class="grow"><strong>${esc(w.project.name)}</strong>
+            <div class="mono" style="font-size:0.68rem;color:var(--ink-faint)">${esc(bal.name || w.id)}${bal.stale ? " · stale" : ""}</div>
+          </div>
+          <span class="ln-badge">⚡</span>
+        </div>
+        <div class="bal sats-ticker">${esc(fmtNum(sats, "sats"))}</div>
+        <div class="usd">${esc(usd)}</div>
+        ${delta ? `<div class="wallet-delta ${delta.abs >= 0 ? "up" : "down"}">${delta.abs >= 0 ? "▲" : "▼"} ${esc(fmtNum(Math.abs(delta.abs), "sats"))}</div>` : ""}
+        <div class="wallet-spark mt-2">${pts.length >= 2 ? sparkline(pts, w.color, 220, 42) : ""}</div>
+        <div class="wallet-share mt-2">${metricBar(share, "", `--bar-c:${w.color}`)}
+          <div class="mono" style="font-size:0.62rem;color:var(--ink-faint);margin-top:0.2rem">${share.toFixed(1)}% of portfolio</div>
+        </div>
       </div>`;
     }).join("");
     el.innerHTML = `
       <div class="flex justify-between items-center flex-wrap gap-2 mb-3">
         <h2 class="section-title" style="margin:0">Wallets <span class="accent-rule"></span></h2>
-        <button type="button" class="btn btn-ghost" id="open-vault-w"><i class="fa-solid fa-key"></i> Vault</button>
+        <div class="flex gap-2">
+          <button type="button" class="btn btn-sm btn-ghost" id="btn-money-tab">Money cockpit</button>
+          <button type="button" class="btn btn-ghost" id="open-vault-w"><i class="fa-solid fa-key"></i> Vault</button>
+          <button type="button" class="btn btn-primary btn-sm" id="wallets-poll">Poll</button>
+        </div>
+      </div>
+      <div class="money-hero panel mb-3">
+        <div class="money-hero-total">${tot.ok ? esc(fmtNum(tot.sats, "sats")) : "—"}</div>
+        <div class="money-hero-usd">${esc(fmtUsd(satsToUsd(tot.sats)))} · ${allocationRibbonHTML()}</div>
       </div>
       <div class="wallets-grid">${cards}</div>`;
     document.getElementById("open-vault-w")?.addEventListener("click", openVaultModal);
+    document.getElementById("btn-money-tab")?.addEventListener("click", () => setTab("money"));
+    document.getElementById("wallets-poll")?.addEventListener("click", async () => {
+      await refreshWallets(); renderPortfolioStrip(); renderWallets();
+    });
+    el.querySelectorAll("[data-project]").forEach((n) => n.addEventListener("click", () => openDrawer(n.dataset.project)));
+    bindTooltips();
   }
 
   function renderDocs() {
@@ -1759,17 +2126,23 @@
     const drawer = document.getElementById("drawer");
     const head = document.getElementById("drawer-head");
     if (!drawer || !head) return;
+    drawer.classList.add("drawer-xl");
+    const bal = state.wallets[walletIdFor(p)];
+    const dual = bal && bal.ok
+      ? `<div class="money-hero-usd" style="margin-top:0.25rem">${esc(fmtNum(bal.sats, "sats"))} · ${esc(fmtUsd(satsToUsd(bal.sats)))}</div>`
+      : `<div class="money-hero-usd" style="margin-top:0.25rem">${balanceChipHTML(p)}</div>`;
     head.innerHTML = `
       ${iconBadge(p.icon, color)}
       <div class="grow">
         <div class="flex items-center gap-2 flex-wrap">
-          <strong class="display" style="font-size:1.1rem">${esc(p.name)}</strong>
+          <strong class="display" style="font-size:1.15rem">${esc(p.name)}</strong>
           ${statusPill(health)}
+          <span class="ln-badge">⚡ LNbits</span>
         </div>
-        <div class="mono" style="font-size:0.68rem;color:var(--ink-faint);margin-top:0.2rem">${esc(p.category || "")} · ${esc(p.repo || "")}</div>
+        <div class="mono" style="font-size:0.68rem;color:var(--ink-faint);margin-top:0.2rem">${esc(p.category || "")} · ${esc(p.repo || "")} · wallet ${esc(walletIdFor(p) || "—")}</div>
+        ${dual}
       </div>
       <button type="button" class="btn btn-icon btn-ghost" id="drawer-close" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>`;
-    // inject tabs into drawer if missing
     let tabs = document.getElementById("drawer-tabs");
     if (!tabs) {
       tabs = document.createElement("div");
@@ -1777,11 +2150,16 @@
       tabs.className = "drawer-tabs";
       drawer.insertBefore(tabs, document.getElementById("drawer-body"));
     }
-    tabs.innerHTML = ["overview", "metrics", "docs"].map((t) =>
+    const tabNames = ["overview", "money", "metrics", "stack", "docs", "related"];
+    tabs.innerHTML = tabNames.map((t) =>
       `<button type="button" class="drawer-tab ${state.drawerTab === t ? "active" : ""}" data-dtab="${t}">${t}</button>`
     ).join("");
     tabs.querySelectorAll("[data-dtab]").forEach((b) => {
-      b.addEventListener("click", () => { state.drawerTab = b.dataset.dtab; paintDrawerBody(p); });
+      b.addEventListener("click", () => {
+        state.drawerTab = b.dataset.dtab;
+        tabs.querySelectorAll(".drawer-tab").forEach((x) => x.classList.toggle("active", x.dataset.dtab === state.drawerTab));
+        paintDrawerBody(p);
+      });
     });
     paintDrawerBody(p);
     backdrop.classList.add("open");
@@ -1796,6 +2174,36 @@
     const color = accentFor(p.id);
     const m = state.metrics[p.id];
     const s = (state.status && state.status.sites && state.status.sites[p.id]) || {};
+    const eco = state.ecosystem && Array.isArray(state.ecosystem.projects)
+      ? state.ecosystem.projects.find((x) => x.id === p.id)
+      : null;
+
+    const bindMoneyActions = () => {
+      body.querySelector("[data-open-vault]")?.addEventListener("click", openVaultModal);
+      body.querySelectorAll("[data-refresh-wallet]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          toast("Refreshing wallet…", "ok");
+          await refreshWallets();
+          renderPortfolioStrip();
+          paintDrawerBody(p);
+          if (state.tab === "cards") renderCards();
+          if (state.tab === "money") renderMoney();
+          if (state.tab === "wallets") renderWallets();
+        });
+      });
+      body.querySelector("[data-copy-sats]")?.addEventListener("click", (e) => {
+        const v = e.currentTarget.getAttribute("data-copy-sats");
+        navigator.clipboard?.writeText(v).then(() => toast("Copied " + v + " sats", "ok"));
+      });
+    };
+
+    if (state.drawerTab === "money") {
+      body.innerHTML = moneyBlockHTML(p);
+      bindMoneyActions();
+      bindTooltips();
+      return;
+    }
+
     if (state.drawerTab === "docs") {
       const pd = state.projectDocs[p.id];
       if (pd && pd.ok) {
@@ -1809,12 +2217,14 @@
       bindTooltips();
       return;
     }
+
     if (state.drawerTab === "metrics") {
       if (!m || !m.ok) { body.innerHTML = unavailableHTML("Metrics", m ? m.path : `/metrics/${p.id}.json`, m ? m.error : ""); return; }
       const d = m.data;
       body.innerHTML = `
+        <div class="card-money-row mb-2">${balanceChipHTML(p, { total: portfolioTotals().sats })}</div>
         <div class="kpi-grid">${topKpis(d, 8).map(kpiCell).join("")}</div>
-        ${(d.series || []).slice(0, 2).map((ser) => `<div class="mt-2">${trendChart(ser, seriesColor(ser, p.id))}</div>`).join("")}
+        ${(d.series || []).slice(0, 3).map((ser) => `<div class="mt-2">${trendChart(ser, seriesColor(ser, p.id))}</div>`).join("")}
         ${(d.funnels || []).map((f) => funnelHTML(f, color)).join("")}
         ${segmentsHTML(d.segments, color, p.id)}
         ${offersHTML(d.offers, color)}
@@ -1823,47 +2233,128 @@
       bindTooltips();
       return;
     }
-    // overview
+
+    if (state.drawerTab === "stack") {
+      body.innerHTML = `
+        <div class="drawer-section">
+          <h4>Stack</h4>
+          <div class="stack-chips">${(p.stack || []).map((t) => `<span class="chip">${esc(t)}</span>`).join("") || "—"}</div>
+        </div>
+        <div class="drawer-section">
+          <h4>Category · deploy</h4>
+          <div class="kpi-grid">
+            <div class="kpi-cell"><div class="label">Category</div><div class="value" style="font-size:1rem">${esc(p.category || "—")}</div></div>
+            <div class="kpi-cell"><div class="label">Deployed</div><div class="value" style="font-size:1rem">${p.deployed ? "yes" : "no"}</div></div>
+            <div class="kpi-cell"><div class="label">Repo</div><div class="value" style="font-size:0.85rem">${esc(p.repo || "—")}</div></div>
+            <div class="kpi-cell"><div class="label">Wallet</div><div class="value" style="font-size:0.85rem">${esc(walletIdFor(p) || "—")}</div></div>
+          </div>
+        </div>
+        ${eco ? `<div class="drawer-section"><h4>Ecosystem map</h4>
+          <div class="kpi-grid">
+            <div class="kpi-cell"><div class="label">Synced</div><div class="value" style="font-size:0.9rem">${esc(eco.synced || "—")}</div></div>
+            <div class="kpi-cell"><div class="label">On THOR</div><div class="value" style="font-size:0.9rem">${eco.localOnThor ? "yes" : "no"}</div></div>
+            <div class="kpi-cell"><div class="label">Version</div><div class="value" style="font-size:0.85rem">${esc(eco.version || "—")}</div></div>
+            <div class="kpi-cell"><div class="label">GitHub</div><div class="value" style="font-size:0.75rem">${esc(eco.github || "—")}</div></div>
+          </div>
+          ${eco.lastCommit ? `<p class="mono" style="font-size:0.72rem;color:var(--ink-dim)">${esc(eco.lastCommit)}</p>` : ""}
+        </div>` : ""}
+        <div class="drawer-section">
+          <h4>Links</h4>
+          <div class="flex flex-wrap gap-2">
+            ${p.url ? `<a class="btn btn-sm btn-primary" href="${escAttr(p.url)}" target="_blank" rel="noopener">Site</a>` : ""}
+            ${eco && eco.github ? `<a class="btn btn-sm btn-ghost" href="https://github.com/${escAttr(eco.github)}" target="_blank" rel="noopener">GitHub</a>` : ""}
+            ${m && m.ok && (m.data.links || []).map((l) => `<a class="btn btn-sm btn-ghost" href="${escAttr(l.url)}" target="_blank" rel="noopener">${esc(l.label || "link")}</a>`).join("") || ""}
+          </div>
+        </div>`;
+      bindTooltips();
+      return;
+    }
+
+    if (state.drawerTab === "related") {
+      const rel = p.related || [];
+      body.innerHTML = `
+        <div class="drawer-section">
+          <h4>Related projects</h4>
+          <div class="cards-grid">${rel.map((id) => {
+            const rp = state.projects.find((x) => x.id === id);
+            if (!rp) return `<div class="chip">${esc(id)}</div>`;
+            return `<div class="project-wealth-tile panel" style="border-left:4px solid ${escAttr(accentFor(id))};cursor:pointer" data-rel="${escAttr(id)}">
+              <div class="flex items-center gap-2">${iconBadge(rp.icon, accentFor(id))}<strong>${esc(rp.name)}</strong></div>
+              <div class="mt-2">${balanceChipHTML(rp, { total: portfolioTotals().sats })}</div>
+              <p style="font-size:0.75rem;color:var(--ink-faint);margin:0.35rem 0 0">${esc(rp.tagline || "")}</p>
+            </div>`;
+          }).join("") || `<p class="empty-state">No related links in projects.json</p>`}</div>
+        </div>
+        ${p.backbone ? `<div class="drawer-section"><span class="status-pill sky">backbone product</span></div>` : ""}
+        ${m && m.ok && (m.data.offers || []).length ? `<div class="drawer-section"><h4>Offers</h4>${offersHTML(m.data.offers, color)}</div>` : ""}`;
+      body.querySelectorAll("[data-rel]").forEach((n) => n.addEventListener("click", () => openDrawer(n.dataset.rel)));
+      bindTooltips();
+      return;
+    }
+
+    // overview — comprehensive
     let metricsBlock = "";
     if (m && m.ok) {
       const d = m.data;
       metricsBlock = `
-        <h4>Top KPIs</h4>
-        <div class="kpi-grid">${topKpis(d, 6).map(kpiCell).join("")}</div>
-        ${(d.series || [])[0] ? `<h4>Trend</h4>${sparkline(seriesPoints(d.series[0], 15), color, 300, 48)}` : ""}
-        <div class="card-meta-row mt-2">
-          <span class="depth-badge" style="--depth-c:${escAttr(depthColor(depthScore(d, false)))}">depth ${depthScore(d, false)}</span>
-          <span class="chip">${(d.kpis || []).length} KPIs</span>
-          <span class="chip">${(d.series || []).length} series</span>
-          <span class="chip">${(d.funnels || []).length} funnels</span>
+        <div class="drawer-section">
+          <h4>Top KPIs · depth ${depthScore(d, false)}</h4>
+          <div class="kpi-grid">${topKpis(d, 6).map(kpiCell).join("")}</div>
+          ${(d.series || [])[0] ? `<div class="mt-2">${sparkline(seriesPoints(d.series[0], 15), color, 300, 48)}</div>` : ""}
+          <div class="card-meta-row mt-2">
+            <span class="chip">${(d.kpis || []).length} KPIs</span>
+            <span class="chip">${(d.series || []).length} series</span>
+            <span class="chip">${(d.funnels || []).length} funnels</span>
+            <span class="chip">${(d.segments || []).length} segments</span>
+            ${d.raw && d.raw.demo ? `<span class="chip">demo</span>` : `<span class="chip">live</span>`}
+          </div>
         </div>`;
     } else {
-      metricsBlock = unavailableHTML("Metrics", m ? m.path : `/metrics/${p.id}.json`, m ? m.error : "");
+      metricsBlock = `<div class="drawer-section">${unavailableHTML("Metrics", m ? m.path : `/metrics/${p.id}.json`, m ? m.error : "")}</div>`;
     }
+
     body.innerHTML = `
-      <p style="color:var(--ink-dim);font-size:0.9rem;margin:0">${esc(p.pitch || p.tagline || "")}</p>
+      <p style="color:var(--ink-dim);font-size:0.92rem;margin:0;line-height:1.5">${esc(p.pitch || p.tagline || "")}</p>
       <div class="stack-chips mt-2">${(p.stack || []).map((t) => `<span class="chip">${esc(t)}</span>`).join("")}
         ${(p.related || []).map((r) => `<span class="chip" style="border-color:${escAttr(accentFor(r))}">→ ${esc(r)}</span>`).join("")}
       </div>
-      <h4>Live status</h4>
-      <div class="kpi-grid">
-        <div class="kpi-cell"><div class="label">HTTP</div><div class="value" style="font-size:1rem">${s.status != null ? esc(String(s.status)) : "—"}</div></div>
-        <div class="kpi-cell"><div class="label">Latency</div><div class="value" style="font-size:1rem">${s.ms != null ? esc(fmtMs(s.ms)) : "—"}</div></div>
-        <div class="kpi-cell"><div class="label">Deployed</div><div class="value" style="font-size:1rem">${p.deployed ? "yes" : "no"}</div></div>
+      <div class="drawer-section">
+        <h4>Money snapshot</h4>
+        ${moneyBlockHTML(p)}
+      </div>
+      <div class="drawer-section">
+        <h4>Live status</h4>
+        <div class="kpi-grid">
+          <div class="kpi-cell"><div class="label">HTTP</div><div class="value" style="font-size:1rem">${s.status != null ? esc(String(s.status)) : "—"}</div></div>
+          <div class="kpi-cell"><div class="label">Latency</div><div class="value" style="font-size:1rem">${s.ms != null ? esc(fmtMs(s.ms)) : "—"}</div></div>
+          <div class="kpi-cell"><div class="label">Deployed</div><div class="value" style="font-size:1rem">${p.deployed ? "yes" : "no"}</div></div>
+          <div class="kpi-cell"><div class="label">Health</div><div class="value" style="font-size:0.95rem">${statusPill(projectHealth(p))}</div></div>
+        </div>
       </div>
       ${metricsBlock}
-      <h4>Actions</h4>
-      <div class="flex flex-wrap gap-2">
-        ${p.url ? `<a class="btn btn-sm btn-primary" href="${escAttr(p.url)}" target="_blank" rel="noopener">Open site</a>` : ""}
-        <button type="button" class="btn btn-sm btn-ghost" data-goto-metrics="${escAttr(p.id)}">Metrics lab</button>
-        <button type="button" class="btn btn-sm btn-ghost" data-goto-doc="${escAttr(p.id)}">Project MD</button>
+      <div class="drawer-section">
+        <h4>Actions</h4>
+        <div class="flex flex-wrap gap-2">
+          ${p.url ? `<a class="btn btn-sm btn-primary" href="${escAttr(p.url)}" target="_blank" rel="noopener">Open site</a>` : ""}
+          <button type="button" class="btn btn-sm btn-ghost" data-goto-metrics="${escAttr(p.id)}">Metrics lab</button>
+          <button type="button" class="btn btn-sm btn-ghost" data-goto-money-tab>Money cockpit</button>
+          <button type="button" class="btn btn-sm btn-ghost" data-dtab-jump="docs">Project MD</button>
+          <button type="button" class="btn btn-sm btn-ghost" data-dtab-jump="money">Wallet detail</button>
+        </div>
       </div>`;
+    bindMoneyActions();
     body.querySelector("[data-goto-metrics]")?.addEventListener("click", () => {
       closeDrawer(); state.selectedMetricsId = p.id; setTab("metrics");
     });
-    body.querySelector("[data-goto-doc]")?.addEventListener("click", () => {
-      state.drawerTab = "docs"; paintDrawerBody(p);
-      document.querySelectorAll("#drawer-tabs .drawer-tab").forEach((b) => b.classList.toggle("active", b.dataset.dtab === "docs"));
+    body.querySelector("[data-goto-money-tab]")?.addEventListener("click", () => {
+      closeDrawer(); setTab("money");
+    });
+    body.querySelectorAll("[data-dtab-jump]").forEach((b) => {
+      b.addEventListener("click", () => {
+        state.drawerTab = b.dataset.dtabJump;
+        document.querySelectorAll("#drawer-tabs .drawer-tab").forEach((x) => x.classList.toggle("active", x.dataset.dtab === state.drawerTab));
+        paintDrawerBody(p);
+      });
     });
     bindTooltips();
   }
@@ -1895,6 +2386,10 @@
       lines.push(`- Health: ${projectHealth(p)} · HTTP ${s.status ?? "—"} · ${s.ms != null ? s.ms + "ms" : "—"}`);
       lines.push(`- Deployed: ${p.deployed}`);
       lines.push(`- Metrics depth: ${d ? depthScore(d, false) : 0}/100 · source: ${m ? m.path : "—"}`);
+      const wid = walletIdFor(p);
+      const bal = wid ? state.wallets[wid] : null;
+      if (bal && bal.ok) lines.push(`- LNbits wallet \`${wid}\`: ${fmtNum(bal.sats, "sats")} (${fmtUsd(satsToUsd(bal.sats))})`);
+      else if (wid) lines.push(`- LNbits wallet \`${wid}\`: ${bal ? (bal.error || "unavailable") : "no poll"}`);
       if (d) {
         (d.kpis || []).forEach((k) => lines.push(`  - KPI ${k.label}: ${fmtNum(k.value, k.format)} ${k.unit || ""}`));
         lines.push(`  - series: ${(d.series || []).map((x) => x.key).join(", ") || "—"}`);
@@ -2036,9 +2531,28 @@
       if (e.key === "r") bootstrap();
       if (e.key === "v") openVaultModal();
       if (e.key === "e") exportDiligence();
+      if (e.key === "m") setTab("money");
+      if (e.key === "w") setTab("wallets");
     });
 
     bootstrap();
+    // LNbits auto-poll — money surfaces stay live
+    try {
+      if (window.__hqBalPoll) clearInterval(window.__hqBalPoll);
+      window.__hqBalPoll = setInterval(async () => {
+        if (!Object.keys(vaultKeys()).length) return;
+        await refreshWallets();
+        renderPortfolioStrip();
+        updateVaultChip();
+        if (state.tab === "money") renderMoney();
+        if (state.tab === "wallets") renderWallets();
+        if (state.tab === "cards") renderCards();
+        if (state.drawerProject && document.getElementById("drawer")?.classList.contains("open")) {
+          const p = state.projects.find((x) => x.id === state.drawerProject);
+          if (p) paintDrawerBody(p);
+        }
+      }, BAL_POLL_MS);
+    } catch { /* ignore */ }
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);

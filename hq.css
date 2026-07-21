@@ -2078,3 +2078,1116 @@ table.data .name-cell {
   .card-kpis { grid-template-columns: 1fr 1fr 1fr; }
   .card-sparks { grid-template-columns: 1fr; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   MONEY / YOLO v3.2
+   Portfolio cockpit · wallets · sats · lightning · drawers
+   Hard rule: no black, no white, no grey. Every pixel is tinted.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Keyframes ── */
+
+@keyframes yolo-border-pulse {
+  0%, 100% {
+    border-color: color-mix(in srgb, var(--orange) 42%, var(--line));
+    box-shadow:
+      inset 0 1px 0 var(--shine),
+      0 0 0 1px color-mix(in srgb, var(--orange) 12%, transparent),
+      0 0 18px color-mix(in srgb, var(--amber) 18%, transparent);
+  }
+  50% {
+    border-color: color-mix(in srgb, var(--amber) 62%, var(--pink));
+    box-shadow:
+      inset 0 1px 0 var(--shine),
+      0 0 0 1px color-mix(in srgb, var(--amber) 28%, transparent),
+      0 0 28px color-mix(in srgb, var(--orange) 32%, transparent),
+      0 0 48px color-mix(in srgb, var(--pink) 14%, transparent);
+  }
+}
+
+@keyframes sats-count {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  40% { transform: scale(1.035); filter: brightness(1.08); }
+  70% { transform: scale(0.99); filter: brightness(1.02); }
+}
+
+/* ── Wider drawer ── */
+
+.drawer.drawer-xl {
+  width: min(720px, 98vw);
+}
+
+/* ── Money cockpit shell ── */
+
+.money-cockpit {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+}
+
+.money-cockpit::before {
+  content: "";
+  position: absolute;
+  inset: -12% -6% auto;
+  height: 220px;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 55% 70% at 18% 30%, color-mix(in srgb, var(--orange) 16%, transparent), transparent 70%),
+    radial-gradient(ellipse 45% 60% at 82% 20%, color-mix(in srgb, var(--violet) 12%, transparent), transparent 68%),
+    radial-gradient(ellipse 40% 50% at 50% 80%, color-mix(in srgb, var(--teal) 8%, transparent), transparent 70%);
+  opacity: 0.9;
+  z-index: 0;
+}
+
+.money-cockpit > * { position: relative; z-index: 1; }
+
+/* ── Hero total strip ── */
+
+.money-hero {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem 1.5rem;
+  align-items: end;
+  padding: 1.25rem 1.35rem 1.15rem;
+  border-radius: var(--r-xl);
+  background:
+    radial-gradient(ellipse 80% 90% at 0% 0%, color-mix(in srgb, var(--orange) 18%, transparent), transparent 55%),
+    radial-gradient(ellipse 50% 70% at 100% 100%, color-mix(in srgb, var(--violet) 14%, transparent), transparent 50%),
+    var(--surface-grad);
+  border: 1px solid var(--line-hi);
+  box-shadow:
+    inset 0 1px 0 var(--shine),
+    inset 0 0 48px var(--glow-soft),
+    0 16px 40px -18px var(--shadow),
+    0 0 40px color-mix(in srgb, var(--orange) 10%, transparent);
+  overflow: hidden;
+}
+
+.money-hero::after {
+  content: "";
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--amber) 22%, transparent), transparent 68%);
+  pointer-events: none;
+}
+
+.money-hero-total {
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 4.2vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  color: var(--ink);
+  text-shadow: 0 0 32px color-mix(in srgb, var(--orange) 28%, transparent);
+  animation: sats-count 2.8s var(--ease-out) both;
+}
+
+.money-hero-usd {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink-dim);
+  margin-top: 0.35rem;
+  letter-spacing: 0.01em;
+}
+
+.money-hero-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.55rem;
+  padding: 0.28rem 0.65rem;
+  border-radius: 99px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--green);
+  background: color-mix(in srgb, var(--green) 14%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--green) 40%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--green) 22%, transparent), inset 0 1px 0 var(--shine);
+}
+
+.money-hero-delta.down,
+.money-hero-delta.neg {
+  color: var(--red);
+  background: color-mix(in srgb, var(--red) 14%, var(--surface));
+  border-color: color-mix(in srgb, var(--red) 40%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--red) 22%, transparent), inset 0 1px 0 var(--shine);
+}
+
+.money-hero-delta.flat {
+  color: var(--amber);
+  background: color-mix(in srgb, var(--amber) 14%, var(--surface));
+  border-color: color-mix(in srgb, var(--amber) 40%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--amber) 20%, transparent), inset 0 1px 0 var(--shine);
+}
+
+/* ── Allocation strip ── */
+
+.money-alloc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: stretch;
+}
+
+.money-alloc-item {
+  flex: 1 1 120px;
+  min-width: 100px;
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--r-sm);
+  background: var(--surface-grad-2);
+  border: 1px solid var(--line);
+  box-shadow: inset 0 1px 0 var(--shine), 0 4px 14px -10px var(--shadow);
+  transition: border-color var(--dur) var(--ease-out), transform var(--dur) var(--ease-out), box-shadow var(--dur);
+  position: relative;
+  overflow: hidden;
+}
+
+.money-alloc-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--alloc-c, var(--orange));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--alloc-c, var(--orange)) 55%, transparent);
+}
+
+.money-alloc-item:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--alloc-c, var(--accent-theme)) 45%, var(--line));
+  box-shadow:
+    inset 0 1px 0 var(--shine),
+    0 10px 22px -12px var(--shadow),
+    0 0 18px color-mix(in srgb, var(--alloc-c, var(--orange)) 16%, transparent);
+}
+
+.money-alloc-item .label,
+.money-alloc-item .al {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+  margin-bottom: 0.2rem;
+}
+
+.money-alloc-item .value,
+.money-alloc-item .av {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.money-alloc-item .pct,
+.money-alloc-item .ap {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: color-mix(in srgb, var(--alloc-c, var(--amber)) 75%, var(--ink-dim));
+  margin-top: 0.15rem;
+}
+
+/* ── Balance chips ── */
+
+.balance-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.65rem;
+  border-radius: 99px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ink-dim);
+  background: color-mix(in srgb, var(--surface-2) 85%, var(--sky) 8%);
+  border: 1px solid var(--line);
+  box-shadow: inset 0 1px 0 var(--shine), 0 2px 8px -4px var(--shadow);
+  transition: border-color var(--dur), box-shadow var(--dur), color var(--dur), background var(--dur);
+}
+
+.balance-chip.ok {
+  color: var(--green);
+  background: color-mix(in srgb, var(--green) 14%, var(--surface));
+  border-color: color-mix(in srgb, var(--green) 42%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--green) 22%, transparent), inset 0 1px 0 var(--shine);
+}
+
+.balance-chip.empty {
+  color: var(--ink-faint);
+  background: color-mix(in srgb, var(--violet) 8%, var(--surface));
+  border-color: color-mix(in srgb, var(--violet) 22%, var(--line));
+  border-style: dashed;
+}
+
+.balance-chip.err {
+  color: var(--red);
+  background: color-mix(in srgb, var(--red) 14%, var(--surface));
+  border-color: color-mix(in srgb, var(--red) 45%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--red) 24%, transparent), inset 0 1px 0 var(--shine);
+}
+
+.balance-chip.pending {
+  color: var(--amber);
+  background: color-mix(in srgb, var(--amber) 14%, var(--surface));
+  border-color: color-mix(in srgb, var(--amber) 42%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--amber) 22%, transparent), inset 0 1px 0 var(--shine);
+  animation: pulse-glow 1.4s ease-in-out infinite;
+}
+
+/* ── Card money row ── */
+
+.card-money-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.45rem 0.75rem;
+  margin-top: 0.55rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-dim);
+}
+
+.card-money-row .bal,
+.card-money-row .sats {
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.card-money-row .usd {
+  color: var(--ink-faint);
+}
+
+/* ── Wallet hero cards ── */
+
+.wallet-hero-card {
+  position: relative;
+  overflow: hidden;
+  padding: 1.1rem 1.15rem 1rem;
+  border-radius: var(--r-lg);
+  background:
+    radial-gradient(ellipse 70% 80% at 0% 0%, color-mix(in srgb, var(--wallet-c, var(--orange)) 16%, transparent), transparent 60%),
+    var(--surface-grad);
+  border: 1px solid color-mix(in srgb, var(--wallet-c, var(--line-hi)) 35%, var(--line));
+  box-shadow:
+    inset 0 1px 0 var(--shine),
+    inset 0 0 36px color-mix(in srgb, var(--wallet-c, var(--glow-soft)) 18%, transparent),
+    0 12px 28px -14px var(--shadow);
+  transition: transform var(--dur) var(--ease-out), border-color var(--dur), box-shadow var(--dur);
+}
+
+.wallet-hero-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--wallet-c, var(--orange)) 55%, var(--line));
+  box-shadow:
+    inset 0 1px 0 var(--shine),
+    inset 0 0 48px color-mix(in srgb, var(--wallet-c, var(--orange)) 14%, transparent),
+    0 18px 36px -12px var(--shadow),
+    0 0 24px color-mix(in srgb, var(--wallet-c, var(--orange)) 16%, transparent);
+}
+
+.wallet-hero-card .name,
+.wallet-hero-card .wh-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--ink);
+  margin: 0 0 0.35rem;
+}
+
+.wallet-hero-card .bal,
+.wallet-hero-card .wh-bal {
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  line-height: 1.1;
+  text-shadow: 0 0 20px color-mix(in srgb, var(--wallet-c, var(--orange)) 25%, transparent);
+}
+
+.wallet-spark {
+  display: block;
+  width: 100%;
+  height: 36px;
+  margin-top: 0.55rem;
+  border-radius: var(--r-xs);
+  overflow: hidden;
+  background: color-mix(in srgb, var(--surface-2) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+  box-shadow: inset 0 1px 0 var(--shine);
+}
+
+.wallet-spark svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.wallet-spark path,
+.wallet-spark polyline {
+  fill: none;
+  stroke: var(--wallet-c, var(--sky));
+  stroke-width: 1.75;
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--wallet-c, var(--sky)) 45%, transparent));
+}
+
+.wallet-spark .area,
+.wallet-spark .fill {
+  fill: color-mix(in srgb, var(--wallet-c, var(--sky)) 18%, transparent);
+  stroke: none;
+  filter: none;
+}
+
+.wallet-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.wallet-delta.down,
+.wallet-delta.neg { color: var(--red); }
+.wallet-delta.flat { color: var(--amber); }
+
+.wallet-share {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.wallet-share .bar,
+.wallet-share .track {
+  flex: 1;
+  height: 5px;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--surface-hi) 55%, transparent);
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px color-mix(in srgb, var(--bg-0) 40%, transparent);
+}
+
+.wallet-share .fill,
+.wallet-share .bar > span {
+  display: block;
+  height: 100%;
+  width: var(--share, 0%);
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--wallet-c, var(--orange)), color-mix(in srgb, var(--wallet-c, var(--amber)) 70%, var(--pink)));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--wallet-c, var(--orange)) 45%, transparent);
+}
+
+/* ── Drawer sections ── */
+
+.drawer-section {
+  margin: 0 0 1.15rem;
+  padding: 0.85rem 0.9rem;
+  border-radius: var(--r-md);
+  background: var(--surface-grad-2);
+  border: 1px solid var(--line);
+  box-shadow: inset 0 1px 0 var(--shine), 0 6px 18px -12px var(--shadow);
+}
+
+.drawer-section + .drawer-section {
+  margin-top: 0;
+}
+
+.drawer-section h4 {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.65rem;
+  padding-bottom: 0.45rem;
+  color: var(--ink);
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 90%, transparent);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.drawer-section h4::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex: none;
+  background: var(--section-c, var(--orange));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--section-c, var(--orange)) 60%, transparent);
+}
+
+.drawer-money-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.85rem 0.95rem;
+  border-radius: var(--r-md);
+  background:
+    radial-gradient(ellipse 80% 100% at 0% 0%, color-mix(in srgb, var(--amber) 12%, transparent), transparent 55%),
+    var(--surface-grad);
+  border: 1px solid color-mix(in srgb, var(--orange) 28%, var(--line));
+  box-shadow:
+    inset 0 1px 0 var(--shine),
+    inset 0 0 28px var(--glow-soft),
+    0 8px 20px -12px var(--shadow);
+}
+
+.drawer-money-block .label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+}
+
+.drawer-money-block .value {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+/* ── Money pulse bars ── */
+
+.money-pulse {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.money-pulse-bar {
+  --pulse-c: var(--orange);
+  position: relative;
+  height: 8px;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--surface-hi) 50%, transparent);
+  border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px color-mix(in srgb, var(--bg-0) 35%, transparent);
+}
+
+.money-pulse-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: var(--pct, 50%);
+  border-radius: inherit;
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--pulse-c) 70%, var(--surface)),
+    var(--pulse-c),
+    color-mix(in srgb, var(--pulse-c) 80%, var(--amber)));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--pulse-c) 45%, transparent);
+  transition: width var(--dur-slow) var(--ease-out);
+}
+
+.money-pulse-bar.sky { --pulse-c: var(--sky); }
+.money-pulse-bar.violet { --pulse-c: var(--violet); }
+.money-pulse-bar.green { --pulse-c: var(--green); }
+.money-pulse-bar.teal { --pulse-c: var(--teal); }
+.money-pulse-bar.pink { --pulse-c: var(--pink); }
+.money-pulse-bar.amber { --pulse-c: var(--amber); }
+
+/* ── Portfolio orbit (radial allocation) ── */
+
+.portfolio-orbit {
+  --orbit-size: min(220px, 70vw);
+  position: relative;
+  width: var(--orbit-size);
+  height: var(--orbit-size);
+  margin: 0.5rem auto;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%,
+      color-mix(in srgb, var(--surface-hi) 70%, transparent) 0%,
+      color-mix(in srgb, var(--surface) 80%, transparent) 42%,
+      transparent 43%),
+    conic-gradient(
+      from -90deg,
+      var(--orbit-1, var(--orange)) 0 var(--orbit-a, 35%),
+      var(--orbit-2, var(--violet)) var(--orbit-a, 35%) var(--orbit-b, 65%),
+      var(--orbit-3, var(--sky)) var(--orbit-b, 65%) var(--orbit-c, 85%),
+      var(--orbit-4, var(--teal)) var(--orbit-c, 85%) 100%
+    );
+  box-shadow:
+    inset 0 0 0 1px var(--line),
+    inset 0 0 40px var(--glow-soft),
+    0 0 40px color-mix(in srgb, var(--orange) 14%, transparent),
+    0 12px 28px -10px var(--shadow);
+  display: grid;
+  place-items: center;
+}
+
+.portfolio-orbit::before {
+  content: "";
+  position: absolute;
+  inset: 18%;
+  border-radius: 50%;
+  background: var(--surface-grad);
+  border: 1px solid var(--line);
+  box-shadow:
+    inset 0 1px 0 var(--shine),
+    inset 0 0 24px var(--glow-soft),
+    0 0 0 6px color-mix(in srgb, var(--bg-0) 55%, transparent);
+  z-index: 1;
+}
+
+.portfolio-orbit::after {
+  content: attr(data-center);
+  position: relative;
+  z-index: 2;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-align: center;
+  max-width: 55%;
+  line-height: 1.15;
+}
+
+.portfolio-orbit .orbit-label {
+  position: absolute;
+  z-index: 3;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+  padding: 0.15rem 0.4rem;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--surface-2) 90%, transparent);
+  border: 1px solid var(--line);
+  box-shadow: 0 2px 8px -4px var(--shadow), inset 0 1px 0 var(--shine);
+  white-space: nowrap;
+}
+
+/* ── Sats ticker & FX badge ── */
+
+.sats-ticker {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--amber);
+  letter-spacing: 0.02em;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--r-xs);
+  background: color-mix(in srgb, var(--amber) 10%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--amber) 28%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--amber) 16%, transparent), inset 0 1px 0 var(--shine);
+  animation: sats-count 3.2s var(--ease-out) infinite;
+}
+
+.sats-ticker .unit {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.fx-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.22rem 0.55rem;
+  border-radius: 99px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--sky);
+  background: color-mix(in srgb, var(--sky) 12%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--sky) 38%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--sky) 18%, transparent), inset 0 1px 0 var(--shine);
+}
+
+.fx-badge.btc {
+  color: var(--orange);
+  background: color-mix(in srgb, var(--orange) 12%, var(--surface));
+  border-color: color-mix(in srgb, var(--orange) 40%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--orange) 20%, transparent), inset 0 1px 0 var(--shine);
+}
+
+.fx-badge.usd {
+  color: var(--teal);
+  background: color-mix(in srgb, var(--teal) 12%, var(--surface));
+  border-color: color-mix(in srgb, var(--teal) 38%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--teal) 18%, transparent), inset 0 1px 0 var(--shine);
+}
+
+/* ── Money grid ── */
+
+.money-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+  align-items: start;
+}
+
+@media (max-width: 720px) {
+  .money-grid { grid-template-columns: 1fr; }
+  .money-hero { grid-template-columns: 1fr; }
+}
+
+/* ── Lightning badge ── */
+
+.ln-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.7rem 0.28rem 0.55rem;
+  border-radius: 99px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #2a1808;
+  background: linear-gradient(135deg, #ffd060 0%, var(--amber) 42%, var(--orange) 100%);
+  border: 1px solid color-mix(in srgb, var(--amber) 55%, transparent);
+  box-shadow:
+    0 0 18px color-mix(in srgb, var(--orange) 35%, transparent),
+    0 0 6px color-mix(in srgb, var(--amber) 40%, transparent),
+    inset 0 1px 0 rgba(255, 230, 160, 0.45);
+  text-shadow: 0 1px 0 rgba(255, 220, 140, 0.35);
+}
+
+.ln-badge::before {
+  content: "⚡";
+  font-size: 0.85em;
+  line-height: 1;
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--orange) 50%, transparent));
+}
+
+/* ── Balance ring (circular progress) ── */
+
+.balance-ring {
+  --ring-pct: 65;
+  --ring-c: var(--orange);
+  --ring-size: 96px;
+  --ring-track: color-mix(in srgb, var(--surface-hi) 70%, transparent);
+  position: relative;
+  width: var(--ring-size);
+  height: var(--ring-size);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle closest-side,
+      var(--surface) 72%,
+      transparent 73% 100%),
+    conic-gradient(
+      var(--ring-c) calc(var(--ring-pct) * 1%),
+      var(--ring-track) 0
+    );
+  box-shadow:
+    inset 0 0 0 1px var(--line),
+    0 0 20px color-mix(in srgb, var(--ring-c) 22%, transparent),
+    0 6px 16px -8px var(--shadow);
+}
+
+.balance-ring::before {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: var(--surface-grad);
+  border: 1px solid var(--line);
+  box-shadow: inset 0 1px 0 var(--shine), inset 0 0 16px var(--glow-soft);
+}
+
+.balance-ring > * {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1.15;
+  max-width: 70%;
+}
+
+.balance-ring .sub {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  font-weight: 600;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.1rem;
+}
+
+/* ── Compare bars ── */
+
+.compare-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.compare-bars .row {
+  display: grid;
+  grid-template-columns: minmax(64px, 90px) 1fr auto;
+  gap: 0.45rem;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--ink-faint);
+}
+
+.compare-bars .label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink-dim);
+  font-weight: 600;
+}
+
+.compare-bars .track {
+  height: 10px;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--surface-hi) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--line) 75%, transparent);
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px color-mix(in srgb, var(--bg-0) 35%, transparent);
+}
+
+.compare-bars .fill {
+  height: 100%;
+  width: var(--w, 40%);
+  border-radius: inherit;
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--bar-c, var(--violet)) 55%, var(--surface)),
+    var(--bar-c, var(--violet)));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--bar-c, var(--violet)) 40%, transparent);
+  transition: width var(--dur-slow) var(--ease-out);
+}
+
+.compare-bars .val {
+  min-width: 3.2rem;
+  text-align: right;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* ── History strip ── */
+
+.history-strip {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding: 0.45rem 0.15rem 0.55rem;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+.history-strip::-webkit-scrollbar { height: 6px; }
+.history-strip::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  border-radius: 99px;
+}
+
+.history-strip .snap,
+.history-strip .item {
+  flex: none;
+  scroll-snap-align: start;
+  min-width: 88px;
+  padding: 0.5rem 0.6rem;
+  border-radius: var(--r-sm);
+  background: var(--surface-grad-2);
+  border: 1px solid var(--line);
+  box-shadow: inset 0 1px 0 var(--shine);
+  transition: border-color var(--dur), box-shadow var(--dur), transform var(--dur) var(--ease-out);
+}
+
+.history-strip .snap:hover,
+.history-strip .item:hover {
+  border-color: var(--line-hi);
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 var(--shine), 0 0 16px var(--glow-soft);
+}
+
+.history-strip .t {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-faint);
+}
+
+.history-strip .v {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--ink);
+  margin-top: 0.15rem;
+  letter-spacing: -0.02em;
+}
+
+.history-strip .d {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  margin-top: 0.15rem;
+  color: var(--green);
+}
+
+.history-strip .d.down,
+.history-strip .d.neg { color: var(--red); }
+
+/* ── YOLO glow utility ── */
+
+.yolo-glow {
+  border: 1px solid color-mix(in srgb, var(--orange) 42%, var(--line));
+  border-radius: var(--r-md);
+  animation: yolo-border-pulse 2.6s ease-in-out infinite;
+}
+
+/* ── Tab money accent ── */
+
+.tab-money-accent,
+.nav-tab.tab-money-accent,
+[data-tab="money"].tab-money-accent,
+.nav-tab[data-tab="wallets"].tab-money-accent {
+  color: var(--amber);
+  border-color: color-mix(in srgb, var(--orange) 40%, transparent);
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--orange) 14%, transparent),
+    transparent);
+  box-shadow: inset 0 -2px 0 var(--orange), 0 0 16px color-mix(in srgb, var(--orange) 18%, transparent);
+}
+
+.tab-money-accent.active,
+.nav-tab.tab-money-accent.active {
+  color: var(--ink);
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--orange) 22%, var(--surface)),
+    color-mix(in srgb, var(--amber) 8%, transparent));
+  box-shadow:
+    inset 0 -2px 0 var(--amber),
+    0 0 20px color-mix(in srgb, var(--orange) 24%, transparent),
+    inset 0 1px 0 var(--shine);
+}
+
+/* ── Snap pill ── */
+
+.snap-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 99px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--violet);
+  background: color-mix(in srgb, var(--violet) 12%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--violet) 38%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--violet) 18%, transparent), inset 0 1px 0 var(--shine);
+  cursor: pointer;
+  transition: transform var(--dur) var(--ease-spring), box-shadow var(--dur), border-color var(--dur);
+}
+
+.snap-pill:hover {
+  transform: translateY(-1px) scale(1.03);
+  border-color: color-mix(in srgb, var(--violet) 55%, transparent);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--violet) 28%, transparent), inset 0 1px 0 var(--shine);
+}
+
+.snap-pill:active { transform: scale(0.97); }
+
+.snap-pill.active {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--violet) 28%, var(--surface));
+  border-color: color-mix(in srgb, var(--pink) 40%, var(--violet));
+  box-shadow: 0 0 20px color-mix(in srgb, var(--violet) 32%, transparent), inset 0 1px 0 var(--shine);
+}
+
+/* ── Wealth ladder ── */
+
+.wealth-ladder {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.75rem;
+  border-radius: var(--r-md);
+  background: var(--surface-grad);
+  border: 1px solid var(--line);
+  box-shadow: inset 0 1px 0 var(--shine), inset 0 0 32px var(--glow-soft);
+}
+
+.wealth-ladder .rung {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.45rem 0.55rem;
+  border-radius: var(--r-sm);
+  background: color-mix(in srgb, var(--surface-2) 70%, transparent);
+  border: 1px solid var(--line);
+  transition: border-color var(--dur), background var(--dur), box-shadow var(--dur);
+}
+
+.wealth-ladder .rung.current {
+  border-color: color-mix(in srgb, var(--orange) 50%, transparent);
+  background: color-mix(in srgb, var(--orange) 12%, var(--surface-2));
+  box-shadow: 0 0 18px color-mix(in srgb, var(--orange) 18%, transparent), inset 0 1px 0 var(--shine);
+}
+
+.wealth-ladder .rung.done {
+  border-color: color-mix(in srgb, var(--green) 35%, transparent);
+  background: color-mix(in srgb, var(--green) 8%, var(--surface-2));
+}
+
+.wealth-ladder .n {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--amber);
+  text-align: center;
+}
+
+.wealth-ladder .rung.done .n { color: var(--green); }
+.wealth-ladder .rung.current .n { color: var(--orange); }
+
+.wealth-ladder .title {
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--ink);
+}
+
+.wealth-ladder .target {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--ink-dim);
+}
+
+/* ── Project wealth tile ── */
+
+.project-wealth-tile {
+  position: relative;
+  overflow: hidden;
+  padding: 0.9rem 1rem;
+  border-radius: var(--r-md);
+  background:
+    radial-gradient(ellipse 90% 80% at 100% 0%, color-mix(in srgb, var(--tile-c, var(--violet)) 16%, transparent), transparent 55%),
+    var(--surface-grad-2);
+  border: 1px solid color-mix(in srgb, var(--tile-c, var(--line-hi)) 30%, var(--line));
+  box-shadow:
+    inset 0 1px 0 var(--shine),
+    0 8px 22px -12px var(--shadow);
+  transition: transform var(--dur) var(--ease-out), border-color var(--dur), box-shadow var(--dur);
+  cursor: pointer;
+}
+
+.project-wealth-tile::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--tile-c, var(--violet));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--tile-c, var(--violet)) 55%, transparent);
+}
+
+.project-wealth-tile:hover {
+  transform: translateY(-2px) scale(1.01);
+  border-color: color-mix(in srgb, var(--tile-c, var(--violet)) 50%, var(--line));
+  box-shadow:
+    inset 0 1px 0 var(--shine),
+    0 14px 28px -12px var(--shadow),
+    0 0 22px color-mix(in srgb, var(--tile-c, var(--violet)) 16%, transparent);
+}
+
+.project-wealth-tile .pw-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--ink);
+  margin: 0 0 0.35rem;
+}
+
+.project-wealth-tile .pw-bal {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.project-wealth-tile .pw-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+  align-items: center;
+}
+
+.project-wealth-tile .pw-share {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── Money-responsive fine-tuning ── */
+
+@media (max-width: 640px) {
+  .money-hero {
+    padding: 1rem 1.05rem;
+  }
+  .money-hero-total {
+    font-size: 1.65rem;
+  }
+  .wallet-hero-card .bal,
+  .wallet-hero-card .wh-bal {
+    font-size: 1.3rem;
+  }
+  .portfolio-orbit {
+    --orbit-size: min(180px, 78vw);
+  }
+  .compare-bars .row {
+    grid-template-columns: minmax(52px, 72px) 1fr auto;
+  }
+  .drawer.drawer-xl {
+    width: min(720px, 100vw);
+  }
+}
+
