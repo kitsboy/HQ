@@ -1,7 +1,7 @@
 {
   "name": "giveabit-hq",
   "private": true,
-  "version": "3.5.0",
+  "version": "3.13.0",
   "description": "Give A Bit HQ v3.5 — ops glass, money push, agent guardrails, concert tab",
   "scripts": {
     "stamp": "node scripts/stamp-version.mjs",
