@@ -1624,6 +1624,30 @@
           <p class="mono mt-2" style="font-size:0.6rem;color:var(--ink-faint)">From Umami analytics on THOR · 7-day window · refreshes every 5 min</p>
         </div>
         <div class="analytics-panel panel span-12">
+          <h3>Live data sources</h3>
+          <div class="table-wrap">
+            <table class="data" style="min-width:100%">
+              <thead><tr><th>Product</th><th>Metrics source</th><th>Analytics</th><th>Status</th></tr></thead>
+              <tbody>${state.projects.map((p) => {
+                const hasLive = p.metricsLiveCandidates && p.metricsLiveCandidates.length > 0;
+                const hasUmami = state.analytics && state.analytics[p.id];
+                const m = state.metrics[p.id];
+                const sourceType = hasLive ? 'live URL' : 'static file';
+                const sourcePath = hasLive ? (p.metricsLiveCandidates || [])[0] || '' : (p.metricsUrl || '');
+                const status = m && m.ok ? 'green' : 'amber';
+                const liveDot = m && m.path && /^https?:\/\//i.test(m.path);
+                return `<tr style="border-bottom:1px solid var(--line)">
+                  <td style="color:${escAttr(accentFor(p.id))}"><strong>${esc(p.name)}</strong></td>
+                  <td class="mono" style="font-size:0.7rem">${liveDot ? '<span class="status-pill green" style="font-size:0.55rem">live</span>' : '<span class="chip">static</span>'} ${esc(sourcePath.slice(0, 50))}</td>
+                  <td>${hasUmami ? `<span class="status-pill sky" style="font-size:0.55rem">${esc(fmtNum(hasUmami.visitors))} visitors</span>` : '<span class="chip">—</span>'}</td>
+                  <td>${statusPill(status)}</td>
+                </tr>`;
+              }).join("")}</tbody>
+            </table>
+          </div>
+          <p class="mono mt-2" style="font-size:0.6rem;color:var(--ink-faint)">CF Web Analytics available via Cloudflare dashboard → Analytics & Logs → Web Analytics</p>
+        </div>
+        <div class="analytics-panel panel span-12">
           <h3>Suite activity overlay (series[0] per product)</h3>
           ${suiteSeries.length ? multiSeriesChart(suiteSeries, "suite") : unavailableHTML("Series", "metrics/*/series")}
         </div>

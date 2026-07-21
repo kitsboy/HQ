@@ -54,7 +54,10 @@
       ],
       "metricsKey": "giveabit",
       "metricsUrl": "/metrics/giveabit.json",
-      "umamiId": "5f12ff2d-f1c5-4eb3-be57-43fe317ee2d2"
+      "umamiId": "5f12ff2d-f1c5-4eb3-be57-43fe317ee2d2",
+      "metricsLiveCandidates": [
+        "https://giveabit.io/metrics.json"
+      ]
     },
     {
       "id": "satohash",
@@ -107,7 +110,10 @@
       ],
       "metricsKey": "katoa",
       "metricsUrl": "/metrics/katoa.json",
-      "umamiId": "fa7b78d8-b121-40ff-a139-8bfab40baec5"
+      "umamiId": "fa7b78d8-b121-40ff-a139-8bfab40baec5",
+      "metricsLiveCandidates": [
+        "https://katoa.org/metrics.json"
+      ]
     },
     {
       "id": "stranded",
@@ -130,7 +136,10 @@
       ],
       "metricsKey": "stranded",
       "metricsUrl": "/metrics/stranded.json",
-      "umamiId": "f07bb222-c151-4018-81d5-a021c0a0bbdb"
+      "umamiId": "f07bb222-c151-4018-81d5-a021c0a0bbdb",
+      "metricsLiveCandidates": [
+        "https://stranded.giveabit.io/metrics.json"
+      ]
     },
     {
       "id": "tadbuy",
@@ -154,7 +163,10 @@
       ],
       "metricsKey": "tadbuy",
       "metricsUrl": "/metrics/tadbuy.json",
-      "umamiId": "e75632e3-b6f4-4fa3-9ec5-8b3107adf783"
+      "umamiId": "e75632e3-b6f4-4fa3-9ec5-8b3107adf783",
+      "metricsLiveCandidates": [
+        "https://tadbuy.giveabit.io/metrics.json"
+      ]
     },
     {
       "id": "motopass",
@@ -178,7 +190,10 @@
       ],
       "metricsKey": "motopass",
       "metricsUrl": "/metrics/motopass.json",
-      "umamiId": "dd982c5b-f27a-40e3-924b-4ea1e64d5f8a"
+      "umamiId": "dd982c5b-f27a-40e3-924b-4ea1e64d5f8a",
+      "metricsLiveCandidates": [
+        "https://motopass.giveabit.io/metrics.json"
+      ]
     },
     {
       "id": "sherpacarta",
@@ -203,7 +218,10 @@
       ],
       "metricsKey": "sherpacarta",
       "metricsUrl": "/metrics/sherpacarta.json",
-      "umamiId": "9b6f05bf-286e-4b21-9094-1d675f9b4442"
+      "umamiId": "9b6f05bf-286e-4b21-9094-1d675f9b4442",
+      "metricsLiveCandidates": [
+        "https://sherpacarta.org/metrics.json"
+      ]
     },
     {
       "id": "openstrata",
@@ -226,7 +244,10 @@
       ],
       "metricsKey": "openstrata",
       "metricsUrl": "/metrics/openstrata.json",
-      "umamiId": "b918844c-2503-4dcd-bef2-66c103a0ee13"
+      "umamiId": "b918844c-2503-4dcd-bef2-66c103a0ee13",
+      "metricsLiveCandidates": [
+        "https://openstrata.giveabit.io/metrics.json"
+      ]
     },
     {
       "id": "btcminiscript",
