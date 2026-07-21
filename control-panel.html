@@ -29,7 +29,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js" defer></script>
 </head>
 <body>
-<div id="app" hidden>
+<div id="app">
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand">
@@ -54,12 +54,6 @@
         </div>
         <button type="button" class="btn btn-ghost btn-icon" id="btn-vault" title="Vault (v)" aria-label="Open vault">
           <i class="fa-solid fa-key"></i>
-        </button>
-        <button type="button" class="btn btn-ghost btn-icon" id="btn-lock" title="Lock HQ (L)" aria-label="Lock HQ">
-          <i class="fa-solid fa-lock"></i>
-        </button>
-        <button type="button" class="btn btn-primary btn-sm" id="btn-refresh" title="Refresh (r)">
-          <i class="fa-solid fa-arrows-rotate"></i> Refresh
         </button>
       </div>
     </div>
@@ -105,7 +99,7 @@
       <div style="margin-top:0.25rem">Safe Harbour · Give A Bit family · Bitcoin sovereignty first</div>
     </div>
     <div class="footer-links" id="footer-links"></div>
-    <div class="mono" style="font-size:0.68rem">gate <span class="mono">L</span> · vault <span class="mono">v</span> · refresh <span class="mono">r</span></div>
+    <div class="mono" style="font-size:0.68rem">vault <span class="mono">v</span> · refresh <span class="mono">r</span></div>
   </footer>
 </div>
 
@@ -129,26 +123,11 @@
   </div>
 </div>
 
-<div id="gate" class="gate" hidden>
-  <div class="gate-card">
-    <div class="brand-mark gate-mark" aria-hidden="true">G</div>
-    <h1 class="display" id="gate-title">Give A Bit HQ</h1>
-    <p class="gate-sub" id="gate-sub">Ops glass for the family · enter passphrase</p>
-    <p class="gate-note mono" style="font-size:0.6rem">gate build 2026-07-21c</p>
-    <input type="password" id="gate-input" class="gate-input" placeholder="passphrase" autocomplete="current-password">
-    <input type="password" id="gate-confirm" class="gate-input" placeholder="confirm passphrase" autocomplete="new-password" hidden>
-    <button type="button" class="btn btn-primary" id="gate-btn">Unlock</button>
-    <p class="gate-note" id="gate-error"></p>
-    <p class="gate-note">Ops glass for the family · <span class="mono">L</span> locks any time · keys live only in this browser's vault</p>
-  </div>
-</div>
-
 <div id="toast-stack" aria-live="polite"></div>
 
 <script>
   document.getElementById("hq-origin").textContent = location.origin || "file";
 </script>
-<script src="gate.js?v=2026-07-21c"></script>
-<script src="hq.js?v=2026-07-21c" defer></script>
+<script src="hq.js?2026-07-21-d" defer></script>
 </body>
 </html>

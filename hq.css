@@ -3323,50 +3323,9 @@ table.data .name-cell {
   backdrop-filter: blur(14px) saturate(1.1);
 }
 
-/* ─── v3.4: gate, footer, link buttons, ember legibility ─── */
+/* ─── v3.4: footer, link buttons, ember legibility ─── */
 
-.gate {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--void-grad), var(--bg-0);
-  z-index: 300;
-  padding: 1rem;
-}
-.gate-card {
-  width: min(420px, 100%);
-  background: var(--surface-grad);
-  border: 1px solid var(--line);
-  border-radius: var(--r-xl);
-  padding: 2.25rem 2rem;
-  box-shadow: 0 24px 64px -24px var(--shadow), inset 0 1px 0 var(--shine);
-  text-align: center;
-}
-.gate-mark {
-  width: 56px; height: 56px;
-  font-size: 1.6rem;
-  margin: 0 auto 1rem;
-}
-.gate-card h1 { margin: 0 0 0.35rem; font-size: 1.5rem; }
-.gate-sub { color: var(--ink-dim); font-size: 0.85rem; margin: 0 0 1.25rem; }
-.gate-input {
-  width: 100%;
-  background: var(--bg-1);
-  border: 1px solid var(--line);
-  border-radius: var(--r-sm);
-  color: var(--ink);
-  padding: 0.7rem 0.9rem;
-  font-size: 0.95rem;
-  margin-bottom: 0.6rem;
-  font-family: var(--font-body);
-}
-.gate-input:focus { outline: none; border-color: var(--line-hi); box-shadow: 0 0 0 3px var(--glow-soft); }
-.gate-card .btn { width: 100%; margin-top: 0.35rem; }
-.gate-note { font-size: 0.72rem; color: var(--ink-faint); margin: 0.6rem 0 0; }
-#gate-error { color: var(--red); min-height: 1rem; }
-
+.gate-reset {
 /* Comprehensive footer */
 .site-footer {
   display: flex;
@@ -3416,21 +3375,7 @@ table.data .name-cell {
 [data-theme="ember"] .kpi-cell { background: color-mix(in srgb, var(--bg-1) 45%, transparent); }
 [data-theme="ember"] .metric-bar { background: color-mix(in srgb, var(--bg-1) 60%, transparent); }
 
-/* ─── v3.4.1: gate reset, mobile, cross-browser ─── */
-
-.gate-reset {
-  background: none;
-  border: none;
-  color: var(--ink-faint);
-  font-size: 0.7rem;
-  margin-top: 0.75rem;
-  cursor: pointer;
-  text-decoration: underline dotted;
-  font-family: var(--font-body);
-}
-.gate-reset:hover { color: var(--amber); }
-
-/* Mobile & small screens */
+/* ─── Mobile & cross-browser ─── */
 @media (max-width: 860px) {
   html { font-size: 14px; }
   .topbar-inner { flex-wrap: wrap; gap: 0.5rem; }
@@ -3452,7 +3397,6 @@ table.data .name-cell {
 }
 @media (max-width: 480px) {
   .card-kpis { grid-template-columns: repeat(2, 1fr) !important; }
-  .gate-card { padding: 1.5rem 1.1rem; }
 }
 
 /* Cross-browser resilience */

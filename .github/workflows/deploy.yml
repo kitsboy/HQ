@@ -24,7 +24,7 @@ jobs:
           mkdir -p public
           mkdir -p public/metrics public/schemas public/docs public/handoff
           cp control-panel.html public/index.html
-          cp hq.css hq.js gate.js public/ || true; cp hq-v28.css hq-v28.js public/ || true
+          cp hq.css hq.js public/ || true; cp hq-v28.css hq-v28.js public/ || true
           cp favicon.png apple-touch-icon.png public/ || true
           cp projects.json agents.json tools.json status.example.json manifest.webmanifest public/
           cp pages/_headers pages/_redirects public/

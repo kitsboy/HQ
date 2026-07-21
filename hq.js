@@ -15,11 +15,8 @@
   const SNAP_KEY = "hq_uptime_snap_v1";
   const BAL_HIST_KEY = "hq_wallet_hist_v1";
   const DOC_OVERRIDES_KEY = "hq_doc_overrides_v1";
-  const GATE_KEY = "hq_gate_v1";
-  const GATE_SESSION = "hq_gate_session_v1";
   const BAL_POLL_MS = 60000;
   const DATA_POLL_MS = 300000;
-  const IDLE_LOCK_MS = 30 * 60 * 1000; // auto-lock after 30 min idle
 
   const PROJECT_ACCENTS = {
     giveabit: "#ff8c00",
@@ -2231,20 +2228,7 @@
     loadAndShowDoc(state.selectedDoc);
   }
 
-  /* ── App boot: gate.js handles the lock screen; we init when app is visible ── */
-  function bootWhenUnlocked() {
-    const app = document.getElementById("app");
-    if (app && !app.hidden) { init(); return; }
-    // poll until gate.js reveals the app (session unlock or passphrase)
-    const t = setInterval(() => {
-      const a = document.getElementById("app");
-      if (a && !a.hidden) { clearInterval(t); init(); }
-    }, 250);
-  }
-  function lockNow() {
-    try { sessionStorage.removeItem("hq_gate_ok_v2"); sessionStorage.removeItem(GATE_SESSION); } catch {}
-    location.reload();
-  }
+  /* ── No gate — the site opens directly ── */
 
   /* ── Doc overrides: browser-local edits of any .md ── */
   function docOverrides() {
@@ -2828,7 +2812,7 @@
           <button type="button" class="btn btn-ghost btn-sm" id="vault-export"><i class="fa-solid fa-file-export"></i> Export vault JSON</button>
           <button type="button" class="btn btn-ghost btn-sm" id="vault-import-btn"><i class="fa-solid fa-file-import"></i> Import</button>
           <input type="file" id="vault-import-file" accept="application/json" style="display:none">
-          <button type="button" class="btn btn-ghost btn-sm" id="vault-lock"><i class="fa-solid fa-lock"></i> Lock HQ now</button>
+          <button type="button" class="btn btn-ghost btn-sm" id="vault-lock"><i class="fa-solid fa-lock"></i> (gate removed)</button>
         </div>`,
     };
     modal.querySelector(".mb").innerHTML = `
@@ -2860,7 +2844,7 @@
         } catch (err) { toast("Import failed: " + err.message, "err"); }
       });
     });
-    modal.querySelector("#vault-lock")?.addEventListener("click", lockNow);
+    modal.querySelector("#vault-lock")?.addEventListener("click", (() => { toast("Gate removed — HQ is always open", "ok"); }));
     modal.classList.add("open");
   }
 
@@ -2947,7 +2931,6 @@
     });
     document.getElementById("btn-refresh")?.addEventListener("click", () => { toast("Refreshing…", "ok"); bootstrap(); });
     document.getElementById("btn-vault")?.addEventListener("click", openVaultModal);
-    document.getElementById("btn-lock")?.addEventListener("click", lockNow);
     document.getElementById("vault-save")?.addEventListener("click", saveVaultFromModal);
     document.getElementById("vault-cancel")?.addEventListener("click", () => {
       document.getElementById("vault-modal")?.classList.remove("open");
@@ -2966,24 +2949,12 @@
       if (map[e.key]) setTab(map[e.key]);
       if (e.key === "r") bootstrap();
       if (e.key === "v") openVaultModal();
-      if (e.key === "l" || e.key === "L") lockNow();
       if (e.key === "e") exportDiligence();
       if (e.key === "m") setTab("money");
       if (e.key === "w") setTab("wallets");
     });
 
     bootstrap();
-    // Auto-lock after idle (gate is only useful if it actually locks)
-    try {
-      let idleTimer = null;
-      const resetIdle = () => {
-        if (idleTimer) clearTimeout(idleTimer);
-        idleTimer = setTimeout(() => { toast("Auto-locked after 30 min idle", "ok"); setTimeout(lockNow, 600); }, IDLE_LOCK_MS);
-      };
-      ["click", "keydown", "mousemove", "touchstart", "scroll"].forEach((ev) =>
-        document.addEventListener(ev, resetIdle, { passive: true }));
-      resetIdle();
-    } catch { /* ignore */ }
     // Live pulse: refresh status + thor + live metrics every 5 min, countdown chip
     try {
       state.nextDataPoll = Date.now() + DATA_POLL_MS;
@@ -3015,6 +2986,6 @@
     } catch { /* ignore */ }
   }
 
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bootWhenUnlocked);
-  else bootWhenUnlocked();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
 })();
