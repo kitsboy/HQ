@@ -249,6 +249,30 @@ export default {
       }
     }
 
+    // GET /invoices/:walletId — last 20 invoices for a wallet (read-only)
+    const invMatch = path.match(/^\/invoices\/([a-zA-Z0-9_\-]+)$/);
+    if (request.method === 'GET' && invMatch && path.startsWith('/invoices/')) {
+      const walletId = invMatch[1];
+      const key = resolveKey(walletId, env, request, clientKeys);
+      if (!key) {
+        return json({ ok: false, wallet: walletId, error: 'no key for wallet', kind: 'nokey' }, 400, cors);
+      }
+      try {
+        const invUrl = `${base}/api/v1/wallet/invoices?limit=20`;
+        const r = await fetch(invUrl, {
+          headers: { 'X-Api-Key': key, Accept: 'application/json' },
+        });
+        if (!r.ok) {
+          const text = await r.text().catch(() => '');
+          return json({ ok: false, wallet: walletId, error: `LNbits HTTP ${r.status}${text ? ': ' + text.slice(0, 120) : ''}` }, r.status, cors);
+        }
+        const data = await r.json();
+        return json({ ok: true, wallet: walletId, invoices: Array.isArray(data) ? data.slice(0, 20) : [] }, 200, cors);
+      } catch (e) {
+        return json({ ok: false, wallet: walletId, error: e.message || String(e) }, 502, cors);
+      }
+    }
+
     // GET|POST /balances
     if (path === '/balances' && (request.method === 'GET' || request.method === 'POST')) {
       let ids = [];

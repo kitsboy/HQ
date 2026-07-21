@@ -401,8 +401,10 @@
         <button type="button" class="btn btn-sm btn-ghost" data-copy-sats="${escAttr(String(bal.sats))}">Copy sats</button>
         <button type="button" class="btn btn-sm btn-ghost" data-open-vault>Vault</button>
         <button type="button" class="btn btn-sm btn-ghost" data-qr-toggle="${escAttr(wid)}"><i class="fa-solid fa-qrcode"></i> QR</button>
+        ${hasVaultKey(wid) ? `<button type="button" class="btn btn-sm btn-ghost" data-invoices-toggle="${escAttr(wid)}"><i class="fa-solid fa-receipt"></i> Invoices</button>` : ""}
       </div>
       <div id="qr-${escAttr(wid)}" style="display:none;margin-top:0.5rem;text-align:center;padding:0.5rem;background:color-mix(in srgb,var(--surface-2)40%,transparent);border-radius:var(--r-sm)"></div>
+      <div id="inv-${escAttr(wid)}" style="display:none;margin-top:0.5rem;padding:0.5rem;background:color-mix(in srgb,var(--surface-2)40%,transparent);border-radius:var(--r-sm);max-height:240px;overflow-y:auto"></div>
       <div class="drawer-section mt-2" style="padding:0.55rem;border:1px dashed color-mix(in srgb,var(--amber)40%,transparent);border-radius:var(--r-sm)">
         <div class="mono" style="font-size:0.68rem;color:var(--amber)">Safety · read-only invoice key path · bulk send blocked · no admin macaroons in HQ</div>
       </div>
@@ -2747,6 +2749,50 @@
           const lnurl = nodeUrl.replace(/\/$/, "") + "/lnurl/pay/" + encodeURIComponent(wid);
           pane.innerHTML = '<p class="mono" style="font-size:0.65rem;color:var(--ink-dim);margin-bottom:0.25rem">LNURL-pay QR</p>' + qrImgHTML(lnurl, 140);
           pane.style.display = "";
+        });
+      });
+      body.querySelectorAll("[data-invoices-toggle]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const wid = btn.getAttribute("data-invoices-toggle");
+          const pane = document.getElementById("inv-" + wid);
+          if (!pane) return;
+          if (pane.style.display !== "none") { pane.style.display = "none"; return; }
+          pane.innerHTML = '<div class="loading-state"><div class="spinner"></div>Loading invoices…</div>';
+          pane.style.display = "";
+          const v = state.vault || {};
+          const proxyUrl = (v.proxyUrl || v.lnbitsProxyUrl || (state.feeds && state.feeds.lnbitsProxyUrl) || "").replace(/\/$/, "");
+          const proxyToken = v.proxyToken || "";
+          const nodeUrl = (v.nodeUrl || v.lnbitsUrl || "").replace(/\/$/, "");
+          const apiKey = (v.keys || v.wallets || {})[wid];
+          if (!proxyUrl || !apiKey) {
+            pane.innerHTML = '<p class="empty-state">Configure proxy URL + wallet key in Vault</p>';
+            return;
+          }
+          try {
+            const url = proxyUrl + "/invoices/" + encodeURIComponent(wid);
+            const headers = { "X-Api-Key": apiKey };
+            if (proxyToken) headers["Authorization"] = "Bearer " + proxyToken;
+            if (nodeUrl) headers["X-LNbits-Base"] = nodeUrl;
+            const r = await fetch(url, { headers, timeout: 10000 });
+            if (!r.ok) { pane.innerHTML = '<p class="empty-state">Failed: HTTP ' + r.status + '</p>'; return; }
+            const j = await r.json();
+            if (!j.ok || !j.invoices || !j.invoices.length) {
+              pane.innerHTML = '<p class="empty-state">No invoices found</p>';
+              return;
+            }
+            pane.innerHTML = '<div class="mono" style="font-size:0.65rem;color:var(--ink-faint);margin-bottom:0.35rem">Last ' + j.invoices.length + ' invoices</div>' +
+              j.invoices.map(function(inv) {
+                const amt = inv.amount != null ? Math.floor(Number(inv.amount) / 1000) + " sats" : "—";
+                const status = inv.paid ? "paid" : "pending";
+                const date = inv.time ? new Date(Number(inv.time) * 1000).toLocaleDateString() : "";
+                return '<div style="display:flex;justify-content:space-between;padding:0.2rem 0;border-bottom:1px solid var(--line);font-size:0.72rem">' +
+                  '<span class="mono">' + date + '</span>' +
+                  '<span class="mono" style="color:var(--ink-dim)">' + amt + '</span>' +
+                  '<span class="status-pill ' + (status === "paid" ? "green" : "amber") + '" style="font-size:0.55rem">' + status + '</span></div>';
+              }).join("");
+          } catch (e) {
+            pane.innerHTML = '<p class="empty-state">Error: ' + e.message + '</p>';
+          }
         });
       });
       body.querySelectorAll("[data-refresh-wallet]").forEach((btn) => {
