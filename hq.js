@@ -1140,7 +1140,8 @@
         <span class="depth-gauge" data-tip="Envelope depth ${depth}/100 — how much of gab.product-metrics.v1 this product fills">${gaugeHTML(depth, depthColor(depth), "depth")}</span>
         <span class="chip">${esc(p.category || "—")}</span>
         ${s.ms != null ? `<span class="chip mono">${esc(fmtMs(s.ms))}</span>` : ""}
-        ${data.raw && data.raw.demo ? `<span class="chip">demo</span>` : `<span class="chip" style="border-color:color-mix(in srgb,var(--green)40%,transparent)">live</span>`}
+        ${m && m.path && /^https?:\/\//i.test(m.path) ? `<span class="status-pill green pulse" style="font-size:0.6rem;padding:0.15rem 0.4rem">live API</span>` : `<span class="chip">static</span>`}
+        ${data.raw && data.raw.demo ? `<span class="chip">demo</span>` : ""}
         ${(data.funnels || []).length ? `<span class="chip">${data.funnels.length} funnel</span>` : ""}
         ${(data.series || []).length ? `<span class="chip">${data.series.length} series</span>` : ""}
       </div>
@@ -1149,6 +1150,11 @@
         <span class="ln-badge" style="margin-left:auto;font-size:0.58rem">LNbits</span>
       </div>
       <div class="card-share-filament" style="height:3px;border-radius:99px;margin:0.35rem 0 0.55rem;background:linear-gradient(90deg,${escAttr(color)} ${_share}%, color-mix(in srgb, var(--surface-2) 80%, transparent) 0)"></div>
+      ${p.id === "satohash" && m && m.ok && /^https?:\/\//i.test(m.path) ? `<div class="card-hero-kpi" style="display:flex;align-items:center;gap:0.6rem;margin:0.35rem 0 0.4rem;padding:0.3rem 0.5rem;background:color-mix(in srgb,var(--surface-2)50%,transparent);border-radius:var(--r-sm)">
+        <span style="font-family:var(--font-display);font-size:1.2rem;font-weight:800;color:${escAttr(color)}">${esc(fmtNum(data.kpis && data.kpis.find(k => k.key === 'stamps_total') && data.kpis.find(k => k.key === 'stamps_total').value))}</span>
+        <span style="font-size:0.65rem;color:var(--ink-dim)"><strong>stamps total</strong> · ${data.kpis && data.kpis.find(k => k.key === 'stamps_24h') ? esc(fmtNum(data.kpis.find(k => k.key === 'stamps_24h').value)) + " today" : ""}</span>
+        <span class="ln-badge" style="margin-left:auto">⚡ live</span>
+      </div>` : ""}
       <div class="card-kpis" style="grid-template-columns:repeat(${Math.min(3, Math.max(2, kpis.length))},1fr)">${kpiHtml}</div>
       ${sparks ? `<div class="card-sparks">${sparks}</div>` : ""}
       ${deps.length ? `<div class="card-deps">${deps.slice(0, 4).map((d) => statusPill(d.status, d.id)).join("")}</div>` : ""}
