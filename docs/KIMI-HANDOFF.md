@@ -13,7 +13,7 @@
 
 **Still to do:** Cam re-adds Vault keys on prod if browser data was cleared · product live metrics beyond satohash · CF Web Analytics beacons per ANALYTICS-PLAN · Grok: do NOT touch gate.js or the design system without reading docs/AGENT-GUARDRAILS.md.
 
-**Next for Grok:** Read docs/AGENT-GUARDRAILS.md + DESIGN-CONTEXT.md + schemas/design-tokens.json BEFORE any HQ UI work. Additive changes only. Login smoke test mandatory after gate-adjacent edits. Version auto-stamp means just bump `package.json version` and run `npm run build`.
+**Next for Grok:** Read docs/AGENT-GUARDRAILS.md + DESIGN-CONTEXT.md + schemas/design-tokens.json BEFORE any HQ UI work. Additive changes only. Login smoke test mandatory after gate-adjacent edits. Version auto-stamp means just bump `package.json version` and run `npm run build`. **CRITICAL: Every repo needs ref/GROK-BOOT.md — runs script/install-grok-boot.sh in each M3 repo. Then add Umami tracking script + /metrics.json per docs/UMAMI-DEPLOYMENT.md and ALL-SITE-METRICS.md.**
 
 ---
 
@@ -31,7 +31,7 @@
 
 **Still to do:** Cam re-adds Vault keys on prod if browser data was cleared · product live metrics beyond satohash · CF Web Analytics beacons per ANALYTICS-PLAN · Grok: do NOT touch gate.js or the design system without reading docs/AGENT-GUARDRAILS.md.
 
-**Next for Grok:** Read docs/AGENT-GUARDRAILS.md + DESIGN-CONTEXT.md + schemas/design-tokens.json BEFORE any HQ UI work. Additive changes only. Login smoke test mandatory after gate-adjacent edits.
+**Next for Grok:** Read docs/AGENT-GUARDRAILS.md + DESIGN-CONTEXT.md + schemas/design-tokens.json BEFORE any HQ UI work. Additive changes only. Login smoke test mandatory after gate-adjacent edits. **CRITICAL: ref/GROK-BOOT.md + Umami tracking + /metrics.json — see docs/UMAMI-DEPLOYMENT.md.**
 
 ---
 
