@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-22T08:15:01Z",
+ "updatedAt": "2026-07-22T08:16:02Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -39,7 +39,7 @@
     "detail": "Up 2 days (healthy)"
    }
   ],
-  "uptimeSec": 465501
+  "uptimeSec": 465561
  },
  "bitcoin": {
   "ok": true,
@@ -282,6 +282,10 @@
     {
      "t": "2026-07-22T08:15:01Z",
      "v": 0
+    },
+    {
+     "t": "2026-07-22T08:16:02Z",
+     "v": 0
     }
    ]
   },
@@ -490,6 +494,10 @@
     {
      "t": "2026-07-22T08:15:01Z",
      "v": 0
+    },
+    {
+     "t": "2026-07-22T08:16:02Z",
+     "v": 0
     }
    ]
   },
@@ -638,6 +646,10 @@
     {
      "t": "2026-07-22T08:15:01Z",
      "v": 0.06
+    },
+    {
+     "t": "2026-07-22T08:16:02Z",
+     "v": 0.23
     }
    ]
   },
@@ -786,6 +798,10 @@
     {
      "t": "2026-07-22T08:15:01Z",
      "v": 3.0
+    },
+    {
+     "t": "2026-07-22T08:16:02Z",
+     "v": 3.1
     }
    ]
   },
@@ -934,6 +950,10 @@
     {
      "t": "2026-07-22T08:15:01Z",
      "v": 959111
+    },
+    {
+     "t": "2026-07-22T08:16:02Z",
+     "v": 959111
     }
    ]
   }
@@ -968,14 +988,14 @@
   },
   "memory": {
    "totalGB": 7.8,
-   "usedGB": 3.0,
-   "freeGB": 2.5,
+   "usedGB": 3.1,
+   "freeGB": 2.4,
    "availableGB": 4.7
   },
   "cpu": {
-   "loadAvg1m": 0.06,
-   "loadAvg5m": 0.18,
-   "loadAvg15m": 0.17,
+   "loadAvg1m": 0.23,
+   "loadAvg5m": 0.22,
+   "loadAvg15m": 0.18,
    "uptimeDays": 5.4
   },
   "docker": {
@@ -986,7 +1006,7 @@
   },
   "breakdownGB": {
    "MASTER-BRAIN_vault": 0.899,
-   "Hermes_skills_config": 0.628,
+   "Hermes_skills_config": 0.629,
    "satohash_repo": 0.021,
    "HQ_repo": 0.013,
    "LND_data": 0.34,
@@ -1000,10 +1020,10 @@
   "diskUsedGB": 28,
   "diskFreeGB": 359,
   "memTotalGB": 7.8,
-  "memUsedGB": 3.0,
-  "load1": 0.06,
-  "load5": 0.18,
-  "load15": 0.17,
+  "memUsedGB": 3.1,
+  "load1": 0.23,
+  "load5": 0.22,
+  "load15": 0.18,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
