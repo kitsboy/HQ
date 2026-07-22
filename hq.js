@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.15.3 — money + depth pack
+ * Give A Bit HQ v3.16.0 — money + depth pack
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
@@ -7,8 +7,31 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.15.3";
+  const HQ_VERSION = "3.16.0";
   const BUILD_TS = new Date().toISOString();
+
+  /** Paint the same version on every chrome surface (header sub + footer). */
+  function paintVersion() {
+    const ver = document.getElementById("hq-version");
+    if (ver) ver.textContent = `v${HQ_VERSION}`;
+    const sub = document.getElementById("hq-sub");
+    if (sub) sub.textContent = `Ops glass · money pack v${HQ_VERSION}`;
+    const b = document.getElementById("hq-build");
+    if (b) b.textContent = BUILD_TS.slice(0, 16).replace("T", " ") + "Z";
+    const meta = document.querySelector('meta[name="hq-version"]');
+    if (meta) meta.setAttribute("content", HQ_VERSION);
+    if (document.title && /Give A Bit HQ/.test(document.title)) {
+      document.title = `Give A Bit HQ v${HQ_VERSION}`;
+    }
+    try { localStorage.setItem("hq_deployed_version", HQ_VERSION); } catch (_) {}
+  }
+  // Immediate paint so header/footer never sit on stale HTML while data loads
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", paintVersion);
+  } else {
+    paintVersion();
+  }
+
   const VAULT_KEY = "sovereign_deck_vault_v1";
   const THEME_KEY = "hq_theme_v3";
   const TAB_KEY = "hq_tab_v3";
@@ -775,13 +798,10 @@
 
     state.loading = false;
     if (!state.selectedMetricsId) state.selectedMetricsId = state.projects[0] ? state.projects[0].id : "thor-node";
+    paintVersion();
     renderChrome();
     renderTicker();
     setTab(state.tab);
-    const ver = document.getElementById("hq-version");
-    if (ver) ver.textContent = `v${HQ_VERSION}`;
-    const b = document.getElementById("hq-build");
-    if (b) b.textContent = BUILD_TS.slice(0, 16).replace("T", " ") + "Z";
   }
 
   /* ── Live pulse: light refresh of status + thor + live metric candidates ── */

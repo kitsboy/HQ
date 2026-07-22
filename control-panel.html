@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  Give A Bit HQ v3.15.3 — money + depth pack.
+  Give A Bit HQ v3.16.0 — money + depth pack.
   Tabs · metrics envelopes · project MD packs · LNbits money on cards · mega drawer.
   SECRETS: NEVER in this file. Vault localStorage key sovereign_deck_vault_v1 only.
   Assets: hq.css · hq.js
@@ -11,11 +11,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0c0618">
+<meta name="hq-version" content="3.16.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="description" content="Give A Bit HQ — suite ops glass for Bitcoin products">
-<title>Give A Bit HQ v3.15.3</title>
+<title>Give A Bit HQ v3.16.0</title>
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -28,9 +29,37 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
-<link rel="stylesheet" href="hq.css?v=2026-07-22-m">
+<link rel="stylesheet" href="hq.css?v=3.16.0">
 <script>
-  if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js?v=2026-07-22-m").catch(function(){});
+  /* Kill stale service workers + caches so version strings cannot mix across deploys */
+  (function () {
+    var META = document.querySelector('meta[name="hq-version"]');
+    var WANT = META && META.content;
+    var KEY = "hq_deployed_version";
+    try {
+      var had = localStorage.getItem(KEY);
+      if (WANT && had && had !== WANT && "serviceWorker" in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function (regs) {
+          return Promise.all(regs.map(function (r) { return r.unregister(); }));
+        }).then(function () {
+          return caches.keys();
+        }).then(function (keys) {
+          return Promise.all(keys.map(function (k) { return caches.delete(k); }));
+        }).then(function () {
+          localStorage.setItem(KEY, WANT);
+          if (!sessionStorage.getItem("hq_ver_reloaded")) {
+            sessionStorage.setItem("hq_ver_reloaded", "1");
+            location.reload(true);
+          }
+        }).catch(function () {});
+      } else if (WANT) {
+        localStorage.setItem(KEY, WANT);
+      }
+    } catch (e) {}
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js?v=3.16.0").catch(function () {});
+    }
+  })();
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js" defer></script>
 </head>
@@ -42,7 +71,7 @@
         <div class="brand-mark" aria-hidden="true">G</div>
         <div class="brand-text">
           <h1>Give A Bit HQ</h1>
-          <p class="sub">Ops glass · money pack v3.15.3</p>
+          <p class="sub" id="hq-sub">Ops glass · money pack v3.16.0</p>
         </div>
       </div>
       <div class="topbar-meta">
@@ -104,7 +133,7 @@
 
   <footer class="site-footer">
     <div>
-      <strong id="hq-version">v3.15.3</strong> · build <span id="hq-build">—</span> · <span id="hq-origin"></span>
+      <strong id="hq-version">v3.16.0</strong> · build <span id="hq-build">—</span> · <span id="hq-origin"></span>
       <div style="margin-top:0.25rem">Safe Harbour · Give A Bit family · Bitcoin sovereignty first</div>
     </div>
     <div class="footer-links" id="footer-links"></div>
@@ -137,6 +166,6 @@
 <script>
   document.getElementById("hq-origin").textContent = location.origin || "file";
 </script>
-<script src="hq.js?v=2026-07-22-m" defer></script>
+<script src="hq.js?v=3.16.0" defer></script>
 </body>
 </html>

@@ -5,19 +5,24 @@
   Permissions-Policy: interest-cohort=()
 
 /
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: no-store, no-cache, must-revalidate
+  CDN-Cache-Control: no-store
 
 /index.html
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: no-store, no-cache, must-revalidate
+  CDN-Cache-Control: no-store
 
 /hq.js
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: no-store, no-cache, must-revalidate
+  CDN-Cache-Control: no-store
 
 /sw.js
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: no-store, no-cache, must-revalidate
+  CDN-Cache-Control: no-store
 
 /hq.css
-  Cache-Control: no-cache, must-revalidate
+  Cache-Control: no-store, no-cache, must-revalidate
+  CDN-Cache-Control: no-store
 
 /projects.json
   Cache-Control: public, max-age=60
