@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-22T08:09:20Z",
+ "updatedAt": "2026-07-22T08:15:01Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -21,7 +21,7 @@
    {
     "id": "umami",
     "status": "green",
-    "detail": "Up 11 hours"
+    "detail": "Up 12 hours"
    },
    {
     "id": "satohash-redis-1",
@@ -39,7 +39,7 @@
     "detail": "Up 2 days (healthy)"
    }
   ],
-  "uptimeSec": 465160
+  "uptimeSec": 465501
  },
  "bitcoin": {
   "ok": true,
@@ -278,6 +278,10 @@
     {
      "t": "2026-07-22T08:09:20Z",
      "v": 0
+    },
+    {
+     "t": "2026-07-22T08:15:01Z",
+     "v": 0
     }
    ]
   },
@@ -482,6 +486,10 @@
     {
      "t": "2026-07-22T08:09:20Z",
      "v": 0
+    },
+    {
+     "t": "2026-07-22T08:15:01Z",
+     "v": 0
     }
    ]
   },
@@ -626,6 +634,10 @@
     {
      "t": "2026-07-22T08:09:20Z",
      "v": 0.13
+    },
+    {
+     "t": "2026-07-22T08:15:01Z",
+     "v": 0.06
     }
    ]
   },
@@ -769,6 +781,10 @@
     },
     {
      "t": "2026-07-22T08:09:20Z",
+     "v": 3.0
+    },
+    {
+     "t": "2026-07-22T08:15:01Z",
      "v": 3.0
     }
    ]
@@ -914,6 +930,10 @@
     {
      "t": "2026-07-22T08:09:20Z",
      "v": 959111
+    },
+    {
+     "t": "2026-07-22T08:15:01Z",
+     "v": 959111
     }
    ]
   }
@@ -953,9 +973,9 @@
    "availableGB": 4.7
   },
   "cpu": {
-   "loadAvg1m": 0.13,
-   "loadAvg5m": 0.24,
-   "loadAvg15m": 0.18,
+   "loadAvg1m": 0.06,
+   "loadAvg5m": 0.18,
+   "loadAvg15m": 0.17,
    "uptimeDays": 5.4
   },
   "docker": {
@@ -966,7 +986,7 @@
   },
   "breakdownGB": {
    "MASTER-BRAIN_vault": 0.899,
-   "Hermes_skills_config": 0.629,
+   "Hermes_skills_config": 0.628,
    "satohash_repo": 0.021,
    "HQ_repo": 0.013,
    "LND_data": 0.34,
@@ -981,9 +1001,9 @@
   "diskFreeGB": 359,
   "memTotalGB": 7.8,
   "memUsedGB": 3.0,
-  "load1": 0.13,
-  "load5": 0.24,
-  "load15": 0.18,
+  "load1": 0.06,
+  "load5": 0.18,
+  "load15": 0.17,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
