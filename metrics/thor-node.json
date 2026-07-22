@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-22T09:15:01Z",
+ "updatedAt": "2026-07-22T09:16:03Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -39,7 +39,7 @@
     "detail": "Up 2 days (healthy)"
    }
   ],
-  "uptimeSec": 469101
+  "uptimeSec": 469163
  },
  "bitcoin": {
   "ok": true,
@@ -314,6 +314,10 @@
     {
      "t": "2026-07-22T09:15:01Z",
      "v": 0
+    },
+    {
+     "t": "2026-07-22T09:16:03Z",
+     "v": 0
     }
    ]
   },
@@ -554,6 +558,10 @@
     {
      "t": "2026-07-22T09:15:01Z",
      "v": 0
+    },
+    {
+     "t": "2026-07-22T09:16:03Z",
+     "v": 0
     }
    ]
   },
@@ -734,6 +742,10 @@
     {
      "t": "2026-07-22T09:15:01Z",
      "v": 0.09
+    },
+    {
+     "t": "2026-07-22T09:16:03Z",
+     "v": 0.18
     }
    ]
   },
@@ -914,6 +926,10 @@
     {
      "t": "2026-07-22T09:15:01Z",
      "v": 3.0
+    },
+    {
+     "t": "2026-07-22T09:16:03Z",
+     "v": 3.1
     }
    ]
   },
@@ -1094,6 +1110,10 @@
     {
      "t": "2026-07-22T09:15:01Z",
      "v": 959115
+    },
+    {
+     "t": "2026-07-22T09:16:03Z",
+     "v": 959115
     }
    ]
   }
@@ -1128,14 +1148,14 @@
   },
   "memory": {
    "totalGB": 7.8,
-   "usedGB": 3.0,
+   "usedGB": 3.1,
    "freeGB": 2.5,
    "availableGB": 4.7
   },
   "cpu": {
-   "loadAvg1m": 0.09,
-   "loadAvg5m": 0.1,
-   "loadAvg15m": 0.13,
+   "loadAvg1m": 0.18,
+   "loadAvg5m": 0.13,
+   "loadAvg15m": 0.14,
    "uptimeDays": 5.4
   },
   "docker": {
@@ -1146,7 +1166,7 @@
   },
   "breakdownGB": {
    "MASTER-BRAIN_vault": 0.899,
-   "Hermes_skills_config": 0.629,
+   "Hermes_skills_config": 0.63,
    "satohash_repo": 0.021,
    "HQ_repo": 0.013,
    "LND_data": 0.34,
@@ -1160,10 +1180,10 @@
   "diskUsedGB": 28,
   "diskFreeGB": 359,
   "memTotalGB": 7.8,
-  "memUsedGB": 3.0,
-  "load1": 0.09,
-  "load5": 0.1,
-  "load15": 0.13,
+  "memUsedGB": 3.1,
+  "load1": 0.18,
+  "load5": 0.13,
+  "load15": 0.14,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
