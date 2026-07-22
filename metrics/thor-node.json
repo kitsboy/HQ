@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-22T20:45:01Z",
+ "updatedAt": "2026-07-22T20:45:33Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -39,7 +39,7 @@
     "detail": "Up 3 days (healthy)"
    }
   ],
-  "uptimeSec": 510501
+  "uptimeSec": 510532
  },
  "bitcoin": {
   "ok": true,
@@ -464,7 +464,7 @@
      "v": 0
     },
     {
-     "t": "2026-07-22T20:45:01Z",
+     "t": "2026-07-22T20:45:33Z",
      "v": 0
     }
    ]
@@ -856,7 +856,7 @@
      "v": 0
     },
     {
-     "t": "2026-07-22T20:45:01Z",
+     "t": "2026-07-22T20:45:33Z",
      "v": 0
     }
    ]
@@ -1248,8 +1248,8 @@
      "v": 0.29
     },
     {
-     "t": "2026-07-22T20:45:01Z",
-     "v": 0.36
+     "t": "2026-07-22T20:45:33Z",
+     "v": 0.78
     }
    ]
   },
@@ -1640,7 +1640,7 @@
      "v": 3.1
     },
     {
-     "t": "2026-07-22T20:45:01Z",
+     "t": "2026-07-22T20:45:33Z",
      "v": 3.1
     }
    ]
@@ -2032,7 +2032,7 @@
      "v": 959173
     },
     {
-     "t": "2026-07-22T20:45:01Z",
+     "t": "2026-07-22T20:45:33Z",
      "v": 959175
     }
    ]
@@ -2070,12 +2070,12 @@
    "totalGB": 7.8,
    "usedGB": 3.1,
    "freeGB": 2.4,
-   "availableGB": 4.7
+   "availableGB": 4.6
   },
   "cpu": {
-   "loadAvg1m": 0.36,
-   "loadAvg5m": 0.21,
-   "loadAvg15m": 0.13,
+   "loadAvg1m": 0.78,
+   "loadAvg5m": 0.32,
+   "loadAvg15m": 0.16,
    "uptimeDays": 5.9
   },
   "docker": {
@@ -2086,9 +2086,9 @@
   },
   "breakdownGB": {
    "MASTER-BRAIN_vault": 0.899,
-   "Hermes_skills_config": 0.637,
+   "Hermes_skills_config": 0.638,
    "satohash_repo": 0.021,
-   "HQ_repo": 0.015,
+   "HQ_repo": 0.016,
    "LND_data": 0.341,
    "Docker_images": 3.911,
    "Docker_volumes": 0.452,
@@ -2101,9 +2101,9 @@
   "diskFreeGB": 359,
   "memTotalGB": 7.8,
   "memUsedGB": 3.1,
-  "load1": 0.36,
-  "load5": 0.21,
-  "load15": 0.13,
+  "load1": 0.78,
+  "load5": 0.32,
+  "load15": 0.16,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
@@ -2146,7 +2146,7 @@
    {
     "id": "HQ_repo",
     "label": "HQ repo",
-    "gb": 0.01
+    "gb": 0.02
    }
   ]
  }
