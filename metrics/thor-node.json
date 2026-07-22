@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-22T00:02:41.000Z",
+ "updatedAt": "2026-07-22T00:16:16.000Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -318,9 +318,9 @@
    "availableGB": 4.8
   },
   "cpu": {
-   "loadAvg1m": 0.24,
-   "loadAvg5m": 0.4,
-   "loadAvg15m": 0.38,
+   "loadAvg1m": 0.13,
+   "loadAvg5m": 0.18,
+   "loadAvg15m": 0.27,
    "uptimeDays": 5
   },
   "docker": {
