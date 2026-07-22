@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-22T12:30:53Z",
+ "updatedAt": "2026-07-22T12:45:02Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -39,13 +39,13 @@
     "detail": "Up 2 days (healthy)"
    }
   ],
-  "uptimeSec": 480853
+  "uptimeSec": 481701
  },
  "bitcoin": {
   "ok": true,
   "chain": "main",
-  "blocks": 959127,
-  "headers": 959127,
+  "blocks": 959129,
+  "headers": 959129,
   "verificationProgress": 1.0,
   "pruned": false,
   "sizeOnDiskGB": 0.34,
@@ -390,6 +390,10 @@
     {
      "t": "2026-07-22T12:30:53Z",
      "v": 0
+    },
+    {
+     "t": "2026-07-22T12:45:02Z",
+     "v": 0
     }
    ]
   },
@@ -706,6 +710,10 @@
     {
      "t": "2026-07-22T12:30:53Z",
      "v": 0
+    },
+    {
+     "t": "2026-07-22T12:45:02Z",
+     "v": 0
     }
    ]
   },
@@ -962,6 +970,10 @@
     {
      "t": "2026-07-22T12:30:53Z",
      "v": 0.67
+    },
+    {
+     "t": "2026-07-22T12:45:02Z",
+     "v": 0.19
     }
    ]
   },
@@ -1217,6 +1229,10 @@
     },
     {
      "t": "2026-07-22T12:30:53Z",
+     "v": 3.1
+    },
+    {
+     "t": "2026-07-22T12:45:02Z",
      "v": 3.1
     }
    ]
@@ -1474,6 +1490,10 @@
     {
      "t": "2026-07-22T12:30:53Z",
      "v": 959127
+    },
+    {
+     "t": "2026-07-22T12:45:02Z",
+     "v": 959129
     }
    ]
   }
@@ -1513,9 +1533,9 @@
    "availableGB": 4.7
   },
   "cpu": {
-   "loadAvg1m": 0.67,
-   "loadAvg5m": 0.37,
-   "loadAvg15m": 0.3,
+   "loadAvg1m": 0.19,
+   "loadAvg5m": 0.15,
+   "loadAvg15m": 0.19,
    "uptimeDays": 5.6
   },
   "docker": {
@@ -1526,7 +1546,7 @@
   },
   "breakdownGB": {
    "MASTER-BRAIN_vault": 0.899,
-   "Hermes_skills_config": 0.629,
+   "Hermes_skills_config": 0.628,
    "satohash_repo": 0.021,
    "HQ_repo": 0.014,
    "LND_data": 0.34,
@@ -1541,9 +1561,9 @@
   "diskFreeGB": 359,
   "memTotalGB": 7.8,
   "memUsedGB": 3.1,
-  "load1": 0.67,
-  "load5": 0.37,
-  "load15": 0.3,
+  "load1": 0.19,
+  "load5": 0.15,
+  "load15": 0.19,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
