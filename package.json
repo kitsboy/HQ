@@ -1,8 +1,8 @@
 {
   "name": "giveabit-hq",
   "private": true,
-  "version": "3.17.0",
-  "description": "Give A Bit HQ — docs/projects deploy fix, agent icons, full build pipeline",
+  "version": "3.18.0",
+  "description": "Give A Bit HQ — Umami tracking on HQ + analytics.giveabit.io",
   "scripts": {
     "stamp": "node scripts/stamp-version.mjs",
     "verify-version": "node scripts/stamp-version.mjs",

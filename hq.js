@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.17.0 — money + depth pack
+ * Give A Bit HQ v3.18.0 — money + depth pack
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
@@ -7,7 +7,7 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.17.0";
+  const HQ_VERSION = "3.18.0";
   const BUILD_TS = new Date().toISOString();
 
   /** Paint the same version on every chrome surface (header sub + footer). */
@@ -810,6 +810,7 @@
 
     await Promise.all([...metricsJobs, thorJob, priceJob, ...docJobs]);
     await refreshWallets();
+    await fetchUmamiStats();
     snapUptime();
 
     state.loading = false;
@@ -817,6 +818,7 @@
     paintVersion();
     renderChrome();
     renderTicker();
+    updateUmamiChip();
     setTab(state.tab);
   }
 
@@ -833,16 +835,45 @@
   /* -- Umami analytics fetcher with cached auth token -- */
   let _umamiToken = null;
   let _umamiTokenExp = 0;
+  const UMAMI_DEFAULT_URL = "https://analytics.giveabit.io";
+
+  function umamiBaseUrl() {
+    const f = state.feeds || {};
+    return String(f.umamiUrl || UMAMI_DEFAULT_URL).replace(/\/$/, "");
+  }
+
+  function updateUmamiChip() {
+    const chip = document.getElementById("umami-status");
+    if (!chip) return;
+    const n = state.umamiSites || 0;
+    const withId = (state.projects || []).filter((p) => p.umamiId).length;
+    if (state.umamiOk) {
+      chip.textContent = `umami ${n}/${withId || n}`;
+      chip.className = "status-pill sky";
+      chip.setAttribute("data-tip", `Polling ${umamiBaseUrl()} · ${n} sites with stats · refreshes with live pulse`);
+    } else if (state.umamiTried) {
+      chip.textContent = "umami off";
+      chip.className = "status-pill amber";
+      chip.setAttribute("data-tip", `Umami login/stats failed via ${umamiBaseUrl()} · check CF worker + THOR :3002`);
+    } else {
+      chip.textContent = "umami —";
+      chip.className = "status-pill muted";
+    }
+  }
 
   async function umamiLogin() {
     if (_umamiToken && Date.now() < _umamiTokenExp) return _umamiToken;
     try {
       const f = state.feeds || {};
-      const url = f.umamiUrl || "http://127.0.0.1:3002";
+      const v = state.vault || {};
+      const url = umamiBaseUrl();
+      // Password: Vault first (rotated ops secret) → feeds → legacy default
+      const user = v.umamiUser || f.umamiUser || "admin";
+      const pass = v.umamiPass || f.umamiPass || "umami";
       const r = await fetch(url + "/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: f.umamiUser || "admin", password: f.umamiPass || "umami" }),
+        body: JSON.stringify({ username: user, password: pass }),
       });
       if (!r.ok) return null;
       const j = await r.json();
@@ -853,13 +884,20 @@
   }
 
   async function fetchUmamiStats() {
+    state.umamiTried = true;
     const token = await umamiLogin();
-    if (!token) return;
+    if (!token) {
+      state.umamiOk = false;
+      state.umamiSites = 0;
+      updateUmamiChip();
+      return;
+    }
     state.analytics = state.analytics || {};
-    const base = (state.feeds && state.feeds.umamiUrl) || "http://127.0.0.1:3002";
+    const base = umamiBaseUrl();
     const now = Date.now();
     const dayAgo = now - 86400000;
     const weekAgo = now - 604800000;
+    let okCount = 0;
     await Promise.all(state.projects.map(async (p) => {
       const wid = p.umamiId;
       if (!wid) return;
@@ -885,8 +923,12 @@
           visitorSeries: pvData ? (pvData.sessions || []).map(function(p) { return { t: p.x, v: p.y }; }) : [],
           updatedAt: new Date().toISOString(),
         };
+        okCount++;
       } catch { /* ignore one site failure */ }
     }));
+    state.umamiSites = okCount;
+    state.umamiOk = okCount > 0;
+    updateUmamiChip();
   }
 
   async function refreshLiveData() {
@@ -1659,7 +1701,7 @@
               }).join("")}</tbody>
             </table>
           </div>
-          <p class="mono mt-2" style="font-size:0.6rem;color:var(--ink-faint)">From Umami analytics on THOR · 7-day window · refreshes every 5 min</p>
+          <p class="mono mt-2" style="font-size:0.6rem;color:var(--ink-faint)">From Umami via ${esc(umamiBaseUrl())} · 7-day window · refreshes every 5 min · ${state.umamiOk ? (state.umamiSites || 0) + " sites polled" : "poll idle/failed"}</p>
         </div>
         <div class="analytics-panel panel span-12">
           <h3>Live data sources</h3>
@@ -1951,6 +1993,7 @@
         <p style="font-size:0.85rem;color:var(--ink-dim);margin:0.4rem 0">Every product may publish: health · kpis[] · series[] (15d points) · funnels[] · segments[] · offers[] · education[] · links[] · raw{}. THOR publishes bitcoin · lightning · host · storage · services · series. Optional: ecosystem-map.json, status.json sites+feeds, CoinGecko FX, LNbits balances via Vault proxy.</p>
         <div class="stack-chips">${fields.map((f) => `<span class="chip">${esc(f)}</span>`).join("")}
           <span class="chip">status.json</span><span class="chip">ecosystem-map</span><span class="chip">docs/projects/*</span>
+          <span class="chip" style="${state.umamiOk ? "border-color:var(--sky)" : ""}">Umami ${state.umamiOk ? (state.umamiSites || 0) + " sites · " + esc(umamiBaseUrl().replace(/^https?:\/\//, "")) : "—"}</span>
         </div>
       </div>
       <div class="coverage-grid">${cards}</div>
@@ -2145,8 +2188,20 @@
   function renderSystem() {
     const el = document.getElementById("view-system");
     if (!el) return;
+    const umamiNote = state.umamiOk
+      ? `<span class="status-pill sky">${esc(String(state.umamiSites || 0))} sites</span>`
+      : state.umamiTried
+        ? `<span class="status-pill amber">poll failed</span>`
+        : `<span class="status-pill muted">—</span>`;
     el.innerHTML = `
       <h2 class="section-title">System · THOR <span class="accent-rule"></span></h2>
+      <div class="panel" style="padding:0.75rem 1rem;margin-bottom:0.75rem">
+        <div class="flex items-center gap-2 flex-wrap">
+          <strong style="font-size:0.85rem">Umami</strong>
+          ${umamiNote}
+          <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">${esc(umamiBaseUrl())} · collector script.js · API stats every 5 min</span>
+        </div>
+      </div>
       <div class="panel" style="padding:1rem">${thorDashboardHTML()}</div>`;
   }
 
@@ -3200,7 +3255,12 @@
         <div class="field"><label>status.json URL</label><input id="vault-feed-status" value="${escAttr((v.feeds || {}).statusJsonUrl || "")}" placeholder="/status.json"/></div>
         <div class="field"><label>THOR node URL</label><input id="vault-feed-thor" value="${escAttr((v.feeds || {}).thorNodeUrl || "")}" placeholder="/metrics/thor-node.json"/></div>
         <div class="field"><label>Satohash metrics URL</label><input id="vault-feed-sato" value="${escAttr((v.feeds || {}).satohashMetricsUrl || "")}" placeholder="https://api.satohash.io/metrics.json"/></div>
-        <div class="field"><label>CoinGecko price URL</label><input id="vault-feed-fx" value="${escAttr((v.feeds || {}).fxUrl || "")}" placeholder="https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"/></div>`,
+        <div class="field"><label>CoinGecko price URL</label><input id="vault-feed-fx" value="${escAttr((v.feeds || {}).fxUrl || "")}" placeholder="https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"/></div>
+        <h3 class="display" style="font-size:0.95rem;margin:1rem 0 0.5rem">Umami (suite analytics)</h3>
+        <p style="font-size:0.75rem;color:var(--ink-faint);margin:0 0 0.5rem">Poll API via <span class="mono">analytics.giveabit.io</span>. Password never in git — paste after ops rotate.</p>
+        <div class="field"><label>Umami base URL</label><input id="vault-umami-url" value="${escAttr(v.umamiUrl || (v.feeds || {}).umamiUrl || "https://analytics.giveabit.io")}"/></div>
+        <div class="field"><label>Umami user</label><input id="vault-umami-user" value="${escAttr(v.umamiUser || "admin")}" autocomplete="off"/></div>
+        <div class="field"><label>Umami password</label><input id="vault-umami-pass" type="password" value="${escAttr(v.umamiPass || "")}" autocomplete="off" placeholder="rotated ops password"/></div>`,
       github: `
         <p style="font-size:0.8rem;color:var(--ink-faint)">Optional — used for future save-to-git of edited docs. Fine-grained PAT, contents:write on kitsboy/HQ only. Never leaves this browser.</p>
         <div class="field"><label>GitHub PAT</label><input id="vault-gh-pat" type="password" value="${escAttr(v.ghPat || "")}" autocomplete="off" placeholder="github_pat_…"/></div>
@@ -3261,6 +3321,12 @@
       const el = document.getElementById(id);
       if (el) { const val = el.value.trim(); if (val) feeds[k] = val; else delete feeds[k]; }
     });
+    const umamiUrlEl = document.getElementById("vault-umami-url");
+    const umamiUserEl = document.getElementById("vault-umami-user");
+    const umamiPassEl = document.getElementById("vault-umami-pass");
+    if (umamiUrlEl && umamiUrlEl.value.trim()) {
+      feeds.umamiUrl = umamiUrlEl.value.trim().replace(/\/$/, "");
+    }
     saveVault({
       ...v,
       keys,
@@ -3272,14 +3338,21 @@
       ghRepo: document.getElementById("vault-gh-repo")?.value.trim() || (v.ghRepo || ""),
       ghBranch: document.getElementById("vault-gh-branch")?.value.trim() || (v.ghBranch || ""),
       notes: document.getElementById("vault-notes")?.value ?? (v.notes || ""),
+      umamiUrl: umamiUrlEl ? umamiUrlEl.value.trim().replace(/\/$/, "") : (v.umamiUrl || ""),
+      umamiUser: umamiUserEl ? umamiUserEl.value.trim() : (v.umamiUser || "admin"),
+      umamiPass: umamiPassEl ? umamiPassEl.value : (v.umamiPass || ""),
       feeds,
     });
+    // clear umami token so next poll re-auths with new creds
+    _umamiToken = null;
+    _umamiTokenExp = 0;
     modal.classList.remove("open");
     refreshWallets().then(() => {
       renderPortfolioStrip();
       updateVaultChip();
       if (state.tab === "wallets") renderWallets();
     });
+    fetchUmamiStats().then(() => updateUmamiChip());
   }
 
   /* ═══════════════ TOOLTIPS ═══════════════ */

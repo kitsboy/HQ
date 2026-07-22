@@ -27,7 +27,7 @@
     "thorNodeFallback": "https://raw.githubusercontent.com/kitsboy/HQ/main/metrics/thor-node.json",
     "metricsBase": "/metrics",
     "lnbitsProxyUrl": "https://giveabit-lnbits-proxy.kitsboy.workers.dev",
-    "umamiUrl": "http://127.0.0.1:3002"
+    "umamiUrl": "https://analytics.giveabit.io"
   },
   "projects": [
     {

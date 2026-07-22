@@ -1,8 +1,8 @@
 {
   "umami": {
-    "url": "http://127.0.0.1:3002",
+    "url": "https://analytics.giveabit.io",
     "username": "admin",
-    "password": "umami",
+    "password": "(rotated — set in HQ Vault umamiPass; THOR secrets/umami-admin.txt)",
     "websites": {
       "giveabit": "5f12ff2d-f1c5-4eb3-be57-43fe317ee2d2",
       "satohash": "720524e7-b747-4f95-8ce6-1a20fd4a599f",

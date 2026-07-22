@@ -1,6 +1,6 @@
 # HQ SOURCE OF TRUTH
 
-_Updated: 2026-07-22 — app v3.17.0 (stamp-version)
+_Updated: 2026-07-22 — app v3.18.0 (stamp-version)
 
 ## Live
 
@@ -10,7 +10,7 @@ _Updated: 2026-07-22 — app v3.17.0 (stamp-version)
 | Pages preview | https://giveabit-hq.pages.dev |
 | GitHub | https://github.com/kitsboy/HQ |
 | CF Pages project | `giveabit-hq` (account Kitsboy) |
-| App version | **v3.17.0** (`npm run stamp` from package.json) |
+| App version | **v3.18.0** (`npm run stamp` from package.json) |
 | LNbits proxy Worker | `giveabit-lnbits-proxy` · https://giveabit-lnbits-proxy.kitsboy.workers.dev |
 | LNbits UI (login) | **http://vmi3446772.tailb672ac.ts.net:5102** (preferred) · **http://api.satohash.io:5102** |
 | LNbits admin user | `admin` (super_user) — password reset 2026-07-22; **not** in git |
@@ -23,13 +23,13 @@ _Updated: 2026-07-22 — app v3.17.0 (stamp-version)
 
 | What | Detail |
 |------|--------|
-| Engine | Umami CE self-hosted at `http://127.0.0.1:3002` |
+| Engine | Umami CE on THOR; public collector `https://analytics.giveabit.io` (CF Worker) |
 | Database | Shares `lnbits-postgres` (Postgres 16) — < 200MB RAM |
 | Sites | All 9 products + HQ registered |
-| HQ integration | `fetchUmamiStats()` polls every 5 min → visitors/pageviews/bounce on card chips + Analytics tab |
-| Tracking script | Each site needs `<script defer src="http://HOST:3002/script.js" data-website-id="ID"></script>` |
-| Proxy needed | localhost:3002 — needs Caddy/CF tunnel for live sites to send data |
-| Details | `docs/UMAMI-SETUP.md` |
+| HQ integration | `fetchUmamiStats()` polls `feeds.umamiUrl` every 5 min → visitors/pageviews/bounce on card chips + Analytics tab |
+| Tracking script | `<script defer src="https://analytics.giveabit.io/script.js" data-website-id="ID"></script>` |
+| Admin UI | THOR localhost/Tailscale `:3002` (not public) |
+| Details | `docs/UMAMI-SETUP.md` · `docs/UMAMI-DEPLOYMENT.md` |
 
 ## Login
 
