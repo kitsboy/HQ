@@ -1,8 +1,8 @@
 {
   "name": "giveabit-hq",
   "private": true,
-  "version": "3.18.1",
-  "description": "Give A Bit HQ — official brand logo + data honesty pass",
+  "version": "3.19.0",
+  "description": "Give A Bit HQ — metrics age honesty + porcelain logo + PWA icons",
   "scripts": {
     "stamp": "node scripts/stamp-version.mjs",
     "verify-version": "node scripts/stamp-version.mjs",

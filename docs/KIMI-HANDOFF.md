@@ -1,3 +1,28 @@
+### 2026-07-22 — Grok · HQ v3.16 → v3.19.0 (Vault keys + metrics age honesty + PWA)
+
+**What shipped (M3 → ready for parent push):**
+- **v3.16–v3.18.x** (prior): brand logo assets, data honesty pass, Umami/CF analytics polish, Vault key path for LNbits money
+- **v3.19.0**: Live badge honesty — product cards / list / matrix / Analytics show metrics age chips (`live 2m` · `stale 4.8h` · `static …`) from envelope `updatedAt` (fallback fetch time). Green &lt;30m · amber 30m–6h · red older/missing. Tooltip shows live URL vs `/metrics/*.json`
+- Stale metrics panel on **System** + **Analytics** (products with `updatedAt` &gt; 6h or missing)
+- Porcelain theme: brand-logo drop-shadow + warm ring so black plate still reads on light bg (CSS only)
+- PWA `manifest.webmanifest` icons → `brand-mark.png` / `brand-logo.png` (build-public already copies both)
+
+**Ops notes (do not put secrets in git):**
+- **Umami admin password** — Vault / password manager / THOR secrets only. Never commit.
+- **LNbits UI**: preferred Tailscale `http://vmi3446772.tailb672ac.ts.net:5102` · public HTTP `http://api.satohash.io:5102` · HTTPS front **https://api.satohash.io:8443** (when TLS proxy is up)
+- **WALLETS_JSON** on LNbits proxy Worker — server-side invoice keys path (optional; browser Vault still works)
+- HQ Vault keys re-added by Cam this session for money surfaces
+
+**Open items:**
+- LN channels / node snapshot depth (true LND channel read into `thor-node.json`)
+- Seed / wallet seed handling — never in HQ; confirm backup location off-git
+- Firewall public **:5102** (prefer Tailscale + proxy only; harden once HTTPS :8443 stable)
+- Product live `/metrics.json` freshness for envelopes still sitting on static HQ files
+
+**Next for Kimi / THOR:** Confirm :8443 TLS path; optional firewall 5102; keep Umami + ref-puller crons green. Parent agent stamps/pushes v3.19.0 if not already.
+
+---
+
 ### 2026-07-21 — Kimi round 3 · HQ v3.5.0 → v3.15.0 (full suite metrics pipe + CF Analytics + tooltips)
 
 **What changed (THOR → `kitsboy/HQ` main):**

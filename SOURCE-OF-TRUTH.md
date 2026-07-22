@@ -1,6 +1,6 @@
 # HQ SOURCE OF TRUTH
 
-_Updated: 2026-07-22 — app v3.18.1 (stamp-version)
+_Updated: 2026-07-22 — app v3.19.0 (stamp-version)
 
 ## Live
 
@@ -10,9 +10,10 @@ _Updated: 2026-07-22 — app v3.18.1 (stamp-version)
 | Pages preview | https://giveabit-hq.pages.dev |
 | GitHub | https://github.com/kitsboy/HQ |
 | CF Pages project | `giveabit-hq` (account Kitsboy) |
-| App version | **v3.18.1** (`npm run stamp` from package.json) |
+| App version | **v3.19.0** (`npm run stamp` from package.json) |
 | LNbits proxy Worker | `giveabit-lnbits-proxy` · https://giveabit-lnbits-proxy.kitsboy.workers.dev |
 | LNbits UI (login) | **http://vmi3446772.tailb672ac.ts.net:5102** (preferred) · **http://api.satohash.io:5102** |
+| LNbits HTTPS front | **https://api.satohash.io:8443** (TLS proxy when up) |
 | LNbits admin user | `admin` (super_user) — password reset 2026-07-22; **not** in git |
 | LNbits upstream (for Worker) | `http://api.satohash.io:5102` |
 | Health (proxy) | https://giveabit-lnbits-proxy.kitsboy.workers.dev/health |
@@ -67,6 +68,9 @@ _Updated: 2026-07-22 — app v3.18.1 (stamp-version)
 ## Version history (recent)
 
 | Ver | What |
+|------|------|
+| **v3.19.0** | Metrics age honesty chips (live/stale/static) on cards·list·matrix; stale metrics panels on System + Analytics; porcelain brand-logo ring; PWA icons → brand-mark/logo |
+| **v3.18.1** | Official brand logo + data honesty pass |
 | **v3.13.0** | LNbits invoice history proxy + wallet transaction log in drawer |
 | **v3.14.0** | CF Web Analytics pipeline — GraphQL API queries 4 zones (giveabit, satohash, katoa, sherpacarta) every 30 min → Analytics tab with 7-day totals + daily bar sparklines. Token in `~/.hermes/cf-token.env` (gitignored). |
 | **v3.15.0** | Tooltips on every metric, chip, badge, filter, tab — hover to understand what each stat means |
@@ -144,12 +148,14 @@ Cards · List · Metrics · Analytics · Pipeline · Network · Matrix · Activi
 ## Known open items
 
 1. ~~Browser CORS for balances~~ **MITIGATED** via LNbits proxy (v2.7+)  
-2. Optional: server-side `WALLETS_JSON` + empty browser wallet fields  
-3. Harden LNbits `:5102` (firewall / Tunnel / HTTPS) — currently public HTTP  
-4. Nova: live `thor-node.json` cron from bitcoind/lnd (host fields currently enriched for System UI)  
-5. Cam: CF Access on `hq.giveabit.io` (optional)  
-6. Products: replace demo envelopes with live origin `/metrics.json` (satohash already live-capable)  
-7. Password gate from v2.x not re-wired in thin v3 shell (vault + optional CF Access)  
+2. Optional: server-side `WALLETS_JSON` on Worker + empty browser wallet fields (partially available)  
+3. Harden LNbits `:5102` firewall — prefer Tailscale + proxy; HTTPS front `:8443` when stable  
+4. LN channels: true LND channel snapshot into `thor-node.json` (not demo)  
+5. Seed / wallet seed — missing from ops inventory; never in HQ git  
+6. Nova: live `thor-node.json` cron from bitcoind/lnd (host fields currently enriched for System UI)  
+7. Cam: CF Access on `hq.giveabit.io` (optional)  
+8. Products: keep live origin `/metrics.json` fresh (age chips surface &gt;6h stale)  
+9. Password gate from v2.x not re-wired in thin v3 shell (vault + optional CF Access)  
 
 ## Security layers
 

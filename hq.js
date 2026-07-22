@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.18.1 — money + depth pack
+ * Give A Bit HQ v3.19.0 — money + depth pack
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
@@ -7,7 +7,7 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.18.1";
+  const HQ_VERSION = "3.19.0";
   const BUILD_TS = new Date().toISOString();
 
   /** Paint the same version on every chrome surface (header sub + footer). */
@@ -141,8 +141,9 @@
         headers: opts.headers || {},
       });
       clearTimeout(t);
+      const fetchedAt = new Date().toISOString();
       if (!res.ok) {
-        return { ok: false, data: null, error: `HTTP ${res.status}`, path: url, status: res.status };
+        return { ok: false, data: null, error: `HTTP ${res.status}`, path: url, status: res.status, fetchedAt };
       }
       const ct = (res.headers.get("content-type") || "").toLowerCase();
       // Markdown / text: never accept SPA HTML fallback (CF Pages returns 200 text/html for missing files)
@@ -159,20 +160,21 @@
             error: "SPA HTML fallback (file missing on edge — redeploy docs)",
             path: url,
             status: res.status,
+            fetchedAt,
           };
         }
-        return { ok: true, data: text, error: null, path: url, status: res.status };
+        return { ok: true, data: text, error: null, path: url, status: res.status, fetchedAt };
       }
       try {
-        return { ok: true, data: await res.json(), error: null, path: url, status: res.status };
+        return { ok: true, data: await res.json(), error: null, path: url, status: res.status, fetchedAt };
       } catch (e) {
-        return { ok: false, data: null, error: "JSON parse: " + e.message, path: url, status: res.status };
+        return { ok: false, data: null, error: "JSON parse: " + e.message, path: url, status: res.status, fetchedAt };
       }
     } catch (err) {
       return {
         ok: false, data: null,
         error: err.name === "AbortError" ? "timeout" : (err.message || String(err)),
-        path: url, status: null,
+        path: url, status: null, fetchedAt: new Date().toISOString(),
       };
     }
   }
@@ -225,6 +227,77 @@
       if (Number.isNaN(d.getTime())) return String(iso);
       return d.toLocaleString(undefined, { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
     } catch { return String(iso); }
+  }
+  /** Compact relative age for metrics chips: 2m · 4.8h · 1.2d */
+  function fmtAge(ms) {
+    if (ms == null || Number.isNaN(Number(ms)) || ms < 0) return "";
+    const m = Number(ms) / 60000;
+    if (m < 1) return "<1m";
+    if (m < 60) return Math.round(m) + "m";
+    if (m < 48 * 60) {
+      const h = m / 60;
+      return (Math.round(h * 10) / 10).toFixed(1).replace(/\.0$/, "") + "h";
+    }
+    const d = m / (60 * 24);
+    return (Math.round(d * 10) / 10).toFixed(1).replace(/\.0$/, "") + "d";
+  }
+  /**
+   * Metrics honesty chip: live Xm / stale Xh / static — color by age.
+   * green < 30m · amber 30m–6h · red/muted older or missing.
+   * Prefer envelope updatedAt; fall back to fetch time.
+   */
+  function metricsAgeInfo(m) {
+    const path = (m && m.path) || "";
+    const isLive = /^https?:\/\//i.test(path);
+    const isStatic = !isLive && !!path;
+    const updatedAt = m && m.ok && m.data && m.data.updatedAt;
+    const fetchedAt = m && m.fetchedAt;
+    const ts = updatedAt || fetchedAt || null;
+    let ageMs = null;
+    if (ts) {
+      const t = new Date(ts).getTime();
+      if (!Number.isNaN(t)) ageMs = Date.now() - t;
+    }
+    const ageStr = ageMs != null ? fmtAge(ageMs) : "";
+    let cls = "muted";
+    if (ageMs != null) {
+      if (ageMs < 30 * 60 * 1000) cls = "green";
+      else if (ageMs < 6 * 60 * 60 * 1000) cls = "amber";
+      else cls = "red";
+    }
+    let kind = "static";
+    if (!m || !m.ok) kind = "missing";
+    else if (ageMs != null && ageMs >= 6 * 60 * 60 * 1000) kind = "stale";
+    else if (isLive) kind = "live";
+    else kind = "static";
+
+    let label;
+    if (kind === "missing") label = "missing";
+    else if (kind === "stale") label = ageStr ? `stale ${ageStr}` : "stale";
+    else if (kind === "live") label = ageStr ? `live ${ageStr}` : "live";
+    else label = ageStr ? `static ${ageStr}` : "static";
+
+    const srcKind = isLive ? "live URL" : isStatic ? "static file" : "unknown";
+    const tip =
+      `Metrics age · ${srcKind}` +
+      (path ? ` · ${path}` : "") +
+      (updatedAt ? ` · envelope updatedAt ${updatedAt}` : fetchedAt ? ` · fetched ${fetchedAt}` : " · no timestamp") +
+      (ageStr ? ` · ${ageStr} ago` : "");
+    return { label, cls, kind, ageMs, ageStr, path, tip, isLive, isStatic };
+  }
+  function metricsAgeChip(m) {
+    const info = metricsAgeInfo(m);
+    const pulse = info.cls === "green" && info.kind === "live" ? " pulse" : "";
+    return `<span class="status-pill ${escAttr(info.cls)}${pulse}" style="font-size:0.58rem;padding:0.12rem 0.4rem;text-transform:none;letter-spacing:0.02em" data-tip="${escAttr(info.tip)}">${esc(info.label)}</span>`;
+  }
+  function staleMetricsRows(maxAgeMs) {
+    const limit = maxAgeMs != null ? maxAgeMs : 6 * 60 * 60 * 1000;
+    return (state.projects || []).map((p) => {
+      const m = state.metrics[p.id];
+      const info = metricsAgeInfo(m);
+      const stale = !m || !m.ok || info.ageMs == null || info.ageMs > limit;
+      return stale ? { p, m, info } : null;
+    }).filter(Boolean);
   }
   function healthClass(status) {
     const s = String(status || "unknown").toLowerCase();
@@ -1254,6 +1327,7 @@
           <div class="grow"><h3>${esc(p.name)}</h3><p class="tagline">${esc(p.tagline || "")}</p></div>
           ${statusPill(health)}
         </div>
+        <div class="card-meta-row">${metricsAgeChip(m)}</div>
         <div class="card-money-row">${balanceChipHTML(p, { total: portfolioTotals().sats })}</div>
         ${unavailableHTML("Metrics unavailable", m ? m.path : `/metrics/${p.id}.json`, m ? m.error : "")}
       </article>`;
@@ -1286,7 +1360,7 @@
         <span class="depth-gauge" data-tip="Envelope depth ${depth}/100 — how much of gab.product-metrics.v1 this product fills">${gaugeHTML(depth, depthColor(depth), "depth")}</span>
         <span class="chip" data-tip="Product category — determines color and section placement on the board">${esc(p.category || "—")}</span>
         ${s.ms != null ? `<span class="chip mono" data-tip="Response time for the last health check ping — lower is faster">${esc(fmtMs(s.ms))}</span>` : ""}
-        ${m && m.path && /^https?:\/\//i.test(m.path) ? `<span class="status-pill green pulse" style="font-size:0.6rem;padding:0.15rem 0.4rem" data-tip="HQ fetches this product's data live from its own server or CF Pages URL">live API</span>` : `<span class="chip" data-tip="Data comes from a static file on HQ — not live from the product site">static</span>`}
+        ${metricsAgeChip(m)}
         ${data.raw && data.raw.demo ? `<span class="chip" data-tip="This envelope contains demo/placeholder data — not real product metrics. Replaced when the product ships a live /metrics.json">demo</span>` : ""}
         ${(data.funnels || []).length ? `<span class="chip" data-tip="${data.funnels.length} conversion funnel(s) showing how users flow through stages (e.g. visit → create → fund)">${data.funnels.length} funnel</span>` : ""}
         ${(data.series || []).length ? `<span class="chip" data-tip="${data.series.length} time-series dataset(s) for sparklines and charts (e.g. daily visitors, sats over time)">${data.series.length} series</span>` : ""}
@@ -1335,6 +1409,7 @@
         <td><div class="name-cell"><div class="icon-badge" style="width:28px;height:28px;font-size:0.75rem;--badge-c:${escAttr(color)}"><i class="${escAttr(p.icon || "fa-solid fa-cube")}"></i></div>${esc(p.name)}</div></td>
         <td>${esc(p.category || "—")}</td>
         <td>${statusPill(health)}</td>
+        <td>${metricsAgeChip(m)}</td>
         <td>${balanceChipHTML(p, { total: portfolioTotals().sats })}</td>
         <td class="mono">${s.ms != null ? esc(fmtMs(s.ms)) : "—"}</td>
         <td><span class="depth-badge" style="--depth-c:${escAttr(depthColor(depth))}">${depth}</span></td>
@@ -1345,10 +1420,10 @@
     }).join("");
     el.innerHTML = `${toolbarHTML()}
       <div class="table-wrap"><table class="data">
-        <thead><tr><th>Project</th><th>Cat</th><th>Health</th><th>Balance</th><th>Latency</th><th>Depth</th><th>K/S/F</th><th>KPIs</th><th>URL</th></tr></thead>
+        <thead><tr><th>Project</th><th>Cat</th><th>Health</th><th>Age</th><th>Balance</th><th>Latency</th><th>Depth</th><th>K/S/F</th><th>KPIs</th><th>URL</th></tr></thead>
         <tbody>${rows}</tbody>
       </table></div>
-      <p class="mono mt-2" style="font-size:0.65rem;color:var(--ink-faint)">K/S/F = KPI count / series count / funnel count from live envelope</p>`;
+      <p class="mono mt-2" style="font-size:0.65rem;color:var(--ink-faint)">K/S/F = KPI count / series count / funnel count from live envelope · Age = metrics envelope honesty (live/stale/static)</p>`;
     bindToolbar(renderList);
     el.querySelectorAll("tbody tr").forEach((tr) => tr.addEventListener("click", () => openDrawer(tr.dataset.project)));
   }
@@ -1709,24 +1784,42 @@
             <table class="data" style="min-width:100%">
               <thead><tr><th>Product</th><th>Metrics source</th><th>Analytics</th><th>Status</th></tr></thead>
               <tbody>${state.projects.map((p) => {
-                const hasLive = p.metricsLiveCandidates && p.metricsLiveCandidates.length > 0;
                 const hasUmami = state.analytics && state.analytics[p.id];
                 const m = state.metrics[p.id];
-                const sourceType = hasLive ? 'live URL' : 'static file';
-                const sourcePath = hasLive ? (p.metricsLiveCandidates || [])[0] || '' : (p.metricsUrl || '');
-                const status = m && m.ok ? 'green' : 'amber';
-                const liveDot = m && m.path && /^https?:\/\//i.test(m.path);
+                const info = metricsAgeInfo(m);
+                const sourcePath = (m && m.path) || (p.metricsLiveCandidates && p.metricsLiveCandidates[0]) || p.metricsUrl || `/metrics/${p.id}.json`;
+                const status = m && m.ok ? (info.cls === "red" ? "amber" : "green") : "amber";
                 return `<tr style="border-bottom:1px solid var(--line)">
                   <td style="color:${escAttr(accentFor(p.id))}"><strong>${esc(p.name)}</strong></td>
-                  <td class="mono" style="font-size:0.7rem">${liveDot ? '<span class="status-pill green" style="font-size:0.55rem">live</span>' : '<span class="chip">static</span>'} ${esc(sourcePath.slice(0, 50))}</td>
+                  <td class="mono" style="font-size:0.7rem">${metricsAgeChip(m)} ${esc(String(sourcePath).slice(0, 50))}</td>
                   <td>${hasUmami ? `<span class="status-pill sky" style="font-size:0.55rem">${esc(fmtNum(hasUmami.visitors))} visitors</span>` : '<span class="chip">—</span>'}</td>
                   <td>${statusPill(status)}</td>
                 </tr>`;
               }).join("")}</tbody>
             </table>
           </div>
-          <p class="mono mt-2" style="font-size:0.6rem;color:var(--ink-faint)">CF Web Analytics via GraphQL API · refreshed every 30 min via THOR cron</p>
+          <p class="mono mt-2" style="font-size:0.6rem;color:var(--ink-faint)">Age chip: green &lt;30m · amber 30m–6h · red &gt;6h · source path live URL vs /metrics/*.json</p>
         </div>
+        ${(() => {
+          const stale = staleMetricsRows(6 * 60 * 60 * 1000);
+          return `<div class="analytics-panel panel span-12">
+            <h3>Stale metrics <span class="chip" style="font-size:0.6rem">&gt; 6h or missing</span></h3>
+            ${stale.length ? `<div class="table-wrap"><table class="data" style="min-width:100%">
+              <thead><tr><th>Product</th><th>Age</th><th>Source</th><th>updatedAt</th></tr></thead>
+              <tbody>${stale.map(({ p, m, info }) => {
+                const ua = m && m.ok && m.data && m.data.updatedAt ? m.data.updatedAt : "—";
+                return `<tr style="border-bottom:1px solid var(--line)">
+                  <td style="color:${escAttr(accentFor(p.id))}"><strong>${esc(p.name)}</strong></td>
+                  <td>${metricsAgeChip(m)}</td>
+                  <td class="mono" style="font-size:0.65rem">${esc((info.path || "—").slice(0, 64))}</td>
+                  <td class="mono" style="font-size:0.65rem">${esc(fmtTime(ua === "—" ? null : ua))}</td>
+                </tr>`;
+              }).join("")}</tbody>
+            </table></div>
+            <p class="mono mt-2" style="font-size:0.6rem;color:var(--ink-faint)">${stale.length} product(s) need a metrics refresh (envelope updatedAt &gt; 6h, missing, or unloadable)</p>`
+            : `<p class="mono" style="font-size:0.75rem;color:var(--ink-dim)">${statusPill("green", "all fresh")} Every product envelope is under 6h old.</p>`}
+          </div>`;
+        })()}
         ${(() => {
           const cf = state.cfAnalytics;
           if (!cf || !cf.zones) return '';
@@ -1791,7 +1884,7 @@
     const el = document.getElementById("view-matrix");
     if (!el) return;
     const sites = (state.status && state.status.sites) || {};
-    const cols = ["Health", "Balance", "HTTP", "ms", "Deploy", "Depth", "KPIs", "Series", "Funnel", "Seg", "Offers", "Doc", "Demo"];
+    const cols = ["Health", "Age", "Balance", "HTTP", "ms", "Deploy", "Depth", "KPIs", "Series", "Funnel", "Seg", "Offers", "Doc", "Demo"];
     const head = `<div class="matrix-cell head">Project</div>${cols.map((c) => `<div class="matrix-cell head">${esc(c)}</div>`).join("")}`;
     const rows = state.projects.map((p) => {
       const m = state.metrics[p.id];
@@ -1800,6 +1893,7 @@
       const depth = d ? depthScore(d, false) : 0;
       const cells = [
         statusPill(projectHealth(p)),
+        metricsAgeChip(m),
         balanceChipHTML(p, { total: portfolioTotals().sats }),
         s.status != null ? esc(String(s.status)) : "—",
         s.ms != null ? esc(fmtMs(s.ms)) : "—",
@@ -2193,6 +2287,19 @@
       : state.umamiTried
         ? `<span class="status-pill amber">poll failed</span>`
         : `<span class="status-pill muted">—</span>`;
+    const stale = staleMetricsRows(6 * 60 * 60 * 1000);
+    const stalePanel = `<div class="panel" style="padding:0.75rem 1rem;margin-bottom:0.75rem">
+        <div class="flex items-center gap-2 flex-wrap" style="margin-bottom:0.45rem">
+          <strong style="font-size:0.85rem">Stale metrics</strong>
+          ${stale.length
+            ? `<span class="status-pill amber">${stale.length} product${stale.length === 1 ? "" : "s"}</span>`
+            : statusPill("green", "all fresh")}
+          <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">envelope updatedAt &gt; 6h · or missing</span>
+        </div>
+        ${stale.length ? `<div class="flex flex-wrap gap-2">${stale.map(({ p, m, info }) =>
+          `<span class="chip" style="border-left:3px solid ${escAttr(accentFor(p.id))}" data-tip="${escAttr(info.tip)}">${esc(p.name)} · ${metricsAgeChip(m)}</span>`
+        ).join("")}</div>` : `<p class="mono" style="margin:0;font-size:0.7rem;color:var(--ink-faint)">All product envelopes under 6 hours old.</p>`}
+      </div>`;
     el.innerHTML = `
       <h2 class="section-title">System · THOR <span class="accent-rule"></span></h2>
       <div class="panel" style="padding:0.75rem 1rem;margin-bottom:0.75rem">
@@ -2202,6 +2309,7 @@
           <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">${esc(umamiBaseUrl())} · collector script.js · API stats every 5 min</span>
         </div>
       </div>
+      ${stalePanel}
       <div class="panel" style="padding:1rem">${thorDashboardHTML()}</div>`;
   }
 

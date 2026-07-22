@@ -3460,6 +3460,22 @@ table.data .name-cell {
 [data-theme="porcelain"] .topbar {
   backdrop-filter: blur(14px) saturate(1.1);
 }
+/* Black plate logo still reads on warm light background */
+[data-theme="porcelain"] .brand-logo {
+  filter: drop-shadow(0 1px 2px rgba(120, 72, 24, 0.28))
+          drop-shadow(0 0 10px rgba(201, 143, 46, 0.22));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--amber, #c98f2e) 35%, transparent),
+    0 2px 10px -2px rgba(120, 72, 24, 0.22);
+  background: color-mix(in srgb, var(--bg-1, #f6ecda) 88%, var(--amber, #c98f2e));
+  border-radius: 8px;
+  padding: 3px 6px;
+}
+[data-theme="porcelain"] .brand:hover .brand-logo {
+  filter: brightness(1.04)
+          drop-shadow(0 1px 3px rgba(120, 72, 24, 0.32))
+          drop-shadow(0 0 14px rgba(201, 143, 46, 0.35));
+}
 
 /* ─── v3.4: footer, link buttons, ember legibility ─── */
 

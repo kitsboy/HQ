@@ -1,117 +1,125 @@
 {
- "schema": "gab.handoff.v1",
- "updatedAt": "2026-07-21T23:53:53.000Z",
- "agents": {
-  "grok": {
-   "lastSeen": "2026-07-21T12:00:00.000Z",
-   "focus": "HQ",
-   "notes": [
-    {
-     "t": "2026-07-21T12:00:00.000Z",
-     "summary": "Goodbye 2026-07-21: HQ v3.2.0 money pack + v3.0/3.1 visual+depth overhaul pushed; docs/SOT refreshed"
+  "schema": "gab.handoff.v1",
+  "updatedAt": "2026-07-22T03:10:57.377557Z",
+  "agents": {
+    "grok": {
+      "lastSeen": "2026-07-21T12:00:00.000Z",
+      "focus": "HQ",
+      "notes": [
+        {
+          "t": "2026-07-21T12:00:00.000Z",
+          "summary": "Goodbye 2026-07-21: HQ v3.2.0 money pack + v3.0/3.1 visual+depth overhaul pushed; docs/SOT refreshed"
+        },
+        {
+          "t": "2026-07-20T07:24:46.644Z",
+          "summary": "Goodbye 2026-07-20: HQ v2.7.0 + LNbits proxy live; Cam confirmed balances; docs+MASTER-BRAIN ingest updated"
+        }
+      ],
+      "nextAction": "Verify Katoa npm run generate-metrics. Then improve Tadbuy live campaign counts."
     },
-    {
-     "t": "2026-07-20T07:24:46.644Z",
-     "summary": "Goodbye 2026-07-20: HQ v2.7.0 + LNbits proxy live; Cam confirmed balances; docs+MASTER-BRAIN ingest updated"
+    "kimi": {
+      "lastSeen": "2026-07-21T18:40:32.000Z",
+      "focus": "satohash-vps",
+      "notes": [
+        {
+          "t": "2026-07-21T23:53:53.000Z",
+          "summary": "Session 3 complete: v3.5\u2192v3.15. All 8 products have live /metrics.json + Umami. CF Analytics pipe live. LNbits invoice proxy. Tooltips everywhere. Push alerts via Telegram. Katoa generator pushed to repo. Next: Cam add Vault keys, Grok verify Katoa generator."
+        },
+        {
+          "t": "2026-07-21T21:27:28.000Z",
+          "summary": "Session done: All 8 products have Umami+metrics. Next: Tadbuy live campaign data (Grok), then CF Web Analytics (Cam dashboard). docs/NEXT-STEPS.md created."
+        },
+        {
+          "t": "2026-07-21T19:15:25.000Z",
+          "summary": "v3.9.0: Ref-puller system \u2014 auto-pulls ref/ docs from 9 repos every 5 min. Seed ref/ files created. Tadbuy ARCHITECTURE.md documents all metrics and integrations. Cron running."
+        },
+        {
+          "t": "2026-07-21T18:40:32.000Z",
+          "summary": "v3.8.0: Umami CE deployed (Docker, 200MB RAM, shares Postgres), all 9 sites registered, HQ polls per-site analytics every 5 min \u2014 visitors/pageviews/bounce/sparklines on cards + Analytics tab + docs/UMAMI-SETUP.md"
+        },
+        {
+          "t": "2026-07-21T18:13:33.000Z",
+          "summary": "v3.7.0: THOR auto-collector cron, diff-before-save, QR pay links, budget runway, PWA service worker, vault cleaned"
+        },
+        {
+          "t": "2026-07-21T17:41:45.000Z",
+          "summary": "Round 2: v3.5.0-4 \u2014 version auto-stamp, portfolio time chart, live API badge on cards, GitHub doc push from editor, Concert all-KPI comparison tab"
+        },
+        {
+          "t": "2026-07-21T17:14:53.000Z",
+          "summary": "Goodbye 2026-07-21: HQ v3.3\u2192v3.4.4 \u2014 gate.js standalone + CI copy fix (login verified live), Vault v2, ember theme, MD editor, gauges, live pulse, design tokens, AGENT-GUARDRAILS protection layer"
+        },
+        {
+          "t": "2026-07-20T04:20:00.000Z",
+          "summary": "v5 API deployed on THOR. /metrics.json live. LNbits CORS path documented. HQ handoff updated."
+        }
+      ],
+      "lastRun": "2026-07-21T23:53:53.000Z"
     }
-   ],
-   "nextAction": "Verify Katoa npm run generate-metrics. Then improve Tadbuy live campaign counts."
   },
-  "kimi": {
-   "lastSeen": "2026-07-21T18:40:32.000Z",
-   "focus": "satohash-vps",
-   "notes": [
+  "ownership": {
+    "kitsboy/HQ": "grok",
+    "kitsboy/satohash": "shared",
+    "metrics-schema": "grok-define / kimi-publish",
+    "thor-node-json": "nova-publish / grok-display",
+    "giveabit-lnbits-proxy": "grok",
+    "lnbits-proxy": "grok"
+  },
+  "blockers": [
     {
-     "t": "2026-07-21T23:53:53.000Z",
-     "summary": "Session 3 complete: v3.5\u2192v3.15. All 8 products have live /metrics.json + Umami. CF Analytics pipe live. LNbits invoice proxy. Tooltips everywhere. Push alerts via Telegram. Katoa generator pushed to repo. Next: Cam add Vault keys, Grok verify Katoa generator."
+      "id": "lnbits-public-harden",
+      "owner": "nova",
+      "detail": "LNbits :5102 public HTTP \u2014 firewall/tunnel/HTTPS preferred"
     },
     {
-     "t": "2026-07-21T21:27:28.000Z",
-     "summary": "Session done: All 8 products have Umami+metrics. Next: Tadbuy live campaign data (Grok), then CF Web Analytics (Cam dashboard). docs/NEXT-STEPS.md created."
+      "id": "thor-exporter",
+      "owner": "nova",
+      "detail": "live thor-node.json cron from bitcoind/lnd"
     },
     {
-     "t": "2026-07-21T19:15:25.000Z",
-     "summary": "v3.9.0: Ref-puller system \u2014 auto-pulls ref/ docs from 9 repos every 5 min. Seed ref/ files created. Tadbuy ARCHITECTURE.md documents all metrics and integrations. Cron running."
-    },
-    {
-     "t": "2026-07-21T18:40:32.000Z",
-     "summary": "v3.8.0: Umami CE deployed (Docker, 200MB RAM, shares Postgres), all 9 sites registered, HQ polls per-site analytics every 5 min \u2014 visitors/pageviews/bounce/sparklines on cards + Analytics tab + docs/UMAMI-SETUP.md"
-    },
-    {
-     "t": "2026-07-21T18:13:33.000Z",
-     "summary": "v3.7.0: THOR auto-collector cron, diff-before-save, QR pay links, budget runway, PWA service worker, vault cleaned"
-    },
-    {
-     "t": "2026-07-21T17:41:45.000Z",
-     "summary": "Round 2: v3.5.0-4 \u2014 version auto-stamp, portfolio time chart, live API badge on cards, GitHub doc push from editor, Concert all-KPI comparison tab"
-    },
-    {
-     "t": "2026-07-21T17:14:53.000Z",
-     "summary": "Goodbye 2026-07-21: HQ v3.3\u2192v3.4.4 \u2014 gate.js standalone + CI copy fix (login verified live), Vault v2, ember theme, MD editor, gauges, live pulse, design tokens, AGENT-GUARDRAILS protection layer"
-    },
-    {
-     "t": "2026-07-20T04:20:00.000Z",
-     "summary": "v5 API deployed on THOR. /metrics.json live. LNbits CORS path documented. HQ handoff updated."
+      "id": "cf-access",
+      "owner": "cam",
+      "detail": "optional Access on hq.giveabit.io"
     }
-   ],
-   "lastRun": "2026-07-21T23:53:53.000Z"
-  }
- },
- "ownership": {
-  "kitsboy/HQ": "grok",
-  "kitsboy/satohash": "shared",
-  "metrics-schema": "grok-define / kimi-publish",
-  "thor-node-json": "nova-publish / grok-display",
-  "giveabit-lnbits-proxy": "grok",
-  "lnbits-proxy": "grok"
- },
- "blockers": [
-  {
-   "id": "lnbits-public-harden",
-   "owner": "nova",
-   "detail": "LNbits :5102 public HTTP \u2014 firewall/tunnel/HTTPS preferred"
-  },
-  {
-   "id": "thor-exporter",
-   "owner": "nova",
-   "detail": "live thor-node.json cron from bitcoind/lnd"
-  },
-  {
-   "id": "cf-access",
-   "owner": "cam",
-   "detail": "optional Access on hq.giveabit.io"
-  }
- ],
- "next": [
-  {
-   "id": "cam-vault-verify",
-   "owner": "cam",
-   "title": "Vault keys on hq.giveabit.io \u2014 confirm Money tab live"
-  },
-  {
-   "id": "wallets-json-optional",
-   "owner": "cam",
-   "title": "Optional: WALLETS_JSON on proxy (keys off browser)"
-  },
-  {
-   "id": "thor-exporter",
-   "owner": "nova",
-   "title": "Cron thor-node.json from bitcoind/lnd"
-  },
-  {
-   "id": "lnbits-harden",
-   "owner": "nova",
-   "title": "Harden public LNbits :5102"
-  },
-  {
-   "id": "product-metrics-live",
-   "owner": "kimi",
-   "title": "Live /metrics.json for remaining suite products"
-  },
-  {
-   "id": "cf-access",
-   "owner": "cam",
-   "title": "Enable CF Access on hq.giveabit.io (optional)"
-  }
- ]
+  ],
+  "next": [
+    {
+      "id": "cam-vault-verify",
+      "owner": "cam",
+      "title": "Vault keys on hq.giveabit.io \u2014 confirm Money tab live"
+    },
+    {
+      "id": "wallets-json-optional",
+      "owner": "cam",
+      "title": "Optional: WALLETS_JSON on proxy (keys off browser)"
+    },
+    {
+      "id": "thor-exporter",
+      "owner": "nova",
+      "title": "Cron thor-node.json from bitcoind/lnd"
+    },
+    {
+      "id": "lnbits-harden",
+      "owner": "nova",
+      "title": "Harden public LNbits :5102"
+    },
+    {
+      "id": "product-metrics-live",
+      "owner": "kimi",
+      "title": "Live /metrics.json for remaining suite products"
+    },
+    {
+      "id": "cf-access",
+      "owner": "cam",
+      "title": "Enable CF Access on hq.giveabit.io (optional)"
+    }
+  ],
+  "history": [
+    {
+      "at": "2026-07-22T03:10:57.377425Z",
+      "agent": "grok",
+      "summary": "2026-07-22 mega: LNbits fix, v3.19 metrics age, WALLETS_JSON, Umami suite, brand logo, real LND thor-node, satohash metrics.json. Slow down after this handoff."
+    }
+  ],
+  "lastAgent": "grok"
 }
