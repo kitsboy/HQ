@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-22T21:45:01Z",
+ "updatedAt": "2026-07-22T21:45:33Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -39,7 +39,7 @@
     "detail": "Up 3 days (healthy)"
    }
   ],
-  "uptimeSec": 514101
+  "uptimeSec": 514132
  },
  "bitcoin": {
   "ok": true,
@@ -464,7 +464,7 @@
      "v": 0
     },
     {
-     "t": "2026-07-22T21:45:01Z",
+     "t": "2026-07-22T21:45:33Z",
      "v": 0
     }
    ]
@@ -856,7 +856,7 @@
      "v": 0
     },
     {
-     "t": "2026-07-22T21:45:01Z",
+     "t": "2026-07-22T21:45:33Z",
      "v": 0
     }
    ]
@@ -1248,8 +1248,8 @@
      "v": 0.37
     },
     {
-     "t": "2026-07-22T21:45:01Z",
-     "v": 0.01
+     "t": "2026-07-22T21:45:33Z",
+     "v": 0.19
     }
    ]
   },
@@ -1640,7 +1640,7 @@
      "v": 3.4
     },
     {
-     "t": "2026-07-22T21:45:01Z",
+     "t": "2026-07-22T21:45:33Z",
      "v": 3.1
     }
    ]
@@ -2032,7 +2032,7 @@
      "v": 959179
     },
     {
-     "t": "2026-07-22T21:45:01Z",
+     "t": "2026-07-22T21:45:33Z",
      "v": 959180
     }
    ]
@@ -2069,13 +2069,13 @@
   "memory": {
    "totalGB": 7.8,
    "usedGB": 3.1,
-   "freeGB": 2.5,
-   "availableGB": 4.7
+   "freeGB": 2.4,
+   "availableGB": 4.6
   },
   "cpu": {
-   "loadAvg1m": 0.01,
-   "loadAvg5m": 0.09,
-   "loadAvg15m": 0.11,
+   "loadAvg1m": 0.19,
+   "loadAvg5m": 0.13,
+   "loadAvg15m": 0.12,
    "uptimeDays": 6.0
   },
   "docker": {
@@ -2086,7 +2086,7 @@
   },
   "breakdownGB": {
    "MASTER-BRAIN_vault": 0.899,
-   "Hermes_skills_config": 0.634,
+   "Hermes_skills_config": 0.635,
    "satohash_repo": 0.021,
    "HQ_repo": 0.016,
    "LND_data": 0.341,
@@ -2101,9 +2101,9 @@
   "diskFreeGB": 359,
   "memTotalGB": 7.8,
   "memUsedGB": 3.1,
-  "load1": 0.01,
-  "load5": 0.09,
-  "load15": 0.11,
+  "load1": 0.19,
+  "load5": 0.13,
+  "load15": 0.12,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
@@ -2126,7 +2126,7 @@
    {
     "id": "Hermes_skills_config",
     "label": "Hermes",
-    "gb": 0.63
+    "gb": 0.64
    },
    {
     "id": "Docker_volumes",
