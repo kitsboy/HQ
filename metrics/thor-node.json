@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-22T04:45:51Z",
+ "updatedAt": "2026-07-22T05:00:01Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -11,12 +11,12 @@
    {
     "id": "satohash-satohash-api-1",
     "status": "green",
-    "detail": "Up 3 hours (healthy)"
+    "detail": "Up 4 hours (healthy)"
    },
    {
     "id": "lnbits",
     "status": "green",
-    "detail": "Up 3 hours"
+    "detail": "Up 4 hours"
    },
    {
     "id": "umami",
@@ -39,13 +39,13 @@
     "detail": "Up 2 days (healthy)"
    }
   ],
-  "uptimeSec": 452951
+  "uptimeSec": 453800
  },
  "bitcoin": {
   "ok": true,
   "chain": "main",
-  "blocks": 959097,
-  "headers": 959097,
+  "blocks": 959098,
+  "headers": 959098,
   "verificationProgress": 1.0,
   "pruned": false,
   "sizeOnDiskGB": 0.34,
@@ -186,6 +186,10 @@
     {
      "t": "2026-07-22T04:45:51Z",
      "v": 0
+    },
+    {
+     "t": "2026-07-22T05:00:01Z",
+     "v": 0
     }
    ]
   },
@@ -298,6 +302,10 @@
     {
      "t": "2026-07-22T04:45:51Z",
      "v": 0
+    },
+    {
+     "t": "2026-07-22T05:00:01Z",
+     "v": 0
     }
    ]
   },
@@ -350,6 +358,10 @@
     {
      "t": "2026-07-22T04:45:51Z",
      "v": 0.13
+    },
+    {
+     "t": "2026-07-22T05:00:01Z",
+     "v": 0.55
     }
    ]
   },
@@ -402,6 +414,10 @@
     {
      "t": "2026-07-22T04:45:51Z",
      "v": 2.9
+    },
+    {
+     "t": "2026-07-22T05:00:01Z",
+     "v": 3.0
     }
    ]
   },
@@ -454,6 +470,10 @@
     {
      "t": "2026-07-22T04:45:51Z",
      "v": 959097
+    },
+    {
+     "t": "2026-07-22T05:00:01Z",
+     "v": 959098
     }
    ]
   }
@@ -488,15 +508,15 @@
   },
   "memory": {
    "totalGB": 7.8,
-   "usedGB": 2.9,
-   "freeGB": 2.5,
+   "usedGB": 3.0,
+   "freeGB": 2.4,
    "availableGB": 4.8
   },
   "cpu": {
-   "loadAvg1m": 0.13,
-   "loadAvg5m": 0.2,
-   "loadAvg15m": 0.19,
-   "uptimeDays": 5.2
+   "loadAvg1m": 0.55,
+   "loadAvg5m": 0.26,
+   "loadAvg15m": 0.23,
+   "uptimeDays": 5.3
   },
   "docker": {
    "images": 7,
@@ -520,10 +540,10 @@
   "diskUsedGB": 28,
   "diskFreeGB": 359,
   "memTotalGB": 7.8,
-  "memUsedGB": 2.9,
-  "load1": 0.13,
-  "load5": 0.2,
-  "load15": 0.19,
+  "memUsedGB": 3.0,
+  "load1": 0.55,
+  "load5": 0.26,
+  "load15": 0.23,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
