@@ -76,6 +76,14 @@ cpOptional("handoff/state.json", "handoff/state.json");
 cpOptional("status.json", "status.json");
 cpOptional("favicon.png", "favicon.png");
 cpOptional("apple-touch-icon.png", "apple-touch-icon.png");
+cpOptional("brand-logo.png", "brand-logo.png");
+cpOptional("brand-mark.png", "brand-mark.png");
+cpOptional("giveabit-logo.png", "giveabit-logo.png");
+// Prefer brand mark as favicon if present
+if (existsSync(resolve(ROOT, "favicon-giveabit.png"))) {
+  cp("favicon-giveabit.png", "favicon.png");
+  cp("brand-mark.png", "apple-touch-icon.png");
+}
 
 // Required project packs
 const requiredPacks = [

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  Give A Bit HQ v3.18.0 — money + depth pack.
+  Give A Bit HQ v3.18.1 — money + depth pack.
   Tabs · metrics envelopes · project MD packs · LNbits money on cards · mega drawer.
   SECRETS: NEVER in this file. Vault localStorage key sovereign_deck_vault_v1 only.
   Assets: hq.css · hq.js
@@ -11,15 +11,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0c0618">
-<meta name="hq-version" content="3.18.0">
+<meta name="hq-version" content="3.18.1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="description" content="Give A Bit HQ — suite ops glass for Bitcoin products">
-<title>Give A Bit HQ v3.18.0</title>
+<title>Give A Bit HQ v3.18.1</title>
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="/brand-mark.png" sizes="128x128">
 <meta property="og:title" content="Give A Bit HQ — Suite Ops Glass">
 <meta property="og:description" content="Live metrics, money, docs and ops for the Give A Bit family of Bitcoin products.">
 <meta property="og:type" content="website">
@@ -29,7 +30,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
-<link rel="stylesheet" href="hq.css?v=3.18.0">
+<link rel="stylesheet" href="hq.css?v=3.18.1">
 <script defer src="https://analytics.giveabit.io/script.js" data-website-id="640018e2-6c1e-4053-b72d-b9b2be0aa952"></script>
 <script>
   /* Kill stale service workers + caches so version strings cannot mix across deploys */
@@ -58,7 +59,7 @@
       }
     } catch (e) {}
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/sw.js?v=3.18.0").catch(function () {});
+      navigator.serviceWorker.register("/sw.js?v=3.18.1").catch(function () {});
     }
   })();
 </script>
@@ -68,13 +69,13 @@
 <div id="app">
   <header class="topbar">
     <div class="topbar-inner">
-      <div class="brand">
-        <div class="brand-mark" aria-hidden="true">G</div>
+      <a class="brand" href="https://giveabit.io" target="_blank" rel="noopener" title="giveaBit.io">
+        <img class="brand-logo" src="/brand-logo.png" width="160" height="80" alt="giveaBit.io" decoding="async" />
         <div class="brand-text">
-          <h1>Give A Bit HQ</h1>
-          <p class="sub" id="hq-sub">Ops glass · money pack v3.18.0</p>
+          <h1>HQ</h1>
+          <p class="sub" id="hq-sub">Ops glass · money pack v3.18.1</p>
         </div>
-      </div>
+      </a>
       <div class="topbar-meta">
         <span id="vault-status" class="status-pill muted" data-tip="Browser Vault holds invoice keys only — never in git" data-tip-title="Vault">vault empty</span>
         <span id="live-poll-chip" class="status-pill muted" data-tip="Auto-refresh: status + metrics every 5 min · wallets every 60s" data-tip-title="Live pulse">live —</span>
@@ -135,7 +136,7 @@
 
   <footer class="site-footer">
     <div>
-      <strong id="hq-version">v3.18.0</strong> · build <span id="hq-build">—</span> · <span id="hq-origin"></span>
+      <strong id="hq-version">v3.18.1</strong> · build <span id="hq-build">—</span> · <span id="hq-origin"></span>
       <div style="margin-top:0.25rem">Safe Harbour · Give A Bit family · Bitcoin sovereignty first</div>
     </div>
     <div class="footer-links" id="footer-links"></div>
@@ -168,6 +169,6 @@
 <script>
   document.getElementById("hq-origin").textContent = location.origin || "file";
 </script>
-<script src="hq.js?v=3.18.0" defer></script>
+<script src="hq.js?v=3.18.1" defer></script>
 </body>
 </html>

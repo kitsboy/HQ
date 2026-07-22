@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.18.0 — money + depth pack
+ * Give A Bit HQ v3.18.1 — money + depth pack
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
@@ -7,7 +7,7 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.18.0";
+  const HQ_VERSION = "3.18.1";
   const BUILD_TS = new Date().toISOString();
 
   /** Paint the same version on every chrome surface (header sub + footer). */

@@ -315,7 +315,15 @@ input:focus, textarea:focus, select:focus {
   align-items: center;
   gap: 0.65rem;
   flex: none;
+  text-decoration: none;
+  color: inherit;
+  min-width: 0;
 }
+.brand:hover { text-decoration: none; color: inherit; }
+.brand:hover .brand-logo {
+  filter: brightness(1.08) drop-shadow(0 0 12px color-mix(in srgb, var(--orange) 45%, transparent));
+}
+/* Legacy letter-mark (kept for any residual use) */
 .brand-mark {
   width: 36px;
   height: 36px;
@@ -329,6 +337,18 @@ input:focus, textarea:focus, select:focus {
   font-weight: 800;
   font-family: var(--font-display);
   font-size: 0.85rem;
+}
+/* Official giveaBit.io wordmark */
+.brand-logo {
+  height: 40px;
+  width: auto;
+  max-width: min(168px, 42vw);
+  object-fit: contain;
+  object-position: left center;
+  display: block;
+  border-radius: 6px;
+  flex: none;
+  transition: filter var(--dur) var(--ease-out);
 }
 .brand-text h1 {
   margin: 0;
@@ -3531,6 +3551,7 @@ input, textarea, select, button { font-size: inherit; }
   }
   .brand { gap: 0.5rem; min-width: 0; flex: 1 1 auto; }
   .brand-mark { width: 36px; height: 36px; font-size: 1rem; }
+  .brand-logo { height: 34px; max-width: min(140px, 48vw); }
   .brand-text h1 { font-size: 1.05rem; line-height: 1.15; }
   .brand-text .sub { display: none; }
 
@@ -3677,6 +3698,9 @@ input, textarea, select, button { font-size: inherit; }
 @media (max-width: 480px) {
   html { font-size: 14.5px; }
   .brand-text h1 { font-size: 0.98rem; }
+  .brand-logo { height: 30px; max-width: 120px; }
+  /* On tiny phones logo alone is enough */
+  .brand-text h1 { display: none; }
   .card-kpis { grid-template-columns: repeat(2, 1fr) !important; }
   .kpi-grid { grid-template-columns: 1fr 1fr !important; }
   .topbar-actions .btn-primary span,
