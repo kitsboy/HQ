@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-22T14:45:19Z",
+ "updatedAt": "2026-07-22T15:00:01Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -11,12 +11,12 @@
    {
     "id": "satohash-satohash-api-1",
     "status": "green",
-    "detail": "Up 13 hours (healthy)"
+    "detail": "Up 14 hours (healthy)"
    },
    {
     "id": "lnbits",
     "status": "green",
-    "detail": "Up 13 hours"
+    "detail": "Up 14 hours"
    },
    {
     "id": "umami",
@@ -39,13 +39,13 @@
     "detail": "Up 2 days (healthy)"
    }
   ],
-  "uptimeSec": 488918
+  "uptimeSec": 489801
  },
  "bitcoin": {
   "ok": true,
   "chain": "main",
-  "blocks": 959140,
-  "headers": 959140,
+  "blocks": 959141,
+  "headers": 959141,
   "verificationProgress": 1.0,
   "pruned": false,
   "sizeOnDiskGB": 0.34,
@@ -434,6 +434,10 @@
     {
      "t": "2026-07-22T14:45:19Z",
      "v": 0
+    },
+    {
+     "t": "2026-07-22T15:00:01Z",
+     "v": 0
     }
    ]
   },
@@ -794,6 +798,10 @@
     {
      "t": "2026-07-22T14:45:19Z",
      "v": 0
+    },
+    {
+     "t": "2026-07-22T15:00:01Z",
+     "v": 0
     }
    ]
   },
@@ -1094,6 +1102,10 @@
     {
      "t": "2026-07-22T14:45:19Z",
      "v": 0.18
+    },
+    {
+     "t": "2026-07-22T15:00:01Z",
+     "v": 0.04
     }
    ]
   },
@@ -1393,6 +1405,10 @@
     },
     {
      "t": "2026-07-22T14:45:19Z",
+     "v": 3.0
+    },
+    {
+     "t": "2026-07-22T15:00:01Z",
      "v": 3.0
     }
    ]
@@ -1694,6 +1710,10 @@
     {
      "t": "2026-07-22T14:45:19Z",
      "v": 959140
+    },
+    {
+     "t": "2026-07-22T15:00:01Z",
+     "v": 959141
     }
    ]
   }
@@ -1733,9 +1753,9 @@
    "availableGB": 4.7
   },
   "cpu": {
-   "loadAvg1m": 0.18,
-   "loadAvg5m": 0.17,
-   "loadAvg15m": 0.18,
+   "loadAvg1m": 0.04,
+   "loadAvg5m": 0.13,
+   "loadAvg15m": 0.15,
    "uptimeDays": 5.7
   },
   "docker": {
@@ -1746,7 +1766,7 @@
   },
   "breakdownGB": {
    "MASTER-BRAIN_vault": 0.899,
-   "Hermes_skills_config": 0.633,
+   "Hermes_skills_config": 0.631,
    "satohash_repo": 0.021,
    "HQ_repo": 0.014,
    "LND_data": 0.34,
@@ -1761,9 +1781,9 @@
   "diskFreeGB": 359,
   "memTotalGB": 7.8,
   "memUsedGB": 3.0,
-  "load1": 0.18,
-  "load5": 0.17,
-  "load15": 0.18,
+  "load1": 0.04,
+  "load5": 0.13,
+  "load15": 0.15,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
