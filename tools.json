@@ -43,14 +43,39 @@
           "tip": "Brand + NIP-05"
         },
         {
-          "name": "LNbits node (Tailscale)",
-          "url": "https://vmi3446772.tailb672ac.ts.net",
-          "tip": "Needs CORS for hq.giveabit.io"
+          "name": "LNbits admin (Tailscale)",
+          "url": "http://vmi3446772.tailb672ac.ts.net:5102",
+          "tip": "Preferred admin UI — user admin · password in password manager / THOR secrets (reset 2026-07-22)"
+        },
+        {
+          "name": "LNbits admin (public HTTP)",
+          "url": "http://api.satohash.io:5102",
+          "tip": "Same LNbits — http only, port 5102 required"
+        },
+        {
+          "name": "Satohash API health",
+          "url": "https://api.satohash.io/health",
+          "tip": "Proof plane — fixed port map 2026-07-22"
+        },
+        {
+          "name": "Umami analytics (Tailscale)",
+          "url": "http://vmi3446772.tailb672ac.ts.net:3002",
+          "tip": "Default admin/umami — rotate password"
+        },
+        {
+          "name": "Site access map",
+          "url": "/docs/SITE-ACCESS.md",
+          "tip": "All URLs, what works, admin logins"
+        },
+        {
+          "name": "LNbits login guide",
+          "url": "/docs/LNBITS-LOGIN.md",
+          "tip": "How to open & log into LNbits"
         },
         {
           "name": "CORS fix guide",
           "url": "/docs/LNBITS-CORS.md",
-          "tip": "Empty balances"
+          "tip": "Empty balances on HQ"
         },
         {
           "name": "GitHub kitsboy",

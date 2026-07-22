@@ -1,8 +1,8 @@
 {
   "name": "giveabit-hq",
   "private": true,
-  "version": "3.13.0",
-  "description": "Give A Bit HQ v3.5 — ops glass, money push, agent guardrails, concert tab",
+  "version": "3.15.3",
+  "description": "Give A Bit HQ — ops glass, money, mobile polish, LNbits login docs",
   "scripts": {
     "stamp": "node scripts/stamp-version.mjs",
     "build": "npm run stamp && mkdir -p public/metrics public/schemas public/docs/projects public/handoff && cp control-panel.html public/index.html && cp hq.css hq.js sw.js public/ && cp projects.json agents.json tools.json status.example.json manifest.webmanifest public/ && cp pages/_headers pages/_redirects public/ && cp -R metrics/. public/metrics/ && cp -R schemas/. public/schemas/ && cp docs/*.md public/docs/ 2>/dev/null; cp -R docs/projects/. public/docs/projects/ 2>/dev/null; cp handoff/state.json public/handoff/ 2>/dev/null; (test -f status.json && cp status.json public/ || true); (test -f favicon.png && cp favicon.png apple-touch-icon.png public/ || true)",

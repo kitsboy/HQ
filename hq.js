@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.13.0 — money + depth pack
+ * Give A Bit HQ v3.15.3 — money + depth pack
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
@@ -7,7 +7,7 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.13.0";
+  const HQ_VERSION = "3.15.3";
   const BUILD_TS = new Date().toISOString();
   const VAULT_KEY = "sovereign_deck_vault_v1";
   const THEME_KEY = "hq_theme_v3";

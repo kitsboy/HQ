@@ -10,10 +10,14 @@ _Updated: 2026-07-21 (goodbye — v3.4.4 gate fix + Vault v2 + ember theme + pro
 | Pages preview | https://giveabit-hq.pages.dev |
 | GitHub | https://github.com/kitsboy/HQ |
 | CF Pages project | `giveabit-hq` (account Kitsboy) |
-| App version | **v3.5.4** (stamp-package, gate build 2026-07-21c, `npm run stamp` auto-versioning) |
+| App version | **v3.15.2** (`npm run stamp` from package.json) |
 | LNbits proxy Worker | `giveabit-lnbits-proxy` · https://giveabit-lnbits-proxy.kitsboy.workers.dev |
+| LNbits UI (login) | **http://vmi3446772.tailb672ac.ts.net:5102** (preferred) · **http://api.satohash.io:5102** |
+| LNbits admin user | `admin` (super_user) — password reset 2026-07-22; **not** in git |
 | LNbits upstream (for Worker) | `http://api.satohash.io:5102` |
 | Health (proxy) | https://giveabit-lnbits-proxy.kitsboy.workers.dev/health |
+| Satohash API | https://api.satohash.io/health (recreated 2026-07-22) |
+| Full access map | `docs/SITE-ACCESS.md` · login `docs/LNBITS-LOGIN.md` |
 
 ## Analytics
 

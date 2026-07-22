@@ -15,9 +15,13 @@ GET {Node URL}/api/v1/wallet
 Header: X-Api-Key: <invoice key>
 ```
 
-Default Tailscale host (direct):
+Direct LNbits UI / API (HTTP, port required):
 
-`https://vmi3446772.tailb672ac.ts.net`
+- Public: `http://api.satohash.io:5102`
+- Tailscale: `http://vmi3446772.tailb672ac.ts.net:5102`
+
+**Do not use** `https://vmi3446772.tailb672ac.ts.net` (TLS broken) or bare `http://vmi3446772…ts.net` without `:5102` (Caddy default site, not LNbits).  
+See [`LNBITS-LOGIN.md`](./LNBITS-LOGIN.md).
 
 Worker upstream (proxy path): `http://api.satohash.io:5102`
 
