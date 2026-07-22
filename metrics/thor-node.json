@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-22T05:45:01Z",
+ "updatedAt": "2026-07-22T05:45:56Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -39,7 +39,7 @@
     "detail": "Up 2 days (healthy)"
    }
   ],
-  "uptimeSec": 456501
+  "uptimeSec": 456556
  },
  "bitcoin": {
   "ok": true,
@@ -212,7 +212,7 @@
      "v": 0
     },
     {
-     "t": "2026-07-22T05:45:01Z",
+     "t": "2026-07-22T05:45:56Z",
      "v": 0
     }
    ]
@@ -352,7 +352,7 @@
      "v": 0
     },
     {
-     "t": "2026-07-22T05:45:01Z",
+     "t": "2026-07-22T05:45:56Z",
      "v": 0
     }
    ]
@@ -432,8 +432,8 @@
      "v": 0.27
     },
     {
-     "t": "2026-07-22T05:45:01Z",
-     "v": 0.01
+     "t": "2026-07-22T05:45:56Z",
+     "v": 0.28
     }
    ]
   },
@@ -512,7 +512,7 @@
      "v": 3.0
     },
     {
-     "t": "2026-07-22T05:45:01Z",
+     "t": "2026-07-22T05:45:56Z",
      "v": 3.0
     }
    ]
@@ -592,7 +592,7 @@
      "v": 959101
     },
     {
-     "t": "2026-07-22T05:45:01Z",
+     "t": "2026-07-22T05:45:56Z",
      "v": 959102
     }
    ]
@@ -630,12 +630,12 @@
    "totalGB": 7.8,
    "usedGB": 3.0,
    "freeGB": 2.5,
-   "availableGB": 4.8
+   "availableGB": 4.7
   },
   "cpu": {
-   "loadAvg1m": 0.01,
-   "loadAvg5m": 0.11,
-   "loadAvg15m": 0.17,
+   "loadAvg1m": 0.28,
+   "loadAvg5m": 0.19,
+   "loadAvg15m": 0.2,
    "uptimeDays": 5.3
   },
   "docker": {
@@ -646,7 +646,7 @@
   },
   "breakdownGB": {
    "MASTER-BRAIN_vault": 0.899,
-   "Hermes_skills_config": 0.625,
+   "Hermes_skills_config": 0.626,
    "satohash_repo": 0.021,
    "HQ_repo": 0.012,
    "LND_data": 0.34,
@@ -661,9 +661,9 @@
   "diskFreeGB": 359,
   "memTotalGB": 7.8,
   "memUsedGB": 3.0,
-  "load1": 0.01,
-  "load5": 0.11,
-  "load15": 0.17,
+  "load1": 0.28,
+  "load5": 0.19,
+  "load15": 0.2,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
@@ -686,7 +686,7 @@
    {
     "id": "Hermes_skills_config",
     "label": "Hermes",
-    "gb": 0.62
+    "gb": 0.63
    },
    {
     "id": "Docker_volumes",
