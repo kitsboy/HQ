@@ -6,8 +6,6 @@ on:
     paths-ignore:
       # status-pinger deploys status.json itself when CF secrets exist
       - "status.json"
-      - "docs/**"
-      - "**.md"
   workflow_dispatch:
 
 jobs:
@@ -18,27 +16,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Assemble public site
-        run: |
-          npm run stamp
-          mkdir -p public
-          mkdir -p public/metrics public/schemas public/docs public/handoff
-          cp control-panel.html public/index.html
-          cp hq.css hq.js sw.js public/ || true; cp hq-v28.css hq-v28.js public/ || true
-          cp favicon.png apple-touch-icon.png public/ || true
-          cp projects.json agents.json tools.json status.example.json manifest.webmanifest public/
-          cp pages/_headers pages/_redirects public/
-          cp -R metrics/. public/metrics/
-          cp -R schemas/. public/schemas/
-          cp docs/*.md public/docs/ || true
-          cp handoff/state.json public/handoff/ || true
-          if [ -f status.json ]; then cp status.json public/; fi
-          ls -la public && ls public/metrics | head
-
-
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
+
+      - name: Build public site (full npm build)
+        run: |
+          # Single build path — never hand-copy a partial subset (missed docs/projects before)
+          npm run build
+          echo "=== public tree (docs) ==="
+          find public/docs -type f | sort | head -80
+          test -f public/docs/projects/giveabit.md || (echo "MISSING project pack giveabit.md" && exit 1)
+          test -f public/hq.js || (echo "MISSING hq.js" && exit 1)
+          test -f public/index.html || (echo "MISSING index.html" && exit 1)
+          ls -la public | head -40
 
       - name: Deploy to Cloudflare Pages
         env:

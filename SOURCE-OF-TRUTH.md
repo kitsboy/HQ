@@ -1,6 +1,6 @@
 # HQ SOURCE OF TRUTH
 
-_Updated: 2026-07-22 — app v3.16.0 (stamp-version)
+_Updated: 2026-07-22 — app v3.17.0 (stamp-version)
 
 ## Live
 
@@ -10,7 +10,7 @@ _Updated: 2026-07-22 — app v3.16.0 (stamp-version)
 | Pages preview | https://giveabit-hq.pages.dev |
 | GitHub | https://github.com/kitsboy/HQ |
 | CF Pages project | `giveabit-hq` (account Kitsboy) |
-| App version | **v3.16.0** (`npm run stamp` from package.json) |
+| App version | **v3.17.0** (`npm run stamp` from package.json) |
 | LNbits proxy Worker | `giveabit-lnbits-proxy` · https://giveabit-lnbits-proxy.kitsboy.workers.dev |
 | LNbits UI (login) | **http://vmi3446772.tailb672ac.ts.net:5102** (preferred) · **http://api.satohash.io:5102** |
 | LNbits admin user | `admin` (super_user) — password reset 2026-07-22; **not** in git |
@@ -89,9 +89,11 @@ _Updated: 2026-07-22 — app v3.16.0 (stamp-version)
 | GitHub PAT | Browser Vault → GitHub tab (fine-grained, contents:write on HQ only) | Future save-to-git for edited docs |
 | Worker `LNBITS_BASE_URL` | CF Worker secret | Upstream LNbits |
 | Worker `PROXY_TOKEN` | CF Worker secret | Bearer for HQ |
-| `CLOUDFLARE_API_TOKEN` | GitHub Actions secrets | Deploy |
-| `CLOUDFLARE_ACCOUNT_ID` | GitHub Actions secrets | Deploy |
+| `CLOUDFLARE_API_TOKEN` | GitHub Actions secrets | Deploy (`deploy.yml` + optional status-pinger CF step) |
+| `CLOUDFLARE_ACCOUNT_ID` | GitHub Actions secrets | Deploy (`deploy.yml` + optional status-pinger CF step) |
 | LND macaroons | **Never in HQ** | Node only |
+
+**Status pinger** (`.github/workflows/status-pinger.yml`, every 15m): needs no secrets for ping + commit of `status.json`. Optional live matrix deploy to Pages uses the same `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` as full deploy. Do not use `secrets.*` in step `if:` — GitHub rejects the workflow file.
 
 Vault key: `sovereign_deck_vault_v1` (per browser **origin**).  
 Balance history cache: `hq_wallet_hist_v1` (local sparklines / Δ only).  

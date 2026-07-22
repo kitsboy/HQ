@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.16.0 — money + depth pack
+ * Give A Bit HQ v3.17.0 — money + depth pack
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
@@ -7,7 +7,7 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.16.0";
+  const HQ_VERSION = "3.17.0";
   const BUILD_TS = new Date().toISOString();
 
   /** Paint the same version on every chrome surface (header sub + footer). */
@@ -76,11 +76,12 @@
   };
 
   const DOCS_HQ = [
+    "SITE-ACCESS.md", "LNBITS-LOGIN.md", "LNBITS-PROXY.md", "LNBITS-CORS.md",
     "CLOUDFLARE-ACCESS.md", "ECOSYSTEM-MAP.md", "HQ-GATE.md", "KIMI-GROK-HANDOFF.md",
-    "KIMI-HANDOFF-2026-07-20-MEGA.md", "KIMI-HANDOFF-2026-07-20.md", "KIMI-HANDOFF.md",
-    "LNBITS-CORS.md", "LNBITS-PROXY.md", "METRICS-SCHEMA.md", "THOR-NODE-JSON.md", "UPGRADES-100.md",
-    "ANALYTICS-PLAN.md", "DESIGN-CONTEXT.md", "AGENT-GUARDRAILS.md", "UMAMI-SETUP.md", "REF-PULLER.md",
-    "ALL-SITE-METRICS.md", "UMAMI-DEPLOYMENT.md",
+    "KIMI-HANDOFF.md", "KIMI-HANDOFF-2026-07-20-MEGA.md", "KIMI-HANDOFF-2026-07-20.md",
+    "METRICS-SCHEMA.md", "THOR-NODE-JSON.md", "UPGRADES-100.md", "NEXT-STEPS.md",
+    "ANALYTICS-PLAN.md", "DESIGN-CONTEXT.md", "AGENT-GUARDRAILS.md", "UMAMI-SETUP.md",
+    "UMAMI-DEPLOYMENT.md", "REF-PULLER.md", "ALL-SITE-METRICS.md",
   ];
 
   const FEATURES = [
@@ -144,8 +145,23 @@
         return { ok: false, data: null, error: `HTTP ${res.status}`, path: url, status: res.status };
       }
       const ct = (res.headers.get("content-type") || "").toLowerCase();
-      if (opts.asText || ct.includes("text/") || /\.md$/i.test(path)) {
-        return { ok: true, data: await res.text(), error: null, path: url, status: res.status };
+      // Markdown / text: never accept SPA HTML fallback (CF Pages returns 200 text/html for missing files)
+      if (opts.asText || /\.md$/i.test(path) || (ct.includes("text/") && !ct.includes("html"))) {
+        const text = await res.text();
+        const looksHtml =
+          ct.includes("text/html") ||
+          /^\s*<!DOCTYPE\s+html/i.test(text) ||
+          /^\s*<html[\s>]/i.test(text);
+        if (looksHtml && /\.md$/i.test(path)) {
+          return {
+            ok: false,
+            data: null,
+            error: "SPA HTML fallback (file missing on edge — redeploy docs)",
+            path: url,
+            status: res.status,
+          };
+        }
+        return { ok: true, data: text, error: null, path: url, status: res.status };
       }
       try {
         return { ok: true, data: await res.json(), error: null, path: url, status: res.status };
@@ -2359,30 +2375,55 @@
     bindTooltips();
   }
 
+  /** Resolve load result for a docs list entry (project pack or HQ doc). */
+  function docLoadResult(fn) {
+    if (!fn) return null;
+    if (state.docs[fn]) return state.docs[fn];
+    if (fn.startsWith("projects/")) {
+      const id = fn.replace(/^projects\//, "").replace(/\.md$/, "");
+      if (state.projectDocs[id]) return state.projectDocs[id];
+    }
+    return null;
+  }
+  function docStatusChip(fn) {
+    const r = docLoadResult(fn);
+    if (!r) return statusPill("muted", "—");
+    if (r.ok) return statusPill("green", "ok");
+    return statusPill("amber", "fail");
+  }
+  function paintDocListStatus(fn) {
+    const btn = document.querySelector(`#view-docs [data-doc="${CSS.escape(fn)}"]`);
+    if (!btn) return;
+    const chip = btn.querySelector(".doc-status");
+    if (chip) chip.innerHTML = docStatusChip(fn);
+  }
+  function docListItemHTML(d) {
+    const active = state.selectedDoc === d.fn;
+    return `<button type="button" class="doc-item ${active ? "active" : ""}" data-doc="${escAttr(d.fn)}">
+      <div class="doc-item-main">
+        <div class="fn">${esc(d.label)}</div>
+        ${d.preview !== false ? `<div class="preview mono">${esc(d.fn)}</div>` : ""}
+      </div>
+      <span class="doc-status">${docStatusChip(d.fn)}</span>
+    </button>`;
+  }
+
   function renderDocs() {
     const el = document.getElementById("view-docs");
     if (!el) return;
     // HQ docs + project packs
     const projectDocs = state.projects.map((p) => ({ fn: `projects/${p.id}.md`, label: p.name, group: "projects" }));
     projectDocs.push({ fn: "projects/thor-node.md", label: "THOR Node", group: "projects" });
-    const hqDocs = DOCS_HQ.map((fn) => ({ fn, label: fn, group: "hq" }));
-    const all = [...projectDocs, ...hqDocs];
+    const hqDocs = DOCS_HQ.map((fn) => ({ fn, label: fn, group: "hq", preview: false }));
     if (!state.selectedDoc) state.selectedDoc = projectDocs[0] ? projectDocs[0].fn : DOCS_HQ[0];
-
-    const list = all.map((d) => {
-      const active = state.selectedDoc === d.fn;
-      return `<button type="button" class="doc-item ${active ? "active" : ""}" data-doc="${escAttr(d.fn)}">
-        <div class="fn">${esc(d.label)}</div>
-        <div class="preview mono">${esc(d.fn)}</div>
-      </button>`;
-    }).join("");
 
     el.innerHTML = `<div class="docs-layout">
       <nav class="docs-list panel">
         <div class="mono" style="font-size:0.65rem;color:var(--ink-faint);padding:0.35rem 0.5rem">PROJECT PACKS</div>
-        ${projectDocs.map((d) => `<button type="button" class="doc-item ${state.selectedDoc === d.fn ? "active" : ""}" data-doc="${escAttr(d.fn)}"><div class="fn">${esc(d.label)}</div><div class="preview">${esc(d.fn)}</div></button>`).join("")}
+        ${projectDocs.map((d) => docListItemHTML(d)).join("")}
+        <p class="docs-tip">If project packs fail, edge is missing docs/projects — see deploy.</p>
         <div class="mono" style="font-size:0.65rem;color:var(--ink-faint);padding:0.65rem 0.5rem 0.35rem">HQ DOCS</div>
-        ${hqDocs.map((d) => `<button type="button" class="doc-item ${state.selectedDoc === d.fn ? "active" : ""}" data-doc="${escAttr(d.fn)}"><div class="fn">${esc(d.fn)}</div></button>`).join("")}
+        ${hqDocs.map((d) => docListItemHTML(d)).join("")}
       </nav>
       <div class="doc-viewer panel" id="doc-viewer"><div class="loading-state"><div class="spinner"></div></div></div>
     </div>`;
@@ -2473,9 +2514,35 @@
     const viewer = document.getElementById("doc-viewer");
     if (!viewer) return;
     const path = "/docs/" + fn;
-    if (!state.docs[fn]) state.docs[fn] = await loadData(path, { asText: true });
+    if (!state.docs[fn]) {
+      // Prefer preloaded project pack when present so list + viewer share one result.
+      if (fn.startsWith("projects/")) {
+        const id = fn.replace(/^projects\//, "").replace(/\.md$/, "");
+        if (state.projectDocs[id]) state.docs[fn] = state.projectDocs[id];
+      }
+      if (!state.docs[fn]) state.docs[fn] = await loadData(path, { asText: true });
+    }
     const r = state.docs[fn];
-    if (!r.ok) { viewer.innerHTML = unavailableHTML("Doc unavailable", r.path, r.error); return; }
+    paintDocListStatus(fn);
+    if (!r.ok) {
+      viewer.innerHTML = `${unavailableHTML("Doc unavailable", r.path || path, r.error)}
+        <div class="doc-retry-row">
+          <button type="button" class="btn btn-ghost btn-sm" id="doc-retry-btn">
+            <i class="fa-solid fa-rotate-right"></i> Retry
+          </button>
+        </div>`;
+      document.getElementById("doc-retry-btn")?.addEventListener("click", async () => {
+        state.docs[fn] = null;
+        if (fn.startsWith("projects/")) {
+          const id = fn.replace(/^projects\//, "").replace(/\.md$/, "");
+          state.projectDocs[id] = null;
+        }
+        viewer.innerHTML = `<div class="loading-state"><div class="spinner"></div></div>`;
+        paintDocListStatus(fn);
+        await loadAndShowDoc(fn);
+      });
+      return;
+    }
     const overrides = docOverrides();
     const ov = overrides[fn];
     const source = ov ? ov.text : (r.data || "");
@@ -2664,16 +2731,28 @@
     const el = document.getElementById("view-agents");
     if (!el) return;
     if (!state.agents.length) { el.innerHTML = unavailableHTML("Agents", "/agents.json"); return; }
+    const fallbackIcon = {
+      Andrea: "fa-solid fa-clipboard-check",
+      Kimi: "fa-solid fa-crown",
+      Lenny: "fa-solid fa-scale-balanced",
+      Mimi: "fa-solid fa-palette",
+      Nova: "fa-solid fa-rocket",
+      Rosa: "fa-solid fa-comments",
+      Ziggy: "fa-solid fa-bullhorn",
+    };
     const cards = state.agents.map((a) => {
       let c = a.color || "#a78bfa";
       if (isNearGrey(c)) c = "#a78bfa";
-      // map known muddy greens/browns to accents
+      const icon = a.icon || fallbackIcon[a.name] || "fa-solid fa-user-astronaut";
       const initials = (a.name || "?").slice(0, 2).toUpperCase();
-      return `<article class="agent-card panel" style="--agent-c:${escAttr(c)};border-left:4px solid ${escAttr(c)}">
+      return `<article class="agent-card panel" style="--agent-c:${escAttr(c)};border-left:4px solid ${escAttr(c)}" data-agent="${escAttr(a.name || "")}">
         ${a.lead ? `<div class="lead-badge"><span class="status-pill violet">lead</span></div>` : ""}
-        <div class="agent-avatar">${esc(initials)}</div>
+        <div class="agent-avatar" title="${escAttr(a.name || "")}" aria-hidden="true">
+          <i class="${escAttr(icon)}"></i>
+          <span class="agent-initials">${esc(initials)}</span>
+        </div>
         <h3>${esc(a.name)}</h3>
-        <div class="role">${esc(a.role || "")}</div>
+        <div class="role"><i class="${escAttr(icon)}" style="margin-right:0.35rem;opacity:0.85"></i>${esc(a.role || "")}</div>
         <p class="motto">“${esc(a.motto || "")}”</p>
         <div class="mono" style="font-size:0.72rem;color:var(--ink-faint)">${esc(a.nip05 || "")}</div>
         <div class="mono mt-1" style="font-size:0.65rem;color:var(--ink-faint)">${esc(a.file || "")}</div>
@@ -2681,7 +2760,7 @@
     }).join("");
     el.innerHTML = `
       <h2 class="section-title">Agents <span class="accent-rule"></span></h2>
-      <p class="section-sub">From agents.json · near-grey colors retinted for the no-grey rule</p>
+      <p class="section-sub">From agents.json · unique icon per persona · suite NIP-05 identities</p>
       <div class="agents-grid">${cards}</div>`;
   }
 

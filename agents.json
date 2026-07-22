@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "namespace": "giveabit.io",
   "nip05Url": "https://giveabit.io/.well-known/nostr.json",
   "agents": [
@@ -10,7 +10,8 @@
       "nip05": "andrea@giveabit.io",
       "repo": "giveabit",
       "file": "agents/ANDREA.md",
-      "color": "#1f6b3a",
+      "color": "#22c55e",
+      "icon": "fa-solid fa-clipboard-check",
       "lead": false
     },
     {
@@ -20,7 +21,8 @@
       "nip05": "kimi@giveabit.io",
       "repo": "giveabit",
       "file": "agents/KIMI.md",
-      "color": "#c45f00",
+      "color": "#ff8c00",
+      "icon": "fa-solid fa-crown",
       "lead": true
     },
     {
@@ -30,7 +32,8 @@
       "nip05": "lenny@giveabit.io",
       "repo": "giveabit",
       "file": "agents/LENNY.md",
-      "color": "#5c3d7a",
+      "color": "#a78bfa",
+      "icon": "fa-solid fa-scale-balanced",
       "lead": false
     },
     {
@@ -40,7 +43,8 @@
       "nip05": "mimi@giveabit.io",
       "repo": "giveabit",
       "file": "agents/MIMI.md",
-      "color": "#a32020",
+      "color": "#f472b6",
+      "icon": "fa-solid fa-palette",
       "lead": false
     },
     {
@@ -50,7 +54,8 @@
       "nip05": "nova@giveabit.io",
       "repo": "giveabit",
       "file": "agents/NOVA.md",
-      "color": "#1a5f7a",
+      "color": "#38bdf8",
+      "icon": "fa-solid fa-rocket",
       "lead": false
     },
     {
@@ -60,7 +65,8 @@
       "nip05": "rosa@giveabit.io",
       "repo": "giveabit",
       "file": "agents/ROSA.md",
-      "color": "#8a5a00",
+      "color": "#fb923c",
+      "icon": "fa-solid fa-comments",
       "lead": false
     },
     {
@@ -70,7 +76,8 @@
       "nip05": "ziggy@giveabit.io",
       "repo": "giveabit",
       "file": "agents/ZIGGY.md",
-      "color": "#2a4a5c",
+      "color": "#2dd4bf",
+      "icon": "fa-solid fa-bullhorn",
       "lead": false
     }
   ]
