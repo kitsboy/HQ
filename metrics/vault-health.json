@@ -1,14 +1,14 @@
 {
-  "checked_at": "2026-07-23T19:52:52Z",
+  "checked_at": "2026-07-23T20:14:34Z",
   "vault_size_mb": 735.5,
   "structure": {
     "02-Agents": {
       "files": 1,
-      "newest_days_ago": 0.2
+      "newest_days_ago": 0.3
     },
     "03-Projects": {
       "files": 475,
-      "newest_days_ago": 0.2
+      "newest_days_ago": 0.3
     },
     "Obsidian": {
       "files": 538,
@@ -36,8 +36,8 @@
     }
   },
   "staleness_days": {
-    "02-Agents": 0.2,
-    "03-Projects": 0.2,
+    "02-Agents": 0.3,
+    "03-Projects": 0.3,
     "Obsidian": 0.6,
     "docs": 3.5,
     "hermes-payd": 50.3,
