@@ -21,7 +21,7 @@
 
   const TABS = {
     intel: { label: "Intel", icon: "fa-microchip", render: renderIntel },
-    activity: { label: "Activity", icon: "fa-wave-square", render: renderActivity },
+    feed: { label: "Feed", icon: "fa-wave-square", render: renderFeed },
     charts: { label: "Charts", icon: "fa-chart-line", render: renderCharts },
     chat: { label: "Chat", icon: "fa-comment-dots", render: renderChat },
   };
@@ -29,42 +29,30 @@
   let currentTab = "intel";
 
   function bootTabs() {
+    // Tabs are already in control-panel.html — hq.js handles click binding via setTab()
+    // We watch for tab switches via MutationObserver on nav-tab active class
+    
     const nav = document.getElementById("nav-tabs");
     if (!nav) return;
 
-    // Add our tabs
-    for (const [id, cfg] of Object.entries(TABS)) {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "nav-tab";
-      btn.dataset.tab = id;
-      btn.role = "tab";
-      btn.innerHTML = `<i class="fa-solid ${cfg.icon}"></i> ${cfg.label}`;
-      nav.appendChild(btn);
-    }
-
-    // Watch for tab clicks
-    nav.addEventListener("click", function (e) {
-      const btn = e.target.closest(".nav-tab");
-      if (!btn || !btn.dataset.tab) return;
-      const tab = btn.dataset.tab;
-      if (!TABS[tab]) return;
-
-      document.querySelectorAll(".nav-tab").forEach((t) => t.classList.remove("active"));
-      btn.classList.add("active");
-      currentTab = tab;
-      TABS[tab].render();
-    });
-
-    // Observer for existing vault tab
     const observer = new MutationObserver(function () {
       const active = document.querySelector(".nav-tab.active[data-tab]");
       if (active && TABS[active.dataset.tab]) {
-        currentTab = active.dataset.tab;
-        TABS[currentTab].render();
+        const tab = active.dataset.tab;
+        if (tab !== currentTab) {
+          currentTab = tab;
+          TABS[tab].render();
+        }
       }
     });
     observer.observe(nav, { attributes: true, subtree: true, attributeFilter: ["class"] });
+
+    // Render if our tab is already active at load (e.g. from localStorage)
+    const active = document.querySelector(".nav-tab.active[data-tab]");
+    if (active && TABS[active.dataset.tab]) {
+      currentTab = active.dataset.tab;
+      TABS[currentTab].render();
+    }
   }
 
   /* ─── Render: Intel ────────────────────────────────────────────────── */
@@ -147,9 +135,9 @@
     });
   }
 
-  /* ─── Render: Activity ─────────────────────────────────────────────── */
+  /* ─── Render: Feed ─────────────────────────────────────────────── */
 
-  function renderActivity() {
+  function renderFeed() {
     const main = document.getElementById("main-content");
     if (!main) return;
 
