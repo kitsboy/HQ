@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-23T00:45:01Z",
+ "updatedAt": "2026-07-23T00:45:47Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -39,7 +39,7 @@
     "detail": "Up 3 days (healthy)"
    }
   ],
-  "uptimeSec": 524900
+  "uptimeSec": 524947
  },
  "bitcoin": {
   "ok": true,
@@ -464,7 +464,7 @@
      "v": 0
     },
     {
-     "t": "2026-07-23T00:45:01Z",
+     "t": "2026-07-23T00:45:47Z",
      "v": 0
     }
    ]
@@ -856,7 +856,7 @@
      "v": 0
     },
     {
-     "t": "2026-07-23T00:45:01Z",
+     "t": "2026-07-23T00:45:47Z",
      "v": 0
     }
    ]
@@ -1248,8 +1248,8 @@
      "v": 0.09
     },
     {
-     "t": "2026-07-23T00:45:01Z",
-     "v": 0.07
+     "t": "2026-07-23T00:45:47Z",
+     "v": 0.25
     }
    ]
   },
@@ -1640,7 +1640,7 @@
      "v": 3.1
     },
     {
-     "t": "2026-07-23T00:45:01Z",
+     "t": "2026-07-23T00:45:47Z",
      "v": 3.1
     }
    ]
@@ -2032,7 +2032,7 @@
      "v": 959194
     },
     {
-     "t": "2026-07-23T00:45:01Z",
+     "t": "2026-07-23T00:45:47Z",
      "v": 959196
     }
    ]
@@ -2073,9 +2073,9 @@
    "availableGB": 4.6
   },
   "cpu": {
-   "loadAvg1m": 0.07,
-   "loadAvg5m": 0.18,
-   "loadAvg15m": 0.25,
+   "loadAvg1m": 0.25,
+   "loadAvg5m": 0.21,
+   "loadAvg15m": 0.26,
    "uptimeDays": 6.1
   },
   "docker": {
@@ -2088,7 +2088,7 @@
    "MASTER-BRAIN_vault": 0.684,
    "Hermes_skills_config": 0.64,
    "satohash_repo": 0.021,
-   "HQ_repo": 0.016,
+   "HQ_repo": 0.017,
    "LND_data": 0.341,
    "Docker_images": 3.911,
    "Docker_volumes": 0.453,
@@ -2101,9 +2101,9 @@
   "diskFreeGB": 359,
   "memTotalGB": 7.8,
   "memUsedGB": 3.1,
-  "load1": 0.07,
-  "load5": 0.18,
-  "load15": 0.25,
+  "load1": 0.25,
+  "load5": 0.21,
+  "load15": 0.26,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
