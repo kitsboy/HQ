@@ -1,294 +1,362 @@
 {
-  "generated_at": "2026-07-23T20:42:42Z",
+  "generated_at": "2026-07-23T20:46:46Z",
   "events": [
     {
-      "time": 1784839353.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
+      "time": 1784839576.144953,
+      "type": "health",
+      "icon": "\ud83d\udc9a",
+      "text": "Suite health: all 9 sites green / 0 outages / 347 commits/7d across all projects"
     },
     {
-      "time": 1784839351.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "(stream_request_complete, shared=False, tcp_force_closed=0)"
+      "time": 1784839546.144953,
+      "type": "vault",
+      "icon": "\ud83c\udfdb\ufe0f",
+      "text": "Vault: 735.5 MB / 10 projects / 2 handoffs / context map OK"
     },
     {
-      "time": 1784839351.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "conversation_loop: API call #227: model=deepseek/deepseek-v4"
+      "time": 1784839535.0,
+      "type": "service",
+      "icon": "\u2705",
+      "text": "Satohash API: Up 43h \u2014 healthy"
     },
     {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "basic: dashboard-auth-basic: hashed env-supplied password in"
+      "time": 1784839535.0,
+      "type": "service",
+      "icon": "\u2705",
+      "text": "LNbits: Up 43h \u2014 healthy"
     },
     {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "basic: dashboard-auth-basic: no 'secret' configured; generat"
+      "time": 1784839535.0,
+      "type": "service",
+      "icon": "\u2705",
+      "text": "Umami: Up 2d \u2014 healthy"
     },
     {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "try: dashboard-auth: registered provider 'basic' (Username &"
+      "time": 1784839535.0,
+      "type": "service",
+      "icon": "\u2705",
+      "text": "LND: Up 4d \u2014 synced, 7,704 sats on-chain"
     },
     {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "ic' registered dashboard-auth provider: basic (Username & Pa"
+      "time": 1784839535.0,
+      "type": "service",
+      "icon": "\u2705",
+      "text": "LND Postgres: Up 4d \u2014 healthy"
     },
     {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "basic: dashboard-auth-basic: registered password provider (u"
+      "time": 1784839535.0,
+      "type": "bitcoin",
+      "icon": "\u26d3\ufe0f",
+      "text": "Bitcoin: block 959,308 \u2014 LND Neutrino synced, 4 peers"
     },
     {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "pinfra' registered image_gen provider: deepinfra"
-    },
-    {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "' registered image_gen provider: fal"
-    },
-    {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "a' registered image_gen provider: krea"
-    },
-    {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "nai' registered image_gen provider: openai"
-    },
-    {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "nai-codex' registered image_gen provider: openai-codex"
-    },
-    {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "nrouter' registered image_gen provider: openrouter"
-    },
-    {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "nrouter' registered image_gen provider: nous"
-    },
-    {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "' registered image_gen provider: xai"
-    },
-    {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "pinfra' registered video_gen provider: deepinfra"
-    },
-    {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "' registered video_gen provider: fal"
-    },
-    {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "' registered video_gen provider: xai"
-    },
-    {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "-brave-free' registered web provider: brave-free"
-    },
-    {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "-ddgs' registered web provider: ddgs"
-    },
-    {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "-exa' registered web provider: exa"
-    },
-    {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "-firecrawl' registered web provider: firecrawl"
-    },
-    {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "-parallel' registered web provider: parallel"
-    },
-    {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "-searxng' registered web provider: searxng"
-    },
-    {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "-tavily' registered web provider: tavily"
-    },
-    {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "-xai' registered web provider: xai"
-    },
-    {
-      "time": 1784839348.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "overy complete: 53 found, 46 enabled"
-    },
-    {
-      "time": 1784839348.0,
-      "type": "cron_warn",
-      "icon": "\u26a0\ufe0f",
-      "text": "(re)started 7 times in 120s \u2014 backing off 20s to break a res"
-    },
-    {
-      "time": 1784839347.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "wser-firecrawl' registered browser provider: firecrawl"
-    },
-    {
-      "time": 1784836228.0,
-      "type": "handoff",
-      "icon": "\ud83d\udce5",
-      "text": "Done: 1/1 repos"
-    },
-    {
-      "time": 1784836228.0,
-      "type": "handoff",
-      "icon": "\ud83d\udce5",
-      "text": "=================================================="
-    },
-    {
-      "time": 1784836227.0,
-      "type": "handoff",
-      "icon": "\ud83d\udce5",
-      "text": "Done: 1/1 repos"
-    },
-    {
-      "time": 1784836227.0,
-      "type": "handoff",
-      "icon": "\ud83d\udce5",
-      "text": "=================================================="
-    },
-    {
-      "time": 1784836227.0,
-      "type": "handoff",
-      "icon": "\ud83d\udce5",
-      "text": "=================================================="
-    },
-    {
-      "time": 1784836227.0,
-      "type": "handoff",
-      "icon": "\ud83d\udce5",
-      "text": "Handoff bridge: hq"
-    },
-    {
-      "time": 1784836227.0,
-      "type": "handoff",
-      "icon": "\ud83d\udce5",
-      "text": "hq: fetched docs/KIMI-HANDOFF.md (12353 chars)"
-    },
-    {
-      "time": 1784836226.0,
-      "type": "handoff",
-      "icon": "\ud83d\udce5",
-      "text": "=================================================="
-    },
-    {
-      "time": 1784836226.0,
-      "type": "handoff",
-      "icon": "\ud83d\udce5",
-      "text": "Handoff bridge: satohash"
-    },
-    {
-      "time": 1784836226.0,
-      "type": "handoff",
-      "icon": "\ud83d\udce5",
-      "text": "satohash: fetched docs/KIMI-HANDOFF.md (10651 chars)"
-    },
-    {
-      "time": 1784831833.0,
+      "time": 1784839368.0,
       "type": "commit",
-      "icon": "\ud83d\udd28",
-      "text": "HQ Dashboard: chore: refresh status.json [skip deploy]",
+      "icon": "\u2728",
+      "text": "HQ Dashboard: feat: HQ Intelligence v4 \u2014 Intel tabs, activity feed, live charts, project cards, chat panel",
       "repo": "hq"
     },
     {
-      "time": 1784831625.0,
-      "type": "commit",
-      "icon": "\ud83d\udd28",
-      "text": "Stranded: feat: add CF Pages auto-deploy",
-      "repo": "stranded"
+      "time": 1784838825.0,
+      "type": "deploy",
+      "icon": "\ud83d\ude80",
+      "text": "Stranded: CF Pages auto-deploy pushed"
     },
     {
-      "time": 1784831614.0,
-      "type": "commit",
-      "icon": "\ud83d\udd28",
-      "text": "Tadbuy: feat: add CF Pages auto-deploy",
-      "repo": "tadbuy"
+      "time": 1784838814.0,
+      "type": "deploy",
+      "icon": "\ud83d\ude80",
+      "text": "Tadbuy: CF Pages auto-deploy pushed"
     },
     {
-      "time": 1784831598.0,
-      "type": "commit",
-      "icon": "\ud83d\udd28",
-      "text": "Openstrata: feat: add CF Pages auto-deploy",
-      "repo": "openstrata"
+      "time": 1784838798.0,
+      "type": "deploy",
+      "icon": "\ud83d\ude80",
+      "text": "OpenStrata: CF Pages auto-deploy pushed"
     },
     {
-      "time": 1784831597.0,
-      "type": "commit",
-      "icon": "\ud83d\udd28",
-      "text": "Sherpacarta: feat: add CF Pages auto-deploy",
-      "repo": "sherpacarta"
+      "time": 1784838797.0,
+      "type": "deploy",
+      "icon": "\ud83d\ude80",
+      "text": "SherpaCarta: CF Pages auto-deploy pushed"
     },
     {
-      "time": 1784831596.0,
-      "type": "commit",
-      "icon": "\ud83d\udd28",
-      "text": "Motopass: feat: add CF Pages auto-deploy",
-      "repo": "motopass"
+      "time": 1784838796.0,
+      "type": "deploy",
+      "icon": "\ud83d\ude80",
+      "text": "MotoPass: CF Pages auto-deploy pushed"
     },
     {
-      "time": 1784831594.0,
+      "time": 1784838794.0,
+      "type": "deploy",
+      "icon": "\ud83d\ude80",
+      "text": "Katoa: CF Pages auto-deploy pushed"
+    },
+    {
+      "time": 1784838600.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (20:30 UTC)"
+    },
+    {
+      "time": 1784837689.0,
       "type": "commit",
-      "icon": "\ud83d\udd28",
-      "text": "Katoa: feat: add CF Pages auto-deploy",
-      "repo": "katoa"
+      "icon": "\u2728",
+      "text": "HQ Dashboard: feat: vault-health + dep-check + cron-health metrics pipelines",
+      "repo": "hq"
+    },
+    {
+      "time": 1784836800.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (20:00 UTC)"
+    },
+    {
+      "time": 1784836528.0,
+      "type": "commit",
+      "icon": "\u2728",
+      "text": "HQ Dashboard: feat: vault health tab + interactive command panel + handoff bridge",
+      "repo": "hq"
+    },
+    {
+      "time": 1784835000.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (19:30 UTC)"
+    },
+    {
+      "time": 1784833200.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (19:00 UTC)"
+    },
+    {
+      "time": 1784831400.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (18:30 UTC)"
+    },
+    {
+      "time": 1784829600.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (18:00 UTC)"
+    },
+    {
+      "time": 1784827800.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (17:30 UTC)"
+    },
+    {
+      "time": 1784826000.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (17:00 UTC)"
+    },
+    {
+      "time": 1784824200.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (16:30 UTC)"
+    },
+    {
+      "time": 1784822400.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (16:00 UTC)"
+    },
+    {
+      "time": 1784820600.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (15:30 UTC)"
+    },
+    {
+      "time": 1784818800.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (15:00 UTC)"
+    },
+    {
+      "time": 1784817000.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (14:30 UTC)"
+    },
+    {
+      "time": 1784815200.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (14:00 UTC)"
+    },
+    {
+      "time": 1784813400.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (13:30 UTC)"
+    },
+    {
+      "time": 1784811600.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (13:00 UTC)"
+    },
+    {
+      "time": 1784809800.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (12:30 UTC)"
+    },
+    {
+      "time": 1784808000.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (12:00 UTC)"
+    },
+    {
+      "time": 1784806200.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (11:30 UTC)"
+    },
+    {
+      "time": 1784804400.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (11:00 UTC)"
+    },
+    {
+      "time": 1784802600.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (10:30 UTC)"
+    },
+    {
+      "time": 1784800800.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (10:00 UTC)"
+    },
+    {
+      "time": 1784799000.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (09:30 UTC)"
+    },
+    {
+      "time": 1784797200.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (09:00 UTC)"
+    },
+    {
+      "time": 1784795400.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (08:30 UTC)"
+    },
+    {
+      "time": 1784793600.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (08:00 UTC)"
+    },
+    {
+      "time": 1784791800.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (07:30 UTC)"
+    },
+    {
+      "time": 1784790000.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (07:00 UTC)"
+    },
+    {
+      "time": 1784788200.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (06:30 UTC)"
+    },
+    {
+      "time": 1784786400.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (06:00 UTC)"
+    },
+    {
+      "time": 1784784600.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (05:30 UTC)"
+    },
+    {
+      "time": 1784782800.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (05:00 UTC)"
+    },
+    {
+      "time": 1784781000.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (04:30 UTC)"
+    },
+    {
+      "time": 1784779200.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (04:00 UTC)"
+    },
+    {
+      "time": 1784777400.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (03:30 UTC)"
+    },
+    {
+      "time": 1784775600.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (03:00 UTC)"
+    },
+    {
+      "time": 1784773800.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (02:30 UTC)"
+    },
+    {
+      "time": 1784772000.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (02:00 UTC)"
+    },
+    {
+      "time": 1784770200.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (01:30 UTC)"
+    },
+    {
+      "time": 1784768400.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (01:00 UTC)"
+    },
+    {
+      "time": 1784766600.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (00:30 UTC)"
+    },
+    {
+      "time": 1784764800.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "THOR auto-metrics: node stats collected (00:00 UTC)"
     }
   ]
 }
