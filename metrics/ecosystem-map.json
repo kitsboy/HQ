@@ -1,6 +1,6 @@
 {
   "schema": "gab.ecosystem-map.v1",
-  "updatedAt": "2026-07-21T04:37:42Z",
+  "updatedAt": "2026-07-23T02:32:03Z",
   "projects": [
     {
       "id": "satohash",
@@ -21,10 +21,10 @@
       "url": "hq.giveabit.io",
       "api": "",
       "github": "kitsboy/HQ",
-      "version": "2.7.0",
+      "version": "3.19.0",
       "status": "green",
       "health": "200",
-      "lastCommit": "fa8bfa9 chore: refresh status.json + thor-node [skip deploy]",
+      "lastCommit": "b1a9fb0 chore: refresh status.json + thor-node [skip deploy]",
       "synced": "synced",
       "localOnThor": true
     },
@@ -140,13 +140,13 @@
       "role": "Orchestrator + Hermes + Master Brain",
       "host": "Contabo VPS 20",
       "status": "green",
-      "disk": "7% used",
-      "diskFree": "360G",
-      "mem": "2.7Gi used",
-      "memAvail": "5.0Gi",
-      "load": "1.19/1.11/0.70",
-      "uptime": "up 4 days, 3 hours, 41 minutes",
-      "lastSeen": "2026-07-21"
+      "disk": "8% used",
+      "diskFree": "359G",
+      "mem": "3.1Gi used",
+      "memAvail": "4.6Gi",
+      "load": "0.50/0.45/0.34",
+      "uptime": "up 6 days, 1 hour, 35 minutes",
+      "lastSeen": "2026-07-23"
     },
     {
       "id": "m3",
@@ -154,8 +154,8 @@
       "role": "Code + Grok (Mac)",
       "host": "Cams-Laptop",
       "status": "green",
-      "lastPush": "2026-07-20",
-      "lastSeen": "2026-07-20"
+      "lastPush": "2026-07-22",
+      "lastSeen": "2026-07-22"
     },
     {
       "id": "m4",
@@ -264,97 +264,97 @@
   "skills": [
     {
       "name": "auto-git-status",
-      "ageDays": 51,
+      "ageDays": 53,
       "status": "aging",
       "updated": "2026-05-30"
     },
     {
       "name": "browser-harness",
-      "ageDays": 51,
+      "ageDays": 53,
       "status": "aging",
       "updated": "2026-05-30"
     },
     {
       "name": "computer-use",
-      "ageDays": 0,
+      "ageDays": 2,
       "status": "fresh",
       "updated": "2026-07-20"
     },
     {
       "name": "current-tasks",
-      "ageDays": 4,
+      "ageDays": 6,
       "status": "fresh",
       "updated": "2026-07-16"
     },
     {
       "name": "deployment-workflow",
-      "ageDays": 7,
+      "ageDays": 9,
       "status": "fresh",
       "updated": "2026-07-13"
     },
     {
       "name": "dogfood",
-      "ageDays": 29,
-      "status": "fresh",
+      "ageDays": 31,
+      "status": "aging",
       "updated": "2026-06-21"
     },
     {
       "name": "github-sync",
-      "ageDays": 18,
+      "ageDays": 20,
       "status": "fresh",
       "updated": "2026-07-02"
     },
     {
       "name": "hermes-desktop-plugins",
-      "ageDays": 0,
+      "ageDays": 2,
       "status": "fresh",
       "updated": "2026-07-20"
     },
     {
       "name": "kanban-worker",
-      "ageDays": 51,
+      "ageDays": 53,
       "status": "aging",
       "updated": "2026-05-30"
     },
     {
       "name": "nova-product-management",
-      "ageDays": 6,
+      "ageDays": 8,
       "status": "fresh",
       "updated": "2026-07-14"
     },
     {
       "name": "project-brief",
-      "ageDays": 6,
+      "ageDays": 8,
       "status": "fresh",
       "updated": "2026-07-14"
     },
     {
       "name": "propagate-template",
-      "ageDays": 25,
+      "ageDays": 26,
       "status": "fresh",
       "updated": "2026-06-26"
     },
     {
       "name": "quick-backup",
-      "ageDays": 25,
+      "ageDays": 27,
       "status": "fresh",
       "updated": "2026-06-26"
     },
     {
       "name": "satohash-orchestrator",
-      "ageDays": 4,
+      "ageDays": 6,
       "status": "fresh",
       "updated": "2026-07-17"
     },
     {
       "name": "task",
-      "ageDays": 47,
+      "ageDays": 49,
       "status": "aging",
       "updated": "2026-06-03"
     },
     {
       "name": "yuanbao",
-      "ageDays": 4,
+      "ageDays": 6,
       "status": "fresh",
       "updated": "2026-07-17"
     }
@@ -373,7 +373,7 @@
       "name": "LND",
       "type": "Lightning Node (Neutrino)",
       "status": "green",
-      "detail": "Up 34 hours (healthy)"
+      "detail": "Up 3 days (healthy)"
     },
     {
       "id": "satohash-api",
@@ -387,41 +387,41 @@
       "name": "Redis",
       "type": "Satohash Cache",
       "status": "green",
-      "detail": "Up 24 hours"
+      "detail": "Up 2 days"
     },
     {
       "id": "postgres",
       "name": "PostgreSQL",
       "type": "LNbits Database",
       "status": "green",
-      "detail": "Up 2 days (healthy)"
+      "detail": "Up 3 days (healthy)"
     }
   ],
   "recentActivity": [
     {
       "repo": "hq",
-      "commit": "fa8bfa9 chore: refresh status.json + thor-node [skip deploy]",
-      "timestamp": "2026-07-21"
+      "commit": "b1a9fb0 chore: refresh status.json + thor-node [skip deploy]",
+      "timestamp": "2026-07-23"
     },
     {
       "repo": "hq",
-      "commit": "d3f036a chore: refresh status.json + thor-node [skip deploy]",
-      "timestamp": "2026-07-21"
+      "commit": "106e922 chore: thor auto-metrics 00:30 (live LND)",
+      "timestamp": "2026-07-23"
     },
     {
       "repo": "hq",
-      "commit": "c8707ba fix(ci): use || true for optional file copies in bui",
-      "timestamp": "2026-07-21"
+      "commit": "cfc9349 chore: thor auto-metrics 00:16 (live LND)",
+      "timestamp": "2026-07-23"
     },
     {
       "repo": "satohash",
       "commit": "14c30cd docs: Kimi mega-handoff 2026-07-20 (ops, HQ v2.5, le",
-      "timestamp": "2026-07-21"
+      "timestamp": "2026-07-23"
     },
     {
       "repo": "satohash",
       "commit": "0810dff docs: Kimi ops-clean handoff 2026-07-20",
-      "timestamp": "2026-07-21"
+      "timestamp": "2026-07-23"
     }
   ],
   "metadata": {
@@ -430,6 +430,6 @@
     "machineCount": 3,
     "activeCrons": 28,
     "skillCount": 16,
-    "vaultJournals": 116
+    "vaultJournals": 117
   }
 }
