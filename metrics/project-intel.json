@@ -1,0 +1,203 @@
+{
+  "checked_at": "2026-07-23T20:42:31Z",
+  "projects": [
+    {
+      "slug": "giveabit",
+      "name": "Give A Bit",
+      "repo": "kitsboy/giveabit",
+      "site_url": "https://giveabit.io",
+      "last_commit": {
+        "sha": "f8f049d",
+        "message": "fix: use https for Umami analytics script URL",
+        "author": "Cam",
+        "date": "2026-07-22T03:05:52Z",
+        "url": "https://github.com/kitsboy/giveabit/commit/f8f049df850822fbd007b9e79ad5775c8f7c3a4f"
+      },
+      "recent_commits": [
+        "fix: use https for Umami analytics script URL",
+        "docs: normalize .ai_docs filenames to protocol names",
+        "docs: LATEST-UPDATE tip SHA"
+      ],
+      "commits_7d": 11,
+      "health": "green",
+      "cf_project": "giveabit",
+      "open_issues": 0
+    },
+    {
+      "slug": "satohash",
+      "name": "Satohash",
+      "repo": "kitsboy/satohash",
+      "site_url": "https://satohash.io",
+      "last_commit": {
+        "sha": "228ad10",
+        "message": "fix(pages): drop metrics 302 so static metrics.json is served",
+        "author": "Cam",
+        "date": "2026-07-22T03:09:21Z",
+        "url": "https://github.com/kitsboy/satohash/commit/228ad10ee3df0fc11eb7dfebdaccfdadc8985313"
+      },
+      "recent_commits": [
+        "fix(pages): drop metrics 302 so static metrics.json is serve",
+        "fix(pages): serve /metrics.json as static build mirror",
+        "fix(pages): proxy /metrics.json to api.satohash.io"
+      ],
+      "commits_7d": 41,
+      "health": "green",
+      "cf_project": "satohash",
+      "open_issues": 1
+    },
+    {
+      "slug": "hq",
+      "name": "HQ Dashboard",
+      "repo": "kitsboy/HQ",
+      "site_url": "https://hq.giveabit.io",
+      "last_commit": {
+        "sha": "b658982",
+        "message": "chore: refresh status.json [skip deploy]",
+        "author": "hq-status-bot",
+        "date": "2026-07-23T20:37:13Z",
+        "url": "https://github.com/kitsboy/HQ/commit/b65898290130adb1121e504951b201b1c2a80b77"
+      },
+      "recent_commits": [
+        "chore: refresh status.json [skip deploy]",
+        "chore: thor auto-metrics 20:30 (live LND)",
+        "chore: refresh status.json + thor-node [skip deploy]"
+      ],
+      "commits_7d": 100,
+      "health": "green",
+      "cf_project": "giveabit-hq",
+      "open_issues": 0
+    },
+    {
+      "slug": "katoa",
+      "name": "Katoa",
+      "repo": "kitsboy/katoa",
+      "site_url": "https://katoa.org",
+      "last_commit": {
+        "sha": "e1801fc",
+        "message": "feat: add CF Pages auto-deploy",
+        "author": "Sherpa",
+        "date": "2026-07-23T20:33:14Z",
+        "url": "https://github.com/kitsboy/katoa/commit/e1801fc51e529efe09d6f97acd148d79dd7d4076"
+      },
+      "recent_commits": [
+        "feat: add CF Pages auto-deploy",
+        "chore: add generate-metrics script to build chain",
+        "feat: add generate-metrics.ts \u2014 counts creators, wishlists, "
+      ],
+      "commits_7d": 10,
+      "health": "green",
+      "cf_project": "katoa",
+      "open_issues": 0
+    },
+    {
+      "slug": "tadbuy",
+      "name": "Tadbuy",
+      "repo": "kitsboy/tadbuy",
+      "site_url": "https://tadbuy.giveabit.io",
+      "last_commit": {
+        "sha": "927c659",
+        "message": "feat: add CF Pages auto-deploy",
+        "author": "Sherpa",
+        "date": "2026-07-23T20:33:34Z",
+        "url": "https://github.com/kitsboy/tadbuy/commit/927c659b9eeba18822adeb9dbf6b5bf156a35978"
+      },
+      "recent_commits": [
+        "feat: add CF Pages auto-deploy",
+        "feat: add CF Pages auto-deploy",
+        "init"
+      ],
+      "commits_7d": 41,
+      "health": "green",
+      "cf_project": "tadbuy",
+      "open_issues": 1
+    },
+    {
+      "slug": "stranded",
+      "name": "Stranded",
+      "repo": "kitsboy/stranded",
+      "site_url": "https://stranded.giveabit.io",
+      "last_commit": {
+        "sha": "f5921c5",
+        "message": "feat: add CF Pages auto-deploy",
+        "author": "Sherpa",
+        "date": "2026-07-23T20:33:45Z",
+        "url": "https://github.com/kitsboy/stranded/commit/f5921c52c12675025a198fa5ef0380dce9c9ae2e"
+      },
+      "recent_commits": [
+        "feat: add CF Pages auto-deploy",
+        "feat: add CF Pages auto-deploy",
+        "feat: add Umami tracking and gab.product-metrics.v1 for HQ"
+      ],
+      "commits_7d": 9,
+      "health": "green",
+      "cf_project": "strandedbuild",
+      "open_issues": 0
+    },
+    {
+      "slug": "motopass",
+      "name": "Motopass",
+      "repo": "kitsboy/motopass",
+      "site_url": "https://motopass.giveabit.io",
+      "last_commit": {
+        "sha": "9820324",
+        "message": "feat: add CF Pages auto-deploy",
+        "author": "Sherpa",
+        "date": "2026-07-23T20:33:16Z",
+        "url": "https://github.com/kitsboy/motopass/commit/98203240e87449ae7963bd08767bfa62f9bb39ce"
+      },
+      "recent_commits": [
+        "feat: add CF Pages auto-deploy",
+        "Add Umami tracking and public/metrics.json for HQ.",
+        "chore: add GROK-BOOT boot instructions for Grok"
+      ],
+      "commits_7d": 7,
+      "health": "green",
+      "cf_project": "motopass",
+      "open_issues": 0
+    },
+    {
+      "slug": "sherpacarta",
+      "name": "Sherpacarta",
+      "repo": "kitsboy/sherpacarta",
+      "site_url": "https://sherpacarta.org",
+      "last_commit": {
+        "sha": "9253994",
+        "message": "feat: add CF Pages auto-deploy",
+        "author": "Sherpa",
+        "date": "2026-07-23T20:33:17Z",
+        "url": "https://github.com/kitsboy/sherpacarta/commit/92539949a0936cedc647cdb6a986216a9d94b09b"
+      },
+      "recent_commits": [
+        "feat: add CF Pages auto-deploy",
+        "docs: point LATEST-UPDATE at HEAD",
+        "docs: correct LATEST-UPDATE HEAD SHA"
+      ],
+      "commits_7d": 11,
+      "health": "green",
+      "cf_project": "sherpacarta",
+      "open_issues": 0
+    },
+    {
+      "slug": "openstrata",
+      "name": "Openstrata",
+      "repo": "kitsboy/openstrata",
+      "site_url": "https://openstrata.giveabit.io",
+      "last_commit": {
+        "sha": "9498290",
+        "message": "feat: add CF Pages auto-deploy",
+        "author": "Sherpa",
+        "date": "2026-07-23T20:33:18Z",
+        "url": "https://github.com/kitsboy/openstrata/commit/949829028054a538fc8f90c172060c78c9d43f0a"
+      },
+      "recent_commits": [
+        "feat: add CF Pages auto-deploy",
+        "docs: Kimi mega-handoff 2026-07-20 (ops, HQ v2.5, less-chat,",
+        "docs: add AGENTS.md, GROK-SESSION-PROTOCOL, DILIGENCE, docs/"
+      ],
+      "commits_7d": 3,
+      "health": "green",
+      "cf_project": "openstrata",
+      "open_issues": 0
+    }
+  ]
+}

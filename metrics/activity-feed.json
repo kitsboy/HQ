@@ -1,0 +1,294 @@
+{
+  "generated_at": "2026-07-23T20:42:42Z",
+  "events": [
+    {
+      "time": 1784839353.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "auth: using NAS invoke JWT"
+    },
+    {
+      "time": 1784839351.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "(stream_request_complete, shared=False, tcp_force_closed=0)"
+    },
+    {
+      "time": 1784839351.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "conversation_loop: API call #227: model=deepseek/deepseek-v4"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "basic: dashboard-auth-basic: hashed env-supplied password in"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "basic: dashboard-auth-basic: no 'secret' configured; generat"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "try: dashboard-auth: registered provider 'basic' (Username &"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "ic' registered dashboard-auth provider: basic (Username & Pa"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "basic: dashboard-auth-basic: registered password provider (u"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "pinfra' registered image_gen provider: deepinfra"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "' registered image_gen provider: fal"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "a' registered image_gen provider: krea"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "nai' registered image_gen provider: openai"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "nai-codex' registered image_gen provider: openai-codex"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "nrouter' registered image_gen provider: openrouter"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "nrouter' registered image_gen provider: nous"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "' registered image_gen provider: xai"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "pinfra' registered video_gen provider: deepinfra"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "' registered video_gen provider: fal"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "' registered video_gen provider: xai"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-brave-free' registered web provider: brave-free"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-ddgs' registered web provider: ddgs"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-exa' registered web provider: exa"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-firecrawl' registered web provider: firecrawl"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-parallel' registered web provider: parallel"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-searxng' registered web provider: searxng"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-tavily' registered web provider: tavily"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-xai' registered web provider: xai"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "overy complete: 53 found, 46 enabled"
+    },
+    {
+      "time": 1784839348.0,
+      "type": "cron_warn",
+      "icon": "\u26a0\ufe0f",
+      "text": "(re)started 7 times in 120s \u2014 backing off 20s to break a res"
+    },
+    {
+      "time": 1784839347.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "wser-firecrawl' registered browser provider: firecrawl"
+    },
+    {
+      "time": 1784836228.0,
+      "type": "handoff",
+      "icon": "\ud83d\udce5",
+      "text": "Done: 1/1 repos"
+    },
+    {
+      "time": 1784836228.0,
+      "type": "handoff",
+      "icon": "\ud83d\udce5",
+      "text": "=================================================="
+    },
+    {
+      "time": 1784836227.0,
+      "type": "handoff",
+      "icon": "\ud83d\udce5",
+      "text": "Done: 1/1 repos"
+    },
+    {
+      "time": 1784836227.0,
+      "type": "handoff",
+      "icon": "\ud83d\udce5",
+      "text": "=================================================="
+    },
+    {
+      "time": 1784836227.0,
+      "type": "handoff",
+      "icon": "\ud83d\udce5",
+      "text": "=================================================="
+    },
+    {
+      "time": 1784836227.0,
+      "type": "handoff",
+      "icon": "\ud83d\udce5",
+      "text": "Handoff bridge: hq"
+    },
+    {
+      "time": 1784836227.0,
+      "type": "handoff",
+      "icon": "\ud83d\udce5",
+      "text": "hq: fetched docs/KIMI-HANDOFF.md (12353 chars)"
+    },
+    {
+      "time": 1784836226.0,
+      "type": "handoff",
+      "icon": "\ud83d\udce5",
+      "text": "=================================================="
+    },
+    {
+      "time": 1784836226.0,
+      "type": "handoff",
+      "icon": "\ud83d\udce5",
+      "text": "Handoff bridge: satohash"
+    },
+    {
+      "time": 1784836226.0,
+      "type": "handoff",
+      "icon": "\ud83d\udce5",
+      "text": "satohash: fetched docs/KIMI-HANDOFF.md (10651 chars)"
+    },
+    {
+      "time": 1784831833.0,
+      "type": "commit",
+      "icon": "\ud83d\udd28",
+      "text": "HQ Dashboard: chore: refresh status.json [skip deploy]",
+      "repo": "hq"
+    },
+    {
+      "time": 1784831625.0,
+      "type": "commit",
+      "icon": "\ud83d\udd28",
+      "text": "Stranded: feat: add CF Pages auto-deploy",
+      "repo": "stranded"
+    },
+    {
+      "time": 1784831614.0,
+      "type": "commit",
+      "icon": "\ud83d\udd28",
+      "text": "Tadbuy: feat: add CF Pages auto-deploy",
+      "repo": "tadbuy"
+    },
+    {
+      "time": 1784831598.0,
+      "type": "commit",
+      "icon": "\ud83d\udd28",
+      "text": "Openstrata: feat: add CF Pages auto-deploy",
+      "repo": "openstrata"
+    },
+    {
+      "time": 1784831597.0,
+      "type": "commit",
+      "icon": "\ud83d\udd28",
+      "text": "Sherpacarta: feat: add CF Pages auto-deploy",
+      "repo": "sherpacarta"
+    },
+    {
+      "time": 1784831596.0,
+      "type": "commit",
+      "icon": "\ud83d\udd28",
+      "text": "Motopass: feat: add CF Pages auto-deploy",
+      "repo": "motopass"
+    },
+    {
+      "time": 1784831594.0,
+      "type": "commit",
+      "icon": "\ud83d\udd28",
+      "text": "Katoa: feat: add CF Pages auto-deploy",
+      "repo": "katoa"
+    }
+  ]
+}
