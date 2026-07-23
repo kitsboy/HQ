@@ -73,6 +73,11 @@
     docs: "#e879f9",
     agents: "#fb923c",
     domains: "#c084fc",
+    vault: "#a78bfa",
+    intel: "#06b6d4",
+    feed: "#67e8f9",
+    charts: "#f59e0b",
+    chat: "#22c55e",
   };
 
   const DOCS_HQ = [

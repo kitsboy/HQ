@@ -1,53 +1,64 @@
 {
-  "checked_at": "2026-07-23T21:00:31Z",
-  "vault_size_mb": 735.5,
+  "checked_at": "2026-07-23T23:03:11Z",
+  "vault_size_mb": 735.2,
   "structure": {
     "02-Agents": {
       "files": 1,
-      "newest_days_ago": 0.3
+      "newest_days_ago": 0.4,
+      "oldest_days_ago": 0.4
     },
     "03-Projects": {
-      "files": 475,
-      "newest_days_ago": 0.3
+      "files": 2593,
+      "newest_days_ago": 0.4,
+      "oldest_days_ago": 0.4
     },
     "Obsidian": {
-      "files": 538,
-      "newest_days_ago": 0.6
+      "files": 665,
+      "newest_days_ago": 0.0,
+      "oldest_days_ago": 72.2
     },
     "bin": {
-      "files": 0,
-      "newest_days_ago": 0
+      "files": 4,
+      "newest_days_ago": 9.8,
+      "oldest_days_ago": 43.0
     },
     "docs": {
       "files": 2,
-      "newest_days_ago": 3.6
+      "newest_days_ago": 3.7,
+      "oldest_days_ago": 3.7
     },
     "hermes-payd": {
-      "files": 4,
-      "newest_days_ago": 50.3
+      "files": 7,
+      "newest_days_ago": 29.7,
+      "oldest_days_ago": 50.7
     },
     "infrastructure": {
-      "files": 1,
-      "newest_days_ago": 1.8
+      "files": 7,
+      "newest_days_ago": 1.8,
+      "oldest_days_ago": 6.0
     },
     "secrets": {
-      "files": 0,
-      "newest_days_ago": 0
+      "files": 6,
+      "newest_days_ago": 1.9,
+      "oldest_days_ago": 5.2
     }
   },
   "staleness_days": {
-    "02-Agents": 0.3,
-    "03-Projects": 0.3,
-    "Obsidian": 0.6,
-    "docs": 3.6,
-    "hermes-payd": 50.3,
-    "infrastructure": 1.8
+    "02-Agents": 0.4,
+    "03-Projects": 0.4,
+    "Obsidian": 0.0,
+    "bin": 9.8,
+    "docs": 3.7,
+    "hermes-payd": 29.7,
+    "infrastructure": 1.8,
+    "secrets": 1.9
   },
   "project_count": 10,
-  "handoff_count": 2,
+  "handoff_count": 30,
   "has_context_map": true,
   "issues": [
-    "hermes-payd: oldest file 50.3d old"
+    "bin: newest file 9.8d old",
+    "hermes-payd: oldest file 50.7d old \u2014 no activity in 29.7d"
   ],
   "disk_used": "28G",
   "disk_avail": "360G",
