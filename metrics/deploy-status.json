@@ -1,0 +1,71 @@
+{
+  "checked_at": "2026-07-23T23:41:20Z",
+  "deploys": [
+    {
+      "slug": "satohash",
+      "repo": "kitsboy/satohash",
+      "status": "success",
+      "created_at": "2026-07-22T03:09:29Z",
+      "updated_at": "2026-07-22T03:10:59Z",
+      "run_url": "https://github.com/kitsboy/satohash/actions/runs/29887710801"
+    },
+    {
+      "slug": "giveabit",
+      "repo": "kitsboy/giveabit",
+      "status": "no_runs"
+    },
+    {
+      "slug": "hq",
+      "repo": "kitsboy/HQ",
+      "status": "success",
+      "created_at": "2026-07-23T23:31:56Z",
+      "updated_at": "2026-07-23T23:32:25Z",
+      "run_url": "https://github.com/kitsboy/HQ/actions/runs/30053481185"
+    },
+    {
+      "slug": "katoa",
+      "repo": "kitsboy/katoa",
+      "status": "failure",
+      "created_at": "2026-07-23T20:33:17Z",
+      "updated_at": "2026-07-23T20:33:36Z",
+      "run_url": "https://github.com/kitsboy/katoa/actions/runs/30042569673"
+    },
+    {
+      "slug": "tadbuy",
+      "repo": "kitsboy/tadbuy",
+      "status": "failure",
+      "created_at": "2026-07-23T20:33:38Z",
+      "updated_at": "2026-07-23T20:34:08Z",
+      "run_url": "https://github.com/kitsboy/tadbuy/actions/runs/30042595543"
+    },
+    {
+      "slug": "stranded",
+      "repo": "kitsboy/stranded",
+      "status": "failure",
+      "created_at": "2026-07-23T20:33:49Z",
+      "updated_at": "2026-07-23T20:34:29Z",
+      "run_url": "https://github.com/kitsboy/stranded/actions/runs/30042608192"
+    },
+    {
+      "slug": "motopass",
+      "repo": "kitsboy/motopass",
+      "status": "failure",
+      "created_at": "2026-07-23T20:33:18Z",
+      "updated_at": "2026-07-23T20:33:40Z",
+      "run_url": "https://github.com/kitsboy/motopass/actions/runs/30042571610"
+    },
+    {
+      "slug": "sherpacarta",
+      "repo": "kitsboy/sherpacarta",
+      "status": "failure",
+      "created_at": "2026-07-23T20:33:20Z",
+      "updated_at": "2026-07-23T20:33:44Z",
+      "run_url": "https://github.com/kitsboy/sherpacarta/actions/runs/30042573822"
+    },
+    {
+      "slug": "openstrata",
+      "repo": "kitsboy/openstrata",
+      "status": "no_runs"
+    }
+  ]
+}

@@ -9,6 +9,8 @@
   const ACTIVITY_URL = "/metrics/activity-feed.json";
   const VAULT_URL = "/metrics/vault-health.json";
   const ECOSYSTEM_URL = "/metrics/ecosystem-map.json";
+  const DEPLOY_URL = "/metrics/deploy-status.json";
+  const DIAGNOSE_URL = "/metrics/auto-diagnose.json";
 
   const COLORS = {
     green: "#22c55e", amber: "#eab308", red: "#ef4444",
@@ -141,7 +143,9 @@
     Promise.all([
       fetch(VAULT_URL).then(r => r.ok ? r.json() : null),
       fetch(INTEL_URL).then(r => r.ok ? r.json() : null),
-    ]).then(([vault, intel]) => {
+      fetch(DEPLOY_URL).then(r => r.ok ? r.json() : null),
+      fetch(DIAGNOSE_URL).then(r => r.ok ? r.json() : null),
+    ]).then(([vault, intel, deploy, diagnose]) => {
       let html = `<div class="section-title"><i class="fa-solid fa-chart-line"></i> System Charts</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;">`;
 
@@ -185,6 +189,36 @@
             <div><div class="mono" style="font-size:0.65rem;opacity:0.6">Issues</div><div style="font-size:1.1rem;font-weight:600">${vault.issues ? vault.issues.length : 0}</div></div>
           </div>
         </div>`;
+      }
+
+      // Deploy status
+      if (deploy && deploy.deploys) {
+        html += `<div class="section-title" style="margin-top:1.5rem;border-top:1px solid var(--border);padding-top:1rem;">
+          <i class="fa-solid fa-rocket"></i> Deploys</div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:0.5rem;">`;
+        for (const d of deploy.deploys) {
+          const icon = d.status === "success" ? "✅" : d.status === "failure" ? "❌" : "⏳";
+          const col = d.status === "success" ? "#22c55e" : d.status === "failure" ? "#ef4444" : "#eab308";
+          html += `<div style="background:var(--card);border-radius:8px;padding:0.5rem;text-align:center;border-left:3px solid ${col};font-size:0.75rem;">
+            <strong>${esc(d.slug)}</strong><br><span>${icon}</span>
+          </div>`;
+        }
+        html += `</div>`;
+      }
+
+      // Auto-diagnose
+      if (diagnose) {
+        if (diagnose.new_alerts && diagnose.new_alerts.length > 0) {
+          html += `<div style="margin-top:1rem;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:0.75rem;">`;
+          for (const a of diagnose.new_alerts) {
+            html += `<div style="font-size:0.85rem;margin-bottom:0.25rem;">🔴 ${esc(a)}</div>`;
+          }
+          html += `</div>`;
+        } else {
+          const s = diagnose.summary || {};
+          html += `<div style="margin-top:1rem;padding:0.75rem;background:var(--card);border-radius:8px;font-size:0.85rem;border-left:3px solid #22c55e;">
+            ✅ All systems healthy · ${s.sites_healthy || "?"}/${s.sites_total || "?"} sites
+          </div>`;
+        }
       }
 
       html += `</div>`;

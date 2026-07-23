@@ -1,185 +1,192 @@
 {
-  "generated_at": "2026-07-23T21:45:33Z",
+  "generated_at": "2026-07-23T23:41:20Z",
   "events": [
     {
-      "time": 1784843133.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "or-auto-metrics' (ID: 42cdc3e9bd97)"
-    },
-    {
-      "time": 1784843133.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "ANT: You are running as a scheduled cron job. DELIVERY: Your"
-    },
-    {
-      "time": 1784843133.0,
+      "time": 1784850078.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "al pool: no available entries (all exhausted or empty)"
     },
     {
-      "time": 1784843133.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "ite-health-alert' (ID: d62af99564f5)"
-    },
-    {
-      "time": 1784843133.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "ANT: You are running as a scheduled cron job. DELIVERY: Your"
-    },
-    {
-      "time": 1784843133.0,
+      "time": 1784850078.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1784843133.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "97': loaded credential pool for provider nous with 1 entries"
-    },
-    {
-      "time": 1784843133.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "al pool: no available entries (all exhausted or empty)"
-    },
-    {
-      "time": 1784843133.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
-    },
-    {
-      "time": 1784843132.0,
-      "type": "cron_warn",
-      "icon": "\u26a0\ufe0f",
-      "text": "nstance is already running (PID 1987053, HERMES_HOME=/root/."
-    },
-    {
-      "time": 1784843122.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "' registered image_gen provider: fal"
-    },
-    {
-      "time": 1784843122.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "a' registered image_gen provider: krea"
-    },
-    {
-      "time": 1784843122.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "nai' registered image_gen provider: openai"
-    },
-    {
-      "time": 1784843122.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "nai-codex' registered image_gen provider: openai-codex"
-    },
-    {
-      "time": 1784843122.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "nrouter' registered image_gen provider: openrouter"
-    },
-    {
-      "time": 1784843122.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "nrouter' registered image_gen provider: nous"
-    },
-    {
-      "time": 1784843122.0,
+      "time": 1784850077.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "' registered image_gen provider: xai"
     },
     {
-      "time": 1784843122.0,
+      "time": 1784850077.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "pinfra' registered video_gen provider: deepinfra"
     },
     {
-      "time": 1784843122.0,
+      "time": 1784850077.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "' registered video_gen provider: fal"
     },
     {
-      "time": 1784843122.0,
+      "time": 1784850077.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "' registered video_gen provider: xai"
     },
     {
-      "time": 1784843122.0,
+      "time": 1784850077.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "-brave-free' registered web provider: brave-free"
     },
     {
-      "time": 1784843122.0,
+      "time": 1784850077.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "-ddgs' registered web provider: ddgs"
     },
     {
-      "time": 1784843122.0,
+      "time": 1784850077.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "-exa' registered web provider: exa"
     },
     {
-      "time": 1784843122.0,
+      "time": 1784850077.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "-firecrawl' registered web provider: firecrawl"
     },
     {
-      "time": 1784843122.0,
+      "time": 1784850077.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "-parallel' registered web provider: parallel"
     },
     {
-      "time": 1784843122.0,
+      "time": 1784850077.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "-searxng' registered web provider: searxng"
     },
     {
-      "time": 1784843122.0,
+      "time": 1784850077.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "-tavily' registered web provider: tavily"
     },
     {
-      "time": 1784843122.0,
+      "time": 1784850077.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "-xai' registered web provider: xai"
     },
     {
-      "time": 1784843122.0,
+      "time": 1784850077.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "overy complete: 53 found, 46 enabled"
     },
     {
-      "time": 1784843122.0,
+      "time": 1784850077.0,
       "type": "cron_warn",
       "icon": "\u26a0\ufe0f",
       "text": "(re)started 6 times in 120s \u2014 backing off 10s to break a res"
+    },
+    {
+      "time": 1784850076.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "wser-browserbase' registered browser provider: browserbase"
+    },
+    {
+      "time": 1784850076.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "wser-firecrawl' registered browser provider: firecrawl"
+    },
+    {
+      "time": 1784850076.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "basic: dashboard-auth-basic: hashed env-supplied password in"
+    },
+    {
+      "time": 1784850076.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "basic: dashboard-auth-basic: no 'secret' configured; generat"
+    },
+    {
+      "time": 1784850076.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "try: dashboard-auth: registered provider 'basic' (Username &"
+    },
+    {
+      "time": 1784850076.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "ic' registered dashboard-auth provider: basic (Username & Pa"
+    },
+    {
+      "time": 1784850076.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "basic: dashboard-auth-basic: registered password provider (u"
+    },
+    {
+      "time": 1784850076.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "pinfra' registered image_gen provider: deepinfra"
+    },
+    {
+      "time": 1784850076.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "' registered image_gen provider: fal"
+    },
+    {
+      "time": 1784850076.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "a' registered image_gen provider: krea"
+    },
+    {
+      "time": 1784850076.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "nai' registered image_gen provider: openai"
+    },
+    {
+      "time": 1784850076.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "nai-codex' registered image_gen provider: openai-codex"
+    },
+    {
+      "time": 1784850076.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "nrouter' registered image_gen provider: openrouter"
+    },
+    {
+      "time": 1784850076.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "nrouter' registered image_gen provider: nous"
+    },
+    {
+      "time": 1784842313.0,
+      "type": "commit",
+      "icon": "\ud83d\udd28",
+      "text": "HQ Dashboard: chore: thor auto-metrics 23:31 (live LND)",
+      "repo": "hq"
     },
     {
       "time": 1784836228.0,
@@ -240,13 +247,6 @@
       "type": "handoff",
       "icon": "\ud83d\udce5",
       "text": "satohash: fetched docs/KIMI-HANDOFF.md (10651 chars)"
-    },
-    {
-      "time": 1784834106.0,
-      "type": "commit",
-      "icon": "\ud83d\udd28",
-      "text": "HQ Dashboard: chore: thor auto-metrics 21:15 (live LND)",
-      "repo": "hq"
     },
     {
       "time": 1784831625.0,
