@@ -1,6 +1,6 @@
-/* Give A Bit HQ — Intelligence Tab (Project Cards, Activity, Charts, Chat)
- * Adds: Intel, Activity, Charts tabs to HQ
- * Self-contained — no hq.js modification needed.
+/* Give A Bit HQ — Intelligence Tab (Intel, Feed, Charts, Chat)
+ * Tabs are in control-panel.html — hq.js handles click/class binding.
+ * We poll for active tab changes (simple, reliable, no MutationObserver races).
  */
 (function () {
   "use strict";
@@ -17,57 +17,42 @@
     motopass: "#f43f5e", sherpacarta: "#0ea5e9", openstrata: "#84cc16",
   };
 
-  /* ─── Tab System ───────────────────────────────────────────────────── */
+  const TABS = ["intel", "feed", "charts", "chat", "vault"];
+  let currentTab = "";
 
-  const TABS = {
-    intel: { label: "Intel", icon: "fa-microchip", render: renderIntel },
-    feed: { label: "Feed", icon: "fa-wave-square", render: renderFeed },
-    charts: { label: "Charts", icon: "fa-chart-line", render: renderCharts },
-    chat: { label: "Chat", icon: "fa-comment-dots", render: renderChat },
-  };
-
-  let currentTab = "intel";
-
-  function bootTabs() {
-    // Tabs are already in control-panel.html — hq.js handles click binding via setTab()
-    // We watch for tab switches via MutationObserver on nav-tab active class
-    
-    const nav = document.getElementById("nav-tabs");
-    if (!nav) return;
-
-    const observer = new MutationObserver(function () {
+  /* ─── Poll for active tab every 300ms ──────────────────────────────── */
+  function startTabWatcher() {
+    setInterval(function () {
       const active = document.querySelector(".nav-tab.active[data-tab]");
-      if (active && TABS[active.dataset.tab]) {
-        const tab = active.dataset.tab;
-        if (tab !== currentTab) {
-          currentTab = tab;
-          TABS[tab].render();
-        }
-      }
-    });
-    observer.observe(nav, { attributes: true, subtree: true, attributeFilter: ["class"] });
+      if (!active) return;
+      const name = active.dataset.tab;
+      if (name === currentTab || !TABS.includes(name)) return;
+      currentTab = name;
+      routeTab(name);
+    }, 300);
+  }
 
-    // Render if our tab is already active at load (e.g. from localStorage)
-    const active = document.querySelector(".nav-tab.active[data-tab]");
-    if (active && TABS[active.dataset.tab]) {
-      currentTab = active.dataset.tab;
-      TABS[currentTab].render();
+  function routeTab(name) {
+    switch (name) {
+      case "intel":   renderIntel(); break;
+      case "feed":    renderFeed(); break;
+      case "charts":  renderCharts(); break;
+      case "chat":    renderChat(); break;
+      case "vault":   renderVault(); break;
     }
   }
 
   /* ─── Render: Intel ────────────────────────────────────────────────── */
-
   function renderIntel() {
     const main = document.getElementById("main-content");
-    if (!main) return;
+    if (!main || main.dataset._intel) return;
+    main.dataset._intel = "1";
 
     main.innerHTML = `<div class="loading-state"><div class="spinner"></div><div>Loading project intelligence…</div></div>`;
 
-    Promise.all([
-      fetch(INTEL_URL).then(r => r.ok ? r.json() : null),
-    ]).then(([intel]) => {
+    fetch(INTEL_URL).then(r => r.ok ? r.json() : null).then(intel => {
       if (!intel || !intel.projects) {
-        main.innerHTML = `<div class="section-title">Project Intelligence</div><div class="vault-empty">No data yet. Run thor-project-intel.py on THOR.</div>`;
+        main.innerHTML = `<div class="section-title">Project Intelligence</div><div class="vault-empty">No data yet.</div>`;
         return;
       }
 
@@ -81,66 +66,48 @@
         const healthDot = p.health === "green" ? "✅" : p.health === "amber" ? "⚠️" : "❌";
 
         html += `<div class="intel-card" style="background:var(--card);border-radius:12px;padding:1.25rem;border-left:4px solid ${color};position:relative;overflow:hidden;">
-          <div class="intel-heat-ring" style="position:absolute;top:-20px;right:-20px;width:80px;height:80px;border-radius:50%;border:4px solid ${heatColor};opacity:0.3;"></div>
+          <div style="position:absolute;top:-20px;right:-20px;width:80px;height:80px;border-radius:50%;border:4px solid ${heatColor};opacity:0.3;"></div>
           <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:0.75rem;">
             <div>
               <strong style="font-size:1.1rem;color:${color}">${esc(p.name)}</strong>
               <div class="mono" style="font-size:0.7rem;opacity:0.6">${esc(p.repo)}</div>
             </div>
-            <div style="text-align:right">
-              <div style="font-size:0.8rem">${healthDot}</div>
-              <div class="mono" style="font-size:0.65rem">${esc(p.cf_project || "")}</div>
-            </div>
+            <div style="text-align:right"><div style="font-size:0.8rem">${healthDot}</div></div>
           </div>
-
-          ${p.last_commit ? `
-          <div class="intel-commit" style="background:var(--bg);border-radius:8px;padding:0.6rem;margin-bottom:0.5rem;font-size:0.8rem;">
+          ${p.last_commit ? `<div style="background:var(--bg);border-radius:8px;padding:0.6rem;margin-bottom:0.5rem;font-size:0.8rem;">
             <div style="display:flex;justify-content:space-between;">
               <span><strong>${esc(p.last_commit.author)}</strong> <span class="mono">${p.last_commit.sha}</span></span>
               <span class="mono" style="font-size:0.7rem;opacity:0.6">${timeAgo(p.last_commit.date)}</span>
             </div>
             <div style="margin-top:0.25rem;opacity:0.8">${esc(p.last_commit.message)}</div>
           </div>` : ""}
-
           <div style="display:flex;gap:1rem;font-size:0.78rem;margin-bottom:0.75rem;">
-            <span>📊 ${p.commits_7d} commits / 7d</span>
-            <span>🐛 ${p.open_issues} issues</span>
+            <span>📊 ${p.commits_7d} commits / 7d</span><span>🐛 ${p.open_issues} issues</span>
           </div>
-
           <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-            <a href="${esc(p.site_url)}" target="_blank" class="btn btn-sm btn-ghost" style="font-size:0.75rem;padding:0.3rem 0.7rem;">🌐 Site</a>
-            <a href="https://github.com/${esc(p.repo)}" target="_blank" class="btn btn-sm btn-ghost" style="font-size:0.75rem;padding:0.3rem 0.7rem;">📂 Repo</a>
-            ${p.last_commit ? `<a href="${esc(p.last_commit.url)}" target="_blank" class="btn btn-sm btn-ghost" style="font-size:0.75rem;padding:0.3rem 0.7rem;">🔗 Latest</a>` : ""}
+            <a href="${esc(p.site_url)}" target="_blank" class="btn btn-sm btn-ghost" style="font-size:0.75rem">🌐 Site</a>
+            <a href="https://github.com/${esc(p.repo)}" target="_blank" class="btn btn-sm btn-ghost" style="font-size:0.75rem">📂 Repo</a>
+            ${p.last_commit ? `<a href="${esc(p.last_commit.url)}" target="_blank" class="btn btn-sm btn-ghost" style="font-size:0.75rem">🔗 Latest</a>` : ""}
           </div>
-
-          ${p.recent_commits && p.recent_commits.length > 1 ? `
-          <div style="margin-top:0.75rem;border-top:1px solid var(--border);padding-top:0.5rem;font-size:0.72rem;opacity:0.6;">
-            ${p.recent_commits.slice(1).map(c => `<div>· ${esc(c)}</div>`).join("")}
-          </div>` : ""}
         </div>`;
       }
-
       html += `</div>`;
 
-      // Quick stats bar
       const totalCommits = projects.reduce((s, p) => s + p.commits_7d, 0);
       const healthy = projects.filter(p => p.health === "green").length;
       html += `<div style="margin-top:1.5rem;display:flex;gap:1rem;flex-wrap:wrap;font-size:0.85rem;padding:1rem;background:var(--card);border-radius:12px;">
-        <span>📈 ${totalCommits} commits this week across ${projects.length} projects</span>
-        <span>✅ ${healthy}/${projects.length} sites healthy</span>
-        <span>🕐 ${timeAgo(intel.checked_at)}</span>
+        <span>📈 ${totalCommits} commits this week</span><span>✅ ${healthy}/${projects.length} healthy</span><span>🕐 ${timeAgo(intel.checked_at)}</span>
       </div>`;
-
       main.innerHTML = `<div class="intel-dashboard">${html}</div>`;
+    }).catch(() => {
+      main.innerHTML = `<div class="section-title">Intel</div><div class="vault-empty">Failed to load project data.</div>`;
     });
   }
 
-  /* ─── Render: Feed ─────────────────────────────────────────────── */
-
+  /* ─── Render: Feed ─────────────────────────────────────────────────── */
   function renderFeed() {
     const main = document.getElementById("main-content");
     if (!main) return;
-
     main.innerHTML = `<div class="loading-state"><div class="spinner"></div><div>Loading activity feed…</div></div>`;
 
     fetch(ACTIVITY_URL).then(r => r.ok ? r.json() : null).then(data => {
@@ -148,78 +115,69 @@
         main.innerHTML = `<div class="section-title">Activity Feed</div><div class="vault-empty">No activity data yet.</div>`;
         return;
       }
-
-      let html = `<div class="section-title"><i class="fa-solid fa-wave-square"></i> Activity Feed <span class="mono" style="font-size:0.7rem;opacity:0.5">last 24h · ${data.events.length} events</span></div>
-        <div class="activity-feed" style="max-height:70vh;overflow-y:auto;">`;
-
+      let html = `<div class="section-title"><i class="fa-solid fa-wave-square"></i> Feed <span class="mono" style="font-size:0.7rem">last 24h · ${data.events.length} events</span></div>
+        <div style="max-height:70vh;overflow-y:auto;">`;
       for (const ev of data.events) {
         const ago = typeof ev.time === "number" ? timeAgo(new Date(ev.time * 1000).toISOString()) : "";
-        html += `<div class="activity-item" style="display:flex;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid var(--border);align-items:start;">
-          <span style="font-size:1.1rem;flex-shrink:0;">${ev.icon || "•"}</span>
+        html += `<div style="display:flex;gap:0.75rem;padding:0.5rem 0;border-bottom:1px solid var(--border);align-items:start;">
+          <span style="font-size:1.1rem">${ev.icon || "•"}</span>
           <div style="flex:1;font-size:0.85rem;">
             <div>${esc(ev.text)}</div>
-            <div class="mono" style="font-size:0.65rem;opacity:0.5;margin-top:0.15rem;">${ago}</div>
+            <div class="mono" style="font-size:0.65rem;opacity:0.5">${ago}</div>
           </div>
         </div>`;
       }
-
       html += `</div>`;
-      main.innerHTML = `<div class="activity-dashboard">${html}</div>`;
+      main.innerHTML = html;
     });
   }
 
   /* ─── Render: Charts ───────────────────────────────────────────────── */
-
   function renderCharts() {
     const main = document.getElementById("main-content");
     if (!main) return;
-
     main.innerHTML = `<div class="loading-state"><div class="spinner"></div><div>Loading charts…</div></div>`;
 
     Promise.all([
       fetch(VAULT_URL).then(r => r.ok ? r.json() : null),
       fetch(INTEL_URL).then(r => r.ok ? r.json() : null),
-      fetch(ECOSYSTEM_URL).then(r => r.ok ? r.json() : null),
-    ]).then(([vault, intel, eco]) => {
+    ]).then(([vault, intel]) => {
       let html = `<div class="section-title"><i class="fa-solid fa-chart-line"></i> System Charts</div>
-        <div class="charts-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;">`;
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;">`;
 
-      // Disk usage card
       if (vault && vault.disk_used) {
         const pct = parseInt(vault.disk_pct || "0");
-        html += `<div class="chart-card" style="background:var(--card);border-radius:12px;padding:1.25rem;">
-          <div style="font-size:0.85rem;margin-bottom:0.5rem;">💾 Disk Usage</div>
+        html += `<div style="background:var(--card);border-radius:12px;padding:1.25rem;">
+          <div style="font-size:0.85rem;margin-bottom:0.5rem;">💾 Disk</div>
           <div style="font-size:1.8rem;font-weight:700;">${esc(vault.disk_used)}</div>
           <div style="font-size:0.8rem;opacity:0.6">${esc(vault.disk_avail)} free (${esc(vault.disk_pct)})</div>
-          <div class="bar" style="margin-top:0.75rem;height:6px;background:var(--border);border-radius:3px;overflow:hidden;">
-            <div style="height:100%;width:${pct}%;background:${pct > 80 ? "#ef4444" : pct > 50 ? "#eab308" : "#22c55e"};border-radius:3px;transition:width 0.5s;"></div>
+          <div style="margin-top:0.75rem;height:6px;background:var(--border);border-radius:3px;overflow:hidden;">
+            <div style="height:100%;width:${pct}%;background:${pct > 80 ? "#ef4444" : pct > 50 ? "#eab308" : "#22c55e"};border-radius:3px;"></div>
           </div>
         </div>`;
       }
 
-      // Commit activity bar
       if (intel && intel.projects) {
-        html += `<div class="chart-card" style="background:var(--card);border-radius:12px;padding:1.25rem;">
-          <div style="font-size:0.85rem;margin-bottom:0.75rem;">📊 Commit Activity (7 days)</div>`;
-        const maxCommits = Math.max(...intel.projects.map(p => p.commits_7d), 1);
+        html += `<div style="background:var(--card);border-radius:12px;padding:1.25rem;">
+          <div style="font-size:0.85rem;margin-bottom:0.75rem;">📊 Commits (7 days)</div>`;
+        const maxC = Math.max(...intel.projects.map(p => p.commits_7d), 1);
         for (const p of intel.projects) {
-          const pct = Math.round((p.commits_7d / maxCommits) * 100);
-          const color = COLORS[p.slug] || "#888";
+          const pct = Math.round((p.commits_7d / maxC) * 100);
+          const c = COLORS[p.slug] || "#888";
           html += `<div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.4rem;">
-            <span style="width:80px;font-size:0.72rem;text-align:right;flex-shrink:0;">${esc(p.name)}</span>
+            <span style="width:80px;font-size:0.72rem;text-align:right;">${esc(p.name)}</span>
             <div style="flex:1;height:14px;background:var(--border);border-radius:3px;overflow:hidden;">
-              <div style="height:100%;width:${pct}%;background:${color};border-radius:3px;opacity:0.8;"></div>
+              <div style="height:100%;width:${pct}%;background:${c};border-radius:3px;opacity:0.8;"></div>
             </div>
-            <span class="mono" style="font-size:0.7rem;width:24px;">${p.commits_7d}</span>
+            <span class="mono" style="font-size:0.7rem">${p.commits_7d}</span>
           </div>`;
         }
         html += `</div>`;
       }
 
-      // Vault health card
       if (vault) {
-        html += `<div class="chart-card" style="background:var(--card);border-radius:12px;padding:1.25rem;">
-          <div style="font-size:0.85rem;margin-bottom:0.5rem;">🏛️ Vault Stats</div>
+        html += `<div style="background:var(--card);border-radius:12px;padding:1.25rem;">
+          <div style="font-size:0.85rem;margin-bottom:0.5rem;">🏛️ Vault</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
             <div><div class="mono" style="font-size:0.65rem;opacity:0.6">Size</div><div style="font-size:1.1rem;font-weight:600">${fmtSize(vault.vault_size_mb)}</div></div>
             <div><div class="mono" style="font-size:0.65rem;opacity:0.6">Projects</div><div style="font-size:1.1rem;font-weight:600">${vault.project_count}</div></div>
@@ -229,136 +187,155 @@
         </div>`;
       }
 
-      // Ecosystem summary
-      if (eco) {
-        const projs = Array.isArray(eco) ? eco : (eco.projects || []);
-        html += `<div class="chart-card" style="background:var(--card);border-radius:12px;padding:1.25rem;">
-          <div style="font-size:0.85rem;margin-bottom:0.5rem;">🌐 Ecosystem</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;font-size:0.78rem;">
-            <span>📦 ${projs.length} projects</span>
-            <span>🤖 ${(eco.agents || []).length} agents</span>
-            <span>⚡ ${(eco.moneyStack || []).length} services</span>
-            <span>🔄 ${(eco.automations || []).length} automations</span>
-          </div>
-        </div>`;
-      }
-
       html += `</div>`;
-      main.innerHTML = `<div class="charts-dashboard">${html}</div>`;
+      main.innerHTML = html;
     });
   }
 
-  /* ─── Render: Chat Panel ───────────────────────────────────────────── */
-
+  /* ─── Render: Chat ─────────────────────────────────────────────────── */
   function renderChat() {
     const main = document.getElementById("main-content");
     if (!main) return;
 
-    main.innerHTML = `<div class="chat-container" style="display:flex;flex-direction:column;height:calc(100vh - 200px);">
+    main.innerHTML = `<div style="display:flex;flex-direction:column;min-height:calc(100vh - 250px);">
       <div class="section-title"><i class="fa-solid fa-comment-dots"></i> Kimi Chat</div>
-      <div style="font-size:0.8rem;margin-bottom:1rem;opacity:0.6;">
-        Send commands to Kimi on THOR. Replies come via Telegram.<br>
-        <span class="mono">Tip: Type a command, hit Enter, check Telegram for response.</span>
-      </div>
-      <div class="chat-messages" id="chat-messages" style="flex:1;overflow-y:auto;background:var(--card);border-radius:12px;padding:1rem;margin-bottom:0.75rem;">
-        <div class="chat-welcome" style="opacity:0.6;text-align:center;padding:2rem;">
+      <div style="font-size:0.8rem;margin-bottom:1rem;opacity:0.6;">Send commands to Kimi on THOR. Replies come via Telegram.</div>
+      <div id="chat-msgs" style="flex:1;overflow-y:auto;background:var(--card);border-radius:12px;padding:1rem;margin-bottom:0.75rem;">
+        <div style="opacity:0.6;text-align:center;padding:2rem;">
           <div style="font-size:2rem;margin-bottom:0.5rem;">🤖</div>
-          <div>Type a command below to reach Kimi on THOR.</div>
-          <div class="mono" style="font-size:0.75rem;margin-top:0.5rem;">Try: status, vault health, deploy check, what changed</div>
+          <div>Type below to reach Kimi on THOR via Telegram.</div>
         </div>
       </div>
-      <div class="chat-input-row" style="display:flex;gap:0.5rem;">
-        <input type="text" id="chat-input" class="command-input" placeholder="Type a command for Kimi…" style="flex:1;padding:0.75rem 1rem;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:0.9rem;" />
-        <button type="button" id="chat-send" class="btn btn-primary" style="padding:0.75rem 1.5rem;border-radius:8px;">Send</button>
+      <div style="display:flex;gap:0.5rem;">
+        <input type="text" id="chat-in" class="command-input" placeholder="Command for Kimi…" style="flex:1;padding:0.75rem 1rem;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:0.9rem;" />
+        <button type="button" id="chat-go" class="btn btn-primary" style="padding:0.75rem 1.5rem;">Send</button>
       </div>
-      <div id="chat-status" class="command-status" style="font-size:0.78rem;margin-top:0.5rem;opacity:0.6;"></div>
+      <div id="chat-st" class="command-status" style="font-size:0.78rem;margin-top:0.5rem;opacity:0.6;"></div>
     </div>`;
 
-    document.getElementById("chat-send")?.addEventListener("click", sendChat);
-    document.getElementById("chat-input")?.addEventListener("keydown", function (e) {
-      if (e.key === "Enter") sendChat();
+    document.getElementById("chat-go")?.addEventListener("click", sendCmd);
+    document.getElementById("chat-in")?.addEventListener("keydown", function (e) { if (e.key === "Enter") sendCmd(); });
+  }
+
+  function sendCmd() {
+    const inp = document.getElementById("chat-in"), st = document.getElementById("chat-st");
+    if (!inp || !st) return;
+    const cmd = inp.value.trim();
+    if (!cmd) return;
+
+    const box = document.getElementById("chat-msgs");
+    if (box) {
+      const b = document.createElement("div");
+      b.style.cssText = "text-align:right;margin-bottom:0.5rem;";
+      b.innerHTML = `<div style="display:inline-block;background:var(--accent);color:#fff;padding:0.5rem 0.9rem;border-radius:12px 12px 4px 12px;max-width:80%;font-size:0.85rem;">${esc(cmd)}</div>`;
+      box.appendChild(b);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    inp.value = "";
+    inp.disabled = true;
+    st.textContent = "⏳ Opening Telegram…";
+
+    const text = encodeURIComponent("🏛️ *HQ Chat:* " + cmd);
+    window.open("https://t.me/kimi_giveabot?text=" + text, "_blank");
+
+    setTimeout(() => {
+      st.textContent = "✅ Sent! Check Telegram for Kimi's reply (@kimi_giveabot)";
+      inp.disabled = false;
+    }, 2000);
+  }
+
+  /* ─── Render: Vault ────────────────────────────────────────────────── */
+  function renderVault() {
+    const main = document.getElementById("main-content");
+    if (!main) return;
+    main.innerHTML = `<div class="loading-state"><div class="spinner"></div><div>Loading vault health…</div></div>`;
+
+    Promise.all([
+      fetch(VAULT_URL).then(r => r.ok ? r.json() : null),
+      fetch(ECOSYSTEM_URL).then(r => r.ok ? r.json() : null),
+    ]).then(([vault, eco]) => {
+      let html = `<div class="section-title">Vault Health</div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;">`;
+      if (vault) {
+        html += vc("Vault Size", fmtSize(vault.vault_size_mb), vault.disk_used ? `Disk: ${vault.disk_used} (${vault.disk_pct})` : "");
+        html += vc("Projects", fmtNum(vault.project_count), `Handoffs: ${vault.handoff_count || 0}`);
+        html += vc("Context Map", vault.has_context_map ? "✅" : "❌", "");
+        html += vc("Issues", fmtNum(vault.issues ? vault.issues.length : 0), vault.issues?.length ? "⚠️" : "✅");
+
+        const stale = vault.staleness_days || {};
+        const keys = Object.keys(stale).sort();
+        if (keys.length) {
+          html += `</div><div class="section-title" style="margin-top:1.5rem">Freshness</div>`;
+          for (const k of keys) {
+            const d = stale[k];
+            const c = d < 1 ? "#22c55e" : d < 7 ? "#eab308" : d < 30 ? "#f97316" : "#ef4444";
+            html += `<div style="display:flex;justify-content:space-between;padding:0.4rem 0;border-bottom:1px solid var(--border);font-size:0.85rem;border-left:3px solid ${c};padding-left:0.5rem;">
+              <strong>${esc(k)}</strong><span style="color:${c}">${d < 1 ? "fresh" : d < 7 ? d+"d" : d+"d ⚠️"}</span>
+            </div>`;
+          }
+        }
+        if (vault.issues?.length) {
+          html += `<div class="section-title" style="margin-top:1.5rem">Issues</div>`;
+          for (const i of vault.issues) html += `<div>⚠️ ${esc(i)}</div>`;
+        }
+      }
+
+      if (eco) {
+        const projs = Array.isArray(eco) ? eco : (eco.projects || []);
+        html += `<div class="section-title" style="margin-top:1.5rem;border-top:1px solid var(--border);padding-top:1rem;">Project Pulse</div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;">`;
+        for (const p of projs) {
+          const n = p.name || p.slug || "?";
+          html += `<div style="background:var(--card);border-radius:8px;padding:0.75rem;">
+            <strong>${esc(n)}</strong>
+            <div class="mono muted">${p.repo && p.repo !== "?" ? "📦 "+esc(p.repo) : "—"}</div>
+          </div>`;
+        }
+        html += `</div>`;
+      }
+
+      main.innerHTML = html;
     });
   }
 
-  function sendChat() {
-    const input = document.getElementById("chat-input");
-    const msgBox = document.getElementById("chat-messages");
-    const status = document.getElementById("chat-status");
-    if (!input || !msgBox || !status) return;
-    const cmd = input.value.trim();
-    if (!cmd) return;
-
-    // Add user message bubble
-    const bubble = document.createElement("div");
-    bubble.style.cssText = "display:flex;justify-content:flex-end;margin-bottom:0.5rem;";
-    bubble.innerHTML = `<div style="background:var(--accent);color:#fff;padding:0.5rem 0.9rem;border-radius:12px 12px 4px 12px;max-width:80%;font-size:0.85rem;">${esc(cmd)}</div>`;
-    msgBox.appendChild(bubble);
-
-    // Add "thinking" indicator
-    const thinking = document.createElement("div");
-    thinking.style.cssText = "display:flex;margin-bottom:0.5rem;";
-    thinking.id = "chat-thinking";
-    thinking.innerHTML = `<div style="background:var(--bg);padding:0.5rem 0.9rem;border-radius:12px 12px 12px 4px;font-size:0.85rem;opacity:0.6;">⏳ Sending to Kimi via Telegram…</div>`;
-    msgBox.appendChild(thinking);
-    msgBox.scrollTop = msgBox.scrollHeight;
-
-    input.value = "";
-    input.disabled = true;
-    status.textContent = "⏳ Opening Telegram…";
-
-    // Open Telegram with the command
-    const text = encodeURIComponent("🏛️ *HQ Chat:* " + cmd);
-    const tgWeb = "https://t.me/kimi_giveabot?text=" + text;
-    window.open(tgWeb, "_blank");
-
-    setTimeout(() => {
-      const t = document.getElementById("chat-thinking");
-      if (t) {
-        t.innerHTML = `<div style="background:var(--bg);padding:0.5rem 0.9rem;border-radius:12px 12px 12px 4px;font-size:0.85rem;">
-          ✅ Sent! Check Telegram for Kimi's reply.
-        </div>`;
-      }
-      input.disabled = false;
-      status.textContent = "Reply will appear in Telegram — @kimi_giveabot";
-      msgBox.scrollTop = msgBox.scrollHeight;
-    }, 3000);
+  function vc(l, v, s) {
+    return `<div style="background:var(--card);border-radius:12px;padding:1.25rem;">
+      <div class="card-label">${esc(l)}</div><div class="card-value">${v}</div>
+      ${s ? `<div class="card-sub">${esc(s)}</div>` : ""}
+    </div>`;
   }
 
   /* ─── Utility ──────────────────────────────────────────────────────── */
+  function esc(s) { return typeof s === "string" ? s.replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[m]) : s; }
 
-  function esc(s) {
-    if (typeof s !== "string") return s;
-    return s.replace(/[&<>"']/g, function (m) {
-      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m];
-    });
+  function timeAgo(ds) {
+    if (!ds) return "";
+    const d = new Date(ds), diff = (Date.now() - d) / 1000;
+    if (diff < 60) return "now";
+    if (diff < 3600) return Math.floor(diff / 60) + "m";
+    if (diff < 86400) return Math.floor(diff / 3600) + "h";
+    return Math.floor(diff / 86400) + "d";
   }
 
-  function timeAgo(dateStr) {
-    if (!dateStr) return "";
-    const d = new Date(dateStr);
-    const diff = (Date.now() - d.getTime()) / 1000;
-    if (diff < 60) return "just now";
-    if (diff < 3600) return Math.floor(diff / 60) + "m ago";
-    if (diff < 86400) return Math.floor(diff / 3600) + "h ago";
-    return Math.floor(diff / 86400) + "d ago";
-  }
-
-  function fmtSize(mb) {
-    if (!mb) return "—";
-    if (mb > 1024) return (mb / 1024).toFixed(1) + " GB";
-    return mb.toFixed(0) + " MB";
-  }
+  function fmtSize(mb) { return mb ? (mb > 1024 ? (mb/1024).toFixed(1)+" GB" : mb.toFixed(0)+" MB") : "—"; }
+  function fmtNum(n) { return n == null ? "—" : (typeof n === "string" ? parseFloat(n) : n).toLocaleString(); }
 
   /* ─── Boot ─────────────────────────────────────────────────────────── */
-
   function boot() {
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", bootTabs);
-    } else {
-      bootTabs();
+    // Clean up old vault.js observer (if loaded)
+    // Start our tab watcher
+    startTabWatcher();
+
+    // Also render the current tab if one of ours is active
+    const active = document.querySelector(".nav-tab.active[data-tab]");
+    if (active && TABS.includes(active.dataset.tab)) {
+      currentTab = active.dataset.tab;
+      routeTab(currentTab);
     }
   }
 
-  boot();
-
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
 })();
