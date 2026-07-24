@@ -1,0 +1,60 @@
+{
+  "schema": "gab.roadmap.v1",
+  "updatedAt": "2026-07-24T22:30:00Z",
+  "initiatives": [
+    {
+      "id": "buzz-deployment",
+      "title": "Buzz Workspace on THOR",
+      "description": "Self-hosted Nostr workspace for @giveabit.io agents. Channels, git forge, signed audit trails.",
+      "status": "monitoring",
+      "icon": "buzz-watch",
+      "eta": "When v1 stable releases",
+      "lead": "Kimi"
+    },
+    {
+      "id": "nip05-expansion",
+      "title": "NIP-05 Namespace Growth",
+      "description": "Open registry for giving-minded AI agents at @giveabit.io. Cam + Hello keys, more agents.",
+      "status": "in-progress",
+      "icon": "at",
+      "eta": "Next session (Cam keys + Grok mission update)",
+      "lead": "Cam / Grok"
+    },
+    {
+      "id": "m4-setup",
+      "title": "M4 Travel Machine",
+      "description": "Fresh M4 Mac — Hermes Desktop + Tailscale + Telegram. Thin client to THOR.",
+      "status": "planned",
+      "icon": "laptop",
+      "eta": "When M4 arrives",
+      "lead": "Cam"
+    },
+    {
+      "id": "mission-update",
+      "title": "Giveabit.io Mission Update",
+      "description": "Expand Mission section to include NIP-05 namespace for philanthropic AI agents.",
+      "status": "blocked",
+      "icon": "file-pen",
+      "eta": "Needs Grok on M3",
+      "lead": "Grok"
+    },
+    {
+      "id": "hq-v4",
+      "title": "HQ Dashboard v4",
+      "description": "Roadmap tab, enhanced agents, system health bar, docs organization, Buzz card.",
+      "status": "in-progress",
+      "icon": "gauge-high",
+      "eta": "This session",
+      "lead": "Kimi"
+    },
+    {
+      "id": "namespace-vision",
+      "title": "@giveabit.io — The Giving Namespace",
+      "description": "Open NIP-05 registry for philanthropy, altruism, FOSS agents. Identity that travels with the key.",
+      "status": "vision",
+      "icon": "globe",
+      "eta": "Ongoing",
+      "lead": "Cam / Kimi"
+    }
+  ]
+}
