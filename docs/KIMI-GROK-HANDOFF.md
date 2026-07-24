@@ -8,45 +8,48 @@
 
 ## Roles
 
-| Agent | Owns |
-|-------|------|
-| **Grok** | `kitsboy/HQ`, CF Pages `giveabit-hq`, LNbits **proxy Worker**, metrics UI, schemas, status pinger, pitch glass |
-| **Kimi** | Cross-repo diligence, agent docs, **satohash** live metrics / API on THOR |
-| **Nova** | THOR node, LNbits host hardening, `thor-node.json` exporter, deploys reliability |
-| **Cam** | Secrets, Access, priorities, Vault proxy token |
+|| Agent | Owns |
+||-------|------|
+|| **Grok** | `kitsboy/HQ`, CF Pages `giveabit-hq`, **`kitsboy/giveabit` (giveabit.io hub site — Mission + namespace)**, LNbits **proxy Worker**, metrics UI, schemas, status pinger, pitch glass |
+|| **Kimi** | Cross-repo diligence, agent docs, **satohash** live metrics / API on THOR, Buzz observation, NIP-05 namespace registry |
+|| **Nova** | THOR node, LNbits host hardening, `thor-node.json` exporter, deploys reliability |
+|| **Cam** | Secrets, Access, priorities, Vault proxy token, NIP-05 key generation |
 
 ---
 
-## Latest Session Summary (from 2026-07-21 goodbye — Grok / HQ)
+### Latest Session Summary (from 2026-07-24 — Kimi / HQ)
 
-**Chat topic:** Full HQ visual reconstruction + depth pack + LNbits money everywhere.
+**Chat topic:** NIP-05 namespace vision + Buzz research.
 
 ### Finished in this session
-- **v3.0.0** Visual overhaul: `hq.css` + `hq.js` + thin shell; 4 tinted themes (ink default); no B/W/grey  
-- **v3.1.0** Depth pack: enriched product metrics, THOR host/storage UI, `docs/projects/*`, 15+ tabs (Analytics/Matrix/Coverage/Ecosystem/Activity)  
-- **v3.2.0** Money pack: LNbits balances on cards/list/matrix/analytics; Money cockpit; history sparklines; portfolio ribbon; mega drawer (overview/money/metrics/stack/docs/related); 60s auto-poll  
-- Pushed to `origin/main` (latest money commit family includes `116fbc9` / rebased tip)  
-- Docs refreshed: SOT, README, ECOSYSTEM-MAP, LNBITS-PROXY, METRICS-SCHEMA, THOR-NODE-JSON, UPGRADES-100  
+- **agents.json v3** — added `namespaceVision`, `futureWorkspace: Buzz`, Cam + Hello agents, `openRegistry: true`
+- **HQ Agents tab** — namespace banner showing @giveabit.io vision for giving-minded AI agents
+- **`docs/BUZZ-PLAN.md`** — full deployment plan for Buzz on THOR (not yet deployed)
+- **`docs/projects/giveabit.md`** — expanded with NIP-05 namespace section, all 9 agents
+- **`docs/GIVEABIT-MISSION-UPDATE.md`** — handoff spec for Grok: what to change on giveabit.io site Mission
+- **Weekly buzz-watch cron** — every Saturday 10:00, tracks block/buzz for v1 stable
+- All new docs wired into HQ Docs tab
 
 ### Still to do
-- **Cam:** Vault keys on production HQ to verify live money UI; optional CF Access; optional `WALLETS_JSON`  
-- **Nova:** real `thor-node.json` cron (host/storage from node, not snapshot); harden LNbits `:5102`  
-- **Kimi:** keep satohash live metrics; other products publish real `/metrics.json`  
-- **Grok:** optional re-wire password gate if desired; payment history when LNbits API ready  
-
-### Next for Kimi
-1. Integrate this summary into MASTER-BRAIN / Kanban (clean bullets only)  
-2. Confirm HQ v3.2 on `hq.giveabit.io` after CF deploy  
-3. Keep satohash `metrics.json` live  
-4. Educate Hermes: money path = Vault → proxy Worker → LNbits  
+- **Grok:** Update giveabit.io Mission section to include NIP-05 namespace for giving-minded agents (see `docs/GIVEABIT-MISSION-UPDATE.md`)
+- **Grok:** Update agent count 8→9 on homepage; add Cam + Hello to `.well-known/nostr.json` once keys generated
+- **Cam:** Generate Nostr keypairs for cam@giveabit.io and hello@giveabit.io
+- **Kimi:** Keep buzz-watch running; deploy Buzz on THOR when v1 stable
 
 ### Next for Grok
-- Verify deploy green; smoke money surfaces with Cam’s Vault  
-- Prefer live product envelopes over demo  
+1. **URGENT: Update giveabit.io Mission** — expand with NIP-05 namespace vision for philanthropic/FOSS agents. Spec at `docs/GIVEABIT-MISSION-UPDATE.md` in HQ repo
+2. Update homepage "Trusted Identity" count from 8→9 agents
+3. Add Cam + Hello to `.well-known/nostr.json` once Cam provides keys
+4. Read `docs/BUZZ-PLAN.md` for future deployment context
 
-### Next for Nova
-- Cron real thor-node aggregates  
-- Harden public LNbits HTTP  
+### Next for Kimi
+- Keep buzz-watch cron running (weekly Sat 10:00)
+- Monitor block/buzz for v1 stable release
+- When ready, deploy Buzz on THOR
+
+### Next for Cam
+- Generate Nostr keypair for cam@giveabit.io and hello@giveabit.io
+- Provide Nostr pubkeys for `.well-known/nostr.json`
 
 ---
 

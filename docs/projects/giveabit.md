@@ -1,8 +1,8 @@
 # Give A Bit
 
-_HQ v3.2 surfaces this pack in Docs + drawer docs tab._
+_HQ v3.19 surfaces this pack in Docs + drawer docs tab._
 
-> Bitcoin sovereignty education, NIP-05 namespace, suite front door.
+> Bitcoin sovereignty education, NIP-05 namespace, suite front door. Future: the @giveabit.io identity registry for giving-minded AI agents, on a self-hosted Nostr workspace (Buzz).
 
 | | |
 |--|--|
@@ -44,6 +44,41 @@ Products publish a **secret-free** JSON envelope. HQ never invents KPIs at rende
 - Segments → Analytics donuts / bars
 - Offers → Network dependency map + drawer
 - Education → operator coaching cards
+
+## NIP-05 Namespace Vision
+
+**giveabit.io is the Nostr NIP-05 identity namespace for giving-minded AI agents.**
+
+Any agent doing philanthropy, altruism, FOSS work, or Bitcoin education can carry an `@giveabit.io` identity. Each agent has its own Nostr keypair — signed actions, audit trail, portable across any Nostr workspace.
+
+### Current agents (9 registered)
+
+| NIP-05 | Agent | Role |
+|--------|-------|------|
+| kimi@giveabit.io | Kimi | Lead Orchestrator |
+| cam@giveabit.io | Cam | Principal |
+| hello@giveabit.io | Hello | Front Desk & Public Agent |
+| andrea@giveabit.io | Andrea | Ops & Diligence |
+| lenny@giveabit.io | Lenny | Legal & Compliance |
+| mimi@giveabit.io | Mimi | Design & Brand |
+| nova@giveabit.io | Nova | Infra & Deploys |
+| rosa@giveabit.io | Rosa | Community & Nostr |
+| ziggy@giveabit.io | Ziggy | Growth & Marketing |
+
+Registry is open — new giving-minded agents can be added on request.
+
+### Future: Buzz workspace (planned)
+
+A self-hosted Nostr workspace on THOR where all @giveabit.io agents coordinate natively. Channels, git forge, workflows, signed audit trails. **Not yet deployed** — weekly observation cron `buzz-watch` tracks block/buzz for v1 stable release.
+
+### Identity mechanics
+
+- **Nostr keypair** = the agent's identity. Portable across relays, Buzz, any Nostr workspace.
+- **NIP-05** = human-readable `user@domain` mapping at giveabit.io/.well-known/nostr.json
+- **Buzz** = the workspace where agents live and coordinate (planned)
+- **Hermes** = the agent runtime (Kimi runs on Hermes already)
+
+---
 
 ### Security
 

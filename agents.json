@@ -1,19 +1,10 @@
 {
-  "version": 2,
+  "version": 3,
   "namespace": "giveabit.io",
   "nip05Url": "https://giveabit.io/.well-known/nostr.json",
+  "namespaceVision": "A Nostr NIP-05 identity registry for giving-minded AI agents — philanthropy, altruism, open source, and Bitcoin sovereignty. Every agent signed with its own keypair, portable across any Nostr workspace (Buzz, relays, etc.). @giveabit.io is the trust badge: if an agent carries this namespace, its actions are verifiable, auditable, and belong to the giving ecosystem.",
+  "futureWorkspace": "Buzz on THOR — planned self-hosted Nostr workspace where all @giveabit.io agents coordinate. Channels, git forge, workflows, signed audit trails. Not yet deployed.",
   "agents": [
-    {
-      "name": "Andrea",
-      "role": "Ops & Diligence",
-      "motto": "Trust, but verify on-chain.",
-      "nip05": "andrea@giveabit.io",
-      "repo": "giveabit",
-      "file": "agents/ANDREA.md",
-      "color": "#22c55e",
-      "icon": "fa-solid fa-clipboard-check",
-      "lead": false
-    },
     {
       "name": "Kimi",
       "role": "Lead Orchestrator",
@@ -24,6 +15,17 @@
       "color": "#ff8c00",
       "icon": "fa-solid fa-crown",
       "lead": true
+    },
+    {
+      "name": "Andrea",
+      "role": "Ops & Diligence",
+      "motto": "Trust, but verify on-chain.",
+      "nip05": "andrea@giveabit.io",
+      "repo": "giveabit",
+      "file": "agents/ANDREA.md",
+      "color": "#22c55e",
+      "icon": "fa-solid fa-clipboard-check",
+      "lead": false
     },
     {
       "name": "Lenny",
@@ -79,6 +81,30 @@
       "color": "#2dd4bf",
       "icon": "fa-solid fa-bullhorn",
       "lead": false
+    },
+    {
+      "name": "Cam",
+      "role": "Principal",
+      "motto": "Bitcoin sovereignty first.",
+      "nip05": "cam@giveabit.io",
+      "repo": "giveabit",
+      "file": null,
+      "color": "#f59e0b",
+      "icon": "fa-solid fa-user-astronaut",
+      "lead": false
+    },
+    {
+      "name": "Hello",
+      "role": "Front Desk & Public Agent",
+      "motto": "How can we give today?",
+      "nip05": "hello@giveabit.io",
+      "repo": "giveabit",
+      "file": null,
+      "color": "#67e8f9",
+      "icon": "fa-solid fa-hand-sparkles",
+      "lead": false
     }
-  ]
+  ],
+  "openRegistry": true,
+  "openRegistryNote": "@giveabit.io is an open namespace for giving-minded AI agents. Philanthropy, FOSS, altruism, Bitcoin education. Contact Cam to register a new agent identity."
 }

@@ -87,6 +87,7 @@
     "METRICS-SCHEMA.md", "THOR-NODE-JSON.md", "UPGRADES-100.md", "NEXT-STEPS.md",
     "ANALYTICS-PLAN.md", "DESIGN-CONTEXT.md", "AGENT-GUARDRAILS.md", "UMAMI-SETUP.md",
     "UMAMI-DEPLOYMENT.md", "REF-PULLER.md", "ALL-SITE-METRICS.md",
+    "BUZZ-PLAN.md", "GIVEABIT-MISSION-UPDATE.md",
   ];
 
   const FEATURES = [
@@ -2929,6 +2930,13 @@
     el.innerHTML = `
       <h2 class="section-title">Agents <span class="accent-rule"></span></h2>
       <p class="section-sub">From agents.json · unique icon per persona · suite NIP-05 identities</p>
+      <div class="namespace-banner panel" style="border-left:4px solid #ff8c00;padding:0.75rem 1rem;margin-bottom:1rem;border-radius:var(--radius,8px);display:flex;align-items:center;gap:0.75rem">
+        <i class="fa-solid fa-globe" style="font-size:1.2rem;color:#ff8c00;flex-shrink:0"></i>
+        <div>
+          <strong style="font-size:0.85rem">@giveabit.io NIP-05 Namespace</strong>
+          <p style="margin:0.15rem 0 0;font-size:0.78rem;color:var(--ink-faint, #888)">A Nostr identity registry for giving-minded AI agents — philanthropy, altruism, FOSS, Bitcoin sovereignty. Every agent verified by its own keypair. <a href="https://giveabit.io/namespace" target="_blank" rel="noopener" style="color:var(--accent,#ff8c00)">Learn more →</a></p>
+        </div>
+      </div>
       <div class="agents-grid">${cards}</div>`;
   }
 
