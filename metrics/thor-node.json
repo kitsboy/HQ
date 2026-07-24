@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-24T23:15:01Z",
+ "updatedAt": "2026-07-24T23:15:49Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -39,7 +39,7 @@
     "detail": "Up 5 days (healthy)"
    }
   ],
-  "uptimeSec": 692300
+  "uptimeSec": 692349
  },
  "bitcoin": {
   "ok": true,
@@ -464,7 +464,7 @@
      "v": 0
     },
     {
-     "t": "2026-07-24T23:15:01Z",
+     "t": "2026-07-24T23:15:49Z",
      "v": 0
     }
    ]
@@ -856,7 +856,7 @@
      "v": 0
     },
     {
-     "t": "2026-07-24T23:15:01Z",
+     "t": "2026-07-24T23:15:49Z",
      "v": 0
     }
    ]
@@ -1248,8 +1248,8 @@
      "v": 0.12
     },
     {
-     "t": "2026-07-24T23:15:01Z",
-     "v": 0.05
+     "t": "2026-07-24T23:15:49Z",
+     "v": 0.15
     }
    ]
   },
@@ -1640,8 +1640,8 @@
      "v": 3.7
     },
     {
-     "t": "2026-07-24T23:15:01Z",
-     "v": 3.7
+     "t": "2026-07-24T23:15:49Z",
+     "v": 3.8
     }
    ]
   },
@@ -2032,7 +2032,7 @@
      "v": 959478
     },
     {
-     "t": "2026-07-24T23:15:01Z",
+     "t": "2026-07-24T23:15:49Z",
      "v": 959478
     }
    ]
@@ -2068,14 +2068,14 @@
   },
   "memory": {
    "totalGB": 7.8,
-   "usedGB": 3.7,
+   "usedGB": 3.8,
    "freeGB": 1.4,
    "availableGB": 4.0
   },
   "cpu": {
-   "loadAvg1m": 0.05,
-   "loadAvg5m": 0.07,
-   "loadAvg15m": 0.09,
+   "loadAvg1m": 0.15,
+   "loadAvg5m": 0.1,
+   "loadAvg15m": 0.1,
    "uptimeDays": 8.0
   },
   "docker": {
@@ -2086,7 +2086,7 @@
   },
   "breakdownGB": {
    "MASTER-BRAIN_vault": 0.691,
-   "Hermes_skills_config": 0.788,
+   "Hermes_skills_config": 0.784,
    "satohash_repo": 0.021,
    "HQ_repo": 0.029,
    "LND_data": 0.337,
@@ -2100,10 +2100,10 @@
   "diskUsedGB": 28,
   "diskFreeGB": 359,
   "memTotalGB": 7.8,
-  "memUsedGB": 3.7,
-  "load1": 0.05,
-  "load5": 0.07,
-  "load15": 0.09,
+  "memUsedGB": 3.8,
+  "load1": 0.15,
+  "load5": 0.1,
+  "load15": 0.1,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
@@ -2121,7 +2121,7 @@
    {
     "id": "Hermes_skills_config",
     "label": "Hermes",
-    "gb": 0.79
+    "gb": 0.78
    },
    {
     "id": "MASTER-BRAIN_vault",
