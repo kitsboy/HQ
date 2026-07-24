@@ -1,33 +1,57 @@
 {
-  "checked_at": "2026-07-24T18:00:35Z",
+  "checked_at": "2026-07-24T19:00:38Z",
   "jobs": {
     "c8ce19bb5571": {
       "status": "completed",
-      "last_run": "2026-07-24T19:55:37.734506+02:00",
+      "last_run": "2026-07-24T20:55:40.215149+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "1b2c31d6ba98": {
       "status": "completed",
-      "last_run": "2026-07-24T19:47:35.817156+02:00",
+      "last_run": "2026-07-24T20:47:24.610254+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "42cdc3e9bd97": {
       "status": "completed",
-      "last_run": "2026-07-24T19:45:46.836840+02:00",
+      "last_run": "2026-07-24T20:45:52.018961+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "e8d5b97de501": {
       "status": "completed",
-      "last_run": "2026-07-24T19:30:55.987404+02:00",
+      "last_run": "2026-07-24T20:30:58.724817+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "cb8398b3fa67": {
       "status": "completed",
-      "last_run": "2026-07-24T19:30:36.066586+02:00",
+      "last_run": "2026-07-24T20:30:38.153941+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "bb5980d548fb": {
+      "status": "completed",
+      "last_run": "2026-07-24T20:05:51.239287+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "d8c69ae4056e": {
+      "status": "completed",
+      "last_run": "2026-07-24T20:04:18.933002+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "7768b5c5aa49": {
+      "status": "completed",
+      "last_run": "2026-07-24T20:03:04.812978+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "17affbe86a4e": {
+      "status": "completed",
+      "last_run": "2026-07-24T20:00:36.413162+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
@@ -35,27 +59,9 @@
       "status": "failed",
       "last_run": "2026-07-24T19:18:45.855287+02:00",
       "consecutive_fails": 3,
-      "paused": false,
+      "paused": true,
       "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
-      "action": "PAUSED"
-    },
-    "bb5980d548fb": {
-      "status": "completed",
-      "last_run": "2026-07-24T19:05:33.253916+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "d8c69ae4056e": {
-      "status": "completed",
-      "last_run": "2026-07-24T19:04:28.414526+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "7768b5c5aa49": {
-      "status": "completed",
-      "last_run": "2026-07-24T19:01:52.711339+02:00",
-      "consecutive_fails": 0,
-      "paused": false
+      "action": "warn"
     },
     "7a870ef5b108": {
       "status": "completed",
@@ -72,12 +78,6 @@
     "91d0082d0da5": {
       "status": "completed",
       "last_run": "2026-07-24T18:00:32.465214+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "17affbe86a4e": {
-      "status": "completed",
-      "last_run": "2026-07-24T16:00:26.821205+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
@@ -157,11 +157,12 @@
     }
   },
   "paused_count": 5,
-  "alert_count": 1,
+  "alert_count": 2,
   "paused_jobs": [
-    "7e58d4dd29a7",
     "c73da343ba68",
+    "7e58d4dd29a7",
     "d62af99564f5",
-    "e9ccb37f523d"
+    "e9ccb37f523d",
+    "bd5a6b221b7b"
   ]
 }
