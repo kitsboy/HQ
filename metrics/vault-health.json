@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-24T02:15:15Z",
+  "checked_at": "2026-07-24T02:45:15Z",
   "vault_size_mb": 935.6,
   "structure": {
     ".git": {
@@ -12,15 +12,15 @@
     },
     "02-Agents": {
       "files": 1,
-      "newest_days_ago": 0.1
+      "newest_days_ago": 0.0
     },
     "03-Projects": {
-      "files": 475,
-      "newest_days_ago": 0.1
+      "files": 489,
+      "newest_days_ago": 0.0
     },
     "Obsidian": {
-      "files": 538,
-      "newest_days_ago": 0.1
+      "files": 539,
+      "newest_days_ago": 0.0
     },
     "bin": {
       "files": 0,
@@ -41,9 +41,9 @@
   },
   "staleness_days": {
     "01-Architecture": 0.0,
-    "02-Agents": 0.1,
-    "03-Projects": 0.1,
-    "Obsidian": 0.1,
+    "02-Agents": 0.0,
+    "03-Projects": 0.0,
+    "Obsidian": 0.0,
     "docs": 3.8,
     "infrastructure": 2.0
   },

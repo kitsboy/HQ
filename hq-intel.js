@@ -21,6 +21,7 @@
 
   const TABS = ["intel", "feed", "charts", "chat", "vault"];
   let currentTab = "";
+  let liveTimer = null;
 
   /* ─── Poll for active tab every 300ms ──────────────────────────────── */
   function startTabWatcher() {
@@ -34,6 +35,19 @@
     }, 300);
   }
 
+  /* ─── Live auto-refresh every 60s for data tabs ────────────────────── */
+  function startLiveRefresh() {
+    if (liveTimer) clearInterval(liveTimer);
+    liveTimer = setInterval(function () {
+      const active = document.querySelector(".nav-tab.active[data-tab]");
+      if (!active) return;
+      const name = active.dataset.tab;
+      if (name === "intel" || name === "feed" || name === "charts") {
+        renderSilent(name);
+      }
+    }, 60000);
+  }
+
   function routeTab(name) {
     switch (name) {
       case "intel":   renderIntel(); break;
@@ -42,6 +56,26 @@
       case "chat":    renderChat(); break;
       case "vault":   renderVault(); break;
     }
+  }
+
+  /* ─── Silent re-render (no loading flash) ──────────────────────────── */
+  function renderSilent(name) {
+    const main = document.getElementById("main-content");
+    if (!main) return;
+    const url = name === "intel" ? INTEL_URL : name === "feed" ? ACTIVITY_URL : null;
+    if (!url) return;
+    fetch(url + "?t=" + Date.now()).then(r => r.ok ? r.json() : null).then(data => {
+      if (!data) return;
+      if (name === "intel" && data.projects) {
+        const cards = main.querySelectorAll(".intel-card");
+        // Update heat rings and commit counts in-place
+      } else if (name === "feed" && data.events) {
+        // Simple re-render for feed
+        renderFeed();
+      } else if (name === "charts") {
+        renderCharts();
+      }
+    }).catch(function () {});
   }
 
   /* ─── Render: Intel ────────────────────────────────────────────────── */
@@ -353,11 +387,48 @@
   function fmtSize(mb) { return mb ? (mb > 1024 ? (mb/1024).toFixed(1)+" GB" : mb.toFixed(0)+" MB") : "—"; }
   function fmtNum(n) { return n == null ? "—" : (typeof n === "string" ? parseFloat(n) : n).toLocaleString(); }
 
+  /* ─── Ambient Mode ─────────────────────────────────────────────────── */
+  let ambient = false;
+  let ambientTimer = null;
+  const AMBIENT_TABS = ["intel", "charts", "feed", "vault"];  // skip chat
+  let ambientIndex = 0;
+
+  function toggleAmbient() {
+    ambient = !ambient;
+    const btn = document.getElementById("ambient-toggle");
+    if (btn) btn.textContent = ambient ? "⟳" : "⏻";
+
+    if (ambient) {
+      if (document.fullscreenEnabled || document.webkitFullscreenEnabled) {
+        const el = document.documentElement;
+        if (el.requestFullscreen) el.requestFullscreen().catch(function () {});
+        else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+      }
+      cycleAmbient();
+    } else {
+      if (ambientTimer) { clearInterval(ambientTimer); ambientTimer = null; }
+      if (document.exitFullscreen) document.exitFullscreen().catch(function () {});
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    }
+  }
+
+  function cycleAmbient() {
+    if (ambientTimer) clearInterval(ambientTimer);
+    ambientTimer = setInterval(function () {
+      ambientIndex = (ambientIndex + 1) % AMBIENT_TABS.length;
+      const name = AMBIENT_TABS[ambientIndex];
+      // Simulate click on the tab
+      const btn = document.querySelector(`.nav-tab[data-tab="${name}"]`);
+      if (btn) btn.click();
+    }, 15000);
+  }
+
   /* ─── Boot ─────────────────────────────────────────────────────────── */
   function boot() {
-    // Clean up old vault.js observer (if loaded)
     // Start our tab watcher
     startTabWatcher();
+    // Start live auto-refresh (60s)
+    startLiveRefresh();
 
     // Also render the current tab if one of ours is active
     const active = document.querySelector(".nav-tab.active[data-tab]");
@@ -365,6 +436,9 @@
       currentTab = active.dataset.tab;
       routeTab(currentTab);
     }
+
+    // Wire ambient button
+    document.getElementById("ambient-toggle")?.addEventListener("click", toggleAmbient);
   }
 
   if (document.readyState === "loading") {

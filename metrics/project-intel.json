@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-24T02:15:04Z",
+  "checked_at": "2026-07-24T02:45:03Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -7,18 +7,18 @@
       "repo": "kitsboy/giveabit",
       "site_url": "https://giveabit.io",
       "last_commit": {
-        "sha": "f8f049d",
-        "message": "fix: use https for Umami analytics script URL",
-        "author": "Cam",
-        "date": "2026-07-22T03:05:52Z",
-        "url": "https://github.com/kitsboy/giveabit/commit/f8f049df850822fbd007b9e79ad5775c8f7c3a4f"
+        "sha": "19aa5e1",
+        "message": "chore: update ROADMAP.md per project template",
+        "author": "Sherpa",
+        "date": "2026-07-24T02:19:13Z",
+        "url": "https://github.com/kitsboy/giveabit/commit/19aa5e17c3dba182fc11bbeaf483d3fcd7655c6f"
       },
       "recent_commits": [
-        "fix: use https for Umami analytics script URL",
-        "docs: normalize .ai_docs filenames to protocol names",
-        "docs: LATEST-UPDATE tip SHA"
+        "chore: update ROADMAP.md per project template",
+        "chore: update DESIGN.md per project template",
+        "chore: update ROADMAP.md per project template"
       ],
-      "commits_7d": 11,
+      "commits_7d": 17,
       "health": "green",
       "cf_project": "giveabit",
       "open_issues": 0
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "da74fc0",
-        "message": "chore: thor auto-metrics 02:02 (live LND)",
+        "sha": "617bc78",
+        "message": "chore: thor auto-metrics 02:31 (live LND)",
         "author": "Cam (via Aider)",
-        "date": "2026-07-24T02:02:42Z",
-        "url": "https://github.com/kitsboy/HQ/commit/da74fc0fbb485e39899d2dbee1c44c693d28d566"
+        "date": "2026-07-24T02:31:08Z",
+        "url": "https://github.com/kitsboy/HQ/commit/617bc78c99889de4b7607d55f76c952f6978474b"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 02:02 (live LND)",
-        "chore: refresh status.json + thor-node [skip deploy]",
-        "chore: thor auto-metrics 02:00 (live LND)"
+        "chore: thor auto-metrics 02:31 (live LND)",
+        "chore: thor auto-metrics 02:30 (live LND)",
+        "chore: refresh status.json + thor-node [skip deploy]"
       ],
       "commits_7d": 100,
       "health": "green",
@@ -73,18 +73,18 @@
       "repo": "kitsboy/katoa",
       "site_url": "https://katoa.org",
       "last_commit": {
-        "sha": "e1801fc",
-        "message": "feat: add CF Pages auto-deploy",
+        "sha": "fc13ba5",
+        "message": "chore: update .ai_docs/current-status.md per project template",
         "author": "Sherpa",
-        "date": "2026-07-23T20:33:14Z",
-        "url": "https://github.com/kitsboy/katoa/commit/e1801fc51e529efe09d6f97acd148d79dd7d4076"
+        "date": "2026-07-24T02:19:15Z",
+        "url": "https://github.com/kitsboy/katoa/commit/fc13ba50b2ca08f127d465c7cacf5061ff215538"
       },
       "recent_commits": [
-        "feat: add CF Pages auto-deploy",
-        "chore: add generate-metrics script to build chain",
-        "feat: add generate-metrics.ts \u2014 counts creators, wishlists, "
+        "chore: update .ai_docs/current-status.md per project templat",
+        "chore: update ROADMAP.md per project template",
+        "chore: update DESIGN.md per project template"
       ],
-      "commits_7d": 10,
+      "commits_7d": 19,
       "health": "green",
       "cf_project": "katoa",
       "open_issues": 0
@@ -95,18 +95,18 @@
       "repo": "kitsboy/tadbuy",
       "site_url": "https://tadbuy.giveabit.io",
       "last_commit": {
-        "sha": "927c659",
-        "message": "feat: add CF Pages auto-deploy",
+        "sha": "8b89bb7",
+        "message": "chore: update .ai_docs/current-status.md per project template",
         "author": "Sherpa",
-        "date": "2026-07-23T20:33:34Z",
-        "url": "https://github.com/kitsboy/tadbuy/commit/927c659b9eeba18822adeb9dbf6b5bf156a35978"
+        "date": "2026-07-24T02:19:16Z",
+        "url": "https://github.com/kitsboy/tadbuy/commit/8b89bb7c563d51973dfaa27a2c900ca153208248"
       },
       "recent_commits": [
-        "feat: add CF Pages auto-deploy",
-        "feat: add CF Pages auto-deploy",
-        "init"
+        "chore: update .ai_docs/current-status.md per project templat",
+        "chore: update ROADMAP.md per project template",
+        "chore: update DESIGN.md per project template"
       ],
-      "commits_7d": 41,
+      "commits_7d": 50,
       "health": "green",
       "cf_project": "tadbuy",
       "open_issues": 1
@@ -117,18 +117,18 @@
       "repo": "kitsboy/stranded",
       "site_url": "https://stranded.giveabit.io",
       "last_commit": {
-        "sha": "f5921c5",
-        "message": "feat: add CF Pages auto-deploy",
+        "sha": "5b65143",
+        "message": "chore: update .ai_docs/current-status.md per project template",
         "author": "Sherpa",
-        "date": "2026-07-23T20:33:45Z",
-        "url": "https://github.com/kitsboy/stranded/commit/f5921c52c12675025a198fa5ef0380dce9c9ae2e"
+        "date": "2026-07-24T02:19:17Z",
+        "url": "https://github.com/kitsboy/stranded/commit/5b65143f892495dab06874ad2ecdecaceb234cd8"
       },
       "recent_commits": [
-        "feat: add CF Pages auto-deploy",
-        "feat: add CF Pages auto-deploy",
-        "feat: add Umami tracking and gab.product-metrics.v1 for HQ"
+        "chore: update .ai_docs/current-status.md per project templat",
+        "chore: update ROADMAP.md per project template",
+        "chore: update DESIGN.md per project template"
       ],
-      "commits_7d": 9,
+      "commits_7d": 18,
       "health": "green",
       "cf_project": "strandedbuild",
       "open_issues": 0
@@ -139,18 +139,18 @@
       "repo": "kitsboy/motopass",
       "site_url": "https://motopass.giveabit.io",
       "last_commit": {
-        "sha": "9820324",
-        "message": "feat: add CF Pages auto-deploy",
+        "sha": "1963f52",
+        "message": "chore: update .ai_docs/current-status.md per project template",
         "author": "Sherpa",
-        "date": "2026-07-23T20:33:16Z",
-        "url": "https://github.com/kitsboy/motopass/commit/98203240e87449ae7963bd08767bfa62f9bb39ce"
+        "date": "2026-07-24T02:19:18Z",
+        "url": "https://github.com/kitsboy/motopass/commit/1963f5237fea97b4c1a91376c9cd746fdd60cb71"
       },
       "recent_commits": [
-        "feat: add CF Pages auto-deploy",
-        "Add Umami tracking and public/metrics.json for HQ.",
-        "chore: add GROK-BOOT boot instructions for Grok"
+        "chore: update .ai_docs/current-status.md per project templat",
+        "chore: update ROADMAP.md per project template",
+        "chore: update .ai_docs/current-status.md per project templat"
       ],
-      "commits_7d": 7,
+      "commits_7d": 13,
       "health": "green",
       "cf_project": "motopass",
       "open_issues": 0
@@ -161,18 +161,18 @@
       "repo": "kitsboy/sherpacarta",
       "site_url": "https://sherpacarta.org",
       "last_commit": {
-        "sha": "9253994",
-        "message": "feat: add CF Pages auto-deploy",
+        "sha": "8dd0c7f",
+        "message": "chore: update ROADMAP.md per project template",
         "author": "Sherpa",
-        "date": "2026-07-23T20:33:17Z",
-        "url": "https://github.com/kitsboy/sherpacarta/commit/92539949a0936cedc647cdb6a986216a9d94b09b"
+        "date": "2026-07-24T02:19:12Z",
+        "url": "https://github.com/kitsboy/sherpacarta/commit/8dd0c7faa30951b73268e800b6b840719e0e2412"
       },
       "recent_commits": [
-        "feat: add CF Pages auto-deploy",
-        "docs: point LATEST-UPDATE at HEAD",
-        "docs: correct LATEST-UPDATE HEAD SHA"
+        "chore: update ROADMAP.md per project template",
+        "chore: update DESIGN.md per project template",
+        "chore: update ROADMAP.md per project template"
       ],
-      "commits_7d": 11,
+      "commits_7d": 17,
       "health": "green",
       "cf_project": "sherpacarta",
       "open_issues": 0
@@ -183,18 +183,18 @@
       "repo": "kitsboy/openstrata",
       "site_url": "https://openstrata.giveabit.io",
       "last_commit": {
-        "sha": "9498290",
-        "message": "feat: add CF Pages auto-deploy",
+        "sha": "6fe84be",
+        "message": "chore: update .ai_docs/current-status.md per project template",
         "author": "Sherpa",
-        "date": "2026-07-23T20:33:18Z",
-        "url": "https://github.com/kitsboy/openstrata/commit/949829028054a538fc8f90c172060c78c9d43f0a"
+        "date": "2026-07-24T02:19:18Z",
+        "url": "https://github.com/kitsboy/openstrata/commit/6fe84be311f305824a1a05eff96db1af4c6c4fad"
       },
       "recent_commits": [
-        "feat: add CF Pages auto-deploy",
-        "docs: Kimi mega-handoff 2026-07-20 (ops, HQ v2.5, less-chat,",
-        "docs: add AGENTS.md, GROK-SESSION-PROTOCOL, DILIGENCE, docs/"
+        "chore: update .ai_docs/current-status.md per project templat",
+        "chore: update ROADMAP.md per project template",
+        "chore: update DESIGN.md per project template"
       ],
-      "commits_7d": 3,
+      "commits_7d": 12,
       "health": "green",
       "cf_project": "openstrata",
       "open_issues": 0
