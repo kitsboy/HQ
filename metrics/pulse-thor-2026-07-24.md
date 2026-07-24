@@ -1,10 +1,10 @@
-# THOR Morning Pulse — 2026-07-24 10:45 UTC
+# THOR Pulse — 2026-07-24 14:30 UTC
 
-**📍 Overall: 🟡 WARNING** — 5 of 8 CF Pages deploys still failing since 02:19 UTC (known deploy.yml bug). Two cron jobs showing transient failures.
+**📍 Overall: 🟡 WARNING** — Same 5 CF Pages deploys still failing since 02:19 UTC (known deploy.yml bug). HTTP 429 job `bd5a6b221b7b` has **recovered** (now completing OK). One paused 429 job remains. Otherwise steady.
 
 ---
 
-### 📊 Metrics Bundle (5/5 completed, @ 10:45 UTC)
+### 📊 Metrics Bundle (5/5 completed, @ 14:30 UTC)
 | Script | Status |
 |---|---|
 | thor-project-intel.py | ✅ |
@@ -17,15 +17,17 @@
 | Metric | Value |
 |---|---|
 | Disk | 28G / 387G (8%) |
-| Uptime | 7 days, 1h+ |
-| Vault size | 935.6 MB stable |
+| Uptime | 7 days, 13h+ |
+| Memory | 3.3 Gi / 7.8 Gi (43%) |
+| Load avg | 0.70 / 0.32 / 0.18 |
+| Vault size | 955.0 MB |
 | Projects | 10 |
 
 ### ⚡ Docker Services
 | Service | Status | Uptime |
 |---|---|---|
-| umami | 🟢 Running | 8 hours (up from 5h) |
-| satohash-api | 🟢 Healthy | 4 days |
+| umami | 🟢 Running | 11 hours |
+| satohash-api | 🟢 Healthy | 2 days |
 | lnbits | 🟢 Running | 2 days |
 | redis | 🟢 Running | 4 days |
 | lnbits-postgres | 🟢 Healthy | 5 days |
@@ -34,19 +36,19 @@
 ### ₿ Bitcoin / Lightning
 | Metric | Value |
 |---|---|
-| Chain | main (blocks **959,400**) |
+| Chain | main (blocks **959,420**) |
 | Neutrino sync | ✅ Verified (LND synced to chain & graph) |
 | Active channels | 0 (unchanged) |
-| LND peers | 4 (up from 3 on Jul 22) |
+| LND peers | 3 (was 4 at 13:30, dropped by 1) |
 | Wallet balance | 7,704 sats on-chain |
 | LND version | 0.18.3-beta |
-| Block change | +23 since 07:45 (959,377 → 959,400) |
+| Block change | +4 since 13:30 (959,416 → 959,420), +63 on day |
 
 ### 🏗️ Deploy Status
 | Project | Status | Note |
 |---|---|---|
 | satohash | ✅ **Success** (Jul 22) | Last good deploy |
-| **HQ** | ✅ **Success** (run #711, 28s) | Auto-metrics push at 08:45; resolved |
+| **HQ** | ✅ **Auto-metrics push** (12:30 UTC) | Commit `a00e3eb` pushed with live LND |
 | giveabit | ⏸️ No runs | — |
 | openstrata | ⏸️ No runs | Static site |
 | **katoa** | ❌ **Failure** | Exit 127 — known deploy.yml bug |
@@ -58,17 +60,17 @@
 ### 📁 Vault Health
 | Metric | Value |
 |---|---|
-| Vault size | 935.6 MB |
+| Vault size | 955.0 MB (+20 MB since 13:30) |
 | Project count | 10 |
 | Handoffs | 2 (satohash, hq) |
 | Context map | ✅ Present |
-| Stale dirs | Only `docs/` (4.1d) and `infrastructure/` (2.3d) — non-critical |
+| Stale dirs | Only `docs/` (4.2d) and `infrastructure/` (2.4d) — non-critical |
 | Issues | 0 |
 
 ### 🚀 Project Activity (7-day commits)
 | Project | Commits | Last commit | Author |
 |---|---|---|---|
-| HQ Dashboard | **100** | 08:45 UTC today | Cam (via Aider) |
+| HQ Dashboard | **100** | 12:30 UTC (auto-metrics) | Cam (via Aider) |
 | Tadbuy | 50 | 02:19 UTC | Sherpa |
 | Satohash | 41 | Jul 22 | Cam |
 | Katoa | 19 | 02:19 UTC | Sherpa |
@@ -83,31 +85,33 @@
 |---|---|
 | Sites healthy | **9/9** — all 200 OK (< 200ms latency) |
 | Site issues | 0 |
-| Cron failures | **2** (see below) |
+| Cron failures | **0 new** this period |
 | New alerts | 0 |
 
 ### ⏰ Cron Health
 | Metric | Value |
 |---|---|
 | Total jobs | ~28 configured |
-| Last run OK | ✅ Most completed this hour |
+| Last run OK | ✅ Most completed recently |
 | Paused | 4 (1 auto-paused for HTTP 429, 3 manual) |
-| Recent failures | 2: (1) ping-site-check exit code 1 at 09:30 — partial ping success but script exited 1; (2) HTTP 429 rate limit at 09:17 on another job |
+| Recent failures | **0** — `bd5a6b221b7b` HTTP 429 (reported at 13:30) has **recovered** and is now completing. Job `7e58d4dd29a7` still paused since Jul 23 (HTTP 429). |
 
 ### ⚠️ Notable
 
-1. **🔴 5 CF Pages deploys still failing** — Sherpa's template update push at 02:19 triggered GH Actions on katoa, tadbuy, stranded, motopass, sherpacarta. All failed exit 127 (`command not found`). Same known deploy.yml bug. **No fix applied yet.** Sites unaffected (CF Pages still serves last successful build).
+1. **🟢 Improvement: HTTP 429 cron job recovered** — Job `bd5a6b221b7b` that was failing with HTTP 429 at 12:16 UTC has recovered and is now completing successfully (0 consecutive fails).
 
-2. **🟢 HQ deploy triggered** — The 10:45 auto-metrics push is running now. HQ deploys have been succeeding in ~26s.
+2. **🔴 5 CF Pages deploys still failing** — Sherpa's template update push at 02:19 triggered GH Actions on katoa, tadbuy, stranded, motopass, sherpacarta. All failed exit 127 (`command not found`). Same known deploy.yml bug. **No fix applied yet.** Sites unaffected (CF Pages still serves last successful build).
 
-3. **🟢 Umami uptime improving** — Now up 8 hours (was 5h at 07:45). Postgres auth timeout restart pattern seems resolved for now.
+3. **🟢 HQ auto-metrics pipeline healthy** — `thor-auto-metrics.py` ran successfully at 14:33 UTC, pushed commit with live LND data to GitHub.
 
-4. **✅ All sites healthy** — All 9 sites return HTTP 200 with sub-200ms latency. Auto-diagnose finds zero site issues.
+4. **🟢 Umami uptime stable** — Now up 11 hours (was 10h at 13:30). Container stable.
 
-5. **⚠️ 2 cron failures this hour** — A ping-site-check job exited 1 at 09:30 (though individual pings showed OK). An HTTP 429 rate-limited job hit again at 09:17 (auto-pausing may not have kicked in yet). Previously auto-paused 429 job from Jul 23 still paused.
+5. **✅ All sites healthy** — All 9 sites return HTTP 200 with sub-200ms latency. Auto-diagnose finds zero site issues.
 
-6. **₿ Bitcoin advancing** — Chain at block 959,400 (+23 since 07:45). LND synced. 4 LND peers (was 3, added 1 since Jul 22).
+6. **₿ Bitcoin advancing** — Chain at block 959,420 (+4 since 13:30, +63 on day). LND synced to chain & graph. LND peers dropped from 4 to 3 (minor). 0 channels, 7,704 sats on-chain wallet.
 
-7. **📡 Ecosystem stable** — All agents (Kimi, Grok, Mimi, Ziggy, Rosa, Andrea, Lenny) showing green. THOR system resources healthy. M3 last seen Jul 22; M4 deprecated.
+7. **📡 Ecosystem stable** — All agents showing green. THOR system healthy (load ~0.70/0.32/0.18, 43% memory).
 
-8. **💾 LNbits** — No wallets created; balance 0. CORS proxy on :5103 functional.
+8. **💾 Vault grew ~20 MB** — 955 MB (was 935.6 MB at 13:30). Likely normal Obsidian journal activity.
+
+9. **⚠️ LND peers dropped to 3** (was 4 at 13:30). Not alarming (neutrino peers come and go), but worth noting.
