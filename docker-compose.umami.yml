@@ -6,7 +6,7 @@ services:
     ports:
       - "0.0.0.0:3002:3000"
     environment:
-      DATABASE_URL: postgresql://umami:***@172.18.0.2:5432/umami
+      DATABASE_URL: postgresql://umami:umami_giveabit_2026@172.18.0.2:5432/umami
       DATABASE_TYPE: postgresql
       HASH_SALT: umami_giveabit_2026_salt
       ALLOWED_ORIGINS: https://hq.giveabit.io

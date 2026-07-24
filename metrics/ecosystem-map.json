@@ -1,6 +1,6 @@
 {
   "schema": "gab.ecosystem-map.v1",
-  "updatedAt": "2026-07-23T02:32:03Z",
+  "updatedAt": "2026-07-24T02:32:02Z",
   "projects": [
     {
       "id": "satohash",
@@ -24,7 +24,7 @@
       "version": "3.19.0",
       "status": "green",
       "health": "200",
-      "lastCommit": "b1a9fb0 chore: refresh status.json + thor-node [skip deploy]",
+      "lastCommit": "e50add7 chore: refresh status.json + thor-node [skip deploy]",
       "synced": "synced",
       "localOnThor": true
     },
@@ -141,12 +141,12 @@
       "host": "Contabo VPS 20",
       "status": "green",
       "disk": "8% used",
-      "diskFree": "359G",
-      "mem": "3.1Gi used",
-      "memAvail": "4.6Gi",
-      "load": "0.50/0.45/0.34",
-      "uptime": "up 6 days, 1 hour, 35 minutes",
-      "lastSeen": "2026-07-23"
+      "diskFree": "360G",
+      "mem": "3.3Gi used",
+      "memAvail": "4.5Gi",
+      "load": "0.43/0.35/0.32",
+      "uptime": "up 1 week, 1 hour, 35 minutes",
+      "lastSeen": "2026-07-24"
     },
     {
       "id": "m3",
@@ -264,97 +264,97 @@
   "skills": [
     {
       "name": "auto-git-status",
-      "ageDays": 53,
+      "ageDays": 54,
       "status": "aging",
       "updated": "2026-05-30"
     },
     {
       "name": "browser-harness",
-      "ageDays": 53,
+      "ageDays": 54,
       "status": "aging",
       "updated": "2026-05-30"
     },
     {
       "name": "computer-use",
-      "ageDays": 2,
+      "ageDays": 3,
       "status": "fresh",
       "updated": "2026-07-20"
     },
     {
       "name": "current-tasks",
-      "ageDays": 6,
+      "ageDays": 7,
       "status": "fresh",
       "updated": "2026-07-16"
     },
     {
       "name": "deployment-workflow",
-      "ageDays": 9,
+      "ageDays": 10,
       "status": "fresh",
       "updated": "2026-07-13"
     },
     {
       "name": "dogfood",
-      "ageDays": 31,
+      "ageDays": 32,
       "status": "aging",
       "updated": "2026-06-21"
     },
     {
       "name": "github-sync",
-      "ageDays": 20,
+      "ageDays": 21,
       "status": "fresh",
       "updated": "2026-07-02"
     },
     {
       "name": "hermes-desktop-plugins",
-      "ageDays": 2,
+      "ageDays": 3,
       "status": "fresh",
       "updated": "2026-07-20"
     },
     {
       "name": "kanban-worker",
-      "ageDays": 53,
+      "ageDays": 54,
       "status": "aging",
       "updated": "2026-05-30"
     },
     {
       "name": "nova-product-management",
-      "ageDays": 8,
+      "ageDays": 9,
       "status": "fresh",
       "updated": "2026-07-14"
     },
     {
       "name": "project-brief",
-      "ageDays": 8,
+      "ageDays": 9,
       "status": "fresh",
       "updated": "2026-07-14"
     },
     {
       "name": "propagate-template",
-      "ageDays": 26,
-      "status": "fresh",
-      "updated": "2026-06-26"
-    },
-    {
-      "name": "quick-backup",
       "ageDays": 27,
       "status": "fresh",
       "updated": "2026-06-26"
     },
     {
+      "name": "quick-backup",
+      "ageDays": 28,
+      "status": "fresh",
+      "updated": "2026-06-26"
+    },
+    {
       "name": "satohash-orchestrator",
-      "ageDays": 6,
+      "ageDays": 7,
       "status": "fresh",
       "updated": "2026-07-17"
     },
     {
       "name": "task",
-      "ageDays": 49,
+      "ageDays": 50,
       "status": "aging",
       "updated": "2026-06-03"
     },
     {
       "name": "yuanbao",
-      "ageDays": 6,
+      "ageDays": 7,
       "status": "fresh",
       "updated": "2026-07-17"
     }
@@ -373,7 +373,7 @@
       "name": "LND",
       "type": "Lightning Node (Neutrino)",
       "status": "green",
-      "detail": "Up 3 days (healthy)"
+      "detail": "Up 4 days (healthy)"
     },
     {
       "id": "satohash-api",
@@ -387,41 +387,41 @@
       "name": "Redis",
       "type": "Satohash Cache",
       "status": "green",
-      "detail": "Up 2 days"
+      "detail": "Up 3 days"
     },
     {
       "id": "postgres",
       "name": "PostgreSQL",
       "type": "LNbits Database",
       "status": "green",
-      "detail": "Up 3 days (healthy)"
+      "detail": "Up 4 days (healthy)"
     }
   ],
   "recentActivity": [
     {
       "repo": "hq",
-      "commit": "b1a9fb0 chore: refresh status.json + thor-node [skip deploy]",
-      "timestamp": "2026-07-23"
+      "commit": "e50add7 chore: refresh status.json + thor-node [skip deploy]",
+      "timestamp": "2026-07-24"
     },
     {
       "repo": "hq",
-      "commit": "106e922 chore: thor auto-metrics 00:30 (live LND)",
-      "timestamp": "2026-07-23"
+      "commit": "5ed1e0c chore: thor auto-metrics 00:30 (live LND)",
+      "timestamp": "2026-07-24"
     },
     {
       "repo": "hq",
-      "commit": "cfc9349 chore: thor auto-metrics 00:16 (live LND)",
-      "timestamp": "2026-07-23"
+      "commit": "fad5893 chore: project intel 00:15 (9 projects, all green)",
+      "timestamp": "2026-07-24"
     },
     {
       "repo": "satohash",
       "commit": "14c30cd docs: Kimi mega-handoff 2026-07-20 (ops, HQ v2.5, le",
-      "timestamp": "2026-07-23"
+      "timestamp": "2026-07-24"
     },
     {
       "repo": "satohash",
       "commit": "0810dff docs: Kimi ops-clean handoff 2026-07-20",
-      "timestamp": "2026-07-23"
+      "timestamp": "2026-07-24"
     }
   ],
   "metadata": {
