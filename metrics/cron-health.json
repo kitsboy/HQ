@@ -1,159 +1,33 @@
 {
-  "checked_at": "2026-07-24T10:00:20Z",
+  "checked_at": "2026-07-24T12:00:30Z",
   "jobs": {
-    "91d0082d0da5": {
-      "status": "completed",
-      "last_run": "2026-07-24T12:00:19.938072+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "17affbe86a4e": {
-      "status": "completed",
-      "last_run": "2026-07-24T12:00:19.760731+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "c8ce19bb5571": {
-      "status": "completed",
-      "last_run": "2026-07-24T11:55:21.133120+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "1b2c31d6ba98": {
-      "status": "completed",
-      "last_run": "2026-07-24T11:46:43.704934+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "42cdc3e9bd97": {
-      "status": "completed",
-      "last_run": "2026-07-24T11:45:33.387504+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "e8d5b97de501": {
-      "status": "completed",
-      "last_run": "2026-07-24T11:30:36.933941+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "cb8398b3fa67": {
-      "status": "completed",
-      "last_run": "2026-07-24T11:30:19.225319+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "bd5a6b221b7b": {
-      "status": "completed",
-      "last_run": "2026-07-24T11:16:11.680560+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "d8c69ae4056e": {
-      "status": "completed",
-      "last_run": "2026-07-24T11:09:25.360244+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "bb5980d548fb": {
-      "status": "completed",
-      "last_run": "2026-07-24T11:07:32.103070+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "7768b5c5aa49": {
-      "status": "completed",
-      "last_run": "2026-07-24T11:01:47.955508+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "17029e4cdbed": {
-      "status": "completed",
-      "last_run": "2026-07-24T08:00:13.467724+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "71f476018b46": {
-      "status": "completed",
-      "last_run": "2026-07-24T07:33:35.507951+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "337c7ae0b619": {
-      "status": "completed",
-      "last_run": "2026-07-24T07:30:13.306833+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "311d146f45c3": {
-      "status": "completed",
-      "last_run": "2026-07-24T07:15:09.294503+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "5c6f78744d6e": {
-      "status": "completed",
-      "last_run": "2026-07-24T07:00:09.986020+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "9bd2735e125e": {
-      "status": "completed",
-      "last_run": "2026-07-24T06:00:10.412685+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "48e9ee316af5": {
-      "status": "completed",
-      "last_run": "2026-07-24T06:00:06.936064+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "883ff52cf5a2": {
-      "status": "completed",
-      "last_run": "2026-07-24T03:06:11.883178+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "44b42cec976a": {
-      "status": "completed",
-      "last_run": "2026-07-24T02:35:04.729384+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "062cb12b5553": {
-      "status": "completed",
-      "last_run": "2026-07-24T02:00:45.243494+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "d62af99564f5": {
-      "status": "completed",
-      "last_run": "2026-07-24T00:05:12.551759+02:00",
-      "consecutive_fails": 0,
-      "paused": true
-    },
-    "7e58d4dd29a7": {
-      "status": "failed",
-      "last_run": "2026-07-23T23:46:18.460258+02:00",
-      "consecutive_fails": 1,
-      "paused": true,
-      "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
-      "action": "warn"
-    },
-    "12b477c661ae": {
-      "status": "completed",
-      "last_run": "2026-07-23T22:07:42.012044+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    }
+    "91d0082d0da5": {"status": "completed", "last_run": "2026-07-24T12:00:19.938072+02:00", "consecutive_fails": 0, "paused": false},
+    "17affbe86a4e": {"status": "completed", "last_run": "2026-07-24T12:00:19.760731+02:00", "consecutive_fails": 0, "paused": false},
+    "c8ce19bb5571": {"status": "completed", "last_run": "2026-07-24T12:00:21.855584+02:00", "consecutive_fails": 0, "paused": false},
+    "1b2c31d6ba98": {"status": "completed", "last_run": "2026-07-24T12:00:20.611999+02:00", "consecutive_fails": 0, "paused": false},
+    "42cdc3e9bd97": {"status": "completed", "last_run": "2026-07-24T12:00:18.922912+02:00", "consecutive_fails": 0, "paused": false},
+    "9bd2735e125e": {"status": "completed", "last_run": "2026-07-24T12:00:22.525011+02:00", "consecutive_fails": 0, "paused": false},
+    "e8d5b97de501": {"status": "failed", "last_run": "2026-07-24T12:00:25.172340+02:00", "consecutive_fails": 1, "paused": false, "error": "Non-fast-forward git push (fixed: retry+rebase added to script)", "action": "fixed"},
+    "cb8398b3fa67": {"status": "completed", "last_run": "2026-07-24T12:00:20.586581+02:00", "consecutive_fails": 0, "paused": false},
+    "bd5a6b221b7b": {"status": "completed", "last_run": "2026-07-24T11:16:11.680560+02:00", "consecutive_fails": 0, "paused": false},
+    "d8c69ae4056e": {"status": "completed", "last_run": "2026-07-24T11:09:25.360244+02:00", "consecutive_fails": 0, "paused": false},
+    "bb5980d548fb": {"status": "running", "last_run": "2026-07-24T12:00:19.948532+02:00", "consecutive_fails": 0, "paused": false},
+    "7768b5c5aa49": {"status": "completed", "last_run": "2026-07-24T12:01:37.627778+02:00", "consecutive_fails": 0, "paused": false},
+    "17029e4cdbed": {"status": "completed", "last_run": "2026-07-24T08:00:13.467724+02:00", "consecutive_fails": 0, "paused": false},
+    "71f476018b46": {"status": "completed", "last_run": "2026-07-24T07:33:35.507951+02:00", "consecutive_fails": 0, "paused": false},
+    "337c7ae0b619": {"status": "completed", "last_run": "2026-07-24T07:30:13.306833+02:00", "consecutive_fails": 0, "paused": false},
+    "311d146f45c3": {"status": "completed", "last_run": "2026-07-24T07:15:09.294503+02:00", "consecutive_fails": 0, "paused": false},
+    "5c6f78744d6e": {"status": "completed", "last_run": "2026-07-24T07:00:09.986020+02:00", "consecutive_fails": 0, "paused": false},
+    "48e9ee316af5": {"status": "completed", "last_run": "2026-07-24T06:00:06.936064+02:00", "consecutive_fails": 0, "paused": false},
+    "883ff52cf5a2": {"status": "completed", "last_run": "2026-07-24T03:06:11.883178+02:00", "consecutive_fails": 0, "paused": false},
+    "44b42cec976a": {"status": "completed", "last_run": "2026-07-24T02:35:04.729384+02:00", "consecutive_fails": 0, "paused": false},
+    "062cb12b5553": {"status": "completed", "last_run": "2026-07-24T02:00:45.243494+02:00", "consecutive_fails": 0, "paused": false},
+    "d62af99564f5": {"status": "completed", "last_run": "2026-07-24T00:05:12.551759+02:00", "consecutive_fails": 0, "paused": true},
+    "7e58d4dd29a7": {"status": "failed", "last_run": "2026-07-23T23:46:18.460258+02:00", "consecutive_fails": 1, "paused": true, "error": "HTTP 429 rate limit", "action": "warn"},
+    "12b477c661ae": {"status": "completed", "last_run": "2026-07-23T22:07:42.012044+02:00", "consecutive_fails": 0, "paused": false}
   },
   "paused_count": 4,
-  "alert_count": 1,
-  "paused_jobs": [
-    "c73da343ba68",
-    "7e58d4dd29a7",
-    "d62af99564f5",
-    "e9ccb37f523d"
-  ]
+  "alert_count": 0,
+  "fixed_count": 1,
+  "paused_jobs": ["c73da343ba68", "7e58d4dd29a7", "d62af99564f5", "e9ccb37f523d"]
 }
