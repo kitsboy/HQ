@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-24T13:15:24Z",
+  "checked_at": "2026-07-24T15:45:29Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "5b4023e",
-        "message": "chore: thor auto-metrics 13:15 (live LND)",
-        "author": "Cam (via Aider)",
-        "date": "2026-07-24T13:15:05Z",
-        "url": "https://github.com/kitsboy/HQ/commit/5b4023e45f8ba6a9c1da5c6520df5710a859289f"
+        "sha": "81445c3",
+        "message": "chore: refresh status.json [skip deploy]",
+        "author": "hq-status-bot",
+        "date": "2026-07-24T15:28:06Z",
+        "url": "https://github.com/kitsboy/HQ/commit/81445c3c5e261e5129c4d721a9e06dabcb48beed"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 13:15 (live LND)",
-        "chore: thor auto-metrics 13:02 (live LND)",
-        "chore: refresh status.json + thor-node [skip deploy]"
+        "chore: refresh status.json [skip deploy]",
+        "chore: thor auto-metrics 15:15 (live LND)",
+        "chore: thor auto-metrics 15:15 (live LND)"
       ],
       "commits_7d": 100,
       "health": "green",
@@ -73,18 +73,18 @@
       "repo": "kitsboy/katoa",
       "site_url": "https://katoa.org",
       "last_commit": {
-        "sha": "fc13ba5",
-        "message": "chore: update .ai_docs/current-status.md per project template",
-        "author": "Sherpa",
-        "date": "2026-07-24T02:19:15Z",
-        "url": "https://github.com/kitsboy/katoa/commit/fc13ba50b2ca08f127d465c7cacf5061ff215538"
+        "sha": "eec2b76",
+        "message": "fix: prefix bare vite build with npx for Node 24 runner compat",
+        "author": "Cam (via Aider)",
+        "date": "2026-07-24T13:19:16Z",
+        "url": "https://github.com/kitsboy/katoa/commit/eec2b765c28ce8d54d16af39cee52a6f21f4bae3"
       },
       "recent_commits": [
+        "fix: prefix bare vite build with npx for Node 24 runner comp",
         "chore: update .ai_docs/current-status.md per project templat",
-        "chore: update ROADMAP.md per project template",
-        "chore: update DESIGN.md per project template"
+        "chore: update ROADMAP.md per project template"
       ],
-      "commits_7d": 19,
+      "commits_7d": 20,
       "health": "green",
       "cf_project": "katoa",
       "open_issues": 0
@@ -95,18 +95,18 @@
       "repo": "kitsboy/tadbuy",
       "site_url": "https://tadbuy.giveabit.io",
       "last_commit": {
-        "sha": "8b89bb7",
-        "message": "chore: update .ai_docs/current-status.md per project template",
-        "author": "Sherpa",
-        "date": "2026-07-24T02:19:16Z",
-        "url": "https://github.com/kitsboy/tadbuy/commit/8b89bb7c563d51973dfaa27a2c900ca153208248"
+        "sha": "97bcd1c",
+        "message": "fix: prefix bare vite build with npx for Node 24 runner compat",
+        "author": "Cam (via Aider)",
+        "date": "2026-07-24T13:19:18Z",
+        "url": "https://github.com/kitsboy/tadbuy/commit/97bcd1ca9f0edb7b9c29c7777515d3bd64f8a8c9"
       },
       "recent_commits": [
+        "fix: prefix bare vite build with npx for Node 24 runner comp",
         "chore: update .ai_docs/current-status.md per project templat",
-        "chore: update ROADMAP.md per project template",
-        "chore: update DESIGN.md per project template"
+        "chore: update ROADMAP.md per project template"
       ],
-      "commits_7d": 50,
+      "commits_7d": 51,
       "health": "green",
       "cf_project": "tadbuy",
       "open_issues": 1
@@ -117,18 +117,18 @@
       "repo": "kitsboy/stranded",
       "site_url": "https://stranded.giveabit.io",
       "last_commit": {
-        "sha": "5b65143",
-        "message": "chore: update .ai_docs/current-status.md per project template",
-        "author": "Sherpa",
-        "date": "2026-07-24T02:19:17Z",
-        "url": "https://github.com/kitsboy/stranded/commit/5b65143f892495dab06874ad2ecdecaceb234cd8"
+        "sha": "306d15f",
+        "message": "fix: prefix bare next build with npx for Node 24 runner compat",
+        "author": "Cam (via Aider)",
+        "date": "2026-07-24T13:19:28Z",
+        "url": "https://github.com/kitsboy/stranded/commit/306d15fec52f5aa2e387e13e19ce7ea2c30820da"
       },
       "recent_commits": [
+        "fix: prefix bare next build with npx for Node 24 runner comp",
         "chore: update .ai_docs/current-status.md per project templat",
-        "chore: update ROADMAP.md per project template",
-        "chore: update DESIGN.md per project template"
+        "chore: update ROADMAP.md per project template"
       ],
-      "commits_7d": 18,
+      "commits_7d": 19,
       "health": "green",
       "cf_project": "strandedbuild",
       "open_issues": 0
@@ -139,18 +139,18 @@
       "repo": "kitsboy/motopass",
       "site_url": "https://motopass.giveabit.io",
       "last_commit": {
-        "sha": "1963f52",
-        "message": "chore: update .ai_docs/current-status.md per project template",
-        "author": "Sherpa",
-        "date": "2026-07-24T02:19:18Z",
-        "url": "https://github.com/kitsboy/motopass/commit/1963f5237fea97b4c1a91376c9cd746fdd60cb71"
+        "sha": "28dba80",
+        "message": "fix: prefix bare vite build with npx for Node 24 runner compat",
+        "author": "Cam (via Aider)",
+        "date": "2026-07-24T13:20:04Z",
+        "url": "https://github.com/kitsboy/motopass/commit/28dba80b6840a99c668c05d3fc1449aad67eb980"
       },
       "recent_commits": [
+        "fix: prefix bare vite build with npx for Node 24 runner comp",
         "chore: update .ai_docs/current-status.md per project templat",
-        "chore: update ROADMAP.md per project template",
-        "chore: update .ai_docs/current-status.md per project templat"
+        "chore: update ROADMAP.md per project template"
       ],
-      "commits_7d": 13,
+      "commits_7d": 14,
       "health": "green",
       "cf_project": "motopass",
       "open_issues": 0
@@ -161,18 +161,18 @@
       "repo": "kitsboy/sherpacarta",
       "site_url": "https://sherpacarta.org",
       "last_commit": {
-        "sha": "8dd0c7f",
-        "message": "chore: update ROADMAP.md per project template",
-        "author": "Sherpa",
-        "date": "2026-07-24T02:19:12Z",
-        "url": "https://github.com/kitsboy/sherpacarta/commit/8dd0c7faa30951b73268e800b6b840719e0e2412"
+        "sha": "b167bcc",
+        "message": "fix: prefix bare vite build with npx for Node 24 runner compat",
+        "author": "Cam (via Aider)",
+        "date": "2026-07-24T13:20:10Z",
+        "url": "https://github.com/kitsboy/sherpacarta/commit/b167bcc5b86779c30408109a1b5f9cad4bb5dac7"
       },
       "recent_commits": [
+        "fix: prefix bare vite build with npx for Node 24 runner comp",
         "chore: update ROADMAP.md per project template",
-        "chore: update DESIGN.md per project template",
-        "chore: update ROADMAP.md per project template"
+        "chore: update DESIGN.md per project template"
       ],
-      "commits_7d": 17,
+      "commits_7d": 18,
       "health": "green",
       "cf_project": "sherpacarta",
       "open_issues": 0
