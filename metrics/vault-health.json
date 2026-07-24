@@ -1,65 +1,57 @@
 {
-  "checked_at": "2026-07-24T02:04:35Z",
-  "vault_size_mb": 740.4,
+  "checked_at": "2026-07-24T02:15:15Z",
+  "vault_size_mb": 935.6,
   "structure": {
+    ".git": {
+      "files": 0,
+      "newest_days_ago": 0
+    },
     "01-Architecture": {
       "files": 2,
-      "newest_days_ago": 0.0,
-      "oldest_days_ago": 0.0
+      "newest_days_ago": 0.0
     },
     "02-Agents": {
       "files": 1,
-      "newest_days_ago": 0.0,
-      "oldest_days_ago": 0.0
+      "newest_days_ago": 0.1
     },
     "03-Projects": {
-      "files": 2603,
-      "newest_days_ago": 0.0,
-      "oldest_days_ago": 0.0
+      "files": 475,
+      "newest_days_ago": 0.1
     },
     "Obsidian": {
-      "files": 665,
-      "newest_days_ago": 0.0,
-      "oldest_days_ago": 72.3
+      "files": 538,
+      "newest_days_ago": 0.1
     },
     "bin": {
-      "files": 3,
-      "newest_days_ago": 9.9,
-      "oldest_days_ago": 43.1
+      "files": 0,
+      "newest_days_ago": 0
     },
     "docs": {
       "files": 2,
-      "newest_days_ago": 3.8,
-      "oldest_days_ago": 3.8
+      "newest_days_ago": 3.8
     },
     "infrastructure": {
-      "files": 7,
-      "newest_days_ago": 2.0,
-      "oldest_days_ago": 6.2
+      "files": 1,
+      "newest_days_ago": 2.0
     },
     "secrets": {
-      "files": 6,
-      "newest_days_ago": 2.0,
-      "oldest_days_ago": 5.4
+      "files": 0,
+      "newest_days_ago": 0
     }
   },
   "staleness_days": {
     "01-Architecture": 0.0,
-    "02-Agents": 0.0,
-    "03-Projects": 0.0,
-    "Obsidian": 0.0,
-    "bin": 9.9,
+    "02-Agents": 0.1,
+    "03-Projects": 0.1,
+    "Obsidian": 0.1,
     "docs": 3.8,
-    "infrastructure": 2.0,
-    "secrets": 2.0
+    "infrastructure": 2.0
   },
   "project_count": 10,
-  "handoff_count": 30,
+  "handoff_count": 2,
   "has_context_map": true,
-  "issues": [
-    "bin: newest file 9.9d old"
-  ],
+  "issues": [],
   "disk_used": "28G",
-  "disk_avail": "360G",
+  "disk_avail": "359G",
   "disk_pct": "8%"
 }
