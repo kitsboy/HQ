@@ -1,17 +1,17 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-24T01:04:05Z",
+ "updatedAt": "2026-07-24T01:15:01Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
   "stack": "Docker \u00b7 LND Neutrino \u00b7 LNbits \u00b7 satohash-api \u00b7 Hermes",
   "region": "EU Contabo",
-  "status": "amber",
+  "status": "green",
   "services": [
    {
     "id": "umami",
-    "status": "amber",
-    "detail": "Restarting (1) 29 seconds ago"
+    "status": "green",
+    "detail": "Up About a minute"
    },
    {
     "id": "satohash-satohash-api-1",
@@ -31,7 +31,7 @@
    {
     "id": "lnbits-postgres",
     "status": "green",
-    "detail": "Up 4 days (healthy)"
+    "detail": "Up 5 days (healthy)"
    },
    {
     "id": "lnd",
@@ -39,13 +39,13 @@
     "detail": "Up 4 days (healthy)"
    }
   ],
-  "uptimeSec": 612445
+  "uptimeSec": 613100
  },
  "bitcoin": {
   "ok": true,
   "chain": "main",
-  "blocks": 959337,
-  "headers": 959337,
+  "blocks": 959338,
+  "headers": 959338,
   "verificationProgress": 1.0,
   "pruned": false,
   "sizeOnDiskGB": 0.34,
@@ -84,10 +84,6 @@
    "color": "#1f6b3a",
    "points": [
     {
-     "t": "2026-07-23T08:46:04Z",
-     "v": 0
-    },
-    {
      "t": "2026-07-23T09:00:01Z",
      "v": 0
     },
@@ -465,6 +461,10 @@
     },
     {
      "t": "2026-07-24T01:04:05Z",
+     "v": 0
+    },
+    {
+     "t": "2026-07-24T01:15:01Z",
      "v": 0
     }
    ]
@@ -476,10 +476,6 @@
    "color": "#c45f00",
    "points": [
     {
-     "t": "2026-07-23T08:46:04Z",
-     "v": 0
-    },
-    {
      "t": "2026-07-23T09:00:01Z",
      "v": 0
     },
@@ -858,6 +854,10 @@
     {
      "t": "2026-07-24T01:04:05Z",
      "v": 0
+    },
+    {
+     "t": "2026-07-24T01:15:01Z",
+     "v": 0
     }
    ]
   },
@@ -867,10 +867,6 @@
    "unit": "load",
    "color": "#38bdf8",
    "points": [
-    {
-     "t": "2026-07-23T08:46:04Z",
-     "v": 0.38
-    },
     {
      "t": "2026-07-23T09:00:01Z",
      "v": 0.06
@@ -1250,6 +1246,10 @@
     {
      "t": "2026-07-24T01:04:05Z",
      "v": 0.69
+    },
+    {
+     "t": "2026-07-24T01:15:01Z",
+     "v": 0.6
     }
    ]
   },
@@ -1259,10 +1259,6 @@
    "unit": "GB",
    "color": "#a78bfa",
    "points": [
-    {
-     "t": "2026-07-23T08:46:04Z",
-     "v": 3.2
-    },
     {
      "t": "2026-07-23T09:00:01Z",
      "v": 3.1
@@ -1642,6 +1638,10 @@
     {
      "t": "2026-07-24T01:04:05Z",
      "v": 3.3
+    },
+    {
+     "t": "2026-07-24T01:15:01Z",
+     "v": 3.5
     }
    ]
   },
@@ -1651,10 +1651,6 @@
    "unit": "blocks",
    "color": "#f7931a",
    "points": [
-    {
-     "t": "2026-07-23T08:46:04Z",
-     "v": 959237
-    },
     {
      "t": "2026-07-23T09:00:01Z",
      "v": 959238
@@ -2034,6 +2030,10 @@
     {
      "t": "2026-07-24T01:04:05Z",
      "v": 959337
+    },
+    {
+     "t": "2026-07-24T01:15:01Z",
+     "v": 959338
     }
    ]
   }
@@ -2068,25 +2068,25 @@
   },
   "memory": {
    "totalGB": 7.8,
-   "usedGB": 3.3,
-   "freeGB": 2.1,
-   "availableGB": 4.5
+   "usedGB": 3.5,
+   "freeGB": 1.9,
+   "availableGB": 4.3
   },
   "cpu": {
-   "loadAvg1m": 0.69,
-   "loadAvg5m": 0.45,
-   "loadAvg15m": 0.3,
+   "loadAvg1m": 0.6,
+   "loadAvg5m": 0.67,
+   "loadAvg15m": 0.47,
    "uptimeDays": 7.1
   },
   "docker": {
    "images": 7,
    "containers": 6,
-   "running": 5,
+   "running": 6,
    "buildCacheGB": 9.131
   },
   "breakdownGB": {
    "MASTER-BRAIN_vault": 0.688,
-   "Hermes_skills_config": 0.689,
+   "Hermes_skills_config": 0.687,
    "satohash_repo": 0.021,
    "HQ_repo": 0.022,
    "LND_data": 0.343,
@@ -2100,10 +2100,10 @@
   "diskUsedGB": 28,
   "diskFreeGB": 360,
   "memTotalGB": 7.8,
-  "memUsedGB": 3.3,
-  "load1": 0.69,
-  "load5": 0.45,
-  "load15": 0.3,
+  "memUsedGB": 3.5,
+  "load1": 0.6,
+  "load5": 0.67,
+  "load15": 0.47,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
