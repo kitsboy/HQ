@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-24T09:02:27Z",
+ "updatedAt": "2026-07-24T09:15:01Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -39,24 +39,24 @@
     "detail": "Up 4 days (healthy)"
    }
   ],
-  "uptimeSec": 641146
+  "uptimeSec": 641901
  },
  "bitcoin": {
-  "ok": true,
+  "ok": false,
   "chain": "main",
-  "blocks": 959401,
-  "headers": 959401,
-  "verificationProgress": 1.0,
+  "blocks": 959402,
+  "headers": 959402,
+  "verificationProgress": 0.0,
   "pruned": false,
   "sizeOnDiskGB": 0.34,
   "connections": 4,
-  "ibd": false,
+  "ibd": true,
   "hint": "LND Neutrino (no local bitcoind). Height + sync from lncli getinfo."
  },
  "lightning": {
-  "ok": true,
+  "ok": false,
   "implementation": "lnd",
-  "syncedToChain": true,
+  "syncedToChain": false,
   "syncedToGraph": true,
   "numPeers": 4,
   "numActiveChannels": 0,
@@ -84,10 +84,6 @@
    "color": "#1f6b3a",
    "points": [
     {
-     "t": "2026-07-23T17:00:02Z",
-     "v": 0
-    },
-    {
      "t": "2026-07-23T17:02:53Z",
      "v": 0
     },
@@ -465,6 +461,10 @@
     },
     {
      "t": "2026-07-24T09:02:27Z",
+     "v": 0
+    },
+    {
+     "t": "2026-07-24T09:15:01Z",
      "v": 0
     }
    ]
@@ -476,10 +476,6 @@
    "color": "#c45f00",
    "points": [
     {
-     "t": "2026-07-23T17:00:02Z",
-     "v": 0
-    },
-    {
      "t": "2026-07-23T17:02:53Z",
      "v": 0
     },
@@ -858,6 +854,10 @@
     {
      "t": "2026-07-24T09:02:27Z",
      "v": 0
+    },
+    {
+     "t": "2026-07-24T09:15:01Z",
+     "v": 0
     }
    ]
   },
@@ -867,10 +867,6 @@
    "unit": "load",
    "color": "#38bdf8",
    "points": [
-    {
-     "t": "2026-07-23T17:00:02Z",
-     "v": 0.32
-    },
     {
      "t": "2026-07-23T17:02:53Z",
      "v": 0.2
@@ -1250,6 +1246,10 @@
     {
      "t": "2026-07-24T09:02:27Z",
      "v": 0.39
+    },
+    {
+     "t": "2026-07-24T09:15:01Z",
+     "v": 0.13
     }
    ]
   },
@@ -1259,10 +1259,6 @@
    "unit": "GB",
    "color": "#a78bfa",
    "points": [
-    {
-     "t": "2026-07-23T17:00:02Z",
-     "v": 3.1
-    },
     {
      "t": "2026-07-23T17:02:53Z",
      "v": 3.1
@@ -1642,6 +1638,10 @@
     {
      "t": "2026-07-24T09:02:27Z",
      "v": 3.3
+    },
+    {
+     "t": "2026-07-24T09:15:01Z",
+     "v": 3.2
     }
    ]
   },
@@ -1651,10 +1651,6 @@
    "unit": "blocks",
    "color": "#f7931a",
    "points": [
-    {
-     "t": "2026-07-23T17:00:02Z",
-     "v": 959283
-    },
     {
      "t": "2026-07-23T17:02:53Z",
      "v": 959283
@@ -2034,6 +2030,10 @@
     {
      "t": "2026-07-24T09:02:27Z",
      "v": 959401
+    },
+    {
+     "t": "2026-07-24T09:15:01Z",
+     "v": 959402
     }
    ]
   }
@@ -2068,14 +2068,14 @@
   },
   "memory": {
    "totalGB": 7.8,
-   "usedGB": 3.3,
-   "freeGB": 2.6,
+   "usedGB": 3.2,
+   "freeGB": 2.5,
    "availableGB": 4.5
   },
   "cpu": {
-   "loadAvg1m": 0.39,
-   "loadAvg5m": 0.26,
-   "loadAvg15m": 0.18,
+   "loadAvg1m": 0.13,
+   "loadAvg5m": 0.13,
+   "loadAvg15m": 0.13,
    "uptimeDays": 7.4
   },
   "docker": {
@@ -2086,13 +2086,13 @@
   },
   "breakdownGB": {
    "MASTER-BRAIN_vault": 0.688,
-   "Hermes_skills_config": 0.721,
+   "Hermes_skills_config": 0.722,
    "satohash_repo": 0.021,
-   "HQ_repo": 0.024,
+   "HQ_repo": 0.025,
    "LND_data": 0.336,
    "Docker_images": 3.911,
    "Docker_volumes": 0.448,
-   "other_system": 21.9
+   "other_system": 21.8
   }
  },
  "host": {
@@ -2100,10 +2100,10 @@
   "diskUsedGB": 28,
   "diskFreeGB": 359,
   "memTotalGB": 7.8,
-  "memUsedGB": 3.3,
-  "load1": 0.39,
-  "load5": 0.26,
-  "load15": 0.18,
+  "memUsedGB": 3.2,
+  "load1": 0.13,
+  "load5": 0.13,
+  "load15": 0.13,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
@@ -2111,7 +2111,7 @@
    {
     "id": "other_system",
     "label": "Other system",
-    "gb": 21.9
+    "gb": 21.8
    },
    {
     "id": "Docker_images",
@@ -2139,13 +2139,13 @@
     "gb": 0.34
    },
    {
-    "id": "satohash_repo",
-    "label": "satohash repo",
-    "gb": 0.02
-   },
-   {
     "id": "HQ_repo",
     "label": "HQ repo",
+    "gb": 0.03
+   },
+   {
+    "id": "satohash_repo",
+    "label": "satohash repo",
     "gb": 0.02
    }
   ]
