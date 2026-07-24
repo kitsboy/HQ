@@ -51,6 +51,7 @@ cp("hq.css", "hq.css");
 cp("hq.js", "hq.js");
 cpOptional("hq-vault.js", "hq-vault.js");
 cpOptional("hq-intel.js", "hq-intel.js");
+cpOptional("umami-tracker.js", "umami-tracker.js");
 cp("sw.js", "sw.js");
 cp("projects.json", "projects.json");
 cp("agents.json", "agents.json");
