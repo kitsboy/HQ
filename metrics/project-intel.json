@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-24T19:30:39Z",
+  "checked_at": "2026-07-24T22:45:44Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "817bea9",
-        "message": "chore: thor auto-metrics 19:30 (live LND)",
-        "author": "Cam (via Aider)",
-        "date": "2026-07-24T19:30:13Z",
-        "url": "https://github.com/kitsboy/HQ/commit/817bea9ac6aa087f147140c5b45147a5d656130e"
+        "sha": "cec0992",
+        "message": "chore: refresh status.json [skip deploy]",
+        "author": "hq-status-bot",
+        "date": "2026-07-24T22:43:52Z",
+        "url": "https://github.com/kitsboy/HQ/commit/cec0992abdf5067472d7a34d1c01590bef84977c"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 19:30 (live LND)",
-        "chore: refresh metrics bundle 21:15 (5/5 scripts OK) [skip d",
-        "chore: thor auto-metrics 19:15 (live LND)"
+        "chore: refresh status.json [skip deploy]",
+        "chore: thor auto-metrics 22:30 (live LND)",
+        "chore: refresh status.json + thor-node [skip deploy]"
       ],
       "commits_7d": 100,
       "health": "green",
@@ -117,18 +117,18 @@
       "repo": "kitsboy/stranded",
       "site_url": "https://stranded.giveabit.io",
       "last_commit": {
-        "sha": "44efa79",
-        "message": "fix: deploy from ./dist not ./out (next.config.js sets distDir: dist)",
-        "author": "Cam (via Aider)",
-        "date": "2026-07-24T16:32:48Z",
-        "url": "https://github.com/kitsboy/stranded/commit/44efa798a028603ce916edb0e6f0b859dc452576"
+        "sha": "d258a64",
+        "message": "fix: CI verify paths for trailingSlash + bump Node to 22 (stop Actions failures)",
+        "author": "Sherpa",
+        "date": "2026-07-24T19:31:30Z",
+        "url": "https://github.com/kitsboy/stranded/commit/d258a6420f2398005b6e8c2103fb295398cb81cb"
       },
       "recent_commits": [
+        "fix: CI verify paths for trailingSlash + bump Node to 22 (st",
         "fix: deploy from ./dist not ./out (next.config.js sets distD",
-        "fix: prefix next build with npx for Node 24 compat",
-        "fix: prefix bare next build with npx for Node 24 runner comp"
+        "fix: prefix next build with npx for Node 24 compat"
       ],
-      "commits_7d": 21,
+      "commits_7d": 22,
       "health": "green",
       "cf_project": "strandedbuild",
       "open_issues": 0

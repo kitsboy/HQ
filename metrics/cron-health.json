@@ -1,168 +1,60 @@
 {
-  "checked_at": "2026-07-24T19:00:38Z",
+  "checked_at": "2026-07-24T22:08:07Z",
   "jobs": {
-    "c8ce19bb5571": {
-      "status": "completed",
-      "last_run": "2026-07-24T20:55:40.215149+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "1b2c31d6ba98": {
-      "status": "completed",
-      "last_run": "2026-07-24T20:47:24.610254+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
     "42cdc3e9bd97": {
       "status": "completed",
-      "last_run": "2026-07-24T20:45:52.018961+02:00",
+      "last_run": "2026-07-25T00:03:45+02:00",
       "consecutive_fails": 0,
-      "paused": false
+      "paused": false,
+      "note": "Recovered after 1 fail (HTTP 429)"
     },
-    "e8d5b97de501": {
-      "status": "completed",
-      "last_run": "2026-07-24T20:30:58.724817+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "cb8398b3fa67": {
-      "status": "completed",
-      "last_run": "2026-07-24T20:30:38.153941+02:00",
-      "consecutive_fails": 0,
-      "paused": false
+    "1b2c31d6ba98": {
+      "status": "failed",
+      "last_run": "2026-07-24T23:46:38+02:00",
+      "consecutive_fails": 1,
+      "paused": false,
+      "action": "warn",
+      "error": "HTTP 429 rate limit",
+      "note": "1 consecutive fail, previous completed"
     },
     "bb5980d548fb": {
-      "status": "completed",
-      "last_run": "2026-07-24T20:05:51.239287+02:00",
-      "consecutive_fails": 0,
-      "paused": false
+      "status": "failed",
+      "last_run": "2026-07-24T23:04:49+02:00",
+      "consecutive_fails": 2,
+      "paused": false,
+      "action": "warn",
+      "error": "HTTP 429 rate limit",
+      "note": "2 consecutive fails, 1 more until auto-pause"
     },
-    "d8c69ae4056e": {
-      "status": "completed",
-      "last_run": "2026-07-24T20:04:18.933002+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "7768b5c5aa49": {
-      "status": "completed",
-      "last_run": "2026-07-24T20:03:04.812978+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "17affbe86a4e": {
-      "status": "completed",
-      "last_run": "2026-07-24T20:00:36.413162+02:00",
-      "consecutive_fails": 0,
-      "paused": false
+    "12b477c661ae": {
+      "status": "failed",
+      "last_run": "2026-07-24T22:05:00+02:00",
+      "consecutive_fails": 1,
+      "paused": false,
+      "action": "warn",
+      "error": "HTTP 429 rate limit",
+      "note": "1 consecutive fail, previous completed"
     },
     "bd5a6b221b7b": {
       "status": "failed",
-      "last_run": "2026-07-24T19:18:45.855287+02:00",
+      "last_run": "2026-07-24T19:18:45+02:00",
       "consecutive_fails": 3,
       "paused": true,
-      "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
-      "action": "warn"
-    },
-    "7a870ef5b108": {
-      "status": "completed",
-      "last_run": "2026-07-24T18:02:43.784445+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "9bd2735e125e": {
-      "status": "completed",
-      "last_run": "2026-07-24T18:00:35.996384+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "91d0082d0da5": {
-      "status": "completed",
-      "last_run": "2026-07-24T18:00:32.465214+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "17029e4cdbed": {
-      "status": "completed",
-      "last_run": "2026-07-24T08:00:13.467724+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "71f476018b46": {
-      "status": "completed",
-      "last_run": "2026-07-24T07:33:35.507951+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "337c7ae0b619": {
-      "status": "completed",
-      "last_run": "2026-07-24T07:30:13.306833+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "311d146f45c3": {
-      "status": "completed",
-      "last_run": "2026-07-24T07:15:09.294503+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "5c6f78744d6e": {
-      "status": "completed",
-      "last_run": "2026-07-24T07:00:09.986020+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "48e9ee316af5": {
-      "status": "completed",
-      "last_run": "2026-07-24T06:00:06.936064+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "883ff52cf5a2": {
-      "status": "completed",
-      "last_run": "2026-07-24T03:06:11.883178+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "44b42cec976a": {
-      "status": "completed",
-      "last_run": "2026-07-24T02:35:04.729384+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "062cb12b5553": {
-      "status": "completed",
-      "last_run": "2026-07-24T02:00:45.243494+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "d62af99564f5": {
-      "status": "completed",
-      "last_run": "2026-07-24T00:05:12.551759+02:00",
-      "consecutive_fails": 0,
-      "paused": true
+      "error": "HTTP 429 rate limit",
+      "note": "PAUSED correctly by earlier run"
     },
     "7e58d4dd29a7": {
       "status": "failed",
-      "last_run": "2026-07-23T23:46:18.460258+02:00",
+      "last_run": "2026-07-23T23:46:18+02:00",
       "consecutive_fails": 1,
       "paused": true,
-      "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
-      "action": "warn"
-    },
-    "12b477c661ae": {
-      "status": "completed",
-      "last_run": "2026-07-23T22:07:42.012044+02:00",
-      "consecutive_fails": 0,
-      "paused": false
+      "error": "HTTP 429 rate limit",
+      "note": "PAUSED correctly by earlier run"
     }
   },
   "paused_count": 5,
-  "alert_count": 2,
-  "paused_jobs": [
-    "c73da343ba68",
-    "7e58d4dd29a7",
-    "d62af99564f5",
-    "e9ccb37f523d",
-    "bd5a6b221b7b"
-  ]
+  "alert_count": 3,
+  "stale_executions_cleaned": 0,
+  "auto_paused": 0,
+  "note": "All 5 paused jobs confirmed disabled in jobs.json. No stale executions. All failures are HTTP 429 rate limit \u2014 common root cause, no individual job bugs."
 }
