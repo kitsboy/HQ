@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-24T01:45:41Z",
+  "checked_at": "2026-07-24T02:00:42Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "b560660",
-        "message": "chore: thor auto-metrics 01:45 (live LND)",
+        "sha": "84640ff",
+        "message": "chore: thor auto-metrics 02:00 (live LND)",
         "author": "Cam (via Aider)",
-        "date": "2026-07-24T01:45:09Z",
-        "url": "https://github.com/kitsboy/HQ/commit/b5606601aa5ea0e61c5282da805cae5d7dc7fcfc"
+        "date": "2026-07-24T02:00:07Z",
+        "url": "https://github.com/kitsboy/HQ/commit/84640ff66658a81e264a6ed03a4666b6b807c96b"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 01:45 (live LND)",
-        "chore: thor auto-metrics 01:31 (live LND)",
-        "chore: refresh status.json + thor-node [skip deploy]"
+        "chore: thor auto-metrics 02:00 (live LND)",
+        "fix: umami \u2014 remove all custom CORS headers, set data-host-u",
+        "fix: umami CORS \u2014 host tracker locally without x-umami-hostn"
       ],
       "commits_7d": 100,
       "health": "green",
