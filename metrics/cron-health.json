@@ -1,27 +1,52 @@
 {
-  "checked_at": "2026-07-24T02:09:41Z",
+  "checked_at": "2026-07-24T03:00:04Z",
   "jobs": {
-    "1b2c31d6ba98": {
-      "status": "completed",
-      "last_run": "2026-07-24T04:08:24.659842+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "d8c69ae4056e": {
-      "status": "completed",
-      "last_run": "2026-07-24T04:06:02.102468+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
     "c8ce19bb5571": {
       "status": "completed",
-      "last_run": "2026-07-24T04:05:42.461420+02:00",
+      "last_run": "2026-07-24T04:55:05.990462+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "1b2c31d6ba98": {
+      "status": "completed",
+      "last_run": "2026-07-24T04:46:56.755094+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "42cdc3e9bd97": {
       "status": "completed",
-      "last_run": "2026-07-24T04:03:24.222409+02:00",
+      "last_run": "2026-07-24T04:45:28.263050+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "e8d5b97de501": {
+      "status": "completed",
+      "last_run": "2026-07-24T04:30:21.454427+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "cb8398b3fa67": {
+      "status": "completed",
+      "last_run": "2026-07-24T04:30:06.015221+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "bd5a6b221b7b": {
+      "status": "completed",
+      "last_run": "2026-07-24T04:18:51.039033+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "bb5980d548fb": {
+      "status": "unknown",
+      "last_run": "2026-07-24T04:11:01.415547+02:00",
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": "Scheduler restarted after this execution's owner exited before a durable terminal state; whether side effects ran is unknown."
+    },
+    "d8c69ae4056e": {
+      "status": "completed",
+      "last_run": "2026-07-24T04:06:02.102468+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
@@ -31,33 +56,9 @@
       "consecutive_fails": 0,
       "paused": false
     },
-    "e8d5b97de501": {
-      "status": "completed",
-      "last_run": "2026-07-24T04:01:00.166504+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "cb8398b3fa67": {
-      "status": "completed",
-      "last_run": "2026-07-24T04:00:43.035052+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
     "17affbe86a4e": {
       "status": "completed",
       "last_run": "2026-07-24T04:00:42.647656+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "bd5a6b221b7b": {
-      "status": "completed",
-      "last_run": "2026-07-24T03:19:32.557907+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "bb5980d548fb": {
-      "status": "completed",
-      "last_run": "2026-07-24T03:09:11.426948+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
@@ -145,9 +146,9 @@
   "paused_count": 4,
   "alert_count": 1,
   "paused_jobs": [
-    "d62af99564f5",
-    "c73da343ba68",
     "7e58d4dd29a7",
-    "e9ccb37f523d"
+    "e9ccb37f523d",
+    "c73da343ba68",
+    "d62af99564f5"
   ]
 }
