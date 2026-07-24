@@ -1,57 +1,61 @@
 {
-  "checked_at": "2026-07-24T07:00:13Z",
+  "checked_at": "2026-07-24T08:00:15Z",
   "jobs": {
     "c8ce19bb5571": {
       "status": "completed",
-      "last_run": "2026-07-24T08:55:15.570691+02:00",
+      "last_run": "2026-07-24T09:55:17.620324+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "1b2c31d6ba98": {
       "status": "completed",
-      "last_run": "2026-07-24T08:48:26.882923+02:00",
+      "last_run": "2026-07-24T09:46:34.343405+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "42cdc3e9bd97": {
       "status": "completed",
-      "last_run": "2026-07-24T08:46:31.675016+02:00",
+      "last_run": "2026-07-24T09:45:31.135663+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "e8d5b97de501": {
-      "status": "completed",
-      "last_run": "2026-07-24T08:30:33.960320+02:00",
-      "consecutive_fails": 0,
-      "paused": false
+      "status": "failed",
+      "last_run": "2026-07-24T09:30:19.583060+02:00",
+      "consecutive_fails": 1,
+      "paused": false,
+      "error": "Script exited with code 1\nstderr:\nping giveabit https://giveabit.io \u2026 OK 200 232ms\nping satohash https://satohash.io \u2026 OK 200 99ms\nping katoa https://katoa.org \u2026 OK 200 97ms\nping stranded https://stra",
+      "action": "warn"
     },
     "cb8398b3fa67": {
       "status": "completed",
-      "last_run": "2026-07-24T08:30:13.937312+02:00",
+      "last_run": "2026-07-24T09:30:15.600527+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "bd5a6b221b7b": {
-      "status": "completed",
-      "last_run": "2026-07-24T08:16:10.644301+02:00",
-      "consecutive_fails": 0,
-      "paused": false
+      "status": "failed",
+      "last_run": "2026-07-24T09:17:11.743555+02:00",
+      "consecutive_fails": 1,
+      "paused": false,
+      "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
+      "action": "warn"
     },
     "bb5980d548fb": {
       "status": "completed",
-      "last_run": "2026-07-24T08:09:30.681157+02:00",
+      "last_run": "2026-07-24T09:09:15.905482+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "d8c69ae4056e": {
       "status": "completed",
-      "last_run": "2026-07-24T08:05:02.034969+02:00",
+      "last_run": "2026-07-24T09:06:26.888402+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "7768b5c5aa49": {
       "status": "completed",
-      "last_run": "2026-07-24T08:01:32.075376+02:00",
+      "last_run": "2026-07-24T09:02:17.601173+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
@@ -149,11 +153,11 @@
     }
   },
   "paused_count": 4,
-  "alert_count": 1,
+  "alert_count": 3,
   "paused_jobs": [
     "d62af99564f5",
-    "7e58d4dd29a7",
+    "c73da343ba68",
     "e9ccb37f523d",
-    "c73da343ba68"
+    "7e58d4dd29a7"
   ]
 }
