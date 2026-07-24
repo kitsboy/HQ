@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-24T17:45:47Z",
+  "checked_at": "2026-07-24T18:15:48Z",
   "vault_size_mb": 935.6,
   "structure": {
     ".git": {
@@ -8,15 +8,15 @@
     },
     "01-Architecture": {
       "files": 2,
-      "newest_days_ago": 0.6
+      "newest_days_ago": 0.7
     },
     "02-Agents": {
       "files": 1,
-      "newest_days_ago": 0.6
+      "newest_days_ago": 0.7
     },
     "03-Projects": {
       "files": 489,
-      "newest_days_ago": 0.6
+      "newest_days_ago": 0.7
     },
     "Obsidian": {
       "files": 539,
@@ -28,11 +28,11 @@
     },
     "docs": {
       "files": 2,
-      "newest_days_ago": 4.4
+      "newest_days_ago": 4.5
     },
     "infrastructure": {
       "files": 1,
-      "newest_days_ago": 2.6
+      "newest_days_ago": 2.7
     },
     "secrets": {
       "files": 0,
@@ -40,12 +40,12 @@
     }
   },
   "staleness_days": {
-    "01-Architecture": 0.6,
-    "02-Agents": 0.6,
-    "03-Projects": 0.6,
+    "01-Architecture": 0.7,
+    "02-Agents": 0.7,
+    "03-Projects": 0.7,
     "Obsidian": 0.5,
-    "docs": 4.4,
-    "infrastructure": 2.6
+    "docs": 4.5,
+    "infrastructure": 2.7
   },
   "project_count": 10,
   "handoff_count": 2,
