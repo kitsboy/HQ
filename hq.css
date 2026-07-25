@@ -417,14 +417,46 @@ input:focus, textarea:focus, select:focus {
 
 /* Nav tabs */
 .nav-wrap {
+  position: relative;
   max-width: 1600px;
   margin: 0 auto;
   width: 100%;
   padding: 0.55rem 1.1rem 0;
+  transition: opacity var(--dur) var(--ease-out);
 }
+.nav-wrap.switching {
+  opacity: 0.7;
+}
+/* Scroll gradient hints — fade tabs at nav-wrap edges when content overflows */
+.nav-wrap::before,
+.nav-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  z-index: 2;
+  pointer-events: none;
+}
+.nav-wrap::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg-0), transparent);
+}
+.nav-wrap::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg-0), transparent);
+}
+.nav-scroll {
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+.nav-scroll::-webkit-scrollbar { display: none; }
 .nav-tabs {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.3rem;
   padding: 0.3rem;
   border-radius: var(--r-md);
@@ -458,13 +490,12 @@ input:focus, textarea:focus, select:focus {
 .nav-tab.active::after {
   content: "";
   position: absolute;
-  left: 18%;
-  right: 18%;
-  bottom: 3px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   height: 2px;
-  border-radius: 2px;
   background: var(--tab-accent, var(--accent-theme));
-  box-shadow: 0 0 8px var(--tab-accent, var(--accent-theme));
+  transition: all 0.2s;
 }
 
 /* Main */
@@ -475,8 +506,16 @@ input:focus, textarea:focus, select:focus {
   margin: 0 auto;
   padding: 1rem 1.1rem 2.5rem;
 }
-.view { display: none; animation: view-in 0.35s var(--ease-out); }
+.view { display: none; position: relative; animation: view-in 0.35s var(--ease-out); }
 .view.active { display: block; }
+.view.active .tab-loading-overlay {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: color-mix(in srgb, var(--bg-0) 70%, transparent);
+}
+.tab-loading-overlay { display: none; }
 @keyframes view-in {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: none; }
@@ -3635,6 +3674,11 @@ input, textarea, select, button { font-size: inherit; }
   .concert-grid,
   .agents-grid { grid-template-columns: 1fr !important; }
 
+  /* Roadmap + health bar mobile */
+  .roadmap-grid { grid-template-columns: 1fr !important; }
+  .health-bar { flex-direction: column !important; align-items: stretch !important; }
+  .health-bar-chip { justify-content: center !important; }
+
   .card { padding: 0.9rem 0.85rem 0.8rem; }
   .card:hover { transform: none; } /* less jank on touch */
   .card:active { transform: scale(0.99); }
@@ -3731,7 +3775,7 @@ input, textarea, select, button { font-size: inherit; }
   }
   #btn-refresh i { font-size: 0.9rem; }
   .theme-switch { display: none; } /* free space; theme still via localStorage */
-  .nav-tab { padding: 0.45rem 0.7rem; font-size: 0.74rem; min-height: 38px; }
+  .nav-tab { padding: 0.4rem 0.55rem; font-size: 0.72rem; }
   .card-links .link-btn { flex: 1 1 auto; justify-content: center; }
 }
 

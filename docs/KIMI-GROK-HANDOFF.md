@@ -38,9 +38,10 @@
 
 ### Next for Grok
 1. **URGENT: Update giveabit.io Mission** — expand with NIP-05 namespace vision for philanthropic/FOSS agents. Spec at `docs/GIVEABIT-MISSION-UPDATE.md` in HQ repo
-2. Update homepage "Trusted Identity" count from 8→9 agents
-3. Add Cam + Hello to `.well-known/nostr.json` once Cam provides keys
-4. Read `docs/BUZZ-PLAN.md` for future deployment context
+2. **Update Safe Harbour across all product sites** — footer + privacy page. Spec at `docs/SAFE-HARBOUR-HANDOFF.md`
+3. Update homepage "Trusted Identity" count from 8→9 agents
+4. Add Cam + Hello to `.well-known/nostr.json` once Cam provides keys
+5. Read `docs/BUZZ-PLAN.md` for future deployment context
 
 ### Next for Kimi
 - Keep buzz-watch cron running (weekly Sat 10:00)
@@ -74,9 +75,11 @@
 ## Session protocol
 
 ```text
-START: read handoff/state.json + this file + SOURCE-OF-TRUTH.md
+START: read FILE-INVENTORY.md → verify handoff files exist on disk
+        read handoff/state.json + KIMI-GROK-HANDOFF.md + SOURCE-OF-TRUTH.md
 WORK:  stay in owned paths unless asked
 END:   stamp-handoff.mjs + append Latest Session if goodbye
+       if you CREATED a file → add it to FILE-INVENTORY.md in the same batch
 ```
 
 ## Conflict rule

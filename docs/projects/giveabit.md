@@ -86,4 +86,4 @@ No LNbits keys, PATs, macaroons, or PII in metrics payloads.
 
 ---
 
-*Part of the Give A Bit family · Safe Harbour*
+*Safe Harbour · No data collected · EU GDPR compliant · [Full policy](../SAFE-HARBOUR.md) · Part of the Give A Bit family*

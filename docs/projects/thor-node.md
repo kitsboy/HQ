@@ -25,4 +25,4 @@ _HQ v3.2 surfaces this pack in Docs + drawer docs tab._
 
 Never: macaroons, admin keys, seeds.
 
-*Part of the Give A Bit family · Safe Harbour*
+*Safe Harbour · No data collected · EU GDPR compliant · [Full policy](../SAFE-HARBOUR.md) · Part of the Give A Bit family*

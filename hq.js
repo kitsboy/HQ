@@ -80,6 +80,15 @@
     chat: "#22c55e",
   };
 
+  const TAB_DISPLAY_NAMES = {
+    cards: "Cards", list: "List", metrics: "Metrics", analytics: "Analytics",
+    pipeline: "Pipeline", network: "Network", matrix: "Matrix", activity: "Activity",
+    ecosystem: "Ecosystem", concert: "Concert", coverage: "Coverage", system: "System",
+    wallets: "Wallets", money: "Money", docs: "Docs", agents: "Agents",
+    domains: "Domains", vault: "Vault", intel: "Intel", feed: "Feed",
+    charts: "Charts", chat: "Chat",
+  };
+
   const DOCS_HQ = [
     "SITE-ACCESS.md", "LNBITS-LOGIN.md", "LNBITS-PROXY.md", "LNBITS-CORS.md",
     "CLOUDFLARE-ACCESS.md", "ECOSYSTEM-MAP.md", "HQ-GATE.md", "KIMI-GROK-HANDOFF.md",
@@ -87,7 +96,7 @@
     "METRICS-SCHEMA.md", "THOR-NODE-JSON.md", "UPGRADES-100.md", "NEXT-STEPS.md",
     "ANALYTICS-PLAN.md", "DESIGN-CONTEXT.md", "AGENT-GUARDRAILS.md", "UMAMI-SETUP.md",
     "UMAMI-DEPLOYMENT.md", "REF-PULLER.md", "ALL-SITE-METRICS.md",
-    "BUZZ-PLAN.md", "GIVEABIT-MISSION-UPDATE.md",
+    "BUZZ-PLAN.md", "GIVEABIT-MISSION-UPDATE.md", "SAFE-HARBOUR.md", "SAFE-HARBOUR-HANDOFF.md", "FILE-INVENTORY.md",
   ];
 
   const FEATURES = [
@@ -762,6 +771,7 @@
     metrics: {},
     thor: null,
     ecosystem: null,
+    roadmap: null,
     btcUsd: null,
     wallets: {},
     docs: {},
@@ -776,6 +786,8 @@
     filter: "all",
     search: "",
     feeds: {},
+    renderFailures: {},
+    renderTimeouts: {},
   };
 
   /* ═══════════════ VAULT / THEME / TOAST ═══════════════ */
@@ -812,16 +824,62 @@
     setTimeout(() => document.body.classList.remove("theme-switching"), 560);
   }
   function setTab(name) {
-    if (!TAB_ACCENTS[name]) name = "cards";
-    state.tab = name;
-    try { localStorage.setItem(TAB_KEY, name); } catch {}
-    document.querySelectorAll(".nav-tab").forEach((btn) => {
-      const on = btn.dataset.tab === name;
-      btn.classList.toggle("active", on);
-      if (on) btn.style.setProperty("--tab-accent", TAB_ACCENTS[name]);
-    });
-    document.querySelectorAll(".view").forEach((v) => v.classList.toggle("active", v.id === "view-" + name));
-    renderActiveTab();
+    try {
+      if (!TAB_ACCENTS[name]) name = "cards";
+      closeDrawer();
+
+      const navWrap = document.querySelector(".nav-wrap");
+      if (navWrap) {
+        navWrap.classList.add("switching");
+        setTimeout(() => navWrap.classList.remove("switching"), 300);
+      }
+
+      // Guard: ensure #view-{name} element exists
+      let viewEl = document.getElementById("view-" + name);
+      if (!viewEl) {
+        viewEl = document.createElement("div");
+        viewEl.id = "view-" + name;
+        viewEl.className = "view";
+        const main = document.getElementById("main-content");
+        if (main) main.appendChild(viewEl);
+      } else {
+        const overlay = document.createElement("div");
+        overlay.className = "tab-loading-overlay";
+        overlay.id = "tab-loading-overlay";
+        viewEl.appendChild(overlay);
+      }
+
+      state.tab = name;
+      try { localStorage.setItem(TAB_KEY, name); } catch {}
+      document.querySelectorAll(".nav-tab").forEach((btn) => {
+        const on = btn.dataset.tab === name;
+        btn.classList.toggle("active", on);
+        if (on) {
+          btn.style.setProperty("--tab-accent", TAB_ACCENTS[name]);
+          btn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+        }
+      });
+      document.querySelectorAll(".view").forEach((v) => v.classList.toggle("active", v.id === "view-" + name));
+      renderActiveTab();
+
+      const overlayEl = document.getElementById("tab-loading-overlay");
+      if (overlayEl) overlayEl.remove();
+
+      const displayName = TAB_DISPLAY_NAMES[name] || name.charAt(0).toUpperCase() + name.slice(1);
+      toast("\u2192 " + displayName, "");
+      setTimeout(() => {
+        document.querySelectorAll(".toast").forEach((t) => {
+          if (t.textContent === "\u2192 " + displayName) {
+            t.style.opacity = "0";
+            setTimeout(() => t.remove(), 300);
+          }
+        });
+      }, 600);
+    } catch (e) {
+      console.error("setTab error, falling back to cards:", e);
+      state.tab = "cards";
+      renderActiveTab();
+    }
   }
 
   /* ═══════════════ BOOTSTRAP ═══════════════ */
@@ -838,6 +896,7 @@
       loadData("/status.json"),
       loadData("/metrics/ecosystem-map.json"),
     ]);
+    const roadmapR = await loadData("/metrics/roadmap.json");
 
     if (projectsR.ok && projectsR.data && Array.isArray(projectsR.data.projects)) {
       state.projects = projectsR.data.projects;
@@ -851,6 +910,7 @@
     if (toolsR.ok) state.tools = toolsR.data; else { state.tools = null; state.loadErrors.push(toolsR); }
     if (statusR.ok) state.status = statusR.data; else { state.status = null; state.loadErrors.push(statusR); }
     if (ecoR.ok) state.ecosystem = ecoR.data; else { state.ecosystem = null; /* optional */ }
+    if (roadmapR.ok) state.roadmap = roadmapR.data; else { state.roadmap = null; }
 
     const metricsJobs = state.projects.map(async (p) => {
       const key = p.metricsKey || p.id;
@@ -1206,20 +1266,184 @@
     track.innerHTML = items.join("") + items.join("");
   }
 
+  /* ═══════════════ ERROR BOUNDARY HELPERS ═══════════════ */
+  /**
+   * Show a spinner with optional message (loading guard).
+   */
+  function spinnerHTML(msg) {
+    return `<div class="loading-state"><div class="spinner"></div><div>${esc(msg || "Loading…")}</div></div>`;
+  }
+
+  /**
+   * Show a timeout message for a tab that exceeded the 3-second render budget.
+   */
+  function renderTimeoutHTML(tab) {
+    return `<div class="unavailable-card"><div class="icon"><i class="fa-solid fa-clock"></i></div><h4>Render timed out</h4><p>${esc(tab)} tab took longer than 3 seconds to render.</p><div class="path">timeout</div></div>`;
+  }
+
+  /**
+   * Universal render guard. Every render call routes through this to get:
+   *  1. Loading guard — shows spinner while state.loading is true
+   *  2. Timeout detection — cancels after 3 s via setTimeout
+   *  3. try/catch with console.error logging
+   *  4. Consecutive-failure tracking — after 3 failures for the same tab,
+   *     auto-fallback to "cards" and log
+   */
+  function renderWithGuard(tab, renderFn) {
+    const el = document.getElementById("view-" + tab);
+    if (!el) return;
+
+    // Loading guard — defer render while data isn't ready yet
+    if (state.loading) {
+      el.innerHTML = spinnerHTML("Data still loading — tab render deferred");
+      console.log("[HQ] Deferred render for tab \"" + tab + "\" — state.loading is true");
+      return;
+    }
+
+    // Previously timed out — don't keep trying until next full refresh
+    if (state.renderTimeouts && state.renderTimeouts[tab]) {
+      el.innerHTML = renderTimeoutHTML(tab);
+      return;
+    }
+
+    // Setup 3-second timeout
+    var timer = setTimeout(function () {
+      if (!state.renderTimeouts) state.renderTimeouts = {};
+      state.renderTimeouts[tab] = true;
+      var el2 = document.getElementById("view-" + tab);
+      if (el2) el2.innerHTML = renderTimeoutHTML(tab);
+      console.error("[HQ] Render timeout: \"" + tab + "\" exceeded 3s");
+    }, 3000);
+
+    // Execute render with try/catch
+    try {
+      renderFn();
+      clearTimeout(timer);
+      // Clear timeout flag on success
+      if (state.renderTimeouts) delete state.renderTimeouts[tab];
+      // Reset failure count on success
+      if (state.renderFailures) state.renderFailures[tab] = 0;
+    } catch (e) {
+      clearTimeout(timer);
+      console.error("[HQ] Render error for tab \"" + tab + "\":", e);
+
+      // Track consecutive failures
+      if (!state.renderFailures) state.renderFailures = {};
+      state.renderFailures[tab] = (state.renderFailures[tab] || 0) + 1;
+
+      // Auto-fallback after 3 consecutive failures for the same tab
+      if (state.renderFailures[tab] >= 3) {
+        console.error("[HQ] \"" + tab + "\" failed " + state.renderFailures[tab] + " times — auto-fallback to \"cards\"");
+        state.tab = "cards";
+        state.renderFailures = {};
+        state.renderTimeouts = {};
+        renderActiveTab();
+        return;
+      }
+
+      // Show inline error message
+      el.innerHTML = unavailableHTML("Tab render error", tab, e.message);
+    }
+  }
+
+  /* ─── Stub renderers for development tabs ───────────────────────── */
+
+  function renderStubHTML(tabName) {
+    return '<div class="unavailable-card">' +
+      '<div class="icon"><i class="fa-solid fa-flask"></i></div>' +
+      '<h4>Under development</h4>' +
+      '<p>The <strong>' + esc(tabName) + '</strong> tab is being built. Stay tuned.</p>' +
+      '<div class="path">' + esc(tabName) + ' · coming soon</div>' +
+      '</div>';
+  }
+
+  function renderIntelStub() {
+    var el = document.getElementById("view-intel");
+    if (el) el.innerHTML = renderStubHTML("Intel");
+  }
+  function renderFeedStub() {
+    var el = document.getElementById("view-feed");
+    if (el) el.innerHTML = renderStubHTML("Feed");
+  }
+  function renderChartsStub() {
+    var el = document.getElementById("view-charts");
+    if (el) el.innerHTML = renderStubHTML("Charts");
+  }
+  function renderChatStub() {
+    var el = document.getElementById("view-chat");
+    if (el) el.innerHTML = renderStubHTML("Chat");
+  }
+
+  /* ─── Vault tab: open modal + show key status ──────────────────── */
+
+  function renderVaultTab() {
+    // Open the vault modal
+    openVaultModal();
+
+    // Render a vault status view in the main content area
+    var el = document.getElementById("view-vault");
+    if (!el) return;
+
+    var v = state.vault || {};
+    var keys = v.keys || v.wallets || {};
+    var keyCount = Object.keys(keys).filter(function (k) { return !!(keys[k] && String(keys[k]).trim()); }).length;
+    var totalWallets = state.projects.filter(function (p) { return p.wallet || p.id; }).length;
+    var configured = keyCount > 0;
+    var proxyConfigured = !!(v.proxyUrl || v.lnbitsProxyUrl);
+
+    el.innerHTML = '' +
+      '<div class="panel" style="padding:1.5rem;max-width:600px;margin:0 auto">' +
+        '<div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">' +
+          '<i class="fa-solid fa-vault" style="font-size:1.5rem;color:var(--vault, #a78bfa)"></i>' +
+          '<h3 style="margin:0">Vault</h3>' +
+        '</div>' +
+        '<div class="grid grid-2" style="gap:1rem">' +
+          '<div class="stat panel" style="cursor:default">' +
+            '<div class="l">Invoice keys configured</div>' +
+            '<div class="v" style="color:' + (configured ? 'var(--green)' : 'var(--red)') + '">' + (configured ? 'Yes (' + keyCount + '/' + totalWallets + ')' : 'No') + '</div>' +
+          '</div>' +
+          '<div class="stat panel" style="cursor:default">' +
+            '<div class="l">Proxy URL</div>' +
+            '<div class="v" style="color:' + (proxyConfigured ? 'var(--green)' : 'var(--ink-faint)') + '">' + (proxyConfigured ? 'Set' : 'Not set') + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<button type="button" class="btn btn-primary mt-2" id="vault-open-modal-btn" style="width:100%">' +
+          '<i class="fa-solid fa-key"></i> Open Vault Settings' +
+        '</button>' +
+      '</div>';
+
+    var openBtn = document.getElementById("vault-open-modal-btn");
+    if (openBtn) openBtn.addEventListener("click", openVaultModal);
+  }
+
+  function renderCatchAll(tab) {
+    var el = document.getElementById("view-" + tab);
+    if (!el) return;
+    el.innerHTML = '' +
+      '<div class="unavailable-card">' +
+        '<div class="icon"><i class="fa-solid fa-compass"></i></div>' +
+        '<h4>Unknown tab</h4>' +
+        '<p>The tab <strong>' + esc(tab) + '</strong> does not have a renderer yet. This might be a new feature being added.</p>' +
+        '<div class="path">' + esc(tab) + ' · not implemented</div>' +
+      '</div>';
+  }
+
   function renderActiveTab() {
     const map = {
       cards: renderCards, list: renderList, metrics: renderMetrics, analytics: renderAnalytics,
       pipeline: renderPipeline, network: renderNetwork, matrix: renderMatrix, activity: renderActivity,
       ecosystem: renderEcosystem, concert: renderConcert, coverage: renderCoverage, system: renderSystem,
       wallets: renderWallets, money: renderMoney, docs: renderDocs, agents: renderAgents, domains: renderDomains,
+      vault: renderVaultTab,
+      intel: renderIntelStub, feed: renderFeedStub, charts: renderChartsStub, chat: renderChatStub,
     };
     const fn = map[state.tab];
-    if (!fn) return;
-    try { fn(); } catch (e) {
-      const el = document.getElementById("view-" + state.tab);
-      if (el) el.innerHTML = unavailableHTML("Tab render error", state.tab, e.message);
-      console.error(e);
+    if (!fn) {
+      renderCatchAll(state.tab);
+      bindTooltips();
+      return;
     }
+    renderWithGuard(state.tab, fn);
     bindTooltips();
   }
 
@@ -1288,6 +1512,37 @@
 
   /* ═══════════════ CARDS ═══════════════ */
 
+  function healthBarItems() {
+    const items = [];
+    const sites = (state.status && state.status.sites) || {};
+    const siteList = Object.values(sites);
+    const healthy = siteList.filter(s => s.status === "healthy" && s.http === "200").length;
+    const total = siteList.length;
+    if (total) {
+      const allOk = healthy === total;
+      items.push({ icon: allOk ? "🟢" : "🟡", label: `${healthy}/${total} sites` });
+    }
+    const eco = state.ecosystem;
+    if (eco && eco.metadata) {
+      items.push({ icon: "🔄", label: `${eco.metadata.activeCrons || "?"} crons` });
+    }
+    // LND check from thor-node if available
+    const thor = state.thor && state.thor.ok && state.thor.data;
+    if (thor && thor.lightning) {
+      const lnd = thor.lightning;
+      items.push({ icon: lnd.synced ? "⚡" : "⏳", label: lnd.synced ? "LND synced" : "LND syncing" });
+    }
+    // Disk from thor
+    if (thor && thor.host) {
+      const disk = thor.host.disk;
+      if (disk) {
+        const pct = parseInt(String(disk).replace("%", ""));
+        items.push({ icon: pct < 60 ? "💾" : "⚠️", label: `Disk ${disk}` });
+      }
+    }
+    return items;
+  }
+
   function renderCards() {
     const el = document.getElementById("view-cards");
     if (!el) return;
@@ -1296,8 +1551,34 @@
       return;
     }
     const list = filteredProjects();
+    const healthItems = healthBarItems();
+    const roadItems = state.roadmap && state.roadmap.initiatives ? state.roadmap.initiatives : [];
     el.innerHTML = `${toolbarHTML()}
+      ${healthItems.length ? `<div class="health-bar" style="display:flex;flex-wrap:wrap;gap:0.4rem;padding:0.5rem 0.75rem;margin-bottom:1rem;background:color-mix(in srgb,var(--surface-2)40%,transparent);border-radius:var(--radius,8px);align-items:center">
+        ${healthItems.map(h => `<span class="health-bar-chip" style="display:inline-flex;align-items:center;gap:0.3rem;font-size:0.75rem;padding:0.2rem 0.5rem;background:color-mix(in srgb,var(--surface-2)60%,transparent);border-radius:4px">${h.icon}<span>${esc(h.label)}</span></span>`).join("")}
+      </div>` : ""}
       <div class="cards-grid">${list.map(cardHTML).join("") || `<div class="empty-state"><div class="emoji">⌕</div>No matches</div>`}</div>
+      ${roadItems.length ? `<div class="mt-3 panel" style="padding:1rem">
+        <h3 class="display" style="margin:0 0 0.55rem;font-size:0.95rem">Roadmap <span class="mono" style="font-weight:400;font-size:0.72rem;color:var(--ink-faint)">${roadItems.length} initiatives</span></h3>
+        <div class="roadmap-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0.5rem">
+          ${roadItems.map(r => {
+            const statusIcons = {"in-progress":"🔄","planned":"📋","monitoring":"👁️","blocked":"🚫","vision":"💭","done":"✅"};
+            const sIcon = statusIcons[r.status] || "◻️";
+            const leadCls = r.lead === "Kimi" ? "violet" : r.lead === "Grok" ? "sky" : "amber";
+            return `<div class="roadmap-card" style="padding:0.65rem;background:color-mix(in srgb,var(--surface-2)50%,transparent);border-radius:var(--radius,6px);border-left:3px solid ${r.status === "in-progress" ? "#22c55e" : r.status === "blocked" ? "#ef4444" : r.status === "monitoring" ? "#f59e0b" : "#38bdf8"}">
+              <div style="display:flex;align-items:center;gap:0.4rem;margin-bottom:0.3rem">
+                <span>${sIcon}</span>
+                <strong style="font-size:0.8rem">${esc(r.title)}</strong>
+              </div>
+              <p style="margin:0.2rem 0;font-size:0.72rem;color:var(--ink-dim);line-height:1.35">${esc(r.description)}</p>
+              <div style="display:flex;align-items:center;gap:0.4rem;margin-top:0.35rem">
+                <span class="status-pill ${escAttr(leadCls)}" style="font-size:0.6rem;padding:0.1rem 0.35rem">${esc(r.lead)}</span>
+                <span class="mono" style="font-size:0.6rem;color:var(--ink-faint)">${esc(r.eta || "")}</span>
+              </div>
+            </div>`;
+          }).join("")}
+        </div>
+      </div>` : ""}
       <div class="mt-3 panel" style="padding:1rem">
         <h3 class="display" style="margin:0 0 0.55rem;font-size:0.95rem">Feature board (${FEATURES.length})</h3>
         <div class="feature-board">${FEATURES.map((f) => `<div class="feature-chip on">${esc(f)}</div>`).join("")}</div>
@@ -1328,14 +1609,14 @@
     const sites = (state.status && state.status.sites) || {};
     const s = sites[p.id] || {};
     if (!m || !m.ok) {
-      return `<article class="card" style="--card-accent:${escAttr(color)}" data-project="${escAttr(p.id)}">
+      return `<article class="card" style="--card-accent:${escAttr(color)};${p.planned ? "opacity:0.85" : ""}" data-project="${escAttr(p.id)}">
         <div class="card-head">${iconBadge(p.icon, color)}
           <div class="grow"><h3>${esc(p.name)}</h3><p class="tagline">${esc(p.tagline || "")}</p></div>
           ${statusPill(health)}
         </div>
-        <div class="card-meta-row">${metricsAgeChip(m)}</div>
+        <div class="card-meta-row">${p.planned ? `<span class="status-pill amber" style="font-size:0.58rem;padding:0.12rem 0.4rem">planned</span>` : metricsAgeChip(m)}</div>
         <div class="card-money-row">${balanceChipHTML(p, { total: portfolioTotals().sats })}</div>
-        ${unavailableHTML("Metrics unavailable", m ? m.path : `/metrics/${p.id}.json`, m ? m.error : "")}
+        ${p.planned ? `<div class="panel" style="margin:0.35rem 0;padding:0.5rem;font-size:0.75rem;color:var(--ink-dim);background:color-mix(in srgb,var(--surface-2)40%,transparent);border-radius:var(--radius,6px)">${esc(p.pitch || "Planned project — not yet deployed.")}</div>` : unavailableHTML("Metrics unavailable", m ? m.path : `/metrics/${p.id}.json`, m ? m.error : "")}
       </article>`;
     }
     const data = m.data;
@@ -2410,7 +2691,7 @@
       renderPortfolioStrip();
       updateVaultChip();
       renderMoney();
-      if (state.tab === "cards") renderCards();
+      if (state.tab === "cards") renderWithGuard("cards", renderCards);
     });
     document.getElementById("money-vault")?.addEventListener("click", openVaultModal);
     el.querySelectorAll("[data-project]").forEach((n) => n.addEventListener("click", () => openDrawer(n.dataset.project)));
@@ -2580,19 +2861,45 @@
   function renderDocs() {
     const el = document.getElementById("view-docs");
     if (!el) return;
-    // HQ docs + project packs
+    // Categorized doc groups
+    const docGroups = [
+      { label: "🧭 OPS", prefix: "", keywords: ["SITE-ACCESS", "LNBITS", "CLOUDFLARE", "ECOSYSTEM", "HQ-GATE", "KIMI", "HANDOFF", "METRICS", "THOR-NODE", "UPGRADES", "NEXT-STEPS", "AGENT-GUARDRAILS", "SOURCE-OF-TRUTH", "SAFE-HARBOUR", "FILE-INVENTORY"] },
+      { label: "📊 ANALYTICS", prefix: "", keywords: ["ANALYTICS", "UMAMI", "REF-PULLER", "ALL-SITE"] },
+      { label: "🎨 DESIGN", prefix: "", keywords: ["DESIGN-CONTEXT"] },
+      { label: "🗺️ ROADMAP", prefix: "", keywords: ["BUZZ-PLAN", "MISSION-UPDATE"] },
+    ];
+    // HQ docs — route each doc into its group
+    const unassigned = DOCS_HQ.slice();
+    const grouped = docGroups.map(g => {
+      const docs = [];
+      const remaining = [];
+      unassigned.forEach(fn => {
+        const match = g.keywords.some(kw => fn.toUpperCase().includes(kw));
+        if (match) docs.push({ fn, label: fn.replace(/\.md$/i, "").replace(/-/g, " ") });
+        else remaining.push(fn);
+      });
+      unassigned.length = 0;
+      unassigned.push(...remaining);
+      return { ...g, docs };
+    });
+    // Put leftover into a catch-all
+    if (unassigned.length) {
+      grouped.push({ label: "📄 OTHER", prefix: "", docs: unassigned.map(fn => ({ fn, label: fn.replace(/\.md$/i, "").replace(/-/g, " ") })) });
+    }
+
     const projectDocs = state.projects.map((p) => ({ fn: `projects/${p.id}.md`, label: p.name, group: "projects" }));
     projectDocs.push({ fn: "projects/thor-node.md", label: "THOR Node", group: "projects" });
-    const hqDocs = DOCS_HQ.map((fn) => ({ fn, label: fn, group: "hq", preview: false }));
     if (!state.selectedDoc) state.selectedDoc = projectDocs[0] ? projectDocs[0].fn : DOCS_HQ[0];
 
     el.innerHTML = `<div class="docs-layout">
       <nav class="docs-list panel">
-        <div class="mono" style="font-size:0.65rem;color:var(--ink-faint);padding:0.35rem 0.5rem">PROJECT PACKS</div>
+        <div class="mono" style="font-size:0.65rem;color:var(--ink-faint);padding:0.35rem 0.5rem">📦 PROJECT PACKS</div>
         ${projectDocs.map((d) => docListItemHTML(d)).join("")}
         <p class="docs-tip">If project packs fail, edge is missing docs/projects — see deploy.</p>
-        <div class="mono" style="font-size:0.65rem;color:var(--ink-faint);padding:0.65rem 0.5rem 0.35rem">HQ DOCS</div>
-        ${hqDocs.map((d) => docListItemHTML(d)).join("")}
+        ${grouped.map(g => `
+          <div class="mono" style="font-size:0.65rem;color:var(--ink-faint);padding:0.65rem 0.5rem 0.35rem">${esc(g.label)}</div>
+          ${g.docs.map((d) => docListItemHTML(d)).join("")}
+        `).join("")}
       </nav>
       <div class="doc-viewer panel" id="doc-viewer"><div class="loading-state"><div class="spinner"></div></div></div>
     </div>`;
@@ -2914,6 +3221,7 @@
       if (isNearGrey(c)) c = "#a78bfa";
       const icon = a.icon || fallbackIcon[a.name] || "fa-solid fa-user-astronaut";
       const initials = (a.name || "?").slice(0, 2).toUpperCase();
+      const nip05Link = a.nip05 ? `<a href="https://giveabit.io/namespace" target="_blank" rel="noopener" class="mono" style="font-size:0.72rem;color:${escAttr(c)};text-decoration:none">${esc(a.nip05)} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.55rem"></i></a>` : `<span class="mono" style="font-size:0.72rem;color:var(--ink-faint)">no NIP-05</span>`;
       return `<article class="agent-card panel" style="--agent-c:${escAttr(c)};border-left:4px solid ${escAttr(c)}" data-agent="${escAttr(a.name || "")}">
         ${a.lead ? `<div class="lead-badge"><span class="status-pill violet">lead</span></div>` : ""}
         <div class="agent-avatar" title="${escAttr(a.name || "")}" aria-hidden="true">
@@ -2923,18 +3231,26 @@
         <h3>${esc(a.name)}</h3>
         <div class="role"><i class="${escAttr(icon)}" style="margin-right:0.35rem;opacity:0.85"></i>${esc(a.role || "")}</div>
         <p class="motto">“${esc(a.motto || "")}”</p>
-        <div class="mono" style="font-size:0.72rem;color:var(--ink-faint)">${esc(a.nip05 || "")}</div>
+        ${nip05Link}
         <div class="mono mt-1" style="font-size:0.65rem;color:var(--ink-faint)">${esc(a.file || "")}</div>
       </article>`;
     }).join("");
+    const ns = state.agents[0] && (state.agents.find(a => a.nip05) || state.agents[0]).nip05 ? state.agents[0].nip05.split("@")[1] || "giveabit.io" : "giveabit.io";
+    const leadCount = state.agents.filter(a => a.lead).length;
+    const roles = [...new Set(state.agents.map(a => a.role || "Unspecified").filter(Boolean))];
     el.innerHTML = `
       <h2 class="section-title">Agents <span class="accent-rule"></span></h2>
-      <p class="section-sub">From agents.json · unique icon per persona · suite NIP-05 identities</p>
-      <div class="namespace-banner panel" style="border-left:4px solid #ff8c00;padding:0.75rem 1rem;margin-bottom:1rem;border-radius:var(--radius,8px);display:flex;align-items:center;gap:0.75rem">
+      <p class="section-sub">From agents.json · ${state.agents.length} registered · ${leadCount} lead · ${roles.length} roles</p>
+      <div class="namespace-banner panel" style="border-left:4px solid #ff8c00;padding:0.75rem 1rem;margin-bottom:1rem;border-radius:var(--radius,8px);display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap">
         <i class="fa-solid fa-globe" style="font-size:1.2rem;color:#ff8c00;flex-shrink:0"></i>
-        <div>
-          <strong style="font-size:0.85rem">@giveabit.io NIP-05 Namespace</strong>
-          <p style="margin:0.15rem 0 0;font-size:0.78rem;color:var(--ink-faint, #888)">A Nostr identity registry for giving-minded AI agents — philanthropy, altruism, FOSS, Bitcoin sovereignty. Every agent verified by its own keypair. <a href="https://giveabit.io/namespace" target="_blank" rel="noopener" style="color:var(--accent,#ff8c00)">Learn more →</a></p>
+        <div style="flex:1;min-width:200px">
+          <strong style="font-size:0.85rem">@${esc(ns)} NIP-05 Namespace</strong>
+          <p style="margin:0.15rem 0 0;font-size:0.78rem;color:var(--ink-faint, #888)">Open registry for giving-minded AI agents — philanthropy, altruism, FOSS, Bitcoin sovereignty. Every agent verified by its own keypair.</p>
+        </div>
+        <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap">
+          <span class="status-pill green" style="font-size:0.65rem">${state.agents.length} agents</span>
+          <span class="status-pill amber" style="font-size:0.65rem">open registry</span>
+          <a href="https://giveabit.io/namespace" target="_blank" rel="noopener" class="btn btn-sm btn-ghost" style="font-size:0.7rem">Learn more →</a>
         </div>
       </div>
       <div class="agents-grid">${cards}</div>`;
@@ -3105,9 +3421,9 @@
           await refreshWallets();
           renderPortfolioStrip();
           paintDrawerBody(p);
-          if (state.tab === "cards") renderCards();
-          if (state.tab === "money") renderMoney();
-          if (state.tab === "wallets") renderWallets();
+          if (state.tab === "cards") renderWithGuard("cards", renderCards);
+          if (state.tab === "money") renderWithGuard("money", renderMoney);
+          if (state.tab === "wallets") renderWithGuard("wallets", renderWallets);
         });
       });
       body.querySelector("[data-copy-sats]")?.addEventListener("click", (e) => {
@@ -3471,7 +3787,7 @@
     refreshWallets().then(() => {
       renderPortfolioStrip();
       updateVaultChip();
-      if (state.tab === "wallets") renderWallets();
+      if (state.tab === "wallets") renderWithGuard("wallets", renderWallets);
     });
     fetchUmamiStats().then(() => updateUmamiChip());
   }
@@ -3534,16 +3850,32 @@
         document.getElementById("vault-modal")?.classList.remove("open");
       }
       if (e.target.matches("input,textarea,select")) return;
-      const map = {
+      // Number shortcuts (existing 1-9 + 0)
+      const numMap = {
         1: "cards", 2: "list", 3: "metrics", 4: "analytics", 5: "pipeline",
         6: "network", 7: "matrix", 8: "activity", 9: "ecosystem", 0: "concert",
       };
-      if (map[e.key]) setTab(map[e.key]);
+      if (numMap[e.key]) setTab(numMap[e.key]);
       if (e.key === "r") bootstrap();
-      if (e.key === "v") openVaultModal();
       if (e.key === "e") exportDiligence();
-      if (e.key === "m") setTab("money");
-      if (e.key === "w") setTab("wallets");
+      // Alphabet tab shortcuts — lower/upper both accepted
+      const keyLc = e.key.toLowerCase();
+      const letterMap = {
+        s: "system", m: "money", w: "wallets", d: "docs",
+        a: "agents", i: "intel", f: "feed", c: "charts",
+        t: "chat", v: "vault",
+      };
+      if (letterMap[keyLc]) setTab(letterMap[keyLc]);
+      // Shift+ArrowLeft/ArrowRight for prev/next tab
+      if (e.shiftKey && (e.key === "ArrowLeft" || e.key === "ArrowRight")) {
+        e.preventDefault();
+        const tabs = Array.from(document.querySelectorAll(".nav-tab[data-tab]"));
+        const current = tabs.findIndex(t => t.classList.contains("active"));
+        if (current === -1) return;
+        const step = e.key === "ArrowRight" ? 1 : -1;
+        const next = (current + step + tabs.length) % tabs.length;
+        tabs[next].click();
+      }
     });
 
     bootstrap();
@@ -3567,9 +3899,9 @@
         await refreshWallets();
         renderPortfolioStrip();
         updateVaultChip();
-        if (state.tab === "money") renderMoney();
-        if (state.tab === "wallets") renderWallets();
-        if (state.tab === "cards") renderCards();
+        if (state.tab === "money") renderWithGuard("money", renderMoney);
+        if (state.tab === "wallets") renderWithGuard("wallets", renderWallets);
+        if (state.tab === "cards") renderWithGuard("cards", renderCards);
         if (state.drawerProject && document.getElementById("drawer")?.classList.contains("open")) {
           const p = state.projects.find((x) => x.id === state.drawerProject);
           if (p) paintDrawerBody(p);

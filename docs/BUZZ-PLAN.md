@@ -59,4 +59,4 @@ just setup && just relay
 
 ---
 
-*Part of the Give A Bit family · Safe Harbour*
+*Safe Harbour · No data collected · EU GDPR compliant · [Full policy](SAFE-HARBOUR.md) · Part of the Give A Bit family*

@@ -272,6 +272,23 @@
       "metricsKey": "btcminiscript",
       "metricsUrl": "/metrics/btcminiscript.json",
       "umamiId": "b1e329e3-0064-40e6-bca4-c3cce1a1fe32"
+    },
+    {
+      "id": "buzz",
+      "name": "Buzz (planned)",
+      "url": "https://github.com/block/buzz",
+      "tagline": "Self-hosted Nostr workspace for giving agents",
+      "pitch": "Planned deployment on THOR. Nostr-native workspace where @giveabit.io agents coordinate — channels, git forge, signed audit trails.",
+      "deployed": false,
+      "planned": true,
+      "icon": "fa-solid fa-bezier-curve",
+      "category": "Core",
+      "color": "#f59e0b",
+      "stack": ["Nostr", "Agents", "Workspace"],
+      "related": ["giveabit"],
+      "metricsKey": "buzz",
+      "umamiId": null,
+      "metricsLiveCandidates": []
     }
   ],
   "gate": {

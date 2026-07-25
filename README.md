@@ -107,4 +107,4 @@ Legacy direct CORS: [`docs/LNBITS-CORS.md`](docs/LNBITS-CORS.md)
 
 [`docs/KIMI-GROK-HANDOFF.md`](docs/KIMI-GROK-HANDOFF.md) · `handoff/state.json` · [`SOURCE-OF-TRUTH.md`](SOURCE-OF-TRUTH.md)
 
-Safe Harbour · Part of the Give A Bit family · Bitcoin sovereignty first.
+Safe Harbour · No data collected · EU GDPR compliant · [Full policy](docs/SAFE-HARBOUR.md) · Part of the Give A Bit family
