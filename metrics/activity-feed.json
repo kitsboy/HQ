@@ -1,191 +1,191 @@
 {
-  "generated_at": "2026-07-25T03:31:01Z",
+  "generated_at": "2026-07-25T06:16:06Z",
   "events": [
     {
-      "time": 1784950259.0,
+      "time": 1784960160.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "050] tools.terminal_tool: Creating new local environment for"
+      "text": "555] run_agent: OpenAI client closed (request_complete, shar"
     },
     {
-      "time": 1784950259.0,
+      "time": 1784960160.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "050] tools.environments.base: Session snapshot created (sess"
+      "text": "555] agent.conversation_loop: API call #1: model=deepseek/de"
     },
     {
-      "time": 1784950259.0,
+      "time": 1784960160.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "050] tools.terminal_tool: local environment ready for task d"
+      "text": "555] tools.terminal_tool: Creating new local environment for"
     },
     {
-      "time": 1784950258.0,
+      "time": 1784960160.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "050] run_agent: OpenAI client closed (request_complete, shar"
+      "text": "555] tools.environments.base: Session snapshot created (sess"
     },
     {
-      "time": 1784950258.0,
+      "time": 1784960160.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "050] agent.conversation_loop: API call #1: model=deepseek/de"
+      "text": "555] tools.terminal_tool: local environment ready for task d"
     },
     {
-      "time": 1784950251.0,
+      "time": 1784960156.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "d (agent_init, shared=True) thread=cron-parallel_2:133596157"
+      "text": "555] agent.turn_context: conversation turn: session=cron_42c"
     },
     {
-      "time": 1784950251.0,
+      "time": 1784960156.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "050] agent.turn_context: conversation turn: session=cron_42c"
+      "text": "555] run_agent: OpenAI client created (chat_completion_reque"
     },
     {
-      "time": 1784950251.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "050] run_agent: OpenAI client created (chat_completion_reque"
-    },
-    {
-      "time": 1784950250.0,
+      "time": 1784960155.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "or-auto-metrics' (ID: 42cdc3e9bd97)"
     },
     {
-      "time": 1784950250.0,
+      "time": 1784960155.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "ANT: You are running as a scheduled cron job. DELIVERY: Your"
     },
     {
-      "time": 1784950250.0,
+      "time": 1784960155.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "al pool: no available entries (all exhausted or empty)"
+    },
+    {
+      "time": 1784960155.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "auth: using NAS invoke JWT"
+    },
+    {
+      "time": 1784960155.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "97': loaded credential pool for provider nous with 1 entries"
     },
     {
-      "time": 1784950238.0,
+      "time": 1784960155.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
+      "text": "d (agent_init, shared=True) thread=cron-parallel_5:133595723"
     },
     {
-      "time": 1784950208.0,
+      "time": 1784959874.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
+      "text": "inactive environment for task: default"
     },
     {
-      "time": 1784950178.0,
+      "time": 1784959655.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
+      "text": "054] run_agent: OpenAI client closed (agent_close, shared=Tr"
     },
     {
-      "time": 1784950148.0,
+      "time": 1784959654.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
+      "text": "054] run_agent: OpenAI client created (chat_completion_reque"
     },
     {
-      "time": 1784950118.0,
+      "time": 1784959654.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
+      "text": "054] run_agent: OpenAI client closed (request_complete, shar"
     },
     {
-      "time": 1784950088.0,
+      "time": 1784959654.0,
+      "type": "cron_warn",
+      "icon": "\u26a0\ufe0f",
+      "text": "080054] agent.conversation_loop: API call failed (attempt 3/"
+    },
+    {
+      "time": 1784959654.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
+      "text": "054] agent.conversation_loop: Nous 429 looks like upstream c"
     },
     {
-      "time": 1784950058.0,
+      "time": 1784959654.0,
+      "type": "cron_warn",
+      "icon": "\u26a0\ufe0f",
+      "text": "0054] agent.conversation_loop: API call failed after 3 retri"
+    },
+    {
+      "time": 1784959650.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
+      "text": "054] run_agent: OpenAI client closed (request_complete, shar"
     },
     {
-      "time": 1784950028.0,
+      "time": 1784959650.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
+      "text": "054] agent.credential_pool: credential pool: marking device_"
     },
     {
-      "time": 1784949998.0,
+      "time": 1784959650.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
+      "text": "054] agent.credential_pool: credential pool: no available en"
     },
     {
-      "time": 1784949983.0,
+      "time": 1784959650.0,
+      "type": "cron_warn",
+      "icon": "\u26a0\ufe0f",
+      "text": "080054] agent.conversation_loop: API call failed (attempt 2/"
+    },
+    {
+      "time": 1784959650.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
+      "text": "054] agent.conversation_loop: Nous 429 looks like upstream c"
     },
     {
-      "time": 1784949969.0,
+      "time": 1784959650.0,
+      "type": "cron_warn",
+      "icon": "\u26a0\ufe0f",
+      "text": "080054] agent.conversation_loop: Retrying API call in 4.3209"
+    },
+    {
+      "time": 1784959649.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
+      "text": "054] run_agent: OpenAI client created (chat_completion_reque"
     },
     {
-      "time": 1784949969.0,
+      "time": 1784959646.0,
+      "type": "cron_warn",
+      "icon": "\u26a0\ufe0f",
+      "text": "080054] agent.conversation_loop: API call failed (attempt 1/"
+    },
+    {
+      "time": 1784959646.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
+      "text": "054] agent.conversation_loop: Nous 429 looks like upstream c"
     },
     {
-      "time": 1784949938.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
+      "time": 1784959646.0,
+      "type": "cron_warn",
+      "icon": "\u26a0\ufe0f",
+      "text": "080054] agent.conversation_loop: Retrying API call in 2.6838"
     },
     {
-      "time": 1784949908.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
-    },
-    {
-      "time": 1784949878.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
-    },
-    {
-      "time": 1784949848.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
-    },
-    {
-      "time": 1784949818.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
-    },
-    {
-      "time": 1784949788.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
-    },
-    {
-      "time": 1784949758.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
-    },
-    {
-      "time": 1784943009.0,
+      "time": 1784952907.0,
       "type": "commit",
       "icon": "\ud83d\udd28",
-      "text": "HQ Dashboard: chore: thor auto-metrics 03:30 (live LND)",
+      "text": "HQ Dashboard: chore: thor auto-metrics 06:15 (live LND)",
       "repo": "hq"
     },
     {
