@@ -20,9 +20,7 @@
     if (b) b.textContent = BUILD_TS.slice(0, 16).replace("T", " ") + "Z";
     const meta = document.querySelector('meta[name="hq-version"]');
     if (meta) meta.setAttribute("content", HQ_VERSION);
-    if (document.title && /Give A Bit HQ/.test(document.title)) {
-      document.title = `Give A Bit HQ v${HQ_VERSION}`;
-    }
+    document.title = `Give A Bit HQ v${HQ_VERSION}`;
     try { localStorage.setItem("hq_deployed_version", HQ_VERSION); } catch (_) {}
   }
   // Immediate paint so header/footer never sit on stale HTML while data loads
