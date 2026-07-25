@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-25T14:00:22Z",
+  "checked_at": "2026-07-25T14:30:24Z",
   "vault_size_mb": 943.5,
   "structure": {
     ".git": {
@@ -8,7 +8,7 @@
     },
     "01-Architecture": {
       "files": 2,
-      "newest_days_ago": 0.6
+      "newest_days_ago": 0.7
     },
     "02-Agents": {
       "files": 1,
@@ -40,7 +40,7 @@
     }
   },
   "staleness_days": {
-    "01-Architecture": 0.6,
+    "01-Architecture": 0.7,
     "02-Agents": 0.6,
     "03-Projects": 0.6,
     "Obsidian": 0.4,
