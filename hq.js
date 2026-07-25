@@ -1202,14 +1202,22 @@
     if (!el) return;
     const sites = (state.status && state.status.sites) || {};
     const total = state.projects.length;
-    let up = 0, down = 0;
+    let up = 0, down = 0, totalMs = 0, msCount = 0;
     state.projects.forEach((p) => {
       const s = sites[p.id];
-      if (s && s.ok === true) up++;
+      if (s && s.ok === true) { up++; if (s.ms != null) { totalMs += s.ms; msCount++; } }
       else if (s && s.ok === false) down++;
     });
+    const avgMs = msCount ? Math.round(totalMs / msCount) : null;
     const health = state.thor && state.thor.ok && state.thor.data && state.thor.data.node
       ? state.thor.data.node.status : "unknown";
+    const thorData = (state.thor && state.thor.ok && state.thor.data) || {};
+    const node = thorData.node || {};
+    const btc = thorData.bitcoin || {};
+    const lnd = thorData.lightning || {};
+    const services = (node.services || []).filter(s => s.status === "green").length;
+    const totalServices = (node.services || []).length;
+    const uptimeDays = node.uptimeSec ? Math.round(node.uptimeSec / 86400) : null;
     const tot = portfolioTotals();
     const avgDepth = state.projects.length
       ? Math.round(state.projects.reduce((a, p) => {
@@ -1218,19 +1226,51 @@
         }, 0) / state.projects.length)
       : 0;
     const usd = fmtUsd(satsToUsd(tot.sats));
+    const statusTime = state.status && state.status.updatedAt ? fmtTime(state.status.updatedAt).replace(/^Jul 25, /, "").replace(/ UTC$/, "") : "—";
+    const depthBuckets = (() => {
+      let full = 0, partial = 0, none = 0;
+      state.projects.forEach(p => {
+        const m = state.metrics[p.id];
+        const d = m && m.ok ? depthScore(m.data, false) : 0;
+        if (d >= 70) full++;
+        else if (d > 0) partial++;
+        else none++;
+      });
+      return { full, partial, none };
+    })();
 
     el.innerHTML = `
-      <div class="stat panel" data-tip="How many suite sites returned HTTP 200 in the last health check. Out of ${total} total sites, ${up} are responding." style="cursor:help"><div class="l">Suite live</div><div class="v" style="color:var(--green)">${up}<span style="font-size:0.85rem;color:var(--ink-faint)">/${total}</span></div></div>
-      <div class="stat panel" data-tip="Sites that are down, timing out, or have failing metrics. 0 = everything running smoothly." style="cursor:help"><div class="l">Attention</div><div class="v" style="color:${down ? "var(--red)" : "var(--ink-faint)"}">${down}</div></div>
-      <div class="stat panel" data-tip="THOR VPS health: green = all services (Docker, Postgres, LNbits, LND, Umami) running and responding. amber = one or more degraded. red = unreachable." style="cursor:help"><div class="l">THOR</div><div class="v" style="font-size:1.05rem">${statusPill(health, health)}</div></div>
-      <div class="stat panel" data-tip="How much data HQ has collected for each product (0-100). 100 = every product has live /metrics.json, wallet data, Umami analytics, AND CF Web Analytics feeding in. 0 = demo/empty." style="cursor:help"><div class="l">Data depth</div><div class="v" style="color:${escAttr(depthColor(avgDepth))}">${avgDepth}<span style="font-size:0.75rem;color:var(--ink-faint)">/100</span></div></div>
+      <div class="stat panel" data-tip="How many suite sites returned HTTP 200 in the last health check. Out of ${total} total sites, ${up} are responding." style="cursor:help">
+        <div class="l">Suite live</div>
+        <div class="v" style="color:var(--green)">${up}<span style="font-size:0.85rem;color:var(--ink-faint)">/${total}</span></div>
+        <div class="stat-secondary">${avgMs != null ? esc(avgMs) + "ms avg" : ""} · ${esc(statusTime)}</div>
+      </div>
+      <div class="stat panel" data-tip="Sites that are down, timing out, or have failing metrics. 0 = everything running smoothly." style="cursor:help">
+        <div class="l">Attention</div>
+        <div class="v" style="color:${down ? "var(--red)" : "var(--ink-faint)"}">${down}</div>
+        <div class="stat-secondary">${down ? esc(down) + " need review" : "all clear"}${down ? "" : " ✓"}</div>
+      </div>
+      <div class="stat panel" data-tip="THOR VPS health: green = all services (Docker, Postgres, LNbits, LND, Umami) running and responding. amber = one or more degraded. red = unreachable." style="cursor:help">
+        <div class="l">THOR</div>
+        <div class="v" style="font-size:1.05rem">${statusPill(health, health)}</div>
+        <div class="stat-secondary">${services}/${totalServices} svc · blk ${btc.blocks || "—"} · ${uptimeDays != null ? uptimeDays + "d up" : ""}${lnd.walletBalanceSats > 0 ? " · " + esc(fmtNum(lnd.walletBalanceSats, "sats")) + " on-chain" : ""}</div>
+      </div>
+      <div class="stat panel" data-tip="How much data HQ has collected for each product (0-100). 100 = every product has live /metrics.json, wallet data, Umami analytics, AND CF Web Analytics feeding in. 0 = demo/empty." style="cursor:help">
+        <div class="l">Data depth</div>
+        <div class="v" style="color:${escAttr(depthColor(avgDepth))}">${avgDepth}<span style="font-size:0.75rem;color:var(--ink-faint)">/100</span></div>
+        <div class="stat-secondary">${depthBuckets.full} deep · ${depthBuckets.partial} partial · ${depthBuckets.none} empty</div>
+      </div>
       <div class="stat panel money-hero" style="cursor:pointer;min-width:200px" id="btn-goto-money" data-tip="Open money cockpit">
         <div class="l">Portfolio · LNbits</div>
         <div class="money-hero-total" style="font-size:1.15rem">${tot.ok ? esc(fmtNum(tot.sats, "sats")) : "—"}</div>
-        <div class="money-hero-usd">${esc(usd)} · ${tot.ok} wallets${state.btcUsd ? ` · <span class="fx-badge">BTC $${esc(fmtNum(state.btcUsd))}</span>` : ""}</div>
+        <div class="money-hero-usd">${esc(usd)} · ${tot.ok} wallets${state.btcUsd ? ` · <span class='fx-badge'>BTC $${esc(fmtNum(state.btcUsd))}</span>` : ""}</div>
         ${allocationRibbonHTML()}
       </div>
-      <div class="stat panel" style="cursor:pointer" id="btn-export-diligence"><div class="l">Diligence</div><div class="v" style="font-size:0.95rem">Export MD</div></div>
+      <div class="stat panel" style="cursor:pointer" id="btn-export-diligence">
+        <div class="l">Diligence</div>
+        <div class="v" style="font-size:0.95rem">Export MD</div>
+        <div class="stat-secondary">${total} projects · ${up} live</div>
+      </div>
     `;
     document.getElementById("btn-export-diligence")?.addEventListener("click", exportDiligence);
     document.getElementById("btn-goto-money")?.addEventListener("click", () => setTab("money"));

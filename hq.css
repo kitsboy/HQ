@@ -1898,6 +1898,15 @@ table.data .name-cell {
   letter-spacing: -0.03em;
   margin-top: 0.15rem;
 }
+.portfolio-strip .stat-secondary {
+  font-size: 0.62rem;
+  color: var(--ink-faint);
+  margin-top: 0.25rem;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /* ─── v3.1 DEPTH PACK ─── */
 
