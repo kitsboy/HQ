@@ -1,6 +1,6 @@
 {
   "schema": "gab.ecosystem-map.v1",
-  "updatedAt": "2026-07-25T02:00:51Z",
+  "updatedAt": "2026-07-25T16:05:06Z",
   "projects": [
     {
       "id": "satohash",
@@ -21,11 +21,11 @@
       "url": "hq.giveabit.io",
       "api": "",
       "github": "kitsboy/HQ",
-      "version": "3.19.0",
+      "version": "3.20.0",
       "status": "green",
       "health": "200",
-      "lastCommit": "dd9380e chore: refresh status.json + thor-node [skip deploy]",
-      "synced": "ahead",
+      "lastCommit": "23ba264 chore: thor auto-metrics 14:02 (live LND)",
+      "synced": "synced",
       "localOnThor": true
     },
     {
@@ -142,10 +142,10 @@
       "status": "green",
       "disk": "8% used",
       "diskFree": "359G",
-      "mem": "3.8Gi used",
-      "memAvail": "3.9Gi",
-      "load": "0.28/0.19/0.16",
-      "uptime": "up 1 week, 1 day, 1 hour, 4 minutes",
+      "mem": "3.4Gi used",
+      "memAvail": "4.4Gi",
+      "load": "0.04/0.14/0.16",
+      "uptime": "up 1 week, 1 day, 15 hours, 8 minutes",
       "lastSeen": "2026-07-25"
     },
     {
@@ -154,8 +154,8 @@
       "role": "Code + Grok (Mac)",
       "host": "Cams-Laptop",
       "status": "green",
-      "lastPush": "unknown",
-      "lastSeen": "2026-07-25"
+      "lastPush": "2026-07-22",
+      "lastSeen": "2026-07-22"
     },
     {
       "id": "m4",
@@ -264,19 +264,19 @@
   "skills": [
     {
       "name": "auto-git-status",
-      "ageDays": 55,
+      "ageDays": 56,
       "status": "aging",
       "updated": "2026-05-30"
     },
     {
       "name": "browser-harness",
-      "ageDays": 55,
+      "ageDays": 56,
       "status": "aging",
       "updated": "2026-05-30"
     },
     {
       "name": "computer-use",
-      "ageDays": 4,
+      "ageDays": 5,
       "status": "fresh",
       "updated": "2026-07-20"
     },
@@ -288,7 +288,7 @@
     },
     {
       "name": "deployment-workflow",
-      "ageDays": 11,
+      "ageDays": 12,
       "status": "fresh",
       "updated": "2026-07-13"
     },
@@ -306,37 +306,37 @@
     },
     {
       "name": "hermes-desktop-plugins",
-      "ageDays": 4,
+      "ageDays": 5,
       "status": "fresh",
       "updated": "2026-07-20"
     },
     {
       "name": "kanban-worker",
-      "ageDays": 55,
+      "ageDays": 56,
       "status": "aging",
       "updated": "2026-05-30"
     },
     {
       "name": "nova-product-management",
-      "ageDays": 10,
+      "ageDays": 11,
       "status": "fresh",
       "updated": "2026-07-14"
     },
     {
       "name": "project-brief",
-      "ageDays": 10,
+      "ageDays": 11,
       "status": "fresh",
       "updated": "2026-07-14"
     },
     {
       "name": "propagate-template",
-      "ageDays": 28,
+      "ageDays": 29,
       "status": "fresh",
       "updated": "2026-06-26"
     },
     {
       "name": "quick-backup",
-      "ageDays": 28,
+      "ageDays": 29,
       "status": "fresh",
       "updated": "2026-06-26"
     },
@@ -387,30 +387,30 @@
       "name": "Redis",
       "type": "Satohash Cache",
       "status": "green",
-      "detail": "Up 4 days"
+      "detail": "Up 5 days"
     },
     {
       "id": "postgres",
       "name": "PostgreSQL",
       "type": "LNbits Database",
       "status": "green",
-      "detail": "Up 5 days (healthy)"
+      "detail": "Up 6 days (healthy)"
     }
   ],
   "recentActivity": [
     {
       "repo": "hq",
-      "commit": "dd9380e chore: refresh status.json + thor-node [skip deploy]",
+      "commit": "23ba264 chore: thor auto-metrics 14:02 (live LND)",
       "timestamp": "2026-07-25"
     },
     {
       "repo": "hq",
-      "commit": "e1879a2 chore: thor auto-metrics 00:00 (live LND)",
+      "commit": "4faa174 chore: refresh status.json + thor-node [skip deploy]",
       "timestamp": "2026-07-25"
     },
     {
       "repo": "hq",
-      "commit": "cc63034 chore: resolve stash conflicts, keep remote version ",
+      "commit": "0065d62 chore: thor auto-metrics 14:00 (live LND)",
       "timestamp": "2026-07-25"
     },
     {
