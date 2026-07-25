@@ -1,42 +1,42 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-25T12:45:11Z",
+ "updatedAt": "2026-07-25T12:46:10.000Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
   "stack": "Docker \u00b7 LND Neutrino \u00b7 LNbits \u00b7 satohash-api \u00b7 Hermes",
   "region": "EU Contabo",
-  "status": "green",
+  "status": "amber",
   "services": [
    {
     "id": "umami",
     "status": "green",
-    "detail": "Up 36 hours"
+    "detail": "Up (running)"
    },
    {
     "id": "satohash-satohash-api-1",
-    "status": "green",
-    "detail": "Up 3 days (healthy)"
+    "status": "healthy",
+    "detail": "Up (healthy)"
    },
    {
     "id": "lnbits",
     "status": "green",
-    "detail": "Up 3 days"
+    "detail": "Up (running)"
    },
    {
     "id": "satohash-redis-1",
     "status": "green",
-    "detail": "Up 5 days"
+    "detail": "Up (running)"
    },
    {
     "id": "lnbits-postgres",
-    "status": "green",
-    "detail": "Up 6 days (healthy)"
+    "status": "healthy",
+    "detail": "Up (healthy)"
    },
    {
     "id": "lnd",
-    "status": "green",
-    "detail": "Up 5 days (healthy)"
+    "status": "healthy",
+    "detail": "Up (healthy)"
    }
   ],
   "uptimeSec": 740910
@@ -2068,31 +2068,30 @@
   },
   "memory": {
    "totalGB": 7.8,
-   "usedGB": 3.4,
-   "freeGB": 2.1,
+   "usedGB": 3.5,
+   "freeGB": 2.0,
    "availableGB": 4.3
   },
   "cpu": {
-   "loadAvg1m": 0.19,
-   "loadAvg5m": 0.15,
-   "loadAvg15m": 0.17,
-   "uptimeDays": 8.6
+   "loadAvg1m": 0.37,
+   "loadAvg5m": 0.21,
+   "loadAvg15m": 0.19,
+   "uptimeDays": 8
   },
   "docker": {
    "images": 7,
    "containers": 6,
    "running": 6,
-   "buildCacheGB": 9.131
+   "buildCacheGB": 3.911
   },
   "breakdownGB": {
-   "MASTER-BRAIN_vault": 0.695,
-   "Hermes_skills_config": 0.845,
-   "satohash_repo": 0.021,
-   "HQ_repo": 0.034,
-   "LND_data": 0.338,
-   "Docker_images": 3.911,
-   "Docker_volumes": 0.45,
-   "other_system": 21.7
+   "MASTER-BRAIN_vault": 0.6953125,
+   "Hermes_skills_config": 0.84765625,
+   "satohash_repo": 0.0205078125,
+   "HQ_repo": 0.0341796875,
+   "Docker_volumes": 5.0,
+   "other_system": 38.4,
+   "Docker_images": 2.6
   }
  },
  "host": {
