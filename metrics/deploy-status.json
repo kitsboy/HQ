@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-25T20:45:36Z",
+  "checked_at": "2026-07-25T21:30:39Z",
   "deploys": [
     {
       "slug": "satohash",
@@ -17,10 +17,10 @@
     {
       "slug": "hq",
       "repo": "kitsboy/HQ",
-      "status": "success",
-      "created_at": "2026-07-25T20:31:24Z",
-      "updated_at": "2026-07-25T20:31:52Z",
-      "run_url": "https://github.com/kitsboy/HQ/actions/runs/30173753835"
+      "status": null,
+      "created_at": "2026-07-25T21:30:33Z",
+      "updated_at": "2026-07-25T21:30:36Z",
+      "run_url": "https://github.com/kitsboy/HQ/actions/runs/30175769927"
     },
     {
       "slug": "katoa",

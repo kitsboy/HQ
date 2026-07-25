@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-07-25T20:45:35Z",
-  "vault_size_mb": 943.5,
+  "checked_at": "2026-07-25T21:30:38Z",
+  "vault_size_mb": 1210.3,
   "structure": {
     ".git": {
       "files": 0,
@@ -8,7 +8,7 @@
     },
     "01-Architecture": {
       "files": 2,
-      "newest_days_ago": 0.9
+      "newest_days_ago": 1.0
     },
     "02-Agents": {
       "files": 1,
@@ -19,8 +19,8 @@
       "newest_days_ago": 0.9
     },
     "Obsidian": {
-      "files": 539,
-      "newest_days_ago": 0.6
+      "files": 540,
+      "newest_days_ago": 0.0
     },
     "bin": {
       "files": 0,
@@ -40,10 +40,10 @@
     }
   },
   "staleness_days": {
-    "01-Architecture": 0.9,
+    "01-Architecture": 1.0,
     "02-Agents": 0.9,
     "03-Projects": 0.9,
-    "Obsidian": 0.6,
+    "Obsidian": 0.0,
     "docs": 5.6,
     "infrastructure": 3.8
   },
@@ -51,7 +51,7 @@
   "handoff_count": 2,
   "has_context_map": true,
   "issues": [],
-  "disk_used": "28G",
+  "disk_used": "29G",
   "disk_avail": "359G",
   "disk_pct": "8%"
 }
