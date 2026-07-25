@@ -1,8 +1,8 @@
 {
   "name": "giveabit-hq",
   "private": true,
-  "version": "3.20.0",
-  "description": "Give A Bit HQ — navigation fix, Safe Harbour v2, file inventory, roadmap",
+  "version": "3.21.0",
+  "description": "Give A Bit HQ — handoffs registry tab, OTS deep learn, GHA cleanup",
   "scripts": {
     "stamp": "node scripts/stamp-version.mjs",
     "verify-version": "node scripts/stamp-version.mjs",

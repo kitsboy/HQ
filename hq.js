@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.20.0 — money + depth pack
+ * Give A Bit HQ v3.21.0 — handoffs registry tab
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
@@ -7,7 +7,7 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.20.0";
+  const HQ_VERSION = "3.21.0";
   const BUILD_TS = new Date().toISOString();
 
   /** Paint the same version on every chrome surface (header sub + footer). */
@@ -78,6 +78,7 @@
     feed: "#67e8f9",
     charts: "#f59e0b",
     chat: "#22c55e",
+    handoffs: "#ff8c00",
   };
 
   const TAB_DISPLAY_NAMES = {
@@ -86,7 +87,7 @@
     ecosystem: "Ecosystem", concert: "Concert", coverage: "Coverage", system: "System",
     wallets: "Wallets", money: "Money", docs: "Docs", agents: "Agents",
     domains: "Domains", vault: "Vault", intel: "Intel", feed: "Feed",
-    charts: "Charts", chat: "Chat",
+    charts: "Charts", chat: "Chat", handoffs: "Handoffs",
   };
 
   const DOCS_HQ = [
@@ -97,6 +98,7 @@
     "ANALYTICS-PLAN.md", "DESIGN-CONTEXT.md", "AGENT-GUARDRAILS.md", "UMAMI-SETUP.md",
     "UMAMI-DEPLOYMENT.md", "REF-PULLER.md", "ALL-SITE-METRICS.md",
     "BUZZ-PLAN.md", "GIVEABIT-MISSION-UPDATE.md", "SAFE-HARBOUR.md", "SAFE-HARBOUR-HANDOFF.md", "FILE-INVENTORY.md",
+    "OTS-DEEP-LEARN.md",
   ];
 
   const FEATURES = [
@@ -1435,6 +1437,7 @@
       ecosystem: renderEcosystem, concert: renderConcert, coverage: renderCoverage, system: renderSystem,
       wallets: renderWallets, money: renderMoney, docs: renderDocs, agents: renderAgents, domains: renderDomains,
       vault: renderVaultTab,
+      handoffs: renderHandoffs,
       intel: renderIntelStub, feed: renderFeedStub, charts: renderChartsStub, chat: renderChatStub,
     };
     const fn = map[state.tab];
@@ -3290,6 +3293,125 @@
           <td><a href="${escAttr(r.url)}" target="_blank" rel="noopener" data-tip="${escAttr(r.tip)}">${esc(r.url)}</a></td>
         </tr>`).join("")}</tbody>
       </table></div>`;
+  }
+
+  /* ═══════════════ HANDOFFS ═══════════════ */
+
+  async function loadHandoffsJson() {
+    try {
+      const r = await fetch("/handoffs.json");
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return await r.json();
+    } catch (e) {
+      console.error("handoffs.json load failed:", e);
+      return null;
+    }
+  }
+
+  function renderHandoffCard(h, accent) {
+    const typeColors = {
+      protocol: "#a78bfa",
+      handoff: "#fb923c",
+      ops: "#2dd4bf",
+      reference: "#38bdf8",
+      policy: "#f472b6",
+      roadmap: "#f59e0b",
+      mission: "#c084fc",
+      contract: "#67e8f9",
+      tool: "#22c55e",
+    };
+    const tc = typeColors[h.type] || "#888";
+    const tags = (h.tags || []).map(t => `<span class="status-pill" style="font-size:0.6rem;background:var(--surface-2, #1a1a2e);color:var(--ink-faint, #888);padding:0.1rem 0.4rem;border-radius:4px">${esc(t)}</span>`).join("");
+    return `<a href="${escAttr(h.url || "#")}" target="_blank" rel="noopener" class="panel handoff-card" style="display:block;padding:0.85rem 1rem;border-left:4px solid ${escAttr(tc)};text-decoration:none;color:inherit;border-radius:var(--radius,8px);margin-bottom:0.5rem;transition:all 0.15s" data-handoff="${escAttr(h.id)}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem;flex-wrap:wrap">
+        <div style="flex:1;min-width:140px">
+          <strong style="font-size:0.85rem;color:var(--ink, #e2e8f0)">${esc(h.title)}</strong>
+          <div style="font-size:0.72rem;color:var(--ink-faint, #888);margin-top:0.2rem;line-height:1.4">${esc(h.summary)}</div>
+        </div>
+        <div style="display:flex;gap:0.35rem;align-items:center;flex-wrap:wrap;flex-shrink:0">
+          <span class="status-pill" style="font-size:0.6rem;background:${escAttr(tc)}22;color:${escAttr(tc)};border:1px solid ${escAttr(tc)}44">${esc(h.type)}</span>
+          <span class="status-pill" style="font-size:0.6rem;background:var(--surface-2);color:var(--ink-faint)">${esc(h.audience || "—")}</span>
+        </div>
+      </div>
+      ${h.path ? `<div class="mono" style="font-size:0.62rem;color:var(--ink-faint, #666);margin-top:0.3rem">${esc(h.path)}</div>` : ""}
+      ${tags ? `<div style="display:flex;gap:0.25rem;flex-wrap:wrap;margin-top:0.3rem">${tags}</div>` : ""}
+    </a>`;
+  }
+
+  function renderHandoffs() {
+    const el = document.getElementById("view-handoffs");
+    if (!el) return;
+    el.innerHTML = `<div class="loading-state"><div class="spinner"></div><div>Loading handoff registry…</div></div>`;
+    loadHandoffsJson().then(data => {
+      if (!data) {
+        el.innerHTML = unavailableHTML("Handoffs", "/handoffs.json");
+        return;
+      }
+      const accent = (id) => {
+        const colors = {
+          satohash: "#8a5a00", hq: "#a78bfa", giveabit: "#c45f00",
+          katoa: "#1a5f7a", stranded: "#1f6b3a", tadbuy: "#a32020",
+          motopass: "#5c3d7a", sherpacarta: "#6b4f2a", openstrata: "#2a4a5c",
+          btcminiscript: "#5a574f",
+        };
+        return colors[id] || "#a78bfa";
+      };
+
+      const count = (data.projects || []).reduce((s, p) => s + (p.handoffs || []).length, 0)
+        + (data.cross_project || []).length + (data.tools || []).length;
+
+      let html = `<h2 class="section-title">Callable Handoffs <span class="accent-rule"></span></h2>
+      <p class="section-sub">${count} handoffs · learnings · protocols · tools across all projects</p>
+      <div class="handoff-meta panel" style="padding:0.75rem 1rem;margin-bottom:1rem;border-left:4px solid #ff8c00;border-radius:var(--radius,8px);display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap">
+        <i class="fa-solid fa-book-open" style="font-size:1.2rem;color:#ff8c00"></i>
+        <div style="flex:1;min-width:200px">
+          <strong style="font-size:0.85rem">What can I call upon?</strong>
+          <p style="margin:0.15rem 0 0;font-size:0.78rem;color:var(--ink-faint)">
+            Every handoff, learning doc, protocol, and tool you can use with Grok — categorized by project. 
+            <strong>New:</strong> OTS Deep Learn from DGI.io tutorial. Read these before coding.
+          </p>
+        </div>
+        <div style="display:flex;gap:0.35rem;flex-wrap:wrap">
+          <span class="status-pill green">${count} total</span>
+          <span class="status-pill amber">updated ${(data.updatedAt || "").slice(0, 10)}</span>
+        </div>
+      </div>`;
+
+      // Cross-project mandatory items first
+      if (data.cross_project && data.cross_project.length) {
+        html += `<h3 style="font-size:0.9rem;margin:1.2rem 0 0.6rem;color:var(--accent, #ff8c00)">🌐 Cross-Project Mandatory</h3>`;
+        data.cross_project.forEach(h => {
+          html += renderHandoffCard(h, "#ff8c00");
+        });
+      }
+
+      // Per-project handoffs
+      (data.projects || []).forEach(p => {
+        if (!p.handoffs || !p.handoffs.length) return;
+        const c = accent(p.id);
+        const sorted = [...p.handoffs].sort((a, b) => (a.priority || 9) - (b.priority || 9));
+        html += `<h3 style="font-size:0.9rem;margin:1.2rem 0 0.6rem;border-left:3px solid ${escAttr(c)};padding-left:0.6rem">
+          <span style="color:${escAttr(c)}">${esc(p.name)}</span>
+          <span class="mono" style="font-size:0.65rem;color:var(--ink-faint);font-weight:400"> · ${sorted.length} handoffs</span>
+        </h3>`;
+        sorted.forEach(h => {
+          html += renderHandoffCard(h, c);
+        });
+      });
+
+      // Tools section
+      if (data.tools && data.tools.length) {
+        html += `<h3 style="font-size:0.9rem;margin:1.2rem 0 0.6rem;color:var(--accent, #ff8c00)">🔧 Tools & Dashboards</h3>`;
+        data.tools.forEach(t => {
+          html += renderHandoffCard(t, "#22c55e");
+        });
+      }
+
+      el.innerHTML = `<div class="handoffs-container" style="max-width:820px;margin:0 auto;padding:1rem 1rem 2rem">${html}</div>`;
+      bindTooltips();
+    }).catch(e => {
+      el.innerHTML = unavailableHTML("Handoffs", "/handoffs.json", e.message);
+    });
   }
 
   /* ═══════════════ DRAWER ═══════════════ */

@@ -1,0 +1,339 @@
+{
+  "schema": "gab.handoffs.v1",
+  "updatedAt": "2026-07-26T20:00:00.000Z",
+  "projects": [
+    {
+      "id": "satohash",
+      "name": "Satohash",
+      "url": "https://satohash.io",
+      "repo": "kitsboy/satohash",
+      "handoffs": [
+        {
+          "id": "ots-deep-learn",
+          "title": "OTS Deep Learn — Full Protocol Masterclass",
+          "summary": "Complete 6-step OTS protocol: hash → submit → load → info → upgrade → verify. Synthesized from DGI.io tutorial + 10 enhanced automation blueprints for satohash v5+.",
+          "path": "docs/OTS-DEEP-LEARN.md",
+          "url": "https://github.com/kitsboy/satohash/blob/main/docs/OTS-DEEP-LEARN.md",
+          "audience": "Grok + Kimi",
+          "type": "protocol",
+          "priority": 1,
+          "tags": ["ots", "bitcoin", "timestamping", "protocol", "automation"]
+        },
+        {
+          "id": "ots-setup",
+          "title": "OTS Setup — Calendar & Integration Guide",
+          "summary": "Calendar URLs (alice, bob, finney), npm library integration, upgrade daemon, and independent verification with CLI tools.",
+          "path": "docs/OTS_SETUP.md",
+          "url": "https://github.com/kitsboy/satohash/blob/main/docs/OTS_SETUP.md",
+          "audience": "Grok + Kimi",
+          "type": "ops",
+          "priority": 2,
+          "tags": ["ots", "setup", "calendar", "integration"]
+        },
+        {
+          "id": "grok-session-protocol-satohash",
+          "title": "GROK Session Protocol — Mandatory Handoff Rules",
+          "summary": "Session start/end protocol. Read before ANY coding session. Includes OTS Deep Learn mandatory read directive.",
+          "path": "GROK-SESSION-PROTOCOL.md",
+          "url": "https://github.com/kitsboy/satohash/blob/main/GROK-SESSION-PROTOCOL.md",
+          "audience": "Grok",
+          "type": "protocol",
+          "priority": 1,
+          "tags": ["handoff", "protocol", "mandatory"]
+        },
+        {
+          "id": "kimi-handoff-satohash",
+          "title": "KIMI-HANDOFF — Latest Session Summary",
+          "summary": "Running log of all sessions. Top entry is most recent — always read first to know what was done last.",
+          "path": "docs/KIMI-HANDOFF.md",
+          "url": "https://github.com/kitsboy/satohash/blob/main/docs/KIMI-HANDOFF.md",
+          "audience": "Grok + Kimi",
+          "type": "handoff",
+          "priority": 1,
+          "tags": ["handoff", "running-log"]
+        },
+        {
+          "id": "kimi-mega-handoff-satohash",
+          "title": "KIMI → GROK MEGA Handoff (2026-07-20)",
+          "summary": "Master handoff: machine roles, HQ status, automations schedule, memory setup, repo-specific notes, do/don't rules. Read before coding.",
+          "path": "docs/KIMI-HANDOFF-2026-07-20-MEGA.md",
+          "url": "https://github.com/kitsboy/satohash/blob/main/docs/KIMI-HANDOFF-2026-07-20-MEGA.md",
+          "audience": "Grok",
+          "type": "handoff",
+          "priority": 2,
+          "tags": ["handoff", "mega", "reference"]
+        },
+        {
+          "id": "kimi-vps-runbook",
+          "title": "KIMI-VPS-RUNBOOK — THOR Ops Procedures",
+          "summary": "All ops procedures: upgrade daemon, Docker management, LNbits/LND, cron jobs, and troubleshooting.",
+          "path": "docs/KIMI-VPS-RUNBOOK.md",
+          "url": "https://github.com/kitsboy/satohash/blob/main/docs/KIMI-VPS-RUNBOOK.md",
+          "audience": "Kimi",
+          "type": "ops",
+          "priority": 3,
+          "tags": ["runbook", "thor", "ops"]
+        }
+      ]
+    },
+    {
+      "id": "hq",
+      "name": "HQ Dashboard",
+      "url": "https://hq.giveabit.io",
+      "repo": "kitsboy/HQ",
+      "handoffs": [
+        {
+          "id": "kimi-grok-handoff-hq",
+          "title": "KIMI-GROK-HANDOFF — HQ Ops Handoff",
+          "summary": "Latest cross-agent handoff for HQ: what Kimi did on THOR, what Grok needs to do on M3.",
+          "path": "docs/KIMI-GROK-HANDOFF.md",
+          "url": "/docs/KIMI-GROK-HANDOFF.md",
+          "audience": "Grok",
+          "type": "handoff",
+          "priority": 1,
+          "tags": ["handoff", "hq"]
+        },
+        {
+          "id": "handoff-state",
+          "title": "Handoff State — Agent Status & Blockers",
+          "summary": "Live agent handoff state: who's working on what, blockers, and next actions.",
+          "path": "handoff/state.json",
+          "url": "/handoff/state.json",
+          "audience": "Kimi + Cam",
+          "type": "ops",
+          "priority": 1,
+          "tags": ["state", "live", "status"]
+        },
+        {
+          "id": "site-access",
+          "title": "Site Access Map — All URLs & Logins",
+          "summary": "Every site, admin URL, login method, and credential location. The master reference.",
+          "path": "docs/SITE-ACCESS.md",
+          "url": "/docs/SITE-ACCESS.md",
+          "audience": "Kimi + Cam",
+          "type": "reference",
+          "priority": 1,
+          "tags": ["urls", "logins", "admin"]
+        },
+        {
+          "id": "ecosystem-map",
+          "title": "Ecosystem Map — Domains & Planes",
+          "summary": "Full map of all domains, data planes, and infrastructure connections.",
+          "path": "docs/ECOSYSTEM-MAP.md",
+          "url": "/docs/ECOSYSTEM-MAP.md",
+          "audience": "Grok + Kimi",
+          "type": "reference",
+          "priority": 1,
+          "tags": ["map", "domains", "infrastructure"]
+        },
+        {
+          "id": "safe-harbour",
+          "title": "Safe Harbour — Full Policy",
+          "summary": "Legal framework: Bitcoin sovereignty, data collection, GDPR compliance.",
+          "path": "docs/SAFE-HARBOUR.md",
+          "url": "/docs/SAFE-HARBOUR.md",
+          "audience": "Grok + Kimi + Cam",
+          "type": "policy",
+          "priority": 2,
+          "tags": ["legal", "policy", "sovereignty"]
+        },
+        {
+          "id": "agent-guardrails",
+          "title": "Agent Guardrails — Rules for All Agents",
+          "summary": "Conduct rules, Safe Harbour limits, NIP-05 namespace policy, do/don't for all agents.",
+          "path": "docs/AGENT-GUARDRAILS.md",
+          "url": "/docs/AGENT-GUARDRAILS.md",
+          "audience": "Grok + Kimi",
+          "type": "policy",
+          "priority": 2,
+          "tags": ["rules", "guardrails", "conduct"]
+        },
+        {
+          "id": "upgrades-100",
+          "title": "100 Upgrades Map — Pipeline Roadmap",
+          "summary": "Complete roadmap of data pipes, features, and infrastructure upgrades.",
+          "path": "docs/UPGRADES-100.md",
+          "url": "/docs/UPGRADES-100.md",
+          "audience": "Grok + Kimi",
+          "type": "roadmap",
+          "priority": 3,
+          "tags": ["roadmap", "upgrades", "pipeline"]
+        },
+        {
+          "id": "file-inventory",
+          "title": "File Inventory — Complete HQ File Map",
+          "summary": "Every file in the HQ repo with purpose and status.",
+          "path": "docs/FILE-INVENTORY.md",
+          "url": "/docs/FILE-INVENTORY.md",
+          "audience": "Grok",
+          "type": "reference",
+          "priority": 3,
+          "tags": ["inventory", "files"]
+        }
+      ]
+    },
+    {
+      "id": "giveabit",
+      "name": "Give A Bit",
+      "url": "https://giveabit.io",
+      "repo": "kitsboy/giveabit",
+      "handoffs": [
+        {
+          "id": "giveabit-mission-update",
+          "title": "Give A Bit Mission Update — NIP-05 Vision",
+          "summary": "Mission expansion: NIP-05 namespace for giving-minded AI agents. Philanthropy, altruism, FOSS, Bitcoin sovereignty.",
+          "path": "docs/GIVEABIT-MISSION-UPDATE.md",
+          "url": "/docs/GIVEABIT-MISSION-UPDATE.md",
+          "audience": "Grok",
+          "type": "mission",
+          "priority": 1,
+          "tags": ["mission", "nip05", "namespace"]
+        }
+      ]
+    }
+  ],
+  "cross_project": [
+    {
+      "id": "ots-deep-learn-global",
+      "title": "OTS Deep Learn — Propagation Rule",
+      "summary": "The OTS protocol masterclass (satohash/docs/OTS-DEEP-LEARN.md) applies to ALL repos. Grok MUST read it regardless of which project they're working on.",
+      "url": "https://github.com/kitsboy/satohash/blob/main/docs/OTS-DEEP-LEARN.md",
+      "audience": "Grok",
+      "type": "protocol",
+      "priority": 1,
+      "tags": ["ots", "mandatory", "cross-project"]
+    },
+    {
+      "id": "grok-session-protocol-global",
+      "title": "GROK Session Protocol — Cross-Repo Rules",
+      "summary": "Every project has GROK-SESSION-PROTOCOL.md. Read it every session. Handoff pattern: append to docs/KIMI-HANDOFF.md, commit, push.",
+      "audience": "Grok",
+      "type": "protocol",
+      "priority": 1,
+      "tags": ["protocol", "handoff", "mandatory"]
+    },
+    {
+      "id": "agents-md-global",
+      "title": "AGENTS.md — Per-Project Quick Facts",
+      "summary": "Every repo has AGENTS.md with quick facts: status, deploy method, security rules. Read first when entering any project.",
+      "audience": "Grok + Kimi",
+      "type": "reference",
+      "priority": 1,
+      "tags": ["quickstart", "facts"]
+    },
+    {
+      "id": "all-site-metrics",
+      "title": "All Site Metrics — Suite-Wide KPI Reference",
+      "summary": "Every product site's metrics, KPIs, and data sources in one document.",
+      "path": "docs/ALL-SITE-METRICS.md",
+      "url": "/docs/ALL-SITE-METRICS.md",
+      "audience": "Kimi",
+      "type": "reference",
+      "priority": 2,
+      "tags": ["metrics", "kpis", "reference"]
+    },
+    {
+      "id": "metrics-schema",
+      "title": "Metrics Schema — Product Metrics Contract",
+      "summary": "The gab.product-metrics.v1 schema. How every product publishes KPIs.",
+      "path": "docs/METRICS-SCHEMA.md",
+      "url": "/docs/METRICS-SCHEMA.md",
+      "audience": "Grok + Kimi",
+      "type": "contract",
+      "priority": 2,
+      "tags": ["schema", "metrics", "contract"]
+    },
+    {
+      "id": "safe-harbour-handoff",
+      "title": "Safe Harbour Handoff — Public Output Rules",
+      "summary": "What's safe to say in public outputs, how to handle sensitive data.",
+      "path": "docs/SAFE-HARBOUR-HANDOFF.md",
+      "url": "/docs/SAFE-HARBOUR-HANDOFF.md",
+      "audience": "Grok + Kimi",
+      "type": "policy",
+      "priority": 2,
+      "tags": ["legal", "safe-harbour", "output"]
+    }
+  ],
+  "tools": [
+    {
+      "id": "hq-dashboard",
+      "title": "🔭 HQ Dashboard",
+      "summary": "The ops glass you're looking at right now. Live metrics, status, wallets, docs, agents. All data in one place.",
+      "url": "https://hq.giveabit.io",
+      "audience": "Cam",
+      "type": "tool",
+      "tags": ["dashboard", "ops"]
+    },
+    {
+      "id": "hermes-kanban",
+      "title": "📋 Hermes Kanban",
+      "summary": "Task board on Hermes Strata. Create, assign, track tasks across all agents.",
+      "url": "https://openstrata.giveabit.io",
+      "audience": "Kimi + Cam",
+      "type": "tool",
+      "tags": ["kanban", "tasks"]
+    },
+    {
+      "id": "grok-chat",
+      "title": "🤖 Grok (xAI)",
+      "summary": "M3 coding agent. Use when you need code changes on any project. Grok writes code, commits, pushes to GitHub.",
+      "url": "https://grok.com",
+      "audience": "Cam",
+      "type": "tool",
+      "tags": ["coding", "m3"]
+    },
+    {
+      "id": "hermes-agent",
+      "title": "🧠 Hermes Agent (Kimi on THOR)",
+      "summary": "Your ops agent on the VPS. Automations, Docker, LNbits, cron, docs, vault management.",
+      "audience": "Cam",
+      "type": "tool",
+      "tags": ["ops", "thor", "automation"]
+    },
+    {
+      "id": "lnbits-admin",
+      "title": "⚡ LNbits Admin",
+      "summary": "Lightning wallet management. User admin, invoice tracking, balance monitoring.",
+      "url": "http://vmi3446772.tailb672ac.ts.net:5102",
+      "audience": "Cam + Kimi",
+      "type": "tool",
+      "tags": ["lightning", "wallets", "admin"]
+    },
+    {
+      "id": "umami-analytics",
+      "title": "📊 Umami Analytics",
+      "summary": "Suite-wide analytics: page views, visitors, traffic sources for all products.",
+      "url": "http://vmi3446772.tailb672ac.ts.net:3002",
+      "audience": "Cam + Kimi",
+      "type": "tool",
+      "tags": ["analytics", "traffic"]
+    },
+    {
+      "id": "github-actions",
+      "title": "🔄 GitHub Actions",
+      "summary": "CI/CD: status pingers, auto-deploy to CF Pages, 15m suite health checks.",
+      "url": "https://github.com/kitsboy/HQ/actions",
+      "audience": "Kimi",
+      "type": "tool",
+      "tags": ["ci", "cd", "automation"]
+    },
+    {
+      "id": "cloudflare-pages",
+      "title": "☁️ Cloudflare Pages",
+      "summary": "Hosting for all suite sites. Deploy dashboard, custom domains, access policies.",
+      "url": "https://dash.cloudflare.com",
+      "audience": "Kimi",
+      "type": "tool",
+      "tags": ["hosting", "deploy", "cdn"]
+    },
+    {
+      "id": "aider-cli",
+      "title": "🔧 Aider (on THOR)",
+      "summary": "AI coding assistant pipx-installed on THOR. Wired to ppq.ai (Kimi K3). Use via aider-go wrapper for auto-pull/commit/push.",
+      "audience": "Kimi",
+      "type": "tool",
+      "tags": ["coding", "thor", "aider"]
+    }
+  ]
+}
