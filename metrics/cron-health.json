@@ -1,225 +1,111 @@
 {
-  "checked_at": "2026-07-25T11:07:29Z",
-  "agent_checked": true,
-  "scheduler_active": 26,
+  "checked_at": "2026-07-25T12:00:05Z",
   "jobs": {
-    "980226ec5716": {
-      "name": "?",
-      "status": "no_executions",
+    "c8ce19bb5571": {
+      "status": "completed",
+      "last_run": "2026-07-25T13:55:07.177185+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
-    "9bd2735e125e": {
-      "name": "github-project-scan.sh",
+    "1b2c31d6ba98": {
       "status": "completed",
-      "last_run": "2026-07-25T12:00:00.260374+02:00",
-      "consecutive_fails": 0,
-      "error": null,
-      "paused": false,
-      "action": "ok"
-    },
-    "2621be4bb5dd": {
-      "name": "?",
-      "status": "no_executions",
+      "last_run": "2026-07-25T13:47:24.014280+02:00",
       "consecutive_fails": 0,
       "paused": false
-    },
-    "5c6f78744d6e": {
-      "name": "deploy-healthcheck.sh",
-      "status": "completed",
-      "last_run": "2026-07-25T07:00:52.906436+02:00",
-      "consecutive_fails": 0,
-      "error": null,
-      "paused": false,
-      "action": "ok"
-    },
-    "469f2cfb7ab8": {
-      "name": "?",
-      "status": "no_executions",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "59b3a68e3eb2": {
-      "name": "?",
-      "status": "no_executions",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "337c7ae0b619": {
-      "name": "thor-morning-pulse.sh",
-      "status": "completed",
-      "last_run": "2026-07-25T07:30:53.715182+02:00",
-      "consecutive_fails": 0,
-      "error": null,
-      "paused": false,
-      "action": "ok"
-    },
-    "12b477c661ae": {
-      "name": "?",
-      "status": "completed",
-      "last_run": "2026-07-25T00:29:03.764427+02:00",
-      "consecutive_fails": 0,
-      "error": null,
-      "paused": false,
-      "action": "ok"
-    },
-    "560e38829acf": {
-      "name": "thor-vault-enforcer.py",
-      "status": "no_executions",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "019f2b72567e": {
-      "name": "thor-drift-detector.py",
-      "status": "no_executions",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "311d146f45c3": {
-      "name": "thor-node-export.py",
-      "status": "completed",
-      "last_run": "2026-07-25T07:15:53.377692+02:00",
-      "consecutive_fails": 0,
-      "error": null,
-      "paused": false,
-      "action": "ok"
-    },
-    "e8d5b97de501": {
-      "name": "hq-status-refresh.sh",
-      "status": "completed",
-      "last_run": "2026-07-25T13:00:02.619177+02:00",
-      "consecutive_fails": 0,
-      "error": null,
-      "paused": false,
-      "action": "ok"
-    },
-    "7768b5c5aa49": {
-      "name": "?",
-      "status": "completed",
-      "last_run": "2026-07-25T13:00:02.610696+02:00",
-      "consecutive_fails": 0,
-      "error": null,
-      "paused": false,
-      "action": "ok"
     },
     "42cdc3e9bd97": {
-      "name": "?",
       "status": "completed",
-      "last_run": "2026-07-25T13:00:02.670846+02:00",
-      "consecutive_fails": 0,
-      "error": null,
-      "paused": false,
-      "action": "ok"
-    },
-    "c8ce19bb5571": {
-      "name": "ref-puller.py",
-      "status": "completed",
-      "last_run": "2026-07-25T13:05:02.950364+02:00",
-      "consecutive_fails": 0,
-      "error": null,
-      "paused": false,
-      "action": "ok"
-    },
-    "cb8398b3fa67": {
-      "name": "cf-analytics-puller.py",
-      "status": "completed",
-      "last_run": "2026-07-25T13:00:02.719504+02:00",
-      "consecutive_fails": 0,
-      "error": null,
-      "paused": false,
-      "action": "ok"
-    },
-    "b7b5c1bebfe7": {
-      "name": "?",
-      "status": "no_executions",
+      "last_run": "2026-07-25T13:45:35.570249+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
-    "eb7452b2189e": {
-      "name": "thor-dep-check.py",
-      "status": "no_executions",
+    "e8d5b97de501": {
+      "status": "completed",
+      "last_run": "2026-07-25T13:30:23.114976+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "cb8398b3fa67": {
+      "status": "completed",
+      "last_run": "2026-07-25T13:30:06.016568+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "bb5980d548fb": {
-      "name": "thor-cron-health.py",
-      "status": "running",
-      "last_run": "2026-07-25T13:00:02.728043+02:00",
-      "consecutive_fails": 1,
-      "error": null,
-      "paused": false,
-      "action": "warn"
-    },
-    "71f476018b46": {
-      "name": "?",
       "status": "completed",
-      "last_run": "2026-07-25T07:30:53.795004+02:00",
+      "last_run": "2026-07-25T13:07:58.384603+02:00",
       "consecutive_fails": 0,
-      "error": null,
-      "paused": false,
-      "action": "ok"
+      "paused": false
     },
-    "1b2c31d6ba98": {
-      "name": "thor-metrics-bundle.py",
+    "7768b5c5aa49": {
       "status": "completed",
-      "last_run": "2026-07-25T13:00:02.841912+02:00",
+      "last_run": "2026-07-25T13:01:47.196924+02:00",
       "consecutive_fails": 0,
-      "error": null,
-      "paused": false,
-      "action": "ok"
+      "paused": false
     },
-    "447ed87c7a57": {
-      "name": "thor-weekly-cleanup.py",
-      "status": "no_executions",
+    "e4b5079b66ce": {
+      "status": "completed",
+      "last_run": "2026-07-25T12:00:07.345241+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "9bd2735e125e": {
+      "status": "completed",
+      "last_run": "2026-07-25T12:00:07.331640+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "34c2181c2737": {
-      "name": "?",
       "status": "completed",
-      "last_run": "2026-07-25T10:00:57.856239+02:00",
+      "last_run": "2026-07-25T10:03:52.880029+02:00",
       "consecutive_fails": 0,
-      "error": null,
-      "paused": false,
-      "action": "ok",
-      "delivery_error": "live adapter send failed: Chat not found; live adapter delivery to telegram:-1002286292251 failed: Chat not found; delivery error: Telegram send failed: Chat not found"
+      "paused": false
     },
-    "e4b5079b66ce": {
-      "name": "thor-health-check.sh",
+    "71f476018b46": {
       "status": "completed",
-      "last_run": "2026-07-25T12:00:02.849194+02:00",
+      "last_run": "2026-07-25T07:31:25.464919+02:00",
       "consecutive_fails": 0,
-      "error": null,
-      "paused": false,
-      "action": "ok"
+      "paused": false
+    },
+    "337c7ae0b619": {
+      "status": "completed",
+      "last_run": "2026-07-25T07:30:57.474312+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "311d146f45c3": {
+      "status": "completed",
+      "last_run": "2026-07-25T07:15:53.597720+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "5c6f78744d6e": {
+      "status": "completed",
+      "last_run": "2026-07-25T07:00:54.444756+02:00",
+      "consecutive_fails": 0,
+      "paused": false
     },
     "bb6e71c68350": {
-      "name": "thor-nightly-pipeline.sh",
       "status": "completed",
-      "last_run": "2026-07-25T02:00:46.608501+02:00",
+      "last_run": "2026-07-25T02:01:05.750285+02:00",
       "consecutive_fails": 0,
-      "error": null,
-      "paused": false,
-      "action": "ok"
+      "paused": false
     },
     "e19a3670752f": {
-      "name": "thor-monday-batch.sh",
       "status": "completed",
-      "last_run": "2026-07-25T00:30:13.822097+02:00",
+      "last_run": "2026-07-25T00:30:22.709832+02:00",
       "consecutive_fails": 0,
-      "error": null,
-      "paused": false,
-      "action": "ok"
+      "paused": false
+    },
+    "12b477c661ae": {
+      "status": "completed",
+      "last_run": "2026-07-25T00:29:45.919500+02:00",
+      "consecutive_fails": 0,
+      "paused": false
     }
   },
   "paused_count": 0,
-  "alert_count": 1,
+  "alert_count": 0,
   "paused_jobs": [],
-  "orphaned_count": 10,
-  "notes": [
-    "HTTP 429 rate limit spike at 12:00 hit 2 jobs (both self-healed)",
-    "buzz-watch delivery error: Telegram chat -1002286292251 not found",
-    "No stale running executions",
-    "No auto-pauses needed (max 1 consecutive failure)"
-  ]
+  "orphaned_count": 9
 }
