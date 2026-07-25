@@ -1,53 +1,51 @@
 {
-  "checked_at": "2026-07-25T09:00:59Z",
+  "checked_at": "2026-07-25T10:00:00Z",
   "jobs": {
     "c8ce19bb5571": {
       "status": "completed",
-      "last_run": "2026-07-25T10:56:01.217139+02:00",
+      "last_run": "2026-07-25T11:56:02.326851+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "1b2c31d6ba98": {
       "status": "completed",
-      "last_run": "2026-07-25T10:47:27.445940+02:00",
+      "last_run": "2026-07-25T11:49:09.225311+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "42cdc3e9bd97": {
       "status": "completed",
-      "last_run": "2026-07-25T10:46:11.453687+02:00",
+      "last_run": "2026-07-25T11:46:18.479009+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "e8d5b97de501": {
-      "status": "failed",
-      "last_run": "2026-07-25T10:31:05.815196+02:00",
-      "consecutive_fails": 1,
-      "paused": false,
-      "error": "Script exited with code 1\nstderr:\nping giveabit https://giveabit.io \u2026 OK 200 177ms\nping satohash https://satohash.io \u2026 OK 200 98ms\nping katoa https://katoa.org \u2026 OK 200 117ms\nping stranded https://str",
-      "action": "warn"
+      "status": "completed",
+      "last_run": "2026-07-25T11:31:16.769744+02:00",
+      "consecutive_fails": 0,
+      "paused": false
     },
     "cb8398b3fa67": {
       "status": "completed",
-      "last_run": "2026-07-25T10:30:59.556211+02:00",
+      "last_run": "2026-07-25T11:31:00.609865+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "bb5980d548fb": {
       "status": "completed",
-      "last_run": "2026-07-25T10:04:52.032435+02:00",
+      "last_run": "2026-07-25T11:05:24.679841+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "7768b5c5aa49": {
+      "status": "completed",
+      "last_run": "2026-07-25T11:02:17.738007+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "34c2181c2737": {
       "status": "completed",
       "last_run": "2026-07-25T10:03:52.880029+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "7768b5c5aa49": {
-      "status": "completed",
-      "last_run": "2026-07-25T10:02:19.008895+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
@@ -107,7 +105,7 @@
     }
   },
   "paused_count": 0,
-  "alert_count": 1,
+  "alert_count": 0,
   "paused_jobs": [],
-  "orphaned_count": 12
+  "orphaned_count": 10
 }
