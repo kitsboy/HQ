@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-25T23:00:30Z",
+  "checked_at": "2026-07-25T23:15:30Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -29,18 +29,18 @@
       "repo": "kitsboy/satohash",
       "site_url": "https://satohash.io",
       "last_commit": {
-        "sha": "228ad10",
-        "message": "fix(pages): drop metrics 302 so static metrics.json is served",
-        "author": "Cam",
-        "date": "2026-07-22T03:09:21Z",
-        "url": "https://github.com/kitsboy/satohash/commit/228ad10ee3df0fc11eb7dfebdaccfdadc8985313"
+        "sha": "341b8c5",
+        "message": "learn: OTS deep learn from DGI.io tutorial + automation enhancements",
+        "author": "Kimi (THOR)",
+        "date": "2026-07-25T23:02:21Z",
+        "url": "https://github.com/kitsboy/satohash/commit/341b8c5eda9d3ba4723653df087d2d685364fc70"
       },
       "recent_commits": [
-        "fix(pages): drop metrics 302 so static metrics.json is serve",
-        "fix(pages): serve /metrics.json as static build mirror",
-        "fix(pages): proxy /metrics.json to api.satohash.io"
+        "learn: OTS deep learn from DGI.io tutorial + automation enha",
+        "chore: update handoff after SuperSession",
+        "fix(pages): drop metrics 302 so static metrics.json is serve"
       ],
-      "commits_7d": 38,
+      "commits_7d": 40,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "d8acd5e",
-        "message": "chore: thor auto-metrics 23:00 (live LND)",
+        "sha": "91ca647",
+        "message": "chore: thor auto-metrics 23:15 (live LND)",
         "author": "Cam (via Aider)",
-        "date": "2026-07-25T23:00:08Z",
-        "url": "https://github.com/kitsboy/HQ/commit/d8acd5ea48e8bc6c01504466b3ede9a88f56f38f"
+        "date": "2026-07-25T23:15:06Z",
+        "url": "https://github.com/kitsboy/HQ/commit/91ca64709976fd7572b387448419594a2fdbdea6"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 23:00 (live LND)",
-        "chore: batch metrics update 22:46",
-        "chore: thor auto-metrics 22:45 (live LND)"
+        "chore: thor auto-metrics 23:15 (live LND)",
+        "feat: Handoffs tab v3.21.0 \u2014 full callable handoff registry ",
+        "chore: thor auto-metrics 23:02 (live LND)"
       ],
       "commits_7d": 100,
       "health": "green",

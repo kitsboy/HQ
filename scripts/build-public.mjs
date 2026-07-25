@@ -76,6 +76,7 @@ for (const name of readdirSync(docsDir)) {
 cp("docs/projects", "docs/projects");
 
 cpOptional("handoff/state.json", "handoff/state.json");
+cpOptional("handoffs.json", "handoffs.json");
 cpOptional("status.json", "status.json");
 cpOptional("favicon.png", "favicon.png");
 cpOptional("apple-touch-icon.png", "apple-touch-icon.png");
