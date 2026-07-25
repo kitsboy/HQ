@@ -1,120 +1,105 @@
 {
-  "checked_at": "2026-07-25T07:05:44Z",
+  "checked_at": "2026-07-25T08:00:57Z",
   "jobs": {
+    "c8ce19bb5571": {
+      "status": "completed",
+      "last_run": "2026-07-25T09:55:59.894407+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
     "1b2c31d6ba98": {
       "status": "completed",
-      "last_run": "2026-07-25T09:05:41.933095+02:00",
+      "last_run": "2026-07-25T09:47:06.083832+02:00",
       "consecutive_fails": 0,
-      "paused": false,
-      "action": "ok"
+      "paused": false
     },
     "42cdc3e9bd97": {
       "status": "completed",
-      "last_run": "2026-07-25T09:03:12.108699+02:00",
+      "last_run": "2026-07-25T09:46:11.091510+02:00",
       "consecutive_fails": 0,
-      "paused": false,
-      "action": "ok"
+      "paused": false
+    },
+    "e8d5b97de501": {
+      "status": "completed",
+      "last_run": "2026-07-25T09:31:15.662691+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "cb8398b3fa67": {
+      "status": "completed",
+      "last_run": "2026-07-25T09:30:58.380576+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "bb5980d548fb": {
+      "status": "completed",
+      "last_run": "2026-07-25T09:06:06.402247+02:00",
+      "consecutive_fails": 0,
+      "paused": false
     },
     "7768b5c5aa49": {
       "status": "completed",
       "last_run": "2026-07-25T09:02:13.830680+02:00",
       "consecutive_fails": 0,
-      "paused": false,
-      "action": "ok"
-    },
-    "e8d5b97de501": {
-      "status": "completed",
-      "last_run": "2026-07-25T09:01:15.460033+02:00",
-      "consecutive_fails": 0,
-      "paused": false,
-      "action": "ok"
-    },
-    "c8ce19bb5571": {
-      "status": "completed",
-      "last_run": "2026-07-25T09:00:59.957981+02:00",
-      "consecutive_fails": 0,
-      "paused": false,
-      "action": "ok"
-    },
-    "cb8398b3fa67": {
-      "status": "completed",
-      "last_run": "2026-07-25T09:00:57.861683+02:00",
-      "consecutive_fails": 0,
-      "paused": false,
-      "action": "ok"
-    },
-    "bb5980d548fb": {
-      "status": "completed",
-      "last_run": "2026-07-25T08:06:08.321887+02:00",
-      "consecutive_fails": 0,
-      "paused": false,
-      "action": "ok"
+      "paused": false
     },
     "e4b5079b66ce": {
       "status": "completed",
       "last_run": "2026-07-25T08:00:57.901259+02:00",
       "consecutive_fails": 0,
-      "paused": false,
-      "action": "ok"
+      "paused": false
     },
     "71f476018b46": {
       "status": "completed",
       "last_run": "2026-07-25T07:31:25.464919+02:00",
       "consecutive_fails": 0,
-      "paused": false,
-      "action": "ok"
+      "paused": false
     },
     "337c7ae0b619": {
       "status": "completed",
       "last_run": "2026-07-25T07:30:57.474312+02:00",
       "consecutive_fails": 0,
-      "paused": false,
-      "action": "ok"
+      "paused": false
     },
     "311d146f45c3": {
       "status": "completed",
       "last_run": "2026-07-25T07:15:53.597720+02:00",
       "consecutive_fails": 0,
-      "paused": false,
-      "action": "ok"
+      "paused": false
     },
     "5c6f78744d6e": {
       "status": "completed",
       "last_run": "2026-07-25T07:00:54.444756+02:00",
       "consecutive_fails": 0,
-      "paused": false,
-      "action": "ok"
+      "paused": false
     },
     "9bd2735e125e": {
       "status": "completed",
       "last_run": "2026-07-25T06:00:54.680886+02:00",
       "consecutive_fails": 0,
-      "paused": false,
-      "action": "ok"
+      "paused": false
     },
     "bb6e71c68350": {
       "status": "completed",
       "last_run": "2026-07-25T02:01:05.750285+02:00",
       "consecutive_fails": 0,
-      "paused": false,
-      "action": "ok"
+      "paused": false
     },
     "e19a3670752f": {
       "status": "completed",
       "last_run": "2026-07-25T00:30:22.709832+02:00",
       "consecutive_fails": 0,
-      "paused": false,
-      "action": "ok"
+      "paused": false
     },
     "12b477c661ae": {
       "status": "completed",
       "last_run": "2026-07-25T00:29:45.919500+02:00",
       "consecutive_fails": 0,
-      "paused": false,
-      "action": "ok"
+      "paused": false
     }
   },
   "paused_count": 0,
   "alert_count": 0,
-  "paused_jobs": []
+  "paused_jobs": [],
+  "orphaned_count": 12
 }
