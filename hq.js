@@ -3665,13 +3665,18 @@
     const dual = bal && bal.ok
       ? `<div class="money-hero-usd" style="margin-top:0.25rem">${esc(fmtNum(bal.sats, "sats"))} · ${esc(fmtUsd(satsToUsd(bal.sats)))}</div>`
       : `<div class="money-hero-usd" style="margin-top:0.25rem">${balanceChipHTML(p)}</div>`;
+    const sherpaHead = p.id === "sherpacarta"
+      ? `<div class="sc-drawer-head-kicker"><i class="fa-solid fa-landmark"></i> Digital Magna Carta · live origin</div>`
+      : "";
     head.innerHTML = `
       ${iconBadge(p.icon, color)}
       <div class="grow">
+        ${sherpaHead}
         <div class="flex items-center gap-2 flex-wrap">
-          <strong class="display" style="font-size:1.15rem">${esc(p.name)}</strong>
+          <strong class="display" style="font-size:1.15rem;${p.id === "sherpacarta" ? "color:color-mix(in srgb,#e8b84a 55%,var(--ink))" : ""}">${esc(p.name)}</strong>
           ${statusPill(health)}
           <span class="ln-badge">⚡ LNbits</span>
+          ${p.id === "sherpacarta" ? `<span class="chip chip-live">flagship</span>` : ""}
         </div>
         <div class="mono" style="font-size:0.68rem;color:var(--ink-faint);margin-top:0.2rem">${esc(p.category || "")} · ${esc(p.repo || "")} · wallet ${esc(walletIdFor(p) || "—")}</div>
         ${dual}
