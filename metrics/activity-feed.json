@@ -1,191 +1,191 @@
 {
-  "generated_at": "2026-07-25T23:30:43Z",
+  "generated_at": "2026-07-26T00:00:43Z",
   "events": [
     {
-      "time": 1785022239.0,
+      "time": 1785024032.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "(stream_request_complete, shared=False, tcp_force_closed=0)"
+      "text": "d (agent_init, shared=True) thread=cron-seq_0:13359525971321"
     },
     {
-      "time": 1785022239.0,
+      "time": 1785024032.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "conversation_loop: API call #148: model=deepseek/deepseek-v4"
+      "text": "or-cron-health-hourly' (ID: bb5980d548fb)"
     },
     {
-      "time": 1785022239.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "tool_executor: tool read_file completed (0.06s, 760 chars)"
-    },
-    {
-      "time": 1785022239.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "d (chat_completion_stream_request, shared=False) thread=Thre"
-    },
-    {
-      "time": 1785022233.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "tool_executor: tool terminal completed (0.21s, 541 chars)"
-    },
-    {
-      "time": 1785022233.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "d (chat_completion_stream_request, shared=False) thread=Thre"
-    },
-    {
-      "time": 1785022232.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "(stream_request_complete, shared=False, tcp_force_closed=0)"
-    },
-    {
-      "time": 1785022232.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "conversation_loop: API call #147: model=deepseek/deepseek-v4"
-    },
-    {
-      "time": 1785022231.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "d (agent_init, shared=True) thread=cron-parallel_0:133596648"
-    },
-    {
-      "time": 1785022231.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "030] agent.turn_context: conversation turn: session=cron_42c"
-    },
-    {
-      "time": 1785022231.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "030] run_agent: OpenAI client created (chat_completion_reque"
-    },
-    {
-      "time": 1785022230.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "or-auto-metrics' (ID: 42cdc3e9bd97)"
-    },
-    {
-      "time": 1785022230.0,
+      "time": 1785024032.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "ANT: You are running as a scheduled cron job. DELIVERY: Your"
     },
     {
-      "time": 1785022230.0,
+      "time": 1785024032.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "97': loaded credential pool for provider nous with 1 entries"
+      "text": "031] agent.turn_context: conversation turn: session=cron_776"
     },
     {
-      "time": 1785022229.0,
+      "time": 1785024032.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "031] run_agent: OpenAI client created (chat_completion_reque"
+    },
+    {
+      "time": 1785024031.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "or-metrics-export-hourly' (ID: 7768b5c5aa49)"
+    },
+    {
+      "time": 1785024031.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "ANT: You are running as a scheduled cron job. DELIVERY: Your"
+    },
+    {
+      "time": 1785024031.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "49': using workdir /root/hq"
+    },
+    {
+      "time": 1785024031.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "49': loaded credential pool for provider nous with 1 entries"
+    },
+    {
+      "time": 1785024031.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "or-auto-metrics' (ID: 42cdc3e9bd97)"
+    },
+    {
+      "time": 1785024031.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "ANT: You are running as a scheduled cron job. DELIVERY: Your"
+    },
+    {
+      "time": 1785024014.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785022228.0,
+      "time": 1785023984.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "(stream_request_complete, shared=False, tcp_force_closed=0)"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785022228.0,
+      "time": 1785023954.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "conversation_loop: API call #146: model=deepseek/deepseek-v4"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785022228.0,
+      "time": 1785023924.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "tool_executor: tool patch completed (0.15s, 712 chars)"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785022228.0,
+      "time": 1785023894.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "d (chat_completion_stream_request, shared=False) thread=Thre"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785022223.0,
+      "time": 1785023864.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "(stream_request_complete, shared=False, tcp_force_closed=0)"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785022223.0,
+      "time": 1785023834.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "conversation_loop: API call #145: model=deepseek/deepseek-v4"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785022223.0,
+      "time": 1785023804.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "tool_executor: tool read_file completed (0.08s, 729 chars)"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785022223.0,
+      "time": 1785023774.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "d (chat_completion_stream_request, shared=False) thread=Thre"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785022219.0,
+      "time": 1785023744.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "(stream_request_complete, shared=False, tcp_force_closed=0)"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785022219.0,
+      "time": 1785023714.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "conversation_loop: API call #144: model=deepseek/deepseek-v4"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785022219.0,
+      "time": 1785023684.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "tool_executor: tool search_files completed (0.05s, 403 chars"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785022219.0,
+      "time": 1785023654.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "d (chat_completion_stream_request, shared=False) thread=Thre"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785022214.0,
+      "time": 1785023624.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "conversation_loop: API call #143: model=deepseek/deepseek-v4"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785022214.0,
+      "time": 1785023594.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "tool_executor: tool terminal completed (0.17s, 88 chars)"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785022214.0,
+      "time": 1785023564.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "d (chat_completion_stream_request, shared=False) thread=Thre"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785015009.0,
+      "time": 1785023534.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "auth: using NAS invoke JWT"
+    },
+    {
+      "time": 1785023504.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "inactive environment for task: default"
+    },
+    {
+      "time": 1785023504.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "auth: using NAS invoke JWT"
+    },
+    {
+      "time": 1785015869.0,
       "type": "commit",
       "icon": "\ud83d\udd28",
-      "text": "HQ Dashboard: chore: thor auto-metrics 23:30 (live LND)",
+      "text": "HQ Dashboard: chore: refresh status.json [skip deploy]",
       "repo": "hq"
     },
     {

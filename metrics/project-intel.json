@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-25T23:30:31Z",
+  "checked_at": "2026-07-26T00:00:32Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "f0fd628",
-        "message": "chore: thor auto-metrics 23:30 (live LND)",
-        "author": "Cam (via Aider)",
-        "date": "2026-07-25T23:30:09Z",
-        "url": "https://github.com/kitsboy/HQ/commit/f0fd628001e456a7843eb604dd7ad4773912bd56"
+        "sha": "07b6a0d",
+        "message": "chore: refresh status.json [skip deploy]",
+        "author": "hq-status-bot",
+        "date": "2026-07-25T23:44:29Z",
+        "url": "https://github.com/kitsboy/HQ/commit/07b6a0db3350429e06d36d88363b298fde85706f"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 23:30 (live LND)",
-        "fix: handoffs tab missing from nav \u2014 control-panel.html is s",
-        "chore: thor auto-metrics 23:15 (live LND)"
+        "chore: refresh status.json [skip deploy]",
+        "fix: browser tab title always matches version \u2014 removed guar",
+        "chore: thor auto-metrics 23:31 (live LND)"
       ],
       "commits_7d": 100,
       "health": "green",
