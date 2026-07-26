@@ -11,14 +11,15 @@
 | Canonical metrics URL | `https://sherpacarta.org/metrics.json` |
 | Never mix | campaign signers with Parliamentary e-petition counts |
 
-**6 discussion points for Kimi next session:**
+**THOR-ONLY task list (Kimi — next session):**
 
-1. **Live origin preferred over demo:** `https://sherpacarta.org/metrics.json` loads and `raw.demo === false`. Never fall back to `/metrics/sherpacarta.json` numbers.
-2. **Delete or rebadge the demo envelope** so it cannot win a race against live origin.
-3. **Wallet integration:** Confirm `projects.json` wallet map has key `sherpacarta` (invoice key only) and balances poll green on LNbits.
-4. **Umami ingestion:** Confirm Umami is ingesting for website id `9b6f05bf-286e-4b21-9094-1d675f9b4442` — script URL + CSP already on site.
-5. **CF zone ids:** Fix CF zone ids for sherpacarta.org (or drop CF analytics until zones are real).
-6. **Optional THOR cron:** Regenerate or refresh product metrics (signers + mempool + Umami visitors) every 15–30m — either write-back to origin or merge server-side in HQ.
+These cannot be done from outside THOR. No keys in chat — Vault is correct.
+
+- [ ] **1. Kill the demo envelope** — `metrics/sherpacarta.json` and `public/metrics/sherpacarta.json` still show 230 signers / 0.15 BTC / 1200 visitors (inflated demo numbers). Delete or replace with a stub that yields to live origin. Origin at `https://sherpacarta.org/metrics.json` has `raw.demo: false` — real product metrics.
+- [ ] **2. Prefer live origin in HQ** — When `raw.demo === false` on origin metrics.json, HQ must never fall back to the static cache. Verify `hq.js` envelope resolution skips the demo file when origin is live.
+- [ ] **3. Wallet balances on Money tab** — Confirm LNbits/projects.json wallet key `sherpacarta` (invoice key only) polls green and shows on HQ Money tab. No user ops tokens in product metrics.
+- [ ] **4. Overlay Umami visitors** — Origin leaves `visitors_monthly: 0` intentionally (no analytics token in product metrics). HQ should overlay Umami visitors from Umami server-side API using the website id `9b6f05bf-286e-4b21-9094-1d675f9b4442`. Script + CSP already on site.
+- [ ] **5. CF zone ids** — Fix or drop CF analytics for sherpacarta.org (zones not real yet).
 
 ### 2026-07-26 — M4 is back in the game 🎉
 
