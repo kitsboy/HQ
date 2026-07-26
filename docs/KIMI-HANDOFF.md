@@ -5,6 +5,10 @@
 **For Kimi next session:**
 - Read MACHINE-ECOSYSTEM.md in MASTER-BRAIN/01-Architecture/
 
+**For Grok next session (any machine):**
+- ⚡ **Start:** `cd ~/Projects/HQ && git pull` (sync from GitHub — M3 or M4 may have pushed)
+- ⚡ **End:** `git add -A && git commit -m "save" && git push` (never lose work)
+
 ### 2026-07-24 — SuperSession: HQ v4, auto-deploy, template v2, ambient
 
 **What was built:**
