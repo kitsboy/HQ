@@ -1,3 +1,25 @@
+### 2026-07-27 — SherpaCarta labeling contract + discussion points
+
+**Labeling contract (use consistently across you + Grok):**
+
+| Property | Value |
+|----------|-------|
+| `productId` / `metricsKey` / project id | `sherpacarta` (always lowercase) |
+| Display name | **SherpaCarta** |
+| Wallet id (LNbits / HQ Money) | `sherpacarta` |
+| Umami website key | `sherpacarta` → `9b6f05bf-286e-4b21-9094-1d675f9b4442` |
+| Canonical metrics URL | `https://sherpacarta.org/metrics.json` |
+| Never mix | campaign signers with Parliamentary e-petition counts |
+
+**6 discussion points for Kimi next session:**
+
+1. **Live origin preferred over demo:** `https://sherpacarta.org/metrics.json` loads and `raw.demo === false`. Never fall back to `/metrics/sherpacarta.json` numbers.
+2. **Delete or rebadge the demo envelope** so it cannot win a race against live origin.
+3. **Wallet integration:** Confirm `projects.json` wallet map has key `sherpacarta` (invoice key only) and balances poll green on LNbits.
+4. **Umami ingestion:** Confirm Umami is ingesting for website id `9b6f05bf-286e-4b21-9094-1d675f9b4442` — script URL + CSP already on site.
+5. **CF zone ids:** Fix CF zone ids for sherpacarta.org (or drop CF analytics until zones are real).
+6. **Optional THOR cron:** Regenerate or refresh product metrics (signers + mempool + Umami visitors) every 15–30m — either write-back to origin or merge server-side in HQ.
+
 ### 2026-07-26 — M4 is back in the game 🎉
 
 **Machine update:** M4 (cams-macbook-air-1, Tailscale 100.71.46.84) rebuilt and live. Travel laptop now mirrors M3 — Grok coding locally, pushes to GitHub. Hermes Desktop (Brave install-as-app) connects to THOR backend via SSH tunnel. Both M3 + M4 code; no CLI on M4.

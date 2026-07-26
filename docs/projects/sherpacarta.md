@@ -11,7 +11,7 @@ _HQ v3.2 surfaces this pack in Docs + drawer docs tab._
 | **URL** | https://sherpacarta.org |
 | **Metrics** | `/metrics/sherpacarta.json` |
 | **Schema** | `gab.product-metrics.v1` |
-| **Demo envelope** | `True` |
+| **Demo envelope** | `False` — live origin confirmed |
 
 ## What HQ can receive from this product
 
