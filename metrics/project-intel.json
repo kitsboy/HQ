@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-26T00:00:32Z",
+  "checked_at": "2026-07-26T02:00:35Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "07b6a0d",
-        "message": "chore: refresh status.json [skip deploy]",
-        "author": "hq-status-bot",
-        "date": "2026-07-25T23:44:29Z",
-        "url": "https://github.com/kitsboy/HQ/commit/07b6a0db3350429e06d36d88363b298fde85706f"
+        "sha": "1bfaba4",
+        "message": "chore: thor auto-metrics 02:00 (live LND)",
+        "author": "Cam (via Aider)",
+        "date": "2026-07-26T02:00:10Z",
+        "url": "https://github.com/kitsboy/HQ/commit/1bfaba4869f88eca77ec31b72f2addeb09f30713"
       },
       "recent_commits": [
-        "chore: refresh status.json [skip deploy]",
-        "fix: browser tab title always matches version \u2014 removed guar",
-        "chore: thor auto-metrics 23:31 (live LND)"
+        "chore: thor auto-metrics 02:00 (live LND)",
+        "chore: thor auto-metrics 01:46 (live LND)",
+        "chore: thor auto-metrics 01:45 (live LND)"
       ],
       "commits_7d": 100,
       "health": "green",
