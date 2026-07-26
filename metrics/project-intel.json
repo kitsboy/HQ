@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-26T22:45:38Z",
+  "checked_at": "2026-07-26T23:00:38Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "2b448ed",
-        "message": "chore: refresh status.json [skip deploy]",
-        "author": "hq-status-bot",
-        "date": "2026-07-26T22:43:14Z",
-        "url": "https://github.com/kitsboy/HQ/commit/2b448ed107a84d7ccd1884fba63ab3703d732e8d"
+        "sha": "b2f69a4",
+        "message": "docs: sharpen SherpaCarta tasks for Kimi (THOR-only actions)",
+        "author": "Cam (via Aider)",
+        "date": "2026-07-26T23:00:36Z",
+        "url": "https://github.com/kitsboy/HQ/commit/b2f69a4e8c2c35b57a355198202b833ac0545ee7"
       },
       "recent_commits": [
-        "chore: refresh status.json [skip deploy]",
-        "chore: thor auto-metrics 22:30 (live LND)",
-        "chore: refresh status.json + thor-node [skip deploy]"
+        "docs: sharpen SherpaCarta tasks for Kimi (THOR-only actions)",
+        "chore: thor auto-metrics 23:00 (live LND)",
+        "chore: update metrics batch [skip deploy]"
       ],
       "commits_7d": 100,
       "health": "green",
@@ -161,18 +161,18 @@
       "repo": "kitsboy/sherpacarta",
       "site_url": "https://sherpacarta.org",
       "last_commit": {
-        "sha": "b167bcc",
-        "message": "fix: prefix bare vite build with npx for Node 24 runner compat",
-        "author": "Cam (via Aider)",
-        "date": "2026-07-24T13:20:10Z",
-        "url": "https://github.com/kitsboy/sherpacarta/commit/b167bcc5b86779c30408109a1b5f9cad4bb5dac7"
+        "sha": "dd16923",
+        "message": "docs: stamp LATEST-UPDATE with metrics pipeline SHA",
+        "author": "Cam",
+        "date": "2026-07-26T22:56:17Z",
+        "url": "https://github.com/kitsboy/sherpacarta/commit/dd169231fda91d2e0edc6877233b0688e31065dc"
       },
       "recent_commits": [
-        "fix: prefix bare vite build with npx for Node 24 runner comp",
-        "chore: update ROADMAP.md per project template",
-        "chore: update DESIGN.md per project template"
+        "docs: stamp LATEST-UPDATE with metrics pipeline SHA",
+        "feat: live real metrics for HQ (productId sherpacarta)",
+        "fix: prefix bare vite build with npx for Node 24 runner comp"
       ],
-      "commits_7d": 17,
+      "commits_7d": 19,
       "health": "green",
       "cf_project": "sherpacarta",
       "open_issues": 0
