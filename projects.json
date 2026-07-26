@@ -201,16 +201,18 @@
       "name": "SherpaCarta",
       "repo": "sherpacarta",
       "url": "https://sherpacarta.org",
-      "tagline": "Global Digital Magna Carta for the 21st Century",
-      "pitch": "Governance charter for digital citizens.",
+      "tagline": "Global Digital Magna Carta — 114 living articles",
+      "pitch": "Bitcoin-sovereign digital rights charter. Honest campaign signers, public on-chain treasury, first-party analytics.",
       "wallet": "sherpacarta",
       "deployed": true,
       "icon": "fa-solid fa-scroll",
       "category": "Governance",
-      "color": "#6b4f2a",
+      "color": "#e8b84a",
       "stack": [
         "Nostr",
-        "Governance"
+        "Governance",
+        "Bitcoin",
+        "Canada campaign"
       ],
       "related": [
         "giveabit",

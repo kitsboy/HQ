@@ -1,3 +1,19 @@
+### 2026-07-27 — HQ v3.24 SherpaCarta elite beauty lift (Grok)
+
+**Flagship card treatment shipped:**
+- `card--sherpa` parchment / gold / seal aesthetic (grid span 2)
+- Hero pods: Signers · Treasury · Articles · Visitors 7d (Umami overlay)
+- Funnel strip, treasury rails, secondary KPIs, live-origin ribbon
+- Metrics lab gold hero + drawer seal banner
+- Accent `#e8b84a` · projects.json pitch/stack refresh · docs pack update
+- Suite polish: `card--polished`, `chip-live` for honest envelopes
+
+**Files:** `hq.js`, `hq.css`, `projects.json`, `docs/projects/sherpacarta.md`, `package.json` → `3.24.0`
+
+**Verify:** Cards tab → SherpaCarta should dominate the board visually; click → drawer banner; Metrics tab → gold hero.
+
+---
+
 ### 2026-07-27 — SherpaCarta end-to-end live ✅
 
 **Grok shipped on sherpacarta repo (commit `fd4c000`):**

@@ -3801,3 +3801,558 @@ input, textarea, select, button { font-size: inherit; }
   .card, .btn, .nav-tab, .link-btn { transition: none !important; }
   .card:hover, .card:active, .btn:hover { transform: none !important; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   v3.24 — Elite surface polish + SherpaCarta flagship parchment
+   ═══════════════════════════════════════════════════════════════ */
+
+.cards-grid {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.card--polished {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.card--polished .card-links { margin-top: auto; padding-top: 0.35rem; }
+.card--polished .card-kpis .mini {
+  transition: transform 0.2s var(--ease-out, ease), border-color 0.2s, box-shadow 0.2s;
+}
+.card--polished:hover .card-kpis .mini {
+  border-color: color-mix(in srgb, var(--card-accent) 35%, var(--line));
+}
+.card--polished .card-kpis .mini:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px -6px color-mix(in srgb, var(--card-accent) 40%, transparent);
+}
+
+.chip-live {
+  color: #86efac !important;
+  border-color: color-mix(in srgb, #22c55e 45%, transparent) !important;
+  background: color-mix(in srgb, #22c55e 14%, var(--surface)) !important;
+  box-shadow: 0 0 12px color-mix(in srgb, #22c55e 22%, transparent);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.58rem !important;
+}
+
+/* ── SherpaCarta flagship card ── */
+.card--sherpa {
+  --sc-gold: #e8b84a;
+  --sc-gold-2: #c9922e;
+  --sc-ink: color-mix(in srgb, var(--ink) 92%, #f5e6c8);
+  --sc-parchment: color-mix(in srgb, #8b6914 18%, var(--surface));
+  grid-column: span 2;
+  min-height: 100%;
+  padding: 1.15rem 1.2rem 1rem;
+  border-color: color-mix(in srgb, var(--sc-gold) 42%, var(--line));
+  background:
+    radial-gradient(ellipse 90% 70% at 100% 0%, color-mix(in srgb, var(--sc-gold) 22%, transparent) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 50% at 0% 100%, color-mix(in srgb, #a16207 16%, transparent) 0%, transparent 50%),
+    linear-gradient(155deg,
+      color-mix(in srgb, var(--sc-gold) 12%, var(--surface-hi)) 0%,
+      color-mix(in srgb, #7c5a2a 20%, var(--surface)) 48%,
+      color-mix(in srgb, #5c4020 25%, var(--surface-2)) 100%);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--sc-gold) 35%, var(--shine)),
+    inset 0 0 60px color-mix(in srgb, var(--sc-gold) 10%, transparent),
+    0 18px 48px -18px color-mix(in srgb, #5c3a10 55%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--sc-gold) 18%, transparent);
+  overflow: hidden;
+}
+.card--sherpa::before {
+  width: 5px;
+  background: linear-gradient(180deg, #fde68a 0%, var(--sc-gold) 40%, var(--sc-gold-2) 100%);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--sc-gold) 70%, transparent);
+}
+.card--sherpa:hover {
+  transform: translateY(-4px) scale(1.008);
+  border-color: color-mix(in srgb, var(--sc-gold) 65%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--sc-gold) 45%, var(--shine)),
+    inset 0 0 72px color-mix(in srgb, var(--sc-gold) 14%, transparent),
+    0 24px 56px -14px color-mix(in srgb, #4a3010 60%, transparent),
+    0 0 40px color-mix(in srgb, var(--sc-gold) 22%, transparent);
+}
+
+.card--sherpa .sc-orb {
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--sc-gold) 35%, transparent) 0%, transparent 70%);
+  pointer-events: none;
+  animation: sc-orb-breathe 6s ease-in-out infinite;
+}
+.card--sherpa .sc-seal {
+  position: absolute;
+  right: 1rem;
+  top: 3.1rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 1.05rem;
+  color: var(--sc-gold);
+  background: color-mix(in srgb, var(--sc-gold) 14%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--sc-gold) 45%, transparent);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--sc-gold) 28%, transparent), inset 0 1px 0 var(--shine);
+  pointer-events: none;
+  opacity: 0.92;
+}
+@keyframes sc-orb-breathe {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
+.sc-ribbon {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: -0.15rem 0 0.7rem;
+  flex-wrap: wrap;
+}
+.sc-ribbon-mark {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--sc-gold) 85%, var(--ink));
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.sc-ribbon-mark i { opacity: 0.9; }
+.sc-ribbon-live {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.55rem;
+  border-radius: 99px;
+  border: 1px solid transparent;
+}
+.sc-ribbon-live.is-live {
+  color: #86efac;
+  border-color: color-mix(in srgb, #22c55e 50%, transparent);
+  background: color-mix(in srgb, #22c55e 16%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, #22c55e 25%, transparent);
+}
+.sc-ribbon-live.is-demo {
+  color: #fcd34d;
+  border-color: color-mix(in srgb, #f59e0b 50%, transparent);
+  background: color-mix(in srgb, #f59e0b 14%, transparent);
+}
+
+.card--sherpa .sc-head h3 {
+  font-size: 1.2rem;
+  background: linear-gradient(105deg, var(--ink) 0%, color-mix(in srgb, var(--sc-gold) 70%, var(--ink)) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  /* fallback if clip unsupported */
+  color: var(--ink);
+}
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  .card--sherpa .sc-head h3 {
+    color: transparent;
+  }
+}
+.card--sherpa .sc-head .tagline {
+  font-size: 0.78rem;
+  max-width: 92%;
+  -webkit-line-clamp: 2;
+}
+
+.sc-hero {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  margin: 0.15rem 0 0.75rem;
+}
+.sc-hero-pod {
+  position: relative;
+  padding: 0.65rem 0.55rem 0.55rem;
+  border-radius: var(--r-sm, 8px);
+  border: 1px solid color-mix(in srgb, var(--sc-gold) 28%, var(--line));
+  background:
+    linear-gradient(165deg,
+      color-mix(in srgb, var(--sc-gold) 14%, var(--surface-hi)) 0%,
+      color-mix(in srgb, var(--surface-2) 80%, transparent) 100%);
+  box-shadow: inset 0 1px 0 var(--shine), 0 6px 18px -12px var(--shadow);
+  overflow: hidden;
+  transition: transform 0.2s ease, border-color 0.2s, box-shadow 0.2s;
+}
+.sc-hero-pod::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--sc-gold), transparent);
+  opacity: 0.65;
+}
+.card--sherpa:hover .sc-hero-pod {
+  border-color: color-mix(in srgb, var(--sc-gold) 48%, var(--line));
+}
+.sc-hero-pod:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -10px color-mix(in srgb, var(--sc-gold) 45%, transparent);
+}
+.sc-hero-label {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+}
+.sc-hero-value {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+  letter-spacing: -0.03em;
+  margin-top: 0.15rem;
+  color: color-mix(in srgb, var(--sc-gold) 55%, var(--ink));
+  line-height: 1.15;
+}
+.sc-hero-sub {
+  font-size: 0.62rem;
+  color: var(--ink-faint);
+  margin-top: 0.2rem;
+  line-height: 1.25;
+}
+
+.sc-money {
+  align-items: center;
+  gap: 0.45rem;
+}
+.sc-money-note {
+  font-size: 0.58rem;
+  color: var(--ink-faint);
+}
+.sc-filament {
+  height: 4px !important;
+  margin: 0.4rem 0 0.65rem !important;
+  background: linear-gradient(
+    90deg,
+    var(--sc-gold) var(--share, 0%),
+    color-mix(in srgb, var(--surface-2) 70%, transparent) 0
+  ) !important;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--sc-gold) 35%, transparent);
+}
+
+/* Funnel */
+.sc-funnel {
+  margin: 0 0 0.7rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: var(--r-sm, 8px);
+  border: 1px solid color-mix(in srgb, var(--sc-gold) 22%, var(--line));
+  background: color-mix(in srgb, var(--surface-2) 55%, transparent);
+}
+.sc-funnel-label {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--ink-faint);
+  margin-bottom: 0.45rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.sc-funnel-steps {
+  display: flex;
+  align-items: stretch;
+  gap: 0.25rem;
+}
+.sc-funnel-step {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+}
+.sc-funnel-bar {
+  height: 6px;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  overflow: hidden;
+  margin-bottom: 0.35rem;
+}
+.sc-funnel-bar span {
+  display: block;
+  height: 100%;
+  width: var(--f-pct, 20%);
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--sc-gold-2), var(--sc-gold), #fde68a);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--sc-gold) 50%, transparent);
+}
+.sc-funnel-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+}
+.sc-funnel-meta strong {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+.sc-funnel-meta span {
+  font-size: 0.58rem;
+  color: var(--ink-faint);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sc-funnel-chev {
+  display: none;
+}
+
+/* Treasury rails */
+.sc-rails {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  margin-bottom: 0.7rem;
+}
+.sc-rail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.5rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: var(--r-xs, 6px);
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface-2) 60%, transparent);
+  font-size: 0.72rem;
+}
+.sc-rail.is-live {
+  border-color: color-mix(in srgb, #22c55e 40%, var(--line));
+  background: color-mix(in srgb, #22c55e 8%, var(--surface-2));
+}
+.sc-rail.is-pending {
+  border-color: color-mix(in srgb, #f59e0b 35%, var(--line));
+}
+.sc-rail-name { flex: 1; color: var(--ink-dim); min-width: 4rem; }
+.sc-rail-val { color: var(--ink); font-weight: 600; }
+.sc-rail-tag {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.1rem 0.35rem;
+  border-radius: 99px;
+  border: 1px solid var(--line);
+  color: var(--ink-faint);
+}
+.sc-rail.is-live .sc-rail-tag {
+  color: #86efac;
+  border-color: color-mix(in srgb, #22c55e 45%, transparent);
+}
+
+.sc-secondary {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 0.55rem;
+  margin-bottom: 0.55rem;
+}
+.sc-sec-kpis {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem;
+}
+.sc-sec-kpis .mini {
+  padding: 0.4rem 0.45rem;
+  border-radius: var(--r-xs, 6px);
+  background: color-mix(in srgb, var(--surface-2) 75%, transparent);
+  border: 1px solid color-mix(in srgb, var(--sc-gold) 18%, var(--line));
+}
+.sc-sec-kpis .mini .l {
+  font-size: 0.55rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-faint);
+}
+.sc-sec-kpis .mini .v {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-top: 0.08rem;
+  color: color-mix(in srgb, var(--sc-gold) 40%, var(--ink));
+}
+.sc-sparks { margin: 0 !important; }
+.sc-spark {
+  border-color: color-mix(in srgb, var(--sc-gold) 22%, var(--line)) !important;
+  background: color-mix(in srgb, var(--sc-gold) 6%, var(--surface-2)) !important;
+}
+
+.sc-deps { margin-top: 0.35rem; }
+.sc-links { margin-top: 0.65rem; gap: 0.4rem; }
+.sc-link-primary {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--sc-gold) 55%, #a16207), var(--sc-gold-2)) !important;
+  color: #2a1a08 !important;
+  border-color: color-mix(in srgb, var(--sc-gold) 60%, transparent) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 16px -4px color-mix(in srgb, var(--sc-gold) 55%, transparent) !important;
+}
+.sc-link-primary:hover {
+  filter: brightness(1.08);
+}
+.sc-foot {
+  margin-top: 0.65rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid color-mix(in srgb, var(--sc-gold) 18%, var(--line));
+}
+.sc-foot .mono,
+.sc-foot-src {
+  font-size: 0.62rem !important;
+  color: var(--ink-faint) !important;
+}
+
+/* Metrics lab hero for SherpaCarta */
+.sc-metrics-hero {
+  position: relative;
+  margin: 0.85rem 0 1rem;
+  padding: 1rem 1.1rem;
+  border-radius: var(--r-md, 12px);
+  border: 1px solid color-mix(in srgb, #e8b84a 40%, var(--line));
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 80% 100% at 0% 50%, color-mix(in srgb, #e8b84a 18%, transparent), transparent 60%),
+    color-mix(in srgb, var(--surface-2) 70%, transparent);
+}
+.sc-metrics-hero-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, color-mix(in srgb, #e8b84a 8%, transparent) 100%);
+  pointer-events: none;
+}
+.sc-metrics-hero-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.65rem;
+}
+.sc-m-pod .l {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--ink-faint);
+}
+.sc-m-pod .v {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.45rem;
+  letter-spacing: -0.03em;
+  color: color-mix(in srgb, #e8b84a 50%, var(--ink));
+  margin-top: 0.15rem;
+}
+.sc-m-pod .s {
+  font-size: 0.65rem;
+  color: var(--ink-faint);
+  margin-top: 0.15rem;
+}
+.sc-metrics-tagline {
+  position: relative;
+  margin: 0.75rem 0 0;
+  font-size: 0.65rem;
+  color: var(--ink-faint);
+}
+.sc-detail-head {
+  border-bottom: 1px solid color-mix(in srgb, #e8b84a 22%, var(--line));
+  padding-bottom: 0.85rem;
+}
+
+/* Drawer banner */
+.sc-drawer-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: var(--r-md, 12px);
+  border: 1px solid color-mix(in srgb, #e8b84a 40%, var(--line));
+  background:
+    radial-gradient(ellipse 70% 120% at 0% 50%, color-mix(in srgb, #e8b84a 20%, transparent), transparent 55%),
+    linear-gradient(120deg, color-mix(in srgb, #e8b84a 10%, var(--surface)) 0%, var(--surface-2) 100%);
+  box-shadow: inset 0 1px 0 var(--shine), 0 8px 24px -14px var(--shadow);
+}
+.sc-drawer-seal {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 1.15rem;
+  color: #e8b84a;
+  background: color-mix(in srgb, #e8b84a 16%, var(--surface));
+  border: 1px solid color-mix(in srgb, #e8b84a 45%, transparent);
+  box-shadow: 0 0 18px color-mix(in srgb, #e8b84a 30%, transparent);
+  flex-shrink: 0;
+}
+.sc-drawer-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, #e8b84a 75%, var(--ink-faint));
+  margin-bottom: 0.25rem;
+}
+.sc-drawer-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 0.9rem;
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+}
+.sc-drawer-stats strong {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  color: color-mix(in srgb, #e8b84a 45%, var(--ink));
+  margin-right: 0.2rem;
+}
+
+/* Theme-safe gold on porcelain */
+[data-theme="porcelain"] .card--sherpa {
+  background:
+    radial-gradient(ellipse 90% 70% at 100% 0%, rgba(217, 119, 6, 0.12) 0%, transparent 55%),
+    linear-gradient(155deg, #fff8eb 0%, #f3e4c8 50%, #e8d4a8 100%);
+}
+[data-theme="porcelain"] .sc-hero-value,
+[data-theme="porcelain"] .sc-m-pod .v,
+[data-theme="porcelain"] .sc-drawer-stats strong {
+  color: #b45309;
+}
+[data-theme="porcelain"] .sc-link-primary {
+  color: #fffaf0 !important;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .card--sherpa { grid-column: span 2; }
+  .sc-hero { grid-template-columns: repeat(2, 1fr); }
+  .sc-metrics-hero-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .card--sherpa { grid-column: span 1; }
+  .sc-secondary { grid-template-columns: 1fr; }
+  .sc-rails { grid-template-columns: 1fr; }
+  .sc-hero { grid-template-columns: 1fr 1fr; }
+  .card--sherpa .sc-seal { display: none; }
+  .sc-metrics-hero-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card--sherpa .sc-orb { animation: none; }
+  .card--sherpa:hover { transform: none; }
+  .sc-hero-pod:hover { transform: none; }
+}

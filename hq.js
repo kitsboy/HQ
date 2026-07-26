@@ -7,7 +7,7 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.23.0";
+  const HQ_VERSION = "3.24.0";
   const BUILD_TS = new Date().toISOString();
 
   /** Paint the same version on every chrome surface (header sub + footer). */
@@ -46,7 +46,7 @@
     stranded: "#2dd4bf",
     tadbuy: "#f472b6",
     motopass: "#e879f9",
-    sherpacarta: "#fb923c",
+    sherpacarta: "#e8b84a",
     openstrata: "#67e8f9",
     btcminiscript: "#c084fc",
     "thor-node": "#2dd4bf",
@@ -1544,6 +1544,14 @@
     if (!data || !Array.isArray(data.kpis)) return [];
     return [...data.kpis].sort((a, b) => (a.priority || 99) - (b.priority || 99)).slice(0, n || 3);
   }
+  function kpiByKey(data, key) {
+    if (!data || !Array.isArray(data.kpis)) return null;
+    return data.kpis.find((k) => k.key === key) || null;
+  }
+  function kpiVal(data, key, fallback) {
+    const k = kpiByKey(data, key);
+    return k && k.value != null ? k.value : fallback;
+  }
   function seriesPoints(series, maxN) {
     if (!series || !series.points) return [];
     const pts = series.points;
@@ -1698,6 +1706,9 @@
         ${p.planned ? `<div class="panel" style="margin:0.35rem 0;padding:0.5rem;font-size:0.75rem;color:var(--ink-dim);background:color-mix(in srgb,var(--surface-2)40%,transparent);border-radius:var(--radius,6px)">${esc(p.pitch || "Planned project — not yet deployed.")}</div>` : unavailableHTML("Metrics unavailable", m ? m.path : `/metrics/${p.id}.json`, m ? m.error : "")}
       </article>`;
     }
+    /* Flagship: SherpaCarta gets the elite parchment treatment */
+    if (p.id === "sherpacarta") return sherpaCardHTML(p, m, health, s);
+
     const data = m.data;
     const depth = depthScore(data, false);
     const kpis = topKpis(data, 6);
@@ -1713,7 +1724,7 @@
     const _tot = portfolioTotals();
     const _bal = state.wallets[walletIdFor(p)];
     const _share = _bal && _bal.ok ? walletSharePct(_bal.sats, _tot.sats) : 0;
-    return `<article class="card" style="--card-accent:${escAttr(color)}" data-project="${escAttr(p.id)}">
+    return `<article class="card card--polished" style="--card-accent:${escAttr(color)}" data-project="${escAttr(p.id)}">
       <div class="card-head">
         ${iconBadge(p.icon, color)}
         <div class="grow">
@@ -1727,7 +1738,7 @@
         <span class="chip" data-tip="Product category — determines color and section placement on the board">${esc(p.category || "—")}</span>
         ${s.ms != null ? `<span class="chip mono" data-tip="Response time for the last health check ping — lower is faster">${esc(fmtMs(s.ms))}</span>` : ""}
         ${metricsAgeChip(m)}
-        ${data.raw && data.raw.demo ? `<span class="chip" data-tip="This envelope contains demo/placeholder data — not real product metrics. Replaced when the product ships a live /metrics.json">demo</span>` : ""}
+        ${data.raw && data.raw.demo ? `<span class="chip" data-tip="This envelope contains demo/placeholder data — not real product metrics. Replaced when the product ships a live /metrics.json">demo</span>` : `<span class="chip chip-live" data-tip="Live envelope · raw.demo false">live</span>`}
         ${(data.funnels || []).length ? `<span class="chip" data-tip="${data.funnels.length} conversion funnel(s) showing how users flow through stages (e.g. visit → create → fund)">${data.funnels.length} funnel</span>` : ""}
         ${(data.series || []).length ? `<span class="chip" data-tip="${data.series.length} time-series dataset(s) for sparklines and charts (e.g. daily visitors, sats over time)">${data.series.length} series</span>` : ""}
         ${state.analytics && state.analytics[p.id] ? `<span class="status-pill sky" style="font-size:0.58rem;padding:0.1rem 0.35rem" data-tip="Real-time analytics from Umami on THOR: ${esc(fmtNum(state.analytics[p.id].visitors))} visitors in last 7 days, ${state.analytics[p.id].bounceRate}% bounce rate">${esc(fmtNum(state.analytics[p.id].visitors))} vis · ${esc(state.analytics[p.id].bounceRate)}% bnc</span>` : ""}
@@ -1753,6 +1764,140 @@
       <div class="card-foot">
         <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">${esc(fmtTime(data.updatedAt))}</span>
         <span class="mono" style="font-size:0.62rem;color:var(--ink-faint)">${(data.kpis || []).length} KPI · doc ${(state.projectDocs[p.id] && state.projectDocs[p.id].ok) ? "✓" : "—"}</span>
+      </div>
+    </article>`;
+  }
+
+  /** Elite flagship card — Digital Magna Carta / governance parchment aesthetic */
+  function sherpaCardHTML(p, m, health, s) {
+    const color = accentFor(p.id);
+    const data = m.data;
+    const depth = depthScore(data, false);
+    const _tot = portfolioTotals();
+    const _bal = state.wallets[walletIdFor(p)];
+    const _share = _bal && _bal.ok ? walletSharePct(_bal.sats, _tot.sats) : 0;
+    const signers = kpiVal(data, "signers_total", 0);
+    const articles = kpiVal(data, "articles_total", 114);
+    const sats = kpiVal(data, "donations_sats", null);
+    const btc = kpiVal(data, "donations_btc", null);
+    const langs = kpiVal(data, "languages_served", 8);
+    const paper = kpiVal(data, "paper_batches", 0);
+    const txs = kpiVal(data, "treasury_txs", null);
+    const um = state.analytics && state.analytics[p.id];
+    const visitors = um ? um.visitors : kpiVal(data, "visitors_monthly", 0);
+    const bounce = um ? um.bounceRate : null;
+    const deps = (data.health && data.health.dependencies) || [];
+    const funnel = (data.funnels || [])[0];
+    const maxFunnel = funnel && funnel.steps && funnel.steps.length
+      ? Math.max(...funnel.steps.map((st) => Number(st.count) || 0), 1)
+      : 1;
+    const liveOrigin = m.path && /^https?:\/\//i.test(m.path);
+    const isDemo = !!(data.raw && data.raw.demo);
+
+    const heroPods = [
+      { key: "signers", label: "Signers", value: fmtNum(signers), sub: "Canada campaign", tip: "Honest campaign commitments — not Parliamentary e-petition counts" },
+      { key: "treasury", label: "Treasury", value: sats != null ? fmtNum(sats, "sats") : (btc != null ? fmtNum(btc) + " BTC" : "—"), sub: btc != null ? String(btc) + " BTC on-chain" : "on-chain", tip: "Public mempool UTXO sum · LN on Money tab" },
+      { key: "charter", label: "Articles", value: fmtNum(articles), sub: "living charter", tip: "CC0 Digital Magna Carta article count" },
+      { key: "reach", label: "Visitors 7d", value: um ? fmtNum(visitors) : "—", sub: bounce != null ? bounce + "% bounce" : "Umami", tip: um ? "Umami 7-day visitors · first-party only" : "Waiting on Umami overlay" },
+    ];
+
+    const funnelHtml = funnel && funnel.steps
+      ? `<div class="sc-funnel" data-tip="Charter journey funnel from product envelope">
+          <div class="sc-funnel-label"><i class="fa-solid fa-route"></i> ${esc(funnel.label || "Journey")}</div>
+          <div class="sc-funnel-steps">
+            ${funnel.steps.map((st, i) => {
+              const c = Number(st.count) || 0;
+              const pct = Math.max(8, Math.round((c / maxFunnel) * 100));
+              return `<div class="sc-funnel-step" style="--f-pct:${pct}%">
+                <div class="sc-funnel-bar"><span></span></div>
+                <div class="sc-funnel-meta"><strong>${esc(fmtNum(c))}</strong><span>${esc(st.label || st.id)}</span></div>
+                ${i < funnel.steps.length - 1 ? `<i class="fa-solid fa-chevron-right sc-funnel-chev"></i>` : ""}
+              </div>`;
+            }).join("")}
+          </div>
+        </div>`
+      : "";
+
+    const railsSeg = (data.segments || []).find((seg) => seg.id === "treasury_rails");
+    const railsHtml = railsSeg && railsSeg.rows
+      ? `<div class="sc-rails">
+          ${railsSeg.rows.map((r) => {
+            const st = (r.meta && r.meta.status) || "—";
+            const live = st === "live" || st === "green";
+            return `<div class="sc-rail ${live ? "is-live" : "is-pending"}">
+              <span class="sc-rail-name">${esc(r.label || r.id)}</span>
+              <span class="sc-rail-val mono">${esc(fmtNum(r.value))} ${(r.meta && r.meta.unit) || ""}</span>
+              <span class="sc-rail-tag">${esc(st)}</span>
+            </div>`;
+          }).join("")}
+        </div>`
+      : "";
+
+    const series = (data.series || []).slice(0, 2);
+    const sparks = series.map((ser) =>
+      `<div class="spark-block sc-spark"><div class="sl">${esc(ser.label || ser.key)}</div>${sparkline(seriesPoints(ser, 15), seriesColor(ser, p.id), 160, 40)}</div>`
+    ).join("");
+
+    return `<article class="card card--sherpa" style="--card-accent:${escAttr(color)}" data-project="${escAttr(p.id)}">
+      <div class="sc-orb" aria-hidden="true"></div>
+      <div class="sc-seal" aria-hidden="true"><i class="fa-solid fa-scroll"></i></div>
+      <div class="sc-ribbon">
+        <span class="sc-ribbon-mark"><i class="fa-solid fa-landmark"></i> Digital Magna Carta</span>
+        <span class="sc-ribbon-live ${isDemo ? "is-demo" : "is-live"}">${isDemo ? "demo" : liveOrigin ? "live origin" : "live envelope"}</span>
+      </div>
+      <div class="card-head sc-head">
+        ${iconBadge(p.icon, color)}
+        <div class="grow">
+          <h3>${esc(p.name)}</h3>
+          <p class="tagline">${esc(p.tagline || p.pitch || "Governance charter for digital citizens.")}</p>
+        </div>
+        ${statusPill(health)}
+      </div>
+      <div class="card-meta-row sc-meta">
+        <span class="depth-gauge" data-tip="Envelope depth ${depth}/100">${gaugeHTML(depth, depthColor(depth), "depth")}</span>
+        <span class="chip">${esc(p.category || "Governance")}</span>
+        ${s.ms != null ? `<span class="chip mono">${esc(fmtMs(s.ms))}</span>` : ""}
+        ${metricsAgeChip(m)}
+        ${!isDemo ? `<span class="chip chip-live">honest KPIs</span>` : `<span class="chip">demo</span>`}
+        ${um ? `<span class="status-pill sky" style="font-size:0.58rem;padding:0.1rem 0.35rem">${esc(fmtNum(visitors))} vis · ${esc(bounce)}% bnc</span>` : `<span class="chip mono">umami…</span>`}
+        <span class="chip mono" data-tip="productId + LNbits wallet id">id · sherpacarta</span>
+      </div>
+      <div class="sc-hero">
+        ${heroPods.map((h) =>
+          `<div class="sc-hero-pod" data-tip="${escAttr(h.tip)}">
+            <div class="sc-hero-label">${esc(h.label)}</div>
+            <div class="sc-hero-value">${esc(h.value)}</div>
+            <div class="sc-hero-sub">${esc(h.sub)}</div>
+          </div>`
+        ).join("")}
+      </div>
+      <div class="card-money-row sc-money">
+        ${balanceChipHTML(p, { total: _tot.sats })}
+        <span class="sc-money-note mono">LN wallet · sherpacarta</span>
+        <span class="ln-badge" style="margin-left:auto">LNbits</span>
+      </div>
+      <div class="card-share-filament sc-filament" style="--share:${_share}%"></div>
+      ${funnelHtml}
+      ${railsHtml}
+      <div class="sc-secondary">
+        <div class="sc-sec-kpis">
+          <div class="mini"><div class="l">Languages</div><div class="v">${esc(fmtNum(langs))}</div></div>
+          <div class="mini"><div class="l">Paper batches</div><div class="v">${esc(fmtNum(paper))}</div></div>
+          <div class="mini"><div class="l">Treasury txs</div><div class="v">${esc(txs != null ? fmtNum(txs) : "—")}</div></div>
+          <div class="mini"><div class="l">KPIs</div><div class="v">${esc(fmtNum((data.kpis || []).length))}</div></div>
+        </div>
+        ${sparks ? `<div class="card-sparks sc-sparks">${sparks}</div>` : ""}
+      </div>
+      ${deps.length ? `<div class="card-deps sc-deps">${deps.slice(0, 5).map((d) => statusPill(d.status, d.id)).join("")}</div>` : ""}
+      <div class="card-links sc-links">
+        ${p.url ? `<a class="link-btn sc-link-primary" href="${escAttr(p.url)}" target="_blank" rel="noopener" data-card-link><i class="fa-solid fa-scroll"></i> open charter</a>` : ""}
+        <a class="link-btn" href="${escAttr(liveOrigin ? m.path : "https://sherpacarta.org/metrics.json")}" target="_blank" rel="noopener" data-card-link><i class="fa-solid fa-database"></i> live metrics</a>
+        <a class="link-btn" href="https://sherpacarta.org/treasury" target="_blank" rel="noopener" data-card-link><i class="fa-solid fa-scale-balanced"></i> treasury</a>
+        <a class="link-btn" href="/docs/projects/sherpacarta.md" target="_blank" rel="noopener" data-card-link><i class="fa-solid fa-file-lines"></i> brief</a>
+      </div>
+      <div class="card-foot sc-foot">
+        <span class="mono">${esc(fmtTime(data.updatedAt))}</span>
+        <span class="mono sc-foot-src" data-tip="${escAttr(m.path)}">${liveOrigin ? "origin · CF Function" : "static fallback"} · depth ${depth}</span>
       </div>
     </article>`;
   }
@@ -1847,15 +1992,26 @@
     const health = data.health || {};
     const depth = depthScore(data, false);
     const kpis = topKpis(data, 12);
+    const sherpaHero = id === "sherpacarta" ? `
+      <div class="sc-metrics-hero">
+        <div class="sc-metrics-hero-bg" aria-hidden="true"></div>
+        <div class="sc-metrics-hero-grid">
+          <div class="sc-m-pod"><div class="l">Signers</div><div class="v">${esc(fmtNum(kpiVal(data, "signers_total", 0)))}</div><div class="s">Canada campaign</div></div>
+          <div class="sc-m-pod"><div class="l">Treasury sats</div><div class="v">${esc(fmtNum(kpiVal(data, "donations_sats", kpiVal(data, "donations_btc", 0) * 1e8)))}</div><div class="s">on-chain public</div></div>
+          <div class="sc-m-pod"><div class="l">Articles</div><div class="v">${esc(fmtNum(kpiVal(data, "articles_total", 114)))}</div><div class="s">living charter</div></div>
+          <div class="sc-m-pod"><div class="l">Languages</div><div class="v">${esc(fmtNum(kpiVal(data, "languages_served", 8)))}</div><div class="s">UI locales</div></div>
+        </div>
+        <p class="sc-metrics-tagline mono">productId sherpacarta · wallet sherpacarta · Umami first-party · no demo inflation</p>
+      </div>` : "";
     el.innerHTML = `
-      <div class="metrics-detail-head" style="--detail-c:${escAttr(color)}">
+      <div class="metrics-detail-head ${id === "sherpacarta" ? "sc-detail-head" : ""}" style="--detail-c:${escAttr(color)}">
         ${iconBadge(p.icon, color)}
         <div class="grow">
           <div class="flex items-center gap-2 flex-wrap">
             <h2 class="display" style="margin:0;font-size:1.25rem">${esc(data.name || p.name)}</h2>
             ${statusPill(health.status || projectHealth(p))}
             <span class="depth-badge" style="--depth-c:${escAttr(depthColor(depth))}">depth ${depth}/100</span>
-            ${data.raw && data.raw.demo ? `<span class="chip">demo envelope</span>` : `<span class="chip">live envelope</span>`}
+            ${data.raw && data.raw.demo ? `<span class="chip">demo envelope</span>` : `<span class="chip chip-live">live envelope</span>`}
           </div>
           <p style="margin:0.35rem 0 0;color:var(--ink-dim);font-size:0.85rem">${esc(p.pitch || p.tagline || health.message || "")}</p>
           <div class="flex flex-wrap gap-1 mt-2 mono" style="font-size:0.72rem;color:var(--ink-faint)">
@@ -1867,6 +2023,7 @@
           </div>
         </div>
       </div>
+      ${sherpaHero}
       <div class="detail-blocks">
         <section>
           <div class="block-title">KPIs (${kpis.length})</div>
@@ -3749,14 +3906,31 @@
             <span class="chip">${(d.series || []).length} series</span>
             <span class="chip">${(d.funnels || []).length} funnels</span>
             <span class="chip">${(d.segments || []).length} segments</span>
-            ${d.raw && d.raw.demo ? `<span class="chip">demo</span>` : `<span class="chip">live</span>`}
+            ${d.raw && d.raw.demo ? `<span class="chip">demo</span>` : `<span class="chip chip-live">live</span>`}
           </div>
         </div>`;
     } else {
       metricsBlock = `<div class="drawer-section">${unavailableHTML("Metrics", m ? m.path : `/metrics/${p.id}.json`, m ? m.error : "")}</div>`;
     }
 
+    const sherpaBanner = p.id === "sherpacarta" && m && m.ok
+      ? `<div class="sc-drawer-banner">
+          <div class="sc-drawer-seal"><i class="fa-solid fa-scroll"></i></div>
+          <div class="grow">
+            <div class="sc-drawer-kicker">Digital Magna Carta · productId sherpacarta</div>
+            <div class="sc-drawer-stats">
+              <span><strong>${esc(fmtNum(kpiVal(m.data, "signers_total", 0)))}</strong> signers</span>
+              <span><strong>${esc(fmtNum(kpiVal(m.data, "donations_sats", null) != null ? kpiVal(m.data, "donations_sats", 0) : Math.round((kpiVal(m.data, "donations_btc", 0) || 0) * 1e8)))}</strong> sats</span>
+              <span><strong>${esc(fmtNum(kpiVal(m.data, "articles_total", 114)))}</strong> articles</span>
+              <span><strong>${esc(fmtNum(kpiVal(m.data, "languages_served", 8)))}</strong> langs</span>
+            </div>
+          </div>
+          <a class="btn btn-sm btn-primary" href="https://sherpacarta.org" target="_blank" rel="noopener" data-card-link>Open site</a>
+        </div>`
+      : "";
+
     body.innerHTML = `
+      ${sherpaBanner}
       <p style="color:var(--ink-dim);font-size:0.92rem;margin:0;line-height:1.5">${esc(p.pitch || p.tagline || "")}</p>
       <div class="stack-chips mt-2">${(p.stack || []).map((t) => `<span class="chip">${esc(t)}</span>`).join("")}
         ${(p.related || []).map((r) => `<span class="chip" style="border-color:${escAttr(accentFor(r))}">→ ${esc(r)}</span>`).join("")}

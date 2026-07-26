@@ -1,54 +1,52 @@
 # SherpaCarta
 
-_HQ v3.2 surfaces this pack in Docs + drawer docs tab._
+_HQ v3.24 surfaces this pack as the **flagship governance card** (parchment / Digital Magna Carta treatment)._
 
-> Digital Magna Carta; signer social proof; OTS-anchored charters.
+> Digital Magna Carta · honest campaign signers · public on-chain treasury · first-party Umami.
 
 | | |
 |--|--|
 | **ID** | `sherpacarta` |
 | **Category** | Governance |
 | **URL** | https://sherpacarta.org |
-| **Metrics** | `/metrics/sherpacarta.json` |
+| **Live metrics** | `https://sherpacarta.org/metrics.json` |
+| **Fallback** | `/metrics/sherpacarta.json` |
 | **Schema** | `gab.product-metrics.v1` |
-| **Demo envelope** | `False` — live origin confirmed |
+| **Wallet id** | `sherpacarta` |
+| **Umami** | `9b6f05bf-286e-4b21-9094-1d675f9b4442` |
+| **Demo envelope** | `false` — live origin preferred |
 
-## What HQ can receive from this product
+## What HQ renders
 
-Products publish a **secret-free** JSON envelope. HQ never invents KPIs at render time — it only charts what is on disk / live origin.
+| Surface | Treatment |
+|---------|-----------|
+| **Cards** | Elite `card--sherpa` — hero pods (signers · treasury · articles · visitors), funnel, rails, live origin ribbon |
+| **Metrics lab** | Gold hero strip + full KPI / series / funnel / segments |
+| **Drawer** | Banner with seal + money / metrics / docs tabs |
+| **Money** | LNbits wallet `sherpacarta` via Vault invoice key |
+| **Analytics** | Umami overlay (CF analytics deliberately off — no zone) |
 
-### Envelope fields HQ renders
+### Envelope fields
 
-| Field | This product |
-|-------|----------------|
-| `health` | status, latency, uptime, dependencies |
-| `kpis` | charters, ots, signers, proposals, relays |
-| `series` (15d) | activity, signers_cum, ots_daily |
-| `funnels` | 1 |
-| `segments` | 1 |
-| `offers` | 2 |
-| `education` | 1 |
-| `links` | present |
+| Field | Notes |
+|-------|--------|
+| `health` | status, dependencies (charter, canada-stats, on-chain, lightning, umami) |
+| `kpis` | articles, signers, donations_btc/sats, languages, paper, treasury_txs |
+| `series` | signers + treasury snapshots |
+| `funnels` | charter journey |
+| `segments` | languages, treasury rails, province/method when present |
+| `raw.demo` | **must be false** for live guard |
 
 ### Live candidates
 
-1. Product origin `https://…/metrics.json` (preferred when CORS allows)
-2. HQ static cache `/metrics/sherpacarta.json`
-3. `status.json` site ping (HTTP + latency only)
-
-### Mold the data
-
-- Top 3 priority KPIs → Cards
-- Full KPI grid + every series → Metrics lab
-- Funnels → Pipeline + Metrics
-- Segments → Analytics donuts / bars
-- Offers → Network dependency map + drawer
-- Education → operator coaching cards
+1. `https://sherpacarta.org/metrics.json` (CF Function — preferred)
+2. HQ static `/metrics/sherpacarta.json` (honest stub only)
+3. `status.json` site ping
 
 ### Security
 
-No LNbits keys, PATs, macaroons, or PII in metrics payloads.
+No LNbits keys, PATs, or PII in metrics payloads. Invoice keys stay in HQ Vault.
 
 ---
 
-*Safe Harbour · No data collected · EU GDPR compliant · [Full policy](../SAFE-HARBOUR.md) · Part of the Give A Bit family*
+*Safe Harbour · Part of the Give A Bit family*

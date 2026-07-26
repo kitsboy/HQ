@@ -1,8 +1,8 @@
 {
   "name": "giveabit-hq",
   "private": true,
-  "version": "3.23.0",
-  "description": "Give A Bit HQ — critical bug fixes: nav stuck, LNbits proxy, race conditions",
+  "version": "3.24.0",
+  "description": "Give A Bit HQ — SherpaCarta elite flagship card + surface polish",
   "scripts": {
     "stamp": "node scripts/stamp-version.mjs",
     "verify-version": "node scripts/stamp-version.mjs",
