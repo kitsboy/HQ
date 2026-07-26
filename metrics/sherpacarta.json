@@ -1,57 +1,35 @@
 {
   "schema": "gab.product-metrics.v1",
-  "updatedAt": "2026-07-21T18:00:00Z",
+  "productId": "sherpacarta",
+  "name": "SherpaCarta",
+  "updatedAt": "2026-07-27T00:00:00Z",
   "window": {
-    "label": "7d",
-    "from": "2026-07-14T18:00:00Z",
-    "to": "2026-07-21T18:00:00Z"
+    "label": "all",
+    "from": "2026-01-01T00:00:00Z",
+    "to": "2026-07-27T00:00:00Z"
   },
   "health": {
     "status": "green",
-    "message": "Enriched demo envelope \u2014 replace with live /metrics.json when ready"
+    "message": "Static fallback — live origin at sherpacarta.org/metrics.json preferred",
+    "latencyMs": null,
+    "uptimePct24h": null,
+    "dependencies": [
+      { "id": "charter-data", "status": "green", "detail": "data/charter.json · 114 articles" },
+      { "id": "canada-stats", "status": "green", "detail": "GET /api/canada/stats (PETITION_KV)" },
+      { "id": "on-chain-treasury", "status": "green", "detail": "mempool.space address balance" },
+      { "id": "umami", "status": "amber", "detail": "Script wired; relies on analytics.giveabit.io proxy for HQ overlay" }
+    ]
   },
-  "productId": "sherpacarta",
-  "name": "Sherpacarta",
   "kpis": [
-    {
-      "key": "articles_total",
-      "label": "Charter articles",
-      "value": 114,
-      "format": "number",
-      "priority": 1
-    },
-    {
-      "key": "signers_total",
-      "label": "Signers",
-      "value": 230,
-      "format": "number",
-      "priority": 2
-    },
-    {
-      "key": "languages_served",
-      "label": "Languages",
-      "value": 7,
-      "format": "number",
-      "priority": 2
-    },
-    {
-      "key": "visitors_monthly",
-      "label": "Monthly visitors",
-      "value": 1200,
-      "format": "number",
-      "priority": 3,
-      "hint": "Umami"
-    },
-    {
-      "key": "donations_btc",
-      "label": "BTC donations",
-      "value": 0.15,
-      "format": "number",
-      "priority": 3
-    }
+    { "key": "articles_total", "label": "Articles", "value": 114, "unit": "articles", "format": "number", "priority": 1, "hint": "Living charter articles from data/charter.json" },
+    { "key": "signers_total", "label": "Signers", "value": 4, "unit": "signers", "format": "number", "priority": 1, "hint": "Canada campaign commitments from /api/canada/stats — not Parliamentary e-petition counts" },
+    { "key": "languages_served", "label": "Languages", "value": 8, "unit": "languages", "format": "number", "priority": 2, "hint": "UI locales: en, zh, es, ar, fr, de, pt, sw" },
+    { "key": "visitors_monthly", "label": "Visitors / month", "value": 0, "unit": "visitors", "format": "number", "priority": 2, "hint": "Umami website 9b6f05bf-286e-4b21-9094-1d675f9b4442. Zero here — HQ overlays Umami visitors server-side" },
+    { "key": "donations_btc", "label": "Donations (BTC)", "value": 0.00012884, "unit": "BTC", "format": "number", "priority": 1, "hint": "On-chain treasury balance (12,884 sats). Address in public/data/wallets.json" }
   ],
   "raw": {
-    "demo": true,
-    "note": "Enriched with all known metrics \u2014 ready for live data"
+    "demo": false,
+    "source": "backup — live origin preferred at sherpacarta.org/metrics.json",
+    "note": "Static fallback copy of live origin data. Never inflated. HQ prefers live origin when reachable."
   }
 }

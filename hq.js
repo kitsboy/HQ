@@ -928,8 +928,14 @@
       if (p.metricsUrl) candidates.push(p.metricsUrl);
       candidates.push(`/metrics/${key}.json`);
       const r = await loadFirst(candidates);
-      state.metrics[p.id] = r;
-      if (!r.ok) state.loadErrors.push(r);
+      // If result is from a demo fallback and product has live candidates,
+      // skip it — live refresh will pick up the real origin next cycle
+      if (p.metricsLiveCandidates && p.metricsLiveCandidates.length && r.ok && r.data && r.data.raw && r.data.raw.demo) {
+        state.metrics[p.id] = { ok: false, data: null, error: "demo fallback — waiting for live origin", path: r.path, status: null };
+      } else {
+        state.metrics[p.id] = r;
+      }
+      if (!state.metrics[p.id].ok) state.loadErrors.push(state.metrics[p.id]);
     });
 
     const thorJob = (async () => {
