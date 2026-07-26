@@ -1,15 +1,15 @@
 {
-  "checked_at": "2026-07-26T15:00:03Z",
+  "checked_at": "2026-07-26T16:00:06Z",
   "jobs": {
     "c8ce19bb5571": {
       "status": "completed",
-      "last_run": "2026-07-26T16:55:03.434792+02:00",
+      "last_run": "2026-07-26T17:55:06.621131+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "1b2c31d6ba98": {
       "status": "failed",
-      "last_run": "2026-07-26T16:46:55.470762+02:00",
+      "last_run": "2026-07-26T17:46:06.388687+02:00",
       "consecutive_fails": 1,
       "paused": false,
       "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
@@ -17,31 +17,31 @@
     },
     "42cdc3e9bd97": {
       "status": "completed",
-      "last_run": "2026-07-26T16:45:15.049937+02:00",
+      "last_run": "2026-07-26T17:45:57.775068+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "e8d5b97de501": {
       "status": "completed",
-      "last_run": "2026-07-26T16:30:23.067382+02:00",
+      "last_run": "2026-07-26T17:30:29.341700+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "cb8398b3fa67": {
       "status": "completed",
-      "last_run": "2026-07-26T16:30:04.625705+02:00",
+      "last_run": "2026-07-26T17:30:07.921549+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "bb5980d548fb": {
       "status": "completed",
-      "last_run": "2026-07-26T16:10:07.331263+02:00",
+      "last_run": "2026-07-26T17:07:34.080317+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "7768b5c5aa49": {
       "status": "completed",
-      "last_run": "2026-07-26T16:02:45.835494+02:00",
+      "last_run": "2026-07-26T17:01:45.913543+02:00",
       "consecutive_fails": 0,
       "paused": false
     },

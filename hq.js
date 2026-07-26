@@ -824,15 +824,23 @@
     document.querySelectorAll(".theme-dot").forEach((d) => d.classList.toggle("active", d.dataset.themePick === t));
     setTimeout(() => document.body.classList.remove("theme-switching"), 560);
   }
+  let _switchingTimer = null;
   function setTab(name) {
     try {
       if (!TAB_ACCENTS[name]) name = "cards";
       closeDrawer();
 
+      // Clear any stale render timeouts for this tab — give it a fresh chance
+      if (state.renderTimeouts) delete state.renderTimeouts[name];
+
       const navWrap = document.querySelector(".nav-wrap");
       if (navWrap) {
+        if (_switchingTimer) clearTimeout(_switchingTimer);
         navWrap.classList.add("switching");
-        setTimeout(() => navWrap.classList.remove("switching"), 300);
+        _switchingTimer = setTimeout(() => {
+          navWrap.classList.remove("switching");
+          _switchingTimer = null;
+        }, 400);
       }
 
       // Guard: ensure #view-{name} element exists
@@ -1376,8 +1384,8 @@
       state.renderTimeouts[tab] = true;
       var el2 = document.getElementById("view-" + tab);
       if (el2) el2.innerHTML = renderTimeoutHTML(tab);
-      console.error("[HQ] Render timeout: \"" + tab + "\" exceeded 3s");
-    }, 3000);
+      console.error("[HQ] Render timeout: \"" + tab + "\" exceeded 10s");
+    }, 10000);
 
     // Execute render with try/catch
     try {
