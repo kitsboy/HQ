@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-26T21:00:16Z",
+  "checked_at": "2026-07-26T21:45:37Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "89c2a28",
-        "message": "chore: thor auto-metrics 21:00 (live LND)",
-        "author": "Cam (via Aider)",
-        "date": "2026-07-26T21:00:05Z",
-        "url": "https://github.com/kitsboy/HQ/commit/89c2a284350faf7ca907d61850daf57b8eb23032"
+        "sha": "2db20cb",
+        "message": "chore: refresh status.json [skip deploy]",
+        "author": "hq-status-bot",
+        "date": "2026-07-26T21:41:08Z",
+        "url": "https://github.com/kitsboy/HQ/commit/2db20cb83422c1828c2dedaffda00c4c77d5ad87"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 21:00 (live LND)",
-        "chore: thor auto-metrics 20:45 (live LND)",
-        "chore: thor auto-metrics 20:45 (live LND)"
+        "chore: refresh status.json [skip deploy]",
+        "chore: thor auto-metrics 21:30 (live LND)",
+        "chore: refresh status.json + thor-node [skip deploy]"
       ],
       "commits_7d": 100,
       "health": "green",
