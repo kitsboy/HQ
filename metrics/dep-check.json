@@ -1,0 +1,45 @@
+{
+  "checked_at": "2026-07-26T07:00:45Z",
+  "repos": {
+    "giveabit": {
+      "name": "giveabit.io",
+      "has_npm": true,
+      "outdated": []
+    },
+    "satohash": {
+      "name": "satohash.io",
+      "has_npm": true,
+      "outdated": []
+    },
+    "katoa": {
+      "name": "katoa.org",
+      "has_npm": true,
+      "outdated": []
+    },
+    "tadbuy": {
+      "name": "tadbuy",
+      "has_npm": true,
+      "outdated": []
+    },
+    "stranded": {
+      "name": "stranded",
+      "has_npm": true,
+      "outdated": []
+    },
+    "motopass": {
+      "name": "motopass",
+      "has_npm": true,
+      "outdated": []
+    },
+    "sherpacarta": {
+      "name": "sherpacarta.org",
+      "has_npm": true,
+      "outdated": []
+    },
+    "openstrata": {
+      "name": "openstrata",
+      "has_npm": false,
+      "outdated": []
+    }
+  }
+}
