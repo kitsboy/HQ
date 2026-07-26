@@ -26,7 +26,6 @@ ZONE_DOMAINS = {
     "giveabit": "giveabit.io",
     "satohash": "satohash.io",
     "katoa": "katoa.org",
-    "sherpacarta": "sherpacarta.org",
 }
 HEADERS = {
     "Authorization": f"Bearer {CF_TOKEN}",

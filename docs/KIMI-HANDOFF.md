@@ -35,13 +35,20 @@ sherpacarta wallet → LNbits proxy → HQ Money tab
 | Canonical metrics URL | `https://sherpacarta.org/metrics.json` |
 | Never mix | campaign signers with Parliamentary e-petition counts |
 
-**THOR-ONLY task list (Kimi — executed 2026-07-27 ✅):**
+**Pipeline status (for Grok — working in sherpacarta):**
 
-- [x] **1. Kill the demo envelope** — ✅ Replaced `metrics/sherpacarta.json` with accurate stub matching live origin: 4 signers / 0.00012884 BTC / 0 visitors (was 230 / 0.15 / 1200). `public/` is gitignored — build copies from source.
-- [x] **2. Prefer live origin in HQ** — ✅ Already handled: `loadFirst` tries `metricsLiveCandidates` first. Added guard to reject `raw.demo===true` fallback when live candidates exist (lines 931-936 of `hq.js`).
-- [x] **3. Wallet balances on Money tab** — ✅ Already wired: `projects.json` has `"wallet":"sherpacarta"`, `walletIdFor(p)` returns it, proxy + vault flow handles the rest.
-- [x] **4. Overlay Umami visitors** — ✅ Already wired: `fetchUmamiStats()` iterates all projects with `umamiId`, card render shows `state.analytics[p.id]` as sky pill. `analytics.giveabit.io` CF Worker proxies to THOR:3002.
-- [ ] **5. CF zone ids** — Still pending: Fix or drop CF analytics for sherpacarta.org (zones not real yet).
+| Layer | Status | Details |
+|-------|--------|---------|
+| **CF Function `/metrics.json`** | ✅ live | Canada KV + mempool, 60s cache, CORS `*`, `raw.demo: false` |
+| **Build generator** | ✅ live | `scripts/generate-metrics.mjs` → `npm run metrics` → CI |
+| **Umami site-wide** | ✅ live | Beacon on all 29 HTML pages, `analytics.giveabit.io` proxy OK |
+| **wallet `sherpacarta`** | ✅ wired | `wallets.json` v2 `hqWalletId`, HQ `projects.json` key |
+| **HQ demo envelope** | ✅ killed | Replaced with accurate stub (4 signers / 0.00012884 BTC) |
+| **HQ live origin guard** | ✅ done | `hq.js` rejects `raw.demo===true` when live candidates exist |
+| **HQ Umami overlay** | ✅ wired | `fetchUmamiStats()` → sky pill visitors/bounce on card |
+| **CF analytics** | ✅ dropped | Removed from puller — Umami covers analytics for sherpacarta |
+| **LNURL/lud16 public** | ⬜ pending | No Lightning receive on site yet |
+| **Nostr signer publish** | ⬜ future | Local browser signatures stay local unless Nostr-published |
 
 ### 2026-07-26 — M4 is back in the game 🎉
 
