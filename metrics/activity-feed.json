@@ -1,191 +1,191 @@
 {
-  "generated_at": "2026-07-26T05:00:51Z",
+  "generated_at": "2026-07-26T05:30:54Z",
   "events": [
     {
-      "time": 1785042044.0,
+      "time": 1785043847.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "041] run_agent: OpenAI client closed (request_complete, shar"
+    },
+    {
+      "time": 1785043847.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "041] agent.conversation_loop: API call #1: model=deepseek/de"
+    },
+    {
+      "time": 1785043847.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "041] tools.terminal_tool: Creating new local environment for"
+    },
+    {
+      "time": 1785043847.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "041] tools.environments.base: Session snapshot created (sess"
+    },
+    {
+      "time": 1785043847.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "041] tools.terminal_tool: local environment ready for task d"
+    },
+    {
+      "time": 1785043846.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "19': delivered to telegram:155378281 via live adapter"
+    },
+    {
+      "time": 1785043844.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785042043.0,
+      "time": 1785043842.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "al pool: no available entries (all exhausted or empty)"
+      "text": "041] agent.turn_context: conversation turn: session=cron_42c"
     },
     {
-      "time": 1785042043.0,
+      "time": 1785043842.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
+      "text": "041] run_agent: OpenAI client created (chat_completion_reque"
     },
     {
-      "time": 1785042041.0,
+      "time": 1785043842.0,
+      "type": "cron_warn",
+      "icon": "\u26a0\ufe0f",
+      "text": "mi-voice-briefing': skill not found, skipping \u2014 Skill 'devop"
+    },
+    {
+      "time": 1785043842.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "040] agent.turn_context: conversation turn: session=cron_776"
+      "text": "mi-voice-briefing' (ID: 71f476018b46)"
     },
     {
-      "time": 1785042041.0,
+      "time": 1785043842.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "040] run_agent: OpenAI client created (chat_completion_reque"
+      "text": "ANT: The following skill(s) were listed for this job but cou"
     },
     {
-      "time": 1785042041.0,
+      "time": 1785043842.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "6e': delivered to telegram:155378281 via live adapter"
+      "text": "46': loaded credential pool for provider nous with 1 entries"
     },
     {
-      "time": 1785042040.0,
+      "time": 1785043842.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "or-metrics-export-hourly' (ID: 7768b5c5aa49)"
+      "text": "d (agent_init, shared=True) thread=cron-parallel_5:133595723"
     },
     {
-      "time": 1785042040.0,
+      "time": 1785043842.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "ANT: You are running as a scheduled cron job. DELIVERY: Your"
+      "text": "042] agent.turn_context: conversation turn: session=cron_71f"
     },
     {
-      "time": 1785042040.0,
+      "time": 1785043842.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "49': using workdir /root/hq"
+      "text": "042] run_agent: OpenAI client created (chat_completion_reque"
     },
     {
-      "time": 1785042040.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "al pool: no available entries (all exhausted or empty)"
-    },
-    {
-      "time": 1785042040.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
-    },
-    {
-      "time": 1785042040.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "49': loaded credential pool for provider nous with 1 entries"
-    },
-    {
-      "time": 1785042040.0,
+      "time": 1785043841.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "or-auto-metrics' (ID: 42cdc3e9bd97)"
     },
     {
-      "time": 1785042040.0,
+      "time": 1785043841.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "ANT: You are running as a scheduled cron job. DELIVERY: Your"
     },
     {
-      "time": 1785042040.0,
+      "time": 1785043841.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "d (agent_init, shared=True) thread=cron-seq_0:13359525971321"
+      "text": "97': loaded credential pool for provider nous with 1 entries"
     },
     {
-      "time": 1785042040.0,
+      "time": 1785043841.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "or-cron-health-hourly' (ID: bb5980d548fb)"
+      "text": "d (agent_init, shared=True) thread=cron-parallel_1:133596165"
     },
     {
-      "time": 1785042040.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "ANT: You are running as a scheduled cron job. DELIVERY: Your"
-    },
-    {
-      "time": 1785042029.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "al pool: no available entries (all exhausted or empty)"
-    },
-    {
-      "time": 1785042029.0,
+      "time": 1785043814.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785042014.0,
+      "time": 1785043784.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785042013.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "al pool: no available entries (all exhausted or empty)"
-    },
-    {
-      "time": 1785042013.0,
+      "time": 1785043754.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785041998.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "al pool: no available entries (all exhausted or empty)"
-    },
-    {
-      "time": 1785041998.0,
+      "time": 1785043724.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785041984.0,
+      "time": 1785043694.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785041983.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "al pool: no available entries (all exhausted or empty)"
-    },
-    {
-      "time": 1785041983.0,
+      "time": 1785043664.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785041968.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "al pool: no available entries (all exhausted or empty)"
-    },
-    {
-      "time": 1785041968.0,
+      "time": 1785043634.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785041954.0,
+      "time": 1785043604.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785034808.0,
+      "time": 1785043574.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "auth: using NAS invoke JWT"
+    },
+    {
+      "time": 1785043544.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "auth: using NAS invoke JWT"
+    },
+    {
+      "time": 1785036611.0,
       "type": "commit",
       "icon": "\ud83d\udd28",
-      "text": "HQ Dashboard: chore: thor auto-metrics 05:00 (live LND)",
+      "text": "HQ Dashboard: chore: thor auto-metrics 05:30 (live LND)",
       "repo": "hq"
     },
     {
