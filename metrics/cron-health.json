@@ -1,45 +1,61 @@
 {
-  "checked_at": "2026-07-26T07:00:45Z",
+  "checked_at": "2026-07-26T10:00:51Z",
   "jobs": {
     "c8ce19bb5571": {
       "status": "completed",
-      "last_run": "2026-07-26T08:55:45.369660+02:00",
+      "last_run": "2026-07-26T11:55:51.605130+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "1b2c31d6ba98": {
       "status": "completed",
-      "last_run": "2026-07-26T08:47:19.051532+02:00",
+      "last_run": "2026-07-26T11:47:02.268274+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "42cdc3e9bd97": {
       "status": "completed",
-      "last_run": "2026-07-26T08:46:01.464285+02:00",
+      "last_run": "2026-07-26T11:46:03.359124+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "e8d5b97de501": {
       "status": "completed",
-      "last_run": "2026-07-26T08:31:06.422593+02:00",
+      "last_run": "2026-07-26T11:31:08.433866+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "cb8398b3fa67": {
       "status": "completed",
-      "last_run": "2026-07-26T08:30:45.291248+02:00",
+      "last_run": "2026-07-26T11:30:51.357540+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "bb5980d548fb": {
-      "status": "completed",
-      "last_run": "2026-07-26T08:06:49.593205+02:00",
-      "consecutive_fails": 0,
-      "paused": false
+      "status": "failed",
+      "last_run": "2026-07-26T11:05:03.541835+02:00",
+      "consecutive_fails": 3,
+      "paused": false,
+      "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
+      "action": "PAUSED"
     },
     "7768b5c5aa49": {
       "status": "completed",
-      "last_run": "2026-07-26T08:01:58.533559+02:00",
+      "last_run": "2026-07-26T11:02:06.992842+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "30921a766dae": {
+      "status": "failed",
+      "last_run": "2026-07-26T10:06:32.408730+02:00",
+      "consecutive_fails": 3,
+      "paused": true,
+      "error": "Script exited with code 1\nstderr:\nTraceback (most recent call last):\n  File \"/root/.hermes/scripts/poll_inbound.py\", line 23, in <module>\n    import email_config as cfg\nModuleNotFoundError: No module ",
+      "action": "warn"
+    },
+    "eb7452b2189e": {
+      "status": "completed",
+      "last_run": "2026-07-26T09:02:36.954782+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
@@ -132,9 +148,10 @@
       "paused": false
     }
   },
-  "paused_count": 1,
-  "alert_count": 2,
+  "paused_count": 3,
+  "alert_count": 3,
   "paused_jobs": [
+    "30921a766dae",
     "34c2181c2737"
   ],
   "orphaned_count": 3

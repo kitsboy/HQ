@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-26T07:30:46Z",
+  "checked_at": "2026-07-26T10:00:51Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -18,7 +18,7 @@
         "chore: update DESIGN.md per project template",
         "chore: update ROADMAP.md per project template"
       ],
-      "commits_7d": 17,
+      "commits_7d": 16,
       "health": "green",
       "cf_project": "giveabit",
       "open_issues": 0
@@ -40,7 +40,7 @@
         "chore: update handoff after SuperSession",
         "fix(pages): drop metrics 302 so static metrics.json is serve"
       ],
-      "commits_7d": 38,
+      "commits_7d": 31,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "8d568ae",
-        "message": "chore: thor auto-metrics 07:30 (live LND)",
+        "sha": "1a268d8",
+        "message": "chore: thor auto-metrics 10:00 (live LND)",
         "author": "Cam (via Aider)",
-        "date": "2026-07-26T07:30:11Z",
-        "url": "https://github.com/kitsboy/HQ/commit/8d568ae26322d619d7e155e5d1b594a06029e813"
+        "date": "2026-07-26T10:00:08Z",
+        "url": "https://github.com/kitsboy/HQ/commit/1a268d869293088eb58519de8773be9746a7f2b2"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 07:30 (live LND)",
-        "chore: thor auto-metrics 07:15 (live LND)",
-        "chore: thor auto-metrics 07:15 (live LND)"
+        "chore: thor auto-metrics 10:00 (live LND)",
+        "chore: thor auto-metrics 09:45 (live LND)",
+        "chore: thor auto-metrics 09:45 (live LND)"
       ],
       "commits_7d": 100,
       "health": "green",
@@ -84,7 +84,7 @@
         "chore: update .ai_docs/current-status.md per project templat",
         "chore: update ROADMAP.md per project template"
       ],
-      "commits_7d": 20,
+      "commits_7d": 19,
       "health": "green",
       "cf_project": "katoa",
       "open_issues": 0
@@ -106,7 +106,7 @@
         "chore: update .ai_docs/current-status.md per project templat",
         "chore: update ROADMAP.md per project template"
       ],
-      "commits_7d": 51,
+      "commits_7d": 50,
       "health": "green",
       "cf_project": "tadbuy",
       "open_issues": 1
@@ -128,7 +128,7 @@
         "fix: deploy from ./dist not ./out (next.config.js sets distD",
         "fix: prefix next build with npx for Node 24 compat"
       ],
-      "commits_7d": 22,
+      "commits_7d": 21,
       "health": "green",
       "cf_project": "strandedbuild",
       "open_issues": 0
@@ -150,7 +150,7 @@
         "chore: update .ai_docs/current-status.md per project templat",
         "chore: update ROADMAP.md per project template"
       ],
-      "commits_7d": 14,
+      "commits_7d": 13,
       "health": "green",
       "cf_project": "motopass",
       "open_issues": 0
@@ -172,7 +172,7 @@
         "chore: update ROADMAP.md per project template",
         "chore: update DESIGN.md per project template"
       ],
-      "commits_7d": 18,
+      "commits_7d": 17,
       "health": "green",
       "cf_project": "sherpacarta",
       "open_issues": 0
@@ -194,7 +194,7 @@
         "chore: update ROADMAP.md per project template",
         "chore: update DESIGN.md per project template"
       ],
-      "commits_7d": 12,
+      "commits_7d": 11,
       "health": "green",
       "cf_project": "openstrata",
       "open_issues": 0
