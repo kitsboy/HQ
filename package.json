@@ -1,8 +1,8 @@
 {
   "name": "giveabit-hq",
   "private": true,
-  "version": "3.22.0",
-  "description": "Give A Bit HQ — shortcuts, drill-down modals, sort, attention bell",
+  "version": "3.23.0",
+  "description": "Give A Bit HQ — critical bug fixes: nav stuck, LNbits proxy, race conditions",
   "scripts": {
     "stamp": "node scripts/stamp-version.mjs",
     "verify-version": "node scripts/stamp-version.mjs",
