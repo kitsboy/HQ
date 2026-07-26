@@ -72,7 +72,7 @@ _Updated: 2026-07-26 — app v3.23.0 (stamp-version)
 | **v3.19.0** | Metrics age honesty chips (live/stale/static) on cards·list·matrix; stale metrics panels on System + Analytics; porcelain brand-logo ring; PWA icons → brand-mark/logo |
 | **v3.18.1** | Official brand logo + data honesty pass |
 | **v3.13.0** | LNbits invoice history proxy + wallet transaction log in drawer |
-| **v3.14.0** | CF Web Analytics pipeline — GraphQL API queries 4 zones (giveabit, satohash, katoa, sherpacarta) every 30 min → Analytics tab with 7-day totals + daily bar sparklines. Token in `~/.hermes/cf-token.env` (gitignored). |
+| **v3.14.0** | CF Web Analytics pipeline — GraphQL API queries 3 zones (giveabit, satohash, katoa) every 30 min → Analytics tab with 7-day totals + daily bar sparklines. sherpacarta dropped (zone not in CF account — Umami covers it). Token in `~/.hermes/cf-token.env` (gitignored). |
 | **v3.15.0** | Tooltips on every metric, chip, badge, filter, tab — hover to understand what each stat means |
 | **v3.9.0** | Ref-puller system: auto-pulls `ref/` docs from all 9 suite repos via GitHub API every 5 min; sparse-checkout (only `ref/` folder); seed files for HQ/tadbuy/satohash; docs/REF-PULLER.md; |
 | **v3.8.0** | Umami analytics deployed: Docker on THOR (port 3002, shares Postgres), all 9 sites registered, HQ polls per-site visitors/pageviews/bounce rate every 5 min via Umami API, shown on card chips + Analytics tab table + visitor sparklines |
