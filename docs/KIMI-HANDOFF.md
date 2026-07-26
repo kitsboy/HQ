@@ -11,15 +11,13 @@
 | Canonical metrics URL | `https://sherpacarta.org/metrics.json` |
 | Never mix | campaign signers with Parliamentary e-petition counts |
 
-**THOR-ONLY task list (Kimi — next session):**
+**THOR-ONLY task list (Kimi — executed 2026-07-27 ✅):**
 
-These cannot be done from outside THOR. No keys in chat — Vault is correct.
-
-- [ ] **1. Kill the demo envelope** — `metrics/sherpacarta.json` and `public/metrics/sherpacarta.json` still show 230 signers / 0.15 BTC / 1200 visitors (inflated demo numbers). Delete or replace with a stub that yields to live origin. Origin at `https://sherpacarta.org/metrics.json` has `raw.demo: false` — real product metrics.
-- [ ] **2. Prefer live origin in HQ** — When `raw.demo === false` on origin metrics.json, HQ must never fall back to the static cache. Verify `hq.js` envelope resolution skips the demo file when origin is live.
-- [ ] **3. Wallet balances on Money tab** — Confirm LNbits/projects.json wallet key `sherpacarta` (invoice key only) polls green and shows on HQ Money tab. No user ops tokens in product metrics.
-- [ ] **4. Overlay Umami visitors** — Origin leaves `visitors_monthly: 0` intentionally (no analytics token in product metrics). HQ should overlay Umami visitors from Umami server-side API using the website id `9b6f05bf-286e-4b21-9094-1d675f9b4442`. Script + CSP already on site.
-- [ ] **5. CF zone ids** — Fix or drop CF analytics for sherpacarta.org (zones not real yet).
+- [x] **1. Kill the demo envelope** — ✅ Replaced `metrics/sherpacarta.json` with accurate stub matching live origin: 4 signers / 0.00012884 BTC / 0 visitors (was 230 / 0.15 / 1200). `public/` is gitignored — build copies from source.
+- [x] **2. Prefer live origin in HQ** — ✅ Already handled: `loadFirst` tries `metricsLiveCandidates` first. Added guard to reject `raw.demo===true` fallback when live candidates exist (lines 931-936 of `hq.js`).
+- [x] **3. Wallet balances on Money tab** — ✅ Already wired: `projects.json` has `"wallet":"sherpacarta"`, `walletIdFor(p)` returns it, proxy + vault flow handles the rest.
+- [x] **4. Overlay Umami visitors** — ✅ Already wired: `fetchUmamiStats()` iterates all projects with `umamiId`, card render shows `state.analytics[p.id]` as sky pill. `analytics.giveabit.io` CF Worker proxies to THOR:3002.
+- [ ] **5. CF zone ids** — Still pending: Fix or drop CF analytics for sherpacarta.org (zones not real yet).
 
 ### 2026-07-26 — M4 is back in the game 🎉
 
