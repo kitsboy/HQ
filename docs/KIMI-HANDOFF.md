@@ -1,3 +1,27 @@
+### 2026-07-27 — SherpaCarta end-to-end live ✅
+
+**Grok shipped on sherpacarta repo (commit `fd4c000`):**
+- CF Function `GET /metrics.json` (`functions/metrics.json.js`) — Canada KV + mempool, 60s cache, CORS `*`
+- Build generator `scripts/generate-metrics.mjs` → `public/metrics.json` fallback
+- Site-wide first-party Umami + event beacon across 29 HTML pages
+- `wallets.json` v2: `hqWalletId: sherpacarta` (same id as HQ projects.json)
+- Canada API CORS allows `https://hq.giveabit.io`
+- Origin envelope `raw.demo: false` confirmed — no invoice keys in git
+
+**HQ side (Kimi — already done):**
+- ✅ Demo envelope killed — replaced with accurate stub matching live origin
+- ✅ Live origin guard in `hq.js` — rejects `raw.demo===true` fallback when live candidates exist
+- ✅ Wallet `sherpacarta` wired in `projects.json` — Vault/Worker flow handles balances
+- ✅ Umami overlay wired — `fetchUmamiStats()` iterates `umamiId: 9b6f05bf-286e-4b21-9094-1d675f9b4442`
+- ⬜ CF zone ids — still pending (zones not real yet)
+
+**Pipeline is end-to-end live:**
+```
+sherpacarta.org/metrics.json (CF Function) → HQ loadFirst(liveCandidate) → card render
+sherpacarta.org (Umami beacon) → analytics.giveabit.io (CF Worker) → THOR:3002 → HQ fetchUmamiStats() → sky pill on card
+sherpacarta wallet → LNbits proxy → HQ Money tab
+```
+
 ### 2026-07-27 — SherpaCarta labeling contract + discussion points
 
 **Labeling contract (use consistently across you + Grok):**
