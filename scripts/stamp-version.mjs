@@ -6,7 +6,7 @@
  * cannot disagree. Also rewrites asset cache-bust query strings and SW cache id.
  *
  * Run: node scripts/stamp-version.mjs
- * Called by: npm run stamp | npm run build | GH Actions deploy
+ * Called by: npm run stamp | npm run build | GH Actions deploy (every push)
  */
 
 import { readFileSync, writeFileSync, existsSync } from "fs";
@@ -22,7 +22,8 @@ if (!/^\d+\.\d+\.\d+/.test(ver)) {
   console.error(`stamp-version: invalid package.json version: ${ver}`);
   process.exit(1);
 }
-const bust = ver; // cache-bust query = version (stable per release)
+const bust = ver;
+const label = `v${ver}`;
 
 function write(path, content) {
   writeFileSync(path, content);
@@ -37,19 +38,19 @@ function write(path, content) {
   write(p, s);
 }
 
-// ---- control-panel.html ----
+// ---- control-panel.html (source of public/index.html) ----
 {
   const p = resolve(ROOT, "control-panel.html");
   let s = readFileSync(p, "utf8");
-  // HTML comment banner
   s = s.replace(/(Give A Bit HQ v)[\d.]+/g, `$1${ver}`);
-  // <title>
   s = s.replace(/(<title>Give A Bit HQ v)[\d.]+(<\/title>)/, `$1${ver}$2`);
-  // subtitle (any "money pack vX.Y.Z")
   s = s.replace(/(money pack v)[\d.]+/g, `$1${ver}`);
-  // footer static fallback
+  // Footer
   s = s.replace(/(id="hq-version">v)[\d.]+(<\/)/, `$1${ver}$2`);
-  // meta application-version
+  // Header badge (always visible)
+  s = s.replace(/(id="hq-ver-badge"[^>]*>)v?[\d.]+(<\/)/, `$1${label}$2`);
+  s = s.replace(/(id="hq-ver-chip"[^>]*>)v?[\d.]+(<\/)/, `$1${label}$2`);
+  // Meta
   if (/name="hq-version"/.test(s)) {
     s = s.replace(/(name="hq-version" content=")[^"]*(")/, `$1${ver}$2`);
   } else {
@@ -58,9 +59,12 @@ function write(path, content) {
       `$1\n<meta name="hq-version" content="${ver}">`
     );
   }
-  // Asset cache-bust on hq.css / hq.js / sw.js
+  // Asset cache-bust — all local scripts/styles
   s = s.replace(/(href="hq\.css)(?:\?v=[^"]*)?(")/, `$1?v=${bust}$2`);
   s = s.replace(/(src="hq\.js)(?:\?v=[^"]*)?(")/, `$1?v=${bust}$2`);
+  s = s.replace(/(src="hq-intel\.js)(?:\?v=[^"]*)?(")/, `$1?v=${bust}$2`);
+  s = s.replace(/(src="hq-vault\.js)(?:\?v=[^"]*)?(")/, `$1?v=${bust}$2`);
+  s = s.replace(/(src="gate\.js)(?:\?v=[^"]*)?(")/, `$1?v=${bust}$2`);
   s = s.replace(/(register\("\/sw\.js)(?:\?v=[^"]*)?(")/, `$1?v=${bust}$2`);
   write(p, s);
 }
@@ -70,14 +74,8 @@ function write(path, content) {
   const p = resolve(ROOT, "sw.js");
   if (existsSync(p)) {
     let s = readFileSync(p, "utf8");
-    s = s.replace(
-      /(const CACHE = ")[^"]*(";)/,
-      `$1hq-cache-v${ver}$2`
-    );
-    s = s.replace(
-      /(const HQ_SW_VERSION = ")[^"]*(";)/,
-      `$1${ver}$2`
-    );
+    s = s.replace(/(const CACHE = ")[^"]*(";)/, `$1hq-cache-v${ver}$2`);
+    s = s.replace(/(const HQ_SW_VERSION = ")[^"]*(";)/, `$1${ver}$2`);
     if (!/const HQ_SW_VERSION =/.test(s)) {
       s = s.replace(
         /(const CACHE = "[^"]+";)/,
@@ -88,7 +86,7 @@ function write(path, content) {
   }
 }
 
-// ---- SOURCE-OF-TRUTH live version row (if present) ----
+// ---- SOURCE-OF-TRUTH ----
 {
   const p = resolve(ROOT, "SOURCE-OF-TRUTH.md");
   if (existsSync(p)) {
@@ -97,7 +95,6 @@ function write(path, content) {
       /(\|\s*App version\s*\|\s*\*\*)v?[\d.]+(\*\*[^\n]*)/,
       `$1v${ver}$2`
     );
-    // Keep leading "Updated" line current-ish without lying about full audit
     s = s.replace(
       /^(_Updated: )[^\n]+/m,
       `$1${new Date().toISOString().slice(0, 10)} — app v${ver} (stamp-version)`
@@ -106,7 +103,7 @@ function write(path, content) {
   }
 }
 
-// ---- README badge line if present ----
+// ---- README ----
 {
   const p = resolve(ROOT, "README.md");
   if (existsSync(p)) {
@@ -119,7 +116,7 @@ function write(path, content) {
   }
 }
 
-// ---- Verify consistency ----
+// ---- Verify consistency (fail hard — CI must not ship drift) ----
 const html = readFileSync(resolve(ROOT, "control-panel.html"), "utf8");
 const js = readFileSync(resolve(ROOT, "hq.js"), "utf8");
 const checks = [
@@ -127,8 +124,12 @@ const checks = [
   [`title v${ver}`, html.includes(`<title>Give A Bit HQ v${ver}</title>`)],
   [`subtitle v${ver}`, html.includes(`money pack v${ver}`)],
   [`footer v${ver}`, html.includes(`id="hq-version">v${ver}<`)],
+  [`header badge ${label}`, html.includes(`id="hq-ver-badge"`) && html.includes(`>${label}<`)],
+  [`header chip ${label}`, html.includes(`id="hq-ver-chip"`) && html.includes(`hq-ver-chip`) && html.includes(label)],
+  [`meta content="${ver}"`, html.includes(`name="hq-version" content="${ver}"`)],
   [`css ?v=${bust}`, html.includes(`hq.css?v=${bust}`)],
   [`js ?v=${bust}`, html.includes(`hq.js?v=${bust}`)],
+  [`sw ?v=${bust}`, html.includes(`sw.js?v=${bust}`)],
 ];
 const bad = checks.filter(([, ok]) => !ok);
 if (bad.length) {
@@ -137,5 +138,7 @@ if (bad.length) {
   process.exit(1);
 }
 
-console.log(`stamped version ${ver} → hq.js, control-panel.html, sw.js, SOT/README (asset bust=${bust})`);
-console.log("verify: all surfaces match");
+console.log(
+  `stamped version ${ver} → hq.js, control-panel.html, sw.js, SOT/README (asset bust=${bust})`
+);
+console.log("verify: all surfaces match — header badge + chip + footer + meta + cache-bust");

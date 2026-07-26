@@ -1,26 +1,32 @@
 /**
- * Give A Bit HQ v3.23.0 — handoffs registry tab
+ * Give A Bit HQ v3.24.1 — handoffs registry tab
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
+ * Version source of truth: package.json → npm run stamp → all surfaces.
  */
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.24.0";
+  const HQ_VERSION = "3.24.1";
   const BUILD_TS = new Date().toISOString();
 
-  /** Paint the same version on every chrome surface (header sub + footer). */
+  /** Paint the same version on every chrome surface (header badge + sub + footer). */
   function paintVersion() {
+    const label = `v${HQ_VERSION}`;
     const ver = document.getElementById("hq-version");
-    if (ver) ver.textContent = `v${HQ_VERSION}`;
+    if (ver) ver.textContent = label;
+    const badge = document.getElementById("hq-ver-badge");
+    if (badge) badge.textContent = label;
+    const chip = document.getElementById("hq-ver-chip");
+    if (chip) chip.textContent = label;
     const sub = document.getElementById("hq-sub");
-    if (sub) sub.textContent = `Ops glass · money pack v${HQ_VERSION}`;
+    if (sub) sub.textContent = `Ops glass · money pack ${label}`;
     const b = document.getElementById("hq-build");
     if (b) b.textContent = BUILD_TS.slice(0, 16).replace("T", " ") + "Z";
     const meta = document.querySelector('meta[name="hq-version"]');
     if (meta) meta.setAttribute("content", HQ_VERSION);
-    document.title = `Give A Bit HQ v${HQ_VERSION}`;
+    document.title = `Give A Bit HQ ${label}`;
     try { localStorage.setItem("hq_deployed_version", HQ_VERSION); } catch (_) {}
   }
   // Immediate paint so header/footer never sit on stale HTML while data loads

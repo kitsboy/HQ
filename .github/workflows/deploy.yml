@@ -22,8 +22,17 @@ jobs:
 
       - name: Build public site (full npm build)
         run: |
-          # Single build path — never hand-copy a partial subset (missed docs/projects before)
+          # Single build path — stamp package.json version into ALL surfaces, then assemble public/
           npm run build
+          VER=$(node -p "require('./package.json').version")
+          echo "=== version stamp check (must be v$VER everywhere) ==="
+          grep -q "const HQ_VERSION = \"$VER\"" public/hq.js || (echo "FAIL hq.js HQ_VERSION" && exit 1)
+          grep -q "name=\"hq-version\" content=\"$VER\"" public/index.html || (echo "FAIL meta hq-version" && exit 1)
+          grep -q "id=\"hq-ver-badge\"" public/index.html || (echo "FAIL missing header badge" && exit 1)
+          grep -q ">v$VER<" public/index.html || (echo "FAIL badge/footer not stamped v$VER" && exit 1)
+          grep -q "hq.js?v=$VER" public/index.html || (echo "FAIL cache-bust hq.js" && exit 1)
+          grep -q "money pack v$VER" public/index.html || (echo "FAIL subtitle" && exit 1)
+          echo "OK version $VER stamped on public surfaces"
           echo "=== public tree (docs) ==="
           find public/docs -type f | sort | head -80
           test -f public/docs/projects/giveabit.md || (echo "MISSING project pack giveabit.md" && exit 1)

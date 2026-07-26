@@ -1,3 +1,18 @@
+### 2026-07-27 — Version stamp hardened (v3.24.1) — Grok
+
+**Problem:** Header could show stale/hidden version (subtitle hidden on mobile; local HTML drifted from package.json). User reported not seeing v3.24.
+
+**Fix:**
+- package.json → **3.24.1** (cache-bust)
+- Always-visible **header badge** `#hq-ver-badge` next to "HQ" + meta chip `#hq-ver-chip`
+- `paintVersion()` updates badge + chip + sub + footer + meta + title
+- `stamp-version.mjs` stamps all surfaces; CI **fails deploy** if public/* != package.json version
+- Every `npm run build` / push runs stamp first
+
+**Rule forever:** bump `package.json` version → stamp is automatic on build/push. Never hand-edit version strings only in HTML.
+
+---
+
 ### 2026-07-27 — HQ v3.24 SherpaCarta elite beauty lift (Grok)
 
 **Flagship card treatment shipped:**

@@ -350,6 +350,38 @@ input:focus, textarea:focus, select:focus {
   flex: none;
   transition: filter var(--dur) var(--ease-out);
 }
+.hq-ver-badge {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-left: 0.35rem;
+  padding: 0.12rem 0.45rem;
+  border-radius: 99px;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: lowercase;
+  color: color-mix(in srgb, var(--accent-theme) 90%, var(--ink));
+  background: color-mix(in srgb, var(--accent-theme) 18%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--accent-theme) 45%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent-theme) 22%, transparent);
+}
+.hq-ver-chip {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 99px;
+  color: color-mix(in srgb, var(--accent-theme) 95%, var(--ink));
+  background: color-mix(in srgb, var(--accent-theme) 16%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--accent-theme) 40%, transparent);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
 .brand-text h1 {
   margin: 0;
   font-family: var(--font-display);
@@ -3618,6 +3650,9 @@ input, textarea, select, button { font-size: inherit; }
   .brand-logo { height: 34px; max-width: min(140px, 48vw); }
   .brand-text h1 { font-size: 1.05rem; line-height: 1.15; }
   .brand-text .sub { display: none; }
+  /* Version must stay visible even when subtitle is hidden */
+  .hq-ver-badge { font-size: 0.52rem; padding: 0.1rem 0.38rem; }
+  .hq-ver-chip { font-size: 0.58rem; }
 
   .topbar-meta {
     order: 3;

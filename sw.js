@@ -1,6 +1,6 @@
 /* Give A Bit HQ — service worker (network-only for app shell; no stale HTML/JS) */
-const HQ_SW_VERSION = "3.23.0";
-const CACHE = "hq-cache-v3.23.0";
+const HQ_SW_VERSION = "3.24.1";
+const CACHE = "hq-cache-v3.24.1";
 
 /** Never serve shell from cache — ops glass must always match deploy. */
 function isAppShell(url) {
