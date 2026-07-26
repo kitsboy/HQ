@@ -784,6 +784,7 @@
     loading: true,
     loadErrors: [],
     filter: "all",
+    sortBy: "name",
     search: "",
     feeds: {},
     renderFailures: {},
@@ -1272,6 +1273,14 @@
     `;
     document.getElementById("btn-export-diligence")?.addEventListener("click", exportDiligence);
     document.getElementById("btn-goto-money")?.addEventListener("click", () => setTab("money"));
+    // Stat card click handlers for drill-down modals
+    el.querySelectorAll(".stat")?.forEach(card => {
+      const lbl = card.querySelector(".l")?.textContent?.toLowerCase().trim() || "";
+      if (lbl.includes("suite live")) card.addEventListener("click", (e) => { if (!e.target.closest("a,button")) showStatDetail("suite-live"); });
+      else if (lbl.includes("attention")) card.addEventListener("click", (e) => { if (!e.target.closest("a,button")) showStatDetail("attention"); });
+      else if (lbl === "thor" || lbl.startsWith("thor")) card.addEventListener("click", (e) => { if (!e.target.closest("a,button")) showStatDetail("thor-detail"); });
+      else if (lbl.includes("data depth")) card.addEventListener("click", (e) => { if (!e.target.closest("a,button")) showStatDetail("depth-detail"); });
+    });
     bindTooltips();
   }
 
@@ -1282,6 +1291,21 @@
     const n = Object.values(keys).filter((k) => k && String(k).trim()).length;
     chip.textContent = n ? `vault ${n} keys` : "vault empty";
     chip.className = "status-pill " + (n ? "sky" : "muted");
+    updateAttentionBell();
+  }
+
+  function updateAttentionBell() {
+    const bell = document.getElementById("attention-bell");
+    if (!bell) return;
+    const sites = (state.status && state.status.sites) || {};
+    const down = Object.values(sites).filter(s => s.ok === false).length;
+    if (down > 0) {
+      bell.innerHTML = `<span class="status-pill red" style="cursor:pointer;font-size:0.65rem" data-tip="${down} site(s) need attention" id="attention-bell-btn"><i class="fa-solid fa-bell"></i> ${down}</span>`;
+    } else {
+      bell.innerHTML = `<span class="status-pill muted" style="font-size:0.65rem"><i class="fa-regular fa-bell"></i></span>`;
+    }
+    const btn = document.getElementById("attention-bell-btn");
+    if (btn) btn.addEventListener("click", () => { setTab("cards"); const f = document.querySelector('[data-filter="attention"]'); if (f) f.click(); });
   }
 
   function renderTicker() {
@@ -4008,9 +4032,11 @@
       if (e.key === "Escape") {
         closeDrawer();
         document.getElementById("vault-modal")?.classList.remove("open");
+        document.getElementById("shortcuts-modal")?.classList.remove("open");
+        document.getElementById("tab-search-modal")?.classList.remove("open");
       }
       if (e.target.matches("input,textarea,select")) return;
-      // Number shortcuts (existing 1-9 + 0)
+      // Number shortcuts (1-9 + 0)
       const numMap = {
         1: "cards", 2: "list", 3: "metrics", 4: "analytics", 5: "pipeline",
         6: "network", 7: "matrix", 8: "activity", 9: "ecosystem", 0: "concert",
@@ -4018,12 +4044,22 @@
       if (numMap[e.key]) setTab(numMap[e.key]);
       if (e.key === "r") bootstrap();
       if (e.key === "e") exportDiligence();
-      // Alphabet tab shortcuts — lower/upper both accepted
+      // ? opens shortcuts cheat sheet
+      if (e.key === "?" && !e.shiftKey) {
+        e.preventDefault();
+        showShortcutsModal();
+      }
+      // / or Ctrl+K opens tab search
+      if (e.key === "/" || (e.ctrlKey && e.key.toLowerCase() === "k")) {
+        e.preventDefault();
+        showTabSearch();
+      }
+      // Alphabet tab shortcuts
       const keyLc = e.key.toLowerCase();
       const letterMap = {
         s: "system", m: "money", w: "wallets", d: "docs",
         a: "agents", i: "intel", f: "feed", c: "charts",
-        t: "chat", v: "vault",
+        t: "chat", v: "vault", h: "handoffs",
       };
       if (letterMap[keyLc]) setTab(letterMap[keyLc]);
       // Shift+ArrowLeft/ArrowRight for prev/next tab
@@ -4037,6 +4073,163 @@
         tabs[next].click();
       }
     });
+
+
+
+  /* ── Stat card drill-down modals ── */
+  function showStatDetail(id) {
+    const modals = {
+      "suite-live": () => {
+        const sites = (state.status && state.status.sites) || {};
+        const rows = Object.entries(sites).map(([pid, s]) => {
+          const p = state.projects.find(x => x.id === pid);
+          const color = accentFor(pid);
+          const health = s.ok === true ? '<span class="status-pill green" style="font-size:0.6rem">ok</span>' : s.ok === false ? '<span class="status-pill red" style="font-size:0.6rem">down</span>' : '<span class="status-pill amber" style="font-size:0.6rem">—</span>';
+          return `<tr><td style="padding:0.3rem 0.5rem"><span style="color:${escAttr(color)}">${esc(p ? p.name : pid)}</span></td><td style="padding:0.3rem 0.5rem">${health}</td><td class="mono" style="padding:0.3rem 0.5rem;font-size:0.75rem">${s.ms != null ? s.ms + "ms" : "—"}</td><td style="padding:0.3rem 0.5rem;font-size:0.72rem;color:var(--ink-faint)">${esc(s.url || "")}</td></tr>`;
+        }).join("");
+        return `<table style="width:100%;border-collapse:collapse"><thead><tr style="font-size:0.7rem;color:var(--ink-faint);text-transform:uppercase"><th style="padding:0.3rem 0.5rem;text-align:left">Site</th><th style="padding:0.3rem 0.5rem;text-align:left">Status</th><th style="padding:0.3rem 0.5rem;text-align:left">Latency</th><th style="padding:0.3rem 0.5rem;text-align:left">URL</th></tr></thead><tbody>${rows}</tbody></table>`;
+      },
+      "attention": () => {
+        const sites = (state.status && state.status.sites) || {};
+        const down = Object.entries(sites).filter(([, s]) => s.ok === false);
+        if (!down.length) return '<div style="text-align:center;padding:1rem"><div style="font-size:2rem;margin-bottom:0.5rem">✅</div><p style="color:var(--ink-dim)">All sites healthy. No attention items.</p></div>';
+        return down.map(([pid, s]) => {
+          const p = state.projects.find(x => x.id === pid);
+          return `<div style="padding:0.5rem;margin-bottom:0.3rem;background:color-mix(in srgb,var(--surface-2)50%,transparent);border-radius:6px;border-left:3px solid #ef4444"><strong>${esc(p ? p.name : pid)}</strong><div class="mono" style="font-size:0.72rem;color:var(--ink-faint)">${esc(s.url || "")} · status ${s.status || "—"}</div></div>`;
+        }).join("");
+      },
+      "thor-detail": () => {
+        const td = (state.thor && state.thor.ok && state.thor.data) || {};
+        const node = td.node || {};
+        const btc = td.bitcoin || {};
+        const lnd = td.lightning || {};
+        const host = td.host || {};
+        const svcs = (node.services || []).map(s => `<div style="display:flex;align-items:center;gap:0.4rem;padding:0.3rem 0;border-bottom:1px solid var(--surface-2)"><span class="status-pill ${s.status === "green" ? "green" : "amber"}" style="font-size:0.55rem">${esc(s.status)}</span><span style="font-size:0.78rem">${esc(s.id)}</span><span class="mono" style="font-size:0.65rem;color:var(--ink-faint);margin-left:auto">${esc(s.detail || "")}</span></div>`).join("");
+        return `<div class="mb-2"><strong>Node:</strong> ${esc(node.hostLabel || "THOR")} · ${esc(node.region || "")} · ${esc(node.stack || "")}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.75rem">
+          <div class="panel" style="padding:0.5rem"><div class="mono" style="font-size:0.6rem;color:var(--ink-faint)">UPTIME</div><div style="font-size:1rem;font-weight:700">${node.uptimeSec ? Math.round(node.uptimeSec / 86400) + "d" : "—"}</div></div>
+          <div class="panel" style="padding:0.5rem"><div class="mono" style="font-size:0.6rem;color:var(--ink-faint)">BLOCK</div><div style="font-size:1rem;font-weight:700">${btc.blocks || "—"}</div></div>
+          <div class="panel" style="padding:0.5rem"><div class="mono" style="font-size:0.6rem;color:var(--ink-faint)">PEERS</div><div style="font-size:1rem;font-weight:700">${lnd.numPeers ?? "—"}</div></div>
+          <div class="panel" style="padding:0.5rem"><div class="mono" style="font-size:0.6rem;color:var(--ink-faint)">ON-CHAIN</div><div style="font-size:1rem;font-weight:700">${lnd.walletBalanceSats != null ? fmtNum(lnd.walletBalanceSats, "sats") : "—"}</div></div>
+        </div>
+        <div class="mono" style="font-size:0.65rem;color:var(--ink-faint);margin-bottom:0.4rem">SERVICES (${svcs.split("</div>").length - 1} total)</div>
+        ${svcs || '<div class="mono" style="font-size:0.75rem;color:var(--ink-faint)">No service data</div>'}`;
+      },
+      "depth-detail": () => {
+        const rows = state.projects.map(p => {
+          const m = state.metrics[p.id];
+          const d = m && m.ok ? depthScore(m.data, false) : 0;
+          const color = accentFor(p.id);
+          const cat = d >= 70 ? "deep" : d > 0 ? "partial" : "empty";
+          const catColor = d >= 70 ? "var(--green)" : d > 0 ? "#f59e0b" : "var(--ink-faint)";
+          const bar = `<div style="height:6px;background:var(--surface-2);border-radius:3px;overflow:hidden;margin-top:0.2rem"><div style="height:100%;width:${d}%;background:${escAttr(color)};border-radius:3px"></div></div>`;
+          return `<tr><td style="padding:0.3rem 0.5rem"><span style="color:${escAttr(color)}">${esc(p.name)}</span></td><td style="padding:0.3rem 0.5rem"><span style="color:${escAttr(catColor)}">${esc(d)}</span></td><td style="padding:0.3rem 0.5rem"><span class="status-pill" style="font-size:0.55rem;background:${escAttr(catColor)}22;color:${escAttr(catColor)}">${esc(cat)}</span></td><td style="padding:0.3rem 0.5rem;width:120px">${bar}</td></tr>`;
+        }).join("");
+        return `<table style="width:100%;border-collapse:collapse"><thead><tr style="font-size:0.7rem;color:var(--ink-faint);text-transform:uppercase"><th style="padding:0.3rem 0.5rem;text-align:left">Project</th><th style="padding:0.3rem 0.5rem;text-align:left">Depth</th><th style="padding:0.3rem 0.5rem;text-align:left">Category</th><th style="padding:0.3rem 0.5rem;text-align:left">Bar</th></tr></thead><tbody>${rows}</tbody></table>`;
+      },
+    };
+    const fn = modals[id];
+    if (!fn) return;
+    const content = fn();
+    let m = document.getElementById("stat-detail-modal");
+    if (!m) {
+      m = document.createElement("div");
+      m.id = "stat-detail-modal";
+      m.className = "modal-backdrop";
+      m.setAttribute("role", "dialog");
+      m.setAttribute("aria-modal", "true");
+      m.style.zIndex = "1200";
+      document.body.appendChild(m);
+    }
+    const labels = { "suite-live": "Suite Live — Per-Site Status", "attention": "Attention Items", "thor-detail": "THOR Node Detail", "depth-detail": "Data Depth — Per Project" };
+    m.innerHTML = `<div class="modal-card" style="max-width:560px">
+      <div class="mh"><h2>${esc(labels[id] || id)}</h2><button type="button" class="btn btn-icon btn-ghost" onclick="document.getElementById('stat-detail-modal').classList.remove('open')"><i class="fa-solid fa-xmark"></i></button></div>
+      <div class="mb" style="max-height:60vh;overflow-y:auto">${content}</div>
+      <div class="mf"><button type="button" class="btn btn-ghost" onclick="document.getElementById('stat-detail-modal').classList.remove('open')">Close</button></div>
+    </div>`;
+    m.classList.add("open");
+  }
+
+  /* ── Shortcuts cheat sheet modal ── */
+  function showShortcutsModal() {
+    let m = document.getElementById("shortcuts-modal");
+    if (!m) {
+      m = document.createElement("div");
+      m.id = "shortcuts-modal";
+      m.className = "modal-backdrop";
+      m.setAttribute("role", "dialog");
+      m.setAttribute("aria-modal", "true");
+      m.setAttribute("aria-label", "Shortcuts");
+      m.style.zIndex = "1200";
+      document.body.appendChild(m);
+    }
+    const tabs = Object.entries(TAB_DISPLAY_NAMES).map(([id, label]) => {
+      let key = "";
+      const numMap = {cards:"1", list:"2", metrics:"3", analytics:"4", pipeline:"5", network:"6", matrix:"7", activity:"8", ecosystem:"9", concert:"0"};
+      const letterMap = {system:"s", money:"m", wallets:"w", docs:"d", agents:"a", intel:"i", feed:"f", charts:"c", chat:"t", vault:"v", handoffs:"h"};
+      key = numMap[id] || letterMap[id] || "";
+      return `<tr><td class="mono" style="padding:0.2rem 0.5rem;background:var(--surface-2);border-radius:4px;font-size:0.75rem">${key}</td><td style="padding:0.2rem 0.5rem;font-size:0.8rem">${esc(label)}</td></tr>`;
+    }).join("");
+    m.innerHTML = `<div class="modal-card" style="max-width:420px">
+      <div class="mh"><h2>Keyboard Shortcuts</h2><button type="button" class="btn btn-icon btn-ghost" onclick="document.getElementById('shortcuts-modal').classList.remove('open')"><i class="fa-solid fa-xmark"></i></button></div>
+      <div class="mb">
+        <table style="width:100%;border-collapse:collapse">${tabs}</table>
+        <hr style="margin:0.75rem 0;border-color:var(--surface-2)">
+        <table style="width:100%;border-collapse:collapse">
+          <tr><td class="mono" style="padding:0.2rem 0.5rem;background:var(--surface-2);border-radius:4px;font-size:0.75rem">/</td><td style="padding:0.2rem 0.5rem;font-size:0.8rem">Search tabs</td></tr>
+          <tr><td class="mono" style="padding:0.2rem 0.5rem;background:var(--surface-2);border-radius:4px;font-size:0.75rem">?</td><td style="padding:0.2rem 0.5rem;font-size:0.8rem">This cheat sheet</td></tr>
+          <tr><td class="mono" style="padding:0.2rem 0.5rem;background:var(--surface-2);border-radius:4px;font-size:0.75rem">r</td><td style="padding:0.2rem 0.5rem;font-size:0.8rem">Refresh all data</td></tr>
+          <tr><td class="mono" style="padding:0.2rem 0.5rem;background:var(--surface-2);border-radius:4px;font-size:0.75rem">e</td><td style="padding:0.2rem 0.5rem;font-size:0.8rem">Export diligence</td></tr>
+          <tr><td class="mono" style="padding:0.2rem 0.5rem;background:var(--surface-2);border-radius:4px;font-size:0.75rem">Shift+←→</td><td style="padding:0.2rem 0.5rem;font-size:0.8rem">Previous / next tab</td></tr>
+          <tr><td class="mono" style="padding:0.2rem 0.5rem;background:var(--surface-2);border-radius:4px;font-size:0.75rem">Esc</td><td style="padding:0.2rem 0.5rem;font-size:0.8rem">Close drawer / modal</td></tr>
+          <tr><td class="mono" style="padding:0.2rem 0.5rem;background:var(--surface-2);border-radius:4px;font-size:0.75rem">v</td><td style="padding:0.2rem 0.5rem;font-size:0.8rem">Open vault</td></tr>
+        </table>
+      </div>
+      <div class="mf"><button type="button" class="btn btn-ghost" onclick="document.getElementById('shortcuts-modal').classList.remove('open')">Close</button></div>
+    </div>`;
+    m.classList.add("open");
+  }
+
+  /* ── Tab search overlay (Cmd+K or /) ── */
+  function showTabSearch() {
+    let m = document.getElementById("tab-search-modal");
+    if (!m) {
+      m = document.createElement("div");
+      m.id = "tab-search-modal";
+      m.className = "modal-backdrop";
+      m.setAttribute("role", "dialog");
+      m.setAttribute("aria-modal", "true");
+      m.setAttribute("aria-label", "Tab search");
+      m.style.zIndex = "1200";
+      document.body.appendChild(m);
+    }
+    const tabList = Object.entries(TAB_DISPLAY_NAMES).map(([id, label]) => ({ id, label, search: label.toLowerCase() }));
+    m.innerHTML = `<div class="modal-card" style="max-width:360px">
+      <div class="mh"><h2>Jump to tab</h2></div>
+      <div class="mb" style="padding:0.5rem">
+        <input id="tab-search-input" type="text" placeholder="Type tab name…" autofocus style="width:100%;padding:0.4rem 0.6rem;background:var(--surface-2);border:1px solid var(--surface-3);border-radius:6px;color:var(--ink);font-size:0.9rem" />
+        <div id="tab-search-results" style="margin-top:0.5rem;max-height:300px;overflow-y:auto"></div>
+      </div>
+    </div>`;
+    m.classList.add("open");
+    const input = document.getElementById("tab-search-input");
+    if (input) {
+      input.focus();
+      input.addEventListener("input", () => {
+        const q = input.value.toLowerCase().trim();
+        const results = document.getElementById("tab-search-results");
+        if (!q) { results.innerHTML = tabList.map(t => `<button type="button" class="doc-item" data-tab-jump="${escAttr(t.id)}" style="width:100%;text-align:left;font-size:0.8rem">${esc(t.label)}</button>`).join(""); return; }
+        const matches = tabList.filter(t => t.search.includes(q)).slice(0, 12);
+        results.innerHTML = matches.length ? matches.map(t => `<button type="button" class="doc-item" data-tab-jump="${escAttr(t.id)}" style="width:100%;text-align:left;font-size:0.8rem">${esc(t.label)}</button>`).join("") : `<div class="mono" style="font-size:0.75rem;color:var(--ink-faint);padding:0.5rem">No matches</div>`;
+      });
+      m.querySelectorAll("[data-tab-jump]").forEach(b => b.addEventListener("click", () => { setTab(b.dataset.tabJump); m.classList.remove("open"); }));
+      // Delegate clicks from dynamically created items
+      document.getElementById("tab-search-results")?.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-tab-jump]");
+        if (btn) { setTab(btn.dataset.tabJump); m.classList.remove("open"); }
+      });
+    }
+  }
 
     bootstrap();
     // Live pulse: refresh status + thor + live metrics every 5 min, countdown chip
