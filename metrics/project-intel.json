@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-26T02:30:36Z",
+  "checked_at": "2026-07-26T05:00:40Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -40,7 +40,7 @@
         "chore: update handoff after SuperSession",
         "fix(pages): drop metrics 302 so static metrics.json is serve"
       ],
-      "commits_7d": 40,
+      "commits_7d": 38,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "7bd2759",
-        "message": "chore: thor auto-metrics 02:30 (live LND)",
+        "sha": "f9917ba",
+        "message": "chore: thor auto-metrics 05:00 (live LND)",
         "author": "Cam (via Aider)",
-        "date": "2026-07-26T02:30:10Z",
-        "url": "https://github.com/kitsboy/HQ/commit/7bd275905f65baeb3da32482170a0b8fe6c406c2"
+        "date": "2026-07-26T05:00:08Z",
+        "url": "https://github.com/kitsboy/HQ/commit/f9917ba7c726b4d4c14f286e060d7d1aa1dec400"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 02:30 (live LND)",
-        "chore: refresh metrics bundle 02:15 (5/5 OK) + pulse delta",
-        "chore: thor auto-metrics 02:15 (live LND)"
+        "chore: thor auto-metrics 05:00 (live LND)",
+        "chore: thor auto-metrics 04:45 (live LND)",
+        "chore: thor auto-metrics 04:45 (live LND)"
       ],
       "commits_7d": 100,
       "health": "green",
