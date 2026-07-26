@@ -1,3 +1,10 @@
+### 2026-07-26 — M4 is back in the game 🎉
+
+**Machine update:** M4 (cams-macbook-air-1, Tailscale 100.71.46.84) rebuilt and live. Travel laptop now mirrors M3 — Grok coding locally, pushes to GitHub. Hermes Desktop (Brave install-as-app) connects to THOR backend via SSH tunnel. Both M3 + M4 code; no CLI on M4.
+
+**For Kimi next session:**
+- Read MACHINE-ECOSYSTEM.md in MASTER-BRAIN/01-Architecture/
+
 ### 2026-07-24 — SuperSession: HQ v4, auto-deploy, template v2, ambient
 
 **What was built:**
