@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-27T04:45:01Z",
+ "updatedAt": "2026-07-27T04:45:56Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -39,7 +39,7 @@
     "detail": "Up 7 days (healthy)"
    }
   ],
-  "uptimeSec": 884901
+  "uptimeSec": 884955
  },
  "bitcoin": {
   "ok": true,
@@ -464,7 +464,7 @@
      "v": 0
     },
     {
-     "t": "2026-07-27T04:45:01Z",
+     "t": "2026-07-27T04:45:56Z",
      "v": 0
     }
    ]
@@ -856,7 +856,7 @@
      "v": 0
     },
     {
-     "t": "2026-07-27T04:45:01Z",
+     "t": "2026-07-27T04:45:56Z",
      "v": 0
     }
    ]
@@ -1248,8 +1248,8 @@
      "v": 0.07
     },
     {
-     "t": "2026-07-27T04:45:01Z",
-     "v": 0.09
+     "t": "2026-07-27T04:45:56Z",
+     "v": 0.17
     }
    ]
   },
@@ -1640,8 +1640,8 @@
      "v": 6.3
     },
     {
-     "t": "2026-07-27T04:45:01Z",
-     "v": 6.6
+     "t": "2026-07-27T04:45:56Z",
+     "v": 6.4
     }
    ]
   },
@@ -2032,7 +2032,7 @@
      "v": 959782
     },
     {
-     "t": "2026-07-27T04:45:01Z",
+     "t": "2026-07-27T04:45:56Z",
      "v": 959783
     }
    ]
@@ -2068,14 +2068,14 @@
   },
   "memory": {
    "totalGB": 7.8,
-   "usedGB": 6.6,
-   "freeGB": 0.2,
-   "availableGB": 1.2
+   "usedGB": 6.4,
+   "freeGB": 0.3,
+   "availableGB": 1.3
   },
   "cpu": {
-   "loadAvg1m": 0.09,
-   "loadAvg5m": 0.13,
-   "loadAvg15m": 0.15,
+   "loadAvg1m": 0.17,
+   "loadAvg5m": 0.16,
+   "loadAvg15m": 0.16,
    "uptimeDays": 10.2
   },
   "docker": {
@@ -2086,7 +2086,7 @@
   },
   "breakdownGB": {
    "MASTER-BRAIN_vault": 0.696,
-   "Hermes_skills_config": 0.966,
+   "Hermes_skills_config": 0.968,
    "satohash_repo": 0.021,
    "HQ_repo": 0.013,
    "LND_data": 0.343,
@@ -2100,10 +2100,10 @@
   "diskUsedGB": 30,
   "diskFreeGB": 358,
   "memTotalGB": 7.8,
-  "memUsedGB": 6.6,
-  "load1": 0.09,
-  "load5": 0.13,
-  "load15": 0.15,
+  "memUsedGB": 6.4,
+  "load1": 0.17,
+  "load5": 0.16,
+  "load15": 0.16,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
