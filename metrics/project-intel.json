@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-27T23:00:28Z",
+  "checked_at": "2026-07-27T23:15:28Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "411dfc0",
-        "message": "chore: thor auto-metrics 23:00 (live LND)",
+        "sha": "8ad480f",
+        "message": "chore: thor auto-metrics 23:15 (live LND)",
         "author": "Cam (via Aider)",
-        "date": "2026-07-27T23:00:11Z",
-        "url": "https://github.com/kitsboy/HQ/commit/411dfc0fe6722dfb07e0ec189902346e1a7ab8c9"
+        "date": "2026-07-27T23:15:10Z",
+        "url": "https://github.com/kitsboy/HQ/commit/8ad480f628648eda7a1f1e325fc53a7a63ccdb31"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 23:00 (live LND)",
-        "chore: refresh metrics bundle 22:45 (5/5 scripts OK) [skip d",
-        "chore: thor auto-metrics 22:45 (live LND)"
+        "chore: thor auto-metrics 23:15 (live LND)",
+        "Merge branch 'main' of github.com:kitsboy/HQ",
+        "chore: refresh metrics bundle 23:07 (5/5 scripts OK) + pulse"
       ],
       "commits_7d": 100,
       "health": "green",
@@ -85,7 +85,7 @@
         "chore: update ROADMAP.md per project template"
       ],
       "commits_7d": 15,
-      "health": "green",
+      "health": "red",
       "cf_project": "katoa",
       "open_issues": 0
     },
