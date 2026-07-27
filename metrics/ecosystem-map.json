@@ -1,6 +1,6 @@
 {
   "schema": "gab.ecosystem-map.v1",
-  "updatedAt": "2026-07-27T02:00:45Z",
+  "updatedAt": "2026-07-27T03:16:00Z",
   "projects": [
     {
       "id": "satohash",
@@ -160,10 +160,10 @@
     {
       "id": "m4",
       "name": "M4",
-      "role": "DEPRECATED \u2014 reference only",
+      "role": "Code + Grok (Mac) — travel machine",
       "host": "MacBook Air M4",
-      "status": "gray",
-      "lastSeen": "2026-07-17"
+      "status": "green",
+      "lastSeen": "2026-07-27"
     }
   ],
   "agents": [
@@ -177,7 +177,7 @@
     {
       "id": "grok",
       "name": "Grok",
-      "role": "Code + Git on M3",
+      "role": "Code + Git on M3 & M4",
       "host": "M3",
       "status": "green"
     },
