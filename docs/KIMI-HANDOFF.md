@@ -74,10 +74,11 @@ sherpacarta wallet → LNbits proxy → HQ Money tab
 | **Build generator** | ✅ live | `scripts/generate-metrics.mjs` → `npm run metrics` → CI |
 | **Umami site-wide** | ✅ live | Beacon on all 29 HTML pages, `analytics.giveabit.io` proxy OK |
 | **wallet `sherpacarta`** | ✅ wired | `wallets.json` v2 `hqWalletId`, HQ `projects.json` key |
+| **NIP-05 `sherpa@giveabit.io`** | ✅ **live** | Published to giveabit.io (commit `bea71e8`). Grok: flip `nip05Status` → live |
 | **HQ demo envelope** | ✅ killed | Replaced with accurate stub (4 signers / 0.00012884 BTC) |
 | **HQ live origin guard** | ✅ done | `hq.js` rejects `raw.demo===true` when live candidates exist |
 | **HQ Umami overlay** | ✅ wired | `fetchUmamiStats()` → sky pill visitors/bounce on card |
-| **CF analytics** | ✅ dropped | Removed from puller — Umami covers analytics for sherpacarta |
+| **CF analytics** | ✅ dropped | Removed from puller — Umami covers analytics |
 | **LNURL/lud16 public** | ⬜ pending | No Lightning receive on site yet |
 | **Nostr signer publish** | ⬜ future | Local browser signatures stay local unless Nostr-published |
 
