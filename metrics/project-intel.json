@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-27T00:15:40Z",
+  "checked_at": "2026-07-27T00:45:40Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -40,7 +40,7 @@
         "docs: M4 back in game \u2014 machine ecosystem update",
         "learn: OTS deep learn from DGI.io tutorial + automation enha"
       ],
-      "commits_7d": 33,
+      "commits_7d": 32,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "331103e",
-        "message": "chore: thor auto-metrics 00:15 (live LND)",
+        "sha": "07b67d9",
+        "message": "chore: thor auto-metrics 00:45 (live LND)",
         "author": "Cam (via Aider)",
-        "date": "2026-07-27T00:15:05Z",
-        "url": "https://github.com/kitsboy/HQ/commit/331103e819a6d2187e482a80bea2cf01afcf1480"
+        "date": "2026-07-27T00:45:04Z",
+        "url": "https://github.com/kitsboy/HQ/commit/07b67d9f6f0f64f17fa30ecd9660f49cfce66a65"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 00:15 (live LND)",
-        "docs: sherpa@giveabit.io NIP-05 published \u2014 flip nip05Status",
-        "auto-metrics: THOR VPS snapshot 2026-07-27T00:10:33Z"
+        "chore: thor auto-metrics 00:45 (live LND)",
+        "chore: thor auto-metrics 00:31 (live LND)",
+        "chore: refresh status.json + thor-node [skip deploy]"
       ],
       "commits_7d": 100,
       "health": "green",
@@ -161,18 +161,18 @@
       "repo": "kitsboy/sherpacarta",
       "site_url": "https://sherpacarta.org",
       "last_commit": {
-        "sha": "6c977f7",
-        "message": "chore: mark sherpa@giveabit.io NIP-05 live after Kimi publish",
+        "sha": "03dbd6e",
+        "message": "copy: tighten /nostr footer note \u2014 professional and concise",
         "author": "Cam",
-        "date": "2026-07-27T00:13:34Z",
-        "url": "https://github.com/kitsboy/sherpacarta/commit/6c977f72bb46a11b4b37e6ac27ec776dd2395374"
+        "date": "2026-07-27T00:36:32Z",
+        "url": "https://github.com/kitsboy/sherpacarta/commit/03dbd6e0ecc72c124cd31bfac10e2845898f52cd"
       },
       "recent_commits": [
-        "chore: mark sherpa@giveabit.io NIP-05 live after Kimi publis",
-        "feat: public Nostr wall + sherpa@ guide plan (nsec never in ",
-        "feat: BUILD 734 flagship beauty lift \u2014 Digital Magna Carta U"
+        "copy: tighten /nostr footer note \u2014 professional and concise",
+        "fix: nostr page cursor + captivating Nostr education",
+        "feat: use Cam brand mark as browser favicon and app icons"
       ],
-      "commits_7d": 23,
+      "commits_7d": 27,
       "health": "green",
       "cf_project": "sherpacarta",
       "open_issues": 0
