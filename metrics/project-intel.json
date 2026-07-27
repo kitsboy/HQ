@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-27T04:00:44Z",
+  "checked_at": "2026-07-27T05:00:45Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -40,7 +40,7 @@
         "docs: stamp goodbye SHA 0d1c720",
         "docs: goodbye 2026-07-27 \u2014 stamp plane + Kimi L1/L2 wallet r"
       ],
-      "commits_7d": 38,
+      "commits_7d": 32,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "57a718d",
-        "message": "chore: thor auto-metrics 04:00 (live LND)",
+        "sha": "73c0e1d",
+        "message": "chore: thor auto-metrics 05:00 (live LND)",
         "author": "Cam (via Aider)",
-        "date": "2026-07-27T04:00:06Z",
-        "url": "https://github.com/kitsboy/HQ/commit/57a718d8c90cde4e025a1a29175b7176676fec20"
+        "date": "2026-07-27T05:00:07Z",
+        "url": "https://github.com/kitsboy/HQ/commit/73c0e1d66fbcc4eda97cfaa2ce278ce245cf2845"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 04:00 (live LND)",
-        "chore: thor auto-metrics 03:45 (live LND)",
-        "chore: thor auto-metrics 03:45 (live LND)"
+        "chore: thor auto-metrics 05:00 (live LND)",
+        "chore: thor auto-metrics 04:45 (live LND)",
+        "chore: thor auto-metrics 04:45 (live LND)"
       ],
       "commits_7d": 100,
       "health": "green",
@@ -161,18 +161,18 @@
       "repo": "kitsboy/sherpacarta",
       "site_url": "https://sherpacarta.org",
       "last_commit": {
-        "sha": "dbe6884",
-        "message": "fix: force Ambient removal past CDN/SW cache",
+        "sha": "a30c8f2",
+        "message": "chore: LATEST-UPDATE tip c44d263",
         "author": "Cam",
-        "date": "2026-07-27T03:59:46Z",
-        "url": "https://github.com/kitsboy/sherpacarta/commit/dbe688430aaddf32c3d88e1d755606863c1fc497"
+        "date": "2026-07-27T04:58:03Z",
+        "url": "https://github.com/kitsboy/sherpacarta/commit/a30c8f203f13e0941c0889bfa0e99c8ca9e1a765"
       },
       "recent_commits": [
-        "fix: force Ambient removal past CDN/SW cache",
-        "fix: remove unused Ambient mode control from home UI",
-        "feat: upgrade Canada join QR landing for paper-sheet handoff"
+        "chore: LATEST-UPDATE tip c44d263",
+        "chore: session goodbye \u2014 status, handoff, prep, LATEST-UPDAT",
+        "feat: polish Canada join QR landing for federal paper scans"
       ],
-      "commits_7d": 50,
+      "commits_7d": 53,
       "health": "green",
       "cf_project": "sherpacarta",
       "open_issues": 0
