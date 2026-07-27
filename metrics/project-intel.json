@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-27T05:00:45Z",
+  "checked_at": "2026-07-27T06:30:58Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -7,18 +7,18 @@
       "repo": "kitsboy/giveabit",
       "site_url": "https://giveabit.io",
       "last_commit": {
-        "sha": "bea71e8",
-        "message": "feat: add sherpa NIP-05 identity (sherpa@giveabit.io) for SherpaCarta product gu",
-        "author": "Cam (via Aider)",
-        "date": "2026-07-27T00:09:37Z",
-        "url": "https://github.com/kitsboy/giveabit/commit/bea71e8b26eea6a49088bde089c538827a7f1e7d"
+        "sha": "c5209d2",
+        "message": "docs: point Kimi to HQ MASTER LIST with Cam details",
+        "author": "Cam",
+        "date": "2026-07-27T05:17:05Z",
+        "url": "https://github.com/kitsboy/giveabit/commit/c5209d2aab9dd656655fa7e8b125d944cb1491de"
       },
       "recent_commits": [
-        "feat: add sherpa NIP-05 identity (sherpa@giveabit.io) for Sh",
-        "chore: update ROADMAP.md per project template",
-        "chore: update DESIGN.md per project template"
+        "docs: point Kimi to HQ MASTER LIST with Cam details",
+        "feat: Mission NIP-05 identity + sherpa@ in SPA registry (v4.",
+        "feat: add sherpa NIP-05 identity (sherpa@giveabit.io) for Sh"
       ],
-      "commits_7d": 13,
+      "commits_7d": 15,
       "health": "green",
       "cf_project": "giveabit",
       "open_issues": 0
@@ -29,18 +29,18 @@
       "repo": "kitsboy/satohash",
       "site_url": "https://satohash.io",
       "last_commit": {
-        "sha": "9804472",
-        "message": "docs: LATEST-UPDATE tip bcf5f47 goodbye",
+        "sha": "799ac62",
+        "message": "docs: point Kimi to HQ MASTER LIST (Cam priorities)",
         "author": "Cam",
-        "date": "2026-07-27T02:47:50Z",
-        "url": "https://github.com/kitsboy/satohash/commit/9804472677d86b86cb35ed0df953fa47d85b25c0"
+        "date": "2026-07-27T05:17:09Z",
+        "url": "https://github.com/kitsboy/satohash/commit/799ac62c21abf7e31915e4b5af863331b9b73304"
       },
       "recent_commits": [
+        "docs: point Kimi to HQ MASTER LIST (Cam priorities)",
         "docs: LATEST-UPDATE tip bcf5f47 goodbye",
-        "docs: stamp goodbye SHA 0d1c720",
-        "docs: goodbye 2026-07-27 \u2014 stamp plane + Kimi L1/L2 wallet r"
+        "docs: stamp goodbye SHA 0d1c720"
       ],
-      "commits_7d": 32,
+      "commits_7d": 28,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "73c0e1d",
-        "message": "chore: thor auto-metrics 05:00 (live LND)",
+        "sha": "7d3e01f",
+        "message": "chore: thor auto-metrics 06:30 (live LND)",
         "author": "Cam (via Aider)",
-        "date": "2026-07-27T05:00:07Z",
-        "url": "https://github.com/kitsboy/HQ/commit/73c0e1d66fbcc4eda97cfaa2ce278ce245cf2845"
+        "date": "2026-07-27T06:30:09Z",
+        "url": "https://github.com/kitsboy/HQ/commit/7d3e01f75a6d3f1871b4fd7063e8eac9fdef5aa8"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 05:00 (live LND)",
-        "chore: thor auto-metrics 04:45 (live LND)",
-        "chore: thor auto-metrics 04:45 (live LND)"
+        "chore: thor auto-metrics 06:30 (live LND)",
+        "chore: thor auto-metrics 06:16 (live LND)",
+        "chore: thor auto-metrics 06:15 (live LND)"
       ],
       "commits_7d": 100,
       "health": "green",
@@ -95,18 +95,18 @@
       "repo": "kitsboy/tadbuy",
       "site_url": "https://tadbuy.giveabit.io",
       "last_commit": {
-        "sha": "97bcd1c",
-        "message": "fix: prefix bare vite build with npx for Node 24 runner compat",
-        "author": "Cam (via Aider)",
-        "date": "2026-07-24T13:19:18Z",
-        "url": "https://github.com/kitsboy/tadbuy/commit/97bcd1ca9f0edb7b9c29c7777515d3bd64f8a8c9"
+        "sha": "18849e8",
+        "message": "docs: Option A done; point Kimi to HQ MASTER LIST",
+        "author": "Cam",
+        "date": "2026-07-27T05:17:15Z",
+        "url": "https://github.com/kitsboy/tadbuy/commit/18849e8ee4b53705d18c752bb307aa85b99892de"
       },
       "recent_commits": [
+        "docs: Option A done; point Kimi to HQ MASTER LIST",
         "fix: prefix bare vite build with npx for Node 24 runner comp",
-        "chore: update .ai_docs/current-status.md per project templat",
-        "chore: update ROADMAP.md per project template"
+        "chore: update .ai_docs/current-status.md per project templat"
       ],
-      "commits_7d": 36,
+      "commits_7d": 37,
       "health": "green",
       "cf_project": "tadbuy",
       "open_issues": 1
@@ -161,18 +161,18 @@
       "repo": "kitsboy/sherpacarta",
       "site_url": "https://sherpacarta.org",
       "last_commit": {
-        "sha": "a30c8f2",
-        "message": "chore: LATEST-UPDATE tip c44d263",
+        "sha": "785b03e",
+        "message": "docs: Kimi list \u2014 Cam asks, P0 LNURL, pointer to HQ master",
         "author": "Cam",
-        "date": "2026-07-27T04:58:03Z",
-        "url": "https://github.com/kitsboy/sherpacarta/commit/a30c8f203f13e0941c0889bfa0e99c8ca9e1a765"
+        "date": "2026-07-27T05:17:07Z",
+        "url": "https://github.com/kitsboy/sherpacarta/commit/785b03ebde5499c798c41e3a8758c007c2bbb8b5"
       },
       "recent_commits": [
-        "chore: LATEST-UPDATE tip c44d263",
-        "chore: session goodbye \u2014 status, handoff, prep, LATEST-UPDAT",
-        "feat: polish Canada join QR landing for federal paper scans"
+        "docs: Kimi list \u2014 Cam asks, P0 LNURL, pointer to HQ master",
+        "docs: suite truth \u2014 Mission/NIP-05 live; LNURL still Kimi",
+        "chore: LATEST-UPDATE tip c44d263"
       ],
-      "commits_7d": 53,
+      "commits_7d": 55,
       "health": "green",
       "cf_project": "sherpacarta",
       "open_issues": 0
