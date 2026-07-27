@@ -12,7 +12,7 @@ Ops on THOR was cleaned and automated. **You still own all code on M3** (`~/proj
 |---------|-----|------|
 | **M3** | Grok | Code only in `~/projects/` → push |
 | **THOR** | Kimi | Docker, LNbits/LND, crons, vault docs, HQ deploy |
-| **M4** | — | DEPRECATED |
+| **M4** | Grok | Code + push (travel Mac) — REBORN |
 
 ## What shipped on THOR (you need awareness)
 
