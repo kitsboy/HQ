@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-26T23:00:38Z",
+  "checked_at": "2026-07-27T00:00:40Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "b2f69a4",
-        "message": "docs: sharpen SherpaCarta tasks for Kimi (THOR-only actions)",
-        "author": "Cam (via Aider)",
-        "date": "2026-07-26T23:00:36Z",
-        "url": "https://github.com/kitsboy/HQ/commit/b2f69a4e8c2c35b57a355198202b833ac0545ee7"
+        "sha": "29790c4",
+        "message": "chore: refresh status.json [skip deploy]",
+        "author": "hq-status-bot",
+        "date": "2026-07-26T23:44:52Z",
+        "url": "https://github.com/kitsboy/HQ/commit/29790c43e54d16e65b6bf56198e3e1608d87dd69"
       },
       "recent_commits": [
-        "docs: sharpen SherpaCarta tasks for Kimi (THOR-only actions)",
-        "chore: thor auto-metrics 23:00 (live LND)",
-        "chore: update metrics batch [skip deploy]"
+        "chore: refresh status.json [skip deploy]",
+        "fix(hq): always-visible version badge + stamp on every push ",
+        "polish(hq): SherpaCarta card pass-2 micro-luxury"
       ],
       "commits_7d": 100,
       "health": "green",
@@ -161,18 +161,18 @@
       "repo": "kitsboy/sherpacarta",
       "site_url": "https://sherpacarta.org",
       "last_commit": {
-        "sha": "dd16923",
-        "message": "docs: stamp LATEST-UPDATE with metrics pipeline SHA",
+        "sha": "f8fa949",
+        "message": "feat: public Nostr wall + sherpa@ guide plan (nsec never in repo)",
         "author": "Cam",
-        "date": "2026-07-26T22:56:17Z",
-        "url": "https://github.com/kitsboy/sherpacarta/commit/dd169231fda91d2e0edc6877233b0688e31065dc"
+        "date": "2026-07-26T23:49:10Z",
+        "url": "https://github.com/kitsboy/sherpacarta/commit/f8fa9496f6d9c0ca30a36d0fcc9f879e91a80dd2"
       },
       "recent_commits": [
-        "docs: stamp LATEST-UPDATE with metrics pipeline SHA",
-        "feat: live real metrics for HQ (productId sherpacarta)",
-        "fix: prefix bare vite build with npx for Node 24 runner comp"
+        "feat: public Nostr wall + sherpa@ guide plan (nsec never in ",
+        "feat: BUILD 734 flagship beauty lift \u2014 Digital Magna Carta U",
+        "docs: acknowledge Kimi HQ close-out for sherpacarta metrics "
       ],
-      "commits_7d": 19,
+      "commits_7d": 22,
       "health": "green",
       "cf_project": "sherpacarta",
       "open_issues": 0

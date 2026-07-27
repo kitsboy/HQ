@@ -1,199 +1,199 @@
 {
-  "generated_at": "2026-07-26T23:00:48Z",
+  "generated_at": "2026-07-27T00:00:51Z",
   "events": [
     {
-      "time": 1785106846.0,
-      "type": "cron_warn",
-      "icon": "\u26a0\ufe0f",
-      "text": "en from GITHUB_TOKEN is not supported: Classic Personal Acce"
+      "time": 1785110450.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "al pool: no available entries (all exhausted or empty)"
     },
     {
-      "time": 1785106846.0,
-      "type": "cron_warn",
-      "icon": "\u26a0\ufe0f",
-      "text": "en validation failed: Token from `gh auth token` is a classi"
-    },
-    {
-      "time": 1785106846.0,
-      "type": "cron_warn",
-      "icon": "\u26a0\ufe0f",
-      "text": "en from GITHUB_TOKEN is not supported: Classic Personal Acce"
-    },
-    {
-      "time": 1785106846.0,
+      "time": 1785110450.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785106846.0,
+      "time": 1785110440.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
+      "text": "039] agent.turn_context: conversation turn: session=cron_776"
     },
     {
-      "time": 1785106845.0,
+      "time": 1785110440.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "(stream_request_complete, shared=False, tcp_force_closed=0)"
+      "text": "039] run_agent: OpenAI client created (chat_completion_reque"
     },
     {
-      "time": 1785106845.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "conversation_loop: API call #22: model=deepseek/deepseek-v4-"
-    },
-    {
-      "time": 1785106845.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "conversation_loop: Turn ended: reason=text_response(finish_r"
-    },
-    {
-      "time": 1785106840.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "tool_executor: tool terminal completed (3.49s, 271 chars)"
-    },
-    {
-      "time": 1785106840.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "d (chat_completion_stream_request, shared=False) thread=Thre"
-    },
-    {
-      "time": 1785106839.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "038] agent.turn_context: conversation turn: session=cron_776"
-    },
-    {
-      "time": 1785106839.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "038] run_agent: OpenAI client created (chat_completion_reque"
-    },
-    {
-      "time": 1785106838.0,
+      "time": 1785110439.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "or-metrics-export-hourly' (ID: 7768b5c5aa49)"
     },
     {
-      "time": 1785106838.0,
+      "time": 1785110439.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "ANT: You are running as a scheduled cron job. DELIVERY: Your"
     },
     {
-      "time": 1785106838.0,
+      "time": 1785110439.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "49': using workdir /root/hq"
     },
     {
-      "time": 1785106838.0,
+      "time": 1785110439.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "al pool: no available entries (all exhausted or empty)"
+    },
+    {
+      "time": 1785110439.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "auth: using NAS invoke JWT"
+    },
+    {
+      "time": 1785110439.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "49': loaded credential pool for provider nous with 1 entries"
     },
     {
-      "time": 1785106838.0,
+      "time": 1785110439.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "or-auto-metrics' (ID: 42cdc3e9bd97)"
     },
     {
-      "time": 1785106838.0,
+      "time": 1785110439.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "ANT: You are running as a scheduled cron job. DELIVERY: Your"
     },
     {
-      "time": 1785106838.0,
+      "time": 1785110439.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "d (agent_init, shared=True) thread=cron-seq_0:13269286360851"
     },
     {
-      "time": 1785106838.0,
+      "time": 1785110439.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "or-cron-health-hourly' (ID: bb5980d548fb)"
     },
     {
-      "time": 1785106838.0,
+      "time": 1785110439.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "ANT: You are running as a scheduled cron job. DELIVERY: Your"
     },
     {
-      "time": 1785106836.0,
+      "time": 1785110436.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "(stream_request_complete, shared=False, tcp_force_closed=0)"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785106836.0,
+      "time": 1785110435.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "conversation_loop: API call #21: model=deepseek/deepseek-v4-"
+      "text": "al pool: no available entries (all exhausted or empty)"
     },
     {
-      "time": 1785106832.0,
+      "time": 1785110435.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "(stream_request_complete, shared=False, tcp_force_closed=0)"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785106832.0,
+      "time": 1785110420.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "conversation_loop: API call #20: model=deepseek/deepseek-v4-"
+      "text": "al pool: no available entries (all exhausted or empty)"
     },
     {
-      "time": 1785106832.0,
+      "time": 1785110420.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "tool_executor: tool patch completed (0.13s, 2763 chars)"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785106832.0,
+      "time": 1785110406.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "d (chat_completion_stream_request, shared=False) thread=Thre"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785106824.0,
+      "time": 1785110405.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "conversation_loop: API call #19: model=deepseek/deepseek-v4-"
+      "text": "al pool: no available entries (all exhausted or empty)"
     },
     {
-      "time": 1785106824.0,
+      "time": 1785110405.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "tool_executor: tool read_file completed (0.06s, 570 chars)"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785106824.0,
+      "time": 1785110390.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "d (chat_completion_stream_request, shared=False) thread=Thre"
+      "text": "al pool: no available entries (all exhausted or empty)"
     },
     {
-      "time": 1785099636.0,
+      "time": 1785110390.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "auth: using NAS invoke JWT"
+    },
+    {
+      "time": 1785110376.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "auth: using NAS invoke JWT"
+    },
+    {
+      "time": 1785110375.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "al pool: no available entries (all exhausted or empty)"
+    },
+    {
+      "time": 1785110375.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "auth: using NAS invoke JWT"
+    },
+    {
+      "time": 1785110360.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "al pool: no available entries (all exhausted or empty)"
+    },
+    {
+      "time": 1785110360.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "auth: using NAS invoke JWT"
+    },
+    {
+      "time": 1785102550.0,
       "type": "commit",
       "icon": "\ud83d\udd28",
-      "text": "HQ Dashboard: docs: sharpen SherpaCarta tasks for Kimi (THOR-only actions)",
-      "repo": "hq"
-    },
-    {
-      "time": 1785099377.0,
-      "type": "commit",
-      "icon": "\ud83d\udd28",
-      "text": "Sherpacarta: docs: stamp LATEST-UPDATE with metrics pipeline SHA",
+      "text": "Sherpacarta: feat: public Nostr wall + sherpa@ guide plan (nsec never in ",
       "repo": "sherpacarta"
+    },
+    {
+      "time": 1785102292.0,
+      "type": "commit",
+      "icon": "\ud83d\udd28",
+      "text": "HQ Dashboard: chore: refresh status.json [skip deploy]",
+      "repo": "hq"
     },
     {
       "time": 1785095988.0,
