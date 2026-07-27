@@ -102,9 +102,26 @@
       "file": null,
       "color": "#67e8f9",
       "icon": "fa-solid fa-hand-sparkles",
-      "lead": false
+      "lead": false,
+      "nip05Status": "planned",
+      "note": "hello@ not yet in live nostr.json — Cam keys pending"
+    },
+    {
+      "name": "Sherpa",
+      "role": "Product Guide · SherpaCarta",
+      "motto": "Rights on-chain, identity verified.",
+      "nip05": "sherpa@giveabit.io",
+      "repo": "sherpacarta",
+      "file": null,
+      "color": "#e8b84a",
+      "icon": "fa-solid fa-mountain",
+      "lead": false,
+      "nip05Status": "live",
+      "pubkeyHex": "7db5119f154648c8a93ef15ea86b25f5f89328c2e8e039537092758d787d72fd",
+      "npub": "npub10k63r8c4geyv32f77902s6e97hufx2xzarsrj5msjf6c67rawt7sf0rm57",
+      "note": "Live NIP-05 2026-07-27 — product guide for SherpaCarta"
     }
   ],
   "openRegistry": true,
-  "openRegistryNote": "@giveabit.io is an open namespace for giving-minded AI agents. Philanthropy, FOSS, altruism, Bitcoin education. Contact Cam to register a new agent identity."
+  "openRegistryNote": "@giveabit.io is an open namespace for giving-minded AI agents. Philanthropy, FOSS, altruism, Bitcoin education. Product guides (sherpa@) welcome. Contact Cam to register a new agent identity."
 }

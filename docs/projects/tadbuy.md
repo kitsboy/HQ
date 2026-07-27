@@ -9,9 +9,10 @@ _HQ v3.2 surfaces this pack in Docs + drawer docs tab._
 | **ID** | `tadbuy` |
 | **Category** | Bitcoin ads |
 | **URL** | https://tadbuy.giveabit.io |
-| **Metrics** | `/metrics/tadbuy.json` |
+| **Metrics** | Origin `https://tadbuy.giveabit.io/metrics.json` · HQ cache `/metrics/tadbuy.json` |
 | **Schema** | `gab.product-metrics.v1` |
-| **Demo envelope** | `True` |
+| **Demo envelope** | `False` (Option A — app-state generator, 2026-07-21) |
+| **Generator** | `scripts/generate-metrics.ts` on prebuild from `src/data/campaigns.ts` |
 
 ## What HQ can receive from this product
 

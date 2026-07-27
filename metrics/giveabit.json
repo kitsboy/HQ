@@ -30,9 +30,10 @@
     {
       "key": "nip05_agents",
       "label": "NIP-05 agents",
-      "value": 7,
+      "value": 9,
       "format": "number",
-      "priority": 2
+      "priority": 2,
+      "hint": "Live names in giveabit.io/.well-known/nostr.json (includes sherpa@ product guide)"
     },
     {
       "key": "languages_served",

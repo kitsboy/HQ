@@ -1,58 +1,64 @@
-# Give A Bit Site — Mission Update (for Grok on M3)
+# Give A Bit Site — Mission Update
 
-The giveabit.io site needs its **Mission** section expanded to include the NIP-05 namespace vision for giving-minded AI agents.
+**Status (2026-07-27):** Shipping on giveabit repo — NIP-05 identity paragraph on homepage Mission + About pillars; `sherpa@` wired into SPA registry + well-known stubs.
 
-## What to update
+## What shipped / shipping
 
-### 1. Mission section (on giveabit.io)
+### 1. Mission section (homepage `Home.jsx`)
 
-Add a new paragraph after the existing mission text, something like:
+Added `mission.para5` + open-registry line after existing mission paragraphs:
 
-> **Beyond tools, we build identities.** The `@giveabit.io` NIP-05 namespace is an open registry for giving-minded AI agents — philanthropy, altruism, FOSS, Bitcoin sovereignty. Every agent carries its own Nostr keypair, signing every action with a verifiable identity. Soon, these agents will coordinate in a self-hosted Buzz workspace on THOR — a Nostr-native workspace where humans and agents build together, with signed audit trails and decentralized identity. If an agent is `@giveabit.io`, its actions are verifiable, auditable, and belong to the giving ecosystem.
+> **Beyond tools, we build identities.** The `@giveabit.io` NIP-05 namespace is an open registry for giving-minded AI agents — philanthropy, altruism, FOSS, Bitcoin sovereignty. Every agent carries its own Nostr keypair… Product guides like `sherpa@giveabit.io` live here too. Soon, Buzz on THOR…
 
-### 2. Update the namespace section
+CTA row: Projects · Trusted Namespace · Join the Movement.
 
-The existing "Trusted Identity" section on the giveabit.io homepage already references NIP-05. Update the count from "8 agents" to "9 agents" (added Cam + Hello). Also add a short tagline:
+### 2. About page
 
-> **An open namespace.** New giving-minded agents can be added on request. Contact Cam.
+- Fourth mission pillar: *Beyond tools: identities*
+- Agent count **nine** (includes Sherpa product guide)
+- Sherpa agent card + link to sherpacarta.org/nostr
 
-### 3. Mission page
+### 3. Namespace registry (source of truth)
 
-If giveabit.io has a standalone /mission page, update it with the expanded vision.
+| File | Change |
+|------|--------|
+| `src/data/namespaceRegistry.js` | + sherpa product-live |
+| `src/data/agentPubkeys.js` | + sherpa hex pubkey |
+| `public/.well-known/nostr.json` | already live (bea71e8) |
+| `public/.well-known/namespace.json` | v1.3.0 + sherpa + openRegistry |
+| DID / lnurlp stubs | generated for sherpa |
 
-## Current agent roster (9)
+### 4. HQ
 
-| NIP-05 | Agent | Role |
-|--------|-------|------|
-| kimi@giveabit.io | Kimi | Lead Orchestrator |
-| cam@giveabit.io | Cam | Principal |
-| hello@giveabit.io | Hello | Front Desk |
-| andrea@giveabit.io | Andrea | Ops & Diligence |
-| lenny@giveabit.io | Lenny | Legal & Compliance |
-| mimi@giveabit.io | Mimi | Design & Brand |
-| nova@giveabit.io | Nova | Infra & Deploys |
-| rosa@giveabit.io | Rosa | Community & Nostr |
-| ziggy@giveabit.io | Ziggy | Growth & Marketing |
+- `agents.json` — Sherpa entry (`nip05Status: live`)
+- `handoff/state.json` — truth catch-up
+- `docs/NEXT-STEPS.md` — reordered after Sherpa/Satohash/Tadbuy ships
 
-## Files likely to change
+## Agent roster (truth)
 
-- `index.html` or main page template — Mission section
-- `namespace.html` or `/namespace` page — agent listing
-- Any mission/vision page
-- `.well-known/nostr.json` — NIP-05 resolution file (if Cam + Hello need keys added)
+| NIP-05 | In live nostr.json? | Notes |
+|--------|---------------------|--------|
+| cam@, kimi@, mimi@, andrea@, lenny@, rosa@, ziggy@, nova@ | yes | original eight |
+| **sherpa@** | **yes** | product guide 2026-07-27 |
+| hello@ | no | Cam keys still needed |
 
-## Already done on THOR
+## Still open (not Mission)
 
-- `/root/hq/agents.json` — updated to v3 with namespace vision metadata, Cam + Hello added
-- `/root/hq/hq.js` — Agents tab in HQ now shows a namespace banner
-- `/root/hq/docs/projects/giveabit.md` — expanded with NIP-05 namespace + Buzz plan
-- `/root/hq/docs/BUZZ-PLAN.md` — written (see separate file)
+| Item | Owner |
+|------|--------|
+| Public LNURL for sherpacarta | Kimi |
+| LNbits HTTPS harden | Nova |
+| hello@ NIP-05 | Cam |
+| Buzz deploy | Kimi when v1 stable |
 
-## Buzz plan status
+## Verify after deploy
 
-- **Not deployed.** Weekly watch cron (`buzz-watch`, Sat 10:00) tracks block/buzz releases.
-- Target: deploy on THOR when v1 stable releases. No earlier.
+1. https://giveabit.io/#home-mission — identity paragraph visible  
+2. https://giveabit.io/about — nine agents, Sherpa card  
+3. https://giveabit.io/.well-known/nostr.json?name=sherpa — resolves  
+4. https://giveabit.io/.well-known/namespace.json — users includes sherpa  
+5. https://giveabit.io/.well-known/lnurlp/sherpa — 200 after CF deploy  
 
 ---
 
-*Handoff from Kimi (THOR) for Grok (M3) — 2026-07-24*
+*Original handoff Kimi 2026-07-24 · Implemented Grok 2026-07-27*

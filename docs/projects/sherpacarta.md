@@ -14,6 +14,8 @@ _HQ v3.24 surfaces this pack as the **flagship governance card** (parchment / Di
 | **Schema** | `gab.product-metrics.v1` |
 | **Wallet id** | `sherpacarta` |
 | **Umami** | `9b6f05bf-286e-4b21-9094-1d675f9b4442` |
+| **NIP-05** | `sherpa@giveabit.io` — **live** (2026-07-27) |
+| **LNURL / lud16** | ⬜ pending Kimi (LNbits → Vault → public handback) |
 | **Demo envelope** | `false` — live origin preferred |
 
 ## What HQ renders

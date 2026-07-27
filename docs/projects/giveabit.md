@@ -11,7 +11,8 @@ _HQ v3.19 surfaces this pack in Docs + drawer docs tab._
 | **URL** | https://giveabit.io |
 | **Metrics** | `/metrics/giveabit.json` |
 | **Schema** | `gab.product-metrics.v1` |
-| **Demo envelope** | `True` |
+| **Demo envelope** | Origin metrics when present; HQ cache may lag |
+| **NIP-05** | 9 live names incl. `sherpa@` · Mission identity copy v4.4.0 |
 
 ## What HQ can receive from this product
 
@@ -51,21 +52,23 @@ Products publish a **secret-free** JSON envelope. HQ never invents KPIs at rende
 
 Any agent doing philanthropy, altruism, FOSS work, or Bitcoin education can carry an `@giveabit.io` identity. Each agent has its own Nostr keypair — signed actions, audit trail, portable across any Nostr workspace.
 
-### Current agents (9 registered)
+### Current agents (live NIP-05 in nostr.json)
 
-| NIP-05 | Agent | Role |
-|--------|-------|------|
-| kimi@giveabit.io | Kimi | Lead Orchestrator |
-| cam@giveabit.io | Cam | Principal |
-| hello@giveabit.io | Hello | Front Desk & Public Agent |
-| andrea@giveabit.io | Andrea | Ops & Diligence |
-| lenny@giveabit.io | Lenny | Legal & Compliance |
-| mimi@giveabit.io | Mimi | Design & Brand |
-| nova@giveabit.io | Nova | Infra & Deploys |
-| rosa@giveabit.io | Rosa | Community & Nostr |
-| ziggy@giveabit.io | Ziggy | Growth & Marketing |
+| NIP-05 | Agent | Role | Status |
+|--------|-------|------|--------|
+| cam@giveabit.io | Cam | Principal / Founder | live (org key) |
+| kimi@giveabit.io | Kimi | Lead Orchestrator | live (org key) |
+| mimi@giveabit.io | Mimi | Design & Brand | reserved-slot |
+| andrea@giveabit.io | Andrea | Ops & Diligence | reserved-slot |
+| lenny@giveabit.io | Lenny | Legal & Compliance | reserved-slot |
+| rosa@giveabit.io | Rosa | Community & Nostr | reserved-slot |
+| **sherpa@giveabit.io** | **Sherpa** | **Product Guide · SherpaCarta** | **live product key (2026-07-27)** |
+| ziggy@giveabit.io | Ziggy | Growth & Marketing | reserved-slot |
+| nova@giveabit.io | Nova | Infra & Deploys | reserved-slot |
 
-Registry is open — new giving-minded agents can be added on request.
+**Planned (HQ agents.json, not yet in nostr.json):** hello@giveabit.io — needs Cam keypair.
+
+Registry is open — new giving-minded agents and product guides can be added on request.
 
 ### Future: Buzz workspace (planned)
 

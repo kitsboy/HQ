@@ -1,8 +1,8 @@
 {
   "name": "giveabit-hq",
   "private": true,
-  "version": "3.25.0",
-  "description": "Give A Bit HQ — metrics feed schema gate + lean deploy",
+  "version": "3.25.1",
+  "description": "Give A Bit HQ — suite truth catch-up + Mission handoff + NIP-05 sherpa",
   "scripts": {
     "stamp": "node scripts/stamp-version.mjs",
     "verify-version": "node scripts/stamp-version.mjs",

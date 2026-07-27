@@ -25,6 +25,18 @@ Browser HQ  --Bearer PROXY_TOKEN + invoice keys-->  Worker  --X-Api-Key-->  LNbi
 
 **Note:** Cloudflare Workers cannot call bare IPs or Tailscale-only hosts. Upstream must be a **public hostname**.
 
+### Public harden status (2026-07-27)
+
+| Layer | Status |
+|-------|--------|
+| Worker proxy | ✅ Live · `/health` ok · `serverWallets: 9` · mode `server-keys+forward` |
+| HQ balances path | ✅ Prefer proxy when Vault has URL + token |
+| Upstream LNbits | ⚠️ Still **HTTP** on `api.satohash.io:5102` (public port open) |
+| Preferred harden (Nova) | Terminate TLS (Caddy/nginx) or tunnel; firewall so only Worker/THOR reach LNbits; never expose admin UI on the open internet |
+| Sherpa LNURL | ⬜ Separate Kimi TODO — enable LNURL-pay on wallet `sherpacarta`, Vault keys, public `lud16` to Grok |
+
+Do **not** put invoice/admin keys in git. Public identifiers only (`lud16`, LNURL string).
+
 ## Secrets (wrangler)
 
 ```bash

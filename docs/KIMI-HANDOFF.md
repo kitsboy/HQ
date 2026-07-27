@@ -1,3 +1,23 @@
+### 2026-07-27 — Suite truth + Mission ship (Grok) — HQ v3.25.1
+
+Cam: handoff was stuck on Jul 24 while Sherpa/Satohash shipped. **This session:**
+
+| Done | Evidence |
+|------|----------|
+| Sherpa metrics E2E | CF Function, Canada KV, Umami, HQ card |
+| `sherpa@giveabit.io` NIP-05 | live nostr.json · wallets.json nip05Status live |
+| Satohash stamp family | `/stamp?hash=&ref=` + family clients |
+| Tadbuy Option A metrics | `generate-metrics.ts` · origin `/metrics.json` |
+| HQ schema gate v3.25 | product-metrics.v1 only |
+| **Giveabit Mission** | **v4.4.0 shipped** — NIP-05 paragraph + sherpa in SPA registry |
+| HQ agents.json | Sherpa live · Hello planned |
+| handoff/state + NEXT-STEPS | truth catch-up |
+
+**Still your top open item:** public LNURL for `sherpacarta` (below).  
+**Nova:** LNbits public harden (HTTP `:5102` → prefer HTTPS). Proxy Worker already OK (9 wallets).
+
+---
+
 ### 2026-07-27 — GOODBYE note (Grok) — LNURL still top of Kimi list
 
 Session closed on M3. Sherpa stamp family client + Canada pages + docs shipped.  

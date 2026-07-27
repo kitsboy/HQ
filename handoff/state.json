@@ -1,85 +1,132 @@
 {
   "schema": "gab.handoff.v1",
-  "updatedAt": "2026-07-24T18:30:00.000000Z",
+  "updatedAt": "2026-07-27T05:30:00.000Z",
   "agents": {
     "grok": {
-      "lastSeen": "2026-07-24T18:30:00.000Z",
-      "focus": "giveabit.io mission update",
+      "lastSeen": "2026-07-27T05:30:00.000Z",
+      "focus": "giveabit Mission + suite truth catch-up",
       "notes": [
         {
-          "t": "2026-07-24T18:30:00.000Z",
-          "summary": "Handoff 2026-07-24: NIP-05 namespace vision + Buzz research. agents.json v3, HQ agents banner, BUZZ-PLAN.md, GIVEABIT-MISSION-UPDATE.md created. Next: Grok update giveabit.io Mission."
+          "t": "2026-07-27T05:30:00.000Z",
+          "summary": "Catch-up: Sherpa metrics/Canada/stamp live; sherpa@ NIP-05 live; Satohash stamp family done; Tadbuy Option A metrics done; Mission NIP-05 copy + sherpa in giveabit registry in flight. LNURL still Kimi."
         }
       ],
-      "nextAction": "Update giveabit.io Mission to include NIP-05 namespace for giving-minded agents. See docs/GIVEABIT-MISSION-UPDATE.md in HQ repo."
+      "nextAction": "After Kimi lud16 handback → publish sherpacarta wallets.json. Optional: Tadbuy metrics from Supabase."
     },
     "kimi": {
-      "lastSeen": "2026-07-24T18:30:00.000Z",
-      "focus": "buzz-watch + NIP-05 registry",
+      "lastSeen": "2026-07-27T00:00:00.000Z",
+      "focus": "LNURL sherpacarta + THOR ops",
       "notes": [
         {
-          "t": "2026-07-24T18:30:00.000Z",
-          "summary": "Session 2026-07-24: Buzz research complete. Weekly watch cron running. NIP-05 namespace expanded to 9 agents. Buzz deploy planned for v1 stable."
+          "t": "2026-07-27T00:00:00.000Z",
+          "summary": "Top open: public LNURL for wallet sherpacarta via LNbits → Vault keys → public lud16 to Grok. Nostr bot THOR optional."
         }
       ],
-      "lastRun": "2026-07-24T18:30:00.000Z"
+      "lastRun": "2026-07-27T01:15:00.000Z"
     }
   },
   "ownership": {
     "kitsboy/HQ": "grok",
     "kitsboy/giveabit": "grok",
+    "kitsboy/sherpacarta": "grok",
     "kitsboy/satohash": "shared",
+    "kitsboy/tadbuy": "grok",
     "metrics-schema": "grok-define / kimi-publish",
     "thor-node-json": "nova-publish / grok-display",
     "giveabit-lnbits-proxy": "grok",
     "lnbits-proxy": "grok",
-    "giveabit-nip05-namespace": "grok-mission / kimi-registry / cam-keys"
+    "lnbits-public-harden": "nova",
+    "sherpacarta-lnurl": "kimi-setup / grok-publish-public-only",
+    "giveabit-nip05-namespace": "grok-mission / kimi-ops / cam-keys"
   },
   "blockers": [
     {
+      "id": "sherpacarta-lnurl",
+      "owner": "kimi",
+      "detail": "Public LNURL/lud16 for wallet sherpacarta — LNbits + Vault; hand public values to Grok. Site still lud16:null."
+    },
+    {
       "id": "lnbits-public-harden",
       "owner": "nova",
-      "detail": "LNbits :5102 public HTTP — firewall/tunnel/HTTPS preferred"
+      "detail": "LNbits still HTTP :5102 on api.satohash.io — prefer HTTPS tunnel/firewall. Proxy Worker already healthy."
     },
     {
-      "id": "giveabit-mission-update",
-      "owner": "grok",
-      "detail": "Giveabit.io Mission needs NIP-05 namespace expansion. Spec at docs/GIVEABIT-MISSION-UPDATE.md"
-    },
-    {
-      "id": "cam-nip05-keys",
+      "id": "cam-hello-nip05",
       "owner": "cam",
-      "detail": "Need Nostr keypairs for cam@giveabit.io and hello@giveabit.io for .well-known/nostr.json"
+      "detail": "hello@giveabit.io listed in HQ agents but not yet in live nostr.json — needs keypair"
+    }
+  ],
+  "shipped": [
+    {
+      "id": "sherpa-metrics-live",
+      "at": "2026-07-27",
+      "detail": "CF Function metrics.json, Canada feed, Umami, HQ elite card, wallets.json v2"
+    },
+    {
+      "id": "sherpa-nip05",
+      "at": "2026-07-27",
+      "detail": "sherpa@giveabit.io live in nostr.json (bea71e8)"
+    },
+    {
+      "id": "satohash-stamp-family",
+      "at": "2026-07-27",
+      "detail": "Stamp deep-links, family client, API stampUrl"
+    },
+    {
+      "id": "tadbuy-option-a",
+      "at": "2026-07-21",
+      "detail": "generate-metrics.ts from app state; origin /metrics.json live"
+    },
+    {
+      "id": "hq-v325-schema-gate",
+      "at": "2026-07-27",
+      "detail": "gab.product-metrics.v1 only + lean deploy"
     }
   ],
   "next": [
     {
       "id": "giveabit-mission-update",
       "owner": "grok",
-      "title": "Update giveabit.io Mission — NIP-05 namespace for giving-minded agents"
+      "title": "Mission NIP-05 identity — shipped giveabit v4.4.0",
+      "status": "done"
     },
     {
-      "id": "cam-nip05-keys",
-      "owner": "cam",
-      "title": "Generate Nostr keypairs for cam@giveabit.io + hello@giveabit.io"
+      "id": "sherpacarta-lnurl",
+      "owner": "kimi",
+      "title": "Public LNURL for sherpacarta via LNbits → Vault → lud16 handback"
+    },
+    {
+      "id": "lnbits-public-harden",
+      "owner": "nova",
+      "title": "HTTPS / firewall for LNbits upstream (keep Worker proxy)"
     },
     {
       "id": "cam-vault-verify",
       "owner": "cam",
-      "title": "Vault keys on hq.giveabit.io — confirm Money tab live"
+      "title": "Vault invoice keys on hq.giveabit.io — Money tab live"
+    },
+    {
+      "id": "tadbuy-metrics-backend",
+      "owner": "grok",
+      "title": "Later: metrics generator from Supabase not seed campaigns"
     },
     {
       "id": "buzz-deploy",
       "owner": "kimi",
-      "title": "Deploy Buzz on THOR when v1 stable releases — currently watching"
+      "title": "Deploy Buzz on THOR when v1 stable — watching"
     }
   ],
   "history": [
     {
+      "at": "2026-07-27T05:30:00.000Z",
+      "agent": "grok",
+      "summary": "Truth catch-up after Sherpa/Satohash ship wave. Mission update started. LNURL + LNbits harden remain open."
+    },
+    {
       "at": "2026-07-24T18:30:00.000Z",
       "agent": "kimi",
-      "summary": "NIP-05 namespace vision for giving-minded agents. 9 agents registered. Buzz research complete — weekly watch running. Giveabit.io Mission update needed from Grok."
+      "summary": "NIP-05 namespace vision. Buzz research. Mission update needed from Grok."
     }
   ],
-  "lastAgent": "kimi"
+  "lastAgent": "grok"
 }
