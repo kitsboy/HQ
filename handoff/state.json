@@ -1,62 +1,104 @@
 {
   "schema": "gab.handoff.v1",
-  "updatedAt": "2026-07-27T05:30:00.000Z",
+  "updatedAt": "2026-07-27T06:15:00.000Z",
   "agents": {
     "grok": {
-      "lastSeen": "2026-07-27T05:30:00.000Z",
-      "focus": "giveabit Mission + suite truth catch-up",
+      "lastSeen": "2026-07-27T06:15:00.000Z",
+      "focus": "Kimi master list + Cam details in handoffs",
       "notes": [
         {
-          "t": "2026-07-27T05:30:00.000Z",
-          "summary": "Catch-up: Sherpa metrics/Canada/stamp live; sherpa@ NIP-05 live; Satohash stamp family done; Tadbuy Option A metrics done; Mission NIP-05 copy + sherpa in giveabit registry in flight. LNURL still Kimi."
+          "t": "2026-07-27T06:15:00.000Z",
+          "summary": "Full Kimi MASTER LIST in docs/KIMI-HANDOFF.md with Cam priorities, P0 LNURL, P1 bot, P2 crons, done-table, machines, handback format. Mission+Sherpa/Satohash already shipped."
         }
       ],
-      "nextAction": "After Kimi lud16 handback → publish sherpacarta wallets.json. Optional: Tadbuy metrics from Supabase."
+      "nextAction": "After Kimi lud16 handback → publish sherpacarta wallets.json (public only)."
     },
     "kimi": {
-      "lastSeen": "2026-07-27T00:00:00.000Z",
-      "focus": "LNURL sherpacarta + THOR ops",
+      "lastSeen": "2026-07-27T06:15:00.000Z",
+      "focus": "P0 sherpacarta LNURL → Vault → public lud16 handback",
       "notes": [
         {
-          "t": "2026-07-27T00:00:00.000Z",
-          "summary": "Top open: public LNURL for wallet sherpacarta via LNbits → Vault keys → public lud16 to Grok. Nostr bot THOR optional."
+          "t": "2026-07-27T06:15:00.000Z",
+          "summary": "Cam list: (1) LNURL sherpacarta P0 (2) Sherpa Nostr bot P1 (3) crons/Buzz P2 (4) LNbits harden with Nova. Read HQ docs/KIMI-HANDOFF.md MASTER LIST."
         }
       ],
-      "lastRun": "2026-07-27T01:15:00.000Z"
+      "nextAction": "Enable LNURL-pay/LUD-16 on LNbits wallet sherpacarta; Vault invoice key; hand public lud16 to Grok/Cam.",
+      "priorityList": [
+        "P0: public LNURL/lud16 for wallet sherpacarta",
+        "P1: Sherpa Nostr bot on THOR (sherpa@ nsec only)",
+        "P2: cron path fixes (email digest, vault stale-ref)",
+        "P2: LNbits HTTPS harden with Nova",
+        "P2: Buzz deploy when v1 stable (buzz-watch)"
+      ]
+    },
+    "cam": {
+      "role": "Principal / Founder",
+      "nip05": "cam@giveabit.io",
+      "contact": "hello@giveabit.io",
+      "owns": [
+        "Vault invoice keys + proxy token",
+        "CF Access / secrets",
+        "hello@ Nostr keypair generation",
+        "Priorities and MP e-### timing"
+      ],
+      "preferences": [
+        "Less-chat: OPS-PULSE / HQ glass over status spam",
+        "No secrets in git",
+        "Bitcoin sovereignty first",
+        "Honest metrics (no fake KPIs / no campaign=Parliament)"
+      ]
+    },
+    "nova": {
+      "focus": "LNbits public harden — HTTPS/firewall for :5102",
+      "nextAction": "TLS terminate + restrict public LNbits; keep giveabit-lnbits-proxy upstream reachable"
     }
   },
   "ownership": {
     "kitsboy/HQ": "grok",
     "kitsboy/giveabit": "grok",
-    "kitsboy/sherpacarta": "grok",
+    "kitsboy/sherpacarta": "grok-code / kimi-ops-lnurl-bot",
     "kitsboy/satohash": "shared",
     "kitsboy/tadbuy": "grok",
     "metrics-schema": "grok-define / kimi-publish",
     "thor-node-json": "nova-publish / grok-display",
     "giveabit-lnbits-proxy": "grok",
-    "lnbits-proxy": "grok",
     "lnbits-public-harden": "nova",
     "sherpacarta-lnurl": "kimi-setup / grok-publish-public-only",
-    "giveabit-nip05-namespace": "grok-mission / kimi-ops / cam-keys"
+    "sherpacarta-nostr-bot": "kimi-deploy / cam-nsec-offline",
+    "giveabit-nip05-namespace": "grok-mission / cam-keys / kimi-ops"
   },
   "blockers": [
     {
       "id": "sherpacarta-lnurl",
       "owner": "kimi",
+      "priority": "P0",
       "detail": "Public LNURL/lud16 for wallet sherpacarta — LNbits + Vault; hand public values to Grok. Site still lud16:null."
     },
     {
       "id": "lnbits-public-harden",
       "owner": "nova",
-      "detail": "LNbits still HTTP :5102 on api.satohash.io — prefer HTTPS tunnel/firewall. Proxy Worker already healthy."
+      "priority": "P2",
+      "detail": "LNbits still HTTP :5102 on api.satohash.io — prefer HTTPS tunnel/firewall. Proxy Worker healthy (9 wallets)."
     },
     {
       "id": "cam-hello-nip05",
       "owner": "cam",
-      "detail": "hello@giveabit.io listed in HQ agents but not yet in live nostr.json — needs keypair"
+      "priority": "P2",
+      "detail": "hello@giveabit.io not in live nostr.json — needs keypair from Cam"
+    },
+    {
+      "id": "cam-vault-keys",
+      "owner": "cam",
+      "priority": "P1",
+      "detail": "Confirm HQ Vault has invoice keys for Money tab (sherpacarta, tadbuy, suite)"
     }
   ],
   "shipped": [
+    {
+      "id": "giveabit-mission-v440",
+      "at": "2026-07-27",
+      "detail": "Mission NIP-05 identity + sherpa SPA registry — giveabit a545c40"
+    },
     {
       "id": "sherpa-metrics-live",
       "at": "2026-07-27",
@@ -65,7 +107,7 @@
     {
       "id": "sherpa-nip05",
       "at": "2026-07-27",
-      "detail": "sherpa@giveabit.io live in nostr.json (bea71e8)"
+      "detail": "sherpa@giveabit.io live in nostr.json"
     },
     {
       "id": "satohash-stamp-family",
@@ -85,42 +127,58 @@
   ],
   "next": [
     {
-      "id": "giveabit-mission-update",
-      "owner": "grok",
-      "title": "Mission NIP-05 identity — shipped giveabit v4.4.0",
-      "status": "done"
-    },
-    {
       "id": "sherpacarta-lnurl",
       "owner": "kimi",
+      "priority": "P0",
       "title": "Public LNURL for sherpacarta via LNbits → Vault → lud16 handback"
     },
     {
-      "id": "lnbits-public-harden",
-      "owner": "nova",
-      "title": "HTTPS / firewall for LNbits upstream (keep Worker proxy)"
+      "id": "sherpacarta-nostr-bot",
+      "owner": "kimi",
+      "priority": "P1",
+      "title": "Deploy Sherpa Nostr bot on THOR (approve mode first)"
     },
     {
       "id": "cam-vault-verify",
       "owner": "cam",
+      "priority": "P1",
       "title": "Vault invoice keys on hq.giveabit.io — Money tab live"
     },
     {
-      "id": "tadbuy-metrics-backend",
-      "owner": "grok",
-      "title": "Later: metrics generator from Supabase not seed campaigns"
+      "id": "lnbits-public-harden",
+      "owner": "nova",
+      "priority": "P2",
+      "title": "HTTPS / firewall for LNbits upstream"
+    },
+    {
+      "id": "cron-hygiene",
+      "owner": "kimi",
+      "priority": "P2",
+      "title": "Fix email digest path + vault stale-ref cron warns"
     },
     {
       "id": "buzz-deploy",
       "owner": "kimi",
+      "priority": "P2",
       "title": "Deploy Buzz on THOR when v1 stable — watching"
+    },
+    {
+      "id": "tadbuy-metrics-backend",
+      "owner": "grok",
+      "priority": "later",
+      "title": "Metrics generator from Supabase not seed campaigns"
     }
   ],
   "history": [
     {
+      "at": "2026-07-27T06:15:00.000Z",
+      "agent": "grok",
+      "summary": "Kimi MASTER LIST with full Cam details, P0–P2, done-table, machines, handback format. All handoffs synced."
+    },
+    {
       "at": "2026-07-27T05:30:00.000Z",
       "agent": "grok",
-      "summary": "Truth catch-up after Sherpa/Satohash ship wave. Mission update started. LNURL + LNbits harden remain open."
+      "summary": "Truth catch-up after Sherpa/Satohash ship wave. Mission shipped giveabit v4.4.0."
     },
     {
       "at": "2026-07-24T18:30:00.000Z",
@@ -128,5 +186,20 @@
       "summary": "NIP-05 namespace vision. Buzz research. Mission update needed from Grok."
     }
   ],
-  "lastAgent": "grok"
+  "lastAgent": "grok",
+  "cam": {
+    "name": "Cam",
+    "role": "Principal",
+    "email": "hello@giveabit.io",
+    "nip05Live": "cam@giveabit.io",
+    "nip05Planned": ["hello@giveabit.io"],
+    "hq": "https://hq.giveabit.io",
+    "hub": "https://giveabit.io",
+    "asksNow": [
+      "Sherpacarta public LNURL via LNbits + Vault; public lud16 to Grok",
+      "Do not re-open finished Sherpa/Satohash/Mission work",
+      "LNbits harden (Nova)",
+      "Optional Sherpa Nostr bot on THOR"
+    ]
+  }
 }

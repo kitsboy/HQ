@@ -1,46 +1,194 @@
+# KIMI — MASTER LIST (Cam + Grok) · 2026-07-27
+
+**Read this first every THOR session.** Full Cam priorities, your open work, what is already done (do not re-open), machines, secrets rules, and handback format.
+
+Live mirrors: `handoff/state.json` · `docs/NEXT-STEPS.md` · `docs/KIMI-GROK-HANDOFF.md`  
+Product requests: sherpacarta `docs/KIMI-REQUEST-LNURL.md` · `docs/KIMI-REQUEST-SHERPA-BOT.md`
+
+---
+
+## Cam — principal (who he is / how he wants work)
+
+| | |
+|--|--|
+| **Name / role** | Cam · Principal / Founder · Give A Bit family |
+| **NIP-05** | `cam@giveabit.io` (org key live in nostr.json) · **planned:** dedicated key + `hello@giveabit.io` |
+| **Contact** | `hello@giveabit.io` · suite front door |
+| **HQ** | https://hq.giveabit.io (gate + browser Vault — secrets never in git) |
+| **Hub** | https://giveabit.io |
+| **Code machines** | **M3** + **M4** (travel) — Grok codes locally → `git push`; both may push |
+| **Ops machine** | **THOR** — you (Kimi) · Docker, LNbits/LND, crons, vault docs, Hermes |
+| **Less-chat** | Prefer OPS-PULSE / morning Telegram / HQ glass over status spam. One clear handoff entry per session. |
+| **Hard rules** | No secrets/keys/macaroons in git · no invoice/admin keys in public docs · Safe Harbour / zero KYC · Bitcoin sovereignty first |
+| **Labeling** | `sherpacarta` productId always lowercase · never mix campaign signers with Parliamentary e-### counts |
+
+### Cam’s current asks (in his words / intent)
+
+1. **Public Lightning for SherpaCarta** — set up via **LNbits**; keys only in **HQ Vault**; give Grok/Cam the **public** `lud16`/LNURL so the site can publish.  
+2. **Keep truth current** — lots shipped on Sherpa + Satohash + NIP-05; don’t re-open finished work.  
+3. **LNbits public harden** (with Nova) — prefer HTTPS/firewall; not plain HTTP forever.  
+4. **Optional next:** Sherpa Nostr bot on THOR (`sherpa@` key only).  
+5. **When free:** cron nits (email digest path, vault stale-ref) + Buzz when v1 stable.
+
+### Cam still owns (not you unless asked)
+
+| Item | Notes |
+|------|--------|
+| HQ Vault invoice keys | Confirm Money tab live for suite wallets (`sherpacarta`, `tadbuy`, etc.) |
+| Nostr keypairs | `hello@giveabit.io` (and dedicated `cam@` if splitting from org key) → hand pubkeys to Grok for nostr.json |
+| MP e-### / politics | Canada sponsor when ready |
+| CF Access / secrets | Dashboard, proxy token rotation |
+
+---
+
+## Kimi — prioritized open list (do these)
+
+### P0 — TOP (Cam explicit)
+
+#### 1. Public LNURL for wallet `sherpacarta`
+**Status:** ⬜ open · site `lud16: null` · lightning.status `pending`  
+**Full request:** `kitsboy/sherpacarta` → `docs/KIMI-REQUEST-LNURL.md`
+
+| Step | Action |
+|------|--------|
+| A | LNbits: confirm wallet id **`sherpacarta`** · enable **LNURL-pay / LUD-16** |
+| B | Invoice/read key → **HQ Vault** only (`hq.giveabit.io`) — never git/chat if avoidable |
+| C | 1-sat smoke receive |
+| D | Hand Grok/Cam **public only** (paste format below) |
+| E | Grok publishes `sherpacarta.org` `wallets.json` + removes TEMP LN copy |
+
+**Handback paste (public only):**
+```
+LNURL public ready:
+- lud16: …
+- lnurl (if any): …
+- walletId: sherpacarta
+- test: [yes/no paid 1 sat]
+- do NOT put in git: invoice/admin keys
+Grok: update public/data/wallets.json lightning.lud16 + remove TEMP placeholders
+```
+
+### P1 — product / identity
+
+#### 2. Sherpa Nostr guide bot on THOR
+**Status:** ⬜ open · package on main  
+**Request:** `docs/KIMI-REQUEST-SHERPA-BOT.md` · package `packages/sherpa-nostr-bot/`  
+**Key:** nsec for `sherpa@` only (pubkey `7db5119f…`) · THOR secrets · never git  
+**Week 1:** `SHERPA_APPROVE=1` (log only) → then live replies on mentions
+
+#### 3. Optional: satohash-api `client_id` segments
+**Status:** ⬜ optional · for HQ family_share chart when stamps accumulate  
+**Note:** API/metrics already live; only if stamp history needs client segments.
+
+### P2 — THOR ops hygiene
+
+#### 4. Cron warn fixes
+| Job / issue | Action |
+|-------------|--------|
+| Email digest `b6a4e3710d9d` | Script path missing (`send_digest.py` / hermes path) — fix path or pause |
+| Vault stale-ref `560e38829acf` | M4 leftover refs in Architecture docs — scrub or retune check |
+| Paused job `34c2181c2737` | Confirm intentional |
+
+#### 5. LNbits public harden (own with **Nova**)
+| Layer | Status |
+|-------|--------|
+| Worker proxy | ✅ `giveabit-lnbits-proxy` · 9 server wallets · `server-keys+forward` |
+| Upstream | ⚠️ still **HTTP** `http://api.satohash.io:5102` |
+| Prefer | TLS terminate + firewall so LNbits isn’t raw public HTTP; keep Worker path |
+
+#### 6. Buzz workspace
+**Status:** ⬜ watching · `buzz-watch` cron Sat 10:00  
+**Deploy only** when block/buzz v1 stable · plan: HQ `docs/BUZZ-PLAN.md`
+
+---
+
+## DONE — do not re-open as P0
+
+| Item | Evidence |
+|------|----------|
+| SherpaCarta metrics E2E | CF Function `/metrics.json`, Canada KV, Umami site-wide, HQ elite card |
+| Canada mandate + join QR | `/canada/sign`, `/canada/join`, dual-track honesty |
+| Satohash stamp family | `/stamp?hash=&ref=`, family clients, API health + metrics |
+| **NIP-05 `sherpa@giveabit.io`** | ✅ live in giveabit `nostr.json` · wallets.json `nip05Status: live` |
+| Giveabit Mission + registry | ✅ v4.4.0 · NIP-05 identity paragraph · sherpa in SPA registry |
+| HQ metrics schema gate | ✅ v3.25 · `gab.product-metrics.v1` only |
+| Tadbuy Option A metrics | ✅ `generate-metrics.ts` · origin `/metrics.json` (seed SPA data) |
+| LNbits proxy Worker | ✅ live balances path when Vault set |
+| M4 back | ✅ travel laptop coding again (not deprecated) |
+
+### Live NIP-05 names (giveabit.io/.well-known/nostr.json)
+`cam`, `kimi`, `mimi`, `andrea`, `lenny`, `rosa`, **`sherpa`**, `ziggy`, `nova` (+ `_`)  
+**Not live yet:** `hello@` (Cam keys)
+
+### Wallet / identity contract (Sherpa)
+
+| Property | Value |
+|----------|-------|
+| productId | `sherpacarta` |
+| Display | **SherpaCarta** |
+| LNbits / HQ wallet | `sherpacarta` |
+| NIP-05 product guide | `sherpa@giveabit.io` ✅ |
+| Metrics | `https://sherpacarta.org/metrics.json` |
+| Umami | `9b6f05bf-286e-4b21-9094-1d675f9b4442` |
+| LNURL / lud16 | ⬜ you (P0) |
+
+---
+
+## Who owns what
+
+| Area | Owner |
+|------|--------|
+| Code in `~/Projects/*` → push | **Grok** (M3/M4) |
+| THOR Docker / LNbits / LND / crons | **Kimi** |
+| LNbits host HTTPS / firewall | **Nova** (+ Kimi) |
+| Secrets, Vault token, CF Access, NIP-05 key gen | **Cam** |
+| HQ glass + giveabit.io Mission/namespace | **Grok** |
+| Publish public lud16 on site after handback | **Grok** |
+| Satohash API runtime on THOR | **Kimi** / shared |
+
+### Machine roles (hard)
+
+| Machine | Who | Does |
+|---------|-----|------|
+| **M3 / M4** | Grok + Cam | Code only → `git push` · no SSH deploy of LNbits from laptops as primary path |
+| **THOR** | Kimi | Ops, wallets, crons, bots, vault docs |
+
+---
+
+## Session protocol for Kimi
+
+1. `git pull` relevant repos if you touch code; prefer ops on THOR.  
+2. Read **this master list** + product `KIMI-REQUEST-*.md` for active P0.  
+3. Do work · no secrets in git.  
+4. Append result at **top** of this file (and product handoff if needed).  
+5. If LNURL done: use handback paste · tag Grok for site publish.
+
+### Recent Grok commits (for orientation)
+
+| Repo | Tip theme |
+|------|-----------|
+| giveabit | `a545c40` Mission NIP-05 + sherpa registry v4.4.0 |
+| HQ | `fda87b9` suite truth + handoff v3.25.1 |
+| sherpacarta | handoff + Canada/metrics/stamp wave (main) |
+
+---
+
 ### 2026-07-27 — Suite truth + Mission ship (Grok) — HQ v3.25.1
 
-Cam: handoff was stuck on Jul 24 while Sherpa/Satohash shipped. **This session:**
-
-| Done | Evidence |
-|------|----------|
-| Sherpa metrics E2E | CF Function, Canada KV, Umami, HQ card |
-| `sherpa@giveabit.io` NIP-05 | live nostr.json · wallets.json nip05Status live |
-| Satohash stamp family | `/stamp?hash=&ref=` + family clients |
-| Tadbuy Option A metrics | `generate-metrics.ts` · origin `/metrics.json` |
-| HQ schema gate v3.25 | product-metrics.v1 only |
-| **Giveabit Mission** | **v4.4.0 shipped** — NIP-05 paragraph + sherpa in SPA registry |
-| HQ agents.json | Sherpa live · Hello planned |
-| handoff/state + NEXT-STEPS | truth catch-up |
-
-**Still your top open item:** public LNURL for `sherpacarta` (below).  
-**Nova:** LNbits public harden (HTTP `:5102` → prefer HTTPS). Proxy Worker already OK (9 wallets).
+Master list above is authoritative. Prior short entries retained for history.
 
 ---
 
 ### 2026-07-27 — GOODBYE note (Grok) — LNURL still top of Kimi list
 
-Session closed on M3. Sherpa stamp family client + Canada pages + docs shipped.  
-**Your open HQ/LNbits item remains:** public LNURL for wallet `sherpacarta` (entry below).  
+Session closed. **P0 remains:** public LNURL for wallet `sherpacarta`.  
 When done, hand `lud16` to Grok/Cam — no keys in git.
 
 ---
 
 ### 2026-07-27 — KIMI TODO: Public LNURL for sherpacarta (Cam via Grok)
 
-**Cam:** Add to list. Use LNbits to set up public Lightning LNURL; Vault only for keys; provide public details to Grok.
-
-| Step | Action |
-|------|--------|
-| 1 | LNbits wallet id **`sherpacarta`** — enable LNURL-pay / LUD-16 |
-| 2 | Invoice key → **HQ Vault** on hq.giveabit.io (never git) |
-| 3 | Hand Grok/Cam: `lud16`, optional LNURL, 1-sat smoke OK? |
-| 4 | Grok publishes on sherpacarta.org `wallets.json` (public only) |
-
-**Full request (Sherpa repo):** `kitsboy/sherpacarta` → `docs/KIMI-REQUEST-LNURL.md`  
-**Also:** Sherpa `docs/KIMI-HANDOFF.md` top entry.
-
-**Hard rule:** no invoice/admin keys in git or long-lived public docs.
+**Superseded by master list P0 above.** Full request still: `docs/KIMI-REQUEST-LNURL.md` in sherpacarta.
 
 ---
 

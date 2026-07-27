@@ -2,60 +2,55 @@
 
 **Purpose:** Always know who owns what, where truth lives, and what changed.  
 **Update cadence:** Every meaningful session end.  
-**Machine twin:** `handoff/state.json` (`node scripts/stamp-handoff.mjs`)
+**Machine twin:** `handoff/state.json`  
+**Authoritative Kimi list:** [`docs/KIMI-HANDOFF.md`](./KIMI-HANDOFF.md) **top — MASTER LIST**
 
 ---
 
 ## Roles
 
-|| Agent | Owns |
-||-------|------|
-|| **Grok** | `kitsboy/HQ`, CF Pages `giveabit-hq`, **`kitsboy/giveabit` (giveabit.io hub site — Mission + namespace)**, LNbits **proxy Worker**, metrics UI, schemas, status pinger, pitch glass |
-|| **Kimi** | Cross-repo diligence, agent docs, **satohash** live metrics / API on THOR, Buzz observation, NIP-05 namespace registry |
-|| **Nova** | THOR node, LNbits host hardening, `thor-node.json` exporter, deploys reliability |
-|| **Cam** | Secrets, Access, priorities, Vault proxy token, NIP-05 key generation |
+| Agent | Owns |
+|-------|------|
+| **Grok** | `kitsboy/HQ`, CF Pages HQ, **`kitsboy/giveabit`**, LNbits **proxy Worker**, metrics UI/schemas, product code on M3/M4 |
+| **Kimi** | THOR ops, LNbits wallets/LNURL, crons, satohash API runtime, Buzz watch, NIP-05 ops assist, Sherpa bot deploy |
+| **Nova** | THOR harden, LNbits HTTPS/firewall, `thor-node.json` exporter, deploy reliability |
+| **Cam** | Secrets, CF Access, priorities, Vault proxy token + invoice keys, NIP-05 key generation (`hello@`), political/MP timing |
 
 ---
 
-### Latest Session Summary (from 2026-07-24 — Kimi / HQ)
+## Latest Session Summary (2026-07-27 — Grok / Cam)
 
-**Chat topic:** NIP-05 namespace vision + Buzz research.
+**Chat topic:** Suite truth catch-up + giveabit Mission + Kimi master list (Cam details + all open work).
 
-### Finished in this session
-- **agents.json v3** — added `namespaceVision`, `futureWorkspace: Buzz`, Cam + Hello agents, `openRegistry: true`
-- **HQ Agents tab** — namespace banner showing @giveabit.io vision for giving-minded AI agents
-- **`docs/BUZZ-PLAN.md`** — full deployment plan for Buzz on THOR (not yet deployed)
-- **`docs/projects/giveabit.md`** — expanded with NIP-05 namespace section, all 9 agents
-- **`docs/GIVEABIT-MISSION-UPDATE.md`** — handoff spec for Grok: what to change on giveabit.io site Mission
-- **Weekly buzz-watch cron** — every Saturday 10:00, tracks block/buzz for v1 stable
-- All new docs wired into HQ Docs tab
+### Finished
+- **giveabit v4.4.0** — Mission NIP-05 identity paragraph; `sherpa@` in SPA registry + namespace.json; safe well-known generator
+- **HQ v3.25.1** — handoff/NEXT-STEPS/agents.json truth; Sherpa agent live; Hello planned
+- **Already live (do not re-open):** Sherpa metrics/Canada/stamp; `sherpa@` NIP-05; Satohash stamp family; Tadbuy Option A metrics; LNbits proxy (9 wallets)
 
 ### Still to do
-- **Grok:** Update giveabit.io Mission section to include NIP-05 namespace for giving-minded agents (see `docs/GIVEABIT-MISSION-UPDATE.md`)
-- **Grok:** Update agent count 8→9 on homepage; add Cam + Hello to `.well-known/nostr.json` once keys generated
-- **Cam:** Generate Nostr keypairs for cam@giveabit.io and hello@giveabit.io
-- **Kimi:** Keep buzz-watch running; deploy Buzz on THOR when v1 stable
 
-### Next for Grok
-1. **URGENT: Update giveabit.io Mission** — expand with NIP-05 namespace vision for philanthropic/FOSS agents. Spec at `docs/GIVEABIT-MISSION-UPDATE.md` in HQ repo
-2. **Update Safe Harbour across all product sites** — footer + privacy page. Spec at `docs/SAFE-HARBOUR-HANDOFF.md`
-3. Update homepage "Trusted Identity" count from 8→9 agents
-4. Add Cam + Hello to `.well-known/nostr.json` once Cam provides keys
-5. Read `docs/BUZZ-PLAN.md` for future deployment context
+| Owner | Item |
+|-------|------|
+| **Kimi P0** | Public LNURL for `sherpacarta` → Vault keys → public lud16 handback |
+| **Kimi P1** | Sherpa Nostr bot on THOR (`KIMI-REQUEST-SHERPA-BOT.md`) |
+| **Kimi P2** | Cron path fixes; Buzz when v1 stable |
+| **Nova** | LNbits HTTPS / firewall (upstream still HTTP :5102) |
+| **Cam** | Vault invoice keys; `hello@` Nostr keypair |
+| **Grok** | Publish lud16 on site after Kimi handback |
 
 ### Next for Kimi
-- Keep buzz-watch cron running (weekly Sat 10:00)
-- Monitor block/buzz for v1 stable release
-- When ready, deploy Buzz on THOR
+1. **P0 LNURL** — `sherpacarta` wallet · full steps in `docs/KIMI-HANDOFF.md` master list  
+2. P1 Sherpa bot package on THOR  
+3. P2 crons + Buzz watch  
+
+### Next for Grok
+1. After lud16 handback → `wallets.json` public only  
+2. Optional Tadbuy metrics from real backend (later)  
 
 ### Next for Cam
-- Generate Nostr keypair for cam@giveabit.io and hello@giveabit.io
-- Provide Nostr pubkeys for `.well-known/nostr.json`
-
----
-
-## Prior: 2026-07-20 goodbye (v2.7) — abbreviated
-- LNbits proxy live; Cam confirmed balances; v2.5–2.7 vault/visual path  
+1. HQ Vault invoice keys (Money tab)  
+2. Generate `hello@giveabit.io` keypair when ready  
+3. MP e-### when sponsor exists  
 
 ---
 
@@ -64,24 +59,28 @@
 | Area | Owner |
 |------|--------|
 | kitsboy/HQ | Grok |
+| kitsboy/giveabit | Grok |
+| kitsboy/sherpacarta (code) | Grok |
+| sherpacarta LNURL / bot (ops) | Kimi |
 | giveabit-lnbits-proxy | Grok |
-| kitsboy/satohash | Kimi / Cam |
-| metrics schema definition | Grok |
-| metrics live publish | Kimi (satohash) |
-| thor-node publish | Nova |
 | LNbits host / firewall | Nova |
-| CF Access | Cam |
+| satohash API on THOR | Kimi / shared |
+| metrics schema | Grok |
+| CF Access / Vault secrets | Cam |
 
 ## Session protocol
 
 ```text
-START: read FILE-INVENTORY.md → verify handoff files exist on disk
-        read handoff/state.json + KIMI-GROK-HANDOFF.md + SOURCE-OF-TRUTH.md
+START: read docs/KIMI-HANDOFF.md MASTER LIST + handoff/state.json
 WORK:  stay in owned paths unless asked
-END:   stamp-handoff.mjs + append Latest Session if goodbye
-       if you CREATED a file → add it to FILE-INVENTORY.md in the same batch
+END:   append top of KIMI-HANDOFF.md · update state.json if ownership/blockers change
+NEVER: secrets in git, fake metrics, claim campaign = Parliament
 ```
 
-## Conflict rule
+---
 
-Git history wins for code; last handoff stamp wins for narrative status.
+## Prior: 2026-07-24 (abbreviated)
+NIP-05 namespace vision + Buzz research. Mission update was open → **now shipped** giveabit v4.4.0.
+
+## Prior: 2026-07-20 goodbye (v2.7) — abbreviated
+LNbits proxy live; Cam confirmed balances; v2.5–2.7 vault/visual path.
