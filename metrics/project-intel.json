@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-27T00:45:40Z",
+  "checked_at": "2026-07-27T01:30:41Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -40,7 +40,7 @@
         "docs: M4 back in game \u2014 machine ecosystem update",
         "learn: OTS deep learn from DGI.io tutorial + automation enha"
       ],
-      "commits_7d": 32,
+      "commits_7d": 31,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "07b67d9",
-        "message": "chore: thor auto-metrics 00:45 (live LND)",
-        "author": "Cam (via Aider)",
-        "date": "2026-07-27T00:45:04Z",
-        "url": "https://github.com/kitsboy/HQ/commit/07b67d9f6f0f64f17fa30ecd9660f49cfce66a65"
+        "sha": "986ee36",
+        "message": "chore: refresh status.json [skip deploy]",
+        "author": "hq-status-bot",
+        "date": "2026-07-27T01:22:30Z",
+        "url": "https://github.com/kitsboy/HQ/commit/986ee368bcdacb895f2bf0bbfdc17b87a5d23c20"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 00:45 (live LND)",
-        "chore: thor auto-metrics 00:31 (live LND)",
-        "chore: refresh status.json + thor-node [skip deploy]"
+        "chore: refresh status.json [skip deploy]",
+        "chore: thor auto-metrics 01:16 (live LND)",
+        "chore: thor auto-metrics 01:15 (live LND)"
       ],
       "commits_7d": 100,
       "health": "green",
@@ -161,18 +161,18 @@
       "repo": "kitsboy/sherpacarta",
       "site_url": "https://sherpacarta.org",
       "last_commit": {
-        "sha": "03dbd6e",
-        "message": "copy: tighten /nostr footer note \u2014 professional and concise",
+        "sha": "e8235b6",
+        "message": "fix: X panel uses @give_bit timeline + featured post embed",
         "author": "Cam",
-        "date": "2026-07-27T00:36:32Z",
-        "url": "https://github.com/kitsboy/sherpacarta/commit/03dbd6e0ecc72c124cd31bfac10e2845898f52cd"
+        "date": "2026-07-27T01:28:19Z",
+        "url": "https://github.com/kitsboy/sherpacarta/commit/e8235b66029a70abfb32ea68e1abc2cf8509e123"
       },
       "recent_commits": [
-        "copy: tighten /nostr footer note \u2014 professional and concise",
-        "fix: nostr page cursor + captivating Nostr education",
-        "feat: use Cam brand mark as browser favicon and app icons"
+        "fix: X panel uses @give_bit timeline + featured post embed",
+        "chore: add run-seed.sh helper for Cam (interactive nsec, no ",
+        "feat: Sherpa Nostr guide bot package (seed + FAQ + THOR-read"
       ],
-      "commits_7d": 27,
+      "commits_7d": 34,
       "health": "green",
       "cf_project": "sherpacarta",
       "open_issues": 0
