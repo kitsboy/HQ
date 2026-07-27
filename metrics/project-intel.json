@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-27T02:30:42Z",
+  "checked_at": "2026-07-27T14:45:10Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -7,18 +7,18 @@
       "repo": "kitsboy/giveabit",
       "site_url": "https://giveabit.io",
       "last_commit": {
-        "sha": "bea71e8",
-        "message": "feat: add sherpa NIP-05 identity (sherpa@giveabit.io) for SherpaCarta product gu",
-        "author": "Cam (via Aider)",
-        "date": "2026-07-27T00:09:37Z",
-        "url": "https://github.com/kitsboy/giveabit/commit/bea71e8b26eea6a49088bde089c538827a7f1e7d"
+        "sha": "c5209d2",
+        "message": "docs: point Kimi to HQ MASTER LIST with Cam details",
+        "author": "Cam",
+        "date": "2026-07-27T05:17:05Z",
+        "url": "https://github.com/kitsboy/giveabit/commit/c5209d2aab9dd656655fa7e8b125d944cb1491de"
       },
       "recent_commits": [
-        "feat: add sherpa NIP-05 identity (sherpa@giveabit.io) for Sh",
-        "chore: update ROADMAP.md per project template",
-        "chore: update DESIGN.md per project template"
+        "docs: point Kimi to HQ MASTER LIST with Cam details",
+        "feat: Mission NIP-05 identity + sherpa@ in SPA registry (v4.",
+        "feat: add sherpa NIP-05 identity (sherpa@giveabit.io) for Sh"
       ],
-      "commits_7d": 13,
+      "commits_7d": 14,
       "health": "green",
       "cf_project": "giveabit",
       "open_issues": 0
@@ -29,18 +29,18 @@
       "repo": "kitsboy/satohash",
       "site_url": "https://satohash.io",
       "last_commit": {
-        "sha": "c54151a",
-        "message": "docs: learn stamp family handoff + Sherpa prompt path",
+        "sha": "799ac62",
+        "message": "docs: point Kimi to HQ MASTER LIST (Cam priorities)",
         "author": "Cam",
-        "date": "2026-07-27T02:30:08Z",
-        "url": "https://github.com/kitsboy/satohash/commit/c54151a8815a07b15a3fec11ccd792b3387f140f"
+        "date": "2026-07-27T05:17:09Z",
+        "url": "https://github.com/kitsboy/satohash/commit/799ac62c21abf7e31915e4b5af863331b9b73304"
       },
       "recent_commits": [
-        "docs: learn stamp family handoff + Sherpa prompt path",
-        "docs: LATEST-UPDATE after SPA API URL fix",
-        "fix: route production SPA stamps to api.satohash.io"
+        "docs: point Kimi to HQ MASTER LIST (Cam priorities)",
+        "docs: LATEST-UPDATE tip bcf5f47 goodbye",
+        "docs: stamp goodbye SHA 0d1c720"
       ],
-      "commits_7d": 38,
+      "commits_7d": 27,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "fc9c704",
-        "message": "feat: wire Satohash directory and richer metrics feeds for HQ",
-        "author": "Cam",
-        "date": "2026-07-27T02:14:51Z",
-        "url": "https://github.com/kitsboy/HQ/commit/fc9c70448e7c8d588a5d007f3496b9b7239bb4df"
+        "sha": "31b3fe2",
+        "message": "chore: thor auto-metrics 14:45 (live LND)",
+        "author": "Cam (via Aider)",
+        "date": "2026-07-27T14:45:06Z",
+        "url": "https://github.com/kitsboy/HQ/commit/31b3fe26c33ad97c204cd38798d2edbd4f19f03f"
       },
       "recent_commits": [
-        "feat: wire Satohash directory and richer metrics feeds for H",
-        "chore: refresh status.json [skip deploy]",
-        "feat(hq): v3.25 metrics feed schema gate + lean deploy"
+        "chore: thor auto-metrics 14:45 (live LND)",
+        "chore: thor auto-metrics 14:31 (live LND)",
+        "chore: refresh status.json + thor-node [skip deploy]"
       ],
       "commits_7d": 100,
       "health": "green",
@@ -84,7 +84,7 @@
         "chore: update .ai_docs/current-status.md per project templat",
         "chore: update ROADMAP.md per project template"
       ],
-      "commits_7d": 16,
+      "commits_7d": 15,
       "health": "green",
       "cf_project": "katoa",
       "open_issues": 0
@@ -95,18 +95,18 @@
       "repo": "kitsboy/tadbuy",
       "site_url": "https://tadbuy.giveabit.io",
       "last_commit": {
-        "sha": "97bcd1c",
-        "message": "fix: prefix bare vite build with npx for Node 24 runner compat",
-        "author": "Cam (via Aider)",
-        "date": "2026-07-24T13:19:18Z",
-        "url": "https://github.com/kitsboy/tadbuy/commit/97bcd1ca9f0edb7b9c29c7777515d3bd64f8a8c9"
+        "sha": "18849e8",
+        "message": "docs: Option A done; point Kimi to HQ MASTER LIST",
+        "author": "Cam",
+        "date": "2026-07-27T05:17:15Z",
+        "url": "https://github.com/kitsboy/tadbuy/commit/18849e8ee4b53705d18c752bb307aa85b99892de"
       },
       "recent_commits": [
+        "docs: Option A done; point Kimi to HQ MASTER LIST",
         "fix: prefix bare vite build with npx for Node 24 runner comp",
-        "chore: update .ai_docs/current-status.md per project templat",
-        "chore: update ROADMAP.md per project template"
+        "chore: update .ai_docs/current-status.md per project templat"
       ],
-      "commits_7d": 50,
+      "commits_7d": 36,
       "health": "green",
       "cf_project": "tadbuy",
       "open_issues": 1
@@ -128,7 +128,7 @@
         "fix: deploy from ./dist not ./out (next.config.js sets distD",
         "fix: prefix next build with npx for Node 24 compat"
       ],
-      "commits_7d": 18,
+      "commits_7d": 17,
       "health": "green",
       "cf_project": "strandedbuild",
       "open_issues": 0
@@ -150,7 +150,7 @@
         "chore: update .ai_docs/current-status.md per project templat",
         "chore: update ROADMAP.md per project template"
       ],
-      "commits_7d": 11,
+      "commits_7d": 10,
       "health": "green",
       "cf_project": "motopass",
       "open_issues": 0
@@ -161,18 +161,18 @@
       "repo": "kitsboy/sherpacarta",
       "site_url": "https://sherpacarta.org",
       "last_commit": {
-        "sha": "a0cb705",
-        "message": "docs: paste-ready Grok prompt for Satohash stamp handoff",
+        "sha": "785b03e",
+        "message": "docs: Kimi list \u2014 Cam asks, P0 LNURL, pointer to HQ master",
         "author": "Cam",
-        "date": "2026-07-27T02:30:16Z",
-        "url": "https://github.com/kitsboy/sherpacarta/commit/a0cb705f22bb91bbedc0a0015818bb496b61b975"
+        "date": "2026-07-27T05:17:07Z",
+        "url": "https://github.com/kitsboy/sherpacarta/commit/785b03ebde5499c798c41e3a8758c007c2bbb8b5"
       },
       "recent_commits": [
-        "docs: paste-ready Grok prompt for Satohash stamp handoff",
-        "fix: open Satohash stamp deep-links on /stamp?hash=&ref=",
-        "chore: stamp LATEST-UPDATE after Satohash handoff note"
+        "docs: Kimi list \u2014 Cam asks, P0 LNURL, pointer to HQ master",
+        "docs: suite truth \u2014 Mission/NIP-05 live; LNURL still Kimi",
+        "chore: LATEST-UPDATE tip c44d263"
       ],
-      "commits_7d": 37,
+      "commits_7d": 54,
       "health": "green",
       "cf_project": "sherpacarta",
       "open_issues": 0
@@ -194,7 +194,7 @@
         "chore: update ROADMAP.md per project template",
         "chore: update DESIGN.md per project template"
       ],
-      "commits_7d": 11,
+      "commits_7d": 10,
       "health": "green",
       "cf_project": "openstrata",
       "open_issues": 0
