@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-27T00:00:40Z",
+  "checked_at": "2026-07-27T00:15:40Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -7,18 +7,18 @@
       "repo": "kitsboy/giveabit",
       "site_url": "https://giveabit.io",
       "last_commit": {
-        "sha": "19aa5e1",
-        "message": "chore: update ROADMAP.md per project template",
-        "author": "Sherpa",
-        "date": "2026-07-24T02:19:13Z",
-        "url": "https://github.com/kitsboy/giveabit/commit/19aa5e17c3dba182fc11bbeaf483d3fcd7655c6f"
+        "sha": "bea71e8",
+        "message": "feat: add sherpa NIP-05 identity (sherpa@giveabit.io) for SherpaCarta product gu",
+        "author": "Cam (via Aider)",
+        "date": "2026-07-27T00:09:37Z",
+        "url": "https://github.com/kitsboy/giveabit/commit/bea71e8b26eea6a49088bde089c538827a7f1e7d"
       },
       "recent_commits": [
+        "feat: add sherpa NIP-05 identity (sherpa@giveabit.io) for Sh",
         "chore: update ROADMAP.md per project template",
-        "chore: update DESIGN.md per project template",
-        "chore: update ROADMAP.md per project template"
+        "chore: update DESIGN.md per project template"
       ],
-      "commits_7d": 16,
+      "commits_7d": 17,
       "health": "green",
       "cf_project": "giveabit",
       "open_issues": 0
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "29790c4",
-        "message": "chore: refresh status.json [skip deploy]",
-        "author": "hq-status-bot",
-        "date": "2026-07-26T23:44:52Z",
-        "url": "https://github.com/kitsboy/HQ/commit/29790c43e54d16e65b6bf56198e3e1608d87dd69"
+        "sha": "331103e",
+        "message": "chore: thor auto-metrics 00:15 (live LND)",
+        "author": "Cam (via Aider)",
+        "date": "2026-07-27T00:15:05Z",
+        "url": "https://github.com/kitsboy/HQ/commit/331103e819a6d2187e482a80bea2cf01afcf1480"
       },
       "recent_commits": [
-        "chore: refresh status.json [skip deploy]",
-        "fix(hq): always-visible version badge + stamp on every push ",
-        "polish(hq): SherpaCarta card pass-2 micro-luxury"
+        "chore: thor auto-metrics 00:15 (live LND)",
+        "docs: sherpa@giveabit.io NIP-05 published \u2014 flip nip05Status",
+        "auto-metrics: THOR VPS snapshot 2026-07-27T00:10:33Z"
       ],
       "commits_7d": 100,
       "health": "green",
@@ -161,18 +161,18 @@
       "repo": "kitsboy/sherpacarta",
       "site_url": "https://sherpacarta.org",
       "last_commit": {
-        "sha": "f8fa949",
-        "message": "feat: public Nostr wall + sherpa@ guide plan (nsec never in repo)",
+        "sha": "6c977f7",
+        "message": "chore: mark sherpa@giveabit.io NIP-05 live after Kimi publish",
         "author": "Cam",
-        "date": "2026-07-26T23:49:10Z",
-        "url": "https://github.com/kitsboy/sherpacarta/commit/f8fa9496f6d9c0ca30a36d0fcc9f879e91a80dd2"
+        "date": "2026-07-27T00:13:34Z",
+        "url": "https://github.com/kitsboy/sherpacarta/commit/6c977f72bb46a11b4b37e6ac27ec776dd2395374"
       },
       "recent_commits": [
+        "chore: mark sherpa@giveabit.io NIP-05 live after Kimi publis",
         "feat: public Nostr wall + sherpa@ guide plan (nsec never in ",
-        "feat: BUILD 734 flagship beauty lift \u2014 Digital Magna Carta U",
-        "docs: acknowledge Kimi HQ close-out for sherpacarta metrics "
+        "feat: BUILD 734 flagship beauty lift \u2014 Digital Magna Carta U"
       ],
-      "commits_7d": 22,
+      "commits_7d": 23,
       "health": "green",
       "cf_project": "sherpacarta",
       "open_issues": 0

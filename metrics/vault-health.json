@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-07-27T00:00:51Z",
-  "vault_size_mb": 1212.1,
+  "checked_at": "2026-07-27T00:15:49Z",
+  "vault_size_mb": 1212.3,
   "structure": {
     ".git": {
       "files": 0,
@@ -12,10 +12,10 @@
     },
     "02-Agents": {
       "files": 1,
-      "newest_days_ago": 1.0
+      "newest_days_ago": 0.0
     },
     "03-Projects": {
-      "files": 535,
+      "files": 537,
       "newest_days_ago": 0.0
     },
     "Obsidian": {
@@ -41,7 +41,7 @@
   },
   "staleness_days": {
     "01-Architecture": 0.1,
-    "02-Agents": 1.0,
+    "02-Agents": 0.0,
     "03-Projects": 0.0,
     "Obsidian": 0.0,
     "docs": 6.7,
