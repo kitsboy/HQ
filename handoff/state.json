@@ -1,11 +1,15 @@
 {
   "schema": "gab.handoff.v1",
-  "updatedAt": "2026-07-27T06:15:00.000Z",
+  "updatedAt": "2026-07-27T06:45:00.000Z",
   "agents": {
     "grok": {
-      "lastSeen": "2026-07-27T06:15:00.000Z",
-      "focus": "Kimi master list + Cam details in handoffs",
+      "lastSeen": "2026-07-27T06:45:00.000Z",
+      "focus": "session closed — wait Kimi LNURL handback",
       "notes": [
+        {
+          "t": "2026-07-27T06:45:00.000Z",
+          "summary": "GOODBYE. Mission+suite truth+Kimi MASTER LIST shipped. Next Grok: publish lud16 after Kimi handback. Summary: docs/SESSION-SUMMARY-2026-07-27-suite-truth.md"
+        },
         {
           "t": "2026-07-27T06:15:00.000Z",
           "summary": "Full Kimi MASTER LIST in docs/KIMI-HANDOFF.md with Cam priorities, P0 LNURL, P1 bot, P2 crons, done-table, machines, handback format. Mission+Sherpa/Satohash already shipped."

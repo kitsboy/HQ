@@ -1,5 +1,13 @@
 # KIMI — MASTER LIST (Cam + Grok) · 2026-07-27
 
+### GOODBYE — Grok session close (2026-07-27)
+
+Session closed clean. **Your P0 unchanged:** public LNURL for wallet `sherpacarta` (steps + handback paste below).  
+Summary: `docs/SESSION-SUMMARY-2026-07-27-suite-truth.md`  
+When LNURL ready → public `lud16` only to Grok/Cam · **no keys in git**.
+
+---
+
 **Read this first every THOR session.** Full Cam priorities, your open work, what is already done (do not re-open), machines, secrets rules, and handback format.
 
 Live mirrors: `handoff/state.json` · `docs/NEXT-STEPS.md` · `docs/KIMI-GROK-HANDOFF.md`  
