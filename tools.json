@@ -35,7 +35,27 @@
         {
           "name": "Satohash metrics",
           "url": "https://api.satohash.io/metrics.json",
-          "tip": "Live metrics v1"
+          "tip": "Live metrics v1 + raw.directory"
+        },
+        {
+          "name": "Satohash directory",
+          "url": "https://api.satohash.io/api/public/directory",
+          "tip": "Hosts, endpoints, SPA routes, clients"
+        },
+        {
+          "name": "Satohash public status",
+          "url": "https://api.satohash.io/api/public/status",
+          "tip": "Suite heartbeat + deep links"
+        },
+        {
+          "name": "Satohash recent stamps",
+          "url": "https://api.satohash.io/api/stamps/recent",
+          "tip": "Live stamp feed for intel"
+        },
+        {
+          "name": "Satohash stamp SPA",
+          "url": "https://satohash.io/stamp",
+          "tip": "Deep-link stamp entry"
         },
         {
           "name": "Give A Bit",

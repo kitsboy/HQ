@@ -1,13 +1,33 @@
 {
   "schema": "gab.handoffs.v1",
-  "updatedAt": "2026-07-26T20:00:00.000Z",
+  "updatedAt": "2026-07-27T02:15:00.000Z",
   "projects": [
     {
       "id": "satohash",
       "name": "Satohash",
       "url": "https://satohash.io",
       "repo": "kitsboy/satohash",
+      "feeds": {
+        "metrics": "https://api.satohash.io/metrics.json",
+        "directory": "https://api.satohash.io/api/public/directory",
+        "status": "https://api.satohash.io/api/public/status",
+        "recent": "https://api.satohash.io/api/stamps/recent",
+        "health": "https://api.satohash.io/health",
+        "spaStamp": "https://satohash.io/stamp",
+        "docs": "https://github.com/kitsboy/satohash/blob/main/docs/HQ-FEED.md"
+      },
       "handoffs": [
+        {
+          "id": "hq-feed-directory",
+          "title": "HQ Feed Directory — All Satohash data planes",
+          "summary": "Inventory of metrics.json KPIs/series/segments, public directory, stamp deep-links, and attribution via X-Satohash-Client. Poll API origin for live data.",
+          "path": "docs/HQ-FEED.md",
+          "url": "https://github.com/kitsboy/satohash/blob/main/docs/HQ-FEED.md",
+          "audience": "HQ + Grok + Kimi",
+          "type": "ops",
+          "priority": 1,
+          "tags": ["hq", "metrics", "directory", "attribution"]
+        },
         {
           "id": "ots-deep-learn",
           "title": "OTS Deep Learn — Full Protocol Masterclass",
