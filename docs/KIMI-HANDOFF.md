@@ -1,3 +1,21 @@
+### 2026-07-27 — KIMI TODO: Public LNURL for sherpacarta (Cam via Grok)
+
+**Cam:** Add to list. Use LNbits to set up public Lightning LNURL; Vault only for keys; provide public details to Grok.
+
+| Step | Action |
+|------|--------|
+| 1 | LNbits wallet id **`sherpacarta`** — enable LNURL-pay / LUD-16 |
+| 2 | Invoice key → **HQ Vault** on hq.giveabit.io (never git) |
+| 3 | Hand Grok/Cam: `lud16`, optional LNURL, 1-sat smoke OK? |
+| 4 | Grok publishes on sherpacarta.org `wallets.json` (public only) |
+
+**Full request (Sherpa repo):** `kitsboy/sherpacarta` → `docs/KIMI-REQUEST-LNURL.md`  
+**Also:** Sherpa `docs/KIMI-HANDOFF.md` top entry.
+
+**Hard rule:** no invoice/admin keys in git or long-lived public docs.
+
+---
+
 ### 2026-07-27 — Metrics feed tidy v3.25.0 (Grok)
 
 **Cam ask:** review/improve HQ metrics/data feed; carefully tidy structure without breaking deploys/imports.
@@ -99,7 +117,7 @@ sherpacarta wallet → LNbits proxy → HQ Money tab
 | **HQ live origin guard** | ✅ done | `hq.js` rejects `raw.demo===true` when live candidates exist |
 | **HQ Umami overlay** | ✅ wired | `fetchUmamiStats()` → sky pill visitors/bounce on card |
 | **CF analytics** | ✅ dropped | Removed from puller — Umami covers analytics |
-| **LNURL/lud16 public** | ⬜ pending | No Lightning receive on site yet |
+| **LNURL/lud16 public** | ⬜ **Kimi TODO** | Cam: set up via LNbits + Vault; hand public lud16 to Grok — see top entry + sherpacarta `docs/KIMI-REQUEST-LNURL.md` |
 | **Nostr signer publish** | ⬜ future | Local browser signatures stay local unless Nostr-published |
 
 ### 2026-07-26 — M4 is back in the game 🎉
