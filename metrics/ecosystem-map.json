@@ -1,6 +1,6 @@
 {
   "schema": "gab.ecosystem-map.v1",
-  "updatedAt": "2026-07-27T03:16:00Z",
+  "updatedAt": "2026-07-27T20:06:53Z",
   "projects": [
     {
       "id": "satohash",
@@ -11,7 +11,7 @@
       "version": "5.0.0-ELITE",
       "status": "green",
       "health": "200",
-      "lastCommit": "ce387cc docs: Grok workflow notes for M4 multi-machine",
+      "lastCommit": "2527c5c chore: handoff/docs updates \u2014 M4 online, memory cleanup, watchdog installed",
       "synced": "synced",
       "localOnThor": true
     },
@@ -21,11 +21,11 @@
       "url": "hq.giveabit.io",
       "api": "",
       "github": "kitsboy/HQ",
-      "version": "3.23.0",
+      "version": "3.25.1",
       "status": "green",
       "health": "200",
-      "lastCommit": "b5848f7 chore: refresh status.json + thor-node [skip deploy]",
-      "synced": "ahead",
+      "lastCommit": "9612b82 chore: thor auto-metrics 18:02 (live LND)",
+      "synced": "synced",
       "localOnThor": true
     },
     {
@@ -37,7 +37,7 @@
       "version": "4.3.1",
       "status": "green",
       "health": "200",
-      "lastCommit": "19aa5e1 chore: update ROADMAP.md per project template",
+      "lastCommit": "bea71e8 feat: add sherpa NIP-05 identity (sherpa@giveabit.io) for SherpaCarta product guide",
       "synced": "synced",
       "localOnThor": true
     },
@@ -140,12 +140,12 @@
       "role": "Orchestrator + Hermes + Master Brain",
       "host": "Contabo VPS 20",
       "status": "green",
-      "disk": "8% used",
-      "diskFree": "358G",
-      "mem": "5.1Gi used",
-      "memAvail": "2.7Gi",
-      "load": "0.19/0.10/0.10",
-      "uptime": "up 1 week, 3 days, 1 hour, 4 minutes",
+      "disk": "7% used",
+      "diskFree": "363G",
+      "mem": "5.9Gi used",
+      "memAvail": "1.8Gi",
+      "load": "0.43/0.29/0.19",
+      "uptime": "up 1 week, 3 days, 19 hours, 10 minutes",
       "lastSeen": "2026-07-27"
     },
     {
@@ -160,10 +160,10 @@
     {
       "id": "m4",
       "name": "M4",
-      "role": "Code + Grok (Mac) — travel machine",
+      "role": "DEPRECATED \u2014 reference only",
       "host": "MacBook Air M4",
-      "status": "green",
-      "lastSeen": "2026-07-27"
+      "status": "gray",
+      "lastSeen": "2026-07-17"
     }
   ],
   "agents": [
@@ -177,7 +177,7 @@
     {
       "id": "grok",
       "name": "Grok",
-      "role": "Code + Git on M3 & M4",
+      "role": "Code + Git on M3",
       "host": "M3",
       "status": "green"
     },
@@ -264,37 +264,37 @@
   "skills": [
     {
       "name": "auto-git-status",
-      "ageDays": 57,
+      "ageDays": 58,
       "status": "aging",
       "updated": "2026-05-30"
     },
     {
       "name": "browser-harness",
-      "ageDays": 57,
+      "ageDays": 58,
       "status": "aging",
       "updated": "2026-05-30"
     },
     {
       "name": "computer-use",
-      "ageDays": 6,
+      "ageDays": 7,
       "status": "fresh",
       "updated": "2026-07-20"
     },
     {
       "name": "current-tasks",
-      "ageDays": 10,
+      "ageDays": 11,
       "status": "fresh",
       "updated": "2026-07-16"
     },
     {
       "name": "deployment-workflow",
-      "ageDays": 13,
+      "ageDays": 14,
       "status": "fresh",
       "updated": "2026-07-13"
     },
     {
       "name": "dogfood",
-      "ageDays": 35,
+      "ageDays": 36,
       "status": "aging",
       "updated": "2026-06-21"
     },
@@ -306,37 +306,37 @@
     },
     {
       "name": "hermes-desktop-plugins",
-      "ageDays": 6,
+      "ageDays": 7,
       "status": "fresh",
       "updated": "2026-07-20"
     },
     {
       "name": "kanban-worker",
-      "ageDays": 57,
+      "ageDays": 58,
       "status": "aging",
       "updated": "2026-05-30"
     },
     {
       "name": "nova-product-management",
-      "ageDays": 12,
+      "ageDays": 13,
       "status": "fresh",
       "updated": "2026-07-14"
     },
     {
       "name": "project-brief",
-      "ageDays": 12,
+      "ageDays": 13,
       "status": "fresh",
       "updated": "2026-07-14"
     },
     {
       "name": "propagate-template",
-      "ageDays": 30,
+      "ageDays": 31,
       "status": "aging",
       "updated": "2026-06-26"
     },
     {
       "name": "quick-backup",
-      "ageDays": 30,
+      "ageDays": 31,
       "status": "aging",
       "updated": "2026-06-26"
     },
@@ -373,7 +373,7 @@
       "name": "LND",
       "type": "Lightning Node (Neutrino)",
       "status": "green",
-      "detail": "Up 7 days (healthy)"
+      "detail": "Up 8 days (healthy)"
     },
     {
       "id": "satohash-api",
@@ -387,40 +387,40 @@
       "name": "Redis",
       "type": "Satohash Cache",
       "status": "green",
-      "detail": "Up 6 days"
+      "detail": "Up 7 days"
     },
     {
       "id": "postgres",
       "name": "PostgreSQL",
       "type": "LNbits Database",
       "status": "green",
-      "detail": "Up 7 days (healthy)"
+      "detail": "Up 8 days (healthy)"
     }
   ],
   "recentActivity": [
     {
       "repo": "hq",
-      "commit": "b5848f7 chore: refresh status.json + thor-node [skip deploy]",
+      "commit": "9612b82 chore: thor auto-metrics 18:02 (live LND)",
       "timestamp": "2026-07-27"
     },
     {
       "repo": "hq",
-      "commit": "a820660 chore: thor auto-metrics 00:00 (live LND)",
+      "commit": "68e6689 chore: refresh status.json + thor-node [skip deploy]",
       "timestamp": "2026-07-27"
     },
     {
       "repo": "hq",
-      "commit": "fbf7f03 chore: thor auto-metrics 23:45 (live LND)",
+      "commit": "eba8693 chore: thor auto-metrics 18:00 (live LND)",
       "timestamp": "2026-07-27"
     },
     {
       "repo": "satohash",
-      "commit": "ce387cc docs: Grok workflow notes for M4 multi-machine",
+      "commit": "2527c5c chore: handoff/docs updates \u2014 M4 online, memory clea",
       "timestamp": "2026-07-27"
     },
     {
       "repo": "satohash",
-      "commit": "024e9a7 docs: M4 back in game \u2014 machine ecosystem update",
+      "commit": "799ac62 docs: point Kimi to HQ MASTER LIST (Cam priorities)",
       "timestamp": "2026-07-27"
     }
   ],
@@ -430,6 +430,6 @@
     "machineCount": 3,
     "activeCrons": 28,
     "skillCount": 16,
-    "vaultJournals": 118
+    "vaultJournals": 120
   }
 }
