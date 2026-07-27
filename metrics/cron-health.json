@@ -1,41 +1,69 @@
 {
-  "checked_at": "2026-07-27T07:00:59Z",
+  "checked_at": "2026-07-27T14:00:09Z",
   "jobs": {
     "c8ce19bb5571": {
       "status": "completed",
-      "last_run": "2026-07-27T08:55:59.362925+02:00",
+      "last_run": "2026-07-27T15:55:09.929140+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "1b2c31d6ba98": {
-      "status": "failed",
-      "last_run": "2026-07-27T08:47:56.727822+02:00",
-      "consecutive_fails": 1,
-      "paused": false,
-      "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
-      "action": "warn"
+      "status": "completed",
+      "last_run": "2026-07-27T15:46:23.834100+02:00",
+      "consecutive_fails": 0,
+      "paused": false
     },
     "42cdc3e9bd97": {
       "status": "completed",
-      "last_run": "2026-07-27T08:46:13.595009+02:00",
+      "last_run": "2026-07-27T15:45:22.783479+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "e8d5b97de501": {
       "status": "completed",
-      "last_run": "2026-07-27T08:31:17.539343+02:00",
+      "last_run": "2026-07-27T15:30:28.420916+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "cb8398b3fa67": {
       "status": "completed",
-      "last_run": "2026-07-27T08:30:59.549216+02:00",
+      "last_run": "2026-07-27T15:30:10.227421+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "bb5980d548fb": {
       "status": "completed",
-      "last_run": "2026-07-27T08:19:54.571435+02:00",
+      "last_run": "2026-07-27T15:09:04.790485+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "7768b5c5aa49": {
+      "status": "completed",
+      "last_run": "2026-07-27T15:01:38.609424+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "9bd2735e125e": {
+      "status": "completed",
+      "last_run": "2026-07-27T12:00:08.881216+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "e4b5079b66ce": {
+      "status": "completed",
+      "last_run": "2026-07-27T12:00:08.353919+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "b7b5c1bebfe7": {
+      "status": "completed",
+      "last_run": "2026-07-27T09:10:17.008733+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "30921a766dae": {
+      "status": "completed",
+      "last_run": "2026-07-27T09:01:01.235634+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
@@ -45,21 +73,9 @@
       "consecutive_fails": 0,
       "paused": false
     },
-    "7768b5c5aa49": {
-      "status": "completed",
-      "last_run": "2026-07-27T08:02:29.894233+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
     "b6a4e3710d9d": {
       "status": "completed",
       "last_run": "2026-07-27T08:01:00.543429+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "e4b5079b66ce": {
-      "status": "completed",
-      "last_run": "2026-07-27T08:01:00.127123+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
@@ -93,12 +109,6 @@
       "consecutive_fails": 0,
       "paused": false
     },
-    "9bd2735e125e": {
-      "status": "completed",
-      "last_run": "2026-07-27T06:00:47.604803+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
     "980226ec5716": {
       "status": "completed",
       "last_run": "2026-07-27T05:08:55.493438+02:00",
@@ -114,12 +124,6 @@
     "12b477c661ae": {
       "status": "completed",
       "last_run": "2026-07-26T22:05:03.097905+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "30921a766dae": {
-      "status": "completed",
-      "last_run": "2026-07-26T21:00:15.645133+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
@@ -151,7 +155,7 @@
     }
   },
   "paused_count": 1,
-  "alert_count": 2,
+  "alert_count": 1,
   "paused_jobs": [
     "34c2181c2737"
   ],
