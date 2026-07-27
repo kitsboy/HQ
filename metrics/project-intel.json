@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-27T01:30:41Z",
+  "checked_at": "2026-07-27T04:00:44Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -18,7 +18,7 @@
         "chore: update ROADMAP.md per project template",
         "chore: update DESIGN.md per project template"
       ],
-      "commits_7d": 17,
+      "commits_7d": 13,
       "health": "green",
       "cf_project": "giveabit",
       "open_issues": 0
@@ -29,18 +29,18 @@
       "repo": "kitsboy/satohash",
       "site_url": "https://satohash.io",
       "last_commit": {
-        "sha": "ce387cc",
-        "message": "docs: Grok workflow notes for M4 multi-machine",
-        "author": "Kimi (THOR)",
-        "date": "2026-07-26T21:59:48Z",
-        "url": "https://github.com/kitsboy/satohash/commit/ce387cc7ae0837a46ebff80a50ca13ca87fcfc5b"
+        "sha": "9804472",
+        "message": "docs: LATEST-UPDATE tip bcf5f47 goodbye",
+        "author": "Cam",
+        "date": "2026-07-27T02:47:50Z",
+        "url": "https://github.com/kitsboy/satohash/commit/9804472677d86b86cb35ed0df953fa47d85b25c0"
       },
       "recent_commits": [
-        "docs: Grok workflow notes for M4 multi-machine",
-        "docs: M4 back in game \u2014 machine ecosystem update",
-        "learn: OTS deep learn from DGI.io tutorial + automation enha"
+        "docs: LATEST-UPDATE tip bcf5f47 goodbye",
+        "docs: stamp goodbye SHA 0d1c720",
+        "docs: goodbye 2026-07-27 \u2014 stamp plane + Kimi L1/L2 wallet r"
       ],
-      "commits_7d": 31,
+      "commits_7d": 38,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "986ee36",
-        "message": "chore: refresh status.json [skip deploy]",
-        "author": "hq-status-bot",
-        "date": "2026-07-27T01:22:30Z",
-        "url": "https://github.com/kitsboy/HQ/commit/986ee368bcdacb895f2bf0bbfdc17b87a5d23c20"
+        "sha": "57a718d",
+        "message": "chore: thor auto-metrics 04:00 (live LND)",
+        "author": "Cam (via Aider)",
+        "date": "2026-07-27T04:00:06Z",
+        "url": "https://github.com/kitsboy/HQ/commit/57a718d8c90cde4e025a1a29175b7176676fec20"
       },
       "recent_commits": [
-        "chore: refresh status.json [skip deploy]",
-        "chore: thor auto-metrics 01:16 (live LND)",
-        "chore: thor auto-metrics 01:15 (live LND)"
+        "chore: thor auto-metrics 04:00 (live LND)",
+        "chore: thor auto-metrics 03:45 (live LND)",
+        "chore: thor auto-metrics 03:45 (live LND)"
       ],
       "commits_7d": 100,
       "health": "green",
@@ -84,7 +84,7 @@
         "chore: update .ai_docs/current-status.md per project templat",
         "chore: update ROADMAP.md per project template"
       ],
-      "commits_7d": 19,
+      "commits_7d": 16,
       "health": "green",
       "cf_project": "katoa",
       "open_issues": 0
@@ -106,7 +106,7 @@
         "chore: update .ai_docs/current-status.md per project templat",
         "chore: update ROADMAP.md per project template"
       ],
-      "commits_7d": 50,
+      "commits_7d": 36,
       "health": "green",
       "cf_project": "tadbuy",
       "open_issues": 1
@@ -128,7 +128,7 @@
         "fix: deploy from ./dist not ./out (next.config.js sets distD",
         "fix: prefix next build with npx for Node 24 compat"
       ],
-      "commits_7d": 21,
+      "commits_7d": 18,
       "health": "green",
       "cf_project": "strandedbuild",
       "open_issues": 0
@@ -150,7 +150,7 @@
         "chore: update .ai_docs/current-status.md per project templat",
         "chore: update ROADMAP.md per project template"
       ],
-      "commits_7d": 13,
+      "commits_7d": 11,
       "health": "green",
       "cf_project": "motopass",
       "open_issues": 0
@@ -161,18 +161,18 @@
       "repo": "kitsboy/sherpacarta",
       "site_url": "https://sherpacarta.org",
       "last_commit": {
-        "sha": "e8235b6",
-        "message": "fix: X panel uses @give_bit timeline + featured post embed",
+        "sha": "dbe6884",
+        "message": "fix: force Ambient removal past CDN/SW cache",
         "author": "Cam",
-        "date": "2026-07-27T01:28:19Z",
-        "url": "https://github.com/kitsboy/sherpacarta/commit/e8235b66029a70abfb32ea68e1abc2cf8509e123"
+        "date": "2026-07-27T03:59:46Z",
+        "url": "https://github.com/kitsboy/sherpacarta/commit/dbe688430aaddf32c3d88e1d755606863c1fc497"
       },
       "recent_commits": [
-        "fix: X panel uses @give_bit timeline + featured post embed",
-        "chore: add run-seed.sh helper for Cam (interactive nsec, no ",
-        "feat: Sherpa Nostr guide bot package (seed + FAQ + THOR-read"
+        "fix: force Ambient removal past CDN/SW cache",
+        "fix: remove unused Ambient mode control from home UI",
+        "feat: upgrade Canada join QR landing for paper-sheet handoff"
       ],
-      "commits_7d": 34,
+      "commits_7d": 50,
       "health": "green",
       "cf_project": "sherpacarta",
       "open_issues": 0
