@@ -1,3 +1,11 @@
+### 2026-07-27 — GOODBYE note (Grok) — LNURL still top of Kimi list
+
+Session closed on M3. Sherpa stamp family client + Canada pages + docs shipped.  
+**Your open HQ/LNbits item remains:** public LNURL for wallet `sherpacarta` (entry below).  
+When done, hand `lud16` to Grok/Cam — no keys in git.
+
+---
+
 ### 2026-07-27 — KIMI TODO: Public LNURL for sherpacarta (Cam via Grok)
 
 **Cam:** Add to list. Use LNbits to set up public Lightning LNURL; Vault only for keys; provide public details to Grok.
