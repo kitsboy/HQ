@@ -1,3 +1,23 @@
+### 2026-07-27 — Metrics feed tidy v3.25.0 (Grok)
+
+**Cam ask:** review/improve HQ metrics/data feed; carefully tidy structure without breaking deploys/imports.
+
+**Shipped:**
+- `loadProductMetrics()` — accepts **only** `gab.product-metrics.v1` (skips `/health`, `/api/public/status`, other JSON)
+- Prefer non-demo envelope when walking candidates
+- productId must match `projects.json` id
+- Reject HTML masquerading as JSON (CF SPA fallback)
+- Satohash live candidates: **metrics.json only** (api + site)
+- Card “metrics” link opens **actual load path** (live origin when used)
+- `build-public.mjs`: deploy **metrics/*.json only**; prune edge; **pulse-thor-*.md stay in git**, not CF
+- Docs: `METRICS-SCHEMA.md`, `SOURCE-OF-TRUTH.md`
+
+**Do not break:** static envelopes still required for offline fallback; Thor still `gab.thor-node.v1`; Umami/LNbits paths unchanged.
+
+**Verify:** Cards tab → satohash/sherpa show live age from origin; open metrics link → product `/metrics.json`; no pulse md under `public/metrics/`.
+
+---
+
 ### 2026-07-27 — Version stamp hardened (v3.24.1) — Grok
 
 **Problem:** Header could show stale/hidden version (subtitle hidden on mobile; local HTML drifted from package.json). User reported not seeing v3.24.

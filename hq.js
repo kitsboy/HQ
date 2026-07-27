@@ -1,15 +1,18 @@
 /**
- * Give A Bit HQ v3.24.1 — handoffs registry tab
+ * Give A Bit HQ v3.25.0 — handoffs registry tab
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
  * Version source of truth: package.json → npm run stamp → all surfaces.
+ * Metrics feed: only accept gab.product-metrics.v1 envelopes (never health/status JSON).
  */
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.24.1";
+  const HQ_VERSION = "3.25.0";
   const BUILD_TS = new Date().toISOString();
+  const METRICS_SCHEMA = "gab.product-metrics.v1";
+  const THOR_SCHEMA = "gab.thor-node.v1";
 
   /** Paint the same version on every chrome surface (header badge + sub + footer). */
   function paintVersion() {
@@ -168,7 +171,7 @@
       }
       const ct = (res.headers.get("content-type") || "").toLowerCase();
       // Markdown / text: never accept SPA HTML fallback (CF Pages returns 200 text/html for missing files)
-      if (opts.asText || /\.md$/i.test(path) || (ct.includes("text/") && !ct.includes("html"))) {
+      if (opts.asText || /\.md$/i.test(path) || (ct.includes("text/") && !ct.includes("html") && !ct.includes("json"))) {
         const text = await res.text();
         const looksHtml =
           ct.includes("text/html") ||
@@ -186,8 +189,20 @@
         }
         return { ok: true, data: text, error: null, path: url, status: res.status, fetchedAt };
       }
+      // JSON path — reject HTML shells that return 200 on CF Pages
+      if (ct.includes("text/html")) {
+        return {
+          ok: false,
+          data: null,
+          error: "HTML response (not JSON — missing edge asset or SPA fallback)",
+          path: url,
+          status: res.status,
+          fetchedAt,
+        };
+      }
       try {
-        return { ok: true, data: await res.json(), error: null, path: url, status: res.status, fetchedAt };
+        const data = await res.json();
+        return { ok: true, data, error: null, path: url, status: res.status, fetchedAt };
       } catch (e) {
         return { ok: false, data: null, error: "JSON parse: " + e.message, path: url, status: res.status, fetchedAt };
       }
@@ -208,6 +223,98 @@
       if (last.ok) return last;
     }
     return last || { ok: false, data: null, error: "no paths", path: (paths && paths[0]) || "?", status: null };
+  }
+
+  /** True if payload is a publishable product metrics envelope (never health/status). */
+  function isProductMetricsEnvelope(data) {
+    if (!data || typeof data !== "object" || Array.isArray(data)) return false;
+    if (data.schema !== METRICS_SCHEMA) return false;
+    if (typeof data.productId !== "string" || !data.productId) return false;
+    if (!data.health || typeof data.health !== "object") return false;
+    if (!Array.isArray(data.kpis)) return false;
+    return true;
+  }
+
+  function isThorNodeEnvelope(data) {
+    return !!(data && typeof data === "object" && data.schema === THOR_SCHEMA);
+  }
+
+  /**
+   * Walk candidate URLs; accept only gab.product-metrics.v1.
+   * Prefer non-demo when multiple valid hits exist (e.g. live after static demo).
+   * Skips /health and /status JSON that used to poison cards.
+   */
+  async function loadProductMetrics(candidates, opts = {}) {
+    const expectId = opts.expectProductId || null;
+    let lastFail = null;
+    let bestDemo = null;
+    const seen = new Set();
+    for (const p of candidates || []) {
+      if (!p || seen.has(p)) continue;
+      seen.add(p);
+      const r = await loadData(p);
+      if (!r.ok) {
+        lastFail = r;
+        continue;
+      }
+      if (!isProductMetricsEnvelope(r.data)) {
+        lastFail = {
+          ok: false,
+          data: null,
+          error: "not " + METRICS_SCHEMA + " (skipped health/status/other JSON)",
+          path: r.path,
+          status: r.status,
+          fetchedAt: r.fetchedAt,
+        };
+        continue;
+      }
+      if (expectId && r.data.productId !== expectId) {
+        lastFail = {
+          ok: false,
+          data: null,
+          error: "productId mismatch: got " + r.data.productId + ", expected " + expectId,
+          path: r.path,
+          status: r.status,
+          fetchedAt: r.fetchedAt,
+        };
+        continue;
+      }
+      const isDemo = !!(r.data.raw && r.data.raw.demo);
+      if (isDemo) {
+        if (!bestDemo) bestDemo = r;
+        continue;
+      }
+      return r;
+    }
+    if (bestDemo) return bestDemo;
+    return (
+      lastFail || {
+        ok: false,
+        data: null,
+        error: "no metrics envelope",
+        path: (candidates && candidates[0]) || "?",
+        status: null,
+        fetchedAt: new Date().toISOString(),
+      }
+    );
+  }
+
+  /** Build ordered candidate list for a project (live first, then static). */
+  function metricsCandidatesFor(p) {
+    const key = (p && (p.metricsKey || p.id)) || "";
+    const list = [];
+    if (p && Array.isArray(p.metricsLiveCandidates)) list.push(...p.metricsLiveCandidates);
+    if (p && p.metricsUrl) list.push(p.metricsUrl);
+    if (key) list.push(`/metrics/${key}.json`);
+    return list;
+  }
+
+  /** Prefer live origin path for "open metrics" links; never invent numbers. */
+  function metricsHref(p, m) {
+    if (m && m.ok && m.path && /^https?:\/\//i.test(m.path)) return m.path;
+    if (m && m.ok && m.path && String(m.path).startsWith("/")) return m.path;
+    const key = (p && (p.metricsKey || p.id)) || "unknown";
+    return `/metrics/${key}.json`;
   }
 
   function unavailableHTML(title, path, detail) {
@@ -928,16 +1035,26 @@
     if (roadmapR.ok) state.roadmap = roadmapR.data; else { state.roadmap = null; }
 
     const metricsJobs = state.projects.map(async (p) => {
-      const key = p.metricsKey || p.id;
-      const candidates = [];
-      if (p.metricsLiveCandidates) candidates.push(...p.metricsLiveCandidates);
-      if (p.metricsUrl) candidates.push(p.metricsUrl);
-      candidates.push(`/metrics/${key}.json`);
-      const r = await loadFirst(candidates);
-      // If result is from a demo fallback and product has live candidates,
-      // skip it — live refresh will pick up the real origin next cycle
-      if (p.metricsLiveCandidates && p.metricsLiveCandidates.length && r.ok && r.data && r.data.raw && r.data.raw.demo) {
-        state.metrics[p.id] = { ok: false, data: null, error: "demo fallback — waiting for live origin", path: r.path, status: null };
+      const r = await loadProductMetrics(metricsCandidatesFor(p), { expectProductId: p.id });
+      // Honest: if we only have static demo while live candidates exist, wait for live
+      // (non-demo static backups like sherpacarta still show).
+      if (
+        r.ok &&
+        r.data &&
+        r.data.raw &&
+        r.data.raw.demo &&
+        p.metricsLiveCandidates &&
+        p.metricsLiveCandidates.length &&
+        !/^https?:\/\//i.test(r.path || "")
+      ) {
+        state.metrics[p.id] = {
+          ok: false,
+          data: null,
+          error: "demo fallback — waiting for live origin",
+          path: r.path,
+          status: null,
+          fetchedAt: r.fetchedAt,
+        };
       } else {
         state.metrics[p.id] = r;
       }
@@ -946,7 +1063,18 @@
 
     const thorJob = (async () => {
       const f = state.feeds || {};
-      const r = await loadFirst([f.thorNodeUrl, "/metrics/thor-node.json", f.thorNodeFallback]);
+      const paths = [f.thorNodeUrl, "/metrics/thor-node.json", f.thorNodeFallback];
+      let r = await loadFirst(paths);
+      if (r.ok && !isThorNodeEnvelope(r.data)) {
+        r = {
+          ok: false,
+          data: null,
+          error: "not " + THOR_SCHEMA,
+          path: r.path,
+          status: r.status,
+          fetchedAt: r.fetchedAt,
+        };
+      }
       state.thor = r;
       state.metrics["thor-node"] = r;
       if (!r.ok) state.loadErrors.push(r);
@@ -1092,18 +1220,28 @@
   }
 
   async function refreshLiveData() {
-    const [statusR, thorR] = await Promise.all([
-      loadData("/status.json?t=" + Date.now()),
-      loadFirst([(state.feeds || {}).thorNodeUrl, "/metrics/thor-node.json?t=" + Date.now(), (state.feeds || {}).thorNodeFallback]),
+    const bust = "?t=" + Date.now();
+    const [statusR, thorRaw] = await Promise.all([
+      loadData("/status.json" + bust),
+      loadFirst([
+        (state.feeds || {}).thorNodeUrl,
+        "/metrics/thor-node.json" + bust,
+        (state.feeds || {}).thorNodeFallback,
+      ]),
     ]);
     if (statusR.ok) state.status = statusR.data;
-    if (thorR.ok) { state.thor = thorR; state.metrics["thor-node"] = thorR; }
-    // live metric candidates only (satohash API etc.) — static files change with git
-    await Promise.all(state.projects.map(async (p) => {
-      if (!p.metricsLiveCandidates || !p.metricsLiveCandidates.length) return;
-      const r = await loadFirst(p.metricsLiveCandidates);
-      if (r.ok) state.metrics[p.id] = r;
-    }));
+    if (thorRaw.ok && isThorNodeEnvelope(thorRaw.data)) {
+      state.thor = thorRaw;
+      state.metrics["thor-node"] = thorRaw;
+    }
+    // Live product envelopes only — schema-gated (never /health JSON)
+    await Promise.all(
+      state.projects.map(async (p) => {
+        if (!p.metricsLiveCandidates || !p.metricsLiveCandidates.length) return;
+        const r = await loadProductMetrics(p.metricsLiveCandidates, { expectProductId: p.id });
+        if (r.ok) state.metrics[p.id] = r;
+      })
+    );
     // Umami analytics
     await fetchUmamiStats();
     snapUptime();
@@ -1764,7 +1902,7 @@
       ${deps.length ? `<div class="card-deps">${deps.slice(0, 4).map((d) => statusPill(d.status, d.id)).join("")}</div>` : ""}
       <div class="card-links">
         ${p.url ? `<a class="link-btn" href="${escAttr(p.url)}" target="_blank" rel="noopener" data-card-link><i class="fa-solid fa-arrow-up-right-from-square"></i> site</a>` : ""}
-        <a class="link-btn" href="/metrics/${escAttr(p.metricsKey || p.id)}.json" target="_blank" rel="noopener" data-card-link><i class="fa-solid fa-database"></i> metrics</a>
+        <a class="link-btn" href="${escAttr(metricsHref(p, m))}" target="_blank" rel="noopener" data-card-link><i class="fa-solid fa-database"></i> metrics</a>
         <a class="link-btn" href="/docs/projects/${escAttr(p.id)}.md" target="_blank" rel="noopener" data-card-link><i class="fa-solid fa-file-lines"></i> brief</a>
       </div>
       <div class="card-foot">

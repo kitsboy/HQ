@@ -20,16 +20,19 @@ GET https://<product-origin>/metrics.json
 
 Required fields: `schema`, `productId`, `updatedAt`, `health`, `kpis`.
 
-## How HQ loads metrics (v3.1+)
+## How HQ loads metrics (v3.25+)
 
-1. `projects.json` → `metricsUrl` (e.g. `/metrics/satohash.json`)
-2. Optional live candidates (satohash API) when CORS allows
-3. Fallback static `/metrics/<id>.json`
-4. **Cards:** top KPIs + dual sparklines + depth score + LNbits sat pill (v3.2)
-5. **Metrics** view = full lab (all KPIs, multi-series, funnels, segments, offers, education)
-6. **Coverage** tab = field-by-field inventory of what each product publishes
-7. **Analytics** = cross-suite charts from envelopes + status.json + money
+1. `projects.json` → `metricsLiveCandidates[]` (live origins, CORS) **first**
+2. Then `metricsUrl` / static `/metrics/<id>.json`
+3. **Schema gate:** only payloads with `schema: "gab.product-metrics.v1"` + `productId` + `health` + `kpis[]` are accepted  
+   - `/health`, `/api/public/status`, and other JSON **never** become card metrics
+4. **Prefer non-demo:** if a demo and a live envelope both exist, HQ keeps the non-demo hit
+5. Static **demo** alone while live candidates exist → “waiting for live origin” (honest empty), not fake KPIs
+6. **Cards:** top KPIs + sparklines + depth + LNbits pill; metrics link opens the **path actually used**
+7. **Metrics lab / Coverage / Analytics** unchanged — only the feed is stricter
 8. Per-product briefs: `docs/projects/<id>.md`
+
+**Deploy:** `scripts/build-public.mjs` ships **metrics/*.json only**. THOR pulse markdown (`pulse-thor-*.md`) stays in the git repo for ops, not on CF Pages.
 
 Missing/malformed files never blank the page — isolated fetch + “unavailable” card with path.
 

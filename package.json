@@ -1,8 +1,8 @@
 {
   "name": "giveabit-hq",
   "private": true,
-  "version": "3.24.1",
-  "description": "Give A Bit HQ — version badge always visible + stamp on every push",
+  "version": "3.25.0",
+  "description": "Give A Bit HQ — metrics feed schema gate + lean deploy",
   "scripts": {
     "stamp": "node scripts/stamp-version.mjs",
     "verify-version": "node scripts/stamp-version.mjs",

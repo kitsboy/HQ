@@ -22,7 +22,7 @@
     "satohashHealthUrl": "https://api.satohash.io/health",
     "satohashMetricsUrl": "https://api.satohash.io/metrics.json",
     "nip05Url": "https://giveabit.io/.well-known/nostr.json",
-    "note": "Override in Vault. Prefer /metrics.json (gab.product-metrics.v1). HQ tries live candidates then static /metrics/*.json.",
+    "note": "Override in Vault. Prefer product-origin /metrics.json (gab.product-metrics.v1 only). HQ schema-gates candidates — never treat /health or /status as card metrics. Live first, then static /metrics/*.json.",
     "thorNodeUrl": "/metrics/thor-node.json",
     "thorNodeFallback": "https://raw.githubusercontent.com/kitsboy/HQ/main/metrics/thor-node.json",
     "metricsBase": "/metrics",
@@ -82,10 +82,8 @@
       "metricsKey": "satohash",
       "metricsUrl": "/metrics/satohash.json",
       "metricsLiveCandidates": [
-        "https://satohash.io/metrics.json",
         "https://api.satohash.io/metrics.json",
-        "https://api.satohash.io/api/public/status",
-        "https://api.satohash.io/health"
+        "https://satohash.io/metrics.json"
       ],
       "umamiId": "720524e7-b747-4f95-8ce6-1a20fd4a599f"
     },

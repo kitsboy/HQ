@@ -1,6 +1,6 @@
 # HQ SOURCE OF TRUTH
 
-_Updated: 2026-07-26 — app v3.24.1 (stamp-version)
+_Updated: 2026-07-27 — app v3.25.0 (stamp-version)
 
 ## Live
 
@@ -10,7 +10,7 @@ _Updated: 2026-07-26 — app v3.24.1 (stamp-version)
 | Pages preview | https://giveabit-hq.pages.dev |
 | GitHub | https://github.com/kitsboy/HQ |
 | CF Pages project | `giveabit-hq` (account Kitsboy) |
-| App version | **v3.24.1** (`npm run stamp` from package.json) |
+| App version | **v3.25.0** (`npm run stamp` from package.json) |
 | LNbits proxy Worker | `giveabit-lnbits-proxy` · https://giveabit-lnbits-proxy.kitsboy.workers.dev |
 | LNbits UI (login) | **http://vmi3446772.tailb672ac.ts.net:5102** (preferred) · **http://api.satohash.io:5102** |
 | LNbits HTTPS front | **https://api.satohash.io:8443** (TLS proxy when up) |
@@ -50,7 +50,9 @@ _Updated: 2026-07-26 — app v3.24.1 (stamp-version)
 | `projects.json` | Project registry + feeds (`lnbitsProxyUrl`, wallet ids, umamiId per site) |
 | `agents.json` | Agent personas + NIP-05 |
 | `tools.json` | Tools hub + close-by URLs (HERMES first) |
-| `metrics/*.json` | Product envelopes + `thor-node.json` + `ecosystem-map.json` |
+| `metrics/*.json` | Product envelopes + `thor-node.json` + ops feeds (deployed) |
+| `metrics/pulse-thor-*.md` | THOR pulse archive (repo only — **not** CF edge) |
+| Metrics load | `loadProductMetrics()` accepts only `gab.product-metrics.v1` |
 | `docs/projects/*.md` | Per-project data inventory packs |
 | `schemas/*.schema.json` | Metrics & node contracts |
 | `schemas/design-tokens.json` | **Design tokens — the visual contract** |
@@ -69,6 +71,7 @@ _Updated: 2026-07-26 — app v3.24.1 (stamp-version)
 
 | Ver | What |
 |------|------|
+| **v3.25.0** | Metrics feed schema gate (skip health/status JSON); prefer non-demo; satohash candidates = metrics.json only; build ships metrics JSON not pulse .md; metrics link uses live path |
 | **v3.19.0** | Metrics age honesty chips (live/stale/static) on cards·list·matrix; stale metrics panels on System + Analytics; porcelain brand-logo ring; PWA icons → brand-mark/logo |
 | **v3.18.1** | Official brand logo + data honesty pass |
 | **v3.13.0** | LNbits invoice history proxy + wallet transaction log in drawer |

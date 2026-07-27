@@ -2,8 +2,22 @@
 /**
  * Assemble ./public for Cloudflare Pages.
  * Fail hard if required assets (including docs/projects packs) are missing.
+ *
+ * Metrics deploy policy:
+ *   - Copy only metrics/*.json (product envelopes + ops feeds)
+ *   - Leave pulse-thor-*.md in repo for Kimi/THOR; do not ship to CF edge
+ *   - Prune public/metrics files that are not current source JSON
  */
-import { cpSync, mkdirSync, existsSync, writeFileSync, readFileSync, readdirSync, statSync } from "fs";
+import {
+  cpSync,
+  mkdirSync,
+  existsSync,
+  writeFileSync,
+  readFileSync,
+  readdirSync,
+  statSync,
+  unlinkSync,
+} from "fs";
 import { resolve, dirname, join } from "path";
 import { fileURLToPath } from "url";
 
@@ -36,9 +50,42 @@ function cpOptional(srcRel, destRel) {
   return true;
 }
 
-// Clean slate for docs so deletes propagate
 function ensureDir(rel) {
   mkdirSync(resolve(PUB, rel), { recursive: true });
+}
+
+/** Deploy metrics JSON only; prune pulse .md and stale public copies. */
+function copyMetricsJsonOnly() {
+  const src = resolve(ROOT, "metrics");
+  const dest = resolve(PUB, "metrics");
+  if (!existsSync(src)) {
+    console.error("build-public: missing metrics/");
+    process.exit(1);
+  }
+  mkdirSync(dest, { recursive: true });
+
+  let n = 0;
+  const sourceJson = new Set();
+  for (const name of readdirSync(src)) {
+    if (!name.endsWith(".json")) continue;
+    sourceJson.add(name);
+    cpSync(join(src, name), join(dest, name));
+    n++;
+  }
+
+  for (const name of readdirSync(dest)) {
+    const full = join(dest, name);
+    try {
+      if (!statSync(full).isFile()) continue;
+      if (!sourceJson.has(name)) {
+        unlinkSync(full);
+      }
+    } catch {
+      /* ignore */
+    }
+  }
+
+  console.log(`build-public: metrics ${n} json feeds (pulse .md excluded from edge)`);
 }
 
 ensureDir("metrics");
@@ -61,8 +108,7 @@ cp("manifest.webmanifest", "manifest.webmanifest");
 cp("pages/_headers", "_headers");
 cp("pages/_redirects", "_redirects");
 
-// metrics + schemas full trees
-cp("metrics", "metrics");
+copyMetricsJsonOnly();
 cp("schemas", "schemas");
 
 // All HQ docs (top-level) + project packs
@@ -89,10 +135,39 @@ if (existsSync(resolve(ROOT, "favicon-giveabit.png"))) {
   cp("brand-mark.png", "apple-touch-icon.png");
 }
 
+// Required product envelopes (HQ cards break without these static fallbacks)
+const requiredMetrics = [
+  "giveabit",
+  "satohash",
+  "katoa",
+  "stranded",
+  "tadbuy",
+  "motopass",
+  "sherpacarta",
+  "openstrata",
+  "btcminiscript",
+  "thor-node",
+];
+for (const id of requiredMetrics) {
+  const rel = `public/metrics/${id}.json`;
+  if (!existsSync(resolve(ROOT, rel))) {
+    console.error("build-public: missing metrics envelope after copy:", rel);
+    process.exit(1);
+  }
+}
+
 // Required project packs
 const requiredPacks = [
-  "giveabit", "satohash", "katoa", "stranded", "tadbuy",
-  "motopass", "sherpacarta", "openstrata", "btcminiscript", "thor-node",
+  "giveabit",
+  "satohash",
+  "katoa",
+  "stranded",
+  "tadbuy",
+  "motopass",
+  "sherpacarta",
+  "openstrata",
+  "btcminiscript",
+  "thor-node",
 ];
 for (const id of requiredPacks) {
   const rel = `public/docs/projects/${id}.md`;
@@ -104,12 +179,14 @@ for (const id of requiredPacks) {
 
 // Write a tiny build manifest for debugging deploys
 const pkg = JSON.parse(readFileSync(resolve(ROOT, "package.json"), "utf8"));
+const metricsList = readdirSync(resolve(PUB, "metrics")).filter((f) => f.endsWith(".json"));
 writeFileSync(
   resolve(PUB, "build.json"),
   JSON.stringify(
     {
       version: pkg.version,
       builtAt: new Date().toISOString(),
+      metricsJson: metricsList,
       docsProjects: readdirSync(resolve(PUB, "docs/projects")).filter((f) => f.endsWith(".md")),
       docsHq: readdirSync(resolve(PUB, "docs")).filter((f) => f.endsWith(".md")),
     },
@@ -119,5 +196,5 @@ writeFileSync(
 );
 
 console.log(
-  `build-public: v${pkg.version} → public/ (${requiredPacks.length} project packs + HQ docs)`
+  `build-public: v${pkg.version} → public/ (${requiredPacks.length} project packs · ${metricsList.length} metrics json)`
 );
