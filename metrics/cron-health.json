@@ -1,49 +1,49 @@
 {
-  "checked_at": "2026-07-28T08:03:11Z",
+  "checked_at": "2026-07-28T09:00:14Z",
   "jobs": {
-    "e8d5b97de501": {
-      "status": "failed",
-      "last_run": "2026-07-28T10:03:09.863261+02:00",
-      "consecutive_fails": 1,
-      "paused": false,
-      "error": "Script exited with code 1\nstderr:\nping giveabit https://giveabit.io \u2026 OK 200 1328ms\nping satohash https://satohash.io \u2026 OK 200 357ms\nping katoa https://katoa.org \u2026 OK 200 136ms\nping stranded https://s",
-      "action": "warn"
+    "c8ce19bb5571": {
+      "status": "completed",
+      "last_run": "2026-07-28T10:55:16.975246+02:00",
+      "consecutive_fails": 0,
+      "paused": false
     },
     "1b2c31d6ba98": {
       "status": "failed",
-      "last_run": "2026-07-28T09:49:11.556973+02:00",
+      "last_run": "2026-07-28T10:48:42.294938+02:00",
       "consecutive_fails": 1,
       "paused": false,
-      "error": "TimeoutError: Cron job 'thor-metrics-bundle-15m' idle for 601s (limit 600s) \u2014 last activity: executing tool: session_search",
+      "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
       "action": "warn"
     },
-    "c8ce19bb5571": {
+    "42cdc3e9bd97": {
       "status": "completed",
-      "last_run": "2026-07-28T09:45:28.616532+02:00",
+      "last_run": "2026-07-28T10:45:59.803458+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "e8d5b97de501": {
+      "status": "completed",
+      "last_run": "2026-07-28T10:30:51.243245+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "cb8398b3fa67": {
       "status": "completed",
-      "last_run": "2026-07-28T09:30:17.266903+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "42cdc3e9bd97": {
-      "status": "completed",
-      "last_run": "2026-07-28T09:15:54.701190+02:00",
+      "last_run": "2026-07-28T10:30:13.224684+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "bb5980d548fb": {
-      "status": "completed",
-      "last_run": "2026-07-28T09:14:36.626413+02:00",
-      "consecutive_fails": 0,
-      "paused": false
+      "status": "failed",
+      "last_run": "2026-07-28T10:09:48.755533+02:00",
+      "consecutive_fails": 1,
+      "paused": false,
+      "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
+      "action": "warn"
     },
     "7768b5c5aa49": {
       "status": "completed",
-      "last_run": "2026-07-28T09:10:56.829491+02:00",
+      "last_run": "2026-07-28T10:07:51.696212+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
