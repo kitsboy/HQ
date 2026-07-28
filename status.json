@@ -1,53 +1,53 @@
 {
-  "updatedAt": "2026-07-28T15:37:59.824Z",
+  "updatedAt": "2026-07-28T15:40:35.796Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 283,
+      "ms": 212,
       "url": "https://giveabit.io"
     },
     "satohash": {
       "ok": true,
       "status": 200,
-      "ms": 325,
+      "ms": 108,
       "url": "https://satohash.io"
     },
     "katoa": {
       "ok": true,
       "status": 200,
-      "ms": 199,
+      "ms": 90,
       "url": "https://katoa.org"
     },
     "stranded": {
       "ok": true,
       "status": 200,
-      "ms": 221,
+      "ms": 105,
       "url": "https://stranded.giveabit.io"
     },
     "tadbuy": {
       "ok": true,
       "status": 200,
-      "ms": 200,
+      "ms": 156,
       "url": "https://tadbuy.giveabit.io"
     },
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 179,
+      "ms": 85,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 177,
+      "ms": 100,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
       "ok": true,
       "status": 200,
-      "ms": 186,
+      "ms": 115,
       "url": "https://openstrata.giveabit.io"
     },
     "btcminiscript": {
@@ -67,44 +67,44 @@
     "satohashApi": {
       "ok": true,
       "status": 200,
-      "ms": 494,
+      "ms": 24,
       "healthUrl": "https://api.satohash.io/health"
     },
     "satohashMetrics": {
       "schema": "gab.product-metrics.v1",
       "productId": "satohash",
       "name": "Satohash",
-      "updatedAt": "2026-07-28T15:37:59.737Z",
+      "updatedAt": "2026-07-28T15:40:35.785Z",
       "window": {
         "label": "7d",
-        "from": "2026-07-21T15:37:59.737Z",
-        "to": "2026-07-28T15:37:59.737Z"
+        "from": "2026-07-21T15:40:35.785Z",
+        "to": "2026-07-28T15:40:35.785Z"
       },
       "health": {
         "status": "green",
-        "message": "API healthy — uses demo time series until real stamp history accumulates",
-        "latencyMs": 42,
-        "uptimePct24h": 99.9,
+        "message": "API healthy — live stamp aggregates for HQ",
+        "latencyMs": 1,
+        "uptimePct24h": null,
         "dependencies": [
           {
             "id": "opentimestamps-calendars",
             "status": "green",
-            "detail": "Calendar attestations available"
+            "detail": "alice + bob calendars; finney may be flaky"
           },
           {
             "id": "bitcoin-anchor",
             "status": "amber",
-            "detail": "Confirmations lag mempool — normal"
+            "detail": "1 pending Bitcoin confirmation(s)"
           },
           {
             "id": "api.satohash.io",
             "status": "green",
-            "detail": "API serving locally"
+            "detail": "version 5.0.0-ELITE"
           },
           {
-            "id": "nostr-relays",
+            "id": "client-attribution",
             "status": "green",
-            "detail": "Identity / NIP surfaces OK"
+            "detail": "1 distinct X-Satohash-Client id(s)"
           }
         ]
       },
@@ -112,7 +112,7 @@
         {
           "key": "stamps_total",
           "label": "Stamps (all time)",
-          "value": 6,
+          "value": 7,
           "unit": "proofs",
           "format": "number",
           "priority": 1,
@@ -121,7 +121,7 @@
         {
           "key": "stamps_24h",
           "label": "Stamps 24h",
-          "value": 0,
+          "value": 1,
           "unit": "proofs",
           "delta": 0,
           "deltaUnit": "%",
@@ -130,9 +130,27 @@
           "hint": "Daily stamping velocity."
         },
         {
+          "key": "stamps_7d",
+          "label": "Stamps 7d",
+          "value": 4,
+          "unit": "proofs",
+          "format": "number",
+          "priority": 2,
+          "hint": "Weekly velocity window."
+        },
+        {
+          "key": "monthly_capacity",
+          "label": "Monthly capacity (est.)",
+          "value": 17,
+          "unit": "proofs",
+          "format": "number",
+          "priority": 2,
+          "hint": "stamps_7d/7 × 30 — mold into pitch capacity."
+        },
+        {
           "key": "pending",
           "label": "Pending confirm",
-          "value": 0,
+          "value": 1,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -140,12 +158,21 @@
         },
         {
           "key": "confirmed",
-          "label": "Confirmed 7d",
+          "label": "Confirmed (all time)",
           "value": 6,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
-          "hint": "Fully Bitcoin-anchored proofs in window."
+          "hint": "Fully Bitcoin-anchored proofs."
+        },
+        {
+          "key": "confirmed_7d",
+          "label": "Confirmed 7d",
+          "value": 3,
+          "unit": "proofs",
+          "format": "number",
+          "priority": 2,
+          "hint": "Confirmed in last 7 days."
         },
         {
           "key": "confirm_rate",
@@ -154,7 +181,7 @@
           "unit": "%",
           "format": "percent",
           "priority": 1,
-          "hint": "confirmed / (confirmed+failed) in window. Target ≥ 95%."
+          "hint": "confirmed / (confirmed+failed). Target ≥ 95%."
         },
         {
           "key": "family_free",
@@ -163,34 +190,43 @@
           "unit": "proofs",
           "format": "number",
           "priority": 3,
-          "hint": "Internal suite usage — tracked via client_id after launch."
+          "hint": "Attributed to suite clients via X-Satohash-Client / client_id."
         },
         {
           "key": "api_clients",
           "label": "Active API clients",
-          "value": 0,
+          "value": 1,
           "unit": "clients",
           "format": "number",
           "priority": 3,
-          "hint": "Distinct client_id consumers of the proof plane."
+          "hint": "Distinct client_id values stored on stamps."
+        },
+        {
+          "key": "family_share_pct",
+          "label": "Family share",
+          "value": 0,
+          "unit": "%",
+          "format": "percent",
+          "priority": 3,
+          "hint": "Share of stamps from suite family clients."
+        },
+        {
+          "key": "failed",
+          "label": "Failed",
+          "value": 0,
+          "unit": "proofs",
+          "format": "number",
+          "priority": 4,
+          "hint": "Terminal failures (all time)."
         },
         {
           "key": "p50_ms",
-          "label": "Stamp p50",
-          "value": 820,
+          "label": "Metrics build p50",
+          "value": 1,
           "unit": "ms",
           "format": "duration",
-          "priority": 4,
-          "hint": "Median stamp API latency."
-        },
-        {
-          "key": "p95_ms",
-          "label": "Stamp p95",
-          "value": 2400,
-          "unit": "ms",
-          "format": "duration",
-          "priority": 4,
-          "hint": "Tail latency."
+          "priority": 5,
+          "hint": "Time to assemble this metrics envelope (proxy for API snappiness)."
         },
         {
           "key": "fee_sat_vb",
@@ -199,7 +235,7 @@
           "unit": "sat/vB",
           "format": "number",
           "priority": 5,
-          "hint": "Context for anchoring cost narrative."
+          "hint": "Context for anchoring cost narrative (static hint)."
         }
       ],
       "series": [
@@ -210,64 +246,64 @@
           "color": "#8a5a00",
           "points": [
             {
-              "t": "2026-07-14T15:37:59.737Z",
+              "t": "2026-07-14T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-07-15T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-07-16T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-07-17T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-07-18T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-07-19T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-07-20T12:00:00.000Z",
+              "v": 3
+            },
+            {
+              "t": "2026-07-21T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-07-22T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-07-23T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-07-24T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-07-25T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-07-26T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-07-27T12:00:00.000Z",
+              "v": 3
+            },
+            {
+              "t": "2026-07-28T12:00:00.000Z",
               "v": 1
-            },
-            {
-              "t": "2026-07-15T15:37:59.737Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-16T15:37:59.737Z",
-              "v": 4
-            },
-            {
-              "t": "2026-07-17T15:37:59.737Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-18T15:37:59.737Z",
-              "v": 4
-            },
-            {
-              "t": "2026-07-19T15:37:59.737Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-20T15:37:59.737Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-21T15:37:59.737Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-22T15:37:59.737Z",
-              "v": 2
-            },
-            {
-              "t": "2026-07-23T15:37:59.737Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-24T15:37:59.737Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-25T15:37:59.737Z",
-              "v": 4
-            },
-            {
-              "t": "2026-07-26T15:37:59.737Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-27T15:37:59.737Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-28T15:37:59.737Z",
-              "v": 2
             }
           ]
         },
@@ -278,64 +314,64 @@
           "color": "#1f6b3a",
           "points": [
             {
-              "t": "2026-07-14T15:37:59.737Z",
-              "v": 2
+              "t": "2026-07-14T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-15T15:37:59.737Z",
-              "v": 1
+              "t": "2026-07-15T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-16T15:37:59.737Z",
-              "v": 1
+              "t": "2026-07-16T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-17T15:37:59.737Z",
-              "v": 1
+              "t": "2026-07-17T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-18T15:37:59.737Z",
+              "t": "2026-07-18T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-07-19T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-07-20T12:00:00.000Z",
               "v": 3
             },
             {
-              "t": "2026-07-19T15:37:59.737Z",
-              "v": 1
+              "t": "2026-07-21T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-20T15:37:59.737Z",
-              "v": 1
+              "t": "2026-07-22T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-21T15:37:59.737Z",
-              "v": 1
+              "t": "2026-07-23T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-22T15:37:59.737Z",
-              "v": 1
+              "t": "2026-07-24T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-23T15:37:59.737Z",
-              "v": 1
+              "t": "2026-07-25T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-24T15:37:59.737Z",
-              "v": 1
+              "t": "2026-07-26T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-25T15:37:59.737Z",
-              "v": 1
+              "t": "2026-07-27T12:00:00.000Z",
+              "v": 3
             },
             {
-              "t": "2026-07-26T15:37:59.737Z",
-              "v": 2
-            },
-            {
-              "t": "2026-07-27T15:37:59.737Z",
-              "v": 1
-            },
-            {
-              "t": "2026-07-28T15:37:59.737Z",
-              "v": 1
+              "t": "2026-07-28T12:00:00.000Z",
+              "v": 0
             }
           ]
         },
@@ -346,64 +382,64 @@
           "color": "#c45f00",
           "points": [
             {
-              "t": "2026-07-14T15:37:59.737Z",
-              "v": 38
+              "t": "2026-07-14T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-15T15:37:59.737Z",
-              "v": 44
+              "t": "2026-07-15T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-16T15:37:59.737Z",
-              "v": 49
+              "t": "2026-07-16T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-17T15:37:59.737Z",
-              "v": 35
+              "t": "2026-07-17T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-18T15:37:59.737Z",
-              "v": 38
+              "t": "2026-07-18T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-19T15:37:59.737Z",
-              "v": 43
+              "t": "2026-07-19T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-20T15:37:59.737Z",
-              "v": 35
+              "t": "2026-07-20T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-21T15:37:59.737Z",
-              "v": 48
+              "t": "2026-07-21T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-22T15:37:59.737Z",
-              "v": 35
+              "t": "2026-07-22T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-23T15:37:59.737Z",
-              "v": 45
+              "t": "2026-07-23T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-24T15:37:59.737Z",
-              "v": 44
+              "t": "2026-07-24T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-25T15:37:59.737Z",
-              "v": 46
+              "t": "2026-07-25T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-26T15:37:59.737Z",
-              "v": 35
+              "t": "2026-07-26T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-27T15:37:59.737Z",
-              "v": 35
+              "t": "2026-07-27T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-28T15:37:59.737Z",
-              "v": 37
+              "t": "2026-07-28T12:00:00.000Z",
+              "v": 1
             }
           ]
         },
@@ -414,64 +450,64 @@
           "color": "#1a5f7a",
           "points": [
             {
-              "t": "2026-07-14T15:37:59.737Z",
-              "v": 19
+              "t": "2026-07-14T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-15T15:37:59.737Z",
-              "v": 24
+              "t": "2026-07-15T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-16T15:37:59.737Z",
-              "v": 19
+              "t": "2026-07-16T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-17T15:37:59.737Z",
-              "v": 24
+              "t": "2026-07-17T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-18T15:37:59.737Z",
-              "v": 24
+              "t": "2026-07-18T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-19T15:37:59.737Z",
-              "v": 20
+              "t": "2026-07-19T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-20T15:37:59.737Z",
-              "v": 23
+              "t": "2026-07-20T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-21T15:37:59.737Z",
-              "v": 22
+              "t": "2026-07-21T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-22T15:37:59.737Z",
-              "v": 23
+              "t": "2026-07-22T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-23T15:37:59.737Z",
-              "v": 21
+              "t": "2026-07-23T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-24T15:37:59.737Z",
-              "v": 22
+              "t": "2026-07-24T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-25T15:37:59.737Z",
-              "v": 20
+              "t": "2026-07-25T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-26T15:37:59.737Z",
-              "v": 21
+              "t": "2026-07-26T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-27T15:37:59.737Z",
-              "v": 24
+              "t": "2026-07-27T12:00:00.000Z",
+              "v": 0
             },
             {
-              "t": "2026-07-28T15:37:59.737Z",
-              "v": 21
+              "t": "2026-07-28T12:00:00.000Z",
+              "v": 0
             }
           ]
         }
@@ -484,32 +520,32 @@
             {
               "id": "hash_local",
               "label": "Local hash",
-              "count": 210,
+              "count": 7,
               "hint": "File never leaves device"
             },
             {
               "id": "submit",
               "label": "Submit stamp",
-              "count": 0,
-              "hint": "API or UI"
+              "count": 1,
+              "hint": "API or SPA"
             },
             {
               "id": "calendar",
               "label": "Calendar attested",
-              "count": 0,
-              "hint": "OTS calendars"
+              "count": 7,
+              "hint": "OTS calendars accepted"
             },
             {
               "id": "bitcoin",
               "label": "Bitcoin confirmed",
-              "count": 0,
+              "count": 6,
               "hint": "On-chain anchor"
             },
             {
-              "id": "verify",
-              "label": "User verified",
-              "count": 3,
-              "hint": "Return verify flow"
+              "id": "pending_queue",
+              "label": "Still pending",
+              "count": 1,
+              "hint": "Upgrade daemon queue"
             }
           ]
         }
@@ -517,8 +553,40 @@
       "segments": [
         {
           "id": "by_client",
-          "label": "By suite client_id (family free)",
+          "label": "By suite client_id (X-Satohash-Client)",
           "rows": [
+            {
+              "id": "public",
+              "label": "Public / unattributed",
+              "value": 6,
+              "meta": {
+                "offer": "open stamping or pre-attribution stamps"
+              }
+            },
+            {
+              "id": "kimi-ops-smoke",
+              "label": "kimi-ops-smoke",
+              "value": 1,
+              "meta": {
+                "offer": "attributed client"
+              }
+            },
+            {
+              "id": "sherpacarta",
+              "label": "SherpaCarta",
+              "value": 0,
+              "meta": {
+                "offer": "governance docs / charter"
+              }
+            },
+            {
+              "id": "sherpacarta-canada",
+              "label": "SherpaCarta Canada",
+              "value": 0,
+              "meta": {
+                "offer": "campaign / referendum proofs"
+              }
+            },
             {
               "id": "motopass",
               "label": "MotoPass",
@@ -544,19 +612,81 @@
               }
             },
             {
-              "id": "sherpacarta",
-              "label": "SherpaCarta",
+              "id": "tadbuy",
+              "label": "TadBuy",
               "value": 0,
               "meta": {
-                "offer": "governance docs"
+                "offer": "ad / campaign receipts"
               }
             },
             {
-              "id": "public",
-              "label": "Public / other",
+              "id": "stranded",
+              "label": "Stranded",
+              "value": 0,
+              "meta": {
+                "offer": "energy map attestations"
+              }
+            },
+            {
+              "id": "openstrata",
+              "label": "OpenStrata",
+              "value": 0,
+              "meta": {
+                "offer": "protocol docs"
+              }
+            },
+            {
+              "id": "spa",
+              "label": "Satohash SPA",
+              "value": 0,
+              "meta": {
+                "offer": "direct web stamps"
+              }
+            },
+            {
+              "id": "cli",
+              "label": "CLI",
+              "value": 0,
+              "meta": {
+                "offer": "developer tooling"
+              }
+            },
+            {
+              "id": "hq",
+              "label": "HQ",
+              "value": 0,
+              "meta": {
+                "offer": "ops smoke / suite"
+              }
+            }
+          ]
+        },
+        {
+          "id": "by_status",
+          "label": "By stamp status",
+          "rows": [
+            {
+              "id": "pending",
+              "label": "Pending",
+              "value": 1,
+              "meta": {
+                "offer": "awaiting BTC"
+              }
+            },
+            {
+              "id": "confirmed",
+              "label": "Confirmed",
               "value": 6,
               "meta": {
-                "offer": "open stamping"
+                "offer": "Bitcoin anchored"
+              }
+            },
+            {
+              "id": "failed",
+              "label": "Failed",
+              "value": 0,
+              "meta": {
+                "offer": "retry / investigate"
               }
             }
           ]
@@ -567,17 +697,21 @@
           "id": "ots_stamp",
           "title": "OpenTimestamps stamp API",
           "for": [
+            "sherpacarta",
+            "sherpacarta-canada",
             "motopass",
             "katoa",
             "giveabit",
-            "sherpacarta",
             "tadbuy",
             "stranded",
-            "openstrata"
+            "openstrata",
+            "spa",
+            "cli",
+            "hq"
           ],
-          "status": "internal",
+          "status": "ga",
           "endpoint": "POST /api/stamp",
-          "hint": "Family free internal; public rate limits planned"
+          "hint": "Send X-Satohash-Client for HQ attribution"
         },
         {
           "id": "ots_verify",
@@ -587,7 +721,19 @@
           ],
           "status": "ga",
           "endpoint": "GET /verify/:id",
-          "hint": "Court-admissible narrative"
+          "hint": "Cold-load UUID or SHA-256"
+        },
+        {
+          "id": "deep_link_stamp",
+          "title": "SPA stamp deep-link",
+          "for": [
+            "sherpacarta",
+            "motopass",
+            "hq"
+          ],
+          "status": "ga",
+          "endpoint": "/stamp?hash=&ref=",
+          "hint": "Family handoff; home /?hash= redirects"
         },
         {
           "id": "public_status",
@@ -595,9 +741,9 @@
           "for": [
             "hq"
           ],
-          "status": "beta",
+          "status": "ga",
           "endpoint": "GET /api/public/status",
-          "hint": "Wire live into HQ when API up"
+          "hint": "Suite heartbeat"
         },
         {
           "id": "metrics_v1",
@@ -607,36 +753,56 @@
           ],
           "status": "live",
           "endpoint": "GET /metrics.json",
-          "hint": "Published by satohash API origin"
+          "hint": "This envelope"
+        },
+        {
+          "id": "stamps_recent",
+          "title": "Recent stamps",
+          "for": [
+            "hq"
+          ],
+          "status": "live",
+          "endpoint": "GET /api/stamps/recent",
+          "hint": "Live feed for HQ intel"
+        },
+        {
+          "id": "directory",
+          "title": "Public directory",
+          "for": [
+            "hq"
+          ],
+          "status": "live",
+          "endpoint": "raw.directory in metrics.json",
+          "hint": "Hosts, endpoints, SPA routes, clients"
         }
       ],
       "education": [
         {
           "id": "mold_velocity",
           "title": "Mold stamps/day into capacity",
-          "body": "Show 7d average × 30 as \"monthly proof capacity\" for diligence packs.",
-          "action": "Add monthly projection KPI when live API lands",
+          "body": "Use monthly_capacity KPI (7d avg × 30) for diligence packs.",
+          "action": "Surface monthly_capacity on HQ card",
           "severity": "plan"
         },
         {
           "id": "mold_confirm",
           "title": "Confirm rate is trust",
-          "body": "If confirm_rate < 95%, lead with calendar redundancy.",
+          "body": "If confirm_rate < 95%, lead with calendar redundancy + upgrade daemon.",
           "action": "Alert HQ when confirm_rate drops below 92%",
           "severity": "risk"
         },
         {
           "id": "mold_family",
           "title": "Family free = suite moat",
-          "body": "Segment chart proves Satohash is infrastructure, not a silo.",
-          "action": "Pitch mode callout: \"Shared OTS backbone\"",
+          "body": "by_client segment proves Satohash is infrastructure, not a silo.",
+          "action": "Pitch: Shared OTS backbone",
           "severity": "opportunity"
         },
         {
-          "id": "mold_latency",
-          "title": "SLA table from p50/p95",
-          "body": "Publish internal SLOs: p50 < 1s, p95 < 3s for stamp accept.",
-          "action": "Export SLO table into diligence pack",
+          "id": "mold_attribution",
+          "title": "Always send X-Satohash-Client",
+          "body": "Without the header, stamps land as public/unattributed.",
+          "action": "Sherpa/MotoPass/CLI must set client id",
           "severity": "info"
         }
       ],
@@ -646,17 +812,184 @@
           "url": "https://satohash.io"
         },
         {
+          "label": "Stamp deep-link",
+          "url": "https://satohash.io/stamp"
+        },
+        {
           "label": "API",
           "url": "https://api.satohash.io"
         },
         {
+          "label": "Metrics (live)",
+          "url": "https://api.satohash.io/metrics.json"
+        },
+        {
+          "label": "Public status",
+          "url": "https://api.satohash.io/api/public/status"
+        },
+        {
+          "label": "Recent stamps",
+          "url": "https://api.satohash.io/api/stamps/recent"
+        },
+        {
+          "label": "HQ glass",
+          "url": "https://hq.giveabit.io"
+        },
+        {
           "label": "Schema",
-          "url": "/schemas/product-metrics.v1.schema.json"
+          "url": "https://hq.giveabit.io/schemas/product-metrics.v1.schema.json"
         }
       ],
       "raw": {
         "demo": false,
-        "note": "Live metrics from satohash API"
+        "seriesFromDb": true,
+        "note": "Live metrics from satohash API DB",
+        "version": "5.0.0-ELITE",
+        "uptimeSec": 76,
+        "requireLightning": false,
+        "familyFreeTier": true,
+        "directory": {
+          "productId": "satohash",
+          "name": "Satohash",
+          "role": "Give A Bit shared OpenTimestamps / Bitcoin proof plane",
+          "hosts": {
+            "spa": [
+              "https://satohash.io",
+              "https://satohash.giveabit.io"
+            ],
+            "api": [
+              "https://api.satohash.io"
+            ]
+          },
+          "deepLinks": {
+            "stamp": "https://satohash.io/stamp?hash=<64hex>&ref=<productId>",
+            "stampHomeRedirect": "https://satohash.io/?hash=<64hex>&ref=<productId>",
+            "verify": "https://satohash.io/verify/<id-or-hash>"
+          },
+          "endpoints": [
+            {
+              "method": "GET",
+              "path": "/health",
+              "purpose": "Liveness"
+            },
+            {
+              "method": "GET",
+              "path": "/metrics.json",
+              "purpose": "HQ product metrics v1"
+            },
+            {
+              "method": "GET",
+              "path": "/api/public/status",
+              "purpose": "Suite heartbeat"
+            },
+            {
+              "method": "GET",
+              "path": "/api/public/stats",
+              "purpose": "Public stamp stats"
+            },
+            {
+              "method": "GET",
+              "path": "/api/public/network",
+              "purpose": "Network surface"
+            },
+            {
+              "method": "GET",
+              "path": "/api/public/version",
+              "purpose": "API version"
+            },
+            {
+              "method": "GET",
+              "path": "/api/stamps/recent",
+              "purpose": "Recent public stamps"
+            },
+            {
+              "method": "GET",
+              "path": "/api/stamps/:id",
+              "purpose": "Stamp metadata"
+            },
+            {
+              "method": "GET",
+              "path": "/api/stamps/:hash/by-hash",
+              "purpose": "Stamps by SHA-256"
+            },
+            {
+              "method": "GET",
+              "path": "/api/stamps/:id/ots",
+              "purpose": "OTS binary download"
+            },
+            {
+              "method": "GET",
+              "path": "/api/stamps/:id/proof-package",
+              "purpose": "Proof package JSON"
+            },
+            {
+              "method": "POST",
+              "path": "/api/stamp",
+              "purpose": "Create OTS stamp",
+              "headers": [
+                "X-Satohash-Client"
+              ]
+            },
+            {
+              "method": "GET",
+              "path": "/api/openapi.json",
+              "purpose": "OpenAPI stub"
+            }
+          ],
+          "spaRoutes": [
+            "/stamp",
+            "/verify/:id",
+            "/vault",
+            "/templates",
+            "/integrations",
+            "/trust",
+            "/docs"
+          ],
+          "clientsExpected": [
+            "sherpacarta",
+            "sherpacarta-canada",
+            "motopass",
+            "katoa",
+            "giveabit",
+            "tadbuy",
+            "stranded",
+            "openstrata",
+            "spa",
+            "cli",
+            "hq"
+          ],
+          "attribution": {
+            "header": "X-Satohash-Client",
+            "query": "ref | source",
+            "storedAs": "timestamps.client_id"
+          },
+          "docs": [
+            {
+              "label": "Family API",
+              "url": "https://satohash.io/docs/family-api"
+            },
+            {
+              "label": "OTS deep learn",
+              "url": "https://github.com/kitsboy/satohash/blob/main/docs/OTS-DEEP-LEARN.md"
+            },
+            {
+              "label": "HQ feed (this envelope)",
+              "url": "https://api.satohash.io/metrics.json"
+            }
+          ]
+        },
+        "counts": {
+          "stampsTotal": 7,
+          "stamps24h": 1,
+          "stamps7d": 4,
+          "pending": 1,
+          "confirmed": 6,
+          "confirmed7d": 3,
+          "failed": 0,
+          "failed7d": 0,
+          "familyFree": 0,
+          "distinctClients": 1
+        }
       }
     }
   },
