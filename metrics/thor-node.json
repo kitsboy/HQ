@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-28T20:45:01Z",
+ "updatedAt": "2026-07-28T20:45:37Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -11,7 +11,7 @@
    {
     "id": "satohash-satohash-api-1",
     "status": "green",
-    "detail": "Up 18 minutes (healthy)"
+    "detail": "Up 19 minutes (healthy)"
    },
    {
     "id": "umami",
@@ -39,7 +39,7 @@
     "detail": "Up 13 hours (healthy)"
    }
   ],
-  "uptimeSec": 1028901
+  "uptimeSec": 1028936
  },
  "bitcoin": {
   "ok": true,
@@ -464,7 +464,7 @@
      "v": 0
     },
     {
-     "t": "2026-07-28T20:45:01Z",
+     "t": "2026-07-28T20:45:37Z",
      "v": 0
     }
    ]
@@ -856,7 +856,7 @@
      "v": 0
     },
     {
-     "t": "2026-07-28T20:45:01Z",
+     "t": "2026-07-28T20:45:37Z",
      "v": 0
     }
    ]
@@ -1248,8 +1248,8 @@
      "v": 1.53
     },
     {
-     "t": "2026-07-28T20:45:01Z",
-     "v": 1.2
+     "t": "2026-07-28T20:45:37Z",
+     "v": 1.31
     }
    ]
   },
@@ -1640,7 +1640,7 @@
      "v": 5.5
     },
     {
-     "t": "2026-07-28T20:45:01Z",
+     "t": "2026-07-28T20:45:37Z",
      "v": 5.1
     }
    ]
@@ -2032,7 +2032,7 @@
      "v": 960013
     },
     {
-     "t": "2026-07-28T20:45:01Z",
+     "t": "2026-07-28T20:45:37Z",
      "v": 960015
     }
    ]
@@ -2061,8 +2061,8 @@
  "system": {
   "disk": {
    "totalGB": 387,
-   "usedGB": 39,
-   "freeGB": 348,
+   "usedGB": 40,
+   "freeGB": 347,
    "usedPercent": 11,
    "mount": "/"
   },
@@ -2070,12 +2070,12 @@
    "totalGB": 7.8,
    "usedGB": 5.1,
    "freeGB": 0.2,
-   "availableGB": 2.7
+   "availableGB": 2.6
   },
   "cpu": {
-   "loadAvg1m": 1.2,
-   "loadAvg5m": 1.52,
-   "loadAvg15m": 13.98,
+   "loadAvg1m": 1.31,
+   "loadAvg5m": 1.51,
+   "loadAvg15m": 13.51,
    "uptimeDays": 11.9
   },
   "docker": {
@@ -2092,18 +2092,18 @@
    "LND_data": 0.344,
    "Docker_images": 3.911,
    "Docker_volumes": 0.456,
-   "other_system": 32.3
+   "other_system": 33.3
   }
  },
  "host": {
   "diskTotalGB": 387,
-  "diskUsedGB": 39,
-  "diskFreeGB": 348,
+  "diskUsedGB": 40,
+  "diskFreeGB": 347,
   "memTotalGB": 7.8,
   "memUsedGB": 5.1,
-  "load1": 1.2,
-  "load5": 1.52,
-  "load15": 13.98,
+  "load1": 1.31,
+  "load5": 1.51,
+  "load15": 13.51,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
@@ -2111,7 +2111,7 @@
    {
     "id": "other_system",
     "label": "Other system",
-    "gb": 32.3
+    "gb": 33.3
    },
    {
     "id": "Docker_images",
