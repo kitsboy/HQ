@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-28T13:30:55Z",
+  "checked_at": "2026-07-28T16:17:20Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -29,18 +29,18 @@
       "repo": "kitsboy/satohash",
       "site_url": "https://satohash.io",
       "last_commit": {
-        "sha": "2527c5c",
-        "message": "chore: handoff/docs updates \u2014 M4 online, memory cleanup, watchdog installed",
-        "author": "Kimi (THOR)",
-        "date": "2026-07-27T14:46:06Z",
-        "url": "https://github.com/kitsboy/satohash/commit/2527c5ca4c6a122fd9774ea9d85effb1bb55606d"
+        "sha": "15eb4d7",
+        "message": "feat: flip-ready paywall/node/LN, local AI ML, damus Nostr, nav pill",
+        "author": "Cam",
+        "date": "2026-07-28T16:10:12Z",
+        "url": "https://github.com/kitsboy/satohash/commit/15eb4d79863bfb82c643ff9705234078385934d8"
       },
       "recent_commits": [
-        "chore: handoff/docs updates \u2014 M4 online, memory cleanup, wat",
-        "docs: point Kimi to HQ MASTER LIST (Cam priorities)",
-        "docs: LATEST-UPDATE tip bcf5f47 goodbye"
+        "feat: flip-ready paywall/node/LN, local AI ML, damus Nostr, ",
+        "docs: pin LATEST-UPDATE tip to a4ec76a",
+        "feat: live SPA metrics proxy, full AI notary, Nostr multi-re"
       ],
-      "commits_7d": 28,
+      "commits_7d": 35,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "4fd038d",
-        "message": "chore: thor auto-metrics 13:30 (live LND)",
+        "sha": "d895665",
+        "message": "chore: thor auto-metrics 16:09 (live LND)",
         "author": "Cam (via Aider)",
-        "date": "2026-07-28T13:30:15Z",
-        "url": "https://github.com/kitsboy/HQ/commit/4fd038dd278796dda479849a35c0d7e2af11bb50"
+        "date": "2026-07-28T16:09:22Z",
+        "url": "https://github.com/kitsboy/HQ/commit/d89566511e9f941d0c472053844a7a7c21272948"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 13:30 (live LND)",
-        "auto-metrics: THOR pulse 2026-07-28 15:15 UTC",
-        "chore: thor auto-metrics 13:16 (live LND)"
+        "chore: thor auto-metrics 16:09 (live LND)",
+        "chore: thor auto-metrics 16:02 (live LND)",
+        "chore: refresh status.json + thor-node [skip deploy]"
       ],
       "commits_7d": 100,
       "health": "green",

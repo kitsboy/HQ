@@ -1,59 +1,57 @@
 {
-  "checked_at": "2026-07-28T13:10:55Z",
+  "checked_at": "2026-07-28T16:00:05Z",
   "jobs": {
-    "1b2c31d6ba98": {
+    "c8ce19bb5571": {
       "status": "completed",
-      "last_run": "2026-07-28T15:08:53.678494+02:00",
+      "last_run": "2026-07-28T17:55:07.730186+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
-    "c8ce19bb5571": {
+    "1b2c31d6ba98": {
       "status": "completed",
-      "last_run": "2026-07-28T15:05:57.498242+02:00",
+      "last_run": "2026-07-28T17:47:42.642929+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "42cdc3e9bd97": {
       "status": "completed",
-      "last_run": "2026-07-28T15:04:31.365654+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "7768b5c5aa49": {
-      "status": "completed",
-      "last_run": "2026-07-28T15:02:21.435074+02:00",
+      "last_run": "2026-07-28T17:45:35.026382+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "e8d5b97de501": {
       "status": "completed",
-      "last_run": "2026-07-28T15:01:16.826818+02:00",
+      "last_run": "2026-07-28T17:31:19.353943+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "cb8398b3fa67": {
       "status": "completed",
-      "last_run": "2026-07-28T15:00:55.203701+02:00",
+      "last_run": "2026-07-28T17:31:00.515816+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "bb5980d548fb": {
-      "status": "failed",
-      "last_run": "2026-07-28T14:14:18.696717+02:00",
-      "consecutive_fails": 2,
-      "paused": false,
-      "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
-      "action": "warn"
-    },
-    "9bd2735e125e": {
       "status": "completed",
-      "last_run": "2026-07-28T12:00:35.116711+02:00",
+      "last_run": "2026-07-28T17:07:50.239395+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "7768b5c5aa49": {
+      "status": "completed",
+      "last_run": "2026-07-28T17:02:21.937465+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "e4b5079b66ce": {
       "status": "completed",
-      "last_run": "2026-07-28T12:00:33.691333+02:00",
+      "last_run": "2026-07-28T16:00:58.940961+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "9bd2735e125e": {
+      "status": "completed",
+      "last_run": "2026-07-28T12:00:35.116711+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
@@ -133,7 +131,7 @@
     }
   },
   "paused_count": 1,
-  "alert_count": 2,
+  "alert_count": 1,
   "paused_jobs": [
     "34c2181c2737"
   ],
