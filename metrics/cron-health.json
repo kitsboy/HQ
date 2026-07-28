@@ -1,26 +1,185 @@
 {
-  "checked_at": "2026-07-28T20:02:00Z",
-  "total_jobs": 28,
-  "active": 27,
-  "paused": 1,
-  "healthy": 27,
-  "warning": 0,
-  "stale_executions": 0,
+  "checked_at": "2026-07-28T19:08:19Z",
+  "total_fleet": 28,
+  "paused_count": 1,
+  "alert_count": 2,
   "jobs": {
+    "12b477c661ae": {
+      "status": "completed",
+      "last_run": "2026-07-27T22:05:15.769502+02:00",
+      "consecutive_fails": 0,
+      "action": "ok"
+    },
+    "1b2c31d6ba98": {
+      "status": "completed",
+      "last_run": "2026-07-28T20:46:45.445941+02:00",
+      "consecutive_fails": 0,
+      "action": "ok"
+    },
+    "2621be4bb5dd": {
+      "status": "completed",
+      "last_run": "2026-07-27T08:07:27.291005+02:00",
+      "consecutive_fails": 0,
+      "action": "ok"
+    },
+    "30921a766dae": {
+      "status": "completed",
+      "last_run": "2026-07-28T21:00:44.860763+02:00",
+      "consecutive_fails": 0,
+      "action": "ok"
+    },
+    "311d146f45c3": {
+      "status": "completed",
+      "last_run": "2026-07-28T07:15:52.655489+02:00",
+      "consecutive_fails": 0,
+      "action": "ok"
+    },
+    "337c7ae0b619": {
+      "status": "completed",
+      "last_run": "2026-07-28T07:31:04.549028+02:00",
+      "consecutive_fails": 0,
+      "action": "ok"
+    },
+    "42cdc3e9bd97": {
+      "status": "completed",
+      "last_run": "2026-07-28T21:06:10.950570+02:00",
+      "consecutive_fails": 0,
+      "action": "ok"
+    },
+    "5c6f78744d6e": {
+      "status": "completed",
+      "last_run": "2026-07-28T07:00:53.772530+02:00",
+      "consecutive_fails": 0,
+      "action": "ok"
+    },
+    "71f476018b46": {
+      "status": "completed",
+      "last_run": "2026-07-28T07:34:59.331528+02:00",
+      "consecutive_fails": 0,
+      "action": "ok"
+    },
+    "7768b5c5aa49": {
+      "status": "completed",
+      "last_run": "2026-07-28T21:02:08.629341+02:00",
+      "consecutive_fails": 0,
+      "action": "ok"
+    },
+    "9bd2735e125e": {
+      "status": "completed",
+      "last_run": "2026-07-28T18:00:09.945175+02:00",
+      "consecutive_fails": 0,
+      "action": "ok"
+    },
+    "b6a4e3710d9d": {
+      "status": "completed",
+      "last_run": "2026-07-28T08:01:01.400748+02:00",
+      "consecutive_fails": 0,
+      "action": "ok"
+    },
+    "b7b5c1bebfe7": {
+      "status": "completed",
+      "last_run": "2026-07-27T09:10:17.008733+02:00",
+      "consecutive_fails": 0,
+      "action": "ok"
+    },
+    "bb5980d548fb": {
+      "status": "completed",
+      "last_run": "2026-07-28T20:05:30.761368+02:00",
+      "consecutive_fails": 0,
+      "action": "ok"
+    },
     "bb6e71c68350": {
       "status": "failed",
-      "last_run": "2026-07-28T02:00:49+02:00",
+      "last_run": "2026-07-28T02:00:49.486664+02:00",
       "consecutive_fails": 1,
-      "action": "warn",
-      "note": "Known report-only script pattern (self-improve exits 1 on findings). Fix (|| true) applied 2026-07-28 09:14. Next run should succeed."
+      "action": "warn"
+    },
+    "c8ce19bb5571": {
+      "status": "completed",
+      "last_run": "2026-07-28T21:05:47.250755+02:00",
+      "consecutive_fails": 0,
+      "action": "ok"
+    },
+    "cb8398b3fa67": {
+      "status": "completed",
+      "last_run": "2026-07-28T21:00:44.413414+02:00",
+      "consecutive_fails": 0,
+      "action": "ok"
+    },
+    "e4b5079b66ce": {
+      "status": "completed",
+      "last_run": "2026-07-28T20:00:46.718394+02:00",
+      "consecutive_fails": 0,
+      "action": "ok"
+    },
+    "e8d5b97de501": {
+      "status": "failed",
+      "last_run": "2026-07-28T21:01:01.754958+02:00",
+      "consecutive_fails": 1,
+      "action": "warn"
+    },
+    "980226ec5716": {
+      "status": "no_history",
+      "last_run": "N/A",
+      "consecutive_fails": 0,
+      "action": "ok",
+      "paused": false
+    },
+    "469f2cfb7ab8": {
+      "status": "no_history",
+      "last_run": "N/A",
+      "consecutive_fails": 0,
+      "action": "ok",
+      "paused": false
+    },
+    "59b3a68e3eb2": {
+      "status": "no_history",
+      "last_run": "N/A",
+      "consecutive_fails": 0,
+      "action": "ok",
+      "paused": false
+    },
+    "560e38829acf": {
+      "status": "no_history",
+      "last_run": "N/A",
+      "consecutive_fails": 0,
+      "action": "ok",
+      "paused": false
+    },
+    "019f2b72567e": {
+      "status": "no_history",
+      "last_run": "N/A",
+      "consecutive_fails": 0,
+      "action": "ok",
+      "paused": false
+    },
+    "eb7452b2189e": {
+      "status": "no_history",
+      "last_run": "N/A",
+      "consecutive_fails": 0,
+      "action": "ok",
+      "paused": false
+    },
+    "447ed87c7a57": {
+      "status": "no_history",
+      "last_run": "N/A",
+      "consecutive_fails": 0,
+      "action": "ok",
+      "paused": false
     },
     "34c2181c2737": {
       "status": "no_history",
-      "paused": true,
+      "last_run": "N/A",
       "consecutive_fails": 0,
-      "note": "Permanently paused — delivery error: Chat not found for telegram:-1002286292251"
+      "action": "ok",
+      "paused": true
+    },
+    "e19a3670752f": {
+      "status": "no_history",
+      "last_run": "N/A",
+      "consecutive_fails": 0,
+      "action": "ok",
+      "paused": false
     }
-  },
-  "paused_count": 1,
-  "alert_count": 1
+  }
 }
