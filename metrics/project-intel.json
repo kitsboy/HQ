@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-28T18:30:42Z",
+  "checked_at": "2026-07-28T20:30:27Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -29,18 +29,18 @@
       "repo": "kitsboy/satohash",
       "site_url": "https://satohash.io",
       "last_commit": {
-        "sha": "1204b45",
-        "message": "docs: v5.0.0 full rebuild \u2014 AI, Nostr, LNbits paywall-ready",
-        "author": "Kimi (THOR)",
-        "date": "2026-07-28T16:23:12Z",
-        "url": "https://github.com/kitsboy/satohash/commit/1204b45201fb2ca40868d3138e78c420a8319cd7"
+        "sha": "048462d",
+        "message": "docs: production closeout \u2014 www fixed, CORS suite hosts, final Kimi orders",
+        "author": "Cam",
+        "date": "2026-07-28T20:21:59Z",
+        "url": "https://github.com/kitsboy/satohash/commit/048462debde23bda6beffa37dfb1b8119998e725"
       },
       "recent_commits": [
-        "docs: v5.0.0 full rebuild \u2014 AI, Nostr, LNbits paywall-ready",
-        "feat: flip-ready paywall/node/LN, local AI ML, damus Nostr, ",
-        "docs: pin LATEST-UPDATE tip to a4ec76a"
+        "docs: production closeout \u2014 www fixed, CORS suite hosts, fin",
+        "docs: security scrub \u2014 no key material; backup/swap/bitcoind",
+        "docs: bitcoind pruned installed, syncing"
       ],
-      "commits_7d": 36,
+      "commits_7d": 38,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "94b373a",
-        "message": "chore: thor auto-metrics 18:30 (live LND)",
-        "author": "Cam (via Aider)",
-        "date": "2026-07-28T18:30:08Z",
-        "url": "https://github.com/kitsboy/HQ/commit/94b373add6b17ea3f21ad6217a07a2060b492162"
+        "sha": "46573d5",
+        "message": "chore: refresh status.json [skip deploy]",
+        "author": "hq-status-bot",
+        "date": "2026-07-28T20:19:14Z",
+        "url": "https://github.com/kitsboy/HQ/commit/46573d53c963fd6c284032b3fbf0c35c5fb16507"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 18:30 (live LND)",
-        "chore: thor auto-metrics 18:15 (live LND)",
-        "chore: thor auto-metrics 18:15 (live LND)"
+        "chore: refresh status.json [skip deploy]",
+        "chore: thor auto-metrics 20:15 (live LND)",
+        "chore: thor auto-metrics 20:15 (live LND)"
       ],
       "commits_7d": 100,
       "health": "green",
@@ -84,7 +84,7 @@
         "chore: update .ai_docs/current-status.md per project templat",
         "chore: update ROADMAP.md per project template"
       ],
-      "commits_7d": 15,
+      "commits_7d": 14,
       "health": "green",
       "cf_project": "katoa",
       "open_issues": 0
@@ -106,7 +106,7 @@
         "fix: prefix bare vite build with npx for Node 24 runner comp",
         "chore: update .ai_docs/current-status.md per project templat"
       ],
-      "commits_7d": 36,
+      "commits_7d": 35,
       "health": "green",
       "cf_project": "tadbuy",
       "open_issues": 1
@@ -128,7 +128,7 @@
         "fix: deploy from ./dist not ./out (next.config.js sets distD",
         "fix: prefix next build with npx for Node 24 compat"
       ],
-      "commits_7d": 17,
+      "commits_7d": 16,
       "health": "green",
       "cf_project": "strandedbuild",
       "open_issues": 0
@@ -150,7 +150,7 @@
         "chore: update .ai_docs/current-status.md per project templat",
         "chore: update ROADMAP.md per project template"
       ],
-      "commits_7d": 10,
+      "commits_7d": 9,
       "health": "green",
       "cf_project": "motopass",
       "open_issues": 0
@@ -172,7 +172,7 @@
         "docs: suite truth \u2014 Mission/NIP-05 live; LNURL still Kimi",
         "chore: LATEST-UPDATE tip c44d263"
       ],
-      "commits_7d": 54,
+      "commits_7d": 53,
       "health": "green",
       "cf_project": "sherpacarta",
       "open_issues": 0
