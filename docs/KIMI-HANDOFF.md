@@ -120,7 +120,8 @@ Grok: update public/data/wallets.json → set lightning.lud16 and remove TEMP pl
 | SherpaCarta metrics E2E | CF Function `/metrics.json`, Canada KV, Umami site-wide, HQ elite card |
 | Canada mandate + join QR | `/canada/sign`, `/canada/join`, dual-track honesty |
 | Satohash stamp family | `/stamp?hash=&ref=`, family clients, API health + metrics |
-| **Satohash API v5.0.0-ELITE** | ✅ Built + deployed on THOR 2026-07-28 · API reports 5.0.0-ELITE · HQ card 🟢 GREEN · Stamp smoke passes |
+| **Satohash API v5.0.0-ELITE** | ✅ Built + deployed on THOR 2026-07-28 · AI embed/fraud, Nostr multi-relay, LNbits paywall-ready · HQ card 🟢 GREEN |
+| **Satohash LNbits wired** | ✅ Invoice key on API env · paywall flip-ready (still free, `REQUIRE_LIGHTNING=false`) · Cam pastes same key in HQ Vault for Money tab |
 | **NIP-05 `sherpa@giveabit.io`** | ✅ live in giveabit `nostr.json` · wallets.json `nip05Status: live` |
 | Giveabit Mission + registry | ✅ v4.4.0 · NIP-05 identity paragraph · sherpa in SPA registry |
 | HQ metrics schema gate | ✅ v3.25 · `gab.product-metrics.v1` only |
