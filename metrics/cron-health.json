@@ -1,49 +1,47 @@
 {
-  "checked_at": "2026-07-28T09:00:14Z",
+  "checked_at": "2026-07-28T10:00:27Z",
   "jobs": {
     "c8ce19bb5571": {
       "status": "completed",
-      "last_run": "2026-07-28T10:55:16.975246+02:00",
+      "last_run": "2026-07-28T11:55:28.376090+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "1b2c31d6ba98": {
       "status": "failed",
-      "last_run": "2026-07-28T10:48:42.294938+02:00",
-      "consecutive_fails": 1,
+      "last_run": "2026-07-28T11:48:19.264536+02:00",
+      "consecutive_fails": 2,
       "paused": false,
       "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
       "action": "warn"
     },
     "42cdc3e9bd97": {
       "status": "completed",
-      "last_run": "2026-07-28T10:45:59.803458+02:00",
+      "last_run": "2026-07-28T11:45:56.214920+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "e8d5b97de501": {
       "status": "completed",
-      "last_run": "2026-07-28T10:30:51.243245+02:00",
+      "last_run": "2026-07-28T11:33:50.297001+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "cb8398b3fa67": {
       "status": "completed",
-      "last_run": "2026-07-28T10:30:13.224684+02:00",
+      "last_run": "2026-07-28T11:30:21.723543+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "bb5980d548fb": {
-      "status": "failed",
-      "last_run": "2026-07-28T10:09:48.755533+02:00",
-      "consecutive_fails": 1,
-      "paused": false,
-      "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
-      "action": "warn"
+      "status": "completed",
+      "last_run": "2026-07-28T11:08:43.815222+02:00",
+      "consecutive_fails": 0,
+      "paused": false
     },
     "7768b5c5aa49": {
       "status": "completed",
-      "last_run": "2026-07-28T10:07:51.696212+02:00",
+      "last_run": "2026-07-28T11:01:57.532059+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
@@ -135,7 +133,7 @@
     }
   },
   "paused_count": 1,
-  "alert_count": 3,
+  "alert_count": 2,
   "paused_jobs": [
     "34c2181c2737"
   ],
