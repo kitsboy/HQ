@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-28T20:45:28Z",
+  "checked_at": "2026-07-28T21:45:29Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -18,7 +18,7 @@
         "feat: Mission NIP-05 identity + sherpa@ in SPA registry (v4.",
         "feat: add sherpa NIP-05 identity (sherpa@giveabit.io) for Sh"
       ],
-      "commits_7d": 14,
+      "commits_7d": 10,
       "health": "green",
       "cf_project": "giveabit",
       "open_issues": 0
@@ -40,7 +40,7 @@
         "docs: security scrub \u2014 no key material; backup/swap/bitcoind",
         "docs: bitcoind pruned installed, syncing"
       ],
-      "commits_7d": 37,
+      "commits_7d": 36,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "e7a77fd",
-        "message": "chore: thor auto-metrics 20:45 (live LND)",
-        "author": "Cam (via Aider)",
-        "date": "2026-07-28T20:45:05Z",
-        "url": "https://github.com/kitsboy/HQ/commit/e7a77fd292a89934161c98f2239b91c2884bbd60"
+        "sha": "97cfe4b",
+        "message": "chore: refresh status.json [skip deploy]",
+        "author": "hq-status-bot",
+        "date": "2026-07-28T21:41:07Z",
+        "url": "https://github.com/kitsboy/HQ/commit/97cfe4ba17967867e2448847c53e5029d5533e0e"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 20:45 (live LND)",
-        "chore: thor pulse delta 20:30 UTC \u2014 memory recovered, bitcoi",
-        "chore: refresh metrics bundle 20:30 UTC (5/5 scripts OK) [sk"
+        "chore: refresh status.json [skip deploy]",
+        "chore: thor auto-metrics 21:30 (live LND)",
+        "chore: refresh status.json + thor-node [skip deploy]"
       ],
       "commits_7d": 100,
       "health": "green",
@@ -84,7 +84,7 @@
         "chore: update .ai_docs/current-status.md per project templat",
         "chore: update ROADMAP.md per project template"
       ],
-      "commits_7d": 14,
+      "commits_7d": 13,
       "health": "green",
       "cf_project": "katoa",
       "open_issues": 0
@@ -106,7 +106,7 @@
         "fix: prefix bare vite build with npx for Node 24 runner comp",
         "chore: update .ai_docs/current-status.md per project templat"
       ],
-      "commits_7d": 35,
+      "commits_7d": 19,
       "health": "green",
       "cf_project": "tadbuy",
       "open_issues": 1
@@ -128,7 +128,7 @@
         "fix: deploy from ./dist not ./out (next.config.js sets distD",
         "fix: prefix next build with npx for Node 24 compat"
       ],
-      "commits_7d": 16,
+      "commits_7d": 15,
       "health": "green",
       "cf_project": "strandedbuild",
       "open_issues": 0
@@ -150,7 +150,7 @@
         "chore: update .ai_docs/current-status.md per project templat",
         "chore: update ROADMAP.md per project template"
       ],
-      "commits_7d": 9,
+      "commits_7d": 8,
       "health": "green",
       "cf_project": "motopass",
       "open_issues": 0
@@ -172,7 +172,7 @@
         "docs: suite truth \u2014 Mission/NIP-05 live; LNURL still Kimi",
         "chore: LATEST-UPDATE tip c44d263"
       ],
-      "commits_7d": 53,
+      "commits_7d": 49,
       "health": "green",
       "cf_project": "sherpacarta",
       "open_issues": 0

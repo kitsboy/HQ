@@ -1,46 +1,57 @@
 {
-  "checked_at": "2026-07-28T20:12:27Z",
+  "checked_at": "2026-07-28T21:00:28Z",
   "jobs": {
     "c8ce19bb5571": {
       "status": "completed",
-      "last_run": "2026-07-28T21:56:00.689329+02:00",
+      "last_run": "2026-07-28T22:55:28.923446+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "1b2c31d6ba98": {
       "status": "completed",
-      "last_run": "2026-07-28T21:50:10.419949+02:00",
+      "last_run": "2026-07-28T22:49:18.877782+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "42cdc3e9bd97": {
       "status": "completed",
-      "last_run": "2026-07-28T21:49:08.804311+02:00",
+      "last_run": "2026-07-28T22:45:46.926849+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "e8d5b97de501": {
-      "status": "unknown",
-      "last_run": "2026-07-28T21:47:21.825234+02:00",
-      "consecutive_fails": 0,
+      "status": "failed",
+      "last_run": "2026-07-28T22:30:46.155974+02:00",
+      "consecutive_fails": 1,
       "paused": false,
-      "error": "Scheduler restarted after this execution's owner exited before a durable terminal state; whether side effects ran is unknown."
+      "error": "Script exited with code 1\nstderr:\nping giveabit https://giveabit.io \u2026 OK 200 248ms\nping satohash https://satohash.io \u2026 OK 200 95ms\nping katoa https://katoa.org \u2026 OK 200 137ms\nping stranded https://str",
+      "action": "warn"
     },
     "cb8398b3fa67": {
       "status": "completed",
-      "last_run": "2026-07-28T21:30:04.145973+02:00",
+      "last_run": "2026-07-28T22:30:28.656135+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
+    "12b477c661ae": {
+      "status": "failed",
+      "last_run": "2026-07-28T22:13:22.684006+02:00",
+      "consecutive_fails": 1,
+      "paused": false,
+      "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
+      "action": "warn"
+    },
     "bb5980d548fb": {
-      "status": "completed",
-      "last_run": "2026-07-28T21:08:40.521309+02:00",
-      "consecutive_fails": 0,
-      "paused": false
+      "status": "failed",
+      "last_run": "2026-07-28T22:13:21.767339+02:00",
+      "consecutive_fails": 1,
+      "paused": false,
+      "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
+      "action": "warn"
     },
     "7768b5c5aa49": {
       "status": "completed",
-      "last_run": "2026-07-28T21:02:08.629341+02:00",
+      "last_run": "2026-07-28T22:12:47.765311+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
@@ -100,27 +111,15 @@
       "error": "Script exited with code 1\nstdout:\n=== THOR Nightly Pipeline ===\nTime: Tue Jul 28 02:00:32 CEST 2026\n\n\u2500\u2500 [1/3] Backup \u2500\u2500\n=== THOR Nightly Backup ===\nDate: Tue Jul 28 02:00:32 CEST 2026\n[1/2] Backing up",
       "action": "warn"
     },
-    "12b477c661ae": {
-      "status": "completed",
-      "last_run": "2026-07-27T22:05:15.769502+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
     "b7b5c1bebfe7": {
       "status": "completed",
       "last_run": "2026-07-27T09:10:17.008733+02:00",
       "consecutive_fails": 0,
       "paused": false
-    },
-    "2621be4bb5dd": {
-      "status": "completed",
-      "last_run": "2026-07-27T08:07:27.291005+02:00",
-      "consecutive_fails": 0,
-      "paused": false
     }
   },
   "paused_count": 1,
-  "alert_count": 1,
+  "alert_count": 4,
   "paused_jobs": [
     "34c2181c2737"
   ],
