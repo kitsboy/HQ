@@ -1,45 +1,14 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-28T19:00:02Z",
+ "updatedAt": "2026-07-28T19:15:22Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
   "stack": "Docker \u00b7 LND Neutrino \u00b7 LNbits \u00b7 satohash-api \u00b7 Hermes",
   "region": "EU Contabo",
-  "status": "green",
-  "services": [
-   {
-    "id": "satohash-satohash-api-1",
-    "status": "green",
-    "detail": "Up 3 hours (healthy)"
-   },
-   {
-    "id": "umami",
-    "status": "green",
-    "detail": "Up 4 days"
-   },
-   {
-    "id": "lnbits",
-    "status": "green",
-    "detail": "Up 6 days"
-   },
-   {
-    "id": "satohash-redis-1",
-    "status": "green",
-    "detail": "Up 8 days"
-   },
-   {
-    "id": "lnbits-postgres",
-    "status": "green",
-    "detail": "Up 9 days (healthy)"
-   },
-   {
-    "id": "lnd",
-    "status": "green",
-    "detail": "Up 11 hours (healthy)"
-   }
-  ],
-  "uptimeSec": 1022601
+  "status": "unknown",
+  "services": [],
+  "uptimeSec": 1023543
  },
  "bitcoin": {
   "ok": true,
@@ -54,26 +23,12 @@
   "hint": "LND Neutrino (no local bitcoind). Height + sync from lncli getinfo."
  },
  "lightning": {
-  "ok": true,
+  "ok": false,
   "implementation": "lnd",
-  "syncedToChain": true,
-  "syncedToGraph": true,
-  "numPeers": 0,
-  "numActiveChannels": 0,
-  "numInactiveChannels": 0,
-  "numPendingChannels": 0,
-  "totalLocalBalanceSats": 0,
-  "totalRemoteBalanceSats": 0,
-  "totalCapacitySats": 0,
-  "aliasPublic": "THOR-GAB",
-  "pubkeyPrefix": "026bb3ac3932ca9d",
-  "identity_pubkey": "026bb3ac3932ca9d039d04014877de15d13d872066b79b19ef73abd5f3d7a5ebef",
-  "version": "0.18.3-beta",
-  "walletBalanceSats": 7704,
-  "hint": "No open channels yet. On-chain wallet 7704 sats (not channel liquidity). Neutrino light client \u2014 height from LND, not bitcoind RPC. Never expose macaroons to HQ HTML."
+  "hint": "lncli getinfo failed: Command 'docker exec lnd lncli --network=mainnet getinfo' timed out after 45 seconds"
  },
  "lnbits": {
-  "ok": true,
+  "ok": false,
   "hint": "CORS proxy :5103 for hq.giveabit.io"
  },
  "series": [
@@ -83,10 +38,6 @@
    "unit": "n",
    "color": "#1f6b3a",
    "points": [
-    {
-     "t": "2026-07-28T05:00:01Z",
-     "v": 0
-    },
     {
      "t": "2026-07-28T05:03:33Z",
      "v": 0
@@ -465,6 +416,10 @@
     },
     {
      "t": "2026-07-28T19:00:02Z",
+     "v": 0
+    },
+    {
+     "t": "2026-07-28T19:15:22Z",
      "v": 0
     }
    ]
@@ -476,10 +431,6 @@
    "color": "#c45f00",
    "points": [
     {
-     "t": "2026-07-28T05:00:01Z",
-     "v": 0
-    },
-    {
      "t": "2026-07-28T05:03:33Z",
      "v": 0
     },
@@ -858,6 +809,10 @@
     {
      "t": "2026-07-28T19:00:02Z",
      "v": 0
+    },
+    {
+     "t": "2026-07-28T19:15:22Z",
+     "v": 0
     }
    ]
   },
@@ -867,10 +822,6 @@
    "unit": "load",
    "color": "#38bdf8",
    "points": [
-    {
-     "t": "2026-07-28T05:00:01Z",
-     "v": 0.4
-    },
     {
      "t": "2026-07-28T05:03:33Z",
      "v": 0.72
@@ -1250,6 +1201,10 @@
     {
      "t": "2026-07-28T19:00:02Z",
      "v": 1.04
+    },
+    {
+     "t": "2026-07-28T19:15:22Z",
+     "v": 52.52
     }
    ]
   },
@@ -1259,10 +1214,6 @@
    "unit": "GB",
    "color": "#a78bfa",
    "points": [
-    {
-     "t": "2026-07-28T05:00:01Z",
-     "v": 6.7
-    },
     {
      "t": "2026-07-28T05:03:33Z",
      "v": 6.8
@@ -1642,6 +1593,10 @@
     {
      "t": "2026-07-28T19:00:02Z",
      "v": 7.4
+    },
+    {
+     "t": "2026-07-28T19:15:22Z",
+     "v": 7.7
     }
    ]
   },
@@ -1651,10 +1606,6 @@
    "unit": "blocks",
    "color": "#f7931a",
    "points": [
-    {
-     "t": "2026-07-28T05:00:01Z",
-     "v": 959931
-    },
     {
      "t": "2026-07-28T05:03:33Z",
      "v": 959931
@@ -2034,6 +1985,10 @@
     {
      "t": "2026-07-28T19:00:02Z",
      "v": 960006
+    },
+    {
+     "t": "2026-07-28T19:15:22Z",
+     "v": 0
     }
    ]
   }
@@ -2062,48 +2017,48 @@
   "disk": {
    "totalGB": 387,
    "usedGB": 30,
-   "freeGB": 358,
+   "freeGB": 357,
    "usedPercent": 8,
    "mount": "/"
   },
   "memory": {
    "totalGB": 7.8,
-   "usedGB": 7.4,
+   "usedGB": 7.7,
    "freeGB": 0.1,
-   "availableGB": 0.3
+   "availableGB": 0.1
   },
   "cpu": {
-   "loadAvg1m": 1.04,
-   "loadAvg5m": 0.46,
-   "loadAvg15m": 0.27,
+   "loadAvg1m": 52.52,
+   "loadAvg5m": 38.36,
+   "loadAvg15m": 18.29,
    "uptimeDays": 11.8
   },
   "docker": {
-   "images": 7,
-   "containers": 6,
-   "running": 6,
-   "buildCacheGB": 4.056
+   "images": 0,
+   "containers": 0,
+   "running": 0,
+   "buildCacheGB": 0.0
   },
   "breakdownGB": {
    "MASTER-BRAIN_vault": 0.696,
-   "Hermes_skills_config": 1.1,
-   "satohash_repo": 0.023,
-   "HQ_repo": 0.023,
-   "LND_data": 0.344,
-   "Docker_images": 3.911,
-   "Docker_volumes": 0.456,
-   "other_system": 23.4
+   "Hermes_skills_config": 0.0,
+   "satohash_repo": 0.0,
+   "HQ_repo": 0.0,
+   "LND_data": 0.0,
+   "Docker_images": 0.0,
+   "Docker_volumes": 0.0,
+   "other_system": 29.3
   }
  },
  "host": {
   "diskTotalGB": 387,
   "diskUsedGB": 30,
-  "diskFreeGB": 358,
+  "diskFreeGB": 357,
   "memTotalGB": 7.8,
-  "memUsedGB": 7.4,
-  "load1": 1.04,
-  "load5": 0.46,
-  "load15": 0.27,
+  "memUsedGB": 7.7,
+  "load1": 52.52,
+  "load5": 38.36,
+  "load15": 18.29,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
@@ -2111,42 +2066,12 @@
    {
     "id": "other_system",
     "label": "Other system",
-    "gb": 23.4
-   },
-   {
-    "id": "Docker_images",
-    "label": "Docker images",
-    "gb": 3.91
-   },
-   {
-    "id": "Hermes_skills_config",
-    "label": "Hermes",
-    "gb": 1.1
+    "gb": 29.3
    },
    {
     "id": "MASTER-BRAIN_vault",
     "label": "MASTER-BRAIN vault",
     "gb": 0.7
-   },
-   {
-    "id": "Docker_volumes",
-    "label": "Docker volumes",
-    "gb": 0.46
-   },
-   {
-    "id": "LND_data",
-    "label": "LND data (neutrino)",
-    "gb": 0.34
-   },
-   {
-    "id": "satohash_repo",
-    "label": "satohash repo",
-    "gb": 0.02
-   },
-   {
-    "id": "HQ_repo",
-    "label": "HQ repo",
-    "gb": 0.02
    }
   ]
  }
