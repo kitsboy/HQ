@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-28T10:31:06Z",
+  "checked_at": "2026-07-28T12:31:08Z",
   "deploys": [
     {
       "slug": "satohash",
@@ -17,17 +17,26 @@
     {
       "slug": "hq",
       "repo": "kitsboy/HQ",
-      "status": "offline"
+      "status": null,
+      "created_at": "2026-07-28T12:31:01Z",
+      "updated_at": "2026-07-28T12:31:04Z",
+      "run_url": "https://github.com/kitsboy/HQ/actions/runs/30359288538"
     },
     {
       "slug": "katoa",
       "repo": "kitsboy/katoa",
-      "status": "offline"
+      "status": "success",
+      "created_at": "2026-07-24T13:19:31Z",
+      "updated_at": "2026-07-24T13:20:17Z",
+      "run_url": "https://github.com/kitsboy/katoa/actions/runs/30096429844"
     },
     {
       "slug": "tadbuy",
       "repo": "kitsboy/tadbuy",
-      "status": "offline"
+      "status": "success",
+      "created_at": "2026-07-27T05:17:29Z",
+      "updated_at": "2026-07-27T05:18:28Z",
+      "run_url": "https://github.com/kitsboy/tadbuy/actions/runs/30239343114"
     },
     {
       "slug": "stranded",
