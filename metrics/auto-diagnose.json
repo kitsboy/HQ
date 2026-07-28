@@ -1,59 +1,125 @@
 {
-  "checked_at": "2026-07-28T10:16:07Z",
+  "checked_at": "2026-07-28T10:32:31Z",
   "sites": {
     "giveabit.io": {
       "status": "healthy",
       "http": "200",
-      "latency": "0.149678"
+      "latency": "0.748798"
     },
     "satohash.io": {
-      "status": "healthy",
-      "http": "200",
-      "latency": "0.222215"
+      "status": "down",
+      "http": "000",
+      "latency": "0"
     },
     "hq.giveabit.io": {
-      "status": "healthy",
-      "http": "200",
-      "latency": "0.297981"
+      "status": "down",
+      "http": "000",
+      "latency": "0"
     },
     "katoa.org": {
-      "status": "healthy",
-      "http": "200",
-      "latency": "0.142862"
+      "status": "down",
+      "http": "000",
+      "latency": "0"
     },
     "tadbuy.giveabit.io": {
-      "status": "healthy",
-      "http": "200",
-      "latency": "0.166575"
+      "status": "down",
+      "http": "000",
+      "latency": "0"
     },
     "stranded.giveabit.io": {
-      "status": "healthy",
-      "http": "200",
-      "latency": "0.252004"
+      "status": "down",
+      "http": "000",
+      "latency": "0"
     },
     "motopass.giveabit.io": {
-      "status": "healthy",
-      "http": "200",
-      "latency": "0.100336"
+      "status": "down",
+      "http": "000",
+      "latency": "0"
     },
     "sherpacarta.org": {
-      "status": "healthy",
-      "http": "200",
-      "latency": "0.402503"
+      "status": "down",
+      "http": "000",
+      "latency": "0"
     },
     "openstrata.giveabit.io": {
-      "status": "healthy",
-      "http": "200",
-      "latency": "0.450461"
+      "status": "down",
+      "http": "000",
+      "latency": "0"
     }
   },
-  "site_issues": [],
+  "site_issues": [
+    {
+      "name": "satohash.io",
+      "url": "https://satohash.io",
+      "status": "down",
+      "http": "000",
+      "latency": "0"
+    },
+    {
+      "name": "hq.giveabit.io",
+      "url": "https://hq.giveabit.io",
+      "status": "down",
+      "http": "000",
+      "latency": "0"
+    },
+    {
+      "name": "katoa.org",
+      "url": "https://katoa.org",
+      "status": "down",
+      "http": "000",
+      "latency": "0"
+    },
+    {
+      "name": "tadbuy.giveabit.io",
+      "url": "https://tadbuy.giveabit.io",
+      "status": "down",
+      "http": "000",
+      "latency": "0"
+    },
+    {
+      "name": "stranded.giveabit.io",
+      "url": "https://stranded.giveabit.io",
+      "status": "down",
+      "http": "000",
+      "latency": "0"
+    },
+    {
+      "name": "motopass.giveabit.io",
+      "url": "https://motopass.giveabit.io",
+      "status": "down",
+      "http": "000",
+      "latency": "0"
+    },
+    {
+      "name": "sherpacarta.org",
+      "url": "https://sherpacarta.org",
+      "status": "down",
+      "http": "000",
+      "latency": "0"
+    },
+    {
+      "name": "openstrata.giveabit.io",
+      "url": "https://openstrata.giveabit.io",
+      "status": "down",
+      "http": "000",
+      "latency": "0"
+    }
+  ],
   "cron_issues": [],
-  "new_alerts": [],
+  "new_alerts": [
+    "\ud83d\udd34 satohash.io is DOWN (HTTP 000)",
+    "\ud83d\udd34 hq.giveabit.io is DOWN (HTTP 000)",
+    "\ud83d\udd34 katoa.org is DOWN (HTTP 000)",
+    "\ud83d\udd34 tadbuy.giveabit.io is DOWN (HTTP 000)",
+    "\ud83d\udd34 stranded.giveabit.io is DOWN (HTTP 000)",
+    "\ud83d\udd34 motopass.giveabit.io is DOWN (HTTP 000)",
+    "\ud83d\udd34 sherpacarta.org is DOWN (HTTP 000)",
+    "\ud83d\udd34 openstrata.giveabit.io is DOWN (HTTP 000)"
+  ],
   "summary": {
-    "sites_healthy": 9,
+    "sites_healthy": 1,
     "sites_total": 9,
     "cron_failures": 0,
-    "new_alerts": 0
+    "new_alerts": 8
   }
 }
