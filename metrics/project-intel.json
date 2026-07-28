@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-28T23:15:33Z",
+  "checked_at": "2026-07-28T23:45:33Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -29,18 +29,18 @@
       "repo": "kitsboy/satohash",
       "site_url": "https://satohash.io",
       "last_commit": {
-        "sha": "14f5ed0",
-        "message": "feat(certificate): premium title hierarchy for notarization PDF",
+        "sha": "13b0f00",
+        "message": "feat: landing .ots verify panel + IBD-aware health banner",
         "author": "Cam",
-        "date": "2026-07-28T23:12:34Z",
-        "url": "https://github.com/kitsboy/satohash/commit/14f5ed057a6f0497896ec97e0fe808989b53acb2"
+        "date": "2026-07-28T23:19:27Z",
+        "url": "https://github.com/kitsboy/satohash/commit/13b0f00efb47dbeb263149314aa467ee6e3c029e"
       },
       "recent_commits": [
+        "feat: landing .ots verify panel + IBD-aware health banner",
         "feat(certificate): premium title hierarchy for notarization ",
-        "docs: production closeout \u2014 www fixed, CORS suite hosts, fin",
-        "docs: security scrub \u2014 no key material; backup/swap/bitcoind"
+        "docs: production closeout \u2014 www fixed, CORS suite hosts, fin"
       ],
-      "commits_7d": 37,
+      "commits_7d": 38,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,15 +51,15 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "e01d971",
-        "message": "chore: thor auto-metrics 23:15 (live LND)",
-        "author": "Cam (via Aider)",
-        "date": "2026-07-28T23:15:07Z",
-        "url": "https://github.com/kitsboy/HQ/commit/e01d971eea1051e67c146c86fbfa473c1cb70052"
+        "sha": "5b549e7",
+        "message": "chore: refresh status.json [skip deploy]",
+        "author": "hq-status-bot",
+        "date": "2026-07-28T23:44:19Z",
+        "url": "https://github.com/kitsboy/HQ/commit/5b549e76fc71683424993798f959865766a6d83d"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 23:15 (live LND)",
-        "chore: thor auto-metrics 23:02 (live LND)",
+        "chore: refresh status.json [skip deploy]",
+        "chore: thor auto-metrics 23:31 (live LND)",
         "chore: refresh status.json + thor-node [skip deploy]"
       ],
       "commits_7d": 100,
