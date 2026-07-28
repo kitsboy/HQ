@@ -1,139 +1,211 @@
 {
-  "checked_at": "2026-07-28T16:00:05Z",
+  "checked_at": "2026-07-28T19:08:37+02:00",
+  "total_scheduler_jobs": 28,
+  "active": 27,
+  "paused_count": 1,
+  "with_db_history": 20,
+  "no_db_history": 8,
+  "healthy": 19,
+  "warning": 1,
+  "stale_executions": 0,
+  "consecutive_3plus_fails": {},
   "jobs": {
-    "c8ce19bb5571": {
+    "cb8398b3fa67": {
       "status": "completed",
-      "last_run": "2026-07-28T17:55:07.730186+02:00",
+      "last_run": "2026-07-28T19:00:42.172396+02:00",
       "consecutive_fails": 0,
-      "paused": false
-    },
-    "1b2c31d6ba98": {
-      "status": "completed",
-      "last_run": "2026-07-28T17:47:42.642929+02:00",
-      "consecutive_fails": 0,
+      "action": "none",
       "paused": false
     },
     "42cdc3e9bd97": {
       "status": "completed",
-      "last_run": "2026-07-28T17:45:35.026382+02:00",
+      "last_run": "2026-07-28T19:03:26.978822+02:00",
       "consecutive_fails": 0,
-      "paused": false
-    },
-    "e8d5b97de501": {
-      "status": "completed",
-      "last_run": "2026-07-28T17:31:19.353943+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "cb8398b3fa67": {
-      "status": "completed",
-      "last_run": "2026-07-28T17:31:00.515816+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "bb5980d548fb": {
-      "status": "completed",
-      "last_run": "2026-07-28T17:07:50.239395+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "7768b5c5aa49": {
-      "status": "completed",
-      "last_run": "2026-07-28T17:02:21.937465+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "e4b5079b66ce": {
-      "status": "completed",
-      "last_run": "2026-07-28T16:00:58.940961+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "9bd2735e125e": {
-      "status": "completed",
-      "last_run": "2026-07-28T12:00:35.116711+02:00",
-      "consecutive_fails": 0,
+      "action": "none",
       "paused": false
     },
     "30921a766dae": {
       "status": "completed",
       "last_run": "2026-07-28T09:00:15.824968+02:00",
       "consecutive_fails": 0,
+      "action": "none",
       "paused": false
     },
-    "b6a4e3710d9d": {
+    "c8ce19bb5571": {
       "status": "completed",
-      "last_run": "2026-07-28T08:01:01.400748+02:00",
+      "last_run": "2026-07-28T19:05:44.307156+02:00",
       "consecutive_fails": 0,
-      "paused": false
-    },
-    "71f476018b46": {
-      "status": "completed",
-      "last_run": "2026-07-28T07:34:59.331528+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "337c7ae0b619": {
-      "status": "completed",
-      "last_run": "2026-07-28T07:31:04.549028+02:00",
-      "consecutive_fails": 0,
+      "action": "none",
       "paused": false
     },
     "311d146f45c3": {
       "status": "completed",
       "last_run": "2026-07-28T07:15:52.655489+02:00",
       "consecutive_fails": 0,
+      "action": "none",
       "paused": false
     },
-    "5c6f78744d6e": {
+    "71f476018b46": {
       "status": "completed",
-      "last_run": "2026-07-28T07:00:53.772530+02:00",
+      "last_run": "2026-07-28T07:34:59.331528+02:00",
       "consecutive_fails": 0,
+      "action": "none",
       "paused": false
     },
-    "bb6e71c68350": {
-      "status": "failed",
-      "last_run": "2026-07-28T02:00:49.486664+02:00",
-      "consecutive_fails": 1,
-      "paused": false,
-      "error": "Script exited with code 1\nstdout:\n=== THOR Nightly Pipeline ===\nTime: Tue Jul 28 02:00:32 CEST 2026\n\n\u2500\u2500 [1/3] Backup \u2500\u2500\n=== THOR Nightly Backup ===\nDate: Tue Jul 28 02:00:32 CEST 2026\n[1/2] Backing up",
-      "action": "warn"
-    },
-    "12b477c661ae": {
-      "status": "completed",
-      "last_run": "2026-07-27T22:05:15.769502+02:00",
+    "980226ec5716": {
+      "status": "no_history",
+      "last_run": null,
       "consecutive_fails": 0,
+      "action": "none",
       "paused": false
     },
-    "b7b5c1bebfe7": {
+    "bb5980d548fb": {
       "status": "completed",
-      "last_run": "2026-07-27T09:10:17.008733+02:00",
+      "last_run": "2026-07-28T18:09:02.570760+02:00",
       "consecutive_fails": 0,
+      "action": "none",
       "paused": false
     },
-    "2621be4bb5dd": {
-      "status": "completed",
-      "last_run": "2026-07-27T08:07:27.291005+02:00",
+    "469f2cfb7ab8": {
+      "status": "no_history",
+      "last_run": null,
       "consecutive_fails": 0,
+      "action": "none",
+      "paused": false
+    },
+    "9bd2735e125e": {
+      "status": "completed",
+      "last_run": "2026-07-28T18:00:09.945175+02:00",
+      "consecutive_fails": 0,
+      "action": "none",
+      "paused": false
+    },
+    "560e38829acf": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "action": "none",
+      "paused": false
+    },
+    "1b2c31d6ba98": {
+      "status": "completed",
+      "last_run": "2026-07-28T18:47:16.258674+02:00",
+      "consecutive_fails": 0,
+      "action": "none",
+      "paused": false
+    },
+    "019f2b72567e": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "action": "none",
+      "paused": false
+    },
+    "b6a4e3710d9d": {
+      "status": "completed",
+      "last_run": "2026-07-28T08:01:01.400748+02:00",
+      "consecutive_fails": 0,
+      "action": "none",
       "paused": false
     },
     "e19a3670752f": {
       "status": "completed",
       "last_run": "2026-07-27T06:00:54.528451+02:00",
       "consecutive_fails": 0,
+      "action": "none",
       "paused": false
     },
-    "980226ec5716": {
+    "2621be4bb5dd": {
       "status": "completed",
-      "last_run": "2026-07-27T05:08:55.493438+02:00",
+      "last_run": "2026-07-27T08:07:27.291005+02:00",
       "consecutive_fails": 0,
+      "action": "none",
+      "paused": false
+    },
+    "e4b5079b66ce": {
+      "status": "completed",
+      "last_run": "2026-07-28T16:00:58.940961+02:00",
+      "consecutive_fails": 0,
+      "action": "none",
+      "paused": false
+    },
+    "e8d5b97de501": {
+      "status": "completed",
+      "last_run": "2026-07-28T19:00:59.453488+02:00",
+      "consecutive_fails": 0,
+      "action": "none",
+      "paused": false
+    },
+    "7768b5c5aa49": {
+      "status": "completed",
+      "last_run": "2026-07-28T19:02:02.662254+02:00",
+      "consecutive_fails": 0,
+      "action": "none",
+      "paused": false
+    },
+    "5c6f78744d6e": {
+      "status": "completed",
+      "last_run": "2026-07-28T07:00:53.772530+02:00",
+      "consecutive_fails": 0,
+      "action": "none",
+      "paused": false
+    },
+    "eb7452b2189e": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "action": "none",
+      "paused": false
+    },
+    "12b477c661ae": {
+      "status": "completed",
+      "last_run": "2026-07-27T22:05:15.769502+02:00",
+      "consecutive_fails": 0,
+      "action": "none",
+      "paused": false
+    },
+    "bb6e71c68350": {
+      "status": "failed",
+      "last_run": "2026-07-28T02:00:49.486664+02:00",
+      "consecutive_fails": 1,
+      "action": "warn",
+      "paused": false,
+      "error_preview": "Script exited with code 1\nstdout:\n=== THOR Nightly Pipeline ===\nTime: Tue Jul 28 02:00:32 CEST 2026\n\n\u2500\u2500 [1/3] Backup \u2500\u2500\n"
+    },
+    "447ed87c7a57": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "action": "none",
+      "paused": false
+    },
+    "337c7ae0b619": {
+      "status": "completed",
+      "last_run": "2026-07-28T07:31:04.549028+02:00",
+      "consecutive_fails": 0,
+      "action": "none",
+      "paused": false
+    },
+    "59b3a68e3eb2": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "action": "none",
+      "paused": false
+    },
+    "34c2181c2737": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "action": "none",
+      "paused": true
+    },
+    "b7b5c1bebfe7": {
+      "status": "completed",
+      "last_run": "2026-07-27T09:10:17.008733+02:00",
+      "consecutive_fails": 0,
+      "action": "none",
       "paused": false
     }
-  },
-  "paused_count": 1,
-  "alert_count": 1,
-  "paused_jobs": [
-    "34c2181c2737"
-  ],
-  "orphaned_count": 0
+  }
 }
