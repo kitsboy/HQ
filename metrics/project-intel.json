@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-28T20:30:27Z",
+  "checked_at": "2026-07-28T20:45:28Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -40,7 +40,7 @@
         "docs: security scrub \u2014 no key material; backup/swap/bitcoind",
         "docs: bitcoind pruned installed, syncing"
       ],
-      "commits_7d": 38,
+      "commits_7d": 37,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "46573d5",
-        "message": "chore: refresh status.json [skip deploy]",
-        "author": "hq-status-bot",
-        "date": "2026-07-28T20:19:14Z",
-        "url": "https://github.com/kitsboy/HQ/commit/46573d53c963fd6c284032b3fbf0c35c5fb16507"
+        "sha": "e7a77fd",
+        "message": "chore: thor auto-metrics 20:45 (live LND)",
+        "author": "Cam (via Aider)",
+        "date": "2026-07-28T20:45:05Z",
+        "url": "https://github.com/kitsboy/HQ/commit/e7a77fd292a89934161c98f2239b91c2884bbd60"
       },
       "recent_commits": [
-        "chore: refresh status.json [skip deploy]",
-        "chore: thor auto-metrics 20:15 (live LND)",
-        "chore: thor auto-metrics 20:15 (live LND)"
+        "chore: thor auto-metrics 20:45 (live LND)",
+        "chore: thor pulse delta 20:30 UTC \u2014 memory recovered, bitcoi",
+        "chore: refresh metrics bundle 20:30 UTC (5/5 scripts OK) [sk"
       ],
       "commits_7d": 100,
       "health": "green",
