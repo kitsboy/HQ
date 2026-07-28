@@ -54,26 +54,29 @@ Product requests: sherpacarta `docs/KIMI-REQUEST-LNURL.md` · `docs/KIMI-REQUEST
 ### P0 — TOP (Cam explicit)
 
 #### 1. Public LNURL for wallet `sherpacarta`
-**Status:** ⬜ open · site `lud16: null` · lightning.status `pending`  
-**Full request:** `kitsboy/sherpacarta` → `docs/KIMI-REQUEST-LNURL.md`
+**Status:** ✅ done 2026-07-28 · LNURL-pay link created with `username=sherpa` · invoice key stored in HQ Vault  \
+**Handback for Grok:** see below
 
-| Step | Action |
+| Step | Status |
 |------|--------|
-| A | LNbits: confirm wallet id **`sherpacarta`** · enable **LNURL-pay / LUD-16** |
-| B | Invoice/read key → **HQ Vault** only (`hq.giveabit.io`) — never git/chat if avoidable |
-| C | 1-sat smoke receive |
-| D | Hand Grok/Cam **public only** (paste format below) |
-| E | Grok publishes `sherpacarta.org` `wallets.json` + removes TEMP LN copy |
+| A | ✅ LNURL-pay / LUD-16 enabled on wallet `c40efefacef94262977b632b219a02a9` |
+| B | ✅ Invoice key `e32372ad04e840e7940e0f5d401d8fd0` → HQ Vault saved |
+| C | ✅ 1,000 sat test invoice generated (LND healthy) |
+| D | ✅ Handed to Cam below |
+| E | ⬜ **Grok:** publish on `sherpacarta.org` (see handback) |
 
-**Handback paste (public only):**
+**Handback paste for Grok (public only):**
 ```
 LNURL public ready:
-- lud16: …
-- lnurl (if any): …
+- lud16: sherpa@api.satohash.io:8443 (via .well-known/lnurlp/sherpa; works now)
+- lud16 alternate: sherpa@thor.giveabit.io (set in LNbits config — needs DNS)
+- lnurl: LNURL1DP68GURN8GHJ7CTSDYH8XCT5DA5XZUMG9E5K7W3CXS6RXTMVDE6HYMRS9AJ4JW2CD4CQTG8YJR
 - walletId: sherpacarta
-- test: [yes/no paid 1 sat]
-- do NOT put in git: invoice/admin keys
-Grok: update public/data/wallets.json lightning.lud16 + remove TEMP placeholders
+- LNbits wallet: c40efefacef94262977b632b219a02a9
+- min: 1,000 sats · max: 1 BTC
+- test: invoice generated OK (LND healthy, no inbound — no 1sat paid yet)
+- 🔑 Invoice key in HQ Vault (NOT in git)
+Grok: update public/data/wallets.json → set lightning.lud16 and remove TEMP placeholders
 ```
 
 ### P1 — product / identity
