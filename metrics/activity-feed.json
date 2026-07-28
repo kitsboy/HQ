@@ -1,191 +1,191 @@
 {
-  "generated_at": "2026-07-28T01:00:53Z",
+  "generated_at": "2026-07-28T03:30:59Z",
   "events": [
     {
-      "time": 1785200438.0,
+      "time": 1785209453.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "037] agent.turn_context: conversation turn: session=cron_776"
+      "text": "045] run_agent: OpenAI client created (chat_completion_reque"
     },
     {
-      "time": 1785200438.0,
+      "time": 1785209450.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "037] run_agent: OpenAI client created (chat_completion_reque"
+      "text": "045] agent.turn_context: conversation turn: session=cron_42c"
     },
     {
-      "time": 1785200437.0,
+      "time": 1785209449.0,
+      "type": "cron_warn",
+      "icon": "\u26a0\ufe0f",
+      "text": "ck_read_terminal_requirements returned False; dependent tool"
+    },
+    {
+      "time": 1785209449.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "or-metrics-export-hourly' (ID: 7768b5c5aa49)"
+      "text": "auto-detect: using main provider nous (stepfun/step-3.7-flas"
     },
     {
-      "time": 1785200437.0,
+      "time": 1785209448.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "ANT: You are running as a scheduled cron job. DELIVERY: Your"
+      "text": "d (agent_init, shared=True) thread=cron-parallel_1:126769617"
     },
     {
-      "time": 1785200437.0,
+      "time": 1785209448.0,
+      "type": "cron_warn",
+      "icon": "\u26a0\ufe0f",
+      "text": "owser_cdp_check returned False; dependent tools will be unav"
+    },
+    {
+      "time": 1785209448.0,
+      "type": "cron_warn",
+      "icon": "\u26a0\ufe0f",
+      "text": "owser_dialog_check returned False; dependent tools will be u"
+    },
+    {
+      "time": 1785209448.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "49': using workdir /root/hq"
+      "text": "auto-detect: using main provider nous (stepfun/step-3.7-flas"
     },
     {
-      "time": 1785200437.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "al pool: no available entries (all exhausted or empty)"
+      "time": 1785209448.0,
+      "type": "cron_warn",
+      "icon": "\u26a0\ufe0f",
+      "text": "ck_close_terminal_requirements returned False; dependent too"
     },
     {
-      "time": 1785200437.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
+      "time": 1785209448.0,
+      "type": "cron_warn",
+      "icon": "\u26a0\ufe0f",
+      "text": "ck_computer_use_requirements returned False; dependent tools"
     },
     {
-      "time": 1785200437.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "49': loaded credential pool for provider nous with 1 entries"
-    },
-    {
-      "time": 1785200437.0,
+      "time": 1785209445.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "or-auto-metrics' (ID: 42cdc3e9bd97)"
     },
     {
-      "time": 1785200437.0,
+      "time": 1785209445.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "ANT: You are running as a scheduled cron job. DELIVERY: Your"
     },
     {
-      "time": 1785200437.0,
+      "time": 1785209445.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "d (agent_init, shared=True) thread=cron-seq_0:13269286360851"
+      "text": "97': loaded credential pool for provider nous with 1 entries"
     },
     {
-      "time": 1785200437.0,
+      "time": 1785209443.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "or-cron-health-hourly' (ID: bb5980d548fb)"
+      "text": "ariables from /root/.hermes/.env"
     },
     {
-      "time": 1785200437.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "ANT: You are running as a scheduled cron job. DELIVERY: Your"
-    },
-    {
-      "time": 1785200399.0,
+      "time": 1785209323.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785200096.0,
+      "time": 1785209022.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785199902.0,
+      "time": 1785208780.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "inactive environment for task: default"
+      "text": "al pool: no available entries (all exhausted or empty)"
     },
     {
-      "time": 1785199789.0,
+      "time": 1785208727.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
+      "text": "embedded in gateway (interval=60.0s)"
     },
     {
-      "time": 1785199616.0,
+      "time": 1785208722.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "559] agent.conversation_loop: Turn ended: reason=text_respon"
+      "text": "m.adapter: [Telegram] set_my_commands OK for scope BotComman"
     },
     {
-      "time": 1785199616.0,
+      "time": 1785208722.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "cs-bundle-15m' completed successfully"
+      "text": "m.adapter: [Telegram] set_my_commands OK for scope BotComman"
     },
     {
-      "time": 1785199616.0,
+      "time": 1785208722.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "(agent_close, shared=True, tcp_force_closed=0) thread=cron-"
+      "text": "m.adapter: [Telegram] Telegram menu: 60 commands registered,"
     },
     {
-      "time": 1785199615.0,
+      "time": 1785208722.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "559] run_agent: OpenAI client closed (request_complete, shar"
+      "text": "op"
     },
     {
-      "time": 1785199615.0,
+      "time": 1785208722.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "559] agent.conversation_loop: API call #7: model=deepseek/de"
+      "text": "cess cron scheduler started (interval=60s)"
     },
     {
-      "time": 1785199591.0,
+      "time": 1785208722.0,
+      "type": "cron_warn",
+      "icon": "\u26a0\ufe0f",
+      "text": "e 'pst': 'No time zone found with key pst'. Falling back to"
+    },
+    {
+      "time": 1785208722.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "559] agent.tool_executor: tool terminal completed (2.40s, 14"
+      "text": "holding singleton dispatcher lock (/root/.hermes/kanban/.di"
     },
     {
-      "time": 1785199591.0,
+      "time": 1785208722.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "559] run_agent: OpenAI client created (chat_completion_reque"
+      "text": "ng started (interval=60s)"
     },
     {
-      "time": 1785199588.0,
+      "time": 1785208722.0,
+      "type": "cron_warn",
+      "icon": "\u26a0\ufe0f",
+      "text": "ked 2 interrupted cron execution(s) unknown after restart"
+    },
+    {
+      "time": 1785208721.0,
+      "type": "cron_warn",
+      "icon": "\u26a0\ufe0f",
+      "text": "'browser' generates slash command '/browser' which collides"
+    },
+    {
+      "time": 1785208721.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "559] run_agent: OpenAI client closed (request_complete, shar"
+      "text": "built: 1 target(s)"
     },
     {
-      "time": 1785199588.0,
+      "time": 1785208721.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "559] agent.conversation_loop: API call #6: model=deepseek/de"
+      "text": "m.adapter: [Telegram] set_my_commands OK for scope BotComman"
     },
     {
-      "time": 1785199578.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "559] run_agent: OpenAI client created (chat_completion_reque"
-    },
-    {
-      "time": 1785199577.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "559] agent.conversation_loop: API call #5: model=deepseek/de"
-    },
-    {
-      "time": 1785199577.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "file completed (0.22s, 4756 chars)"
-    },
-    {
-      "time": 1785199577.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "file completed (0.23s, 11612 chars)"
-    },
-    {
-      "time": 1785193212.0,
+      "time": 1785202211.0,
       "type": "commit",
       "icon": "\ud83d\udd28",
-      "text": "HQ Dashboard: chore: thor auto-metrics 01:00 (live LND)",
+      "text": "HQ Dashboard: chore: thor auto-metrics 03:30 (live LND)",
       "repo": "hq"
     },
     {
@@ -194,27 +194,6 @@
       "icon": "\ud83d\udd28",
       "text": "Satohash: chore: handoff/docs updates \u2014 M4 online, memory cleanup, wat",
       "repo": "satohash"
-    },
-    {
-      "time": 1785122235.0,
-      "type": "commit",
-      "icon": "\ud83d\udd28",
-      "text": "Tadbuy: docs: Option A done; point Kimi to HQ MASTER LIST",
-      "repo": "tadbuy"
-    },
-    {
-      "time": 1785122227.0,
-      "type": "commit",
-      "icon": "\ud83d\udd28",
-      "text": "Sherpacarta: docs: Kimi list \u2014 Cam asks, P0 LNURL, pointer to HQ master",
-      "repo": "sherpacarta"
-    },
-    {
-      "time": 1785122225.0,
-      "type": "commit",
-      "icon": "\ud83d\udd28",
-      "text": "Give A Bit: docs: point Kimi to HQ MASTER LIST with Cam details",
-      "repo": "giveabit"
     }
   ]
 }
