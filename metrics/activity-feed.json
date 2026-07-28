@@ -1,191 +1,191 @@
 {
-  "generated_at": "2026-07-28T09:30:39Z",
+  "generated_at": "2026-07-28T09:45:40Z",
   "events": [
     {
-      "time": 1785231020.0,
+      "time": 1785231933.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "018] run_agent: OpenAI client created (chat_completion_reque"
+      "text": "524] run_agent: OpenAI client closed (request_complete, shar"
     },
     {
-      "time": 1785231019.0,
+      "time": 1785231933.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "d (agent_init, shared=True) thread=cron-parallel_0:126769642"
+      "text": "524] agent.conversation_loop: API call #2: model=deepseek/de"
     },
     {
-      "time": 1785231019.0,
+      "time": 1785231930.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "018] agent.turn_context: conversation turn: session=cron_42c"
+      "text": "524] run_agent: OpenAI client created (chat_completion_reque"
     },
     {
-      "time": 1785231018.0,
+      "time": 1785231929.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "524] run_agent: OpenAI client closed (request_complete, shar"
+    },
+    {
+      "time": 1785231929.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "524] agent.conversation_loop: API call #1: model=deepseek/de"
+    },
+    {
+      "time": 1785231929.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "local environment for task default..."
+    },
+    {
+      "time": 1785231929.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "n snapshot created (session=86f1f169e735, cwd=/root)"
+    },
+    {
+      "time": 1785231929.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "ment ready for task default"
+    },
+    {
+      "time": 1785231929.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "file completed (0.33s, 21342 chars)"
+    },
+    {
+      "time": 1785231929.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "file completed (0.34s, 11613 chars)"
+    },
+    {
+      "time": 1785231926.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "524] run_agent: OpenAI client created (chat_completion_reque"
+    },
+    {
+      "time": 1785231925.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "524] agent.turn_context: conversation turn: session=cron_42c"
+    },
+    {
+      "time": 1785231924.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "or-auto-metrics' (ID: 42cdc3e9bd97)"
     },
     {
-      "time": 1785231018.0,
+      "time": 1785231924.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "ANT: You are running as a scheduled cron job. DELIVERY: Your"
     },
     {
-      "time": 1785231018.0,
+      "time": 1785231924.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "al pool: no available entries (all exhausted or empty)"
+    },
+    {
+      "time": 1785231924.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "auth: using NAS invoke JWT"
+    },
+    {
+      "time": 1785231924.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "97': loaded credential pool for provider nous with 1 entries"
     },
     {
-      "time": 1785230966.0,
+      "time": 1785231924.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "d (agent_init, shared=True) thread=cron-parallel_1:126769617"
+    },
+    {
+      "time": 1785231878.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785230661.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
-    },
-    {
-      "time": 1785230526.0,
+      "time": 1785231671.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "inactive environment for task: default"
     },
     {
-      "time": 1785230360.0,
+      "time": 1785231574.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785230209.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "516] run_agent: OpenAI client closed (request_complete, shar"
+      "time": 1785231360.0,
+      "type": "cron_warn",
+      "icon": "\u26a0\ufe0f",
+      "text": "ics-bundle-15m' failed: RuntimeError: HTTP 429: Hold up for"
     },
     {
-      "time": 1785230209.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "516] agent.conversation_loop: API call #3: model=deepseek/de"
-    },
-    {
-      "time": 1785230209.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "516] agent.conversation_loop: Turn ended: reason=text_respon"
-    },
-    {
-      "time": 1785230209.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "516] run_agent: OpenAI client closed (agent_close, shared=Tr"
-    },
-    {
-      "time": 1785230198.0,
+      "time": 1785231360.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "(agent_close, shared=True, tcp_force_closed=0) thread=cron-"
     },
     {
-      "time": 1785230197.0,
+      "time": 1785231359.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "547] run_agent: OpenAI client closed (request_complete, shar"
+      "text": "314] run_agent: OpenAI client created (chat_completion_reque"
     },
     {
-      "time": 1785230197.0,
+      "time": 1785231359.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "547] agent.conversation_loop: API call #8: model=deepseek/de"
+      "text": "314] run_agent: OpenAI client closed (request_complete, shar"
     },
     {
-      "time": 1785230197.0,
+      "time": 1785231359.0,
+      "type": "cron_warn",
+      "icon": "\u26a0\ufe0f",
+      "text": "113314] agent.conversation_loop: API call failed (attempt 3/"
+    },
+    {
+      "time": 1785231359.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "547] agent.conversation_loop: Turn ended: reason=text_respon"
+      "text": "314] agent.conversation_loop: Nous 429 looks like upstream c"
     },
     {
-      "time": 1785230197.0,
+      "time": 1785231359.0,
+      "type": "cron_warn",
+      "icon": "\u26a0\ufe0f",
+      "text": "3314] agent.conversation_loop: API call failed after 3 retri"
+    },
+    {
+      "time": 1785231358.0,
+      "type": "cron_warn",
+      "icon": "\u26a0\ufe0f",
+      "text": "3018] agent.conversation_loop: API call failed after 3 retri"
+    },
+    {
+      "time": 1785231358.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "cs-bundle-15m' completed successfully"
+      "text": "018] run_agent: OpenAI client closed (agent_close, shared=Tr"
     },
     {
-      "time": 1785230196.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "516] run_agent: OpenAI client closed (request_complete, shar"
-    },
-    {
-      "time": 1785230196.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "516] agent.conversation_loop: API call #2: model=deepseek/de"
-    },
-    {
-      "time": 1785230196.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "516] agent.tool_executor: tool skill_view completed (0.27s,"
-    },
-    {
-      "time": 1785230196.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "516] run_agent: OpenAI client created (chat_completion_reque"
-    },
-    {
-      "time": 1785230193.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "516] run_agent: OpenAI client closed (request_complete, shar"
-    },
-    {
-      "time": 1785230193.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "516] agent.conversation_loop: API call #1: model=deepseek/de"
-    },
-    {
-      "time": 1785230193.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "516] agent.tool_executor: tool skills_list completed (0.38s,"
-    },
-    {
-      "time": 1785230193.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "516] run_agent: OpenAI client created (chat_completion_reque"
-    },
-    {
-      "time": 1785230186.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "file completed (0.14s, 15959 chars)"
-    },
-    {
-      "time": 1785230186.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "file completed (0.18s, 5202 chars)"
-    },
-    {
-      "time": 1785230186.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "547] run_agent: OpenAI client created (chat_completion_reque"
-    },
-    {
-      "time": 1785222948.0,
+      "time": 1785224721.0,
       "type": "commit",
       "icon": "\ud83d\udd28",
-      "text": "HQ Dashboard: chore: thor auto-metrics 09:15 (live LND)",
+      "text": "HQ Dashboard: chore: thor auto-metrics 09:45 (live LND)",
       "repo": "hq"
     },
     {
