@@ -1,17 +1,17 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-28T19:45:55Z",
+ "updatedAt": "2026-07-28T19:48:59Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
   "stack": "Docker \u00b7 LND Neutrino \u00b7 LNbits \u00b7 satohash-api \u00b7 Hermes",
   "region": "EU Contabo",
-  "status": "green",
+  "status": "red",
   "services": [
    {
     "id": "satohash-satohash-api-1",
-    "status": "green",
-    "detail": "Up 45 minutes (healthy)"
+    "status": "red",
+    "detail": "Up 47 minutes (unhealthy)"
    },
    {
     "id": "umami",
@@ -39,13 +39,13 @@
     "detail": "Up 12 hours (healthy)"
    }
   ],
-  "uptimeSec": 1025379
+  "uptimeSec": 1025539
  },
  "bitcoin": {
   "ok": true,
   "chain": "main",
-  "blocks": 960008,
-  "headers": 960008,
+  "blocks": 960009,
+  "headers": 960009,
   "verificationProgress": 1.0,
   "pruned": false,
   "sizeOnDiskGB": 0.34,
@@ -84,10 +84,6 @@
    "color": "#1f6b3a",
    "points": [
     {
-     "t": "2026-07-28T05:16:05Z",
-     "v": 0
-    },
-    {
      "t": "2026-07-28T05:30:01Z",
      "v": 0
     },
@@ -465,6 +461,10 @@
     },
     {
      "t": "2026-07-28T19:45:55Z",
+     "v": 0
+    },
+    {
+     "t": "2026-07-28T19:48:59Z",
      "v": 0
     }
    ]
@@ -476,10 +476,6 @@
    "color": "#c45f00",
    "points": [
     {
-     "t": "2026-07-28T05:16:05Z",
-     "v": 0
-    },
-    {
      "t": "2026-07-28T05:30:01Z",
      "v": 0
     },
@@ -858,6 +854,10 @@
     {
      "t": "2026-07-28T19:45:55Z",
      "v": 0
+    },
+    {
+     "t": "2026-07-28T19:48:59Z",
+     "v": 0
     }
    ]
   },
@@ -867,10 +867,6 @@
    "unit": "load",
    "color": "#38bdf8",
    "points": [
-    {
-     "t": "2026-07-28T05:16:05Z",
-     "v": 0.99
-    },
     {
      "t": "2026-07-28T05:30:01Z",
      "v": 0.54
@@ -1250,6 +1246,10 @@
     {
      "t": "2026-07-28T19:45:55Z",
      "v": 67.02
+    },
+    {
+     "t": "2026-07-28T19:48:59Z",
+     "v": 50.02
     }
    ]
   },
@@ -1259,10 +1259,6 @@
    "unit": "GB",
    "color": "#a78bfa",
    "points": [
-    {
-     "t": "2026-07-28T05:16:05Z",
-     "v": 6.9
-    },
     {
      "t": "2026-07-28T05:30:01Z",
      "v": 7.1
@@ -1642,6 +1638,10 @@
     {
      "t": "2026-07-28T19:45:55Z",
      "v": 7.7
+    },
+    {
+     "t": "2026-07-28T19:48:59Z",
+     "v": 6.5
     }
    ]
   },
@@ -1651,10 +1651,6 @@
    "unit": "blocks",
    "color": "#f7931a",
    "points": [
-    {
-     "t": "2026-07-28T05:16:05Z",
-     "v": 959931
-    },
     {
      "t": "2026-07-28T05:30:01Z",
      "v": 959931
@@ -2034,6 +2030,10 @@
     {
      "t": "2026-07-28T19:45:55Z",
      "v": 960008
+    },
+    {
+     "t": "2026-07-28T19:48:59Z",
+     "v": 960009
     }
    ]
   }
@@ -2061,27 +2061,27 @@
  "system": {
   "disk": {
    "totalGB": 387,
-   "usedGB": 32,
+   "usedGB": 33,
    "freeGB": 355,
    "usedPercent": 9,
    "mount": "/"
   },
   "memory": {
    "totalGB": 7.8,
-   "usedGB": 7.7,
-   "freeGB": 0.1,
-   "availableGB": 0.1
+   "usedGB": 6.5,
+   "freeGB": 1.1,
+   "availableGB": 1.2
   },
   "cpu": {
-   "loadAvg1m": 67.02,
-   "loadAvg5m": 61.56,
-   "loadAvg15m": 50.85,
+   "loadAvg1m": 50.02,
+   "loadAvg5m": 55.64,
+   "loadAvg15m": 50.36,
    "uptimeDays": 11.9
   },
   "docker": {
-   "images": 0,
-   "containers": 0,
-   "running": 0,
+   "images": 7,
+   "containers": 6,
+   "running": 6,
    "buildCacheGB": 4.056
   },
   "breakdownGB": {
@@ -2092,18 +2092,18 @@
    "LND_data": 0.344,
    "Docker_images": 3.911,
    "Docker_volumes": 0.456,
-   "other_system": 25.4
+   "other_system": 26.4
   }
  },
  "host": {
   "diskTotalGB": 387,
-  "diskUsedGB": 32,
+  "diskUsedGB": 33,
   "diskFreeGB": 355,
   "memTotalGB": 7.8,
-  "memUsedGB": 7.7,
-  "load1": 67.02,
-  "load5": 61.56,
-  "load15": 50.85,
+  "memUsedGB": 6.5,
+  "load1": 50.02,
+  "load5": 55.64,
+  "load15": 50.36,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
@@ -2111,7 +2111,7 @@
    {
     "id": "other_system",
     "label": "Other system",
-    "gb": 25.4
+    "gb": 26.4
    },
    {
     "id": "Docker_images",
