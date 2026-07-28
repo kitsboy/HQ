@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-28T22:45:01Z",
+ "updatedAt": "2026-07-28T22:45:38Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -39,7 +39,7 @@
     "detail": "Up 15 hours (healthy)"
    }
   ],
-  "uptimeSec": 1036100
+  "uptimeSec": 1036137
  },
  "bitcoin": {
   "ok": true,
@@ -464,7 +464,7 @@
      "v": 0
     },
     {
-     "t": "2026-07-28T22:45:01Z",
+     "t": "2026-07-28T22:45:38Z",
      "v": 0
     }
    ]
@@ -856,7 +856,7 @@
      "v": 0
     },
     {
-     "t": "2026-07-28T22:45:01Z",
+     "t": "2026-07-28T22:45:38Z",
      "v": 0
     }
    ]
@@ -1248,8 +1248,8 @@
      "v": 2.22
     },
     {
-     "t": "2026-07-28T22:45:01Z",
-     "v": 2.03
+     "t": "2026-07-28T22:45:38Z",
+     "v": 2.01
     }
    ]
   },
@@ -1640,8 +1640,8 @@
      "v": 6.1
     },
     {
-     "t": "2026-07-28T22:45:01Z",
-     "v": 6.0
+     "t": "2026-07-28T22:45:38Z",
+     "v": 6.1
     }
    ]
   },
@@ -2032,7 +2032,7 @@
      "v": 960022
     },
     {
-     "t": "2026-07-28T22:45:01Z",
+     "t": "2026-07-28T22:45:38Z",
      "v": 960025
     }
    ]
@@ -2068,13 +2068,13 @@
   },
   "memory": {
    "totalGB": 7.8,
-   "usedGB": 6.0,
-   "freeGB": 0.1,
+   "usedGB": 6.1,
+   "freeGB": 0.2,
    "availableGB": 1.7
   },
   "cpu": {
-   "loadAvg1m": 2.03,
-   "loadAvg5m": 1.81,
+   "loadAvg1m": 2.01,
+   "loadAvg5m": 1.83,
    "loadAvg15m": 1.85,
    "uptimeDays": 12.0
   },
@@ -2100,9 +2100,9 @@
   "diskUsedGB": 35,
   "diskFreeGB": 352,
   "memTotalGB": 7.8,
-  "memUsedGB": 6.0,
-  "load1": 2.03,
-  "load5": 1.81,
+  "memUsedGB": 6.1,
+  "load1": 2.01,
+  "load5": 1.83,
   "load15": 1.85,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
