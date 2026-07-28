@@ -1,6 +1,6 @@
 {
   "schema": "gab.ecosystem-map.v1",
-  "updatedAt": "2026-07-27T20:06:53Z",
+  "updatedAt": "2026-07-28T02:00:46Z",
   "projects": [
     {
       "id": "satohash",
@@ -24,7 +24,7 @@
       "version": "3.25.1",
       "status": "green",
       "health": "200",
-      "lastCommit": "9612b82 chore: thor auto-metrics 18:02 (live LND)",
+      "lastCommit": "ff793cf chore: refresh status.json + thor-node [skip deploy]",
       "synced": "synced",
       "localOnThor": true
     },
@@ -141,12 +141,12 @@
       "host": "Contabo VPS 20",
       "status": "green",
       "disk": "7% used",
-      "diskFree": "363G",
-      "mem": "5.9Gi used",
-      "memAvail": "1.8Gi",
-      "load": "0.43/0.29/0.19",
-      "uptime": "up 1 week, 3 days, 19 hours, 10 minutes",
-      "lastSeen": "2026-07-27"
+      "diskFree": "361G",
+      "mem": "6.8Gi used",
+      "memAvail": "964Mi",
+      "load": "2.43/1.11/0.73",
+      "uptime": "up 1 week, 4 days, 1 hour, 4 minutes",
+      "lastSeen": "2026-07-28"
     },
     {
       "id": "m3",
@@ -155,7 +155,7 @@
       "host": "Cams-Laptop",
       "status": "amber",
       "lastPush": "unknown",
-      "lastSeen": "2026-07-27"
+      "lastSeen": "2026-07-28"
     },
     {
       "id": "m4",
@@ -300,7 +300,7 @@
     },
     {
       "name": "github-sync",
-      "ageDays": 24,
+      "ageDays": 25,
       "status": "fresh",
       "updated": "2026-07-02"
     },
@@ -342,19 +342,19 @@
     },
     {
       "name": "satohash-orchestrator",
-      "ageDays": 10,
+      "ageDays": 11,
       "status": "fresh",
       "updated": "2026-07-17"
     },
     {
       "name": "task",
-      "ageDays": 53,
+      "ageDays": 54,
       "status": "aging",
       "updated": "2026-06-03"
     },
     {
       "name": "yuanbao",
-      "ageDays": 10,
+      "ageDays": 11,
       "status": "fresh",
       "updated": "2026-07-17"
     }
@@ -400,28 +400,28 @@
   "recentActivity": [
     {
       "repo": "hq",
-      "commit": "9612b82 chore: thor auto-metrics 18:02 (live LND)",
-      "timestamp": "2026-07-27"
+      "commit": "ff793cf chore: refresh status.json + thor-node [skip deploy]",
+      "timestamp": "2026-07-28"
     },
     {
       "repo": "hq",
-      "commit": "68e6689 chore: refresh status.json + thor-node [skip deploy]",
-      "timestamp": "2026-07-27"
+      "commit": "1e68fd3 chore: thor auto-metrics 00:00 (live LND)",
+      "timestamp": "2026-07-28"
     },
     {
       "repo": "hq",
-      "commit": "eba8693 chore: thor auto-metrics 18:00 (live LND)",
-      "timestamp": "2026-07-27"
+      "commit": "a28cdda chore: refresh metrics bundle 23:45 (5/5 scripts OK)",
+      "timestamp": "2026-07-28"
     },
     {
       "repo": "satohash",
       "commit": "2527c5c chore: handoff/docs updates \u2014 M4 online, memory clea",
-      "timestamp": "2026-07-27"
+      "timestamp": "2026-07-28"
     },
     {
       "repo": "satohash",
       "commit": "799ac62 docs: point Kimi to HQ MASTER LIST (Cam priorities)",
-      "timestamp": "2026-07-27"
+      "timestamp": "2026-07-28"
     }
   ],
   "metadata": {
