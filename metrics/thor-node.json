@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-29T16:15:02Z",
+ "updatedAt": "2026-07-29T16:15:43Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -39,7 +39,7 @@
     "detail": "Up 32 hours (healthy)"
    }
   ],
-  "uptimeSec": 1099101
+  "uptimeSec": 1099142
  },
  "bitcoin": {
   "ok": true,
@@ -464,7 +464,7 @@
      "v": 0
     },
     {
-     "t": "2026-07-29T16:15:02Z",
+     "t": "2026-07-29T16:15:43Z",
      "v": 0
     }
    ]
@@ -856,7 +856,7 @@
      "v": 0
     },
     {
-     "t": "2026-07-29T16:15:02Z",
+     "t": "2026-07-29T16:15:43Z",
      "v": 0
     }
    ]
@@ -1248,8 +1248,8 @@
      "v": 0.34
     },
     {
-     "t": "2026-07-29T16:15:02Z",
-     "v": 0.54
+     "t": "2026-07-29T16:15:43Z",
+     "v": 0.71
     }
    ]
   },
@@ -1640,7 +1640,7 @@
      "v": 5.1
     },
     {
-     "t": "2026-07-29T16:15:02Z",
+     "t": "2026-07-29T16:15:43Z",
      "v": 5.1
     }
    ]
@@ -2032,7 +2032,7 @@
      "v": 960127
     },
     {
-     "t": "2026-07-29T16:15:02Z",
+     "t": "2026-07-29T16:15:43Z",
      "v": 960127
     }
    ]
@@ -2073,9 +2073,9 @@
    "availableGB": 2.7
   },
   "cpu": {
-   "loadAvg1m": 0.54,
-   "loadAvg5m": 0.47,
-   "loadAvg15m": 0.46,
+   "loadAvg1m": 0.71,
+   "loadAvg5m": 0.53,
+   "loadAvg15m": 0.48,
    "uptimeDays": 12.7
   },
   "docker": {
@@ -2086,13 +2086,13 @@
   },
   "breakdownGB": {
    "MASTER-BRAIN_vault": 0.697,
-   "Hermes_skills_config": 1.2,
+   "Hermes_skills_config": 1.3,
    "satohash_repo": 0.057,
    "HQ_repo": 0.03,
    "LND_data": 0.344,
    "Docker_images": 3.911,
    "Docker_volumes": 0.456,
-   "other_system": 36.3
+   "other_system": 36.2
   }
  },
  "host": {
@@ -2101,9 +2101,9 @@
   "diskFreeGB": 344,
   "memTotalGB": 7.8,
   "memUsedGB": 5.1,
-  "load1": 0.54,
-  "load5": 0.47,
-  "load15": 0.46,
+  "load1": 0.71,
+  "load5": 0.53,
+  "load15": 0.48,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
@@ -2111,7 +2111,7 @@
    {
     "id": "other_system",
     "label": "Other system",
-    "gb": 36.3
+    "gb": 36.2
    },
    {
     "id": "Docker_images",
@@ -2121,7 +2121,7 @@
    {
     "id": "Hermes_skills_config",
     "label": "Hermes",
-    "gb": 1.2
+    "gb": 1.3
    },
    {
     "id": "MASTER-BRAIN_vault",
