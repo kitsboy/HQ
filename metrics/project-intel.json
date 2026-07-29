@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-29T03:00:38Z",
+  "checked_at": "2026-07-29T04:00:40Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -18,7 +18,7 @@
         "feat: Mission NIP-05 identity + sherpa@ in SPA registry (v4.",
         "feat: add sherpa NIP-05 identity (sherpa@giveabit.io) for Sh"
       ],
-      "commits_7d": 10,
+      "commits_7d": 9,
       "health": "green",
       "cf_project": "giveabit",
       "open_issues": 0
@@ -40,7 +40,7 @@
         "docs: full closeout \u2014 status, handoffs, MASTER-BRAIN, paths ",
         "fix(media): rebuild valid ~80s with-VO explainer MP4"
       ],
-      "commits_7d": 65,
+      "commits_7d": 62,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "e4ac051",
-        "message": "chore: thor auto-metrics 03:00 (live LND)",
+        "sha": "548c98b",
+        "message": "chore: thor auto-metrics 04:00 (live LND)",
         "author": "Cam (via Aider)",
-        "date": "2026-07-29T03:00:09Z",
-        "url": "https://github.com/kitsboy/HQ/commit/e4ac051e9c6d6d2433217b66a9e3eb3fcf2d41b0"
+        "date": "2026-07-29T04:00:08Z",
+        "url": "https://github.com/kitsboy/HQ/commit/548c98b5b628624f62df34c9ba1bbfadecfab390"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 03:00 (live LND)",
-        "chore: thor auto-metrics 02:45 (live LND)",
-        "chore: thor auto-metrics 02:45 (live LND)"
+        "chore: thor auto-metrics 04:00 (live LND)",
+        "pulse: 2026-07-29 05:45 UTC \u2014 memory pressure, LND 0 peers, ",
+        "chore: thor auto-metrics 03:46 (live LND)"
       ],
       "commits_7d": 100,
       "health": "green",

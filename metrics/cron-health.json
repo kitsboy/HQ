@@ -1,115 +1,47 @@
 {
-  "checked_at": "2026-07-29T03:00:38Z",
-  "jobs": {
-    "c8ce19bb5571": {
-      "status": "completed",
-      "last_run": "2026-07-29T04:55:38.920682+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "1b2c31d6ba98": {
-      "status": "completed",
-      "last_run": "2026-07-29T04:46:34.391118+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "42cdc3e9bd97": {
-      "status": "completed",
-      "last_run": "2026-07-29T04:45:52.533207+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "e8d5b97de501": {
-      "status": "completed",
-      "last_run": "2026-07-29T04:30:59.270479+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "cb8398b3fa67": {
-      "status": "completed",
-      "last_run": "2026-07-29T04:30:38.849661+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "bb5980d548fb": {
-      "status": "completed",
-      "last_run": "2026-07-29T04:11:12.165080+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "7768b5c5aa49": {
-      "status": "completed",
-      "last_run": "2026-07-29T04:02:08.242206+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "e4b5079b66ce": {
-      "status": "completed",
-      "last_run": "2026-07-29T04:00:39.627265+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "bb6e71c68350": {
-      "status": "completed",
-      "last_run": "2026-07-29T02:00:54.071167+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "9bd2735e125e": {
-      "status": "completed",
-      "last_run": "2026-07-29T00:00:33.873830+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "12b477c661ae": {
-      "status": "failed",
-      "last_run": "2026-07-28T22:13:22.684006+02:00",
-      "consecutive_fails": 1,
-      "paused": false,
-      "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
-      "action": "warn"
-    },
-    "30921a766dae": {
-      "status": "completed",
-      "last_run": "2026-07-28T21:00:44.860763+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "b6a4e3710d9d": {
-      "status": "completed",
-      "last_run": "2026-07-28T08:01:01.400748+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "71f476018b46": {
-      "status": "completed",
-      "last_run": "2026-07-28T07:34:59.331528+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "337c7ae0b619": {
-      "status": "completed",
-      "last_run": "2026-07-28T07:31:04.549028+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "311d146f45c3": {
-      "status": "completed",
-      "last_run": "2026-07-28T07:15:52.655489+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "5c6f78744d6e": {
-      "status": "completed",
-      "last_run": "2026-07-28T07:00:53.772530+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    }
+  "checked_at": "2026-07-29T06:08:19Z",
+  "generator": "thor-cron-health-hourly (agent)",
+  "summary": {
+    "total_scheduler_jobs": 28,
+    "healthy": 16,
+    "no_history_weekly_monthly": 11,
+    "paused": 1,
+    "warning_flagged": 1,
+    "stale_executions": 0,
+    "auto_pause_required": 0
   },
-  "paused_count": 1,
-  "alert_count": 1,
-  "paused_jobs": [
-    "34c2181c2737"
+  "jobs": {
+    "9bd2735e125e": {"name": "M3-Projects-GitHub-Scan", "status": "completed", "consecutive_fails": 0},
+    "5c6f78744d6e": {"name": "Daily Deploy Healthcheck", "status": "completed", "consecutive_fails": 0},
+    "337c7ae0b619": {"name": "thor-morning-pulse", "status": "completed", "consecutive_fails": 0},
+    "12b477c661ae": {"name": "thor-evening-wrap", "status": "failed", "consecutive_fails": 1, "action": "warn", "error": "HTTP 429 rate limit (intermittent)"},
+    "311d146f45c3": {"name": "thor-node-export-daily", "status": "completed", "consecutive_fails": 0},
+    "e8d5b97de501": {"name": "hq-status-refresh-30m", "status": "completed", "consecutive_fails": 0},
+    "7768b5c5aa49": {"name": "thor-metrics-export-hourly", "status": "completed", "consecutive_fails": 0},
+    "42cdc3e9bd97": {"name": "thor-auto-metrics", "status": "completed", "consecutive_fails": 0},
+    "c8ce19bb5571": {"name": "ref-puller", "status": "completed", "consecutive_fails": 0},
+    "cb8398b3fa67": {"name": "cf-analytics-puller", "status": "completed", "consecutive_fails": 0},
+    "bb5980d548fb": {"name": "thor-cron-health-hourly", "status": "completed", "consecutive_fails": 0},
+    "71f476018b46": {"name": "kimi-voice-briefing", "status": "completed", "consecutive_fails": 0},
+    "1b2c31d6ba98": {"name": "thor-metrics-bundle-15m", "status": "completed", "consecutive_fails": 0},
+    "34c2181c2737": {"name": "buzz-watch", "status": "no_history", "paused": true, "note": "Delivery error: Telegram Chat not found (permanent)"},
+    "e4b5079b66ce": {"name": "thor-health-check", "status": "completed", "consecutive_fails": 0},
+    "bb6e71c68350": {"name": "thor-nightly-pipeline", "status": "completed", "consecutive_fails": 0, "note": "Report-only || true fix confirmed working"},
+    "30921a766dae": {"name": "email-inbound-poll", "status": "completed", "consecutive_fails": 0},
+    "b6a4e3710d9d": {"name": "email-daily-digest", "status": "completed", "consecutive_fails": 0}
+  },
+  "no_history_jobs": [
+    "EU-Funding-Research-Weekly",
+    "kanban-weekly-digest",
+    "node-mempool-reminder",
+    "vault-monthly-freshness",
+    "thor-vault-auto-enforcer",
+    "thor-drift-detector-weekly",
+    "weekly-what-changed-digest",
+    "thor-dep-check-weekly-v2",
+    "thor-weekly-cleanup-sunday",
+    "thor-monday-batch"
   ],
-  "orphaned_count": 0
+  "stale_executions_cleaned": 0,
+  "auto_paused_this_cycle": []
 }
