@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-07-29T00:03:13Z",
+ "updatedAt": "2026-07-29T00:15:02Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -11,7 +11,7 @@
    {
     "id": "satohash-satohash-api-1",
     "status": "green",
-    "detail": "Up 21 minutes (healthy)"
+    "detail": "Up 33 minutes (healthy)"
    },
    {
     "id": "umami",
@@ -39,7 +39,7 @@
     "detail": "Up 16 hours (healthy)"
    }
   ],
-  "uptimeSec": 1040793
+  "uptimeSec": 1041501
  },
  "bitcoin": {
   "ok": true,
@@ -84,10 +84,6 @@
    "color": "#1f6b3a",
    "points": [
     {
-     "t": "2026-07-28T09:30:01Z",
-     "v": 0
-    },
-    {
      "t": "2026-07-28T09:34:12Z",
      "v": 0
     },
@@ -465,6 +461,10 @@
     },
     {
      "t": "2026-07-29T00:03:13Z",
+     "v": 0
+    },
+    {
+     "t": "2026-07-29T00:15:02Z",
      "v": 0
     }
    ]
@@ -476,10 +476,6 @@
    "color": "#c45f00",
    "points": [
     {
-     "t": "2026-07-28T09:30:01Z",
-     "v": 0
-    },
-    {
      "t": "2026-07-28T09:34:12Z",
      "v": 0
     },
@@ -858,6 +854,10 @@
     {
      "t": "2026-07-29T00:03:13Z",
      "v": 0
+    },
+    {
+     "t": "2026-07-29T00:15:02Z",
+     "v": 0
     }
    ]
   },
@@ -867,10 +867,6 @@
    "unit": "load",
    "color": "#38bdf8",
    "points": [
-    {
-     "t": "2026-07-28T09:30:01Z",
-     "v": 0.91
-    },
     {
      "t": "2026-07-28T09:34:12Z",
      "v": 24.41
@@ -1250,6 +1246,10 @@
     {
      "t": "2026-07-29T00:03:13Z",
      "v": 1.66
+    },
+    {
+     "t": "2026-07-29T00:15:02Z",
+     "v": 1.67
     }
    ]
   },
@@ -1259,10 +1259,6 @@
    "unit": "GB",
    "color": "#a78bfa",
    "points": [
-    {
-     "t": "2026-07-28T09:30:01Z",
-     "v": 7.4
-    },
     {
      "t": "2026-07-28T09:34:12Z",
      "v": 7.4
@@ -1642,6 +1638,10 @@
     {
      "t": "2026-07-29T00:03:13Z",
      "v": 5.7
+    },
+    {
+     "t": "2026-07-29T00:15:02Z",
+     "v": 5.8
     }
    ]
   },
@@ -1651,10 +1651,6 @@
    "unit": "blocks",
    "color": "#f7931a",
    "points": [
-    {
-     "t": "2026-07-28T09:30:01Z",
-     "v": 959953
-    },
     {
      "t": "2026-07-28T09:34:12Z",
      "v": 959953
@@ -2034,6 +2030,10 @@
     {
      "t": "2026-07-29T00:03:13Z",
      "v": 960028
+    },
+    {
+     "t": "2026-07-29T00:15:02Z",
+     "v": 960028
     }
    ]
   }
@@ -2061,22 +2061,22 @@
  "system": {
   "disk": {
    "totalGB": 387,
-   "usedGB": 37,
-   "freeGB": 350,
-   "usedPercent": 10,
+   "usedGB": 40,
+   "freeGB": 348,
+   "usedPercent": 11,
    "mount": "/"
   },
   "memory": {
    "totalGB": 7.8,
-   "usedGB": 5.7,
-   "freeGB": 0.1,
+   "usedGB": 5.8,
+   "freeGB": 0.2,
    "availableGB": 2.0
   },
   "cpu": {
-   "loadAvg1m": 1.66,
-   "loadAvg5m": 1.62,
-   "loadAvg15m": 1.64,
-   "uptimeDays": 12.0
+   "loadAvg1m": 1.67,
+   "loadAvg5m": 1.67,
+   "loadAvg15m": 1.66,
+   "uptimeDays": 12.1
   },
   "docker": {
    "images": 7,
@@ -2092,18 +2092,18 @@
    "LND_data": 0.344,
    "Docker_images": 3.911,
    "Docker_volumes": 0.456,
-   "other_system": 30.3
+   "other_system": 33.3
   }
  },
  "host": {
   "diskTotalGB": 387,
-  "diskUsedGB": 37,
-  "diskFreeGB": 350,
+  "diskUsedGB": 40,
+  "diskFreeGB": 348,
   "memTotalGB": 7.8,
-  "memUsedGB": 5.7,
-  "load1": 1.66,
-  "load5": 1.62,
-  "load15": 1.64,
+  "memUsedGB": 5.8,
+  "load1": 1.67,
+  "load5": 1.67,
+  "load15": 1.66,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
@@ -2111,7 +2111,7 @@
    {
     "id": "other_system",
     "label": "Other system",
-    "gb": 30.3
+    "gb": 33.3
    },
    {
     "id": "Docker_images",
