@@ -122,7 +122,7 @@ Grok: update public/data/wallets.json → set lightning.lud16 and remove TEMP pl
 | Satohash stamp family | `/stamp?hash=&ref=`, family clients, API health + metrics |
 | **Satohash API v5.0.0-ELITE** | ✅ Built + deployed on THOR 2026-07-28 · AI embed/fraud, Nostr multi-relay, LNbits paywall-ready · HQ card 🟢 GREEN |
 | **Satohash LNbits wired** | ✅ Invoice key on API env · paywall flip-ready (still free, `REQUIRE_LIGHTNING=false`) · Cam pastes same key in HQ Vault for Money tab |
-| **Satohash bitcoind pruned** | ✅ Bitcoin Core v28.1 installed on THOR · syncing headers (18% → full IBD in ~2h) · API env wired · mempool.space fallback until sync complete |
+| **Satohash explainer video** | ✅ `/watch` page live · Music by Grok · Kimi VO generated + pushed to GitHub · Production script in `docs/EXPLAINER-SCRIPT-PRODUCTION.md` |
 | **NIP-05 `sherpa@giveabit.io`** | ✅ live in giveabit `nostr.json` · wallets.json `nip05Status: live` |
 | Giveabit Mission + registry | ✅ v4.4.0 · NIP-05 identity paragraph · sherpa in SPA registry |
 | HQ metrics schema gate | ✅ v3.25 · `gab.product-metrics.v1` only |
