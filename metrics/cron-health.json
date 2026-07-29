@@ -1,181 +1,39 @@
 {
-  "checked_at": "2026-07-29T00:14:43Z",
-  "jobs": {
-    "980226ec5716": {
-      "status": "no_history",
-      "last_run": null,
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "9bd2735e125e": {
-      "status": "completed",
-      "last_run": "2026-07-29T00:00:33.873830+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "2621be4bb5dd": {
-      "status": "no_history",
-      "last_run": null,
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "5c6f78744d6e": {
-      "status": "completed",
-      "last_run": "2026-07-28T07:00:53.772530+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "469f2cfb7ab8": {
-      "status": "no_history",
-      "last_run": null,
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "59b3a68e3eb2": {
-      "status": "no_history",
-      "last_run": null,
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "337c7ae0b619": {
-      "status": "completed",
-      "last_run": "2026-07-28T07:31:04.549028+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "12b477c661ae": {
-      "status": "failed",
-      "last_run": "2026-07-28T22:13:22.684006+02:00",
-      "consecutive_fails": 1,
-      "paused": false,
-      "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
-      "action": "warn"
-    },
-    "560e38829acf": {
-      "status": "no_history",
-      "last_run": null,
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "019f2b72567e": {
-      "status": "no_history",
-      "last_run": null,
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "311d146f45c3": {
-      "status": "completed",
-      "last_run": "2026-07-28T07:15:52.655489+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "e8d5b97de501": {
-      "status": "completed",
-      "last_run": "2026-07-29T02:00:53.621762+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "7768b5c5aa49": {
-      "status": "completed",
-      "last_run": "2026-07-29T02:02:33.588254+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "42cdc3e9bd97": {
-      "status": "completed",
-      "last_run": "2026-07-29T02:04:00.504931+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "c8ce19bb5571": {
-      "status": "completed",
-      "last_run": "2026-07-29T02:10:35.265643+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "cb8398b3fa67": {
-      "status": "completed",
-      "last_run": "2026-07-29T02:00:35.584929+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "b7b5c1bebfe7": {
-      "status": "no_history",
-      "last_run": null,
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "eb7452b2189e": {
-      "status": "no_history",
-      "last_run": null,
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "bb5980d548fb": {
-      "status": "completed",
-      "last_run": "2026-07-29T01:04:11.202391+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "71f476018b46": {
-      "status": "completed",
-      "last_run": "2026-07-28T07:34:59.331528+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "1b2c31d6ba98": {
-      "status": "completed",
-      "last_run": "2026-07-29T01:48:47.483731+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "447ed87c7a57": {
-      "status": "no_history",
-      "last_run": null,
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "34c2181c2737": {
-      "status": "no_history",
-      "last_run": null,
-      "consecutive_fails": 0,
-      "paused": true
-    },
-    "e4b5079b66ce": {
-      "status": "completed",
-      "last_run": "2026-07-29T00:00:33.880008+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "bb6e71c68350": {
-      "status": "completed",
-      "last_run": "2026-07-29T02:00:54.071167+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "e19a3670752f": {
-      "status": "no_history",
-      "last_run": null,
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "30921a766dae": {
-      "status": "completed",
-      "last_run": "2026-07-28T21:00:44.860763+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "b6a4e3710d9d": {
-      "status": "completed",
-      "last_run": "2026-07-28T08:01:01.400748+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    }
-  },
+  "checked_at": "2026-07-29T03:02:00Z",
+  "total_jobs": 28,
   "paused_count": 1,
-  "alert_count": 1,
-  "paused_jobs": [
-    "34c2181c2737"
-  ],
-  "orphaned_count": 0
+  "warn_count": 1,
+  "alert_count": 0,
+  "no_history_count": 11,
+  "paused_jobs": ["34c2181c2737"],
+  "jobs": {
+    "980226ec5716": {"status": "no_history", "last_run": "2026-07-27T05:08:55+02:00", "consecutive_fails": 0, "paused": false},
+    "9bd2735e125e": {"status": "completed", "last_run": "2026-07-29T00:00:33+02:00", "consecutive_fails": 0, "paused": false},
+    "2621be4bb5dd": {"status": "no_history", "last_run": "2026-07-27T08:07:27+02:00", "consecutive_fails": 0, "paused": false},
+    "5c6f78744d6e": {"status": "completed", "last_run": "2026-07-28T07:00:53+02:00", "consecutive_fails": 0, "paused": false},
+    "469f2cfb7ab8": {"status": "no_history", "last_run": null, "consecutive_fails": 0, "paused": false},
+    "59b3a68e3eb2": {"status": "no_history", "last_run": null, "consecutive_fails": 0, "paused": false},
+    "337c7ae0b619": {"status": "completed", "last_run": "2026-07-28T07:31:04+02:00", "consecutive_fails": 0, "paused": false},
+    "12b477c661ae": {"status": "failed", "last_run": "2026-07-28T22:13:22+02:00", "consecutive_fails": 1, "paused": false, "error": "HTTP 429 rate limit", "action": "warn"},
+    "560e38829acf": {"status": "no_history", "last_run": "2026-07-26T05:00:37+02:00", "consecutive_fails": 0, "paused": false},
+    "019f2b72567e": {"status": "no_history", "last_run": "2026-07-26T08:00:53+02:00", "consecutive_fails": 0, "paused": false},
+    "311d146f45c3": {"status": "completed", "last_run": "2026-07-28T07:15:52+02:00", "consecutive_fails": 0, "paused": false},
+    "e8d5b97de501": {"status": "completed", "last_run": "2026-07-29T03:00:53+02:00", "consecutive_fails": 0, "paused": false},
+    "7768b5c5aa49": {"status": "completed", "last_run": "2026-07-29T03:02:18+02:00", "consecutive_fails": 0, "paused": false},
+    "42cdc3e9bd97": {"status": "completed", "last_run": "2026-07-29T03:03:52+02:00", "consecutive_fails": 0, "paused": false},
+    "c8ce19bb5571": {"status": "completed", "last_run": "2026-07-29T03:05:36+02:00", "consecutive_fails": 0, "paused": false},
+    "cb8398b3fa67": {"status": "completed", "last_run": "2026-07-29T03:00:36+02:00", "consecutive_fails": 0, "paused": false},
+    "b7b5c1bebfe7": {"status": "no_history", "last_run": "2026-07-27T09:10:17+02:00", "consecutive_fails": 0, "paused": false},
+    "eb7452b2189e": {"status": "no_history", "last_run": "2026-07-26T09:02:36+02:00", "consecutive_fails": 0, "paused": false},
+    "bb5980d548fb": {"status": "running", "last_run": "2026-07-29T02:17:33+02:00", "consecutive_fails": 0, "paused": false},
+    "71f476018b46": {"status": "completed", "last_run": "2026-07-28T07:34:59+02:00", "consecutive_fails": 0, "paused": false},
+    "1b2c31d6ba98": {"status": "running", "last_run": "2026-07-29T02:48:20+02:00", "consecutive_fails": 0, "paused": false},
+    "447ed87c7a57": {"status": "no_history", "last_run": "2026-07-26T04:07:38+02:00", "consecutive_fails": 0, "paused": false},
+    "34c2181c2737": {"status": "no_history", "last_run": "2026-07-25T10:03:52+02:00", "consecutive_fails": 0, "paused": true, "error": "Delivery: Chat not found (permanent)"},
+    "e4b5079b66ce": {"status": "completed", "last_run": "2026-07-29T00:00:33+02:00", "consecutive_fails": 0, "paused": false},
+    "bb6e71c68350": {"status": "completed", "last_run": "2026-07-29T02:00:54+02:00", "consecutive_fails": 0, "paused": false},
+    "e19a3670752f": {"status": "no_history", "last_run": "2026-07-27T06:00:54+02:00", "consecutive_fails": 0, "paused": false},
+    "30921a766dae": {"status": "completed", "last_run": "2026-07-28T21:00:44+02:00", "consecutive_fails": 0, "paused": false},
+    "b6a4e3710d9d": {"status": "completed", "last_run": "2026-07-28T08:01:01+02:00", "consecutive_fails": 0, "paused": false}
+  }
 }
