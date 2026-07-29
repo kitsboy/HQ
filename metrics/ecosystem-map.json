@@ -1,6 +1,6 @@
 {
   "schema": "gab.ecosystem-map.v1",
-  "updatedAt": "2026-07-29T02:00:40Z",
+  "updatedAt": "2026-07-29T16:47:30Z",
   "projects": [
     {
       "id": "satohash",
@@ -11,7 +11,7 @@
       "version": "5.0.0-ELITE",
       "status": "green",
       "health": "200",
-      "lastCommit": "13b0f00 feat: landing .ots verify panel + IBD-aware health banner",
+      "lastCommit": "fb1a28a docs: update ref/GROK-BOOT + ref/AGENTS for v5.0.0-ELITE state",
       "synced": "synced",
       "localOnThor": true
     },
@@ -24,8 +24,8 @@
       "version": "3.25.1",
       "status": "green",
       "health": "200",
-      "lastCommit": "d12d579 chore: refresh status.json + thor-node [skip deploy]",
-      "synced": "ahead",
+      "lastCommit": "d430c48 chore: thor auto-metrics 14:45 (live LND)",
+      "synced": "synced",
       "localOnThor": true
     },
     {
@@ -140,12 +140,12 @@
       "role": "Orchestrator + Hermes + Master Brain",
       "host": "Contabo VPS 20",
       "status": "green",
-      "disk": "10% used",
-      "diskFree": "350G",
-      "mem": "5.8Gi used",
-      "memAvail": "2.0Gi",
-      "load": "2.28/1.68/1.67",
-      "uptime": "up 1 week, 5 days, 1 hour, 4 minutes",
+      "disk": "12% used",
+      "diskFree": "344G",
+      "mem": "5.1Gi used",
+      "memAvail": "2.6Gi",
+      "load": "1.52/0.94/0.59",
+      "uptime": "up 1 week, 5 days, 15 hours, 50 minutes",
       "lastSeen": "2026-07-29"
     },
     {
@@ -264,19 +264,19 @@
   "skills": [
     {
       "name": "auto-git-status",
-      "ageDays": 59,
-      "status": "aging",
+      "ageDays": 60,
+      "status": "stale",
       "updated": "2026-05-30"
     },
     {
       "name": "browser-harness",
-      "ageDays": 59,
-      "status": "aging",
+      "ageDays": 60,
+      "status": "stale",
       "updated": "2026-05-30"
     },
     {
       "name": "computer-use",
-      "ageDays": 8,
+      "ageDays": 9,
       "status": "fresh",
       "updated": "2026-07-20"
     },
@@ -288,13 +288,13 @@
     },
     {
       "name": "deployment-workflow",
-      "ageDays": 15,
+      "ageDays": 16,
       "status": "fresh",
       "updated": "2026-07-13"
     },
     {
       "name": "dogfood",
-      "ageDays": 37,
+      "ageDays": 38,
       "status": "aging",
       "updated": "2026-06-21"
     },
@@ -306,37 +306,37 @@
     },
     {
       "name": "hermes-desktop-plugins",
-      "ageDays": 8,
+      "ageDays": 9,
       "status": "fresh",
       "updated": "2026-07-20"
     },
     {
       "name": "kanban-worker",
-      "ageDays": 59,
-      "status": "aging",
+      "ageDays": 60,
+      "status": "stale",
       "updated": "2026-05-30"
     },
     {
       "name": "nova-product-management",
-      "ageDays": 14,
+      "ageDays": 15,
       "status": "fresh",
       "updated": "2026-07-14"
     },
     {
       "name": "project-brief",
-      "ageDays": 14,
+      "ageDays": 15,
       "status": "fresh",
       "updated": "2026-07-14"
     },
     {
       "name": "propagate-template",
-      "ageDays": 32,
+      "ageDays": 33,
       "status": "aging",
       "updated": "2026-06-26"
     },
     {
       "name": "quick-backup",
-      "ageDays": 32,
+      "ageDays": 33,
       "status": "aging",
       "updated": "2026-06-26"
     },
@@ -373,7 +373,7 @@
       "name": "LND",
       "type": "Lightning Node (Neutrino)",
       "status": "green",
-      "detail": "Up 16 hours (healthy)"
+      "detail": "Up 31 hours (healthy)"
     },
     {
       "id": "satohash-api",
@@ -387,40 +387,40 @@
       "name": "Redis",
       "type": "Satohash Cache",
       "status": "green",
-      "detail": "Up 8 days"
+      "detail": "Up 9 days"
     },
     {
       "id": "postgres",
       "name": "PostgreSQL",
       "type": "LNbits Database",
       "status": "green",
-      "detail": "Up 9 days (healthy)"
+      "detail": "Up 10 days (healthy)"
     }
   ],
   "recentActivity": [
     {
       "repo": "hq",
-      "commit": "d12d579 chore: refresh status.json + thor-node [skip deploy]",
+      "commit": "d430c48 chore: thor auto-metrics 14:45 (live LND)",
       "timestamp": "2026-07-29"
     },
     {
       "repo": "hq",
-      "commit": "6f37e22 chore: thor auto-metrics 00:00 (live LND)",
+      "commit": "892e21a chore: thor auto-metrics 14:45 (live LND)",
       "timestamp": "2026-07-29"
     },
     {
       "repo": "hq",
-      "commit": "9d2f6cf chore: refresh metrics bundle 23:45 (5/5 OK) [skip d",
+      "commit": "031b57a chore: auto-metrics bundle 14:30 (5/5 all green)",
       "timestamp": "2026-07-29"
     },
     {
       "repo": "satohash",
-      "commit": "13b0f00 feat: landing .ots verify panel + IBD-aware health b",
+      "commit": "fb1a28a docs: update ref/GROK-BOOT + ref/AGENTS for v5.0.0-E",
       "timestamp": "2026-07-29"
     },
     {
       "repo": "satohash",
-      "commit": "14f5ed0 feat(certificate): premium title hierarchy for notar",
+      "commit": "e9dd34d docs: explain video VO + script; bitcoind RPC fix; f",
       "timestamp": "2026-07-29"
     }
   ],
