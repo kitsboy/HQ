@@ -1,6 +1,6 @@
 {
   "schema": "gab.ecosystem-map.v1",
-  "updatedAt": "2026-07-29T16:47:30Z",
+  "updatedAt": "2026-07-29T22:00:00Z",
   "projects": [
     {
       "id": "satohash",
@@ -153,8 +153,8 @@
       "name": "M3",
       "role": "Code + Grok (Mac)",
       "host": "Cams-Laptop",
-      "status": "amber",
-      "lastPush": "unknown",
+      "status": "green",
+      "lastPush": "2026-07-29",
       "lastSeen": "2026-07-29"
     },
     {
@@ -236,8 +236,8 @@
       "name": "morning-pulse",
       "schedule": "7:30 daily",
       "enabled": true,
-      "status": "error",
-      "icon": "\ud83d\udfe1"
+      "status": "ok",
+      "icon": "\ud83d\udfe2"
     },
     {
       "name": "github-scan",
@@ -264,15 +264,15 @@
   "skills": [
     {
       "name": "auto-git-status",
-      "ageDays": 60,
-      "status": "stale",
-      "updated": "2026-05-30"
+      "ageDays": 0,
+      "status": "fresh",
+      "updated": "2026-07-29"
     },
     {
       "name": "browser-harness",
-      "ageDays": 60,
-      "status": "stale",
-      "updated": "2026-05-30"
+      "ageDays": 0,
+      "status": "fresh",
+      "updated": "2026-07-29"
     },
     {
       "name": "computer-use",
@@ -341,6 +341,12 @@
       "updated": "2026-06-26"
     },
     {
+      "name": "kanban-worker",
+      "ageDays": 0,
+      "status": "fresh",
+      "updated": "2026-07-29"
+    },
+    {
       "name": "satohash-orchestrator",
       "ageDays": 12,
       "status": "fresh",
@@ -348,9 +354,15 @@
     },
     {
       "name": "task",
-      "ageDays": 55,
-      "status": "aging",
-      "updated": "2026-06-03"
+      "ageDays": 0,
+      "status": "fresh",
+      "updated": "2026-07-29"
+    },
+    {
+      "name": "whatsup",
+      "ageDays": 0,
+      "status": "fresh",
+      "updated": "2026-07-29"
     },
     {
       "name": "yuanbao",
@@ -366,7 +378,7 @@
       "type": "Lightning Wallet Backend",
       "port": ":5102",
       "cors": ":5103",
-      "status": "amber"
+      "status": "green"
     },
     {
       "id": "lnd",
