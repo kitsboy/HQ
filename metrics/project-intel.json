@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-28T23:45:33Z",
+  "checked_at": "2026-07-29T00:00:34Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -29,18 +29,18 @@
       "repo": "kitsboy/satohash",
       "site_url": "https://satohash.io",
       "last_commit": {
-        "sha": "13b0f00",
-        "message": "feat: landing .ots verify panel + IBD-aware health banner",
+        "sha": "b8e64b6",
+        "message": "fix(spa): boot-time SW reset for HTML-as-JS chunk failures",
         "author": "Cam",
-        "date": "2026-07-28T23:19:27Z",
-        "url": "https://github.com/kitsboy/satohash/commit/13b0f00efb47dbeb263149314aa467ee6e3c029e"
+        "date": "2026-07-28T23:58:56Z",
+        "url": "https://github.com/kitsboy/satohash/commit/b8e64b6fdfabf3026fa522812cbf6a1b8111f39c"
       },
       "recent_commits": [
-        "feat: landing .ots verify panel + IBD-aware health banner",
-        "feat(certificate): premium title hierarchy for notarization ",
-        "docs: production closeout \u2014 www fixed, CORS suite hosts, fin"
+        "fix(spa): boot-time SW reset for HTML-as-JS chunk failures",
+        "fix(pages): remove /assets 404 rewrite that served HTML as J",
+        "fix(spa): heal stale chunk System Desync after deploys"
       ],
-      "commits_7d": 38,
+      "commits_7d": 42,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "5b549e7",
-        "message": "chore: refresh status.json [skip deploy]",
-        "author": "hq-status-bot",
-        "date": "2026-07-28T23:44:19Z",
-        "url": "https://github.com/kitsboy/HQ/commit/5b549e76fc71683424993798f959865766a6d83d"
+        "sha": "6f37e22",
+        "message": "chore: thor auto-metrics 00:00 (live LND)",
+        "author": "Cam (via Aider)",
+        "date": "2026-07-29T00:00:11Z",
+        "url": "https://github.com/kitsboy/HQ/commit/6f37e2203a7f2da3503728377dbcd66e268090aa"
       },
       "recent_commits": [
-        "chore: refresh status.json [skip deploy]",
-        "chore: thor auto-metrics 23:31 (live LND)",
-        "chore: refresh status.json + thor-node [skip deploy]"
+        "chore: thor auto-metrics 00:00 (live LND)",
+        "chore: refresh metrics bundle 23:45 (5/5 OK) [skip deploy]",
+        "chore: thor auto-metrics 23:46 (live LND)"
       ],
       "commits_7d": 100,
       "health": "green",
@@ -106,7 +106,7 @@
         "fix: prefix bare vite build with npx for Node 24 runner comp",
         "chore: update .ai_docs/current-status.md per project templat"
       ],
-      "commits_7d": 19,
+      "commits_7d": 16,
       "health": "green",
       "cf_project": "tadbuy",
       "open_issues": 1
