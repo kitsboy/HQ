@@ -1,198 +1,198 @@
 {
-  "generated_at": "2026-07-29T01:45:46Z",
+  "generated_at": "2026-07-29T02:30:48Z",
   "events": [
     {
-      "time": 1785289542.0,
+      "time": 1785292242.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "al pool: no available entries (all exhausted or empty)"
+    },
+    {
+      "time": 1785292242.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785289537.0,
+      "time": 1785292242.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "536] agent.turn_context: conversation turn: session=cron_42c"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785289537.0,
+      "time": 1785292238.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "536] run_agent: OpenAI client created (chat_completion_reque"
+      "text": "037] agent.turn_context: conversation turn: session=cron_42c"
     },
     {
-      "time": 1785289536.0,
+      "time": 1785292238.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "037] run_agent: OpenAI client created (chat_completion_reque"
+    },
+    {
+      "time": 1785292237.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "or-auto-metrics' (ID: 42cdc3e9bd97)"
     },
     {
-      "time": 1785289536.0,
+      "time": 1785292237.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "ANT: You are running as a scheduled cron job. DELIVERY: Your"
     },
     {
-      "time": 1785289536.0,
+      "time": 1785292237.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "al pool: no available entries (all exhausted or empty)"
+    },
+    {
+      "time": 1785292237.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "auth: using NAS invoke JWT"
+    },
+    {
+      "time": 1785292237.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "97': loaded credential pool for provider nous with 1 entries"
     },
     {
-      "time": 1785289536.0,
+      "time": 1785292237.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "d (agent_init, shared=True) thread=cron-parallel_6:136507750"
+      "text": "d (agent_init, shared=True) thread=cron-parallel_2:136509170"
     },
     {
-      "time": 1785289512.0,
+      "time": 1785292227.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
+      "text": "al pool: no available entries (all exhausted or empty)"
     },
     {
-      "time": 1785289482.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
-    },
-    {
-      "time": 1785289481.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "inactive environment for task: default"
-    },
-    {
-      "time": 1785289452.0,
+      "time": 1785292227.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785289422.0,
+      "time": 1785292212.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "al pool: no available entries (all exhausted or empty)"
+    },
+    {
+      "time": 1785292212.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785289392.0,
+      "time": 1785292212.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785289362.0,
+      "time": 1785292197.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "al pool: no available entries (all exhausted or empty)"
+    },
+    {
+      "time": 1785292197.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785289332.0,
+      "time": 1785292182.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "al pool: no available entries (all exhausted or empty)"
+    },
+    {
+      "time": 1785292182.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785289302.0,
+      "time": 1785292182.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785289272.0,
+      "time": 1785292167.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "al pool: no available entries (all exhausted or empty)"
+    },
+    {
+      "time": 1785292167.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785289272.0,
+      "time": 1785292152.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "052] run_agent: OpenAI client closed (request_complete, shar"
+      "text": "al pool: no available entries (all exhausted or empty)"
     },
     {
-      "time": 1785289272.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "052] agent.conversation_loop: API call #1: model=deepseek/de"
-    },
-    {
-      "time": 1785289272.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "052] agent.conversation_loop: Turn ended: reason=text_respon"
-    },
-    {
-      "time": 1785289272.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "052] run_agent: OpenAI client closed (agent_close, shared=Tr"
-    },
-    {
-      "time": 1785289242.0,
+      "time": 1785292152.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785289235.0,
+      "time": 1785292152.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "052] run_agent: OpenAI client closed (request_complete, shar"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785289235.0,
+      "time": 1785292137.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "052] agent.conversation_loop: API call #12: model=deepseek/d"
+      "text": "al pool: no available entries (all exhausted or empty)"
     },
     {
-      "time": 1785289235.0,
+      "time": 1785292137.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "052] agent.conversation_loop: Turn ended: reason=text_respon"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785289235.0,
+      "time": 1785292122.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "cs-bundle-15m' completed successfully"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785289235.0,
+      "time": 1785292122.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "(agent_close, shared=True, tcp_force_closed=0) thread=cron-"
+      "text": "auth: using NAS invoke JWT"
     },
     {
-      "time": 1785289235.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "d (agent_init, shared=True) thread=bg-review:136507734087360"
-    },
-    {
-      "time": 1785289235.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "052] agent.turn_context: conversation turn: session=cron_1b2"
-    },
-    {
-      "time": 1785289235.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "052] run_agent: OpenAI client created (chat_completion_reque"
-    },
-    {
-      "time": 1785282307.0,
+      "time": 1785285010.0,
       "type": "commit",
       "icon": "\ud83d\udd28",
-      "text": "HQ Dashboard: chore: thor auto-metrics 01:45 (live LND)",
+      "text": "HQ Dashboard: chore: thor auto-metrics 02:30 (live LND)",
       "repo": "hq"
     },
     {
-      "time": 1785281645.0,
+      "time": 1785284182.0,
       "type": "commit",
       "icon": "\ud83d\udd28",
-      "text": "Satohash: chore(media): add public/media/video drop zone for explainer",
+      "text": "Satohash: docs: sync architecture map after closeout",
       "repo": "satohash"
     }
   ]
