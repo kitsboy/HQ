@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-29T00:00:34Z",
+  "checked_at": "2026-07-29T00:30:34Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -29,18 +29,18 @@
       "repo": "kitsboy/satohash",
       "site_url": "https://satohash.io",
       "last_commit": {
-        "sha": "b8e64b6",
-        "message": "fix(spa): boot-time SW reset for HTML-as-JS chunk failures",
+        "sha": "8e9ab2e",
+        "message": "fix(spa): kill stale SW and eager-load Landing",
         "author": "Cam",
-        "date": "2026-07-28T23:58:56Z",
-        "url": "https://github.com/kitsboy/satohash/commit/b8e64b6fdfabf3026fa522812cbf6a1b8111f39c"
+        "date": "2026-07-29T00:26:45Z",
+        "url": "https://github.com/kitsboy/satohash/commit/8e9ab2e2d06bd44301c8df51b4c560518e41e9f7"
       },
       "recent_commits": [
-        "fix(spa): boot-time SW reset for HTML-as-JS chunk failures",
-        "fix(pages): remove /assets 404 rewrite that served HTML as J",
-        "fix(spa): heal stale chunk System Desync after deploys"
+        "fix(spa): kill stale SW and eager-load Landing",
+        "feat(verify): ELI-16 OTS status with tall log and Success/Pe",
+        "fix(css): new hash + shorter CSS cache to clear poisoned edg"
       ],
-      "commits_7d": 42,
+      "commits_7d": 46,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "6f37e22",
-        "message": "chore: thor auto-metrics 00:00 (live LND)",
+        "sha": "ef8a46a",
+        "message": "chore: thor auto-metrics 00:30 (live LND)",
         "author": "Cam (via Aider)",
-        "date": "2026-07-29T00:00:11Z",
-        "url": "https://github.com/kitsboy/HQ/commit/6f37e2203a7f2da3503728377dbcd66e268090aa"
+        "date": "2026-07-29T00:30:08Z",
+        "url": "https://github.com/kitsboy/HQ/commit/ef8a46a6ed5e732ec5faa01e1ad0a37f724ed3df"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 00:00 (live LND)",
-        "chore: refresh metrics bundle 23:45 (5/5 OK) [skip deploy]",
-        "chore: thor auto-metrics 23:46 (live LND)"
+        "chore: thor auto-metrics 00:30 (live LND)",
+        "chore: refresh metrics bundle 00:22 UTC (5/5 OK, stable over",
+        "chore: thor auto-metrics 00:16 (live LND)"
       ],
       "commits_7d": 100,
       "health": "green",
