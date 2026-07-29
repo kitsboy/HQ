@@ -1,47 +1,238 @@
 {
-  "checked_at": "2026-07-29T06:08:19Z",
-  "generator": "thor-cron-health-hourly (agent)",
-  "summary": {
-    "total_scheduler_jobs": 28,
-    "healthy": 16,
-    "no_history_weekly_monthly": 11,
-    "paused": 1,
-    "warning_flagged": 1,
-    "stale_executions": 0,
-    "auto_pause_required": 0
-  },
+  "checked_at": "2026-07-29T07:08:25Z",
   "jobs": {
-    "9bd2735e125e": {"name": "M3-Projects-GitHub-Scan", "status": "completed", "consecutive_fails": 0},
-    "5c6f78744d6e": {"name": "Daily Deploy Healthcheck", "status": "completed", "consecutive_fails": 0},
-    "337c7ae0b619": {"name": "thor-morning-pulse", "status": "completed", "consecutive_fails": 0},
-    "12b477c661ae": {"name": "thor-evening-wrap", "status": "failed", "consecutive_fails": 1, "action": "warn", "error": "HTTP 429 rate limit (intermittent)"},
-    "311d146f45c3": {"name": "thor-node-export-daily", "status": "completed", "consecutive_fails": 0},
-    "e8d5b97de501": {"name": "hq-status-refresh-30m", "status": "completed", "consecutive_fails": 0},
-    "7768b5c5aa49": {"name": "thor-metrics-export-hourly", "status": "completed", "consecutive_fails": 0},
-    "42cdc3e9bd97": {"name": "thor-auto-metrics", "status": "completed", "consecutive_fails": 0},
-    "c8ce19bb5571": {"name": "ref-puller", "status": "completed", "consecutive_fails": 0},
-    "cb8398b3fa67": {"name": "cf-analytics-puller", "status": "completed", "consecutive_fails": 0},
-    "bb5980d548fb": {"name": "thor-cron-health-hourly", "status": "completed", "consecutive_fails": 0},
-    "71f476018b46": {"name": "kimi-voice-briefing", "status": "completed", "consecutive_fails": 0},
-    "1b2c31d6ba98": {"name": "thor-metrics-bundle-15m", "status": "completed", "consecutive_fails": 0},
-    "34c2181c2737": {"name": "buzz-watch", "status": "no_history", "paused": true, "note": "Delivery error: Telegram Chat not found (permanent)"},
-    "e4b5079b66ce": {"name": "thor-health-check", "status": "completed", "consecutive_fails": 0},
-    "bb6e71c68350": {"name": "thor-nightly-pipeline", "status": "completed", "consecutive_fails": 0, "note": "Report-only || true fix confirmed working"},
-    "30921a766dae": {"name": "email-inbound-poll", "status": "completed", "consecutive_fails": 0},
-    "b6a4e3710d9d": {"name": "email-daily-digest", "status": "completed", "consecutive_fails": 0}
+    "12b477c661ae": {
+      "status": "failed",
+      "last_run": "2026-07-28T22:13:22.684006+02:00",
+      "consecutive_fails": 1,
+      "paused": false,
+      "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
+      "action": "warn"
+    },
+    "1b2c31d6ba98": {
+      "status": "failed",
+      "last_run": "2026-07-29T06:46:22.275818+02:00",
+      "consecutive_fails": 1,
+      "paused": false,
+      "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
+      "action": "warn"
+    },
+    "30921a766dae": {
+      "status": "completed",
+      "last_run": "2026-07-28T21:00:44.860763+02:00",
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "action": "ok"
+    },
+    "311d146f45c3": {
+      "status": "completed",
+      "last_run": "2026-07-28T07:15:52.655489+02:00",
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "action": "ok"
+    },
+    "337c7ae0b619": {
+      "status": "completed",
+      "last_run": "2026-07-28T07:31:04.549028+02:00",
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "action": "ok"
+    },
+    "42cdc3e9bd97": {
+      "status": "completed",
+      "last_run": "2026-07-29T07:03:06.002959+02:00",
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "action": "ok"
+    },
+    "5c6f78744d6e": {
+      "status": "completed",
+      "last_run": "2026-07-29T07:00:18.883907+02:00",
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "action": "ok"
+    },
+    "71f476018b46": {
+      "status": "completed",
+      "last_run": "2026-07-28T07:34:59.331528+02:00",
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "action": "ok"
+    },
+    "7768b5c5aa49": {
+      "status": "completed",
+      "last_run": "2026-07-29T07:01:38.124207+02:00",
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "action": "ok"
+    },
+    "9bd2735e125e": {
+      "status": "completed",
+      "last_run": "2026-07-29T06:00:43.565681+02:00",
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "action": "ok"
+    },
+    "b6a4e3710d9d": {
+      "status": "completed",
+      "last_run": "2026-07-28T08:01:01.400748+02:00",
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "action": "ok"
+    },
+    "bb5980d548fb": {
+      "status": "completed",
+      "last_run": "2026-07-29T06:09:43.592460+02:00",
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "action": "ok"
+    },
+    "bb6e71c68350": {
+      "status": "completed",
+      "last_run": "2026-07-29T02:00:54.071167+02:00",
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "action": "ok"
+    },
+    "c8ce19bb5571": {
+      "status": "completed",
+      "last_run": "2026-07-29T07:05:18.478827+02:00",
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "action": "ok"
+    },
+    "cb8398b3fa67": {
+      "status": "completed",
+      "last_run": "2026-07-29T07:00:18.693457+02:00",
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "action": "ok"
+    },
+    "e4b5079b66ce": {
+      "status": "completed",
+      "last_run": "2026-07-29T04:00:39.627265+02:00",
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "action": "ok"
+    },
+    "e8d5b97de501": {
+      "status": "completed",
+      "last_run": "2026-07-29T07:00:35.590504+02:00",
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "action": "ok"
+    },
+    "2621be4bb5dd": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false,
+      "action": "no_history",
+      "name": "kanban-weekly-digest"
+    },
+    "469f2cfb7ab8": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false,
+      "action": "no_history",
+      "name": "node-mempool-reminder"
+    },
+    "59b3a68e3eb2": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false,
+      "action": "no_history",
+      "name": "vault-monthly-freshness"
+    },
+    "447ed87c7a57": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false,
+      "action": "no_history",
+      "name": "thor-weekly-cleanup-sunday"
+    },
+    "b7b5c1bebfe7": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false,
+      "action": "no_history",
+      "name": "weekly-what-changed-digest"
+    },
+    "019f2b72567e": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false,
+      "action": "no_history",
+      "name": "thor-drift-detector-weekly"
+    },
+    "34c2181c2737": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": true,
+      "action": "paused",
+      "name": "buzz-watch"
+    },
+    "980226ec5716": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false,
+      "action": "no_history",
+      "name": "EU-Funding-Research-Weekly"
+    },
+    "e19a3670752f": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false,
+      "action": "no_history",
+      "name": "thor-monday-batch"
+    },
+    "560e38829acf": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false,
+      "action": "no_history",
+      "name": "thor-vault-auto-enforcer"
+    },
+    "eb7452b2189e": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false,
+      "action": "no_history",
+      "name": "thor-dep-check-weekly-v2"
+    }
   },
-  "no_history_jobs": [
-    "EU-Funding-Research-Weekly",
-    "kanban-weekly-digest",
-    "node-mempool-reminder",
-    "vault-monthly-freshness",
-    "thor-vault-auto-enforcer",
-    "thor-drift-detector-weekly",
-    "weekly-what-changed-digest",
-    "thor-dep-check-weekly-v2",
-    "thor-weekly-cleanup-sunday",
-    "thor-monday-batch"
+  "healthy_count": 15,
+  "warn_count": 2,
+  "paused_count": 1,
+  "no_history_count": 10,
+  "total_tracked": 28,
+  "paused_jobs": [
+    "34c2181c2737"
   ],
-  "stale_executions_cleaned": 0,
-  "auto_paused_this_cycle": []
+  "orphaned_count": 0
 }
