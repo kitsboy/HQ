@@ -1,42 +1,119 @@
 {
-  "checked_at": "2026-07-29T18:05:11Z",
-  "healthy_count": 15,
-  "warn_count": 2,
-  "paused_count": 1,
-  "no_history_count": 11,
-  "total_tracked": 28,
-  "orphaned_count": 0,
-  "paused_jobs": ["34c2181c2737"],
-  "summary": "Fleet 28 jobs: 15 healthy, 2 warning, 1 paused, 11 no-history (weekly/monthly/once jobs not yet run in check window). No auto-pause needed.",
-  "warnings": [
-    {
-      "job_id": "e8d5b97de501",
-      "name": "hq-status-refresh-30m",
+  "checked_at": "2026-07-29T19:00:54Z",
+  "jobs": {
+    "c8ce19bb5571": {
+      "status": "completed",
+      "last_run": "2026-07-29T20:55:55.990312+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "1b2c31d6ba98": {
       "status": "failed",
+      "last_run": "2026-07-29T20:48:53.917068+02:00",
       "consecutive_fails": 1,
-      "error": "Git push race condition — all 10 site health checks passed, but git push failed after 3 retries (non-fast-forward). Script self-heals on next cycle.",
+      "paused": false,
+      "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
       "action": "warn"
     },
-    {
-      "job_id": "12b477c661ae",
-      "name": "thor-evening-wrap",
+    "42cdc3e9bd97": {
+      "status": "completed",
+      "last_run": "2026-07-29T20:46:19.412347+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "e8d5b97de501": {
       "status": "failed",
+      "last_run": "2026-07-29T20:31:16.942352+02:00",
+      "consecutive_fails": 2,
+      "paused": false,
+      "error": "Script exited with code 1\nstderr:\nping giveabit https://giveabit.io \u2026 OK 200 379ms\nping satohash https://satohash.io \u2026 OK 200 1614ms\nping katoa https://katoa.org \u2026 OK 200 470ms\nping stranded https://s",
+      "action": "warn"
+    },
+    "cb8398b3fa67": {
+      "status": "completed",
+      "last_run": "2026-07-29T20:30:53.721793+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "bb5980d548fb": {
+      "status": "completed",
+      "last_run": "2026-07-29T20:05:42.002530+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "7768b5c5aa49": {
+      "status": "completed",
+      "last_run": "2026-07-29T20:02:16.991552+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "e4b5079b66ce": {
+      "status": "completed",
+      "last_run": "2026-07-29T20:00:52.118364+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "9bd2735e125e": {
+      "status": "completed",
+      "last_run": "2026-07-29T18:00:44.461418+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "30921a766dae": {
+      "status": "completed",
+      "last_run": "2026-07-29T09:00:21.450040+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "b6a4e3710d9d": {
+      "status": "completed",
+      "last_run": "2026-07-29T08:00:49.002903+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "71f476018b46": {
+      "status": "completed",
+      "last_run": "2026-07-29T07:33:14.816494+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "337c7ae0b619": {
+      "status": "completed",
+      "last_run": "2026-07-29T07:30:22.404209+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "311d146f45c3": {
+      "status": "completed",
+      "last_run": "2026-07-29T07:15:18.095511+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "5c6f78744d6e": {
+      "status": "completed",
+      "last_run": "2026-07-29T07:00:18.883907+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "bb6e71c68350": {
+      "status": "completed",
+      "last_run": "2026-07-29T02:00:54.071167+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "12b477c661ae": {
+      "status": "failed",
+      "last_run": "2026-07-28T22:13:22.684006+02:00",
       "consecutive_fails": 1,
-      "error": "HTTP 429 rate limit on API key — transient, job runs again tonight at 22:00",
+      "paused": false,
+      "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
       "action": "warn"
     }
+  },
+  "paused_count": 1,
+  "alert_count": 3,
+  "paused_jobs": [
+    "34c2181c2737"
   ],
-  "paused": [
-    {
-      "job_id": "34c2181c2737",
-      "name": "buzz-watch",
-      "reason": "Permanent delivery error: Telegram chat not found. Correctly paused."
-    }
-  ],
-  "no_history_jobs": [
-    "thor-drift-detector-weekly", "kanban-weekly-digest", "buzz-watch",
-    "thor-weekly-cleanup-sunday", "node-mempool-reminder", "thor-vault-auto-enforcer",
-    "vault-monthly-freshness", "EU-Funding-Research-Weekly", "weekly-what-changed-digest",
-    "thor-monday-batch", "thor-dep-check-weekly-v2"
-  ]
+  "orphaned_count": 0
 }
