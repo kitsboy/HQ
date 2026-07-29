@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-29T02:30:48Z",
+  "checked_at": "2026-07-29T03:00:49Z",
   "vault_size_mb": 1540.9,
   "structure": {
     ".git": {
@@ -51,7 +51,7 @@
   "handoff_count": 2,
   "has_context_map": true,
   "issues": [],
-  "disk_used": "36G",
-  "disk_avail": "352G",
-  "disk_pct": "10%"
+  "disk_used": "41G",
+  "disk_avail": "347G",
+  "disk_pct": "11%"
 }

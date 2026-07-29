@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-29T02:30:37Z",
+  "checked_at": "2026-07-29T03:00:38Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -40,7 +40,7 @@
         "docs: full closeout \u2014 status, handoffs, MASTER-BRAIN, paths ",
         "fix(media): rebuild valid ~80s with-VO explainer MP4"
       ],
-      "commits_7d": 67,
+      "commits_7d": 65,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "1b66611",
-        "message": "chore: thor auto-metrics 02:30 (live LND)",
+        "sha": "e4ac051",
+        "message": "chore: thor auto-metrics 03:00 (live LND)",
         "author": "Cam (via Aider)",
-        "date": "2026-07-29T02:30:10Z",
-        "url": "https://github.com/kitsboy/HQ/commit/1b666115625a6816b72317f640324b48a5b83899"
+        "date": "2026-07-29T03:00:09Z",
+        "url": "https://github.com/kitsboy/HQ/commit/e4ac051e9c6d6d2433217b66a9e3eb3fcf2d41b0"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 02:30 (live LND)",
-        "chore: thor auto-metrics 02:15 (live LND)",
-        "chore: thor auto-metrics 02:15 (live LND)"
+        "chore: thor auto-metrics 03:00 (live LND)",
+        "chore: thor auto-metrics 02:45 (live LND)",
+        "chore: thor auto-metrics 02:45 (live LND)"
       ],
       "commits_7d": 100,
       "health": "green",
