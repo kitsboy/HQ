@@ -1,50 +1,50 @@
 {
-  "checked_at": "2026-07-29T14:30:55Z",
+  "checked_at": "2026-07-29T15:00:56Z",
   "sites": {
     "giveabit.io": {
       "status": "healthy",
       "http": "200",
-      "latency": "0.119653"
+      "latency": "0.089503"
     },
     "satohash.io": {
       "status": "healthy",
       "http": "200",
-      "latency": "0.237352"
+      "latency": "0.115910"
     },
     "hq.giveabit.io": {
       "status": "healthy",
       "http": "200",
-      "latency": "0.149244"
+      "latency": "0.149838"
     },
     "katoa.org": {
       "status": "healthy",
       "http": "200",
-      "latency": "0.143676"
+      "latency": "0.157729"
     },
     "tadbuy.giveabit.io": {
       "status": "healthy",
       "http": "200",
-      "latency": "0.211740"
+      "latency": "0.153854"
     },
     "stranded.giveabit.io": {
       "status": "healthy",
       "http": "200",
-      "latency": "0.099457"
+      "latency": "0.211918"
     },
     "motopass.giveabit.io": {
       "status": "healthy",
       "http": "200",
-      "latency": "0.128092"
+      "latency": "0.192453"
     },
     "sherpacarta.org": {
       "status": "healthy",
       "http": "200",
-      "latency": "0.157869"
+      "latency": "0.106582"
     },
     "openstrata.giveabit.io": {
       "status": "healthy",
       "http": "200",
-      "latency": "0.132250"
+      "latency": "0.220944"
     }
   },
   "site_issues": [],
