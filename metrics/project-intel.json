@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-29T05:00:17Z",
+  "checked_at": "2026-07-29T05:15:18Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -29,18 +29,18 @@
       "repo": "kitsboy/satohash",
       "site_url": "https://satohash.io",
       "last_commit": {
-        "sha": "9c3f658",
-        "message": "docs: sync architecture map after closeout",
-        "author": "Cam",
-        "date": "2026-07-29T02:16:22Z",
-        "url": "https://github.com/kitsboy/satohash/commit/9c3f6583089ef93d69e18e1a209e941c86f68789"
+        "sha": "fb1a28a",
+        "message": "docs: update ref/GROK-BOOT + ref/AGENTS for v5.0.0-ELITE state",
+        "author": "Kimi (THOR)",
+        "date": "2026-07-29T05:02:24Z",
+        "url": "https://github.com/kitsboy/satohash/commit/fb1a28aacf0077c1d17e25942f807ba37a4731d5"
       },
       "recent_commits": [
-        "docs: sync architecture map after closeout",
-        "docs: full closeout \u2014 status, handoffs, MASTER-BRAIN, paths ",
-        "fix(media): rebuild valid ~80s with-VO explainer MP4"
+        "docs: update ref/GROK-BOOT + ref/AGENTS for v5.0.0-ELITE sta",
+        "docs: explain video VO + script; bitcoind RPC fix; final hou",
+        "docs: sync architecture map after closeout"
       ],
-      "commits_7d": 62,
+      "commits_7d": 64,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "63eda71",
-        "message": "chore: thor auto-metrics 05:00 (live LND)",
+        "sha": "9bc175f",
+        "message": "chore: thor auto-metrics 05:15 (live LND)",
         "author": "Cam (via Aider)",
-        "date": "2026-07-29T05:00:06Z",
-        "url": "https://github.com/kitsboy/HQ/commit/63eda718a9ea47066846602520e47bee84500c79"
+        "date": "2026-07-29T05:15:04Z",
+        "url": "https://github.com/kitsboy/HQ/commit/9bc175fb49385826ada293da96b35486ad9a37ae"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 05:00 (live LND)",
-        "chore: thor auto-metrics 04:45 (live LND)",
-        "chore: thor auto-metrics 04:45 (live LND)"
+        "chore: thor auto-metrics 05:15 (live LND)",
+        "chore: refresh metrics bundle 05:00 (5/5 OK) [skip deploy]",
+        "chore: thor auto-metrics 05:02 (live LND)"
       ],
       "commits_7d": 100,
       "health": "green",
