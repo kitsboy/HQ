@@ -86,6 +86,9 @@
     charts: "#f59e0b",
     chat: "#22c55e",
     handoffs: "#ff8c00",
+    ci: "#ef4444",
+    crons: "#22c55e",
+    scanner: "#06b6d4",
   };
 
   const TAB_DISPLAY_NAMES = {
@@ -95,6 +98,7 @@
     wallets: "Wallets", money: "Money", docs: "Docs", agents: "Agents",
     domains: "Domains", vault: "Vault", intel: "Intel", feed: "Feed",
     charts: "Charts", chat: "Chat", handoffs: "Handoffs",
+    ci: "CI Status", crons: "Cron Health", scanner: "Scanner",
   };
 
   const DOCS_HQ = [
@@ -1019,6 +1023,7 @@
       loadData("/metrics/ecosystem-map.json"),
     ]);
     const roadmapR = await loadData("/metrics/roadmap.json");
+    const deployStatusR = await loadData("/metrics/deploy-status.json");
 
     if (projectsR.ok && projectsR.data && Array.isArray(projectsR.data.projects)) {
       state.projects = projectsR.data.projects;
@@ -1033,6 +1038,7 @@
     if (statusR.ok) state.status = statusR.data; else { state.status = null; state.loadErrors.push(statusR); }
     if (ecoR.ok) state.ecosystem = ecoR.data; else { state.ecosystem = null; /* optional */ }
     if (roadmapR.ok) state.roadmap = roadmapR.data; else { state.roadmap = null; }
+    if (deployStatusR.ok) state.deployStatus = deployStatusR.data; else { state.deployStatus = null; state.loadErrors.push(deployStatusR); }
 
     const metricsJobs = state.projects.map(async (p) => {
       const r = await loadProductMetrics(metricsCandidatesFor(p), { expectProductId: p.id });
@@ -1658,6 +1664,7 @@
       wallets: renderWallets, money: renderMoney, docs: renderDocs, agents: renderAgents, domains: renderDomains,
       vault: renderVaultTab,
       handoffs: renderHandoffs,
+      ci: renderCIStatus, crons: renderCronHealth, scanner: renderScannerFeed,
       intel: renderIntelStub, feed: renderFeedStub, charts: renderChartsStub, chat: renderChatStub,
     };
     const fn = map[state.tab];
@@ -1839,6 +1846,8 @@
     const health = projectHealth(p);
     const sites = (state.status && state.status.sites) || {};
     const s = sites[p.id] || {};
+    const ciInfo = state.deployStatus && state.deployStatus[p.id];
+    const ciStatus = ciInfo ? (ciInfo.status === "success" ? "✅" : ciInfo.status === "failure" ? "❌" : "⏳") : "";
     if (!m || !m.ok) {
       return `<article class="card" style="--card-accent:${escAttr(color)};${p.planned ? "opacity:0.85" : ""}" data-project="${escAttr(p.id)}">
         <div class="card-head">${iconBadge(p.icon, color)}
@@ -1873,7 +1882,7 @@
         ${iconBadge(p.icon, color)}
         <div class="grow">
           <h3>${esc(p.name)}</h3>
-          <p class="tagline">${esc(p.tagline || p.pitch || "")}</p>
+          <p class="tagline">${esc(p.tagline || p.pitch || "")} ${ciStatus ? `<span style="margin-left:0.3rem;font-size:0.7rem" title="${escAttr(ciInfo ? ciInfo.workflow_name : 'CI')}: ${escAttr(ciInfo && ciInfo.latest_conclusion)}">${ciStatus}</span>` : ""}</p>
         </div>
         ${statusPill(health)}
       </div>
@@ -4396,7 +4405,7 @@
       const letterMap = {
         s: "system", m: "money", w: "wallets", d: "docs",
         a: "agents", i: "intel", f: "feed", c: "charts",
-        t: "chat", v: "vault", h: "handoffs",
+        t: "chat", v: "vault", h: "handoffs", j: "ci", n: "crons", z: "scanner",
       };
       if (letterMap[keyLc]) setTab(letterMap[keyLc]);
       // Shift+ArrowLeft/ArrowRight for prev/next tab
@@ -4566,6 +4575,87 @@
         if (btn) { setTab(btn.dataset.tabJump); m.classList.remove("open"); }
       });
     }
+  }
+
+  /* ── CI Status Tab ── */
+  function renderCIStatus() {
+    const el = document.getElementById("view-ci");
+    if (!el) return;
+    const ds = state.deployStatus;
+    if (!ds || !Object.keys(ds).length) {
+      el.innerHTML = unavailableHTML("No CI data", "/metrics/deploy-status.json");
+      return;
+    }
+    let rows = Object.entries(ds).map(([id, info]) => {
+      const p = state.projects.find(x => x.id === id);
+      const name = p ? p.name : id;
+      const color = accentFor(id);
+      const icon = info.latest_conclusion === "success" ? "✅" : info.latest_conclusion === "failure" ? "❌" : "⏳";
+      return `<tr>
+        <td style="padding:0.4rem 0.6rem"><span style="color:${escAttr(color)}">${icon} ${esc(name)}</span></td>
+        <td style="padding:0.4rem 0.6rem;font-size:0.75rem" class="mono">${esc(info.workflow_name || "")}</td>
+        <td style="padding:0.4rem 0.6rem;font-size:0.75rem"><span class="status-pill ${info.latest_conclusion === "success" ? 'green' : info.latest_conclusion === "failure" ? 'red' : 'amber'}">${esc(info.latest_conclusion || "?")}</span></td>
+        <td style="padding:0.4rem 0.6rem;font-size:0.7rem;color:var(--ink-faint)" class="mono">${info.updatedAt ? esc(fmtTime(info.updatedAt)) : ""}</td>
+        <td style="padding:0.4rem 0.6rem;font-size:0.7rem"><a href="${escAttr(info.html_url || "#")}" target="_blank" rel="noopener" style="color:var(--accent)">view</a></td>
+      </tr>`;
+    }).join("");
+    el.innerHTML = `<div class="panel" style="padding:1rem">
+      <h2 class="display" style="margin:0 0 0.5rem">CI Status</h2>
+      <p style="font-size:0.8rem;color:var(--ink-dim);margin:0 0 1rem">Latest GitHub Actions run per project — auto-refreshed from deploy-status.json</p>
+      <table style="width:100%;border-collapse:collapse"><thead><tr style="font-size:0.7rem;color:var(--ink-faint);text-align:left"><th style="padding:0.3rem 0.6rem">Project</th><th style="padding:0.3rem 0.6rem">Workflow</th><th style="padding:0.3rem 0.6rem">Status</th><th style="padding:0.3rem 0.6rem">Updated</th><th style="padding:0.3rem 0.6rem">Link</th></tr></thead><tbody>${rows}</tbody></table>
+    </div>`;
+  }
+
+  /* ── Cron Health Tab ── */
+  function renderCronHealth() {
+    const el = document.getElementById("view-crons");
+    if (!el) return;
+    const eco = state.ecosystem;
+    const crons = (eco && eco.automations) || [];
+    if (!crons.length) {
+      el.innerHTML = unavailableHTML("No cron data", "ecosystem-map.json → automations");
+      return;
+    }
+    let rows = crons.map(c => {
+      const st = (c.status || "ok").toLowerCase();
+      const icon = st === "ok" || st === "green" ? "✅" : st === "error" || st === "red" ? "❌" : "⏳";
+      return `<tr>
+        <td style="padding:0.4rem 0.6rem">${icon} ${esc(c.name || c.id || "?")}</td>
+        <td style="padding:0.4rem 0.6rem;font-size:0.7rem;color:var(--ink-dim)" class="mono">${esc(c.schedule || "")}</td>
+        <td style="padding:0.4rem 0.6rem;font-size:0.75rem"><span class="status-pill ${st === "ok" || st === "green" ? 'green' : st === "error" || st === "red" ? 'red' : 'amber'}">${esc(st)}</span></td>
+        <td style="padding:0.4rem 0.6rem;font-size:0.7rem;color:var(--ink-faint)" class="mono">${c.lastRun ? esc(fmtTime(c.lastRun)) : ""}</td>
+      </tr>`;
+    }).join("");
+    el.innerHTML = `<div class="panel" style="padding:1rem">
+      <h2 class="display" style="margin:0 0 0.5rem">Cron Health</h2>
+      <p style="font-size:0.8rem;color:var(--ink-dim);margin:0 0 1rem">All scheduled automations — from ecosystem-map.json. ${crons.length} total.</p>
+      <table style="width:100%;border-collapse:collapse"><thead><tr style="font-size:0.7rem;color:var(--ink-faint);text-align:left"><th style="padding:0.3rem 0.6rem">Job</th><th style="padding:0.3rem 0.6rem">Schedule</th><th style="padding:0.3rem 0.6rem">Status</th><th style="padding:0.3rem 0.6rem">Last Run</th></tr></thead><tbody>${rows}</tbody></table>
+    </div>`;
+  }
+
+  /* ── Scanner Feed Tab ── */
+  function renderScannerFeed() {
+    const el = document.getElementById("view-scanner");
+    if (!el) return;
+    const eco = state.ecosystem;
+    const recent = (eco && eco.recentActivity) || [];
+    if (!recent.length) {
+      el.innerHTML = unavailableHTML("No scanner data", "ecosystem-map.json → recentActivity");
+      return;
+    }
+    let items = recent.slice(0, 30).map(a => {
+      return `<div class="doc-item" style="display:flex;align-items:center;gap:0.5rem;padding:0.5rem 0.7rem">
+        <span class="status-pill green" style="font-size:0.55rem">git</span>
+        <span class="mono" style="font-size:0.7rem;color:var(--ink-faint)">${esc(a.repo || "")}</span>
+        <span style="font-size:0.75rem;flex:1">${esc(a.commit || a.msg || "")}</span>
+        <span class="mono" style="font-size:0.6rem;color:var(--ink-faint)">${a.t ? esc(fmtTime(a.t)) : ""}</span>
+      </div>`;
+    }).join("");
+    el.innerHTML = `<div class="panel" style="padding:1rem">
+      <h2 class="display" style="margin:0 0 0.5rem">Git Scanner Feed</h2>
+      <p style="font-size:0.8rem;color:var(--ink-dim);margin:0 0 1rem">Recent commits detected by the 6-hour GitHub project scanner. Shows new activity across all repos.</p>
+      ${items}
+    </div>`;
   }
 
     bootstrap();

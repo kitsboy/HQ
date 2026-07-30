@@ -1,71 +1,72 @@
 {
-  "checked_at": "2026-07-30T05:46:08Z",
-  "deploys": [
-    {
-      "slug": "satohash",
-      "repo": "kitsboy/satohash",
-      "status": "success",
-      "created_at": "2026-07-29T05:02:28Z",
-      "updated_at": "2026-07-29T05:04:15Z",
-      "run_url": "https://github.com/kitsboy/satohash/actions/runs/30423913954"
-    },
-    {
-      "slug": "giveabit",
-      "repo": "kitsboy/giveabit",
-      "status": "no_runs"
-    },
-    {
-      "slug": "hq",
-      "repo": "kitsboy/HQ",
-      "status": "success",
-      "created_at": "2026-07-30T05:45:15Z",
-      "updated_at": "2026-07-30T05:45:47Z",
-      "run_url": "https://github.com/kitsboy/HQ/actions/runs/30517513351"
-    },
-    {
-      "slug": "katoa",
-      "repo": "kitsboy/katoa",
-      "status": "success",
-      "created_at": "2026-07-24T13:19:31Z",
-      "updated_at": "2026-07-24T13:20:17Z",
-      "run_url": "https://github.com/kitsboy/katoa/actions/runs/30096429844"
-    },
-    {
-      "slug": "tadbuy",
-      "repo": "kitsboy/tadbuy",
-      "status": "success",
-      "created_at": "2026-07-27T05:17:29Z",
-      "updated_at": "2026-07-27T05:18:28Z",
-      "run_url": "https://github.com/kitsboy/tadbuy/actions/runs/30239343114"
-    },
-    {
-      "slug": "stranded",
-      "repo": "kitsboy/stranded",
-      "status": "success",
-      "created_at": "2026-07-24T19:31:32Z",
-      "updated_at": "2026-07-24T19:33:00Z",
-      "run_url": "https://github.com/kitsboy/stranded/actions/runs/30120899333"
-    },
-    {
-      "slug": "motopass",
-      "repo": "kitsboy/motopass",
-      "status": "success",
-      "created_at": "2026-07-24T13:20:08Z",
-      "updated_at": "2026-07-24T13:20:47Z",
-      "run_url": "https://github.com/kitsboy/motopass/actions/runs/30096468994"
-    },
-    {
-      "slug": "sherpacarta",
-      "repo": "kitsboy/sherpacarta",
-      "status": "success",
-      "created_at": "2026-07-27T05:17:10Z",
-      "updated_at": "2026-07-27T05:17:53Z",
-      "run_url": "https://github.com/kitsboy/sherpacarta/actions/runs/30239329447"
-    },
-    {
-      "slug": "openstrata",
-      "repo": "kitsboy/openstrata",
-      "status": "no_runs"
-    }
-  ]
+  "giveabit": {
+    "workflow_name": "Verify",
+    "latest_conclusion": "failure",
+    "html_url": "https://github.com/kitsboy/giveabit/actions/runs/30239328085",
+    "updatedAt": "2026-07-27T05:20:38Z",
+    "status": "completed"
+  },
+  "satohash": {
+    "workflow_name": "Deploy",
+    "latest_conclusion": "success",
+    "html_url": "https://github.com/kitsboy/satohash/actions/runs/30423913954",
+    "updatedAt": "2026-07-29T05:04:15Z",
+    "status": "completed"
+  },
+  "katoa": {
+    "workflow_name": "Deploy katoa to Cloudflare Pages",
+    "latest_conclusion": "success",
+    "html_url": "https://github.com/kitsboy/katoa/actions/runs/30096429844",
+    "updatedAt": "2026-07-24T13:20:17Z",
+    "status": "completed"
+  },
+  "motopass": {
+    "workflow_name": "BTC Map weekly sync",
+    "latest_conclusion": "failure",
+    "html_url": "https://github.com/kitsboy/motopass/actions/runs/30254911370",
+    "updatedAt": "2026-07-27T09:40:44Z",
+    "status": "completed"
+  },
+  "sherpacarta": {
+    "workflow_name": "Deploy sherpacarta to Cloudflare Pages",
+    "latest_conclusion": "success",
+    "html_url": "https://github.com/kitsboy/sherpacarta/actions/runs/30239329447",
+    "updatedAt": "2026-07-27T05:17:53Z",
+    "status": "completed"
+  },
+  "stranded": {
+    "workflow_name": "Deploy stranded to Cloudflare Pages",
+    "latest_conclusion": "success",
+    "html_url": "https://github.com/kitsboy/stranded/actions/runs/30120899333",
+    "updatedAt": "2026-07-24T19:33:00Z",
+    "status": "completed"
+  },
+  "tadbuy": {
+    "workflow_name": "Deploy tadbuy to Cloudflare Pages",
+    "latest_conclusion": "success",
+    "html_url": "https://github.com/kitsboy/tadbuy/actions/runs/30239343114",
+    "updatedAt": "2026-07-27T05:18:28Z",
+    "status": "completed"
+  },
+  "openstrata": {
+    "workflow_name": "?",
+    "latest_conclusion": "no_runs",
+    "html_url": "",
+    "updatedAt": "",
+    "status": "?"
+  },
+  "btcminiscript": {
+    "workflow_name": "?",
+    "latest_conclusion": "no_runs",
+    "html_url": "",
+    "updatedAt": "",
+    "status": "?"
+  },
+  "HQ": {
+    "workflow_name": "Deploy HQ to Cloudflare Pages",
+    "latest_conclusion": "success",
+    "html_url": "https://github.com/kitsboy/HQ/actions/runs/30557010291",
+    "updatedAt": "2026-07-30T15:31:01Z",
+    "status": "completed"
+  }
 }
