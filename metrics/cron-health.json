@@ -1,113 +1,264 @@
 {
-  "checked_at": "2026-07-30T05:33:41Z",
+  "checked_at": "2026-07-30T15:03:15Z",
   "jobs": {
-    "71f476018b46": {
+    "12b477c661ae": {
       "status": "completed",
-      "last_run": "2026-07-30T07:32:32.503002+02:00",
+      "last_run": "2026-07-29T22:01:02.711383+02:00",
       "consecutive_fails": 0,
-      "paused": false
+      "paused": false,
+      "error": null,
+      "name": "thor-evening-wrap",
+      "action": "ok"
     },
     "42cdc3e9bd97": {
       "status": "completed",
-      "last_run": "2026-07-30T07:31:52.722776+02:00",
+      "last_run": "2026-07-30T16:45:27.096168+02:00",
       "consecutive_fails": 0,
-      "paused": false
+      "paused": false,
+      "error": null,
+      "name": "thor-auto-metrics",
+      "action": "ok"
     },
     "e8d5b97de501": {
       "status": "completed",
-      "last_run": "2026-07-30T07:31:19.502067+02:00",
+      "last_run": "2026-07-30T17:00:35.053103+02:00",
       "consecutive_fails": 0,
-      "paused": false
-    },
-    "337c7ae0b619": {
-      "status": "completed",
-      "last_run": "2026-07-30T07:30:59.799923+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "c8ce19bb5571": {
-      "status": "completed",
-      "last_run": "2026-07-30T07:30:56.189431+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "cb8398b3fa67": {
-      "status": "completed",
-      "last_run": "2026-07-30T07:30:52.990399+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "1b2c31d6ba98": {
-      "status": "failed",
-      "last_run": "2026-07-30T07:17:39.667419+02:00",
-      "consecutive_fails": 1,
       "paused": false,
-      "error": "RuntimeError: HTTP 429: Hold up for a bit, you've exceeded the rate limit on your API key.",
-      "action": "warn"
+      "error": null,
+      "name": "hq-status-refresh-30m",
+      "action": "ok"
+    },
+    "e4b5079b66ce": {
+      "status": "completed",
+      "last_run": "2026-07-30T16:00:17.795785+02:00",
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "name": "thor-health-check",
+      "action": "ok"
+    },
+    "9bd2735e125e": {
+      "status": "completed",
+      "last_run": "2026-07-30T12:00:11.581363+02:00",
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "name": "M3-Projects-GitHub-Scan",
+      "action": "ok"
     },
     "311d146f45c3": {
       "status": "completed",
       "last_run": "2026-07-30T07:15:50.784303+02:00",
       "consecutive_fails": 0,
-      "paused": false
+      "paused": false,
+      "error": null,
+      "name": "thor-node-export-daily",
+      "action": "ok"
     },
-    "bb5980d548fb": {
+    "30921a766dae": {
       "status": "completed",
-      "last_run": "2026-07-30T07:07:01.604881+02:00",
+      "last_run": "2026-07-30T09:01:03.129132+02:00",
       "consecutive_fails": 0,
-      "paused": false
+      "paused": false,
+      "error": null,
+      "name": "email-inbound-poll",
+      "action": "ok"
     },
-    "7768b5c5aa49": {
+    "71f476018b46": {
       "status": "completed",
-      "last_run": "2026-07-30T07:02:29.629070+02:00",
+      "last_run": "2026-07-30T07:32:32.503002+02:00",
       "consecutive_fails": 0,
-      "paused": false
+      "paused": false,
+      "error": null,
+      "name": "kimi-voice-briefing",
+      "action": "ok"
     },
     "5c6f78744d6e": {
       "status": "completed",
       "last_run": "2026-07-30T07:00:52.294497+02:00",
       "consecutive_fails": 0,
-      "paused": false
+      "paused": false,
+      "error": null,
+      "name": "Daily Deploy Healthcheck",
+      "action": "ok"
     },
-    "9bd2735e125e": {
+    "b6a4e3710d9d": {
       "status": "completed",
-      "last_run": "2026-07-30T06:00:50.092085+02:00",
+      "last_run": "2026-07-30T08:00:58.090322+02:00",
       "consecutive_fails": 0,
-      "paused": false
-    },
-    "e4b5079b66ce": {
-      "status": "completed",
-      "last_run": "2026-07-30T04:00:37.260911+02:00",
-      "consecutive_fails": 0,
-      "paused": false
+      "paused": false,
+      "error": null,
+      "name": "email-daily-digest",
+      "action": "ok"
     },
     "bb6e71c68350": {
       "status": "completed",
       "last_run": "2026-07-30T02:01:06.936580+02:00",
       "consecutive_fails": 0,
-      "paused": false
+      "paused": false,
+      "error": null,
+      "name": "thor-nightly-pipeline",
+      "action": "ok"
     },
-    "12b477c661ae": {
+    "c8ce19bb5571": {
       "status": "completed",
-      "last_run": "2026-07-29T22:01:02.711383+02:00",
+      "last_run": "2026-07-30T17:00:16.366719+02:00",
       "consecutive_fails": 0,
-      "paused": false
+      "paused": false,
+      "error": null,
+      "name": "ref-puller",
+      "action": "ok"
     },
-    "30921a766dae": {
+    "cb8398b3fa67": {
       "status": "completed",
-      "last_run": "2026-07-29T21:00:57.698288+02:00",
+      "last_run": "2026-07-30T17:00:16.437507+02:00",
       "consecutive_fails": 0,
-      "paused": false
+      "paused": false,
+      "error": null,
+      "name": "cf-analytics-puller",
+      "action": "ok"
     },
-    "b6a4e3710d9d": {
+    "bb5980d548fb": {
       "status": "completed",
-      "last_run": "2026-07-29T08:00:49.002903+02:00",
+      "last_run": "2026-07-30T16:09:06.638876+02:00",
       "consecutive_fails": 0,
-      "paused": false
+      "paused": false,
+      "error": null,
+      "name": "thor-cron-health-hourly",
+      "action": "ok"
+    },
+    "7768b5c5aa49": {
+      "status": "completed",
+      "last_run": "2026-07-30T17:01:42.444399+02:00",
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "name": "thor-metrics-export-hourly",
+      "action": "ok"
+    },
+    "337c7ae0b619": {
+      "status": "completed",
+      "last_run": "2026-07-30T07:30:59.799923+02:00",
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "name": "thor-morning-pulse",
+      "action": "ok"
+    },
+    "1b2c31d6ba98": {
+      "status": "completed",
+      "last_run": "2026-07-30T16:47:10.479572+02:00",
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "name": "thor-metrics-bundle-15m",
+      "action": "ok"
+    },
+    "469f2cfb7ab8": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "name": "node-mempool-reminder",
+      "action": "no_history"
+    },
+    "e19a3670752f": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "name": "thor-monday-batch",
+      "action": "no_history"
+    },
+    "980226ec5716": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "name": "EU-Funding-Research-Weekly",
+      "action": "no_history"
+    },
+    "560e38829acf": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "name": "thor-vault-auto-enforcer",
+      "action": "no_history"
+    },
+    "2621be4bb5dd": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "name": "kanban-weekly-digest",
+      "action": "no_history"
+    },
+    "019f2b72567e": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "name": "thor-drift-detector-weekly",
+      "action": "no_history"
+    },
+    "59b3a68e3eb2": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "name": "vault-monthly-freshness",
+      "action": "no_history"
+    },
+    "b7b5c1bebfe7": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "name": "weekly-what-changed-digest",
+      "action": "no_history"
+    },
+    "447ed87c7a57": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "name": "thor-weekly-cleanup-sunday",
+      "action": "no_history"
+    },
+    "34c2181c2737": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": true,
+      "error": null,
+      "name": "buzz-watch",
+      "action": "paused"
+    },
+    "eb7452b2189e": {
+      "status": "no_history",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false,
+      "error": null,
+      "name": "thor-dep-check-weekly-v2",
+      "action": "no_history"
     }
   },
+  "healthy_count": 17,
+  "warn_count": 0,
   "paused_count": 1,
-  "alert_count": 1,
+  "no_history_count": 10,
+  "total_tracked": 28,
   "paused_jobs": [
     "34c2181c2737"
   ],
