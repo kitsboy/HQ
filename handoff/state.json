@@ -1,6 +1,6 @@
 {
   "schema": "gab.handoff.v1",
-  "updatedAt": "2026-07-27T06:45:00.000Z",
+  "updatedAt": "2026-07-30T15:15:00.000Z",
   "agents": {
     "grok": {
       "lastSeen": "2026-07-27T06:45:00.000Z",
@@ -15,10 +15,10 @@
           "summary": "Full Kimi MASTER LIST in docs/KIMI-HANDOFF.md with Cam priorities, P0 LNURL, P1 bot, P2 crons, done-table, machines, handback format. Mission+Sherpa/Satohash already shipped."
         }
       ],
-      "nextAction": "After Kimi lud16 handback → publish sherpacarta wallets.json (public only)."
+      "nextAction": "After Kimi lud16 handback → publish sherpacarta wallets.json (public only). ALSO: 🔴 Fix katoa CI (npm run check) + 🟡 motopass weekly sync (git-auto-commit failure). See KIMI-GROK-HANDOFF.md."
     },
     "kimi": {
-      "lastSeen": "2026-07-27T06:15:00.000Z",
+      "lastSeen": "2026-07-30T15:15:00.000Z",
       "focus": "P0 sherpacarta LNURL → Vault → public lud16 handback",
       "notes": [
         {
@@ -89,6 +89,18 @@
       "owner": "cam",
       "priority": "P2",
       "detail": "hello@giveabit.io not in live nostr.json — needs keypair from Cam"
+    },
+    {
+      "id": "katoa-ci-failure",
+      "owner": "grok",
+      "priority": "P1",
+      "detail": "npm run check failing on kitsboy/katoa main branch — lint/code issue. Needs Grok to pull and fix."
+    },
+    {
+      "id": "motopass-sync-failure",
+      "owner": "grok",
+      "priority": "P2",
+      "detail": "BTC Map weekly sync workflow fails — git-auto-commit-action@v5 error. Likely no data, needs clean-exit guard."
     },
     {
       "id": "cam-vault-keys",
@@ -171,6 +183,18 @@
       "owner": "grok",
       "priority": "later",
       "title": "Metrics generator from Supabase not seed campaigns"
+    },
+    {
+      "id": "katoa-ci-failure",
+      "owner": "grok",
+      "priority": "P1",
+      "title": "🔴 Fix katoa CI — npm run check failing on main"
+    },
+    {
+      "id": "motopass-sync-failure",
+      "owner": "grok",
+      "priority": "P2",
+      "title": "🟡 Fix motopass BTC Map weekly sync — git-auto-commit guard"
     }
   ],
   "history": [
