@@ -46,6 +46,8 @@
 ### Next for Grok
 1. After lud16 handback → `wallets.json` public only  
 2. Optional Tadbuy metrics from real backend (later)  
+3. **🔴 katoa** — CI `npm run check` failing on main. Pull `kitsboy/katoa`, fix the lint/check failure. Last run: https://github.com/kitsboy/katoa/actions/runs/30096429830
+4. **🟡 motopass** — "BTC Map weekly sync" workflow failing (`git-auto-commit-action@v5` error). Likely no data to commit. Check `kitsboy/motopass` action at https://github.com/kitsboy/motopass/actions/runs/30254911370 — if script has no output to commit, add a guard that exits cleanly instead of forcing a commit.
 
 ### Next for Cam
 1. HQ Vault invoice keys (Money tab)  
