@@ -1,6 +1,6 @@
 {
   "schema": "gab.ecosystem-map.v1",
-  "updatedAt": "2026-07-29T22:00:00Z",
+  "updatedAt": "2026-07-30T02:00:44Z",
   "projects": [
     {
       "id": "satohash",
@@ -24,7 +24,7 @@
       "version": "3.25.1",
       "status": "green",
       "health": "200",
-      "lastCommit": "d430c48 chore: thor auto-metrics 14:45 (live LND)",
+      "lastCommit": "5404b3b chore: refresh status.json + thor-node [skip deploy]",
       "synced": "synced",
       "localOnThor": true
     },
@@ -142,20 +142,20 @@
       "status": "green",
       "disk": "12% used",
       "diskFree": "344G",
-      "mem": "5.1Gi used",
-      "memAvail": "2.6Gi",
-      "load": "1.52/0.94/0.59",
-      "uptime": "up 1 week, 5 days, 15 hours, 50 minutes",
-      "lastSeen": "2026-07-29"
+      "mem": "5.3Gi used",
+      "memAvail": "2.4Gi",
+      "load": "1.55/0.93/0.81",
+      "uptime": "up 1 week, 6 days, 1 hour, 4 minutes",
+      "lastSeen": "2026-07-30"
     },
     {
       "id": "m3",
       "name": "M3",
       "role": "Code + Grok (Mac)",
       "host": "Cams-Laptop",
-      "status": "green",
-      "lastPush": "2026-07-29",
-      "lastSeen": "2026-07-29"
+      "status": "amber",
+      "lastPush": "unknown",
+      "lastSeen": "2026-07-30"
     },
     {
       "id": "m4",
@@ -236,8 +236,8 @@
       "name": "morning-pulse",
       "schedule": "7:30 daily",
       "enabled": true,
-      "status": "ok",
-      "icon": "\ud83d\udfe2"
+      "status": "error",
+      "icon": "\ud83d\udfe1"
     },
     {
       "name": "github-scan",
@@ -270,9 +270,9 @@
     },
     {
       "name": "browser-harness",
-      "ageDays": 0,
-      "status": "fresh",
-      "updated": "2026-07-29"
+      "ageDays": 60,
+      "status": "stale",
+      "updated": "2026-05-30"
     },
     {
       "name": "computer-use",
@@ -282,7 +282,7 @@
     },
     {
       "name": "current-tasks",
-      "ageDays": 12,
+      "ageDays": 13,
       "status": "fresh",
       "updated": "2026-07-16"
     },
@@ -300,7 +300,7 @@
     },
     {
       "name": "github-sync",
-      "ageDays": 26,
+      "ageDays": 27,
       "status": "fresh",
       "updated": "2026-07-02"
     },
@@ -341,14 +341,8 @@
       "updated": "2026-06-26"
     },
     {
-      "name": "kanban-worker",
-      "ageDays": 0,
-      "status": "fresh",
-      "updated": "2026-07-29"
-    },
-    {
       "name": "satohash-orchestrator",
-      "ageDays": 12,
+      "ageDays": 13,
       "status": "fresh",
       "updated": "2026-07-17"
     },
@@ -359,14 +353,8 @@
       "updated": "2026-07-29"
     },
     {
-      "name": "whatsup",
-      "ageDays": 0,
-      "status": "fresh",
-      "updated": "2026-07-29"
-    },
-    {
       "name": "yuanbao",
-      "ageDays": 12,
+      "ageDays": 13,
       "status": "fresh",
       "updated": "2026-07-17"
     }
@@ -378,14 +366,14 @@
       "type": "Lightning Wallet Backend",
       "port": ":5102",
       "cors": ":5103",
-      "status": "green"
+      "status": "amber"
     },
     {
       "id": "lnd",
       "name": "LND",
       "type": "Lightning Node (Neutrino)",
       "status": "green",
-      "detail": "Up 31 hours (healthy)"
+      "detail": "Up 40 hours (healthy)"
     },
     {
       "id": "satohash-api",
@@ -412,28 +400,28 @@
   "recentActivity": [
     {
       "repo": "hq",
-      "commit": "d430c48 chore: thor auto-metrics 14:45 (live LND)",
-      "timestamp": "2026-07-29"
+      "commit": "5404b3b chore: refresh status.json + thor-node [skip deploy]",
+      "timestamp": "2026-07-30"
     },
     {
       "repo": "hq",
-      "commit": "892e21a chore: thor auto-metrics 14:45 (live LND)",
-      "timestamp": "2026-07-29"
+      "commit": "c19e735 chore: thor auto-metrics 00:00 (live LND)",
+      "timestamp": "2026-07-30"
     },
     {
       "repo": "hq",
-      "commit": "031b57a chore: auto-metrics bundle 14:30 (5/5 all green)",
-      "timestamp": "2026-07-29"
+      "commit": "6e98703 chore: thor auto-metrics 23:45 (live LND)",
+      "timestamp": "2026-07-30"
     },
     {
       "repo": "satohash",
       "commit": "fb1a28a docs: update ref/GROK-BOOT + ref/AGENTS for v5.0.0-E",
-      "timestamp": "2026-07-29"
+      "timestamp": "2026-07-30"
     },
     {
       "repo": "satohash",
       "commit": "e9dd34d docs: explain video VO + script; bitcoind RPC fix; f",
-      "timestamp": "2026-07-29"
+      "timestamp": "2026-07-30"
     }
   ],
   "metadata": {
