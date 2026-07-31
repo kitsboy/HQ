@@ -1,6 +1,12 @@
 # KIMI — MASTER LIST (Cam + Grok) · 2026-07-27
 
-### GOODBYE — Grok session close (2026-07-27)
+### GOODBYE — Kimi session close (2026-07-31)
+
+**Pixel 8 (Graphene OS) joined the tailnet** — Cam's new phone `pixel-8` at **100.78.94.65** (kitsboy@ tailnet), verified 0% loss from THOR. 5-device tailnet: THOR, M3, M4, pixel-10-pro (old/offline), pixel-8 (new/active).  
+**Satohash API note:** root `/` has no handler by design — use `/health`, `/metrics.json`, `/api/public/status`, `/api/stamps/recent`.  
+Journal: `05-Journal/2026-07-31-Pixel8-Tailnet.md` · no infra changes made · Docker 6/6 🟢.
+
+---
 
 Session closed clean. **Your P0 unchanged:** public LNURL for wallet `sherpacarta` (steps + handback paste below).  
 Summary: `docs/SESSION-SUMMARY-2026-07-27-suite-truth.md`  
