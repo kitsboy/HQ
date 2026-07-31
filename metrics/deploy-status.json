@@ -63,10 +63,10 @@
     "status": "?"
   },
   "HQ": {
-    "workflow_name": "Deploy HQ to Cloudflare Pages",
+    "workflow_name": "Status pinger",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/HQ/actions/runs/30596534340",
-    "updatedAt": "2026-07-31T01:31:23Z",
+    "html_url": "https://github.com/kitsboy/HQ/actions/runs/30623107476",
+    "updatedAt": "2026-07-31T10:19:13Z",
     "status": "completed"
   }
 }
