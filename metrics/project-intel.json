@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-30T19:45:22Z",
+  "checked_at": "2026-07-31T01:30:30Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "b291a32",
-        "message": "chore: refresh status.json [skip deploy]",
-        "author": "hq-status-bot",
-        "date": "2026-07-30T19:39:54Z",
-        "url": "https://github.com/kitsboy/HQ/commit/b291a32cd3b17cf249885ff11c3145b952bb0171"
+        "sha": "e35030e",
+        "message": "chore: thor auto-metrics 01:30 (live LND)",
+        "author": "Cam (via Aider)",
+        "date": "2026-07-31T01:30:06Z",
+        "url": "https://github.com/kitsboy/HQ/commit/e35030e304bd49bdb6b39f439d6be08a88ef8bc0"
       },
       "recent_commits": [
-        "chore: refresh status.json [skip deploy]",
-        "chore: thor auto-metrics 19:30 (live LND)",
-        "chore: refresh status.json + thor-node [skip deploy]"
+        "chore: thor auto-metrics 01:30 (live LND)",
+        "chore: thor auto-metrics 01:17 (live LND)",
+        "chore: thor auto-metrics 01:15 (live LND)"
       ],
       "commits_7d": 100,
       "health": "green",
@@ -84,7 +84,7 @@
         "chore: update .ai_docs/current-status.md per project templat",
         "chore: update ROADMAP.md per project template"
       ],
-      "commits_7d": 11,
+      "commits_7d": 10,
       "health": "green",
       "cf_project": "katoa",
       "open_issues": 0
@@ -106,7 +106,7 @@
         "fix: prefix bare vite build with npx for Node 24 runner comp",
         "chore: update .ai_docs/current-status.md per project templat"
       ],
-      "commits_7d": 16,
+      "commits_7d": 11,
       "health": "green",
       "cf_project": "tadbuy",
       "open_issues": 1
@@ -128,7 +128,7 @@
         "fix: deploy from ./dist not ./out (next.config.js sets distD",
         "fix: prefix next build with npx for Node 24 compat"
       ],
-      "commits_7d": 15,
+      "commits_7d": 13,
       "health": "green",
       "cf_project": "strandedbuild",
       "open_issues": 0
@@ -150,7 +150,7 @@
         "chore: update .ai_docs/current-status.md per project templat",
         "chore: update ROADMAP.md per project template"
       ],
-      "commits_7d": 8,
+      "commits_7d": 7,
       "health": "green",
       "cf_project": "motopass",
       "open_issues": 0
@@ -172,7 +172,7 @@
         "docs: suite truth \u2014 Mission/NIP-05 live; LNURL still Kimi",
         "chore: LATEST-UPDATE tip c44d263"
       ],
-      "commits_7d": 49,
+      "commits_7d": 48,
       "health": "green",
       "cf_project": "sherpacarta",
       "open_issues": 0
@@ -194,7 +194,7 @@
         "chore: update ROADMAP.md per project template",
         "chore: update DESIGN.md per project template"
       ],
-      "commits_7d": 10,
+      "commits_7d": 9,
       "health": "green",
       "cf_project": "openstrata",
       "open_issues": 0
