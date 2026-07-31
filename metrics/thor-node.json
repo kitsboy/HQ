@@ -1,6 +1,6 @@
 {
   "schema": "gab.thor-node.v1",
-  "updatedAt": "2026-07-31T13:01:44Z",
+  "updatedAt": "2026-07-31T11:12:25Z",
   "node": {
     "id": "THOR",
     "hostLabel": "THOR Contabo VPS 20",
@@ -2056,42 +2056,5 @@
   "security": {
     "secretsInPayload": false,
     "notes": "Auto-export from thor-node-export.py"
-  },
-  "system": {
-    "disk": {
-      "totalGB": 387,
-      "usedGB": 44,
-      "freeGB": 343,
-      "usedPercent": 12,
-      "mount": "/dev/sda1"
-    },
-    "breakdownGB": {
-      "MASTER-BRAIN_vault": 1.518,
-      "Hermes_skills_config": 2.024,
-      "Docker_images": 3.911,
-      "Docker_volumes": 5.0,
-      "Docker_build_cache": 11.0,
-      "satohash_repo": 0.617,
-      "HQ_repo": 0.012,
-      "other_system": 30.9
-    },
-    "memory": {
-      "totalGB": 7.8,
-      "usedGB": 2.8,
-      "freeGB": 3.7,
-      "availableGB": 5.0
-    },
-    "cpu": {
-      "loadAvg1m": 0.27,
-      "loadAvg5m": 0.27,
-      "loadAvg15m": 0.27,
-      "uptimeDays": 14.5
-    },
-    "docker": {
-      "images": 8,
-      "containers": 6,
-      "volumes": 0,
-      "buildCacheGB": 11.0
-    }
   }
 }
