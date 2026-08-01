@@ -1,29 +1,29 @@
 {
-  "updatedAt": "2026-07-31T23:44:03.863Z",
+  "updatedAt": "2026-08-01T00:00:47.672Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 268,
+      "ms": 169,
       "url": "https://giveabit.io"
     },
     "satohash": {
       "ok": true,
       "status": 200,
-      "ms": 184,
+      "ms": 118,
       "url": "https://satohash.io"
     },
     "katoa": {
       "ok": true,
       "status": 200,
-      "ms": 235,
+      "ms": 166,
       "url": "https://katoa.org"
     },
     "stranded": {
       "ok": true,
       "status": 200,
-      "ms": 73,
+      "ms": 123,
       "url": "https://stranded.giveabit.io"
     },
     "tadbuy": {
@@ -35,19 +35,19 @@
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 186,
+      "ms": 117,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 246,
+      "ms": 76,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
       "ok": true,
       "status": 200,
-      "ms": 195,
+      "ms": 97,
       "url": "https://openstrata.giveabit.io"
     },
     "btcminiscript": {
@@ -67,18 +67,18 @@
     "satohashApi": {
       "ok": true,
       "status": 200,
-      "ms": 428,
+      "ms": 45,
       "healthUrl": "https://api.satohash.io/health"
     },
     "satohashMetrics": {
       "schema": "gab.product-metrics.v1",
       "productId": "satohash",
       "name": "Satohash",
-      "updatedAt": "2026-07-31T23:44:03.803Z",
+      "updatedAt": "2026-08-01T00:00:47.659Z",
       "window": {
         "label": "7d",
-        "from": "2026-07-24T23:44:03.803Z",
-        "to": "2026-07-31T23:44:03.803Z"
+        "from": "2026-07-25T00:00:47.659Z",
+        "to": "2026-08-01T00:00:47.659Z"
       },
       "health": {
         "status": "green",
@@ -246,10 +246,6 @@
           "color": "#8a5a00",
           "points": [
             {
-              "t": "2026-07-17T12:00:00.000Z",
-              "v": 0
-            },
-            {
               "t": "2026-07-18T12:00:00.000Z",
               "v": 0
             },
@@ -303,6 +299,10 @@
             },
             {
               "t": "2026-07-31T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-08-01T12:00:00.000Z",
               "v": 0
             }
           ]
@@ -314,10 +314,6 @@
           "color": "#1f6b3a",
           "points": [
             {
-              "t": "2026-07-17T12:00:00.000Z",
-              "v": 0
-            },
-            {
               "t": "2026-07-18T12:00:00.000Z",
               "v": 0
             },
@@ -371,6 +367,10 @@
             },
             {
               "t": "2026-07-31T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-08-01T12:00:00.000Z",
               "v": 0
             }
           ]
@@ -382,10 +382,6 @@
           "color": "#c45f00",
           "points": [
             {
-              "t": "2026-07-17T12:00:00.000Z",
-              "v": 0
-            },
-            {
               "t": "2026-07-18T12:00:00.000Z",
               "v": 0
             },
@@ -439,6 +435,10 @@
             },
             {
               "t": "2026-07-31T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-08-01T12:00:00.000Z",
               "v": 0
             }
           ]
@@ -450,10 +450,6 @@
           "color": "#1a5f7a",
           "points": [
             {
-              "t": "2026-07-17T12:00:00.000Z",
-              "v": 0
-            },
-            {
               "t": "2026-07-18T12:00:00.000Z",
               "v": 0
             },
@@ -507,6 +503,10 @@
             },
             {
               "t": "2026-07-31T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-08-01T12:00:00.000Z",
               "v": 0
             }
           ]
@@ -853,7 +853,7 @@
         "seriesFromDb": true,
         "note": "Live metrics from satohash API DB",
         "version": "5.0.0-ELITE",
-        "uptimeSec": 259355,
+        "uptimeSec": 260359,
         "requireLightning": false,
         "familyFreeTier": true,
         "directory": {
