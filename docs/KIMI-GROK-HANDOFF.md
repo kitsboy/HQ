@@ -18,6 +18,20 @@
 
 ---
 
+## Latest Session Summary (2026-08-01 — Kimi / Kanban + CI diagnosis)
+
+**Topic:** Kanban board brought to life + exact root causes for the two red CI workflows.
+
+### Finished (Kimi)
+- **Kanban `master-brain` seeded** — 10 workstream cards + autofeed robot (every 30m): cron/CI failures auto-create ⚠️ blocked cards, auto-complete on recovery, re-seeds itself if the board is ever wiped, and self-monitors its own cron. Monday digest now reports real content.
+- **Diagnosed both red CI workflows with exact root causes** (below — real fixes, not guesses). The two ⚠️ blocked board cards will auto-resolve the moment CI turns green.
+
+### Next for Grok (real fixes — apply on M3, push, watch the board cards clear)
+1. **🔴 giveabit — Verify workflow fails on EVERY push** (since Jul 27). Root cause: `playwright.config.js` + the workflow run Playwright smoke tests against `http://localhost:4173` (vite preview port) but **no `webServer` is configured and the workflow never starts the preview server** → `net::ERR_CONNECTION_REFUSED` on every `page.goto`. Fix: add a `webServer` block to `playwright.config.js` (`command: 'npm run preview'`, `url: 'http://localhost:4173'`, `reuseExistingServer: true`) so `npm run test:smoke` boots the server itself. Example failing run: https://github.com/kitsboy/giveabit/actions/runs/30239328085
+2. **🟡 motopass — 'BTC Map weekly sync' gets 403** (previous guess "no data to commit" was wrong). Root cause: `git-auto-commit-action@v5` fails with `fatal: unable to access ... 403` because **scheduled (`schedule:`) workflow runs get a read-only GITHUB_TOKEN by default** — the action needs write permission. ALSO the sync job is **duplicated**: `btcmap-cron.yml` AND `ci.yml` both run it on `0 6 * * 1` → two concurrent commits to the same files. Fix: keep ONE sync job (delete `btcmap-cron.yml`, or keep it and strip the `schedule:` + sync job from `ci.yml`), and add `permissions: contents: write` at the top of the surviving workflow. Example failing run: https://github.com/kitsboy/motopass/actions/runs/30254911370
+
+---
+
 ## Latest Session Summary (2026-07-27 — Grok / Cam)
 
 **Chat topic:** Suite truth catch-up + giveabit Mission + Kimi master list (Cam details + all open work).
