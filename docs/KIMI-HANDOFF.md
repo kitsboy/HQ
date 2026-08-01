@@ -21,6 +21,20 @@ Product requests: sherpacarta `docs/KIMI-REQUEST-LNURL.md` · `docs/KIMI-REQUEST
 
 ---
 
+## Dispatch policy — NEVER IDLE TILES (Cam mandate · 2026-08-01)
+
+**Standing rule:** if a ready job card exists on the Kanban board, an agent must be working it. Never leave a tile idle while work is pending — we don't sleep when there's work to do.
+
+**How it runs (no human needed):**
+1. `kanban-work-sweep` cron (every 30m) assigns ready, unassigned, non-shelf job cards to the `default` worker profile.
+2. The built-in dispatcher spawns the worker → card gets done → moves to Done → auto-archive after 7 days.
+3. Shelf cards (the 10 workstream seeds) are NEVER dispatched — they're standing reminders.
+4. Manual variant: Kimi dispatches via `delegate_task` or `hermes kanban assign` during any active session.
+
+**Audit trail:** dispatch pings Telegram only when it actually assigns something.
+
+---
+
 ## Cam — principal (who he is / how he wants work)
 
 | | |
