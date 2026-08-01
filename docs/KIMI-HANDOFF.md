@@ -40,7 +40,7 @@ Product requests: sherpacarta `docs/KIMI-REQUEST-LNURL.md` · `docs/KIMI-REQUEST
 | | |
 |--|--|
 | **Name / role** | Cam · Principal / Founder · Give A Bit family |
-| **NIP-05** | `cam@giveabit.io` (org key live in nostr.json) · **planned:** dedicated key + `hello@giveabit.io` |
+| **NIP-05** | `cam@giveabit.io` (org key live in nostr.json) · `hello@giveabit.io` **REGISTERED 2026-08-01** (pubkey in nostr.json; nsec in HQ Vault + `~/.hermes/vault-keys/`) |
 | **Contact** | `hello@giveabit.io` · suite front door |
 | **HQ** | https://hq.giveabit.io (gate + browser Vault — secrets never in git) |
 | **Hub** | https://giveabit.io |
@@ -63,7 +63,7 @@ Product requests: sherpacarta `docs/KIMI-REQUEST-LNURL.md` · `docs/KIMI-REQUEST
 | Item | Notes |
 |------|--------|
 | HQ Vault invoice keys | Confirm Money tab live for suite wallets (`sherpacarta`, `tadbuy`, etc.) |
-| Nostr keypairs | `hello@giveabit.io` (and dedicated `cam@` if splitting from org key) → hand pubkeys to Grok for nostr.json |
+| Nostr keypairs | ✅ `hello@giveabit.io` DONE 2026-08-01 (nsec → HQ Vault + THOR vault-keys) · dedicated `cam@` still optional — pubkey → Grok for nostr.json if/when |
 | MP e-### / politics | Canada sponsor when ready |
 | CF Access / secrets | Dashboard, proxy token rotation |
 
@@ -152,7 +152,7 @@ Grok: update public/data/wallets.json → set lightning.lud16 and remove TEMP pl
 
 ### Live NIP-05 names (giveabit.io/.well-known/nostr.json)
 `cam`, `kimi`, `mimi`, `andrea`, `lenny`, `rosa`, **`sherpa`**, `ziggy`, `nova` (+ `_`)  
-**Not live yet:** `hello@` (Cam keys)
+**Live now:** `hello@` registered 2026-08-01 (nsec in HQ Vault + THOR vault-keys)
 
 ### Wallet / identity contract (Sherpa)
 
