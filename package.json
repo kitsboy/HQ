@@ -9,7 +9,9 @@
     "prebuild": "node scripts/stamp-version.mjs",
     "build": "node scripts/stamp-version.mjs && node scripts/build-public.mjs",
     "deploy": "npm run build && wrangler pages deploy ./public --project-name=giveabit-hq",
-    "preview": "python3 -m http.server 8765 --directory public"
+    "preview": "python3 -m http.server 8765 --directory public",
+    "katoa-metrics": "node scripts/generate-katoa-metrics.mjs",
+    "katoa-metrics-live": "node scripts/generate-katoa-metrics.mjs --live"
   },
   "devDependencies": {
     "wrangler": "^4.112.0"

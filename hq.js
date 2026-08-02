@@ -321,6 +321,43 @@
     return `/metrics/${key}.json`;
   }
 
+  function isPendingMetrics(data) {
+    if (!data) return false;
+    if (data.raw && (data.raw.aggregatePending === true || (data.raw.demo === false && data.raw.pending))) return true;
+    const kpis = data.kpis || [];
+    const zeros = kpis.filter(k => Number(k.value) === 0).length;
+    if (data.health && data.health.status === "amber" && zeros >= 3) return true;
+    return !!(data.raw && data.raw.demo === false && (data.health?.message || "").toLowerCase().includes("pending"));
+  }
+
+  function refreshProductMetrics(id) {
+    const p = state.projects.find(x => x.id === id);
+    if (!p) return;
+    const btns = document.querySelectorAll(`[data-refresh-project="${id}"]`);
+    btns.forEach(b => { b.disabled = true; b.textContent = "⟳ ..."; });
+
+    loadProductMetrics(metricsCandidatesFor(p), { expectProductId: id }).then(r => {
+      state.metrics[id] = r;
+      if (state.tab === "cards") renderCards();
+      else if (state.tab === "metrics") { state.selectedMetricsId = id; renderMetrics(); }
+      else if (state.tab === "money") renderMoney();
+      else renderActiveTab();
+
+      // re-open drawer if it was for this project
+      if (state.drawerProject === id && document.getElementById("drawer")?.classList.contains("open")) {
+        openDrawer(id);
+      }
+      showToast(`Refreshed ${p.name} (live preferred)`);
+    }).catch(() => {
+      showToast("Refresh failed — using cached");
+    }).finally(() => {
+      btns.forEach(b => { b.disabled = false; b.innerHTML = '<i class="fa-solid fa-sync"></i> Refresh'; });
+    });
+  }
+
+  // Expose for console / future
+  window.hqRefresh = refreshProductMetrics;
+
   function unavailableHTML(title, path, detail) {
     return `<div class="unavailable-card">
       <div class="icon"><i class="fa-solid fa-satellite-dish"></i></div>
@@ -1914,7 +1951,7 @@
         <a class="link-btn" href="${escAttr(metricsHref(p, m))}" target="_blank" rel="noopener" data-card-link><i class="fa-solid fa-database"></i> metrics</a>
         <a class="link-btn" href="/docs/projects/${escAttr(p.id)}.md" target="_blank" rel="noopener" data-card-link><i class="fa-solid fa-file-lines"></i> brief</a>
       </div>
-      <div class="card-foot">
+      <div class="card-foot"><button type="button" class="btn btn-sm btn-ghost" data-refresh-project="${escAttr(p.id)}" title="Refresh this project metrics"><i class="fa-solid fa-sync"></i></button> 
         <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">${esc(fmtTime(data.updatedAt))}</span>
         <span class="mono" style="font-size:0.62rem;color:var(--ink-faint)">${(data.kpis || []).length} KPI · doc ${(state.projectDocs[p.id] && state.projectDocs[p.id].ok) ? "✓" : "—"}</span>
       </div>
@@ -2137,7 +2174,7 @@
     if (!p) { el.innerHTML = unavailableHTML("Unknown", id); return; }
     if (!m || !m.ok) {
       el.innerHTML = `<div class="metrics-detail-head" style="--detail-c:${escAttr(color)}">${iconBadge(p.icon, color)}
-        <div class="grow"><h2 class="display" style="margin:0;font-size:1.25rem">${esc(p.name)}</h2></div></div>
+        <div class="grow"><button type="button" class="btn btn-sm btn-ghost" style="margin-left:auto" data-refresh-project="${escAttr(id)}" title="Refresh"><i class="fa-solid fa-sync"></i> Refresh</button><h2 class="display" style="margin:0;font-size:1.25rem">${esc(p.name)}</h2></div></div>
         ${unavailableHTML("Metrics unavailable", m ? m.path : `/metrics/${id}.json`, m ? m.error : "")}`;
       return;
     }
@@ -2180,7 +2217,7 @@
       <div class="detail-blocks">
         <section>
           <div class="block-title">KPIs (${kpis.length})</div>
-          <div class="kpi-grid">${kpis.map(kpiCell).join("")}</div>
+          <div class="kpi-grid">${kpis.map(k => kpiCell(k, isPendingMetrics(data))).join("")}</div>
         </section>
         ${(health.dependencies || []).length ? `<section><div class="block-title">Dependencies</div><div class="flex flex-wrap gap-1">${health.dependencies.map((d) => statusPill(d.status, d.id) + (d.detail ? ` <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">${esc(d.detail)}</span>` : "")).join(" ")}</div></section>` : ""}
         ${(data.series || []).length ? `<section><div class="block-title">Trends — multi-series</div>${multiSeriesChart(data.series, id)}
@@ -3981,7 +4018,7 @@
       const d = m.data;
       body.innerHTML = `
         <div class="card-money-row mb-2">${balanceChipHTML(p, { total: portfolioTotals().sats })}</div>
-        <div class="kpi-grid">${topKpis(d, 8).map(kpiCell).join("")}</div>
+        <div class="kpi-grid">${topKpis(d, 8).map(k => kpiCell(k, isPendingMetrics(d))).join("")}</div>
         ${(d.series || []).slice(0, 3).map((ser) => `<div class="mt-2">${trendChart(ser, seriesColor(ser, p.id))}</div>`).join("")}
         ${(d.funnels || []).map((f) => funnelHTML(f, color)).join("")}
         ${segmentsHTML(d.segments, color, p.id)}
@@ -4057,7 +4094,7 @@
       metricsBlock = `
         <div class="drawer-section">
           <h4>Top KPIs · depth ${depthScore(d, false)}</h4>
-          <div class="kpi-grid">${topKpis(d, 6).map(kpiCell).join("")}</div>
+          <div class="kpi-grid">${topKpis(d, 6).map(k => kpiCell(k, isPendingMetrics(d))).join("")}</div>
           ${(d.series || [])[0] ? `<div class="mt-2">${sparkline(seriesPoints(d.series[0], 15), color, 300, 48)}</div>` : ""}
           <div class="card-meta-row mt-2">
             <span class="chip">${(d.kpis || []).length} KPIs</span>
@@ -4367,7 +4404,18 @@
     document.querySelectorAll(".theme-dot").forEach((d) => {
       d.addEventListener("click", () => setTheme(d.dataset.themePick));
     });
-    document.getElementById("btn-refresh")?.addEventListener("click", () => { toast("Refreshing…", "ok"); bootstrap(); });
+    document.getElementById("btn-refresh")?.addEventListener("click", () => { toast("Refreshing…", "ok");   // Global refresh delegation (interactive)
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-refresh-project]");
+    if (btn) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      refreshProductMetrics(btn.dataset.refreshProject);
+    }
+  }, { once: false, passive: true });
+
+  // Initial boot
+  bootstrap(); });
     document.getElementById("btn-vault")?.addEventListener("click", openVaultModal);
     document.getElementById("vault-save")?.addEventListener("click", saveVaultFromModal);
     document.getElementById("vault-cancel")?.addEventListener("click", () => {
