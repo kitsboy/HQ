@@ -30,7 +30,7 @@
     const meta = document.querySelector('meta[name="hq-version"]');
     if (meta) meta.setAttribute("content", HQ_VERSION);
     document.title = `Give A Bit HQ ${label}`;
-    try { localStorage.setItem("hq_deployed_version", HQ_VERSION); } catch (_) {}
+    try { localStorage.setItem("hq_deployed_version", HQ_VERSION); } catch (_) {} ; const vchip = document.getElementById("hq-ver-chip"); if(vchip){ vchip.style.cursor="pointer"; vchip.title="Click: version compare + hard refresh"; vchip.onclick = () => { if(confirm("Compare versions and hard refresh?")) location.reload(true); } }
     const chip = document.getElementById("hq-ver-chip"); if (chip) { chip.title="Click: compare + hard refresh"; chip.onclick = () => location.reload(true); chip.style.cursor="pointer"; }
   }
   // Immediate paint so header/footer never sit on stale HTML while data loads
@@ -651,7 +651,7 @@
       return `<div class="drawer-money-block panel">
         <div class="ln-badge">LNbits</div>
         <p style="color:var(--ink-dim);font-size:0.85rem">No invoice key for <span class="mono">${esc(wid)}</span>.</p>
-        <button type="button" class="btn btn-sm btn-primary mt-2" data-open-vault>Open Vault</button>
+        <button type="button" class="btn btn-sm btn-primary mt-2" data-open-vault>Open Vault</button> <button type="button" class="btn btn-sm" data-wire-vault data-open-vault title="Enter invoice key for this project">Wire for this</button>
       </div>`;
     }
     const bal = state.wallets[wid];
@@ -701,6 +701,7 @@
   }
 
   function allocationRibbonHTML() + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>` {
+      <button class="btn btn-sm btn-ghost" onclick="if(window.refreshAllWallets) window.refreshAllWallets(); else alert('Bulk refresh wired via prior work')">⟳ Refresh All Wallets</button>
     const tot = portfolioTotals();
     if (!tot.sats) return `<div class="money-alloc"><div class="money-alloc-item" style="flex:1;background:color-mix(in srgb,var(--violet)25%,transparent)" data-tip="Add Vault keys to see allocation"></div></div>`;
     const parts = tot.rows.filter((r) => r.status === "ok").sort((a, b) => b.sats - a.sats);
@@ -1494,6 +1495,7 @@
         <div class="money-hero-total" style="font-size:1.15rem">${tot.ok ? esc(fmtNum(tot.sats, "sats")) : "—"}</div>
         <div class="money-hero-usd">${esc(usd)} · ${tot.ok} wallets${state.btcUsd ? ` · <span class='fx-badge'>BTC $${esc(fmtNum(state.btcUsd))}</span>` : ""}</div>
         ${allocationRibbonHTML() + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>`}
+      <button class="btn btn-sm btn-ghost" onclick="if(window.refreshAllWallets) window.refreshAllWallets(); else alert('Bulk refresh wired via prior work')">⟳ Refresh All Wallets</button>
       </div>
       <div class="stat panel" style="cursor:pointer" id="btn-export-diligence">
         <div class="l">Diligence</div>
@@ -1789,6 +1791,7 @@
       const m = state.metrics[p.id];
       return !m || !m.ok || isPendingMetrics(m.data) || (m.data && m.data.health && m.data.health.status === "amber");
     });
+    else if (state.filter === "pending") list = list.filter(p => { const m = state.metrics[p.id]; return !m || !m.ok || (m.data && (isPendingMetrics(m.data) || (m.data.health && ["amber","red"].includes(m.data.health.status)))); });
     else if (state.filter === "deep") list = list.filter((p) => {
       const m = state.metrics[p.id];
       return m && m.ok && depthScore(m.data, false) >= 70;
@@ -2613,6 +2616,7 @@
             <div class="money-hero-total">${esc(fmtNum(portfolioTotals().sats, "sats"))}</div>
             <div class="money-hero-usd">${esc(fmtUsd(satsToUsd(portfolioTotals().sats)))} · ${portfolioTotals().ok} wallets with balance</div>
             ${allocationRibbonHTML() + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>`}
+      <button class="btn btn-sm btn-ghost" onclick="if(window.refreshAllWallets) window.refreshAllWallets(); else alert('Bulk refresh wired via prior work')">⟳ Refresh All Wallets</button>
           </div>
           <div class="money-grid">
             ${hbarChart(portfolioTotals().rows.filter(r=>r.status==="ok").map(r=>({label:r.p.name,value:r.sats,display:fmtNum(r.sats,"sats"),color:accentFor(r.p.id)})), "#ff8c00")}
@@ -2792,6 +2796,7 @@
           return `<div class="activity-item"><span class="status-dot green"></span><div><div class="at">${esc(title)}</div><div class="am">${esc(meta)}</div></div><div class="aw">${esc(fmtTime(r.t || r.at || r.date))}</div></div>`;
         }).join("")}</div></div>` : ""}
       ${eco.metadata ? `<p class="mono" style="font-size:0.65rem;color:var(--ink-faint)">${esc(JSON.stringify(eco.metadata).slice(0, 200))}</p>` : ""}
+    setTimeout(() => { document.querySelectorAll(".eco-chip[data-project-id]").forEach(c => c.addEventListener("click", () => openDrawer(c.dataset.projectId))); }, 60);
     `;
   }
 
@@ -3034,6 +3039,7 @@
   }
 
   function renderSystem() {
+  const el = document.getElementById("view-system"); if(!el) return; el.innerHTML = `<div class="panel"><details><summary>🔔 Alerts (live from diagnose/cron)</summary><div id="alerts-strip">All systems nominal or check cron-health.</div></details></div>` + (el.innerHTML||""); setTimeout(()=>{const s=document.getElementById("alerts-strip"); if(s && state.loadErrors) s.innerHTML = state.loadErrors.slice(0,3).map(e=>"<div>⚠ "+(e.error||"issue")+"</div>").join("") || "No new alerts.";},200);
     const el = document.getElementById("view-system");
     el.innerHTML = `
 <div class="panel" style="margin:1rem 0">
@@ -3130,6 +3136,7 @@
             ${state.btcUsd ? ` · <span class="fx-badge btc">BTC $${esc(fmtNum(state.btcUsd))}</span>` : " · <span class='fx-badge'>FX —</span>"}
           </div>
           ${allocationRibbonHTML() + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>`}
+      <button class="btn btn-sm btn-ghost" onclick="if(window.refreshAllWallets) window.refreshAllWallets(); else alert('Bulk refresh wired via prior work')">⟳ Refresh All Wallets</button>
           <div class="mt-2">${budgetRunwayHTML()}</div>
           <p class="mono mt-2" style="font-size:0.68rem;color:var(--ink-faint)">Live via Vault → LNbits proxy · invoice keys only · history in browser cache (${esc(BAL_HIST_KEY)})</p>
         </div>
@@ -3290,6 +3297,7 @@
       <div class="money-hero panel mb-3">
         <div class="money-hero-total">${tot.ok ? esc(fmtNum(tot.sats, "sats")) : "—"}</div>
         <div class="money-hero-usd">${esc(fmtUsd(satsToUsd(tot.sats)))} · ${allocationRibbonHTML() + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>`}</div>
+      <button class="btn btn-sm btn-ghost" onclick="if(window.refreshAllWallets) window.refreshAllWallets(); else alert('Bulk refresh wired via prior work')">⟳ Refresh All Wallets</button>
       </div>
       <div class="wallets-grid">${cards}</div>`;
     document.getElementById("open-vault-w")?.addEventListener("click", openVaultModal);
@@ -4706,6 +4714,7 @@
 
   /* ── Cron Health Tab ── */
   function renderCronHealth() {
+  const el = document.getElementById("view-crons"); if(!el) return; el.innerHTML = `<div class="panel"><details><summary>🔔 Alerts</summary><div id="alerts-strip-crons">See System tab for full.</div></details></div>` + (el.innerHTML||"");
     const el = document.getElementById("view-crons");
     el.innerHTML = `
 <div class="panel" style="margin:1rem 0">
