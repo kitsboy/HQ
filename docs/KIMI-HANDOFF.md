@@ -1,5 +1,18 @@
 # KIMI — MASTER LIST (Cam + Grok) · 2026-08-03 (UPDATED FOR SESSION CLOSE)
 
+### 2026-08-03 — Grok · HQ v3.29.0 + Kimi one-shot package
+
+**Code shipped (M3 → main):** deep links (`?tab=` / `?project=`), Money/System LN isolation + channel checklist, intel tint fixes, arrow nav, suite alerts retained.
+
+**For Cam → Kimi:** paste full prompt in `docs/KIMI-ONESHOT-THOR-PROMPT.md` (also summarized in `docs/CAM-ELI16-HANDOFF-TO-KIMI.md`).
+
+**Kimi P0 remains:** open LN channels if funds allow; harden LNbits; green metrics crons; handback top of this file. No secrets in git.
+
+**Plausible:** https://github.com/plausible/analytics
+
+---
+
+
 ### 2026-08-03 — Grok · HQ v3.28.0 (NEXT-100 P0 batch)
 
 **Top issues fixed**

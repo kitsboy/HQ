@@ -1,8 +1,8 @@
 {
   "name": "giveabit-hq",
   "private": true,
-  "version": "3.28.0",
-  "description": "Give A Bit HQ \u2014 intel shell fix, suite alerts, pin tabs, NEXT-100",
+  "version": "3.29.0",
+  "description": "Give A Bit HQ \u2014 deep links, LN honesty, Kimi one-shot docs",
   "scripts": {
     "stamp": "node scripts/stamp-version.mjs",
     "verify-version": "node scripts/stamp-version.mjs",

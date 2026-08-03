@@ -113,7 +113,7 @@
         <div class="intel-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1rem;">`;
 
       for (const p of projects) {
-        const color = COLORS[p.slug] || "#888";
+        const color = COLORS[p.slug] || "#c4a574";
         const heatColor = p.commits_7d > 5 ? "#22c55e" : p.commits_7d > 1 ? "#eab308" : "#ef4444";
         const healthDot = p.health === "green" ? "✅" : p.health === "amber" ? "⚠️" : "❌";
 
@@ -217,7 +217,7 @@
         const maxC = Math.max(...intel.projects.map(p => p.commits_7d), 1);
         for (const p of intel.projects) {
           const pct = Math.round((p.commits_7d / maxC) * 100);
-          const c = COLORS[p.slug] || "#888";
+          const c = COLORS[p.slug] || "#c4a574";
           html += `<div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.4rem;">
             <span style="width:80px;font-size:0.72rem;text-align:right;">${esc(p.name)}</span>
             <div style="flex:1;height:14px;background:var(--border);border-radius:3px;overflow:hidden;">
@@ -311,7 +311,7 @@
     if (box) {
       const b = document.createElement("div");
       b.style.cssText = "text-align:right;margin-bottom:0.5rem;";
-      b.innerHTML = `<div style="display:inline-block;background:var(--accent);color:#fff;padding:0.5rem 0.9rem;border-radius:12px 12px 4px 12px;max-width:80%;font-size:0.85rem;">${esc(cmd)}</div>`;
+      b.innerHTML = `<div style="display:inline-block;background:var(--accent);color:var(--ink, #f5e6d3);padding:0.5rem 0.9rem;border-radius:12px 12px 4px 12px;max-width:80%;font-size:0.85rem;">${esc(cmd)}</div>`;
       box.appendChild(b);
       box.scrollTop = box.scrollHeight;
     }

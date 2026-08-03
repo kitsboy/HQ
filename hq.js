@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.28.0 — handoffs registry tab
+ * Give A Bit HQ v3.29.0 — handoffs registry tab
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.28.0";
+  const HQ_VERSION = "3.29.0";
   const BUILD_TS = new Date().toISOString();
   const METRICS_SCHEMA = "gab.product-metrics.v1";
   const THOR_SCHEMA = "gab.thor-node.v1";
@@ -240,7 +240,11 @@
   function escAttr(s) { return esc(s).replace(/`/g, "&#96;"); }
 
   async function loadData(path, opts = {}) {
-    const url = path;
+    let url = path;
+    if (opts.cacheBust && typeof url === "string") {
+      const sep = url.includes("?") ? "&" : "?";
+      url = url + sep + "_t=" + Date.now();
+    }
     try {
       const ctrl = new AbortController();
       const t = setTimeout(() => ctrl.abort(), opts.timeout || 12000);
@@ -1023,6 +1027,33 @@
     document.querySelectorAll(".theme-dot").forEach((d) => d.classList.toggle("active", d.dataset.themePick === t));
     setTimeout(() => document.body.classList.remove("theme-switching"), 560);
   }
+
+  function applyUrlDeepLink() {
+    try {
+      const params = new URLSearchParams(location.search || "");
+      let tab = params.get("tab") || params.get("t");
+      if (!tab && location.hash) {
+        const h = location.hash.replace(/^#\/?/, "").split(/[/?&]/)[0];
+        if (h && (TAB_ACCENTS[h] || h === "manual")) tab = h;
+      }
+      if (tab && (TAB_ACCENTS[tab] || tab === "manual")) {
+        state.tab = tab;
+      }
+      const project = params.get("project") || params.get("p");
+      if (project) state._deepProject = project;
+    } catch (_) {}
+  }
+  function syncUrlFromTab(name) {
+    try {
+      const url = new URL(location.href);
+      url.searchParams.set("tab", name);
+      if (state._deepProject) url.searchParams.set("project", state._deepProject);
+      else url.searchParams.delete("project");
+      url.hash = "";
+      history.replaceState(null, "", url.pathname + url.search);
+    } catch (_) {}
+  }
+
   let _switchingTimer = null;
   function setTab(name) {
     try {
@@ -1051,6 +1082,7 @@
 
       state.tab = name;
       try { localStorage.setItem(TAB_KEY, name); } catch {}
+      syncUrlFromTab(name);
 
       document.querySelectorAll(".nav-tab").forEach((btn) => {
         const on = btn.dataset.tab === name;
@@ -1146,7 +1178,7 @@
       <ul style="line-height:1.7;color:var(--ink-dim)">
         <li><strong>Tabs</strong> — swipe/scroll sideways. <strong>Right-click</strong> a tab to pin it first.</li>
         <li><strong>Suite alerts</strong> under the portfolio strip: down sites, LN channels, stale metrics, empty vault.</li>
-        <li><strong>/</strong> or <strong>Jump</strong>: search any tab by name.</li>
+        <li><strong>/</strong> or <strong>Jump</strong>: search any tab by name. Share links: <span class="mono">?tab=money</span> · <span class="mono">?project=sherpacarta</span>.</li>
         <li><strong>?</strong>: shortcuts. <strong>Shift+\u2190/\u2192</strong>: previous/next tab.</li>
         <li>Keys <strong>1\u20130</strong> jump core tabs; letters open Money, Docs, Vault, Manual (u), etc.</li>
       </ul>
@@ -1265,6 +1297,14 @@
       toast(state.loadErrors.length + " feed(s) failed — see System", "err");
     }
     paintSuiteAlerts();
+    if (state._deepProject) {
+      const pid = state._deepProject;
+      const proj = state.projects.find((x) => x.id === pid);
+      if (proj && typeof openDrawer === "function") {
+        try { openDrawer(proj); } catch (_) {}
+      }
+      state._deepProject = null;
+    }
   }
 
   /* ── Live pulse: light refresh of status + thor + live metric candidates ── */
@@ -3168,6 +3208,25 @@
     return list;
   }
 
+
+  function channelOpenChecklistHTML() {
+    const lnd = ((state.thor && state.thor.ok && state.thor.data && state.thor.data.lightning) || {});
+    if (lnd.numActiveChannels > 0) {
+      return `<div class="suite-alert ok" style="margin:0.5rem 0"><i class="fa-solid fa-circle-check"></i> ${lnd.numActiveChannels} active channel(s) · ${lnd.numPeers || 0} peers</div>`;
+    }
+    return `<div class="panel" style="padding:0.85rem;margin:0.5rem 0;border-left:3px solid #f59e0b">
+      <strong>Open Lightning channels (ops)</strong>
+      <ol style="margin:0.4rem 0 0 1.1rem;font-size:0.8rem;color:var(--ink-dim);line-height:1.55">
+        <li>Confirm LND healthy + seed backup off-git (Cam/Kimi)</li>
+        <li>Fund on-chain if needed (now ~${esc(fmtNum(lnd.walletBalanceSats||0,"sats"))})</li>
+        <li>Connect peers + open channel(s) on THOR (Kimi)</li>
+        <li>Confirm <span class="mono">thor-node.json</span> shows numActiveChannels &gt; 0</li>
+        <li>Optional: DNS <span class="mono">lnbits.satohash.io</span> · firewall :5102 (Nova)</li>
+      </ol>
+      <p class="mono" style="font-size:0.68rem;color:var(--ink-faint);margin:0.5rem 0 0">See docs/NEXT-STEPS.md · docs/NEXT-100.md · never put seed/macaroons in git</p>
+    </div>`;
+  }
+
   function renderSystem() {
     const el = document.getElementById("view-system");
     if (!el) return;
@@ -3199,11 +3258,25 @@
         </div>
       </div>
       ${stalePanel}
-      <div class="panel" style="padding:1rem">${thorDashboardHTML()}</div>`;
+      <div class="panel" style="padding:1rem">${thorDashboardHTML()}${channelOpenChecklistHTML()}</div>`;
   }
 
   /* ═══════════════ WALLETS / MONEY / DOCS / AGENTS / DOMAINS ═══════════════ */
 
+
+  function lnIsolationBannerHTML() {
+    const lnd = ((state.thor && state.thor.ok && state.thor.data && state.thor.data.lightning) || {});
+    const ch = lnd.numActiveChannels;
+    const peers = lnd.numPeers;
+    if (ch != null && ch > 0) return "";
+    const sats = lnd.walletBalanceSats != null ? fmtNum(lnd.walletBalanceSats, "sats") : "—";
+    return `<div class="suite-alert warn ln-isolation-banner" style="margin-bottom:0.75rem;width:100%;justify-content:flex-start" role="status">
+      <i class="fa-solid fa-bolt"></i>
+      <span><strong>Lightning is isolated</strong> — ${peers ?? 0} peers · ${ch ?? 0} channels · on-chain ${esc(sats)}.
+      Public LNURL may show, but inbound pay can fail until channels open (Cam capital + Kimi/THOR).
+      <button type="button" class="btn btn-sm btn-ghost" data-goto-system style="margin-left:0.35rem">System detail</button></span>
+    </div>`;
+  }
   function renderMoney() {
     const el = document.getElementById("view-money");
     if (!el) return;
@@ -3241,6 +3314,7 @@
     }).join("");
 
     el.innerHTML = `
+      ${lnIsolationBannerHTML()}
       <div class="flex justify-between items-center flex-wrap gap-2 mb-3">
         <h2 class="section-title" style="margin:0">Money · LNbits <span class="accent-rule"></span></h2>
         <div class="flex gap-2">
@@ -4571,6 +4645,7 @@
     state.vault = loadVault();
     try { state.theme = localStorage.getItem(THEME_KEY) || "ember"; } catch { state.theme = "ember"; }
     try { state.tab = localStorage.getItem(TAB_KEY) || "cards"; } catch { state.tab = "cards"; }
+    applyUrlDeepLink();
     setTheme(state.theme);
 
     rebuildNavTabs();
@@ -4580,6 +4655,7 @@
     });
     document.getElementById("btn-help")?.addEventListener("click", () => setTab("manual"));
     document.addEventListener("click", (e) => {
+      if (e.target.closest("[data-goto-system]")) { e.preventDefault(); setTab("system"); return; }
       const g = e.target.closest(".nav-group-chip[data-jump]");
       if (g) { e.preventDefault(); setTab(g.dataset.jump); }
     });

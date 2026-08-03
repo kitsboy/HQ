@@ -1,3 +1,5 @@
+**v3.29 SHIPPED (2026-08-03):** Deep links `?tab=` / `?project=` · Money+System LN isolation banners + channel checklist · intel design tokens (no grey/white) · arrow-key nav · popstate · Cam ELI16 + **Kimi one-shot prompt** (`docs/KIMI-ONESHOT-THOR-PROMPT.md`, `docs/CAM-ELI16-HANDOFF-TO-KIMI.md`).
+
 # Next 100 HQ fixes — prioritized (2026-08-03)
 
 **Rule:** top of list = do first. Items marked **SHIPPED in v3.28** are done in this pass.  

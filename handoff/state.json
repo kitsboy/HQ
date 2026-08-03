@@ -1,17 +1,11 @@
 {
   "schema": "gab.handoff.v1",
-  "updatedAt": "2026-08-03T18:27:54.000Z",
+  "updatedAt": "2026-08-03T18:59:35.000Z",
   "agents": {
     "grok": {
-      "lastSeen": "2026-08-03T18:27:54.000Z",
-      "focus": "suite currency \u2014 HQ v3.26.0 live; LNURL+agents shipped; channels open for Cam/Kimi",
-      "nextAction": "Cam/Kimi open first LN channels; Grok items 51+ on new feature branch if requested",
-      "notes": [
-        {
-          "t": "2026-08-03T18:27:54.000Z",
-          "summary": "Merged feature/katoa-piping-ui-polish \u2192 main v3.26.0 live. Sherpa LNURL published. giveabit agents=9. All monitored repos pulled current. Lightning still 0 channels."
-        }
-      ]
+      "lastSeen": "2026-08-03T18:59:35.000Z",
+      "focus": "v3.29 shipped; Cam must run KIMI-ONESHOT-THOR-PROMPT on Hermes",
+      "nextAction": "Wait Kimi handback on channels/LNbits/crons; then mark blockers closed"
     },
     "kimi": {
       "lastSeen": "2026-07-30T15:15:00.000Z",
@@ -161,6 +155,11 @@
     }
   ],
   "history": [
+    {
+      "at": "2026-08-03T18:59:35.000Z",
+      "agent": "grok",
+      "summary": "v3.29.0 deep links + LN honesty + Kimi one-shot docs. Ops blockers remain for Kimi."
+    },
     {
       "at": "2026-08-03T18:27:54.000Z",
       "agent": "grok",
