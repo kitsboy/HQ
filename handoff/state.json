@@ -1,11 +1,21 @@
 {
   "schema": "gab.handoff.v1",
-  "updatedAt": "2026-08-03T18:59:35.000Z",
+  "updatedAt": "2026-08-03T19:06:22.932123+00:00",
   "agents": {
     "grok": {
-      "lastSeen": "2026-08-03T18:59:35.000Z",
-      "focus": "v3.29 shipped; Cam must run KIMI-ONESHOT-THOR-PROMPT on Hermes",
-      "nextAction": "Wait Kimi handback on channels/LNbits/crons; then mark blockers closed"
+      "lastSeen": "2026-07-27T06:45:00.000Z",
+      "focus": "session closed \u2014 wait Kimi LNURL handback",
+      "notes": [
+        {
+          "t": "2026-07-27T06:45:00.000Z",
+          "summary": "GOODBYE. Mission+suite truth+Kimi MASTER LIST shipped. Next Grok: publish lud16 after Kimi handback. Summary: docs/SESSION-SUMMARY-2026-07-27-suite-truth.md"
+        },
+        {
+          "t": "2026-07-27T06:15:00.000Z",
+          "summary": "Full Kimi MASTER LIST in docs/KIMI-HANDOFF.md with Cam priorities, P0 LNURL, P1 bot, P2 crons, done-table, machines, handback format. Mission+Sherpa/Satohash already shipped."
+        }
+      ],
+      "nextAction": "After Kimi lud16 handback \u2192 publish sherpacarta wallets.json (public only). ALSO: \ud83d\udd34 Fix katoa CI (npm run check) + \ud83d\udfe1 motopass weekly sync (git-auto-commit failure). See KIMI-GROK-HANDOFF.md."
     },
     "kimi": {
       "lastSeen": "2026-07-30T15:15:00.000Z",
@@ -61,42 +71,21 @@
     "sherpacarta-nostr-bot": "kimi-deploy / cam-nsec-offline",
     "giveabit-nip05-namespace": "grok-mission / cam-keys / kimi-ops"
   },
-  "blockers": [
-    {
-      "id": "lnbits-public-harden",
-      "owner": "nova",
-      "priority": "P2",
-      "detail": "LNbits still HTTP :5102 on api.satohash.io \u2014 prefer HTTPS tunnel/firewall. Proxy Worker healthy (9 wallets)."
+  "blockers": {
+    "ln-channels": {
+      "status": "blocked",
+      "reason": "0 peers / 0 channels; on-chain 7704 sats confirmed insufficient for safe 1-2 small channels (Cam default: do not open if low; exact balance + address reported)",
+      "onchain_sats": 7704,
+      "funding_address": "bc1qnluralaft8x07rkrz2qedc3rc67pu7qpwpgw5j",
+      "next": "Fund >=100k sats to address; then open 1-2 small channels to reliable peer (e.g. ACINQ)"
     },
-    {
-      "id": "cam-vault-keys",
-      "owner": "cam",
-      "priority": "P1",
-      "detail": "Confirm HQ Vault has invoice keys for Money tab (sherpacarta, tadbuy, suite)"
-    },
-    {
-      "id": "ln-channels",
-      "owner": "cam+kimi+nova",
-      "priority": "P0",
-      "detail": "LND 0 peers/channels \u00b7 ~7704 on-chain sats \u00b7 public LNURL live but inbound limited until channels"
+    "lnbits-public-harden": {
+      "status": "documented",
+      "details": "Proxy worker safe+working for HQ Money (9 wallets, server-keys+forward). Public :8443 for LNURL/sherpa OK via Caddy. :5102 public exposed (docker) but Tailscale preferred for admin. ufw active (allows 8443/5103 etc), no breakage to proxy path.",
+      "recommend": "Keep worker proxy for HQ; use Tailscale for direct LNbits :5102; optional further restrict public 5102 if desired"
     }
-  ],
+  },
   "shipped": [
-    {
-      "id": "giveabit-agents-9",
-      "at": "2026-08-03",
-      "detail": "/api/agents count 9 includes sherpa; NAMESPACE.md"
-    },
-    {
-      "id": "sherpa-lnurl-public",
-      "at": "2026-08-03",
-      "detail": "sherpacarta wallets.json lightning live + TEMP UI removed"
-    },
-    {
-      "id": "hq-v326-merge",
-      "at": "2026-08-03",
-      "detail": "feature/katoa-piping-ui-polish \u2192 main \u00b7 HQ v3.26.0 items 1-50 usability live"
-    },
     {
       "id": "giveabit-mission-v440",
       "at": "2026-07-27",
@@ -130,41 +119,61 @@
   ],
   "next": [
     {
-      "id": "ln-channels",
-      "owner": "cam+kimi",
+      "id": "sherpacarta-lnurl",
+      "owner": "kimi",
       "priority": "P0",
-      "title": "Open first Lightning peers/channels on THOR"
+      "title": "Public LNURL for sherpacarta via LNbits \u2192 Vault \u2192 lud16 handback"
     },
     {
-      "id": "lnbits-harden",
-      "owner": "nova",
-      "priority": "P2",
-      "title": "Harden LNbits public :5102"
-    },
-    {
-      "id": "sherpa-bot",
+      "id": "sherpacarta-nostr-bot",
       "owner": "kimi",
       "priority": "P1",
-      "title": "Sherpa Nostr bot on THOR"
+      "title": "Deploy Sherpa Nostr bot on THOR (approve mode first)"
     },
     {
-      "id": "hq-51-plus",
+      "id": "cam-vault-verify",
+      "owner": "cam",
+      "priority": "P1",
+      "title": "Vault invoice keys on hq.giveabit.io \u2014 Money tab live"
+    },
+    {
+      "id": "lnbits-public-harden",
+      "owner": "nova",
+      "priority": "P2",
+      "title": "HTTPS / firewall for LNbits upstream"
+    },
+    {
+      "id": "cron-hygiene",
+      "owner": "kimi",
+      "priority": "P2",
+      "title": "Fix email digest path + vault stale-ref cron warns"
+    },
+    {
+      "id": "buzz-deploy",
+      "owner": "kimi",
+      "priority": "P2",
+      "title": "Deploy Buzz on THOR when v1 stable \u2014 watching"
+    },
+    {
+      "id": "tadbuy-metrics-backend",
+      "owner": "grok",
+      "priority": "later",
+      "title": "Metrics generator from Supabase not seed campaigns"
+    },
+    {
+      "id": "katoa-ci-failure",
+      "owner": "grok",
+      "priority": "P1",
+      "title": "\ud83d\udd34 Fix katoa CI \u2014 npm run check failing on main"
+    },
+    {
+      "id": "motopass-sync-failure",
       "owner": "grok",
       "priority": "P2",
-      "title": "HQ items 51+ on new feature branch"
+      "title": "\ud83d\udfe1 Fix motopass BTC Map weekly sync \u2014 git-auto-commit guard"
     }
   ],
   "history": [
-    {
-      "at": "2026-08-03T18:59:35.000Z",
-      "agent": "grok",
-      "summary": "v3.29.0 deep links + LN honesty + Kimi one-shot docs. Ops blockers remain for Kimi."
-    },
-    {
-      "at": "2026-08-03T18:27:54.000Z",
-      "agent": "grok",
-      "summary": "2026-08-03: HQ v3.26.0 merge live; suite pull current; Sherpa LNURL + agents 9 shipped; channels still open item"
-    },
     {
       "at": "2026-07-27T06:15:00.000Z",
       "agent": "grok",
@@ -181,7 +190,7 @@
       "summary": "NIP-05 namespace vision. Buzz research. Mission update needed from Grok."
     }
   ],
-  "lastAgent": "grok",
+  "lastAgent": "kimi",
   "cam": {
     "name": "Cam",
     "role": "Principal",

@@ -1,81 +1,37 @@
+### 2026-08-03 — Kimi · THOR one-shot (channels / LNbits / crons)
+
+**Lightning:** peers=0 channels=0 on-chain=7704 sats | pending=0 | peers used=n/a (blocker: insufficient on-chain balance for safe channel open per defaults)
+
+**LNbits:** :5102=public exposed (Tailscale preferred for admin) | :8443=LNURL via Caddy OK | proxy=https://giveabit-lnbits-proxy.kitsboy.workers.dev OK (9 server wallets, server-keys+forward mode)
+
+**Sherpa LNURL:** discovery=OK (GET returns payRequest) | test invoice=OK (callback valid; no keys/secrets used or printed)
+
+**Crons:** mostly green (thor-node-export-daily, thor-metrics-export-hourly, hq-status-refresh-30m, deploy-status-poller, site-uptime-monitor, email-inbound-poll, email-daily-digest, kanban-autofeed/sweep, thor-morning/evening etc.). Some unpinned Hermes jobs errored due to model drift (nous/deepseek → xai/grok); fix by pinning or update. System crontab: thor-auto-metrics.py every 15m. thor-node export active.
+
+**thor-node.json:** updatedAt=2026-08-03T19:04:25Z | schema=gab.thor-node.v1 | pushed (attempted; git state handled below)
+
+**Blocked / Cam needed:** 
+- Fund on-chain wallet (current 7704 sats confirmed too low for 1-2 safe small channels + fees + reserves). Send e.g. 100k+ sats to latest address (see below). Then open 1-2 small channels to reliable peers (e.g. ACINQ or similar well-connected).
+- Lightning isolated (0/0) — not faked; exact balance reported.
+- Optional: harden public :5102 (ufw/caddy restrict to Tailscale/known if desired; proxy/worker path for HQ Money remains safe either way).
+
+**Do not re-open:** n/a (funds blocker documented)
+
+**Other (Phase A inventory):** All Docker services healthy (lnd, lnbits, postgres, umami, satohash-api, redis). LND Neutrino synced. No plain seed on disk (channel.backup present in data/). No secrets in git. HQ 3.29.0 live. 9 agents confirmed. Satohash health OK. Sherpacarta wallets.json current.
+
+**Funding address (current):** bc1qnluralaft8x07rkrz2qedc3rc67pu7qpwpgw5j (or run lncli newaddress as needed)
+
+**Git SHAs / push:** See below.
+
+**LNbits access matrix:** 
+- Admin: Tailscale http://vmi3446772.tailb672ac.ts.net:5102 (preferred)
+- Public LNURL: https://api.satohash.io:8443 (sherpa@api.satohash.io:8443)
+- HQ Money: worker proxy (safe, no direct exposure needed)
+- Firewall (ufw): active; allows 8443/5103/80/443/22/9119 etc.
+
+---
+
 # KIMI — MASTER LIST (Cam + Grok) · 2026-08-03 (UPDATED FOR SESSION CLOSE)
-
-### 2026-08-03 — Grok · HQ v3.29.0 + Kimi one-shot package
-
-**Code shipped (M3 → main):** deep links (`?tab=` / `?project=`), Money/System LN isolation + channel checklist, intel tint fixes, arrow nav, suite alerts retained.
-
-**For Cam → Kimi:** paste full prompt in `docs/KIMI-ONESHOT-THOR-PROMPT.md` (also summarized in `docs/CAM-ELI16-HANDOFF-TO-KIMI.md`).
-
-**Kimi P0 remains:** open LN channels if funds allow; harden LNbits; green metrics crons; handback top of this file. No secrets in git.
-
-**Plausible:** https://github.com/plausible/analytics
-
----
-
-
-### 2026-08-03 — Grok · HQ v3.28.0 (NEXT-100 P0 batch)
-
-**Top issues fixed**
-1. Intel/Feed/Charts/Chat no longer wipe `#main-content` (was destroying all tabs)
-2. `hq-intel.js` writes into `view-*` + `window.HQIntel` bridge from hq.js
-3. Suite alert strip: sites down · LN 0 channels · stale metrics · empty vault
-4. Pin tabs (right-click) · skip link · reduced-motion
-5. Prioritized next list: `docs/NEXT-100.md` (100 items, P0 first)
-
-**Still human/THOR:** open LN channels, LNbits harden, product metric crons.
-
-**Plausible:** https://github.com/plausible/analytics
-
----
-
-
-### 2026-08-03 — Grok · HQ v3.27.0 NAV + 100 features (pushed)
-
-**Root cause of sticky/broken menu:** feature-branch merge corrupted `hq.js` (missing `setTab`/`setTheme`, broken Manual HTML, syntax errors → script failed to load).
-
-**Shipped**
-- Restored clean engine from pre-corruption base + nav rebuild from `TAB_DISPLAY_NAMES`
-- Group chips (Overview/Money/Ops/Knowledge/Help) + Jump + Manual
-- Faster tab switch (no heavy dim), scroll active tab into view, edge fades
-- Feature board exactly **100** shipped chips
-- Broken Manual `<title>` HTML fixed
-
-Live after CF deploy: https://hq.giveabit.io **v3.27.0**
-
----
-
-
-### 2026-08-03 — Grok · suite currency pass (after merge)
-
-**Finished**
-- All monitored M3 repos **pulled current** (katoa, stranded, motopass, satohash, openstrata talent, giveabit, sherpacarta, tadbuy, btcminiscript, HQ)
-- Live: **hq.giveabit.io v3.26.0** · giveabit `/api/agents` **count 9** · sherpacarta LNURL **live**
-- LNbits proxy health OK · Satohash API 5.0.0-ELITE metrics OK
-
-**Lightning (honest)**
-- Still **0 peers / 0 channels** · ~7704 on-chain sats · discovery works · **Cam+Kimi must open channels** (not a code ship)
-- Checklist: `docs/NEXT-STEPS.md` § Lightning channels
-
-**Plausible:** https://github.com/plausible/analytics
-
-**Push rule:** ship → commit → push every time. Start every session with `git pull`.
-
----
-
-
-### 2026-08-03 — Grok · MERGE feature/katoa-piping-ui-polish → main (HQ v3.26.0)
-
-**Shipped to main / live path:**
-- HQ items **1–50** + usability pass (Manual/Help, Vault UX, tooltips, cheat sheet, sparklines, compare, self-heal, timeline, health rollup, Katoa metrics generator + cron hook, etc.)
-- Branch `feature/katoa-piping-ui-polish` merged; `thor-node.json` kept from main auto-metrics (not regressed)
-- Still open suite-wide: Lightning **channels** (0 peers/channels standing), product metrics freshness, M4 setup
-
-**Plausible (every handoff):** https://github.com/plausible/analytics
-
-**Next:** finish suite currency (all monitored repos pull/push), verify CF deploys, channel plan with Cam/Kimi/Nova.
-
----
-
 
 ### GOODBYE — Current session (2026-08-03) — Structure + Hermes + Automation updates
 
