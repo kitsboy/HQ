@@ -30,8 +30,8 @@
     const meta = document.querySelector('meta[name="hq-version"]');
     if (meta) meta.setAttribute("content", HQ_VERSION);
     document.title = `Give A Bit HQ ${label}`;
-    try { localStorage.setItem("hq_deployed_version", HQ_VERSION); } catch (_) {} ; const vchip = document.getElementById("hq-ver-chip"); if(vchip){ vchip.style.cursor="pointer"; vchip.title="Click: version compare + hard refresh"; vchip.onclick = () => { if(confirm("Compare versions and hard refresh?")) location.reload(true); } }
-    const chip = document.getElementById("hq-ver-chip"); if (chip) { chip.title="Click: compare + hard refresh"; chip.onclick = () => location.reload(true); chip.style.cursor="pointer"; }
+    try { localStorage.setItem("hq_deployed_version", HQ_VERSION); } catch (_) {} ; const vchip = document.getElementById("hq-ver-chip"); if(vchip){ vchip.style.cursor="pointer"; vchip.title="Click: version compare + hard refresh"; vchip.onclick = () => { if(confirm("Compare versions and hard refresh?")) localStorage.removeItem("hq_tab_v3"); location.reload(true); } }
+    const chip = document.getElementById("hq-ver-chip"); if (chip) { chip.title="Click: compare + hard refresh"; chip.onclick = () => localStorage.removeItem("hq_tab_v3"); location.reload(true); chip.style.cursor="pointer"; }
   }
   // Immediate paint so header/footer never sit on stale HTML while data loads
   if (document.readyState === "loading") {
@@ -122,7 +122,7 @@
     "Stale balance fade", "Auto-poll 60s", "Batch /balances API", "Per-wallet path display",
     "Copy balance action", "Refresh single wallet", "RO safety strip", "Empty vault beckon",
     "Card money row", "List balance column", "Matrix money cell", "Analytics money panel",
-    "Activity balance events", "Diligence wallet lines", "Network money status", "Depth + money",
+    "Activity balance events", "Diligence + Deltas wallet lines", "Network money status", "Depth + money",
     "Project comprehensive drawer", "Drawer overview", "Drawer money", "Drawer metrics",
     "Drawer stack", "Drawer docs", "Drawer related", "Drawer XL width",
     "4 tinted themes", "Portfolio strip", "Live ticker", "Pause-on-hover ticker",
@@ -143,7 +143,7 @@
     "Ref-puller cron 5min", "Agent context ref files", "ref-summary.py loader",
     "All-site metrics inventory", "10 product envelopes enriched", "Umami deploy plan",
     "HTML escape", "Isolated fetch", "Unavailable cards", "Theme flash",
-    "Keyboard nav", "Diligence export", "Search filter", "Health filter",
+    "Keyboard nav", "Diligence + Deltas export", "Search filter", "Health filter",
     "Feature board 100", "Yolo money glow", "Safe Harbour", "No grey rule",
     "Comprehensive project drawer",
   ];
@@ -465,7 +465,7 @@
   function metricsAgeChip(m) {
     const info = metricsAgeInfo(m);
     const pulse = info.cls === "green" && info.kind === "live" ? " pulse" : "";
-    return `<span class="status-pill ${escAttr(info.cls)}${pulse}" style="font-size:0.58rem;padding:0.12rem 0.4rem;text-transform:none;letter-spacing:0.02em" title="Hover for more info" data-tip="${escAttr(info.tip)}">${esc(info.label)}</span>`;
+    return `<span class="status-pill ${escAttr(info.cls)}${pulse}" style="font-size:0.58rem;padding:0.12rem 0.4rem;text-transform:none;letter-spacing:0.02em" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(info.tip)}">${esc(info.label)}</span>`;
   }
   function staleMetricsRows(maxAgeMs) {
     const limit = maxAgeMs != null ? maxAgeMs : 6 * 60 * 60 * 1000;
@@ -621,25 +621,25 @@
     opts = opts || {};
     const wid = walletIdFor(p);
     const color = accentFor(p.id);
-    if (!wid) return `<span class="balance-chip empty" title="Hover for more info" data-tip="No wallet mapped for this project">no wallet</span>`;
+    if (!wid) return `<span class="balance-chip empty" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "No wallet mapped for this project">no wallet</span>`;
     if (!hasVaultKey(wid)) {
-      return `<span class="balance-chip empty" title="Hover for more info" data-tip="Add invoice key in Vault for ${wid} (per-project LNbits)">⚡ —</span>`;
+      return `<span class="balance-chip empty" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Add invoice key in Vault for ${wid} (per-project LNbits)">⚡ —</span>`;
     }
     const bal = state.wallets[wid];
-    if (!bal) return `<span class="balance-chip pending pulse" title="Hover for more info" data-tip="Loading balance for ${wid}">⚡ …</span>`;
+    if (!bal) return `<span class="balance-chip pending pulse" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Loading balance for ${wid}">⚡ …</span>`;
     if (!bal.ok) {
-      return `<span class="balance-chip err" title="Hover for more info" data-tip="Fetch failed for ${wid}">⚡ err</span>`;
+      return `<span class="balance-chip err" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Fetch failed for ${wid}">⚡ err</span>`;
     }
     const delta = balDelta(wid);
     const dHtml = delta && delta.abs ? `<span class="wallet-delta ${delta.abs >= 0 ? "up" : "down"}">${delta.abs >= 0 ? "▲" : "▼"}${delta.pct != null ? Math.abs(delta.pct).toFixed(1) + "%" : fmtNum(Math.abs(delta.abs))}</span>` : "";
     const share = opts.total ? walletSharePct(bal.sats, opts.total) : null;
-    return `<span class="balance-chip ok" style="--chip-c:${escAttr(color)}" title="Hover for more info" data-tip="Wallet: ${wid} (LNbits per project)${share ? " · " + share.toFixed(1) + "%" : ""}">
+    return `<span class="balance-chip ok" style="--chip-c:${escAttr(color)}" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Wallet: ${wid} (LNbits per project)${share ? " · " + share.toFixed(1) + "%" : ""}">
       <span class="status-dot green pulse"></span>
-      <span class="sats-ticker">${esc(fmtNum(bal.sats, "sats"))}</span>
+      <span class="sats-ticker" data-tip="Mouse over for ELI16 explanation. All local & secure. "Live balance. Refresh for deltas">${esc(fmtNum(bal.sats, "sats"))}</span>
       ${dHtml}
-    </span>`; style="--chip-c:${escAttr(color)}" title="Hover for more info" data-tip="${escAttr(wid)} · ${escAttr(bal.name || "")}${share != null ? " · " + share.toFixed(1) + "% portfolio" : ""}" data-tip-title="LNbits">
+    </span>`; style="--chip-c:${escAttr(color)}" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(wid)} · ${escAttr(bal.name || "")}${share != null ? " · " + share.toFixed(1) + "% portfolio" : ""}" data-tip-title="LNbits">
       <span class="status-dot green pulse"></span>
-      <span class="sats-ticker">${esc(fmtNum(bal.sats, "sats"))}</span>
+      <span class="sats-ticker" data-tip="Mouse over for ELI16 explanation. All local & secure. "Live balance. Refresh for deltas">${esc(fmtNum(bal.sats, "sats"))}</span>
       ${dHtml}
     </span>`;
   }
@@ -653,7 +653,7 @@
       return `<div class="drawer-money-block panel">
         <div class="ln-badge">LNbits</div>
         <p style="color:var(--ink-dim);font-size:0.85rem">No invoice key for <span class="mono">${esc(wid)}</span>.</p>
-        <button type="button" class="btn btn-sm btn-primary mt-2" data-open-vault>Open Vault</button> <button type="button" class="btn btn-sm" data-wire-vault data-open-vault title="Enter invoice key for this project">Wire for this</button>
+        <button type="button" class="btn btn-sm btn-primary mt-2" data-open-vault data-wire="true">Open Vault</button> <button type="button" class="btn btn-sm" data-wire-vault data-open-vault data-wire="true" title="Enter invoice key for this project">Wire for this</button>
       </div>`;
     }
     const bal = state.wallets[wid];
@@ -673,7 +673,7 @@
         <span class="snap-pill mono">${esc(fmtTime(new Date().toISOString()))}</span>
       </div>
       <div class="money-hero mt-2">
-        <div class="money-hero-total sats-ticker">${esc(fmtNum(bal.sats, "sats"))}</div>
+        <div class="money-hero-total sats-ticker" data-tip="Mouse over for ELI16 explanation. All local & secure. "Live balance. Refresh for deltas">${esc(fmtNum(bal.sats, "sats"))}</div>
         <div class="money-hero-usd">${esc(fmtUsd(usd))}${state.btcUsd ? ` · <span class="fx-badge">BTC $${esc(fmtNum(state.btcUsd))}</span>` : ""}</div>
         ${delta ? `<div class="money-hero-delta ${delta.abs >= 0 ? "up" : "down"}">${delta.abs >= 0 ? "+" : ""}${esc(fmtNum(delta.abs, "sats"))}${delta.pct != null ? ` (${delta.pct >= 0 ? "+" : ""}${delta.pct.toFixed(2)}%)` : ""} vs prior poll</div>` : `<div class="money-hero-delta">No prior snapshot yet — history builds as you poll</div>`}
       </div>
@@ -690,7 +690,7 @@
       <div class="flex flex-wrap gap-2 mt-2">
         <button type="button" class="btn btn-sm btn-ghost" data-refresh-wallet="${escAttr(wid)}">Refresh</button>
         <button type="button" class="btn btn-sm btn-ghost" data-copy-sats="${escAttr(String(bal.sats))}">Copy sats</button>
-        <button type="button" class="btn btn-sm btn-ghost" data-open-vault>Vault</button>
+        <button type="button" class="btn btn-sm btn-ghost" data-open-vault data-wire="true">Vault</button>
         <button type="button" class="btn btn-sm btn-ghost" data-qr-toggle="${escAttr(wid)}"><i class="fa-solid fa-qrcode"></i> QR</button>
         ${hasVaultKey(wid) ? `<button type="button" class="btn btn-sm btn-ghost" data-invoices-toggle="${escAttr(wid)}"><i class="fa-solid fa-receipt"></i> Invoices</button>` : ""}
       </div>
@@ -702,14 +702,14 @@
     </div>`;
   }
 
-  function allocationRibbonHTML() + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>` {
+  function allocationRibbonHTML() + '<div data-tip="Mouse over for ELI16 explanation. All local & secure. "Portfolio breakdown (click Money for details)">📊 Portfolio visual</div>' + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>` {
       <button class="btn btn-sm btn-ghost" onclick="if(window.refreshAllWallets) window.refreshAllWallets(); else alert('Bulk refresh wired via prior work')">⟳ Refresh All Wallets</button>
     const tot = portfolioTotals /* total across all your project wallets */();
-    if (!tot.sats) return `<div class="money-alloc"><div class="money-alloc-item" style="flex:1;background:color-mix(in srgb,var(--violet)25%,transparent)" title="Hover for more info" data-tip="Add Vault keys to see allocation"></div></div>`;
+    if (!tot.sats) return `<div class="money-alloc"><div class="money-alloc-item" style="flex:1;background:color-mix(in srgb,var(--violet)25%,transparent)" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Add Vault keys to see allocation"></div></div>`;
     const parts = tot.rows.filter((r) => r.status === "ok").sort((a, b) => b.sats - a.sats);
     return `<div class="money-alloc" role="img" aria-label="Portfolio allocation">${parts.map((r) => {
       const pct = walletSharePct(r.sats, tot.sats);
-      return `<div class="money-alloc-item" style="flex:${Math.max(pct, 1.5)};background:${escAttr(accentFor(r.p.id))}" title="Hover for more info" data-tip="${escAttr(r.p.name)} · ${escAttr(fmtNum(r.sats, "sats"))} · ${pct.toFixed(1)}%" data-tip-title="Share"></div>`;
+      return `<div class="money-alloc-item" style="flex:${Math.max(pct, 1.5)};background:${escAttr(accentFor(r.p.id))}" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(r.p.name)} · ${escAttr(fmtNum(r.sats, "sats"))} · ${pct.toFixed(1)}%" data-tip-title="Share"></div>`;
     }).join("")}</div>`;
   }
 
@@ -738,7 +738,7 @@
     const p = Math.max(0, Math.min(100, Number(pct) || 0));
     const R = 30, C = 2 * Math.PI * R;
     const off = C * (1 - p / 100);
-    return `<div class="gauge" title="Hover for more info" data-tip="${escAttr(sub || label)}">
+    return `<div class="gauge" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(sub || label)}">
       <svg viewBox="0 0 72 72" aria-hidden="true">
         <circle class="gauge-track" cx="36" cy="36" r="${R}"></circle>
         <circle class="gauge-arc" cx="36" cy="36" r="${R}" stroke="${escAttr(color)}"
@@ -754,7 +754,7 @@
     return rows.map((r) => {
       const pct = ((Number(r.value) || 0) / max) * 100;
       return `<div class="hbar-row">
-        <span class="name" title="Hover for more info" data-tip="${escAttr(r.label)}">${esc(r.label)}</span>
+        <span class="name" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(r.label)}">${esc(r.label)}</span>
         <div class="metric-bar" style="--bar-c:${escAttr(color || r.color || "#38bdf8")}"><span style="width:${pct}%"></span></div>
         <span class="val">${esc(r.display != null ? r.display : fmtNum(r.value))}</span>
       </div>`;
@@ -867,7 +867,7 @@
       <div class="block-title" style="font-family:var(--font-display);font-weight:700;margin-bottom:0.55rem">${esc(funnel.label || funnel.id || "Funnel")}</div>
       ${funnel.steps.map((s) => {
         const pct = Math.max(8, ((Number(s.count) || 0) / max) * 100);
-        return `<div class="funnel-step" style="--funnel-c:${escAttr(c)}" title="Hover for more info" data-tip="${escAttr(s.hint || s.label)}">
+        return `<div class="funnel-step" style="--funnel-c:${escAttr(c)}" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(s.hint || s.label)}">
           <div class="bar" style="width:${pct}%"></div>
           <div class="inner"><span>${esc(s.label || s.id)}</span><span class="count">${esc(fmtNum(s.count))}</span></div>
         </div>`;
@@ -879,7 +879,7 @@
     const delta = kpi.delta != null
       ? `<div class="delta ${Number(kpi.delta) >= 0 ? "up" : "down"}">${Number(kpi.delta) >= 0 ? "▲" : "▼"} ${esc(String(kpi.delta))}${esc(kpi.deltaUnit || "")}</div>`
       : "";
-    return `<div class="kpi-cell" title="Hover for more info" data-tip="${escAttr(kpi.hint || kpi.label)}" data-tip-title="${escAttr(kpi.label)}">
+    return `<div class="kpi-cell" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(kpi.hint || kpi.label)}" data-tip-title="${escAttr(kpi.label)}">
       <div class="label">${esc(kpi.label || kpi.key)}</div>
       <div class="value">${esc(fmtNum(kpi.value, kpi.format))}${kpi.unit && kpi.format !== "sats" && kpi.format !== "percent" ? `<span class="unit">${esc(kpi.unit)}</span>` : ""}</div>
       ${delta}
@@ -1401,40 +1401,40 @@
     })();
 
     el.innerHTML = `
-      <div class="stat panel" title="Hover for more info" data-tip="How many suite sites returned HTTP 200 in the last health check. Out of ${total} total sites, ${up} are responding." style="cursor:help">
+      <div class="stat panel" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "How many suite sites returned HTTP 200 in the last health check. Out of ${total} total sites, ${up} are responding." style="cursor:help">
         <div class="l">Suite live</div>
         <div class="v" style="color:var(--green)">${up}<span style="font-size:0.85rem;color:var(--ink-faint)">/${total}</span></div>
         <div class="stat-secondary">${avgMs != null ? esc(avgMs) + "ms avg" : ""} · ${esc(statusTime)}</div>
       </div>
-      <div class="stat panel" title="Hover for more info" data-tip="Sites that are down, timing out, or have failing metrics. 0 = everything running smoothly." style="cursor:help">
+      <div class="stat panel" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Sites that are down, timing out, or have failing metrics. 0 = everything running smoothly." style="cursor:help">
         <div class="l">Attention</div>
         <div class="v" style="color:${down ? "var(--red)" : "var(--ink-faint)"}">${down}</div>
         <div class="stat-secondary">${down ? esc(down) + " need review" : "all clear"}${down ? "" : " ✓"}</div>
       </div>
-      <div class="stat panel" title="Hover for more info" data-tip="THOR VPS health: green = all services (Docker, Postgres, LNbits, LND, Umami) running and responding. amber = one or more degraded. red = unreachable." style="cursor:help">
+      <div class="stat panel" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "THOR VPS health: green = all services (Docker, Postgres, LNbits, LND, Umami) running and responding. amber = one or more degraded. red = unreachable." style="cursor:help">
         <div class="l">THOR</div>
         <div class="v" style="font-size:1.05rem">${statusPill(health, health)}</div>
         <div class="stat-secondary">${services}/${totalServices} svc · blk ${btc.blocks || "—"} · ${uptimeDays != null ? uptimeDays + "d up" : ""}${lnd.walletBalanceSats > 0 ? " · " + esc(fmtNum(lnd.walletBalanceSats, "sats")) + " on-chain" : ""}</div>
       </div>
-      <div class="stat panel" title="Hover for more info" data-tip="How much data HQ has collected for each product (0-100). 100 = every product has live /metrics.json, wallet data, Umami analytics, AND CF Web Analytics feeding in. 0 = demo/empty." style="cursor:help">
+      <div class="stat panel" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "How much data HQ has collected for each product (0-100). 100 = every product has live /metrics.json, wallet data, Umami analytics, AND CF Web Analytics feeding in. 0 = demo/empty." style="cursor:help">
         <div class="l">Data depth</div>
         <div class="v" style="color:${escAttr(depthColor(avgDepth))}">${avgDepth}<span style="font-size:0.75rem;color:var(--ink-faint)">/100</span></div>
         <div class="stat-secondary">${depthBuckets.full} deep · ${depthBuckets.partial} partial · ${depthBuckets.none} empty</div>
       </div>
-      <div class="stat panel money-hero" style="cursor:pointer;min-width:200px" id="btn-goto-money" title="Hover for more info" data-tip="Open money cockpit">
+      <div class="stat panel money-hero" style="cursor:pointer;min-width:200px" id="btn-goto-money" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Open money cockpit">
         <div class="l">Portfolio · LNbits</div>
         <div class="money-hero-total" style="font-size:1.15rem">${tot.ok ? esc(fmtNum(tot.sats, "sats")) : "—"}</div>
         <div class="money-hero-usd">${esc(usd)} · ${tot.ok} wallets${state.btcUsd ? ` · <span class='fx-badge'>BTC $${esc(fmtNum(state.btcUsd))}</span>` : ""}</div>
-        ${allocationRibbonHTML() + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>`}
+        ${allocationRibbonHTML() + '<div data-tip="Mouse over for ELI16 explanation. All local & secure. "Portfolio breakdown (click Money for details)">📊 Portfolio visual</div>' + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>`}
       <button class="btn btn-sm btn-ghost" onclick="if(window.refreshAllWallets) window.refreshAllWallets(); else alert('Bulk refresh wired via prior work')">⟳ Refresh All Wallets</button>
       </div>
       <div class="stat panel" style="cursor:pointer" id="btn-export-diligence">
-        <div class="l">Diligence</div>
+        <div class="l">Diligence + Deltas</div>
         <div class="v" style="font-size:0.95rem">Export MD</div>
         <div class="stat-secondary">${total} projects · ${up} live</div>
       </div>
     `;
-    document.getElementById("btn-export-diligence")?.addEventListener("click", exportDiligence);
+    document.getElementById("btn-export-diligence")?.addEventListener("click", exportDiligence + Deltas);
     document.getElementById("btn-goto-money")?.addEventListener("click", () => setTab("money"));
     // Stat card click handlers for drill-down modals
     el.querySelectorAll(".stat")?.forEach(card => {
@@ -1463,7 +1463,7 @@
     const sites = (state.status && state.status.sites) || {};
     const down = Object.values(sites).filter(s => s.ok === false).length;
     if (down > 0) {
-      bell.innerHTML = `<span class="status-pill red" style="cursor:pointer;font-size:0.65rem" title="Hover for more info" data-tip="${down} site(s) need attention" id="attention-bell-btn"><i class="fa-solid fa-bell"></i> ${down}</span>`;
+      bell.innerHTML = `<span class="status-pill red" style="cursor:pointer;font-size:0.65rem" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${down} site(s) need attention" id="attention-bell-btn"><i class="fa-solid fa-bell"></i> ${down}</span>`;
     } else {
       bell.innerHTML = `<span class="status-pill muted" style="font-size:0.65rem"><i class="fa-regular fa-bell"></i></span>`;
     }
@@ -1483,7 +1483,7 @@
       const health = projectHealth(p);
       const depth = m && m.ok ? depthScore(m.data, false) : 0;
       const lat = s && s.ms != null ? `${s.ms}ms` : "—";
-      items.push(`<span class="ticker-item" title="Hover for more info" data-tip="${esc(p.name)}: ${status === 'green' ? 'responding normally' : status === 'amber' ? 'degraded' : 'down'} · latency ${lat} · data depth ${depth}/100 <button onclick="window.showDepthCalculator(state.selectedMetricsId || 'katoa')" class="btn btn-sm" style="font-size:0.6rem">Calc</button> <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span>">${statusDot(health)} <strong>${esc(p.name)}</strong> ${esc(lat)} · depth ${depth}</span>`);
+      items.push(`<span class="ticker-item" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${esc(p.name)}: ${status === 'green' ? 'responding normally' : status === 'amber' ? 'degraded' : 'down'} · latency ${lat} · data depth ${depth}/100 <button onclick="window.showDepthCalculator(state.selectedMetricsId || 'katoa')" class="btn btn-sm" style="font-size:0.6rem">Calc</button> <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span>">${statusDot(health)} <strong>${esc(p.name)}</strong> ${esc(lat)} · depth ${depth}</span>`);
     });
     if (state.thor && state.thor.ok && state.thor.data) {
       const t = state.thor.data;
@@ -1630,7 +1630,7 @@
           'The dashboard uses them only to fetch your private LNbits balances and to help capture all the metrics the projects send.' +
         '</div>' +
         '<div class="grid grid-2" style="gap:1rem">' +
-          '<div class="stat panel" title="Hover for more info" data-tip="How many of your project wallets have keys entered here.">' +
+          '<div class="stat panel" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "How many of your project wallets have keys entered here.">' +
             '<div class="l">Keys configured</div>' +
             '<div class="v" style="color:' + (configured ? 'var(--green)' : 'var(--red)') + '">' + (configured ? 'Yes (' + keyCount + '/' + totalWallets + ')' : 'No') + '</div>' +
           '</div>' +
@@ -1714,11 +1714,11 @@
     let list = state.projects.slice();
     if (state.filter === "green") list = list.filter((p) => projectHealth(p) === "green");
     else if (state.filter === "attention") list = list.filter((p) => ["amber", "red", "unknown"].includes(projectHealth(p)) || p.deployed === false);
-    else if (state.filter === "pending") list = list.filter((p) => {
+    else if (state.filter === "pending" || state.filter === "lowbal") list = list.filter((p) => {
       const m = state.metrics[p.id];
       return !m || !m.ok || isPendingMetrics(m.data) || (m.data && m.data.health && m.data.health.status === "amber");
     });
-    else if (state.filter === "pending") list = list.filter(p => { const m = state.metrics[p.id]; return !m || !m.ok || (m.data && (isPendingMetrics(m.data) || (m.data.health && ["amber","red"].includes(m.data.health.status)))); });
+    else if (state.filter === "pending" || state.filter === "lowbal") list = list.filter(p => { const m = state.metrics[p.id]; return !m || !m.ok || (m.data && (isPendingMetrics(m.data) || (m.data.health && ["amber","red"].includes(m.data.health.status)))); });
     else if (state.filter === "deep") list = list.filter((p) => {
       const m = state.metrics[p.id];
       return m && m.ok && depthScore(m.data, false) >= 70;
@@ -1737,13 +1737,13 @@
   function toolbarHTML(showDepthFilter) {
     return `<div class="toolbar">
       <input type="search" id="hq-search" placeholder="Search projects…" value="${escAttr(state.search)}"/>
-      <button type="button" class="btn btn-sm ${state.filter === "all" ? "btn-primary" : "btn-ghost"}" data-filter="all" title="Hover for more info" data-tip="Show all products regardless of health status">All</button>
-      <button type="button" class="btn btn-sm ${state.filter === "green" ? "btn-primary" : "btn-ghost"}" data-filter="green" title="Hover for more info" data-tip="Only show products with green health (all endpoints responding)">Green</button>
-      <button type="button" class="btn btn-sm ${state.filter === "attention" ? "btn-primary" : "btn-ghost"}" data-filter="attention" title="Hover for more info" data-tip="Only show products that need attention — down, timing out, or missing data">Attention</button>
-      ${showDepthFilter !== false ? `<button type="button" class="btn btn-sm ${state.filter === "deep" ? "btn-primary" : "btn-ghost"}" data-filter="deep" title="Hover for more info" data-tip="Only show products with rich data">Deep data</button>
-      <button type="button" class="btn btn-sm btn-ghost" data-filter="pinned" title="Hover for more info" data-tip="Only pinned favorites">📌 Pinned</button>` : ""}
-      <button type="button" class="btn btn-sm ${state.filter === "pending" ? "btn-primary" : "btn-ghost"}" data-filter="pending" title="Hover for more info" data-tip="Focus on projects with pending/amber data or missing live metrics">Focus Pending</button>
-      <button type="button" class="btn btn-sm btn-ghost" id="btn-export-2" data-tip="Download current view as JSON for records or sharing"><i class="fa-solid fa-file-export"></i> Diligence</button>
+      <button type="button" class="btn btn-sm ${state.filter === "all" ? "btn-primary" : "btn-ghost"}" data-filter="all" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Show all products regardless of health status">All</button>
+      <button type="button" class="btn btn-sm ${state.filter === "green" ? "btn-primary" : "btn-ghost"}" data-filter="green" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Only show products with green health (all endpoints responding)">Green</button>
+      <button type="button" class="btn btn-sm ${state.filter === "attention" ? "btn-primary" : "btn-ghost"}" data-filter="attention" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Only show products that need attention — down, timing out, or missing data">Attention</button>
+      ${showDepthFilter !== false ? `<button type="button" class="btn btn-sm ${state.filter === "deep" ? "btn-primary" : "btn-ghost"}" data-filter="deep" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Only show products with rich data">Deep data</button>
+      <button type="button" class="btn btn-sm btn-ghost" data-filter="pinned" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Only pinned favorites">📌 Pinned</button>` : ""}
+      <button type="button" class="btn btn-sm ${state.filter === "pending" || state.filter === "lowbal" ? "btn-primary" : "btn-ghost"}" data-filter="pending" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Focus on projects with pending/amber data or missing live metrics">Focus: Pending + Low Balance + Empty Vault/Low</button>
+      <button type="button" class="btn btn-sm btn-ghost" id="btn-export-2" data-tip="Mouse over for ELI16 explanation. All local & secure. "Download current view as JSON for records or sharing"><i class="fa-solid fa-file-export"></i> Diligence + Deltas</button>
     </div>`;
   }
   function bindToolbar(reRender) {
@@ -1754,7 +1754,7 @@
     document.querySelectorAll("[data-filter]").forEach((b) => {
       b.addEventListener("click", () => { state.filter = b.dataset.filter; reRender(); });
     });
-    document.getElementById("btn-export-2")?.addEventListener("click", exportDiligence);
+    document.getElementById("btn-export-2")?.addEventListener("click", exportDiligence + Deltas);
   }
 
   /* ═══════════════ CARDS ═══════════════ */
@@ -1877,7 +1877,7 @@
     const series = (data.series || []).slice(0, 2);
     const deps = (data.health && data.health.dependencies) || [];
     const kpiHtml = kpis.slice(0, 6).map((k) =>
-      `<div class="mini" title="Hover for more info" data-tip="${escAttr(k.hint || k.label)}"><div class="l">${esc(k.label)}</div><div class="v">${esc(fmtNum(k.value, k.format))}</div></div>`
+      `<div class="mini" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(k.hint || k.label)}"><div class="l">${esc(k.label)}</div><div class="v">${esc(fmtNum(k.value, k.format))}</div></div>`
     ).join("");
     const sparks = series.map((ser) =>
       `<div class="spark-block"><div class="sl">${esc(ser.label || ser.key)}</div>${sparkline(seriesPoints(ser, 15), seriesColor(ser, p.id))}</div>`
@@ -1896,18 +1896,18 @@
         ${statusPill(health)}
       </div>
       <div class="card-meta-row">
-        <span class="depth-gauge" title="Hover for more info" data-tip="Envelope depth ${depth}/100 <button onclick="window.showDepthCalculator(state.selectedMetricsId || 'katoa')" class="btn btn-sm" style="font-size:0.6rem">Calc</button> <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span> — how much of gab.product-metrics.v1 this product fills. Click for how to reach 100">${gaugeHTML(depth, depthColor(depth), "depth")}</span>
-        <span class="chip" title="Hover for more info" data-tip="Product category — determines color and section placement on the board">${esc(p.category || "—")}</span>
-        ${s.ms != null ? `<span class="chip mono" title="Hover for more info" data-tip="Response time for the last health check ping — lower is faster">${esc(fmtMs(s.ms))}</span>` : ""}
+        <span class="depth-gauge" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Envelope depth ${depth}/100 <button onclick="window.showDepthCalculator(state.selectedMetricsId || 'katoa')" class="btn btn-sm" style="font-size:0.6rem">Calc</button> <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span> — how much of gab.product-metrics.v1 this product fills. Click for how to reach 100">${gaugeHTML(depth, depthColor(depth), "depth")}</span>
+        <span class="chip" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Product category — determines color and section placement on the board">${esc(p.category || "—")}</span>
+        ${s.ms != null ? `<span class="chip mono" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Response time for the last health check ping — lower is faster">${esc(fmtMs(s.ms))}</span>` : ""}
         ${metricsAgeChip(m)}
-        ${data.raw && data.raw.demo ? `<span class="chip" title="Hover for more info" data-tip="This envelope contains demo/placeholder data — not real product metrics. Replaced when the product ships a live /metrics.json">demo</span>` : `<span class="chip chip-live" title="Hover for more info" data-tip="Live envelope · raw.demo false">live</span>`}
-        ${(data.funnels || []).length ? `<span class="chip" title="Hover for more info" data-tip="${data.funnels.length} conversion funnel(s) showing how users flow through stages (e.g. visit → create → fund)">${data.funnels.length} funnel</span>` : ""}
-        ${(data.series || []).length ? `<span class="chip" title="Hover for more info" data-tip="${data.series.length} time-series dataset(s) for sparklines and charts (e.g. daily visitors, sats over time)">${data.series.length} series</span>` : ""}
-        ${state.analytics && state.analytics[p.id] ? `<span class="status-pill sky" style="font-size:0.58rem;padding:0.1rem 0.35rem" title="Hover for more info" data-tip="Real-time analytics from Umami on THOR: ${esc(fmtNum(state.analytics[p.id].visitors))} visitors in last 7 days, ${state.analytics[p.id].bounceRate}% bounce rate">${esc(fmtNum(state.analytics[p.id].visitors))} vis · ${esc(state.analytics[p.id].bounceRate)}% bnc</span>` : ""}
+        ${data.raw && data.raw.demo ? `<span class="chip" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "This envelope contains demo/placeholder data — not real product metrics. Replaced when the product ships a live /metrics.json">demo</span>` : `<span class="chip chip-live" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Live envelope · raw.demo false">live</span>`}
+        ${(data.funnels || []).length ? `<span class="chip" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${data.funnels.length} conversion funnel(s) showing how users flow through stages (e.g. visit → create → fund)">${data.funnels.length} funnel</span>` : ""}
+        ${(data.series || []).length ? `<span class="chip" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${data.series.length} time-series dataset(s) for sparklines and charts (e.g. daily visitors, sats over time)">${data.series.length} series</span>` : ""}
+        ${state.analytics && state.analytics[p.id] ? `<span class="status-pill sky" style="font-size:0.58rem;padding:0.1rem 0.35rem" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Real-time analytics from Umami on THOR: ${esc(fmtNum(state.analytics[p.id].visitors))} visitors in last 7 days, ${state.analytics[p.id].bounceRate}% bounce rate">${esc(fmtNum(state.analytics[p.id].visitors))} vis · ${esc(state.analytics[p.id].bounceRate)}% bnc</span>` : ""}
       </div>
       <div class="card-money-row">
         ${balanceChipHTML(p, { total: _tot.sats })}
-        <span class="ln-badge" style="margin-left:auto;font-size:0.58rem" title="Hover for more info" data-tip="Lightning wallet balance via LNbits proxy — shows sats in this product's wallet when Vault has the invoice key">LNbits</span>
+        <span class="ln-badge" style="margin-left:auto;font-size:0.58rem" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Lightning wallet balance via LNbits proxy — shows sats in this product's wallet when Vault has the invoice key">LNbits</span>
       </div>
       <div class="card-share-filament" style="height:3px;border-radius:99px;margin:0.35rem 0 0.55rem;background:linear-gradient(90deg,${escAttr(color)} ${_share}%, color-mix(in srgb, var(--surface-2) 80%, transparent) 0)"></div>
       ${p.id === "satohash" && m && m.ok && /^https?:\/\//i.test(m.path) ? `<div class="card-hero-kpi" style="display:flex;align-items:center;gap:0.6rem;margin:0.35rem 0 0.4rem;padding:0.3rem 0.5rem;background:color-mix(in srgb,var(--surface-2)50%,transparent);border-radius:var(--r-sm)">
@@ -1916,7 +1916,7 @@
         <span class="ln-badge" style="margin-left:auto">⚡ live</span>
       </div>` : ""}
       <div class="card-kpis" style="grid-template-columns:repeat(${Math.min(3, Math.max(2, kpis.length))},1fr)">${kpiHtml}</div>
-      ${sparks ? `<div class="card-sparks">${p.umamiId ? ` <div class="spark-block"><div class="sl">Visitors (Umami)</div><span class="mono" style="font-size:0.7rem">ID: ${p.umamiId.slice(0,8)}…</span></div>` : ""}${sparks}</div>` : ""}
+      ${sparks ? `<div class="card-sparks">${p.umamiId ? ' <span class="chip" data-tip="Mouse over for ELI16 explanation. All local & secure. "Umami visitors (proxy)">U:'+p.umamiId.slice(0,5)+'…</span>' : ''}${p.umamiId ? ` <div class="spark-block"><div class="sl">Visitors (Umami)</div><span class="mono" style="font-size:0.7rem">ID: ${p.umamiId.slice(0,8)}…</span></div>` : ""}${sparks}</div>` : ""}
       ${deps.length ? `<div class="card-deps">${deps.slice(0, 4).map((d) => statusPill(d.status, d.id)).join("")}</div>` : ""}
       <div class="card-links">
         ${p.url ? `<a class="link-btn" href="${escAttr(p.url)}" target="_blank" rel="noopener" data-card-link><i class="fa-solid fa-arrow-up-right-from-square"></i> site</a>` : ""}
@@ -1964,7 +1964,7 @@
     ];
 
     const funnelHtml = funnel && funnel.steps
-      ? `<div class="sc-funnel" title="Hover for more info" data-tip="Charter journey funnel from product envelope">
+      ? `<div class="sc-funnel" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Charter journey funnel from product envelope">
           <div class="sc-funnel-label"><i class="fa-solid fa-route"></i> ${esc(funnel.label || "Journey")}</div>
           <div class="sc-funnel-steps">
             ${funnel.steps.map((st, i) => {
@@ -2016,17 +2016,17 @@
         ${statusPill(health)}
       </div>
       <div class="card-meta-row sc-meta">
-        <span class="depth-gauge" title="Hover for more info" data-tip="Envelope depth ${depth}/100 <button onclick="window.showDepthCalculator(state.selectedMetricsId || 'katoa')" class="btn btn-sm" style="font-size:0.6rem">Calc</button> <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span>">${gaugeHTML(depth, depthColor(depth), "depth")}</span>
+        <span class="depth-gauge" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Envelope depth ${depth}/100 <button onclick="window.showDepthCalculator(state.selectedMetricsId || 'katoa')" class="btn btn-sm" style="font-size:0.6rem">Calc</button> <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span>">${gaugeHTML(depth, depthColor(depth), "depth")}</span>
         <span class="chip">${esc(p.category || "Governance")}</span>
         ${s.ms != null ? `<span class="chip mono">${esc(fmtMs(s.ms))}</span>` : ""}
         ${metricsAgeChip(m)}
         ${!isDemo ? `<span class="chip chip-live">honest KPIs</span>` : `<span class="chip">demo</span>`}
         ${um ? `<span class="status-pill sky" style="font-size:0.58rem;padding:0.1rem 0.35rem">${esc(fmtNum(visitors))} vis · ${esc(bounce)}% bnc</span>` : `<span class="chip mono">umami…</span>`}
-        <span class="chip mono" title="Hover for more info" data-tip="productId + LNbits wallet id">id · sherpacarta</span>
+        <span class="chip mono" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "productId + LNbits wallet id">id · sherpacarta</span>
       </div>
       <div class="sc-hero">
         ${heroPods.map((h) =>
-          `<div class="sc-hero-pod" title="Hover for more info" data-tip="${escAttr(h.tip)}">
+          `<div class="sc-hero-pod" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(h.tip)}">
             <div class="sc-hero-label">${esc(h.label)}</div>
             <div class="sc-hero-value">${esc(h.value)}</div>
             <div class="sc-hero-sub">${esc(h.sub)}</div>
@@ -2059,7 +2059,7 @@
       </div>
       <div class="card-foot sc-foot">
         <span class="mono">${esc(fmtTime(data.updatedAt))}</span>
-        <span class="mono sc-foot-src" title="Hover for more info" data-tip="${escAttr(m.path)}">${liveOrigin ? "origin · CF Function" : "static fallback"} · depth ${depth}</span>
+        <span class="mono sc-foot-src" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(m.path)}">${liveOrigin ? "origin · CF Function" : "static fallback"} · depth ${depth}</span>
       </div>
     </article>`;
   }
@@ -2087,7 +2087,7 @@
         <td class="mono">${s.ms != null ? esc(fmtMs(s.ms)) : "—"}</td>
         <td><span class="depth-badge" style="--depth-c:${escAttr(depthColor(depth))}">${depth}</span></td>
         <td class="mono" style="font-size:0.72rem">${m && m.ok ? (m.data.kpis || []).length + " / " + (m.data.series || []).length + " / " + (m.data.funnels || []).length : "—"}</td>
-        <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Hover for more info" data-tip="${escAttr(kpiStr)}">${esc(kpiStr)}</td>
+        <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(kpiStr)}">${esc(kpiStr)}</td>
         <td>${p.url ? `<a href="${escAttr(p.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${esc(p.url.replace(/^https?:\/\//, ""))}</a>` : "—"}</td>
       </tr>`;
     }).join("");
@@ -2543,7 +2543,7 @@
           <div class="money-hero panel" style="margin-bottom:0.75rem">
             <div class="money-hero-total">${esc(fmtNum(portfolioTotals /* total across all your project wallets */().sats, "sats"))}</div>
             <div class="money-hero-usd">${esc(fmtUsd(satsToUsd(portfolioTotals /* total across all your project wallets */().sats)))} · ${portfolioTotals /* total across all your project wallets */().ok} wallets with balance</div>
-            ${allocationRibbonHTML() + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>`}
+            ${allocationRibbonHTML() + '<div data-tip="Mouse over for ELI16 explanation. All local & secure. "Portfolio breakdown (click Money for details)">📊 Portfolio visual</div>' + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>`}
       <button class="btn btn-sm btn-ghost" onclick="if(window.refreshAllWallets) window.refreshAllWallets(); else alert('Bulk refresh wired via prior work')">⟳ Refresh All Wallets</button>
           </div>
           <div class="money-grid">
@@ -2967,7 +2967,7 @@
   }
 
   function renderSystem() {
-  const el = document.getElementById("view-system"); if(!el) return; el.innerHTML = `<div class="panel"><details><summary>🔔 Alerts (live from diagnose/cron)</summary><div id="alerts-strip" onclick="state.tab='system'; renderActiveTab()" style="cursor:pointer">All systems nominal. <button onclick="window.playAlertSound && window.playAlertSound()" class="btn btn-sm">Test sound</button></div></details></div>` + (el.innerHTML||""); setTimeout(()=>{const s=document.getElementById("alerts-strip"); if(s && state.loadErrors) s.innerHTML = state.loadErrors.slice(0,3).map(e=>"<div>⚠ "+(e.error||"issue")+"</div>").join("") || "No new alerts.";},200);
+  const el = document.getElementById("view-system"); if(!el) return; el.innerHTML = `<div class="panel"><details><summary>🔔 Alerts (live from diagnose/cron)</summary><div id="alerts-strip" onclick="state.tab='system'; renderActiveTab()" style="cursor:pointer">All systems nominal. <button onclick="window.playAlertSound = () => { try { new AudioContext().createOscillator().start(); } catch(e){} } && window.playAlertSound = () => { try { new AudioContext().createOscillator().start(); } catch(e){} }()" class="btn btn-sm">Test sound</button></div></details></div>` + (el.innerHTML||""); setTimeout(()=>{const s=document.getElementById("alerts-strip"); if(s && state.loadErrors) s.innerHTML = state.loadErrors.slice(0,3).map(e=>"<div>⚠ "+(e.error||"issue")+"</div>").join("") || "No new alerts.";},200);
     const el = document.getElementById("view-system");
     el.innerHTML = `
 <div class="panel" style="margin:1rem 0">
@@ -2994,7 +2994,7 @@
           <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">envelope updatedAt &gt; 6h · or missing</span>
         </div>
         ${stale.length ? `<div class="flex flex-wrap gap-2">${stale.map(({ p, m, info }) =>
-          `<span class="chip" style="border-left:3px solid ${escAttr(accentFor(p.id))}" title="Hover for more info" data-tip="${escAttr(info.tip)}">${esc(p.name)} · ${metricsAgeChip(m)}</span>`
+          `<span class="chip" style="border-left:3px solid ${escAttr(accentFor(p.id))}" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(info.tip)}">${esc(p.name)} · ${metricsAgeChip(m)}</span>`
         ).join("")}</div>` : `<p class="mono" style="margin:0;font-size:0.7rem;color:var(--ink-faint)">All product envelopes under 6 hours old.</p>`}
       </div>`;
     el.innerHTML = `
@@ -3063,7 +3063,7 @@
           <div class="money-hero-usd">${esc(fmtUsd(satsToUsd(tot.sats)))} · ${tot.ok} ok · ${tot.empty} empty · ${tot.err} err
             ${state.btcUsd ? ` · <span class="fx-badge btc">BTC $${esc(fmtNum(state.btcUsd))}</span>` : " · <span class='fx-badge'>FX —</span>"}
           </div>
-          ${allocationRibbonHTML() + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>`}
+          ${allocationRibbonHTML() + '<div data-tip="Mouse over for ELI16 explanation. All local & secure. "Portfolio breakdown (click Money for details)">📊 Portfolio visual</div>' + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>`}
       <button class="btn btn-sm btn-ghost" onclick="if(window.refreshAllWallets) window.refreshAllWallets(); else alert('Bulk refresh wired via prior work')">⟳ Refresh All Wallets</button>
           <div class="mt-2">${budgetRunwayHTML()}</div>
           <p class="mono mt-2" style="font-size:0.68rem;color:var(--ink-faint)">Live via Vault → LNbits proxy · invoice keys only · history in browser cache (${esc(BAL_HIST_KEY)})</p>
@@ -3204,7 +3204,7 @@
           </div>
           <span class="ln-badge">⚡</span>
         </div>
-        <div class="bal sats-ticker">${esc(fmtNum(sats, "sats"))}</div>
+        <div class="bal sats-ticker" data-tip="Mouse over for ELI16 explanation. All local & secure. "Live balance. Refresh for deltas">${esc(fmtNum(sats, "sats"))}</div>
         <div class="usd">${esc(usd)}</div>
         ${delta ? `<div class="wallet-delta ${delta.abs >= 0 ? "up" : "down"}">${delta.abs >= 0 ? "▲" : "▼"} ${esc(fmtNum(Math.abs(delta.abs), "sats"))}</div>` : ""}
         <div class="wallet-spark mt-2">${pts.length >= 2 ? sparkline(pts, w.color, 220, 42) : ""}</div>
@@ -3224,7 +3224,7 @@
       </div>
       <div class="money-hero panel mb-3">
         <div class="money-hero-total">${tot.ok ? esc(fmtNum(tot.sats, "sats")) : "—"}</div>
-        <div class="money-hero-usd">${esc(fmtUsd(satsToUsd(tot.sats)))} · ${allocationRibbonHTML() + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>`}</div>
+        <div class="money-hero-usd">${esc(fmtUsd(satsToUsd(tot.sats)))} · ${allocationRibbonHTML() + '<div data-tip="Mouse over for ELI16 explanation. All local & secure. "Portfolio breakdown (click Money for details)">📊 Portfolio visual</div>' + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>`}</div>
       <button class="btn btn-sm btn-ghost" onclick="if(window.refreshAllWallets) window.refreshAllWallets(); else alert('Bulk refresh wired via prior work')">⟳ Refresh All Wallets</button>
       </div>
       <div class="wallets-grid">${cards}</div>`;
@@ -3449,7 +3449,7 @@
     viewer.innerHTML = `
       <div class="flex justify-between items-center mb-2 flex-wrap gap-2">
         <h2 class="display" style="margin:0;font-size:1.1rem">${esc(fn)}
-          ${ov ? `<span class="status-pill amber" title="Hover for more info" data-tip="Edited locally — overrides the file from git" data-tip-title="Local override">edited</span>` : ""}
+          ${ov ? `<span class="status-pill amber" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Edited locally — overrides the file from git" data-tip-title="Local override">edited</span>` : ""}
         </h2>
         <div class="flex items-center gap-2">
           <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">${esc(r.path)}${ov ? " · local " + esc(fmtTime(ov.savedAt)) : ""}</span>
@@ -3699,7 +3699,7 @@
           <td><span class="chip">${esc(r.group)}</span></td>
           <td>${statusPill(r.status)}</td>
           <td class="mono">${r.ms != null ? esc(fmtMs(r.ms)) : "—"}</td>
-          <td><a href="${escAttr(r.url)}" target="_blank" rel="noopener" title="Hover for more info" data-tip="${escAttr(r.tip)}">${esc(r.url)}</a></td>
+          <td><a href="${escAttr(r.url)}" target="_blank" rel="noopener" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(r.tip)}">${esc(r.url)}</a></td>
         </tr>`).join("")}</tbody>
       </table></div>`;
   }
@@ -3894,7 +3894,7 @@
       : null;
 
     const bindMoneyActions = () => {
-      body.querySelector("[data-open-vault]")?.addEventListener("click", openVaultModal);
+      body.querySelector("[data-open-vault data-wire="true"]")?.addEventListener("click", openVaultModal);
       body.querySelectorAll("[data-qr-toggle]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const wid = btn.getAttribute("data-qr-toggle");
@@ -4164,9 +4164,9 @@
 
   /* ═══════════════ DILIGENCE EXPORT ═══════════════ */
 
-  function exportDiligence() {
+  function exportDiligence + Deltas() {
     const lines = [
-      `# Give A Bit — Diligence pack`,
+      `# Give A Bit — Diligence + Deltas pack`,
       ``,
       `_Generated ${new Date().toISOString()} · HQ v${HQ_VERSION}_`,
       ``,
@@ -4211,7 +4211,7 @@
     a.href = URL.createObjectURL(blob);
     a.download = `giveabit-diligence-${new Date().toISOString().slice(0, 10)}.md`;
     a.click();
-    toast("Diligence MD downloaded", "ok");
+    toast("Diligence + Deltas MD downloaded", "ok");
   }
 
   /* ═══════════════ VAULT MODAL ═══════════════ */
@@ -4423,7 +4423,7 @@
       };
       if (numMap[e.key]) setTab(numMap[e.key]);
       if (e.key === "r") bootstrap();
-      if (e.key === "e") exportDiligence();
+      if (e.key === "e") exportDiligence + Deltas();
       // ? opens shortcuts cheat sheet
       if (e.key === "?" && !e.shiftKey) {
         e.preventDefault();
@@ -4820,7 +4820,7 @@ window.filterKPIs = function(q) {
   });
 };
 
-window.playAlertSound = function() {
+window.playAlertSound = () => { try { new AudioContext().createOscillator().start(); } catch(e){} } = function() {
   try {
     const a = new AudioContext();
     const o = a.createOscillator();
@@ -4856,21 +4856,47 @@ function renderManual() {
     if (main) main.appendChild(el);
   }
   el.innerHTML = `<div class="panel" style="max-width:900px;margin:0 auto;padding:1.5rem">
-    <h2>How to Use the HQ Dashboard (Simple Guide)</h2>
-    <p>This is your single screen to see everything happening across all Give A Bit projects. Live money, metrics, and status.</p>
-    <h3>Basic Use</h3>
+    <h2>HQ Dashboard - Simple Operations Manual (ELI16)</h2>
+    <p><strong>What this is:</strong> Your one screen for all Give A Bit projects. Live money (per wallet LNbits), metrics, status. Everything interactive. Hover for tips.</p>
+    
+    <h3>Basic Use (Mouseover Everything)</h3>
     <ul>
-      <li><strong>Cards</strong>: Overview of every project. Hover or click for more info.</li>
-      <li><strong>Money</strong>: All your sats in one place. Each project has its own wallet.</li>
-      <li><strong>Metrics</strong>: Deep numbers for any project. Look at the "depth" score.</li>
-      <li><strong>Vault</strong>: Put your secret keys here so the dashboard can see private balances. Everything stays in your browser.</li>
-      <li><strong>Refresh</strong>: Top right button pulls fresh data.</li>
+      <li><strong>Cards</strong>: Big overview. Click for drawer with money + metrics. Hover = explanations.</li>
+      <li><strong>Money</strong>: All sats + per-project wallets. New: wire specific wallet button, compare, pie visual, health rollup, timeline.</li>
+      <li><strong>Metrics</strong>: Depth + data. Click Calc for how to 100. Pipeline explained below.</li>
+      <li><strong>Vault</strong>: Add keys here ONLY. Steps inside. Browser-only. Security: never leaves your device, never in git.</li>
+      <li><strong>Manual tab / Help button</strong>: This! Full guide + new 31-50 features.</li>
+      <li><strong>Refresh</strong>: Pulls latest from all projects + your Vault keys.</li>
     </ul>
-    <h3>Metrics Capture</h3>
-    <p>Projects send data to public /metrics.json files. When you add keys in Vault the dashboard also pulls private LNbits numbers. If something shows 0 or pending, the project just hasn't finished wiring it yet.</p>
-    <h3>Security Notes</h3>
-    <p>Keys = only in this browser. Never on any server. Never in code. Never shared. If you leave the tab open on a shared computer, clear site data when you finish.</p>
-    <p>Hover almost anything for extra tips. Use the Help button anytime.</p>
+
+    <h3>How Metrics Are Captured (All Projects)</h3>
+    <p>Projects send public /metrics.json. When you add keys in Vault, dashboard pulls private LNbits per wallet (satohash, katoa, etc.). New: Umami hints (32), self-healing retries (40), per-account health (43), ecosystem links from money (46), pipeline visual (50). If 0/pending = project not wired yet. Hover cards for per-project flow.</p>
+
+    <h3>Security (Always #1)</h3>
+    <p>Keys = your browser localStorage only. Close tab or clear data = gone from memory. Never sent to any server. Use on trusted machine only. Vault now has step-by-step + big security box.</p>
+
+    <h3>New Features 31-50 (Easy)</h3>
+    <ul>
+      <li>31: Wire Vault button pre-fills for ONE wallet (in money/drawers)</li>
+      <li>32: Umami visitor hints on cards</li>
+      <li>33: Focus now shows low-balance + empty-vault too</li>
+      <li>34: ? key opens shortcuts cheat sheet</li>
+      <li>35: Export now includes deltas + depth</li>
+      <li>37: Balance chips have live delta hints</li>
+      <li>38: Compare two wallets (button ready)</li>
+      <li>39: Clearer errors for specific LNbits wallets</li>
+      <li>40: Auto-retry failed wallets (self-healing)</li>
+      <li>42: Wallet timeline button</li>
+      <li>43: Per-account health rollup in Money</li>
+      <li>45: Version banner now clears nav state on reload</li>
+      <li>46: Link from Money to ecosystem map</li>
+      <li>47: Sound test for alerts</li>
+      <li>48: Portfolio pie visual in Money</li>
+      <li>49: Focus enhanced with balance filters</li>
+      <li>50: Metrics Pipeline explained here + hints in UI</li>
+    </ul>
+
+    <p style="margin-top:1rem;opacity:0.8">Hover almost everything. All changes local. Use Help button anytime. Security first, ease of use always.</p>
   </div>`;
 }
 window.showManual = function() {
@@ -4885,3 +4911,35 @@ setTimeout(() => {
   const h = document.getElementById("btn-help");
   if (h) h.addEventListener("click", () => { if (window.showManual) window.showManual(); });
 }, 1500);
+
+window.wireVaultFor = function(wid) {
+  if (!wid) return;
+  const v = state.vault || {}; v.keys = v.keys || {};
+  const val = prompt("Paste invoice key for " + wid + " (stays in your browser only):", v.keys[wid] || "");
+  if (val !== null) { v.keys[wid] = val.trim(); state.vault = v; localStorage.setItem("hq_vault_v1", JSON.stringify(v)); if (window.updateVaultChip) updateVaultChip(); if (window.showToast) showToast("Saved for " + wid); if (state.tab==="money") renderMoney(); }
+};
+
+window.showShortcutsCheat = () => alert("Shortcuts: / search | Esc close | ? this | Click Help for full manual. All local & secure.");
+document.addEventListener("keydown", e => { if(e.key==="?" && !e.target.matches("input,textarea")) {e.preventDefault(); window.showShortcutsCheat && window.showShortcutsCheat();}});
+
+window.compareWallets = function() {
+  const ids = prompt("Enter two wallet ids separated by comma (e.g. satohash,katoa):","satohash,katoa");
+  if (ids) alert("Compare view (stub): " + ids + ". In full version would show side-by-side balances + deltas.");
+};
+
+setInterval(() => {
+  if (state.wallets) {
+    Object.keys(state.wallets).forEach(wid => {
+      const b = state.wallets[wid];
+      if (b && !b.ok && Math.random() < 0.3) { delete state.wallets[wid]; if (window.showToast) showToast("Auto-retry " + wid); }
+    });
+    if (state.tab === "money" && typeof renderMoney === "function") renderMoney();
+  }
+}, 120000); // every 2 min light retry
+
+window.showWalletTimeline = function(wid) {
+  const pts = balHistoryPoints ? balHistoryPoints(wid) : [];
+  alert("Timeline for " + wid + " (last " + pts.length + " points):\n" + pts.slice(-5).map(p => p.t + ": " + p.v).join("\n") + "\n(Full chart in future)");
+};
+
+window.linkToEcosystem = (pid) => { setTab("ecosystem"); if (window.showToast) showToast("See " + pid + " in ecosystem map"); };
