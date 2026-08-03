@@ -1,6 +1,6 @@
 # HQ SOURCE OF TRUTH
 
-_Updated: 2026-07-31 — app v3.25.1 (stamp-version)
+_Updated: 2026-08-03 — app v3.26.0 (stamp-version)
 
 ## Live
 
@@ -10,7 +10,7 @@ _Updated: 2026-07-31 — app v3.25.1 (stamp-version)
 | Pages preview | https://giveabit-hq.pages.dev |
 | GitHub | https://github.com/kitsboy/HQ |
 | CF Pages project | `giveabit-hq` (account Kitsboy) |
-| App version | **v3.25.1** (`npm run stamp` from package.json) |
+| App version | **v3.26.0** (`npm run stamp` from package.json) |
 | LNbits proxy Worker | `giveabit-lnbits-proxy` · https://giveabit-lnbits-proxy.kitsboy.workers.dev |
 | LNbits UI (login) | **http://vmi3446772.tailb672ac.ts.net:5102** (preferred) · **http://api.satohash.io:5102** |
 | LNbits HTTPS front | **https://api.satohash.io:8443** (TLS proxy when up) |

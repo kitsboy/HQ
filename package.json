@@ -1,15 +1,17 @@
 {
   "name": "giveabit-hq",
   "private": true,
-  "version": "3.25.1",
-  "description": "Give A Bit HQ — suite truth catch-up + Mission handoff + NIP-05 sherpa",
+  "version": "3.26.0",
+  "description": "Give A Bit HQ \u2014 merge feature/katoa-piping-ui-polish (items 1-50 + usability) to main",
   "scripts": {
     "stamp": "node scripts/stamp-version.mjs",
     "verify-version": "node scripts/stamp-version.mjs",
     "prebuild": "node scripts/stamp-version.mjs",
     "build": "node scripts/stamp-version.mjs && node scripts/build-public.mjs",
     "deploy": "npm run build && wrangler pages deploy ./public --project-name=giveabit-hq",
-    "preview": "python3 -m http.server 8765 --directory public"
+    "preview": "python3 -m http.server 8765 --directory public",
+    "katoa-metrics": "node scripts/generate-katoa-metrics.mjs",
+    "katoa-metrics-live": "node scripts/generate-katoa-metrics.mjs --live"
   },
   "devDependencies": {
     "wrangler": "^4.112.0"
