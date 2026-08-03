@@ -1552,7 +1552,7 @@
       const health = projectHealth(p);
       const depth = m && m.ok ? depthScore(m.data, false) : 0;
       const lat = s && s.ms != null ? `${s.ms}ms` : "—";
-      items.push(`<span class="ticker-item" data-tip="${esc(p.name)}: ${status === 'green' ? 'responding normally' : status === 'amber' ? 'degraded' : 'down'} · latency ${lat} · data depth ${depth}/100 <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span>">${statusDot(health)} <strong>${esc(p.name)}</strong> ${esc(lat)} · depth ${depth}</span>`);
+      items.push(`<span class="ticker-item" data-tip="${esc(p.name)}: ${status === 'green' ? 'responding normally' : status === 'amber' ? 'degraded' : 'down'} · latency ${lat} · data depth ${depth}/100 <button onclick="window.showDepthCalculator(state.selectedMetricsId || 'katoa')" class="btn btn-sm" style="font-size:0.6rem">Calc</button> <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span>">${statusDot(health)} <strong>${esc(p.name)}</strong> ${esc(lat)} · depth ${depth}</span>`);
     });
     if (state.thor && state.thor.ok && state.thor.data) {
       const t = state.thor.data;
@@ -1813,7 +1813,8 @@
       <button type="button" class="btn btn-sm ${state.filter === "all" ? "btn-primary" : "btn-ghost"}" data-filter="all" data-tip="Show all products regardless of health status">All</button>
       <button type="button" class="btn btn-sm ${state.filter === "green" ? "btn-primary" : "btn-ghost"}" data-filter="green" data-tip="Only show products with green health (all endpoints responding)">Green</button>
       <button type="button" class="btn btn-sm ${state.filter === "attention" ? "btn-primary" : "btn-ghost"}" data-filter="attention" data-tip="Only show products that need attention — down, timing out, or missing data">Attention</button>
-      ${showDepthFilter !== false ? `<button type="button" class="btn btn-sm ${state.filter === "deep" ? "btn-primary" : "btn-ghost"}" data-filter="deep" data-tip="Only show products with rich data (funnels, series, segments — not just KPIs)">Deep data</button>` : ""}
+      ${showDepthFilter !== false ? `<button type="button" class="btn btn-sm ${state.filter === "deep" ? "btn-primary" : "btn-ghost"}" data-filter="deep" data-tip="Only show products with rich data">Deep data</button>
+      <button type="button" class="btn btn-sm btn-ghost" data-filter="pinned" data-tip="Only pinned favorites">📌 Pinned</button>` : ""}
       <button type="button" class="btn btn-sm ${state.filter === "pending" ? "btn-primary" : "btn-ghost"}" data-filter="pending" data-tip="Focus on projects with pending/amber data or missing live metrics">Focus Pending</button>
       <button type="button" class="btn btn-sm btn-ghost" id="btn-export-2"><i class="fa-solid fa-file-export"></i> Diligence</button>
     </div>`;
@@ -1968,7 +1969,7 @@
         ${statusPill(health)}
       </div>
       <div class="card-meta-row">
-        <span class="depth-gauge" data-tip="Envelope depth ${depth}/100 <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span> — how much of gab.product-metrics.v1 this product fills. Click for how to reach 100">${gaugeHTML(depth, depthColor(depth), "depth")}</span>
+        <span class="depth-gauge" data-tip="Envelope depth ${depth}/100 <button onclick="window.showDepthCalculator(state.selectedMetricsId || 'katoa')" class="btn btn-sm" style="font-size:0.6rem">Calc</button> <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span> — how much of gab.product-metrics.v1 this product fills. Click for how to reach 100">${gaugeHTML(depth, depthColor(depth), "depth")}</span>
         <span class="chip" data-tip="Product category — determines color and section placement on the board">${esc(p.category || "—")}</span>
         ${s.ms != null ? `<span class="chip mono" data-tip="Response time for the last health check ping — lower is faster">${esc(fmtMs(s.ms))}</span>` : ""}
         ${metricsAgeChip(m)}
@@ -2088,7 +2089,7 @@
         ${statusPill(health)}
       </div>
       <div class="card-meta-row sc-meta">
-        <span class="depth-gauge" data-tip="Envelope depth ${depth}/100 <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span>">${gaugeHTML(depth, depthColor(depth), "depth")}</span>
+        <span class="depth-gauge" data-tip="Envelope depth ${depth}/100 <button onclick="window.showDepthCalculator(state.selectedMetricsId || 'katoa')" class="btn btn-sm" style="font-size:0.6rem">Calc</button> <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span>">${gaugeHTML(depth, depthColor(depth), "depth")}</span>
         <span class="chip">${esc(p.category || "Governance")}</span>
         ${s.ms != null ? `<span class="chip mono">${esc(fmtMs(s.ms))}</span>` : ""}
         ${metricsAgeChip(m)}
@@ -2244,7 +2245,7 @@
           <div class="flex items-center gap-2 flex-wrap">
             <h2 class="display" style="margin:0;font-size:1.25rem">${esc(data.name || p.name)}</h2>
             ${statusPill(health.status || projectHealth(p))}
-            <span class="depth-badge" style="--depth-c:${escAttr(depthColor(depth))}">depth ${depth}/100 <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span></span>
+            <span class="depth-badge" style="--depth-c:${escAttr(depthColor(depth))}">depth ${depth}/100 <button onclick="window.showDepthCalculator(state.selectedMetricsId || 'katoa')" class="btn btn-sm" style="font-size:0.6rem">Calc</button> <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span></span>
             ${data.raw && data.raw.demo ? `<span class="chip">demo envelope</span>` : `<span class="chip chip-live">live envelope</span>`}
           </div>
           <p style="margin:0.35rem 0 0;color:var(--ink-dim);font-size:0.85rem">${esc(p.pitch || p.tagline || health.message || "")}</p>
@@ -3039,13 +3040,13 @@
   }
 
   function renderSystem() {
-  const el = document.getElementById("view-system"); if(!el) return; el.innerHTML = `<div class="panel"><details><summary>🔔 Alerts (live from diagnose/cron)</summary><div id="alerts-strip">All systems nominal or check cron-health.</div></details></div>` + (el.innerHTML||""); setTimeout(()=>{const s=document.getElementById("alerts-strip"); if(s && state.loadErrors) s.innerHTML = state.loadErrors.slice(0,3).map(e=>"<div>⚠ "+(e.error||"issue")+"</div>").join("") || "No new alerts.";},200);
+  const el = document.getElementById("view-system"); if(!el) return; el.innerHTML = `<div class="panel"><details><summary>🔔 Alerts (live from diagnose/cron)</summary><div id="alerts-strip" onclick="state.tab='system'; renderActiveTab()" style="cursor:pointer">All systems nominal. <button onclick="window.playAlertSound && window.playAlertSound()" class="btn btn-sm">Test sound</button></div></details></div>` + (el.innerHTML||""); setTimeout(()=>{const s=document.getElementById("alerts-strip"); if(s && state.loadErrors) s.innerHTML = state.loadErrors.slice(0,3).map(e=>"<div>⚠ "+(e.error||"issue")+"</div>").join("") || "No new alerts.";},200);
     const el = document.getElementById("view-system");
     el.innerHTML = `
 <div class="panel" style="margin:1rem 0">
   <details>
     <summary style="cursor:pointer;font-weight:600">🔔 Recent Alerts & Diagnose (click to expand)</summary>
-    <div id="alerts-strip" style="margin-top:0.5rem;font-size:0.85rem">
+    <div id="alerts-strip" onclick="state.tab='system'; renderActiveTab()" style="cursor:pointer" style="margin-top:0.5rem;font-size:0.85rem">
       Loading alerts... (uses auto-diagnose + cron health)
     </div>
   </details>
@@ -4720,7 +4721,7 @@
 <div class="panel" style="margin:1rem 0">
   <details>
     <summary style="cursor:pointer;font-weight:600">🔔 Recent Alerts & Diagnose (click to expand)</summary>
-    <div id="alerts-strip" style="margin-top:0.5rem;font-size:0.85rem">
+    <div id="alerts-strip" onclick="state.tab='system'; renderActiveTab()" style="cursor:pointer" style="margin-top:0.5rem;font-size:0.85rem">
       Loading alerts... (uses auto-diagnose + cron health)
     </div>
   </details>
@@ -4821,3 +4822,90 @@
   }
   window.refreshAllWallets = refreshAllWallets;
   
+/* 100-batch pin favorites */
+window.togglePin = function(id) {
+  let pinned = JSON.parse(localStorage.getItem("hq_pinned") || "[]");
+  if (pinned.includes(id)) pinned = pinned.filter(x => x !== id);
+  else pinned.push(id);
+  localStorage.setItem("hq_pinned", JSON.stringify(pinned));
+  if (state && (state.tab === "cards" || state.tab === "list")) renderActiveTab();
+  if (window.showToast) window.showToast("Pin toggled");
+};
+
+window.exportCurrentView = function() {
+  const data = { tab: state.tab, projects: filteredProjects ? filteredProjects() : state.projects, metrics: state.metrics, ts: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "hq-export-" + state.tab + ".json";
+  a.click();
+};
+
+setTimeout(() => {
+  const last = localStorage.getItem("hq_last_seen") || "2026-08-01";
+  if (last < "2026-08-03") {
+    const banner = document.createElement("div");
+    banner.style.cssText = "position:fixed;bottom:10px;right:10px;background:#3b2a1f;color:#f0d9b8;padding:6px 12px;border-radius:6px;font-size:0.75rem;z-index:9999";
+    banner.innerHTML = "✨ New: Pinned + Keyboard + more interactive. <span onclick="this.remove();localStorage.setItem('hq_last_seen','2026-08-03')" style="cursor:pointer">×</span>";
+    document.body.appendChild(banner);
+  }
+}, 1500);
+
+window.launchAider = function() {
+  const prompt = "cd /root/satohash\ngit pull\naider # HQ context from hq.giveabit.io";
+  navigator.clipboard.writeText(prompt).then(() => alert("Aider startup prompt copied! (cd /root/satohash; git pull; aider)"));
+};
+
+window.showDepthCalculator = function(id) {
+  const m = state.metrics[id];
+  const d = m && m.ok ? depthScore(m.data, false) : 0;
+  alert("Depth for " + id + ": " + d + "/100\n\nFill: health, kpis, series, funnels, segments, offers, education, links, live data (not demo).\nSee schemas/product-metrics.v1.schema.json");
+};
+
+setTimeout(() => { const saved = localStorage.getItem("hq_search"); if (saved && state) { state.search = saved; } }, 200);
+
+/* 100-batch drag reorder stub */
+function enableDragForCards() {
+  const cards = document.querySelectorAll(".project-card");
+  cards.forEach(card => {
+    card.setAttribute("draggable", "true");
+    card.addEventListener("dragstart", e => { e.dataTransfer.setData("text", card.dataset.project || ""); });
+    card.addEventListener("dragover", e => e.preventDefault());
+    card.addEventListener("drop", e => {
+      e.preventDefault();
+      const from = e.dataTransfer.getData("text");
+      const to = card.dataset.project;
+      if (from && to && from !== to) {
+        // simple reorder in DOM only for demo
+        const parent = card.parentNode;
+        const fromEl = [...parent.children].find(c => c.dataset.project === from);
+        if (fromEl) parent.insertBefore(fromEl, card.nextSibling);
+      }
+    });
+  });
+}
+setTimeout(enableDragForCards, 800);
+
+window.filterKPIs = function(q) {
+  document.querySelectorAll(".kpi-cell").forEach(cell => {
+    const txt = cell.textContent.toLowerCase();
+    cell.style.display = txt.includes(q.toLowerCase()) ? "" : "none";
+  });
+};
+
+window.playAlertSound = function() {
+  try {
+    const a = new AudioContext();
+    const o = a.createOscillator();
+    o.type = "sine"; o.frequency.value = 880;
+    const g = a.createGain(); g.gain.value = 0.1;
+    o.connect(g); g.connect(a.destination);
+    o.start(); setTimeout(() => { o.stop(); a.close(); }, 200);
+  } catch(e){}
+};
+
+window.drawPortfolioPie = function() {
+  const tot = portfolioTotals ? portfolioTotals() : {rows:[]};
+  console.log("Portfolio pie data ready for canvas:", tot);
+  // stub - can expand to real canvas later
+};
