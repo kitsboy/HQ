@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.27.0 — handoffs registry tab
+ * Give A Bit HQ v3.28.0 — handoffs registry tab
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.27.0";
+  const HQ_VERSION = "3.28.0";
   const BUILD_TS = new Date().toISOString();
   const METRICS_SCHEMA = "gab.product-metrics.v1";
   const THOR_SCHEMA = "gab.thor-node.v1";
@@ -45,6 +45,23 @@
   const SNAP_KEY = "hq_uptime_snap_v1";
   const BAL_HIST_KEY = "hq_wallet_hist_v1";
   const DOC_OVERRIDES_KEY = "hq_doc_overrides_v1";
+
+  const PIN_KEY = "hq_pinned_tabs_v1";
+  function loadPinned() {
+    try { return JSON.parse(localStorage.getItem(PIN_KEY) || "[]") || []; } catch { return []; }
+  }
+  function savePinned(arr) {
+    try { localStorage.setItem(PIN_KEY, JSON.stringify(arr.slice(0, 8))); } catch {}
+  }
+  function togglePinTab(id) {
+    let pins = loadPinned();
+    if (pins.includes(id)) pins = pins.filter((x) => x !== id);
+    else pins = [id, ...pins.filter((x) => x !== id)].slice(0, 8);
+    savePinned(pins);
+    rebuildNavTabs();
+    toast(pins.includes(id) ? "Pinned " + id : "Unpinned " + id, "ok");
+  }
+
   const BAL_POLL_MS = 60000;
   const DATA_POLL_MS = 300000;
 
@@ -1069,17 +1086,31 @@
     const nav = document.getElementById("nav-tabs");
     if (!nav) return;
     const active = state.tab || "cards";
-    nav.innerHTML = Object.keys(TAB_DISPLAY_NAMES).map((id) => {
+    const pins = loadPinned();
+    const ids = Object.keys(TAB_DISPLAY_NAMES);
+    ids.sort((a, b) => {
+      const pa = pins.indexOf(a), pb = pins.indexOf(b);
+      if (pa === -1 && pb === -1) return 0;
+      if (pa === -1) return 1;
+      if (pb === -1) return -1;
+      return pa - pb;
+    });
+    nav.innerHTML = ids.map((id) => {
       const label = TAB_DISPLAY_NAMES[id];
       const on = id === active;
       const accent = TAB_ACCENTS[id] || "#ff8c00";
-      return `<button type="button" class="nav-tab${on ? " active" : ""}" data-tab="${id}" role="tab" aria-selected="${on}" tabindex="${on ? 0 : -1}" style="--tab-accent:${accent}" title="${label}">${label}</button>`;
+      const pinned = pins.includes(id);
+      return `<button type="button" class="nav-tab${on ? " active" : ""}${pinned ? " pinned" : ""}" data-tab="${id}" role="tab" aria-selected="${on}" tabindex="${on ? 0 : -1}" style="--tab-accent:${accent}" title="${label}${pinned ? " · pinned (right-click to unpin)" : " · right-click to pin"}">${pinned ? "📌 " : ""}${label}</button>`;
     }).join("");
     nav.querySelectorAll(".nav-tab").forEach((btn) => {
       btn.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
         setTab(btn.dataset.tab);
+      });
+      btn.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        togglePinTab(btn.dataset.tab);
       });
     });
     const sc = document.querySelector(".nav-scroll");
@@ -1113,7 +1144,8 @@
       <p style="color:var(--ink-dim);line-height:1.6">One glass for every Give A Bit product — status, metrics, money, docs. Secrets stay in the browser Vault only.</p>
       <h3>Menu / navigation</h3>
       <ul style="line-height:1.7;color:var(--ink-dim)">
-        <li><strong>Tabs</strong> stick under the top bar — swipe/scroll sideways for more.</li>
+        <li><strong>Tabs</strong> — swipe/scroll sideways. <strong>Right-click</strong> a tab to pin it first.</li>
+        <li><strong>Suite alerts</strong> under the portfolio strip: down sites, LN channels, stale metrics, empty vault.</li>
         <li><strong>/</strong> or <strong>Jump</strong>: search any tab by name.</li>
         <li><strong>?</strong>: shortcuts. <strong>Shift+\u2190/\u2192</strong>: previous/next tab.</li>
         <li>Keys <strong>1\u20130</strong> jump core tabs; letters open Money, Docs, Vault, Manual (u), etc.</li>
@@ -1229,6 +1261,10 @@
     renderTicker();
     updateUmamiChip();
     setTab(state.tab);
+    if (state.loadErrors && state.loadErrors.length) {
+      toast(state.loadErrors.length + " feed(s) failed — see System", "err");
+    }
+    paintSuiteAlerts();
   }
 
   /* ── Live pulse: light refresh of status + thor + live metric candidates ── */
@@ -1458,6 +1494,55 @@
 
   /* ═══════════════ CHROME ═══════════════ */
 
+
+  function paintSuiteAlerts() {
+    let host = document.getElementById("suite-alerts");
+    if (!host) {
+      const strip = document.getElementById("portfolio-strip");
+      if (!strip) return;
+      host = document.createElement("div");
+      host.id = "suite-alerts";
+      host.className = "suite-alerts";
+      strip.prepend(host);
+    }
+    const sites = (state.status && state.status.sites) || {};
+    const down = state.projects.filter((p) => sites[p.id] && sites[p.id].ok === false);
+    const lnd = ((state.thor && state.thor.ok && state.thor.data && state.thor.data.lightning) || {});
+    const ch = lnd.numActiveChannels != null ? lnd.numActiveChannels : null;
+    const peers = lnd.numPeers != null ? lnd.numPeers : null;
+    const now = Date.now();
+    const stale = state.projects.filter((p) => {
+      const m = state.metrics[p.id];
+      if (!m || !m.ok || !m.data || !m.data.updatedAt) return true;
+      return (now - new Date(m.data.updatedAt).getTime()) / 3600000 > 6;
+    });
+    const bits = [];
+    if (down.length) {
+      bits.push(`<button type="button" class="suite-alert danger" data-alert="down"><i class="fa-solid fa-triangle-exclamation"></i> ${down.length} site${down.length>1?"s":""} down — ${esc(down.map(p=>p.name).slice(0,3).join(", "))}${down.length>3?"…":""}</button>`);
+    }
+    if (ch === 0 || peers === 0) {
+      bits.push(`<button type="button" class="suite-alert warn" data-alert="ln"><i class="fa-solid fa-bolt"></i> Lightning isolated — ${peers ?? 0} peers · ${ch ?? 0} channels · on-chain ${esc(fmtNum(lnd.walletBalanceSats || 0, "sats"))}</button>`);
+    }
+    if (stale.length >= 3) {
+      bits.push(`<button type="button" class="suite-alert muted" data-alert="stale"><i class="fa-solid fa-clock"></i> ${stale.length} product metrics stale (&gt;6h) or missing</button>`);
+    }
+    const keys = (state.vault && (state.vault.keys || state.vault.wallets)) || {};
+    const keyN = Object.keys(keys).filter((k) => keys[k] && String(keys[k]).trim()).length;
+    if (!keyN) {
+      bits.push(`<button type="button" class="suite-alert muted" data-alert="vault"><i class="fa-solid fa-key"></i> Vault empty — Money tab needs invoice keys</button>`);
+    }
+    host.innerHTML = bits.length ? bits.join("") : `<div class="suite-alert ok"><i class="fa-solid fa-circle-check"></i> Suite alerts clear</div>`;
+    host.querySelectorAll("[data-alert]").forEach((b) => {
+      b.addEventListener("click", () => {
+        const a = b.dataset.alert;
+        if (a === "down") setTab("matrix");
+        else if (a === "ln") setTab("system");
+        else if (a === "stale") setTab("analytics");
+        else if (a === "vault") { setTab("vault"); openVaultModal(); }
+      });
+    });
+  }
+
   function renderLoadingShell() {
     const main = document.getElementById("main-content");
     if (main) main.innerHTML = `<div class="loading-state"><div class="spinner"></div><div>Loading registry, metrics, project docs…</div></div>`;
@@ -1481,10 +1566,19 @@
     const sites = (state.status && state.status.sites) || {};
     const total = state.projects.length;
     let up = 0, down = 0, totalMs = 0, msCount = 0;
+    let staleMetrics = 0;
+    const now = Date.now();
     state.projects.forEach((p) => {
       const s = sites[p.id];
       if (s && s.ok === true) { up++; if (s.ms != null) { totalMs += s.ms; msCount++; } }
       else if (s && s.ok === false) down++;
+      const m = state.metrics[p.id];
+      if (m && m.ok && m.data && m.data.updatedAt) {
+        const ageH = (now - new Date(m.data.updatedAt).getTime()) / 3600000;
+        if (ageH > 6) staleMetrics++;
+      } else if (!m || !m.ok) {
+        staleMetrics++;
+      }
     });
     const avgMs = msCount ? Math.round(totalMs / msCount) : null;
     const health = state.thor && state.thor.ok && state.thor.data && state.thor.data.node
@@ -1561,6 +1655,8 @@
       else if (lbl.includes("data depth")) card.addEventListener("click", (e) => { if (!e.target.closest("a,button")) showStatDetail("depth-detail"); });
     });
     bindTooltips();
+    paintSuiteAlerts();
+
   }
 
   function updateVaultChip() {
@@ -1700,19 +1796,23 @@
       '</div>';
   }
 
-  function renderIntelStub() {
+  function renderIntelTab() {
+    if (window.HQIntel && typeof window.HQIntel.renderIntel === "function") return window.HQIntel.renderIntel();
     var el = document.getElementById("view-intel");
     if (el) el.innerHTML = renderStubHTML("Intel");
   }
-  function renderFeedStub() {
+  function renderFeedTab() {
+    if (window.HQIntel && typeof window.HQIntel.renderFeed === "function") return window.HQIntel.renderFeed();
     var el = document.getElementById("view-feed");
     if (el) el.innerHTML = renderStubHTML("Feed");
   }
-  function renderChartsStub() {
+  function renderChartsTab() {
+    if (window.HQIntel && typeof window.HQIntel.renderCharts === "function") return window.HQIntel.renderCharts();
     var el = document.getElementById("view-charts");
     if (el) el.innerHTML = renderStubHTML("Charts");
   }
-  function renderChatStub() {
+  function renderChatTab() {
+    if (window.HQIntel && typeof window.HQIntel.renderChat === "function") return window.HQIntel.renderChat();
     var el = document.getElementById("view-chat");
     if (el) el.innerHTML = renderStubHTML("Chat");
   }
@@ -1780,7 +1880,7 @@
       vault: renderVaultTab,
       handoffs: renderHandoffs,
       manual: renderManual,
-      intel: renderIntelStub, feed: renderFeedStub, charts: renderChartsStub, chat: renderChatStub,
+      intel: renderIntelTab, feed: renderFeedTab, charts: renderChartsTab, chat: renderChatTab,
     };
     const fn = map[state.tab];
     if (!fn) {

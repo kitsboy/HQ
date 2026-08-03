@@ -1,8 +1,8 @@
 {
   "name": "giveabit-hq",
   "private": true,
-  "version": "3.27.0",
-  "description": "Give A Bit HQ \u2014 nav rebuild + 100 feature board + manual (post-merge repair)",
+  "version": "3.28.0",
+  "description": "Give A Bit HQ \u2014 intel shell fix, suite alerts, pin tabs, NEXT-100",
   "scripts": {
     "stamp": "node scripts/stamp-version.mjs",
     "verify-version": "node scripts/stamp-version.mjs",

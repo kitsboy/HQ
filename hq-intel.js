@@ -23,6 +23,23 @@
   let currentTab = "";
   let liveTimer = null;
 
+
+  function getView(tab) {
+    let el = document.getElementById("view-" + tab);
+    if (!el) {
+      el = document.createElement("div");
+      el.id = "view-" + tab;
+      el.className = "view active";
+      const main = document.getElementById("main-content");
+      if (main) main.appendChild(el);
+    }
+    // Activate this view only
+    document.querySelectorAll(".view").forEach((v) => {
+      v.classList.toggle("active", v.id === "view-" + tab);
+    });
+    return el;
+  }
+
   /* ─── Poll for active tab every 300ms ──────────────────────────────── */
   function startTabWatcher() {
     setInterval(function () {
@@ -60,7 +77,7 @@
 
   /* ─── Silent re-render (no loading flash) ──────────────────────────── */
   function renderSilent(name) {
-    const main = document.getElementById("main-content");
+    const main = getView(name);
     if (!main) return;
     const url = name === "intel" ? INTEL_URL : name === "feed" ? ACTIVITY_URL : null;
     if (!url) return;
@@ -80,9 +97,8 @@
 
   /* ─── Render: Intel ────────────────────────────────────────────────── */
   function renderIntel() {
-    const main = document.getElementById("main-content");
-    if (!main || main.dataset._intel) return;
-    main.dataset._intel = "1";
+    const main = getView("intel");
+    if (!main) return;
 
     main.innerHTML = `<div class="loading-state"><div class="spinner"></div><div>Loading project intelligence…</div></div>`;
 
@@ -142,7 +158,7 @@
 
   /* ─── Render: Feed ─────────────────────────────────────────────────── */
   function renderFeed() {
-    const main = document.getElementById("main-content");
+    const main = getView("feed");
     if (!main) return;
     main.innerHTML = `<div class="loading-state"><div class="spinner"></div><div>Loading activity feed…</div></div>`;
 
@@ -170,7 +186,7 @@
 
   /* ─── Render: Charts ───────────────────────────────────────────────── */
   function renderCharts() {
-    const main = document.getElementById("main-content");
+    const main = getView("charts");
     if (!main) return;
     main.innerHTML = `<div class="loading-state"><div class="spinner"></div><div>Loading charts…</div></div>`;
 
@@ -262,7 +278,7 @@
 
   /* ─── Render: Chat ─────────────────────────────────────────────────── */
   function renderChat() {
-    const main = document.getElementById("main-content");
+    const main = getView("chat");
     if (!main) return;
 
     main.innerHTML = `<div style="display:flex;flex-direction:column;min-height:calc(100vh - 250px);">
@@ -315,7 +331,7 @@
 
   /* ─── Render: Vault ────────────────────────────────────────────────── */
   function renderVault() {
-    const main = document.getElementById("main-content");
+    const main = getView("vault");
     if (!main) return;
     main.innerHTML = `<div class="loading-state"><div class="spinner"></div><div>Loading vault health…</div></div>`;
 
@@ -425,6 +441,16 @@
 
   /* ─── Boot ─────────────────────────────────────────────────────────── */
   function boot() {
+
+  window.HQIntel = {
+    renderIntel: renderIntel,
+    renderFeed: renderFeed,
+    renderCharts: renderCharts,
+    renderChat: renderChat,
+    renderVault: renderVault,
+    routeTab: routeTab,
+  };
+
     // Start our tab watcher
     startTabWatcher();
     // Start live auto-refresh (60s)

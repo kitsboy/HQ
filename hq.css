@@ -607,6 +607,75 @@ input:focus, textarea:focus, select:focus {
   .nav-tab { font-size: 0.74rem; padding: 0.42rem 0.65rem; }
   .nav-group-chip { font-size: 0.62rem; padding: 0.22rem 0.45rem; }
 }
+.nav-tab.pinned {
+  border-color: color-mix(in srgb, var(--tab-accent, var(--accent-theme)) 35%, var(--line));
+}
+
+/* Suite attention strip */
+.suite-alerts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 0.65rem;
+}
+.suite-alert {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  color: var(--ink-dim);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.suite-alert:hover { color: var(--ink); border-color: color-mix(in srgb, var(--accent-theme) 40%, var(--line)); }
+.suite-alert.danger {
+  color: color-mix(in srgb, #f87171 85%, var(--ink));
+  border-color: color-mix(in srgb, #ef4444 45%, var(--line));
+  background: color-mix(in srgb, #ef4444 12%, var(--surface));
+}
+.suite-alert.warn {
+  color: color-mix(in srgb, #fbbf24 80%, var(--ink));
+  border-color: color-mix(in srgb, #f59e0b 40%, var(--line));
+  background: color-mix(in srgb, #f59e0b 10%, var(--surface));
+}
+.suite-alert.ok {
+  color: color-mix(in srgb, #4ade80 75%, var(--ink));
+  border-color: color-mix(in srgb, #22c55e 35%, var(--line));
+  cursor: default;
+}
+.suite-alert.muted { opacity: 0.92; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .ticker-track { animation: none !important; }
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0.5rem;
+  z-index: 9999;
+  background: var(--surface-hi);
+  color: var(--ink);
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line);
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+.skip-link:focus {
+  left: 0.75rem;
+}
 
 /* Main */
 .main {

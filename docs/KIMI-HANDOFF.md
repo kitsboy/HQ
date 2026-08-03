@@ -1,5 +1,21 @@
 # KIMI — MASTER LIST (Cam + Grok) · 2026-08-03 (UPDATED FOR SESSION CLOSE)
 
+### 2026-08-03 — Grok · HQ v3.28.0 (NEXT-100 P0 batch)
+
+**Top issues fixed**
+1. Intel/Feed/Charts/Chat no longer wipe `#main-content` (was destroying all tabs)
+2. `hq-intel.js` writes into `view-*` + `window.HQIntel` bridge from hq.js
+3. Suite alert strip: sites down · LN 0 channels · stale metrics · empty vault
+4. Pin tabs (right-click) · skip link · reduced-motion
+5. Prioritized next list: `docs/NEXT-100.md` (100 items, P0 first)
+
+**Still human/THOR:** open LN channels, LNbits harden, product metric crons.
+
+**Plausible:** https://github.com/plausible/analytics
+
+---
+
+
 ### 2026-08-03 — Grok · HQ v3.27.0 NAV + 100 features (pushed)
 
 **Root cause of sticky/broken menu:** feature-branch merge corrupted `hq.js` (missing `setTab`/`setTheme`, broken Manual HTML, syntax errors → script failed to load).
