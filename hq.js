@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.26.0 — handoffs registry tab
+ * Give A Bit HQ v3.27.0 — handoffs registry tab
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.26.0";
+  const HQ_VERSION = "3.27.0";
   const BUILD_TS = new Date().toISOString();
   const METRICS_SCHEMA = "gab.product-metrics.v1";
   const THOR_SCHEMA = "gab.thor-node.v1";
@@ -30,8 +30,7 @@
     const meta = document.querySelector('meta[name="hq-version"]');
     if (meta) meta.setAttribute("content", HQ_VERSION);
     document.title = `Give A Bit HQ ${label}`;
-    try { localStorage.setItem("hq_deployed_version", HQ_VERSION); } catch (_) {} ; const vchip = document.getElementById("hq-ver-chip"); if(vchip){ vchip.style.cursor="pointer"; vchip.title="Click: version compare + hard refresh"; vchip.onclick = () => { if(confirm("Compare versions and hard refresh?")) localStorage.removeItem("hq_tab_v3"); location.reload(true); } }
-    const chip = document.getElementById("hq-ver-chip"); if (chip) { chip.title="Click: compare + hard refresh"; chip.onclick = () => localStorage.removeItem("hq_tab_v3"); location.reload(true); chip.style.cursor="pointer"; }
+    try { localStorage.setItem("hq_deployed_version", HQ_VERSION); } catch (_) {}
   }
   // Immediate paint so header/footer never sit on stale HTML while data loads
   if (document.readyState === "loading") {
@@ -87,9 +86,7 @@
     charts: "#f59e0b",
     chat: "#22c55e",
     handoffs: "#ff8c00",
-    ci: "#ef4444",
-    crons: "#22c55e",
-    scanner: "#06b6d4",
+    manual: "#a78bfa",
   };
 
   const TAB_DISPLAY_NAMES = {
@@ -98,8 +95,7 @@
     ecosystem: "Ecosystem", concert: "Concert", coverage: "Coverage", system: "System",
     wallets: "Wallets", money: "Money", docs: "Docs", agents: "Agents",
     domains: "Domains", vault: "Vault", intel: "Intel", feed: "Feed",
-    charts: "Charts", chat: "Chat", handoffs: "Handoffs",
-    ci: "CI Status", crons: "Cron Health", scanner: "Scanner",
+    charts: "Charts", chat: "Chat", handoffs: "Handoffs", manual: "Manual",
   };
 
   const DOCS_HQ = [
@@ -114,38 +110,106 @@
   ];
 
   const FEATURES = [
-    "LNbits live balances", "Proxy wallet fetch", "Vault invoice keys", "Balance on cards",
-    "Sat pill chips", "Pulse money dots", "Share filament", "Portfolio allocation ribbon",
-    "Dual ticker sats+USD", "Δ whisper cache", "History thread sparklines", "Money drawer tab",
-    "Sats cascade", "Wallet identity block", "Portfolio totem", "Wealth ladder rank",
-    "Money cockpit tab", "Allocation donut", "Compare bars wallets", "FX badge CoinGecko",
-    "Stale balance fade", "Auto-poll 60s", "Batch /balances API", "Per-wallet path display",
-    "Copy balance action", "Refresh single wallet", "RO safety strip", "Empty vault beckon",
-    "Card money row", "List balance column", "Matrix money cell", "Analytics money panel",
-    "Activity balance events", "Diligence + Deltas wallet lines", "Network money status", "Depth + money",
-    "Project comprehensive drawer", "Drawer overview", "Drawer money", "Drawer metrics",
-    "Drawer stack", "Drawer docs", "Drawer related", "Drawer XL width",
-    "4 tinted themes", "Portfolio strip", "Live ticker", "Pause-on-hover ticker",
-    "Product cards", "KPI rows", "Dual sparklines", "Depth badges", "Status pills",
-    "List table", "Metrics lab", "Multi-series charts", "Funnels", "Segments",
-    "Offers map", "Education cards", "THOR system", "Host disk/mem", "Storage top-N",
-    "Docker pills", "Bitcoin plane", "Lightning plane", "Pipeline stages",
-    "Product funnels pipe", "Network graph", "Latency bars", "Connection cards",
-    "Health matrix", "HTTP matrix", "Analytics suite", "Category donut",
-    "Latency rank", "KPI heat", "Coverage scores", "Data inventory",
-    "Activity feed", "Ecosystem map", "Wallets vault", "Balance bars",
-    "Docs browser", "Project MD packs", "Agents personas", "Domains table",
-    "Markdown editor", "Doc overrides", "Doc download", "Docs dirty badge",
-    "Porcelain light theme", "Live pulse chip", "Auto data poll 5m",
-    "Card depth gauges", "THOR host gauges", "Analytics plan doc",
-    "Concert tab", "Portfolio time chart", "GitHub doc push", "Live API badge",
-    "Umami analytics poller", "Visitor sparklines on cards", "Analytics tab table", "Umami docs",
-    "Ref-puller cron 5min", "Agent context ref files", "ref-summary.py loader",
-    "All-site metrics inventory", "10 product envelopes enriched", "Umami deploy plan",
-    "HTML escape", "Isolated fetch", "Unavailable cards", "Theme flash",
-    "Keyboard nav", "Diligence + Deltas export", "Search filter", "Health filter",
-    "Feature board 100", "Yolo money glow", "Safe Harbour", "No grey rule",
-    "Comprehensive project drawer",
+    "LNbits live balances",
+    "Proxy wallet fetch",
+    "Vault invoice keys",
+    "Balance on cards",
+    "Sat pill chips",
+    "Pulse money dots",
+    "Share filament",
+    "Portfolio allocation ribbon",
+    "Dual ticker sats+USD",
+    "Wallet delta cache",
+    "History sparklines",
+    "Money drawer tab",
+    "Sats cascade",
+    "Wallet identity",
+    "Portfolio totem",
+    "Wealth ladder",
+    "Money cockpit",
+    "Allocation donut",
+    "Compare bars",
+    "FX CoinGecko",
+    "Stale balance fade",
+    "Auto-poll 60s",
+    "Batch balances API",
+    "Per-wallet path",
+    "Copy balance",
+    "Refresh one wallet",
+    "RO safety strip",
+    "Empty vault beckon",
+    "Card money row",
+    "List balance col",
+    "Matrix money cell",
+    "Analytics money",
+    "Activity money events",
+    "Diligence export",
+    "Network money status",
+    "Depth + money",
+    "Project mega drawer",
+    "Drawer overview",
+    "Drawer money",
+    "Drawer metrics",
+    "Drawer stack",
+    "Drawer docs",
+    "Drawer related",
+    "Drawer XL",
+    "Six tinted themes",
+    "Portfolio strip",
+    "Live ticker",
+    "Ticker pause hover",
+    "Product cards",
+    "KPI rows",
+    "Dual sparklines",
+    "Depth badges",
+    "Status pills",
+    "List table",
+    "Metrics lab",
+    "Multi-series charts",
+    "Funnels",
+    "Segments",
+    "Offers map",
+    "Education cards",
+    "THOR system",
+    "Host gauges",
+    "Storage top-N",
+    "Docker pills",
+    "Bitcoin plane",
+    "Lightning plane",
+    "Pipeline stages",
+    "Product funnels pipe",
+    "Network graph",
+    "Latency bars",
+    "Connection cards",
+    "Health matrix",
+    "HTTP matrix",
+    "Analytics suite",
+    "Category donut",
+    "Latency rank",
+    "KPI heat",
+    "Coverage scores",
+    "Data inventory",
+    "Activity feed",
+    "Ecosystem map",
+    "Wallets vault",
+    "Balance bars",
+    "Docs browser",
+    "Project MD packs",
+    "Agents personas",
+    "Domains table",
+    "Markdown editor",
+    "Doc overrides",
+    "Doc download",
+    "Docs dirty badge",
+    "Live pulse chip",
+    "Auto poll 5m",
+    "Concert tab",
+    "Portfolio time chart",
+    "GitHub doc push",
+    "Live API badge",
+    "Umami poller",
+    "Visitor sparklines",
+    "Keyboard nav",
   ];
 
   /* ═══════════════ DATA LAYER ═══════════════ */
@@ -322,50 +386,6 @@
     return `/metrics/${key}.json`;
   }
 
-  function isPendingMetrics(data) {
-    if (!data) return false;
-    if (data.raw && (data.raw.aggregatePending === true || (data.raw.demo === false && data.raw.pending))) return true;
-    const kpis = data.kpis || [];
-    const zeros = kpis.filter(k => Number(k.value) === 0).length;
-    if (data.health && data.health.status === "amber" && zeros >= 3) return true;
-    return !!(data.raw && data.raw.demo === false && (data.health?.message || "").toLowerCase().includes("pending"));
-  }
-
-  function refreshProductMetrics(id) {
-    const p = state.projects.find(x => x.id === id);
-    if (!p) return;
-    const btns = document.querySelectorAll(`[data-refresh-project="${id}"]`);
-    btns.forEach(b => { b.disabled = true; b.textContent = "⟳ ..."; });
-
-    loadProductMetrics(metricsCandidatesFor(p), { expectProductId: id }).then(r => {
-      state.metrics[id] = r;
-      if (state.tab === "cards") renderCards();
-      else if (state.tab === "metrics") { state.selectedMetricsId = id; renderMetrics(); }
-      else if (state.tab === "money") renderMoney();
-      else renderActiveTab();
-  // #5 populate alerts if present
-  setTimeout(() => {
-    const strip = document.getElementById("alerts-strip");
-    if (strip && state.loadErrors && state.loadErrors.length) {
-      strip.innerHTML = state.loadErrors.slice(0,5).map(e => `<div style="color:#f59e0b">⚠ ${e.error || "issue"}</div>`).join("") || "No recent alerts.";
-    } else if (strip) { strip.innerHTML = '<div style="color:#22c55e">All clear ✓ (live from cron-health + diagnose)</div>'; }
-  }, 300);
-
-      // re-open drawer if it was for this project
-      if (state.drawerProject === id && document.getElementById("drawer")?.classList.contains("open")) {
-        openDrawer(id);
-      }
-      showToast(`Refreshed ${p.name} (live preferred)`);
-    }).catch(() => {
-      showToast("Refresh failed — using cached");
-    }).finally(() => {
-      btns.forEach(b => { b.disabled = false; b.innerHTML = '<i class="fa-solid fa-sync"></i> Refresh'; });
-    });
-  }
-
-  // Expose for console / future
-  window.hqRefresh = refreshProductMetrics;
-
   function unavailableHTML(title, path, detail) {
     return `<div class="unavailable-card">
       <div class="icon"><i class="fa-solid fa-satellite-dish"></i></div>
@@ -465,7 +485,7 @@
   function metricsAgeChip(m) {
     const info = metricsAgeInfo(m);
     const pulse = info.cls === "green" && info.kind === "live" ? " pulse" : "";
-    return `<span class="status-pill ${escAttr(info.cls)}${pulse}" style="font-size:0.58rem;padding:0.12rem 0.4rem;text-transform:none;letter-spacing:0.02em" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(info.tip)}">${esc(info.label)}</span>`;
+    return `<span class="status-pill ${escAttr(info.cls)}${pulse}" style="font-size:0.58rem;padding:0.12rem 0.4rem;text-transform:none;letter-spacing:0.02em" data-tip="${escAttr(info.tip)}">${esc(info.label)}</span>`;
   }
   function staleMetricsRows(maxAgeMs) {
     const limit = maxAgeMs != null ? maxAgeMs : 6 * 60 * 60 * 1000;
@@ -545,7 +565,7 @@
     return !!(k && String(k).trim());
   }
 
-  function portfolioTotals /* total across all your project wallets */() {
+  function portfolioTotals() {
     let sats = 0, ok = 0, err = 0, empty = 0, pending = 0;
     const rows = [];
     state.projects.forEach((p) => {
@@ -621,25 +641,23 @@
     opts = opts || {};
     const wid = walletIdFor(p);
     const color = accentFor(p.id);
-    if (!wid) return `<span class="balance-chip empty" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "No wallet mapped for this project">no wallet</span>`;
+    if (!wid) return `<span class="balance-chip empty">no wallet</span>`;
     if (!hasVaultKey(wid)) {
-      return `<span class="balance-chip empty" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Add invoice key in Vault for ${wid} (per-project LNbits)">⚡ —</span>`;
+      return `<span class="balance-chip empty" data-tip="Set invoice key in Vault for ${escAttr(wid)}" data-tip-title="LNbits">⚡ —</span>`;
     }
     const bal = state.wallets[wid];
-    if (!bal) return `<span class="balance-chip pending pulse" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Loading balance for ${wid}">⚡ …</span>`;
+    if (!bal) return `<span class="balance-chip pending pulse">⚡ …</span>`;
     if (!bal.ok) {
-      return `<span class="balance-chip err" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Fetch failed for ${wid}">⚡ err</span>`;
+      return `<span class="balance-chip err" data-tip="${escAttr(bal.error || "fail")} · ${escAttr(bal.path || "")}">⚡ err</span>`;
     }
     const delta = balDelta(wid);
-    const dHtml = delta && delta.abs ? `<span class="wallet-delta ${delta.abs >= 0 ? "up" : "down"}">${delta.abs >= 0 ? "▲" : "▼"}${delta.pct != null ? Math.abs(delta.pct).toFixed(1) + "%" : fmtNum(Math.abs(delta.abs))}</span>` : "";
+    const dHtml = delta && delta.abs
+      ? `<span class="wallet-delta ${delta.abs >= 0 ? "up" : "down"}">${delta.abs >= 0 ? "▲" : "▼"}${delta.pct != null ? Math.abs(delta.pct).toFixed(1) + "%" : fmtNum(Math.abs(delta.abs))}</span>`
+      : "";
     const share = opts.total ? walletSharePct(bal.sats, opts.total) : null;
-    return `<span class="balance-chip ok" style="--chip-c:${escAttr(color)}" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Wallet: ${wid} (LNbits per project)${share ? " · " + share.toFixed(1) + "%" : ""}">
+    return `<span class="balance-chip ok" style="--chip-c:${escAttr(color)}" data-tip="${escAttr(wid)} · ${escAttr(bal.name || "")}${share != null ? " · " + share.toFixed(1) + "% portfolio" : ""}" data-tip-title="LNbits">
       <span class="status-dot green pulse"></span>
-      <span class="sats-ticker" data-tip="Mouse over for ELI16 explanation. All local & secure. "Live balance. Refresh for deltas">${esc(fmtNum(bal.sats, "sats"))}</span>
-      ${dHtml}
-    </span>`; style="--chip-c:${escAttr(color)}" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(wid)} · ${escAttr(bal.name || "")}${share != null ? " · " + share.toFixed(1) + "% portfolio" : ""}" data-tip-title="LNbits">
-      <span class="status-dot green pulse"></span>
-      <span class="sats-ticker" data-tip="Mouse over for ELI16 explanation. All local & secure. "Live balance. Refresh for deltas">${esc(fmtNum(bal.sats, "sats"))}</span>
+      <span class="sats-ticker">${esc(fmtNum(bal.sats, "sats"))}</span>
       ${dHtml}
     </span>`;
   }
@@ -647,13 +665,13 @@
   function moneyBlockHTML(p) {
     const wid = walletIdFor(p);
     const color = accentFor(p.id);
-    const tot = portfolioTotals /* total across all your project wallets */();
+    const tot = portfolioTotals();
     if (!wid) return unavailableHTML("No wallet mapping", "projects.json → wallet");
     if (!hasVaultKey(wid)) {
       return `<div class="drawer-money-block panel">
         <div class="ln-badge">LNbits</div>
         <p style="color:var(--ink-dim);font-size:0.85rem">No invoice key for <span class="mono">${esc(wid)}</span>.</p>
-        <button type="button" class="btn btn-sm btn-primary mt-2" data-open-vault data-wire="true">Open Vault</button> <button type="button" class="btn btn-sm" data-wire-vault data-open-vault data-wire="true" title="Enter invoice key for this project">Wire for this</button>
+        <button type="button" class="btn btn-sm btn-primary mt-2" data-open-vault>Open Vault</button>
       </div>`;
     }
     const bal = state.wallets[wid];
@@ -673,7 +691,7 @@
         <span class="snap-pill mono">${esc(fmtTime(new Date().toISOString()))}</span>
       </div>
       <div class="money-hero mt-2">
-        <div class="money-hero-total sats-ticker" data-tip="Mouse over for ELI16 explanation. All local & secure. "Live balance. Refresh for deltas">${esc(fmtNum(bal.sats, "sats"))}</div>
+        <div class="money-hero-total sats-ticker">${esc(fmtNum(bal.sats, "sats"))}</div>
         <div class="money-hero-usd">${esc(fmtUsd(usd))}${state.btcUsd ? ` · <span class="fx-badge">BTC $${esc(fmtNum(state.btcUsd))}</span>` : ""}</div>
         ${delta ? `<div class="money-hero-delta ${delta.abs >= 0 ? "up" : "down"}">${delta.abs >= 0 ? "+" : ""}${esc(fmtNum(delta.abs, "sats"))}${delta.pct != null ? ` (${delta.pct >= 0 ? "+" : ""}${delta.pct.toFixed(2)}%)` : ""} vs prior poll</div>` : `<div class="money-hero-delta">No prior snapshot yet — history builds as you poll</div>`}
       </div>
@@ -690,7 +708,7 @@
       <div class="flex flex-wrap gap-2 mt-2">
         <button type="button" class="btn btn-sm btn-ghost" data-refresh-wallet="${escAttr(wid)}">Refresh</button>
         <button type="button" class="btn btn-sm btn-ghost" data-copy-sats="${escAttr(String(bal.sats))}">Copy sats</button>
-        <button type="button" class="btn btn-sm btn-ghost" data-open-vault data-wire="true">Vault</button>
+        <button type="button" class="btn btn-sm btn-ghost" data-open-vault>Vault</button>
         <button type="button" class="btn btn-sm btn-ghost" data-qr-toggle="${escAttr(wid)}"><i class="fa-solid fa-qrcode"></i> QR</button>
         ${hasVaultKey(wid) ? `<button type="button" class="btn btn-sm btn-ghost" data-invoices-toggle="${escAttr(wid)}"><i class="fa-solid fa-receipt"></i> Invoices</button>` : ""}
       </div>
@@ -702,14 +720,13 @@
     </div>`;
   }
 
-  function allocationRibbonHTML() + '<div data-tip="Mouse over for ELI16 explanation. All local & secure. "Portfolio breakdown (click Money for details)">📊 Portfolio visual</div>' + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>` {
-      <button class="btn btn-sm btn-ghost" onclick="if(window.refreshAllWallets) window.refreshAllWallets(); else alert('Bulk refresh wired via prior work')">⟳ Refresh All Wallets</button>
-    const tot = portfolioTotals /* total across all your project wallets */();
-    if (!tot.sats) return `<div class="money-alloc"><div class="money-alloc-item" style="flex:1;background:color-mix(in srgb,var(--violet)25%,transparent)" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Add Vault keys to see allocation"></div></div>`;
+  function allocationRibbonHTML() {
+    const tot = portfolioTotals();
+    if (!tot.sats) return `<div class="money-alloc"><div class="money-alloc-item" style="flex:1;background:color-mix(in srgb,var(--violet)25%,transparent)" data-tip="Add Vault keys to see allocation"></div></div>`;
     const parts = tot.rows.filter((r) => r.status === "ok").sort((a, b) => b.sats - a.sats);
     return `<div class="money-alloc" role="img" aria-label="Portfolio allocation">${parts.map((r) => {
       const pct = walletSharePct(r.sats, tot.sats);
-      return `<div class="money-alloc-item" style="flex:${Math.max(pct, 1.5)};background:${escAttr(accentFor(r.p.id))}" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(r.p.name)} · ${escAttr(fmtNum(r.sats, "sats"))} · ${pct.toFixed(1)}%" data-tip-title="Share"></div>`;
+      return `<div class="money-alloc-item" style="flex:${Math.max(pct, 1.5)};background:${escAttr(accentFor(r.p.id))}" data-tip="${escAttr(r.p.name)} · ${escAttr(fmtNum(r.sats, "sats"))} · ${pct.toFixed(1)}%" data-tip-title="Share"></div>`;
     }).join("")}</div>`;
   }
 
@@ -738,7 +755,7 @@
     const p = Math.max(0, Math.min(100, Number(pct) || 0));
     const R = 30, C = 2 * Math.PI * R;
     const off = C * (1 - p / 100);
-    return `<div class="gauge" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(sub || label)}">
+    return `<div class="gauge" data-tip="${escAttr(sub || label)}">
       <svg viewBox="0 0 72 72" aria-hidden="true">
         <circle class="gauge-track" cx="36" cy="36" r="${R}"></circle>
         <circle class="gauge-arc" cx="36" cy="36" r="${R}" stroke="${escAttr(color)}"
@@ -754,7 +771,7 @@
     return rows.map((r) => {
       const pct = ((Number(r.value) || 0) / max) * 100;
       return `<div class="hbar-row">
-        <span class="name" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(r.label)}">${esc(r.label)}</span>
+        <span class="name" data-tip="${escAttr(r.label)}">${esc(r.label)}</span>
         <div class="metric-bar" style="--bar-c:${escAttr(color || r.color || "#38bdf8")}"><span style="width:${pct}%"></span></div>
         <span class="val">${esc(r.display != null ? r.display : fmtNum(r.value))}</span>
       </div>`;
@@ -867,7 +884,7 @@
       <div class="block-title" style="font-family:var(--font-display);font-weight:700;margin-bottom:0.55rem">${esc(funnel.label || funnel.id || "Funnel")}</div>
       ${funnel.steps.map((s) => {
         const pct = Math.max(8, ((Number(s.count) || 0) / max) * 100);
-        return `<div class="funnel-step" style="--funnel-c:${escAttr(c)}" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(s.hint || s.label)}">
+        return `<div class="funnel-step" style="--funnel-c:${escAttr(c)}" data-tip="${escAttr(s.hint || s.label)}">
           <div class="bar" style="width:${pct}%"></div>
           <div class="inner"><span>${esc(s.label || s.id)}</span><span class="count">${esc(fmtNum(s.count))}</span></div>
         </div>`;
@@ -879,7 +896,7 @@
     const delta = kpi.delta != null
       ? `<div class="delta ${Number(kpi.delta) >= 0 ? "up" : "down"}">${Number(kpi.delta) >= 0 ? "▲" : "▼"} ${esc(String(kpi.delta))}${esc(kpi.deltaUnit || "")}</div>`
       : "";
-    return `<div class="kpi-cell" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(kpi.hint || kpi.label)}" data-tip-title="${escAttr(kpi.label)}">
+    return `<div class="kpi-cell" data-tip="${escAttr(kpi.hint || kpi.label)}" data-tip-title="${escAttr(kpi.label)}">
       <div class="label">${esc(kpi.label || kpi.key)}</div>
       <div class="value">${esc(fmtNum(kpi.value, kpi.format))}${kpi.unit && kpi.format !== "sats" && kpi.format !== "percent" ? `<span class="unit">${esc(kpi.unit)}</span>` : ""}</div>
       ${delta}
@@ -978,28 +995,137 @@
     el.className = "toast " + (kind || "");
     el.textContent = msg;
     stack.appendChild(el);
-    setTimeout(() => {
-    const strip = document.getElementById("alerts-strip");
-    if (strip && state.loadErrors && state.loadErrors.length) {
-      strip.innerHTML = state.loadErrors.slice(0,5).map(e => `<div style="color:#f59e0b">⚠ ${e.error || "issue"}</div>`).join("") || "No recent alerts.";
-    } else if (strip) { strip.innerHTML = '<div style="color:#22c55e">All clear ✓ (live from cron-health + diagnose)</div>'; }
-  }, 300);
+    setTimeout(() => { el.style.opacity = "0"; setTimeout(() => el.remove(), 300); }, 3200);
+  }
+  function setTheme(name) {
+    const t = ["ember", "porcelain", "stone", "slate", "ink", "aurora"].includes(name) ? name : "ember";
+    document.body.classList.add("theme-switching");
+    document.documentElement.setAttribute("data-theme", t);
+    state.theme = t;
+    try { localStorage.setItem(THEME_KEY, t); } catch {}
+    document.querySelectorAll(".theme-dot").forEach((d) => d.classList.toggle("active", d.dataset.themePick === t));
+    setTimeout(() => document.body.classList.remove("theme-switching"), 560);
+  }
+  let _switchingTimer = null;
+  function setTab(name) {
+    try {
+      if (!TAB_ACCENTS[name] && name !== "manual") name = "cards";
+      if (typeof closeDrawer === "function") closeDrawer();
+      if (state.renderTimeouts) delete state.renderTimeouts[name];
 
-      const overlayEl = document.getElementById("tab-loading-overlay");
-      if (overlayEl) overlayEl.remove();
+      const navWrap = document.querySelector(".nav-wrap");
+      if (navWrap) {
+        if (_switchingTimer) clearTimeout(_switchingTimer);
+        navWrap.classList.add("switching");
+        _switchingTimer = setTimeout(() => {
+          navWrap.classList.remove("switching");
+          _switchingTimer = null;
+        }, 140);
+      }
+
+      let viewEl = document.getElementById("view-" + name);
+      if (!viewEl) {
+        viewEl = document.createElement("div");
+        viewEl.id = "view-" + name;
+        viewEl.className = "view";
+        const main = document.getElementById("main-content");
+        if (main) main.appendChild(viewEl);
+      }
+
+      state.tab = name;
+      try { localStorage.setItem(TAB_KEY, name); } catch {}
+
+      document.querySelectorAll(".nav-tab").forEach((btn) => {
+        const on = btn.dataset.tab === name;
+        btn.classList.toggle("active", on);
+        btn.setAttribute("aria-selected", on ? "true" : "false");
+        btn.tabIndex = on ? 0 : -1;
+        if (on) {
+          btn.style.setProperty("--tab-accent", TAB_ACCENTS[name] || "#ff8c00");
+          try { btn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" }); }
+          catch (_) { btn.scrollIntoView(false); }
+        }
+      });
+      document.querySelectorAll(".nav-group-chip").forEach((g) => {
+        const tabs = (g.dataset.tabs || "").split(",");
+        g.classList.toggle("active", tabs.includes(name));
+      });
+
+      document.querySelectorAll(".view").forEach((v) => v.classList.toggle("active", v.id === "view-" + name));
+
+      if (name === "manual") renderManual();
+      else renderActiveTab();
 
       const displayName = TAB_DISPLAY_NAMES[name] || name.charAt(0).toUpperCase() + name.slice(1);
       toast("\u2192 " + displayName, "");
-      setTimeout(() => {
-    const strip = document.getElementById("alerts-strip");
-    if (strip && state.loadErrors && state.loadErrors.length) {
-      strip.innerHTML = state.loadErrors.slice(0,5).map(e => `<div style="color:#f59e0b">⚠ ${e.error || "issue"}</div>`).join("") || "No recent alerts.";
-    } else if (strip) { strip.innerHTML = '<div style="color:#22c55e">All clear ✓ (live from cron-health + diagnose)</div>'; }
-  }, 300);
+    } catch (e) {
+      console.error("setTab error, falling back to cards:", e);
+      state.tab = "cards";
+      try { renderActiveTab(); } catch (_) {}
     }
   }
 
-  /* ═══════════════ BOOTSTRAP ═══════════════ */
+  function rebuildNavTabs() {
+    const nav = document.getElementById("nav-tabs");
+    if (!nav) return;
+    const active = state.tab || "cards";
+    nav.innerHTML = Object.keys(TAB_DISPLAY_NAMES).map((id) => {
+      const label = TAB_DISPLAY_NAMES[id];
+      const on = id === active;
+      const accent = TAB_ACCENTS[id] || "#ff8c00";
+      return `<button type="button" class="nav-tab${on ? " active" : ""}" data-tab="${id}" role="tab" aria-selected="${on}" tabindex="${on ? 0 : -1}" style="--tab-accent:${accent}" title="${label}">${label}</button>`;
+    }).join("");
+    nav.querySelectorAll(".nav-tab").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setTab(btn.dataset.tab);
+      });
+    });
+    const sc = document.querySelector(".nav-scroll");
+    if (sc && !sc.dataset.boundScroll) {
+      sc.dataset.boundScroll = "1";
+      const syncFade = () => {
+        const wrap = document.querySelector(".nav-wrap");
+        if (!wrap) return;
+        const max = Math.max(0, sc.scrollWidth - sc.clientWidth);
+        wrap.classList.toggle("nav-at-start", sc.scrollLeft <= 2);
+        wrap.classList.toggle("nav-at-end", sc.scrollLeft >= max - 2);
+      };
+      sc.addEventListener("scroll", syncFade, { passive: true });
+      window.addEventListener("resize", syncFade, { passive: true });
+      requestAnimationFrame(syncFade);
+    }
+  }
+
+  function renderManual() {
+    let el = document.getElementById("view-manual");
+    if (!el) {
+      el = document.createElement("div");
+      el.id = "view-manual";
+      el.className = "view";
+      const main = document.getElementById("main-content");
+      if (main) main.appendChild(el);
+    }
+    el.classList.add("active");
+    el.innerHTML = `<div class="panel" style="max-width:900px;margin:0 auto;padding:1.5rem">
+      <h2 class="display">HQ Manual</h2>
+      <p style="color:var(--ink-dim);line-height:1.6">One glass for every Give A Bit product — status, metrics, money, docs. Secrets stay in the browser Vault only.</p>
+      <h3>Menu / navigation</h3>
+      <ul style="line-height:1.7;color:var(--ink-dim)">
+        <li><strong>Tabs</strong> stick under the top bar — swipe/scroll sideways for more.</li>
+        <li><strong>/</strong> or <strong>Jump</strong>: search any tab by name.</li>
+        <li><strong>?</strong>: shortcuts. <strong>Shift+\u2190/\u2192</strong>: previous/next tab.</li>
+        <li>Keys <strong>1\u20130</strong> jump core tabs; letters open Money, Docs, Vault, Manual (u), etc.</li>
+      </ul>
+      <h3>Feature board</h3>
+      <p style="color:var(--ink-dim)">${FEATURES.length} shipped surfaces on the feature board.</p>
+      <h3>Security</h3>
+      <p style="color:var(--ink-dim)">Invoice keys + proxy token = localStorage only. Never git. Never server.</p>
+    </div>`;
+  }
+
+/* ═══════════════ BOOTSTRAP ═══════════════ */
 
   async function bootstrap() {
     state.loading = true;
@@ -1014,7 +1140,6 @@
       loadData("/metrics/ecosystem-map.json"),
     ]);
     const roadmapR = await loadData("/metrics/roadmap.json");
-    const deployStatusR = await loadData("/metrics/deploy-status.json");
 
     if (projectsR.ok && projectsR.data && Array.isArray(projectsR.data.projects)) {
       state.projects = projectsR.data.projects;
@@ -1029,7 +1154,6 @@
     if (statusR.ok) state.status = statusR.data; else { state.status = null; state.loadErrors.push(statusR); }
     if (ecoR.ok) state.ecosystem = ecoR.data; else { state.ecosystem = null; /* optional */ }
     if (roadmapR.ok) state.roadmap = roadmapR.data; else { state.roadmap = null; }
-    if (deployStatusR.ok) state.deployStatus = deployStatusR.data; else { state.deployStatus = null; state.loadErrors.push(deployStatusR); }
 
     const metricsJobs = state.projects.map(async (p) => {
       const r = await loadProductMetrics(metricsCandidatesFor(p), { expectProductId: p.id });
@@ -1245,13 +1369,6 @@
     renderPortfolioStrip();
     renderTicker();
     renderActiveTab();
-  // #5 populate alerts if present
-  setTimeout(() => {
-    const strip = document.getElementById("alerts-strip");
-    if (strip && state.loadErrors && state.loadErrors.length) {
-      strip.innerHTML = state.loadErrors.slice(0,5).map(e => `<div style="color:#f59e0b">⚠ ${e.error || "issue"}</div>`).join("") || "No recent alerts.";
-    } else if (strip) { strip.innerHTML = '<div style="color:#22c55e">All clear ✓ (live from cron-health + diagnose)</div>'; }
-  }, 300);
     toast("Live data refreshed", "ok");
   }
 
@@ -1379,7 +1496,7 @@
     const services = (node.services || []).filter(s => s.status === "green").length;
     const totalServices = (node.services || []).length;
     const uptimeDays = node.uptimeSec ? Math.round(node.uptimeSec / 86400) : null;
-    const tot = portfolioTotals /* total across all your project wallets */();
+    const tot = portfolioTotals();
     const avgDepth = state.projects.length
       ? Math.round(state.projects.reduce((a, p) => {
           const m = state.metrics[p.id];
@@ -1401,40 +1518,39 @@
     })();
 
     el.innerHTML = `
-      <div class="stat panel" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "How many suite sites returned HTTP 200 in the last health check. Out of ${total} total sites, ${up} are responding." style="cursor:help">
+      <div class="stat panel" data-tip="How many suite sites returned HTTP 200 in the last health check. Out of ${total} total sites, ${up} are responding." style="cursor:help">
         <div class="l">Suite live</div>
         <div class="v" style="color:var(--green)">${up}<span style="font-size:0.85rem;color:var(--ink-faint)">/${total}</span></div>
         <div class="stat-secondary">${avgMs != null ? esc(avgMs) + "ms avg" : ""} · ${esc(statusTime)}</div>
       </div>
-      <div class="stat panel" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Sites that are down, timing out, or have failing metrics. 0 = everything running smoothly." style="cursor:help">
+      <div class="stat panel" data-tip="Sites that are down, timing out, or have failing metrics. 0 = everything running smoothly." style="cursor:help">
         <div class="l">Attention</div>
         <div class="v" style="color:${down ? "var(--red)" : "var(--ink-faint)"}">${down}</div>
         <div class="stat-secondary">${down ? esc(down) + " need review" : "all clear"}${down ? "" : " ✓"}</div>
       </div>
-      <div class="stat panel" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "THOR VPS health: green = all services (Docker, Postgres, LNbits, LND, Umami) running and responding. amber = one or more degraded. red = unreachable." style="cursor:help">
+      <div class="stat panel" data-tip="THOR VPS health: green = all services (Docker, Postgres, LNbits, LND, Umami) running and responding. amber = one or more degraded. red = unreachable." style="cursor:help">
         <div class="l">THOR</div>
         <div class="v" style="font-size:1.05rem">${statusPill(health, health)}</div>
         <div class="stat-secondary">${services}/${totalServices} svc · blk ${btc.blocks || "—"} · ${uptimeDays != null ? uptimeDays + "d up" : ""}${lnd.walletBalanceSats > 0 ? " · " + esc(fmtNum(lnd.walletBalanceSats, "sats")) + " on-chain" : ""}</div>
       </div>
-      <div class="stat panel" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "How much data HQ has collected for each product (0-100). 100 = every product has live /metrics.json, wallet data, Umami analytics, AND CF Web Analytics feeding in. 0 = demo/empty." style="cursor:help">
+      <div class="stat panel" data-tip="How much data HQ has collected for each product (0-100). 100 = every product has live /metrics.json, wallet data, Umami analytics, AND CF Web Analytics feeding in. 0 = demo/empty." style="cursor:help">
         <div class="l">Data depth</div>
         <div class="v" style="color:${escAttr(depthColor(avgDepth))}">${avgDepth}<span style="font-size:0.75rem;color:var(--ink-faint)">/100</span></div>
         <div class="stat-secondary">${depthBuckets.full} deep · ${depthBuckets.partial} partial · ${depthBuckets.none} empty</div>
       </div>
-      <div class="stat panel money-hero" style="cursor:pointer;min-width:200px" id="btn-goto-money" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Open money cockpit">
+      <div class="stat panel money-hero" style="cursor:pointer;min-width:200px" id="btn-goto-money" data-tip="Open money cockpit">
         <div class="l">Portfolio · LNbits</div>
         <div class="money-hero-total" style="font-size:1.15rem">${tot.ok ? esc(fmtNum(tot.sats, "sats")) : "—"}</div>
         <div class="money-hero-usd">${esc(usd)} · ${tot.ok} wallets${state.btcUsd ? ` · <span class='fx-badge'>BTC $${esc(fmtNum(state.btcUsd))}</span>` : ""}</div>
-        ${allocationRibbonHTML() + '<div data-tip="Mouse over for ELI16 explanation. All local & secure. "Portfolio breakdown (click Money for details)">📊 Portfolio visual</div>' + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>`}
-      <button class="btn btn-sm btn-ghost" onclick="if(window.refreshAllWallets) window.refreshAllWallets(); else alert('Bulk refresh wired via prior work')">⟳ Refresh All Wallets</button>
+        ${allocationRibbonHTML()}
       </div>
       <div class="stat panel" style="cursor:pointer" id="btn-export-diligence">
-        <div class="l">Diligence + Deltas</div>
+        <div class="l">Diligence</div>
         <div class="v" style="font-size:0.95rem">Export MD</div>
         <div class="stat-secondary">${total} projects · ${up} live</div>
       </div>
     `;
-    document.getElementById("btn-export-diligence")?.addEventListener("click", exportDiligence + Deltas);
+    document.getElementById("btn-export-diligence")?.addEventListener("click", exportDiligence);
     document.getElementById("btn-goto-money")?.addEventListener("click", () => setTab("money"));
     // Stat card click handlers for drill-down modals
     el.querySelectorAll(".stat")?.forEach(card => {
@@ -1463,7 +1579,7 @@
     const sites = (state.status && state.status.sites) || {};
     const down = Object.values(sites).filter(s => s.ok === false).length;
     if (down > 0) {
-      bell.innerHTML = `<span class="status-pill red" style="cursor:pointer;font-size:0.65rem" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${down} site(s) need attention" id="attention-bell-btn"><i class="fa-solid fa-bell"></i> ${down}</span>`;
+      bell.innerHTML = `<span class="status-pill red" style="cursor:pointer;font-size:0.65rem" data-tip="${down} site(s) need attention" id="attention-bell-btn"><i class="fa-solid fa-bell"></i> ${down}</span>`;
     } else {
       bell.innerHTML = `<span class="status-pill muted" style="font-size:0.65rem"><i class="fa-regular fa-bell"></i></span>`;
     }
@@ -1483,7 +1599,7 @@
       const health = projectHealth(p);
       const depth = m && m.ok ? depthScore(m.data, false) : 0;
       const lat = s && s.ms != null ? `${s.ms}ms` : "—";
-      items.push(`<span class="ticker-item" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${esc(p.name)}: ${status === 'green' ? 'responding normally' : status === 'amber' ? 'degraded' : 'down'} · latency ${lat} · data depth ${depth}/100 <button onclick="window.showDepthCalculator(state.selectedMetricsId || 'katoa')" class="btn btn-sm" style="font-size:0.6rem">Calc</button> <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span>">${statusDot(health)} <strong>${esc(p.name)}</strong> ${esc(lat)} · depth ${depth}</span>`);
+      items.push(`<span class="ticker-item" data-tip="${esc(p.name)}: ${status === 'green' ? 'responding normally' : status === 'amber' ? 'degraded' : 'down'} · latency ${lat} · data depth ${depth}/100">${statusDot(health)} <strong>${esc(p.name)}</strong> ${esc(lat)} · depth ${depth}</span>`);
     });
     if (state.thor && state.thor.ok && state.thor.data) {
       const t = state.thor.data;
@@ -1565,13 +1681,6 @@
         state.renderFailures = {};
         state.renderTimeouts = {};
         renderActiveTab();
-  // #5 populate alerts if present
-  setTimeout(() => {
-    const strip = document.getElementById("alerts-strip");
-    if (strip && state.loadErrors && state.loadErrors.length) {
-      strip.innerHTML = state.loadErrors.slice(0,5).map(e => `<div style="color:#f59e0b">⚠ ${e.error || "issue"}</div>`).join("") || "No recent alerts.";
-    } else if (strip) { strip.innerHTML = '<div style="color:#22c55e">All clear ✓ (live from cron-health + diagnose)</div>'; }
-  }, 300);
         return;
       }
 
@@ -1611,37 +1720,41 @@
   /* ─── Vault tab: open modal + show key status ──────────────────── */
 
   function renderVaultTab() {
+    // Open the vault modal
     openVaultModal();
+
+    // Render a vault status view in the main content area
     var el = document.getElementById("view-vault");
     if (!el) return;
+
     var v = state.vault || {};
     var keys = v.keys || v.wallets || {};
     var keyCount = Object.keys(keys).filter(function (k) { return !!(keys[k] && String(keys[k]).trim()); }).length;
     var totalWallets = state.projects.filter(function (p) { return p.wallet || p.id; }).length;
     var configured = keyCount > 0;
+    var proxyConfigured = !!(v.proxyUrl || v.lnbitsProxyUrl);
+
     el.innerHTML = '' +
-      '<div class="panel" style="padding:1.5rem;max-width:720px;margin:0 auto">' +
+      '<div class="panel" style="padding:1.5rem;max-width:600px;margin:0 auto">' +
         '<div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">' +
           '<i class="fa-solid fa-vault" style="font-size:1.5rem;color:var(--vault, #a78bfa)"></i>' +
-          '<h3 style="margin:0">Vault — Private Keys (Browser Only)</h3>' +
-        '</div>' +
-        '<div style="background:rgba(255,255,255,0.06);padding:0.75rem;border-radius:6px;margin-bottom:1rem;font-size:0.85rem">' +
-          '<strong>Security (top priority):</strong> Keys live only in your browser. Never sent anywhere. Never in git. ' +
-          'The dashboard uses them only to fetch your private LNbits balances and to help capture all the metrics the projects send.' +
+          '<h3 style="margin:0">Vault</h3>' +
         '</div>' +
         '<div class="grid grid-2" style="gap:1rem">' +
-          '<div class="stat panel" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "How many of your project wallets have keys entered here.">' +
-            '<div class="l">Keys configured</div>' +
+          '<div class="stat panel" style="cursor:default">' +
+            '<div class="l">Invoice keys configured</div>' +
             '<div class="v" style="color:' + (configured ? 'var(--green)' : 'var(--red)') + '">' + (configured ? 'Yes (' + keyCount + '/' + totalWallets + ')' : 'No') + '</div>' +
           '</div>' +
+          '<div class="stat panel" style="cursor:default">' +
+            '<div class="l">Proxy URL</div>' +
+            '<div class="v" style="color:' + (proxyConfigured ? 'var(--green)' : 'var(--ink-faint)') + '">' + (proxyConfigured ? 'Set' : 'Not set') + '</div>' +
+          '</div>' +
         '</div>' +
-        '<div style="margin:0.75rem 0;font-size:0.8rem">Step-by-step: 1) Click Open Vault 2) Paste the invoice key for each project wallet 3) Save. ' +
-        'Now the dashboard can show real money and pull live metrics from every project.</div>' +
         '<button type="button" class="btn btn-primary mt-2" id="vault-open-modal-btn" style="width:100%">' +
           '<i class="fa-solid fa-key"></i> Open Vault Settings' +
         '</button>' +
-        '<div style="font-size:0.7rem;margin-top:0.5rem;opacity:0.7">Keys never leave this device. Close the browser = they stay local until you clear data.</div>' +
       '</div>';
+
     var openBtn = document.getElementById("vault-open-modal-btn");
     if (openBtn) openBtn.addEventListener("click", openVaultModal);
   }
@@ -1666,7 +1779,7 @@
       wallets: renderWallets, money: renderMoney, docs: renderDocs, agents: renderAgents, domains: renderDomains,
       vault: renderVaultTab,
       handoffs: renderHandoffs,
-      ci: renderCIStatus, crons: renderCronHealth, scanner: renderScannerFeed,
+      manual: renderManual,
       intel: renderIntelStub, feed: renderFeedStub, charts: renderChartsStub, chat: renderChatStub,
     };
     const fn = map[state.tab];
@@ -1714,11 +1827,6 @@
     let list = state.projects.slice();
     if (state.filter === "green") list = list.filter((p) => projectHealth(p) === "green");
     else if (state.filter === "attention") list = list.filter((p) => ["amber", "red", "unknown"].includes(projectHealth(p)) || p.deployed === false);
-    else if (state.filter === "pending" || state.filter === "lowbal") list = list.filter((p) => {
-      const m = state.metrics[p.id];
-      return !m || !m.ok || isPendingMetrics(m.data) || (m.data && m.data.health && m.data.health.status === "amber");
-    });
-    else if (state.filter === "pending" || state.filter === "lowbal") list = list.filter(p => { const m = state.metrics[p.id]; return !m || !m.ok || (m.data && (isPendingMetrics(m.data) || (m.data.health && ["amber","red"].includes(m.data.health.status)))); });
     else if (state.filter === "deep") list = list.filter((p) => {
       const m = state.metrics[p.id];
       return m && m.ok && depthScore(m.data, false) >= 70;
@@ -1737,13 +1845,11 @@
   function toolbarHTML(showDepthFilter) {
     return `<div class="toolbar">
       <input type="search" id="hq-search" placeholder="Search projects…" value="${escAttr(state.search)}"/>
-      <button type="button" class="btn btn-sm ${state.filter === "all" ? "btn-primary" : "btn-ghost"}" data-filter="all" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Show all products regardless of health status">All</button>
-      <button type="button" class="btn btn-sm ${state.filter === "green" ? "btn-primary" : "btn-ghost"}" data-filter="green" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Only show products with green health (all endpoints responding)">Green</button>
-      <button type="button" class="btn btn-sm ${state.filter === "attention" ? "btn-primary" : "btn-ghost"}" data-filter="attention" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Only show products that need attention — down, timing out, or missing data">Attention</button>
-      ${showDepthFilter !== false ? `<button type="button" class="btn btn-sm ${state.filter === "deep" ? "btn-primary" : "btn-ghost"}" data-filter="deep" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Only show products with rich data">Deep data</button>
-      <button type="button" class="btn btn-sm btn-ghost" data-filter="pinned" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Only pinned favorites">📌 Pinned</button>` : ""}
-      <button type="button" class="btn btn-sm ${state.filter === "pending" || state.filter === "lowbal" ? "btn-primary" : "btn-ghost"}" data-filter="pending" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Focus on projects with pending/amber data or missing live metrics">Focus: Pending + Low Balance + Empty Vault/Low</button>
-      <button type="button" class="btn btn-sm btn-ghost" id="btn-export-2" data-tip="Mouse over for ELI16 explanation. All local & secure. "Download current view as JSON for records or sharing"><i class="fa-solid fa-file-export"></i> Diligence + Deltas</button>
+      <button type="button" class="btn btn-sm ${state.filter === "all" ? "btn-primary" : "btn-ghost"}" data-filter="all" data-tip="Show all products regardless of health status">All</button>
+      <button type="button" class="btn btn-sm ${state.filter === "green" ? "btn-primary" : "btn-ghost"}" data-filter="green" data-tip="Only show products with green health (all endpoints responding)">Green</button>
+      <button type="button" class="btn btn-sm ${state.filter === "attention" ? "btn-primary" : "btn-ghost"}" data-filter="attention" data-tip="Only show products that need attention — down, timing out, or missing data">Attention</button>
+      ${showDepthFilter !== false ? `<button type="button" class="btn btn-sm ${state.filter === "deep" ? "btn-primary" : "btn-ghost"}" data-filter="deep" data-tip="Only show products with rich data (funnels, series, segments — not just KPIs)">Deep data</button>` : ""}
+      <button type="button" class="btn btn-sm btn-ghost" id="btn-export-2"><i class="fa-solid fa-file-export"></i> Diligence</button>
     </div>`;
   }
   function bindToolbar(reRender) {
@@ -1754,7 +1860,7 @@
     document.querySelectorAll("[data-filter]").forEach((b) => {
       b.addEventListener("click", () => { state.filter = b.dataset.filter; reRender(); });
     });
-    document.getElementById("btn-export-2")?.addEventListener("click", exportDiligence + Deltas);
+    document.getElementById("btn-export-2")?.addEventListener("click", exportDiligence);
   }
 
   /* ═══════════════ CARDS ═══════════════ */
@@ -1855,8 +1961,6 @@
     const health = projectHealth(p);
     const sites = (state.status && state.status.sites) || {};
     const s = sites[p.id] || {};
-    const ciInfo = state.deployStatus && state.deployStatus[p.id];
-    const ciStatus = ciInfo ? (ciInfo.status === "success" ? "✅" : ciInfo.status === "failure" ? "❌" : "⏳") : "";
     if (!m || !m.ok) {
       return `<article class="card" style="--card-accent:${escAttr(color)};${p.planned ? "opacity:0.85" : ""}" data-project="${escAttr(p.id)}">
         <div class="card-head">${iconBadge(p.icon, color)}
@@ -1864,7 +1968,7 @@
           ${statusPill(health)}
         </div>
         <div class="card-meta-row">${p.planned ? `<span class="status-pill amber" style="font-size:0.58rem;padding:0.12rem 0.4rem">planned</span>` : metricsAgeChip(m)}</div>
-        <div class="card-money-row">${balanceChipHTML(p, { total: portfolioTotals /* total across all your project wallets */().sats })}</div>
+        <div class="card-money-row">${balanceChipHTML(p, { total: portfolioTotals().sats })}</div>
         ${p.planned ? `<div class="panel" style="margin:0.35rem 0;padding:0.5rem;font-size:0.75rem;color:var(--ink-dim);background:color-mix(in srgb,var(--surface-2)40%,transparent);border-radius:var(--radius,6px)">${esc(p.pitch || "Planned project — not yet deployed.")}</div>` : unavailableHTML("Metrics unavailable", m ? m.path : `/metrics/${p.id}.json`, m ? m.error : "")}
       </article>`;
     }
@@ -1877,13 +1981,13 @@
     const series = (data.series || []).slice(0, 2);
     const deps = (data.health && data.health.dependencies) || [];
     const kpiHtml = kpis.slice(0, 6).map((k) =>
-      `<div class="mini" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(k.hint || k.label)}"><div class="l">${esc(k.label)}</div><div class="v">${esc(fmtNum(k.value, k.format))}</div></div>`
+      `<div class="mini" data-tip="${escAttr(k.hint || k.label)}"><div class="l">${esc(k.label)}</div><div class="v">${esc(fmtNum(k.value, k.format))}</div></div>`
     ).join("");
     const sparks = series.map((ser) =>
       `<div class="spark-block"><div class="sl">${esc(ser.label || ser.key)}</div>${sparkline(seriesPoints(ser, 15), seriesColor(ser, p.id))}</div>`
     ).join("");
 
-    const _tot = portfolioTotals /* total across all your project wallets */();
+    const _tot = portfolioTotals();
     const _bal = state.wallets[walletIdFor(p)];
     const _share = _bal && _bal.ok ? walletSharePct(_bal.sats, _tot.sats) : 0;
     return `<article class="card card--polished" style="--card-accent:${escAttr(color)}" data-project="${escAttr(p.id)}">
@@ -1891,23 +1995,23 @@
         ${iconBadge(p.icon, color)}
         <div class="grow">
           <h3>${esc(p.name)}</h3>
-          <p class="tagline">${esc(p.tagline || p.pitch || "")} ${ciStatus ? `<span style="margin-left:0.3rem;font-size:0.7rem" title="${escAttr(ciInfo ? ciInfo.workflow_name : 'CI')}: ${escAttr(ciInfo && ciInfo.latest_conclusion)}">${ciStatus}</span>` : ""}</p>
+          <p class="tagline">${esc(p.tagline || p.pitch || "")}</p>
         </div>
         ${statusPill(health)}
       </div>
       <div class="card-meta-row">
-        <span class="depth-gauge" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Envelope depth ${depth}/100 <button onclick="window.showDepthCalculator(state.selectedMetricsId || 'katoa')" class="btn btn-sm" style="font-size:0.6rem">Calc</button> <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span> — how much of gab.product-metrics.v1 this product fills. Click for how to reach 100">${gaugeHTML(depth, depthColor(depth), "depth")}</span>
-        <span class="chip" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Product category — determines color and section placement on the board">${esc(p.category || "—")}</span>
-        ${s.ms != null ? `<span class="chip mono" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Response time for the last health check ping — lower is faster">${esc(fmtMs(s.ms))}</span>` : ""}
+        <span class="depth-gauge" data-tip="Envelope depth ${depth}/100 — how much of gab.product-metrics.v1 this product fills">${gaugeHTML(depth, depthColor(depth), "depth")}</span>
+        <span class="chip" data-tip="Product category — determines color and section placement on the board">${esc(p.category || "—")}</span>
+        ${s.ms != null ? `<span class="chip mono" data-tip="Response time for the last health check ping — lower is faster">${esc(fmtMs(s.ms))}</span>` : ""}
         ${metricsAgeChip(m)}
-        ${data.raw && data.raw.demo ? `<span class="chip" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "This envelope contains demo/placeholder data — not real product metrics. Replaced when the product ships a live /metrics.json">demo</span>` : `<span class="chip chip-live" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Live envelope · raw.demo false">live</span>`}
-        ${(data.funnels || []).length ? `<span class="chip" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${data.funnels.length} conversion funnel(s) showing how users flow through stages (e.g. visit → create → fund)">${data.funnels.length} funnel</span>` : ""}
-        ${(data.series || []).length ? `<span class="chip" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${data.series.length} time-series dataset(s) for sparklines and charts (e.g. daily visitors, sats over time)">${data.series.length} series</span>` : ""}
-        ${state.analytics && state.analytics[p.id] ? `<span class="status-pill sky" style="font-size:0.58rem;padding:0.1rem 0.35rem" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Real-time analytics from Umami on THOR: ${esc(fmtNum(state.analytics[p.id].visitors))} visitors in last 7 days, ${state.analytics[p.id].bounceRate}% bounce rate">${esc(fmtNum(state.analytics[p.id].visitors))} vis · ${esc(state.analytics[p.id].bounceRate)}% bnc</span>` : ""}
+        ${data.raw && data.raw.demo ? `<span class="chip" data-tip="This envelope contains demo/placeholder data — not real product metrics. Replaced when the product ships a live /metrics.json">demo</span>` : `<span class="chip chip-live" data-tip="Live envelope · raw.demo false">live</span>`}
+        ${(data.funnels || []).length ? `<span class="chip" data-tip="${data.funnels.length} conversion funnel(s) showing how users flow through stages (e.g. visit → create → fund)">${data.funnels.length} funnel</span>` : ""}
+        ${(data.series || []).length ? `<span class="chip" data-tip="${data.series.length} time-series dataset(s) for sparklines and charts (e.g. daily visitors, sats over time)">${data.series.length} series</span>` : ""}
+        ${state.analytics && state.analytics[p.id] ? `<span class="status-pill sky" style="font-size:0.58rem;padding:0.1rem 0.35rem" data-tip="Real-time analytics from Umami on THOR: ${esc(fmtNum(state.analytics[p.id].visitors))} visitors in last 7 days, ${state.analytics[p.id].bounceRate}% bounce rate">${esc(fmtNum(state.analytics[p.id].visitors))} vis · ${esc(state.analytics[p.id].bounceRate)}% bnc</span>` : ""}
       </div>
       <div class="card-money-row">
         ${balanceChipHTML(p, { total: _tot.sats })}
-        <span class="ln-badge" style="margin-left:auto;font-size:0.58rem" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Lightning wallet balance via LNbits proxy — shows sats in this product's wallet when Vault has the invoice key">LNbits</span>
+        <span class="ln-badge" style="margin-left:auto;font-size:0.58rem" data-tip="Lightning wallet balance via LNbits proxy — shows sats in this product's wallet when Vault has the invoice key">LNbits</span>
       </div>
       <div class="card-share-filament" style="height:3px;border-radius:99px;margin:0.35rem 0 0.55rem;background:linear-gradient(90deg,${escAttr(color)} ${_share}%, color-mix(in srgb, var(--surface-2) 80%, transparent) 0)"></div>
       ${p.id === "satohash" && m && m.ok && /^https?:\/\//i.test(m.path) ? `<div class="card-hero-kpi" style="display:flex;align-items:center;gap:0.6rem;margin:0.35rem 0 0.4rem;padding:0.3rem 0.5rem;background:color-mix(in srgb,var(--surface-2)50%,transparent);border-radius:var(--r-sm)">
@@ -1916,14 +2020,14 @@
         <span class="ln-badge" style="margin-left:auto">⚡ live</span>
       </div>` : ""}
       <div class="card-kpis" style="grid-template-columns:repeat(${Math.min(3, Math.max(2, kpis.length))},1fr)">${kpiHtml}</div>
-      ${sparks ? `<div class="card-sparks">${p.umamiId ? ' <span class="chip" data-tip="Mouse over for ELI16 explanation. All local & secure. "Umami visitors (proxy)">U:'+p.umamiId.slice(0,5)+'…</span>' : ''}${p.umamiId ? ` <div class="spark-block"><div class="sl">Visitors (Umami)</div><span class="mono" style="font-size:0.7rem">ID: ${p.umamiId.slice(0,8)}…</span></div>` : ""}${sparks}</div>` : ""}
+      ${sparks ? `<div class="card-sparks">${sparks}</div>` : ""}
       ${deps.length ? `<div class="card-deps">${deps.slice(0, 4).map((d) => statusPill(d.status, d.id)).join("")}</div>` : ""}
       <div class="card-links">
         ${p.url ? `<a class="link-btn" href="${escAttr(p.url)}" target="_blank" rel="noopener" data-card-link><i class="fa-solid fa-arrow-up-right-from-square"></i> site</a>` : ""}
         <a class="link-btn" href="${escAttr(metricsHref(p, m))}" target="_blank" rel="noopener" data-card-link><i class="fa-solid fa-database"></i> metrics</a>
         <a class="link-btn" href="/docs/projects/${escAttr(p.id)}.md" target="_blank" rel="noopener" data-card-link><i class="fa-solid fa-file-lines"></i> brief</a>
       </div>
-      <div class="card-foot"><button type="button" class="btn btn-sm btn-ghost" data-refresh-project="${escAttr(p.id)}" title="Refresh this project metrics"><i class="fa-solid fa-sync"></i></button> 
+      <div class="card-foot">
         <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">${esc(fmtTime(data.updatedAt))}</span>
         <span class="mono" style="font-size:0.62rem;color:var(--ink-faint)">${(data.kpis || []).length} KPI · doc ${(state.projectDocs[p.id] && state.projectDocs[p.id].ok) ? "✓" : "—"}</span>
       </div>
@@ -1935,7 +2039,7 @@
     const color = accentFor(p.id);
     const data = m.data;
     const depth = depthScore(data, false);
-    const _tot = portfolioTotals /* total across all your project wallets */();
+    const _tot = portfolioTotals();
     const _bal = state.wallets[walletIdFor(p)];
     const _share = _bal && _bal.ok ? walletSharePct(_bal.sats, _tot.sats) : 0;
     const signers = kpiVal(data, "signers_total", 0);
@@ -1964,7 +2068,7 @@
     ];
 
     const funnelHtml = funnel && funnel.steps
-      ? `<div class="sc-funnel" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Charter journey funnel from product envelope">
+      ? `<div class="sc-funnel" data-tip="Charter journey funnel from product envelope">
           <div class="sc-funnel-label"><i class="fa-solid fa-route"></i> ${esc(funnel.label || "Journey")}</div>
           <div class="sc-funnel-steps">
             ${funnel.steps.map((st, i) => {
@@ -2016,17 +2120,17 @@
         ${statusPill(health)}
       </div>
       <div class="card-meta-row sc-meta">
-        <span class="depth-gauge" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Envelope depth ${depth}/100 <button onclick="window.showDepthCalculator(state.selectedMetricsId || 'katoa')" class="btn btn-sm" style="font-size:0.6rem">Calc</button> <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span>">${gaugeHTML(depth, depthColor(depth), "depth")}</span>
+        <span class="depth-gauge" data-tip="Envelope depth ${depth}/100">${gaugeHTML(depth, depthColor(depth), "depth")}</span>
         <span class="chip">${esc(p.category || "Governance")}</span>
         ${s.ms != null ? `<span class="chip mono">${esc(fmtMs(s.ms))}</span>` : ""}
         ${metricsAgeChip(m)}
         ${!isDemo ? `<span class="chip chip-live">honest KPIs</span>` : `<span class="chip">demo</span>`}
         ${um ? `<span class="status-pill sky" style="font-size:0.58rem;padding:0.1rem 0.35rem">${esc(fmtNum(visitors))} vis · ${esc(bounce)}% bnc</span>` : `<span class="chip mono">umami…</span>`}
-        <span class="chip mono" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "productId + LNbits wallet id">id · sherpacarta</span>
+        <span class="chip mono" data-tip="productId + LNbits wallet id">id · sherpacarta</span>
       </div>
       <div class="sc-hero">
         ${heroPods.map((h) =>
-          `<div class="sc-hero-pod" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(h.tip)}">
+          `<div class="sc-hero-pod" data-tip="${escAttr(h.tip)}">
             <div class="sc-hero-label">${esc(h.label)}</div>
             <div class="sc-hero-value">${esc(h.value)}</div>
             <div class="sc-hero-sub">${esc(h.sub)}</div>
@@ -2059,7 +2163,7 @@
       </div>
       <div class="card-foot sc-foot">
         <span class="mono">${esc(fmtTime(data.updatedAt))}</span>
-        <span class="mono sc-foot-src" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(m.path)}">${liveOrigin ? "origin · CF Function" : "static fallback"} · depth ${depth}</span>
+        <span class="mono sc-foot-src" data-tip="${escAttr(m.path)}">${liveOrigin ? "origin · CF Function" : "static fallback"} · depth ${depth}</span>
       </div>
     </article>`;
   }
@@ -2083,11 +2187,11 @@
         <td>${esc(p.category || "—")}</td>
         <td>${statusPill(health)}</td>
         <td>${metricsAgeChip(m)}</td>
-        <td>${balanceChipHTML(p, { total: portfolioTotals /* total across all your project wallets */().sats })}</td>
+        <td>${balanceChipHTML(p, { total: portfolioTotals().sats })}</td>
         <td class="mono">${s.ms != null ? esc(fmtMs(s.ms)) : "—"}</td>
         <td><span class="depth-badge" style="--depth-c:${escAttr(depthColor(depth))}">${depth}</span></td>
         <td class="mono" style="font-size:0.72rem">${m && m.ok ? (m.data.kpis || []).length + " / " + (m.data.series || []).length + " / " + (m.data.funnels || []).length : "—"}</td>
-        <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(kpiStr)}">${esc(kpiStr)}</td>
+        <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" data-tip="${escAttr(kpiStr)}">${esc(kpiStr)}</td>
         <td>${p.url ? `<a href="${escAttr(p.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${esc(p.url.replace(/^https?:\/\//, ""))}</a>` : "—"}</td>
       </tr>`;
     }).join("");
@@ -2146,7 +2250,7 @@
     if (!p) { el.innerHTML = unavailableHTML("Unknown", id); return; }
     if (!m || !m.ok) {
       el.innerHTML = `<div class="metrics-detail-head" style="--detail-c:${escAttr(color)}">${iconBadge(p.icon, color)}
-        <div class="grow"><button type="button" class="btn btn-sm btn-ghost" style="margin-left:auto" data-refresh-project="${escAttr(id)}" title="Refresh"><i class="fa-solid fa-sync"></i> Refresh</button><h2 class="display" style="margin:0;font-size:1.25rem">${esc(p.name)}</h2></div></div>
+        <div class="grow"><h2 class="display" style="margin:0;font-size:1.25rem">${esc(p.name)}</h2></div></div>
         ${unavailableHTML("Metrics unavailable", m ? m.path : `/metrics/${id}.json`, m ? m.error : "")}`;
       return;
     }
@@ -2172,7 +2276,7 @@
           <div class="flex items-center gap-2 flex-wrap">
             <h2 class="display" style="margin:0;font-size:1.25rem">${esc(data.name || p.name)}</h2>
             ${statusPill(health.status || projectHealth(p))}
-            <span class="depth-badge" style="--depth-c:${escAttr(depthColor(depth))}">depth ${depth}/100 <button onclick="window.showDepthCalculator(state.selectedMetricsId || 'katoa')" class="btn btn-sm" style="font-size:0.6rem">Calc</button> <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span></span>
+            <span class="depth-badge" style="--depth-c:${escAttr(depthColor(depth))}">depth ${depth}/100</span>
             ${data.raw && data.raw.demo ? `<span class="chip">demo envelope</span>` : `<span class="chip chip-live">live envelope</span>`}
           </div>
           <p style="margin:0.35rem 0 0;color:var(--ink-dim);font-size:0.85rem">${esc(p.pitch || p.tagline || health.message || "")}</p>
@@ -2189,7 +2293,7 @@
       <div class="detail-blocks">
         <section>
           <div class="block-title">KPIs (${kpis.length})</div>
-          <div class="kpi-grid">${kpis.map(k => kpiCell(k, isPendingMetrics(data))).join("")}</div>
+          <div class="kpi-grid">${kpis.map(kpiCell).join("")}</div>
         </section>
         ${(health.dependencies || []).length ? `<section><div class="block-title">Dependencies</div><div class="flex flex-wrap gap-1">${health.dependencies.map((d) => statusPill(d.status, d.id) + (d.detail ? ` <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">${esc(d.detail)}</span>` : "")).join(" ")}</div></section>` : ""}
         ${(data.series || []).length ? `<section><div class="block-title">Trends — multi-series</div>${multiSeriesChart(data.series, id)}
@@ -2541,14 +2645,13 @@
         <div class="analytics-panel panel span-12">
           <h3>LNbits portfolio · money</h3>
           <div class="money-hero panel" style="margin-bottom:0.75rem">
-            <div class="money-hero-total">${esc(fmtNum(portfolioTotals /* total across all your project wallets */().sats, "sats"))}</div>
-            <div class="money-hero-usd">${esc(fmtUsd(satsToUsd(portfolioTotals /* total across all your project wallets */().sats)))} · ${portfolioTotals /* total across all your project wallets */().ok} wallets with balance</div>
-            ${allocationRibbonHTML() + '<div data-tip="Mouse over for ELI16 explanation. All local & secure. "Portfolio breakdown (click Money for details)">📊 Portfolio visual</div>' + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>`}
-      <button class="btn btn-sm btn-ghost" onclick="if(window.refreshAllWallets) window.refreshAllWallets(); else alert('Bulk refresh wired via prior work')">⟳ Refresh All Wallets</button>
+            <div class="money-hero-total">${esc(fmtNum(portfolioTotals().sats, "sats"))}</div>
+            <div class="money-hero-usd">${esc(fmtUsd(satsToUsd(portfolioTotals().sats)))} · ${portfolioTotals().ok} wallets with balance</div>
+            ${allocationRibbonHTML()}
           </div>
           <div class="money-grid">
-            ${hbarChart(portfolioTotals /* total across all your project wallets */().rows.filter(r=>r.status==="ok").map(r=>({label:r.p.name,value:r.sats,display:fmtNum(r.sats,"sats"),color:accentFor(r.p.id)})), "#ff8c00")}
-            <div class="cards-grid">${state.projects.map(p=>`<div class="project-wealth-tile panel" style="border-left:3px solid ${escAttr(accentFor(p.id))}">${esc(p.name)}<div class="mt-1">${balanceChipHTML(p,{total:portfolioTotals /* total across all your project wallets */().sats})}</div></div>`).join("")}</div>
+            ${hbarChart(portfolioTotals().rows.filter(r=>r.status==="ok").map(r=>({label:r.p.name,value:r.sats,display:fmtNum(r.sats,"sats"),color:accentFor(r.p.id)})), "#ff8c00")}
+            <div class="cards-grid">${state.projects.map(p=>`<div class="project-wealth-tile panel" style="border-left:3px solid ${escAttr(accentFor(p.id))}">${esc(p.name)}<div class="mt-1">${balanceChipHTML(p,{total:portfolioTotals().sats})}</div></div>`).join("")}</div>
           </div>
         </div>
         <div class="analytics-panel panel span-12">
@@ -2580,7 +2683,7 @@
       const cells = [
         statusPill(projectHealth(p)),
         metricsAgeChip(m),
-        balanceChipHTML(p, { total: portfolioTotals /* total across all your project wallets */().sats }),
+        balanceChipHTML(p, { total: portfolioTotals().sats }),
         s.status != null ? esc(String(s.status)) : "—",
         s.ms != null ? esc(fmtMs(s.ms)) : "—",
         p.deployed ? statusPill("green", "yes") : statusPill("amber", "no"),
@@ -2700,7 +2803,7 @@
       <div class="eco-section">
         <h3 class="display" style="font-size:1rem">Projects (${projects.length})</h3>
         <div class="eco-chips">${projects.map((p) => `
-          <div class="eco-chip" style="border-left:3px solid ${escAttr(accentFor(p.id))}" data-open="${escAttr(p.id)}" title="Click to open details">
+          <div class="eco-chip" style="border-left:3px solid ${escAttr(accentFor(p.id))}">
             ${statusDot(p.status)} <strong>${esc(p.name || p.id)}</strong>
             <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">${esc(p.synced || "")} ${p.localOnThor ? "· THOR" : ""}</span>
             ${p.version ? `<span class="chip">${esc(p.version)}</span>` : ""}
@@ -2724,7 +2827,6 @@
           return `<div class="activity-item"><span class="status-dot green"></span><div><div class="at">${esc(title)}</div><div class="am">${esc(meta)}</div></div><div class="aw">${esc(fmtTime(r.t || r.at || r.date))}</div></div>`;
         }).join("")}</div></div>` : ""}
       ${eco.metadata ? `<p class="mono" style="font-size:0.65rem;color:var(--ink-faint)">${esc(JSON.stringify(eco.metadata).slice(0, 200))}</p>` : ""}
-    setTimeout(() => { document.querySelectorAll(".eco-chip[data-project-id]").forEach(c => c.addEventListener("click", () => openDrawer(c.dataset.projectId))); }, 60);
     `;
   }
 
@@ -2967,17 +3069,7 @@
   }
 
   function renderSystem() {
-  const el = document.getElementById("view-system"); if(!el) return; el.innerHTML = `<div class="panel"><details><summary>🔔 Alerts (live from diagnose/cron)</summary><div id="alerts-strip" onclick="state.tab='system'; renderActiveTab()" style="cursor:pointer">All systems nominal. <button onclick="window.playAlertSound = () => { try { new AudioContext().createOscillator().start(); } catch(e){} } && window.playAlertSound = () => { try { new AudioContext().createOscillator().start(); } catch(e){} }()" class="btn btn-sm">Test sound</button></div></details></div>` + (el.innerHTML||""); setTimeout(()=>{const s=document.getElementById("alerts-strip"); if(s && state.loadErrors) s.innerHTML = state.loadErrors.slice(0,3).map(e=>"<div>⚠ "+(e.error||"issue")+"</div>").join("") || "No new alerts.";},200);
     const el = document.getElementById("view-system");
-    el.innerHTML = `
-<div class="panel" style="margin:1rem 0">
-  <details>
-    <summary style="cursor:pointer;font-weight:600">🔔 Recent Alerts & Diagnose (click to expand)</summary>
-    <div id="alerts-strip" onclick="state.tab='system'; renderActiveTab()" style="cursor:pointer" style="margin-top:0.5rem;font-size:0.85rem">
-      Loading alerts... (uses auto-diagnose + cron health)
-    </div>
-  </details>
-</div>` + el.innerHTML || ""; // append alerts
     if (!el) return;
     const umamiNote = state.umamiOk
       ? `<span class="status-pill sky">${esc(String(state.umamiSites || 0))} sites</span>`
@@ -2994,7 +3086,7 @@
           <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">envelope updatedAt &gt; 6h · or missing</span>
         </div>
         ${stale.length ? `<div class="flex flex-wrap gap-2">${stale.map(({ p, m, info }) =>
-          `<span class="chip" style="border-left:3px solid ${escAttr(accentFor(p.id))}" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(info.tip)}">${esc(p.name)} · ${metricsAgeChip(m)}</span>`
+          `<span class="chip" style="border-left:3px solid ${escAttr(accentFor(p.id))}" data-tip="${escAttr(info.tip)}">${esc(p.name)} · ${metricsAgeChip(m)}</span>`
         ).join("")}</div>` : `<p class="mono" style="margin:0;font-size:0.7rem;color:var(--ink-faint)">All product envelopes under 6 hours old.</p>`}
       </div>`;
     el.innerHTML = `
@@ -3015,7 +3107,7 @@
   function renderMoney() {
     const el = document.getElementById("view-money");
     if (!el) return;
-    const tot = portfolioTotals /* total across all your project wallets */();
+    const tot = portfolioTotals();
     const sorted = tot.rows.slice().sort((a, b) => (b.sats || 0) - (a.sats || 0));
     const donutSegs = sorted.filter((r) => r.status === "ok").map((r) => ({
       value: r.sats, color: accentFor(r.p.id), label: r.p.name,
@@ -3063,8 +3155,7 @@
           <div class="money-hero-usd">${esc(fmtUsd(satsToUsd(tot.sats)))} · ${tot.ok} ok · ${tot.empty} empty · ${tot.err} err
             ${state.btcUsd ? ` · <span class="fx-badge btc">BTC $${esc(fmtNum(state.btcUsd))}</span>` : " · <span class='fx-badge'>FX —</span>"}
           </div>
-          ${allocationRibbonHTML() + '<div data-tip="Mouse over for ELI16 explanation. All local & secure. "Portfolio breakdown (click Money for details)">📊 Portfolio visual</div>' + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>`}
-      <button class="btn btn-sm btn-ghost" onclick="if(window.refreshAllWallets) window.refreshAllWallets(); else alert('Bulk refresh wired via prior work')">⟳ Refresh All Wallets</button>
+          ${allocationRibbonHTML()}
           <div class="mt-2">${budgetRunwayHTML()}</div>
           <p class="mono mt-2" style="font-size:0.68rem;color:var(--ink-faint)">Live via Vault → LNbits proxy · invoice keys only · history in browser cache (${esc(BAL_HIST_KEY)})</p>
         </div>
@@ -3113,7 +3204,7 @@
   function renderPortfolioTimeSeries() {
     const el = document.getElementById("portfolio-timeseries");
     if (!el) return;
-    const sorted = portfolioTotals /* total across all your project wallets */().rows.filter((r) => r.status === "ok");
+    const sorted = portfolioTotals().rows.filter((r) => r.status === "ok");
     if (!sorted.length) { el.innerHTML = unavailableHTML("No wallet data", "wallet history"); return; }
     // Collect all wallet histories
     const wallets = sorted.map((r) => ({ wid: r.wid, label: r.p.name, color: accentFor(r.p.id), pts: balHistoryPoints(r.wid) }));
@@ -3165,7 +3256,7 @@
     const el = document.getElementById("view-wallets");
     if (!el) return;
     // Full money cockpit also lives on Money tab; Wallets is the classic grid + quick jump
-    const tot = portfolioTotals /* total across all your project wallets */();
+    const tot = portfolioTotals();
     const keys = vaultKeys();
     const list = [];
     const seen = new Set();
@@ -3204,7 +3295,7 @@
           </div>
           <span class="ln-badge">⚡</span>
         </div>
-        <div class="bal sats-ticker" data-tip="Mouse over for ELI16 explanation. All local & secure. "Live balance. Refresh for deltas">${esc(fmtNum(sats, "sats"))}</div>
+        <div class="bal sats-ticker">${esc(fmtNum(sats, "sats"))}</div>
         <div class="usd">${esc(usd)}</div>
         ${delta ? `<div class="wallet-delta ${delta.abs >= 0 ? "up" : "down"}">${delta.abs >= 0 ? "▲" : "▼"} ${esc(fmtNum(Math.abs(delta.abs), "sats"))}</div>` : ""}
         <div class="wallet-spark mt-2">${pts.length >= 2 ? sparkline(pts, w.color, 220, 42) : ""}</div>
@@ -3224,8 +3315,7 @@
       </div>
       <div class="money-hero panel mb-3">
         <div class="money-hero-total">${tot.ok ? esc(fmtNum(tot.sats, "sats")) : "—"}</div>
-        <div class="money-hero-usd">${esc(fmtUsd(satsToUsd(tot.sats)))} · ${allocationRibbonHTML() + '<div data-tip="Mouse over for ELI16 explanation. All local & secure. "Portfolio breakdown (click Money for details)">📊 Portfolio visual</div>' + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>`}</div>
-      <button class="btn btn-sm btn-ghost" onclick="if(window.refreshAllWallets) window.refreshAllWallets(); else alert('Bulk refresh wired via prior work')">⟳ Refresh All Wallets</button>
+        <div class="money-hero-usd">${esc(fmtUsd(satsToUsd(tot.sats)))} · ${allocationRibbonHTML()}</div>
       </div>
       <div class="wallets-grid">${cards}</div>`;
     document.getElementById("open-vault-w")?.addEventListener("click", openVaultModal);
@@ -3449,7 +3539,7 @@
     viewer.innerHTML = `
       <div class="flex justify-between items-center mb-2 flex-wrap gap-2">
         <h2 class="display" style="margin:0;font-size:1.1rem">${esc(fn)}
-          ${ov ? `<span class="status-pill amber" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "Edited locally — overrides the file from git" data-tip-title="Local override">edited</span>` : ""}
+          ${ov ? `<span class="status-pill amber" data-tip="Edited locally — overrides the file from git" data-tip-title="Local override">edited</span>` : ""}
         </h2>
         <div class="flex items-center gap-2">
           <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">${esc(r.path)}${ov ? " · local " + esc(fmtTime(ov.savedAt)) : ""}</span>
@@ -3587,7 +3677,7 @@
 
   /* ── Budget runway: estimate from wallet history ── */
   function budgetRunwayHTML() {
-    const sorted = portfolioTotals /* total across all your project wallets */().rows.filter((r) => r.status === "ok");
+    const sorted = portfolioTotals().rows.filter((r) => r.status === "ok");
     if (!sorted.length) return `<p class="empty-state">Add wallet keys to estimate runway</p>`;
     const totalSats = sorted.reduce((s, r) => s + Number(r.sats), 0);
     // Compute daily burn from wallet history: net change over last 24h across all wallets
@@ -3699,7 +3789,7 @@
           <td><span class="chip">${esc(r.group)}</span></td>
           <td>${statusPill(r.status)}</td>
           <td class="mono">${r.ms != null ? esc(fmtMs(r.ms)) : "—"}</td>
-          <td><a href="${escAttr(r.url)}" target="_blank" rel="noopener" title="Hover for more info" data-tip="Mouse over for ELI16 explanation. All local & secure. "${escAttr(r.tip)}">${esc(r.url)}</a></td>
+          <td><a href="${escAttr(r.url)}" target="_blank" rel="noopener" data-tip="${escAttr(r.tip)}">${esc(r.url)}</a></td>
         </tr>`).join("")}</tbody>
       </table></div>`;
   }
@@ -3894,7 +3984,7 @@
       : null;
 
     const bindMoneyActions = () => {
-      body.querySelector("[data-open-vault data-wire="true"]")?.addEventListener("click", openVaultModal);
+      body.querySelector("[data-open-vault]")?.addEventListener("click", openVaultModal);
       body.querySelectorAll("[data-qr-toggle]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const wid = btn.getAttribute("data-qr-toggle");
@@ -4003,8 +4093,8 @@
       if (!m || !m.ok) { body.innerHTML = unavailableHTML("Metrics", m ? m.path : `/metrics/${p.id}.json`, m ? m.error : ""); return; }
       const d = m.data;
       body.innerHTML = `
-        <div class="card-money-row mb-2">${balanceChipHTML(p, { total: portfolioTotals /* total across all your project wallets */().sats })}</div>
-        <div class="kpi-grid">${topKpis(d, 8).map(k => kpiCell(k, isPendingMetrics(d))).join("")}</div>
+        <div class="card-money-row mb-2">${balanceChipHTML(p, { total: portfolioTotals().sats })}</div>
+        <div class="kpi-grid">${topKpis(d, 8).map(kpiCell).join("")}</div>
         ${(d.series || []).slice(0, 3).map((ser) => `<div class="mt-2">${trendChart(ser, seriesColor(ser, p.id))}</div>`).join("")}
         ${(d.funnels || []).map((f) => funnelHTML(f, color)).join("")}
         ${segmentsHTML(d.segments, color, p.id)}
@@ -4061,7 +4151,7 @@
             if (!rp) return `<div class="chip">${esc(id)}</div>`;
             return `<div class="project-wealth-tile panel" style="border-left:4px solid ${escAttr(accentFor(id))};cursor:pointer" data-rel="${escAttr(id)}">
               <div class="flex items-center gap-2">${iconBadge(rp.icon, accentFor(id))}<strong>${esc(rp.name)}</strong></div>
-              <div class="mt-2">${balanceChipHTML(rp, { total: portfolioTotals /* total across all your project wallets */().sats })}</div>
+              <div class="mt-2">${balanceChipHTML(rp, { total: portfolioTotals().sats })}</div>
               <p style="font-size:0.75rem;color:var(--ink-faint);margin:0.35rem 0 0">${esc(rp.tagline || "")}</p>
             </div>`;
           }).join("") || `<p class="empty-state">No related links in projects.json</p>`}</div>
@@ -4080,7 +4170,7 @@
       metricsBlock = `
         <div class="drawer-section">
           <h4>Top KPIs · depth ${depthScore(d, false)}</h4>
-          <div class="kpi-grid">${topKpis(d, 6).map(k => kpiCell(k, isPendingMetrics(d))).join("")}</div>
+          <div class="kpi-grid">${topKpis(d, 6).map(kpiCell).join("")}</div>
           ${(d.series || [])[0] ? `<div class="mt-2">${sparkline(seriesPoints(d.series[0], 15), color, 300, 48)}</div>` : ""}
           <div class="card-meta-row mt-2">
             <span class="chip">${(d.kpis || []).length} KPIs</span>
@@ -4164,9 +4254,9 @@
 
   /* ═══════════════ DILIGENCE EXPORT ═══════════════ */
 
-  function exportDiligence + Deltas() {
+  function exportDiligence() {
     const lines = [
-      `# Give A Bit — Diligence + Deltas pack`,
+      `# Give A Bit — Diligence pack`,
       ``,
       `_Generated ${new Date().toISOString()} · HQ v${HQ_VERSION}_`,
       ``,
@@ -4211,7 +4301,7 @@
     a.href = URL.createObjectURL(blob);
     a.download = `giveabit-diligence-${new Date().toISOString().slice(0, 10)}.md`;
     a.click();
-    toast("Diligence + Deltas MD downloaded", "ok");
+    toast("Diligence MD downloaded", "ok");
   }
 
   /* ═══════════════ VAULT MODAL ═══════════════ */
@@ -4383,25 +4473,20 @@
     try { state.tab = localStorage.getItem(TAB_KEY) || "cards"; } catch { state.tab = "cards"; }
     setTheme(state.theme);
 
-    document.querySelectorAll(".nav-tab").forEach((btn) => {
-      btn.style.setProperty("--tab-accent", TAB_ACCENTS[btn.dataset.tab] || "#ff8c00");
-      btn.addEventListener("click", () => setTab(btn.dataset.tab));
+    rebuildNavTabs();
+    document.getElementById("btn-nav-jump")?.addEventListener("click", () => {
+      if (typeof showTabSearch === "function") showTabSearch();
+      else toast("Press / to search tabs", "ok");
+    });
+    document.getElementById("btn-help")?.addEventListener("click", () => setTab("manual"));
+    document.addEventListener("click", (e) => {
+      const g = e.target.closest(".nav-group-chip[data-jump]");
+      if (g) { e.preventDefault(); setTab(g.dataset.jump); }
     });
     document.querySelectorAll(".theme-dot").forEach((d) => {
       d.addEventListener("click", () => setTheme(d.dataset.themePick));
     });
-    document.getElementById("btn-refresh")?.addEventListener("click", () => { toast("Refreshing…", "ok");   // Global refresh delegation (interactive)
-  document.addEventListener("click", (e) => {
-    const btn = e.target.closest("[data-refresh-project]");
-    if (btn) {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      refreshProductMetrics(btn.dataset.refreshProject);
-    }
-  }, { once: false, passive: true });
-
-  // Initial boot
-  bootstrap(); });
+    document.getElementById("btn-refresh")?.addEventListener("click", () => { toast("Refreshing…", "ok"); bootstrap(); });
     document.getElementById("btn-vault")?.addEventListener("click", openVaultModal);
     document.getElementById("vault-save")?.addEventListener("click", saveVaultFromModal);
     document.getElementById("vault-cancel")?.addEventListener("click", () => {
@@ -4423,7 +4508,7 @@
       };
       if (numMap[e.key]) setTab(numMap[e.key]);
       if (e.key === "r") bootstrap();
-      if (e.key === "e") exportDiligence + Deltas();
+      if (e.key === "e") exportDiligence();
       // ? opens shortcuts cheat sheet
       if (e.key === "?" && !e.shiftKey) {
         e.preventDefault();
@@ -4439,7 +4524,7 @@
       const letterMap = {
         s: "system", m: "money", w: "wallets", d: "docs",
         a: "agents", i: "intel", f: "feed", c: "charts",
-        t: "chat", v: "vault", h: "handoffs", j: "ci", n: "crons", z: "scanner",
+        t: "chat", v: "vault", h: "handoffs", u: "manual",
       };
       if (letterMap[keyLc]) setTab(letterMap[keyLc]);
       // Shift+ArrowLeft/ArrowRight for prev/next tab
@@ -4611,97 +4696,6 @@
     }
   }
 
-  /* ── CI Status Tab ── */
-  function renderCIStatus() {
-    const el = document.getElementById("view-ci");
-    if (!el) return;
-    const ds = state.deployStatus;
-    if (!ds || !Object.keys(ds).length) {
-      el.innerHTML = unavailableHTML("No CI data", "/metrics/deploy-status.json");
-      return;
-    }
-    let rows = Object.entries(ds).map(([id, info]) => {
-      const p = state.projects.find(x => x.id === id);
-      const name = p ? p.name : id;
-      const color = accentFor(id);
-      const icon = info.latest_conclusion === "success" ? "✅" : info.latest_conclusion === "failure" ? "❌" : "⏳";
-      return `<tr>
-        <td style="padding:0.4rem 0.6rem"><span style="color:${escAttr(color)}">${icon} ${esc(name)}</span></td>
-        <td style="padding:0.4rem 0.6rem;font-size:0.75rem" class="mono">${esc(info.workflow_name || "")}</td>
-        <td style="padding:0.4rem 0.6rem;font-size:0.75rem"><span class="status-pill ${info.latest_conclusion === "success" ? 'green' : info.latest_conclusion === "failure" ? 'red' : 'amber'}">${esc(info.latest_conclusion || "?")}</span></td>
-        <td style="padding:0.4rem 0.6rem;font-size:0.7rem;color:var(--ink-faint)" class="mono">${info.updatedAt ? esc(fmtTime(info.updatedAt)) : ""}</td>
-        <td style="padding:0.4rem 0.6rem;font-size:0.7rem"><a href="${escAttr(info.html_url || "#")}" target="_blank" rel="noopener" style="color:var(--accent)">view</a></td>
-      </tr>`;
-    }).join("");
-    el.innerHTML = `<div class="panel" style="padding:1rem">
-      <h2 class="display" style="margin:0 0 0.5rem">CI Status</h2>
-      <p style="font-size:0.8rem;color:var(--ink-dim);margin:0 0 1rem">Latest GitHub Actions run per project — auto-refreshed from deploy-status.json</p>
-      <table style="width:100%;border-collapse:collapse"><thead><tr style="font-size:0.7rem;color:var(--ink-faint);text-align:left"><th style="padding:0.3rem 0.6rem">Project</th><th style="padding:0.3rem 0.6rem">Workflow</th><th style="padding:0.3rem 0.6rem">Status</th><th style="padding:0.3rem 0.6rem">Updated</th><th style="padding:0.3rem 0.6rem">Link</th></tr></thead><tbody>${rows}</tbody></table>
-    </div>`;
-  }
-
-  /* ── Cron Health Tab ── */
-  function renderCronHealth() {
-  const el = document.getElementById("view-crons"); if(!el) return; el.innerHTML = `<div class="panel"><details><summary>🔔 Alerts</summary><div id="alerts-strip-crons">See System tab for full.</div></details></div>` + (el.innerHTML||"");
-    const el = document.getElementById("view-crons");
-    el.innerHTML = `
-<div class="panel" style="margin:1rem 0">
-  <details>
-    <summary style="cursor:pointer;font-weight:600">🔔 Recent Alerts & Diagnose (click to expand)</summary>
-    <div id="alerts-strip" onclick="state.tab='system'; renderActiveTab()" style="cursor:pointer" style="margin-top:0.5rem;font-size:0.85rem">
-      Loading alerts... (uses auto-diagnose + cron health)
-    </div>
-  </details>
-</div>` + (el.innerHTML || "");
-    if (!el) return;
-    const eco = state.ecosystem;
-    const crons = (eco && eco.automations) || [];
-    if (!crons.length) {
-      el.innerHTML = unavailableHTML("No cron data", "ecosystem-map.json → automations");
-      return;
-    }
-    let rows = crons.map(c => {
-      const st = (c.status || "ok").toLowerCase();
-      const icon = st === "ok" || st === "green" ? "✅" : st === "error" || st === "red" ? "❌" : "⏳";
-      return `<tr>
-        <td style="padding:0.4rem 0.6rem">${icon} ${esc(c.name || c.id || "?")}</td>
-        <td style="padding:0.4rem 0.6rem;font-size:0.7rem;color:var(--ink-dim)" class="mono">${esc(c.schedule || "")}</td>
-        <td style="padding:0.4rem 0.6rem;font-size:0.75rem"><span class="status-pill ${st === "ok" || st === "green" ? 'green' : st === "error" || st === "red" ? 'red' : 'amber'}">${esc(st)}</span></td>
-        <td style="padding:0.4rem 0.6rem;font-size:0.7rem;color:var(--ink-faint)" class="mono">${c.lastRun ? esc(fmtTime(c.lastRun)) : ""}</td>
-      </tr>`;
-    }).join("");
-    el.innerHTML = `<div class="panel" style="padding:1rem">
-      <h2 class="display" style="margin:0 0 0.5rem">Cron Health</h2>
-      <p style="font-size:0.8rem;color:var(--ink-dim);margin:0 0 1rem">All scheduled automations — from ecosystem-map.json. ${crons.length} total.</p>
-      <table style="width:100%;border-collapse:collapse"><thead><tr style="font-size:0.7rem;color:var(--ink-faint);text-align:left"><th style="padding:0.3rem 0.6rem">Job</th><th style="padding:0.3rem 0.6rem">Schedule</th><th style="padding:0.3rem 0.6rem">Status</th><th style="padding:0.3rem 0.6rem">Last Run</th></tr></thead><tbody>${rows}</tbody></table>
-    </div>`;
-  }
-
-  /* ── Scanner Feed Tab ── */
-  function renderScannerFeed() {
-    const el = document.getElementById("view-scanner");
-    if (!el) return;
-    const eco = state.ecosystem;
-    const recent = (eco && eco.recentActivity) || [];
-    if (!recent.length) {
-      el.innerHTML = unavailableHTML("No scanner data", "ecosystem-map.json → recentActivity");
-      return;
-    }
-    let items = recent.slice(0, 30).map(a => {
-      return `<div class="doc-item" style="display:flex;align-items:center;gap:0.5rem;padding:0.5rem 0.7rem">
-        <span class="status-pill green" style="font-size:0.55rem">git</span>
-        <span class="mono" style="font-size:0.7rem;color:var(--ink-faint)">${esc(a.repo || "")}</span>
-        <span style="font-size:0.75rem;flex:1">${esc(a.commit || a.msg || "")}</span>
-        <span class="mono" style="font-size:0.6rem;color:var(--ink-faint)">${a.t ? esc(fmtTime(a.t)) : ""}</span>
-      </div>`;
-    }).join("");
-    el.innerHTML = `<div class="panel" style="padding:1rem">
-      <h2 class="display" style="margin:0 0 0.5rem">Git Scanner Feed</h2>
-      <p style="font-size:0.8rem;color:var(--ink-dim);margin:0 0 1rem">Recent commits detected by the 6-hour GitHub project scanner. Shows new activity across all repos.</p>
-      ${items}
-    </div>`;
-  }
-
     bootstrap();
     // Live pulse: refresh status + thor + live metrics every 5 min, countdown chip
     try {
@@ -4737,209 +4731,3 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
 })();
-
-  function refreshAllWallets() {
-    const projs = (state.projects || []).filter(p => p.wallet);
-    projs.forEach(p => {
-      const wid = walletIdFor(p);
-      if (wid && window.hqRefresh) window.hqRefresh(p.id); // triggers metric refresh + wallet will poll
-    });
-    setTimeout(() => { if (state.tab === "money") renderMoney(); }, 800);
-    showToast("Refreshing all known wallets...");
-  }
-  window.refreshAllWallets = refreshAllWallets;
-  
-/* 100-batch pin favorites */
-window.togglePin = function(id) {
-  let pinned = JSON.parse(localStorage.getItem("hq_pinned") || "[]");
-  if (pinned.includes(id)) pinned = pinned.filter(x => x !== id);
-  else pinned.push(id);
-  localStorage.setItem("hq_pinned", JSON.stringify(pinned));
-  if (state && (state.tab === "cards" || state.tab === "list")) renderActiveTab();
-  if (window.showToast) window.showToast("Pin toggled");
-};
-
-window.exportCurrentView = function() {
-  const data = { tab: state.tab, projects: filteredProjects ? filteredProjects() : state.projects, metrics: state.metrics, ts: new Date().toISOString() };
-  const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "hq-export-" + state.tab + ".json";
-  a.click();
-};
-
-setTimeout(() => {
-  const last = localStorage.getItem("hq_last_seen") || "2026-08-01";
-  if (last < "2026-08-03") {
-    const banner = document.createElement("div");
-    banner.style.cssText = "position:fixed;bottom:10px;right:10px;background:#3b2a1f;color:#f0d9b8;padding:6px 12px;border-radius:6px;font-size:0.75rem;z-index:9999";
-    banner.innerHTML = "✨ New: Pinned + Keyboard + more interactive. <span onclick="this.remove();localStorage.setItem('hq_last_seen','2026-08-03')" style="cursor:pointer">×</span>";
-    document.body.appendChild(banner);
-  }
-}, 1500);
-
-window.launchAider = function() {
-  const prompt = "cd /root/satohash\ngit pull\naider # HQ context from hq.giveabit.io";
-  navigator.clipboard.writeText(prompt).then(() => alert("Aider startup prompt copied! (cd /root/satohash; git pull; aider)"));
-};
-
-window.showDepthCalculator = function(id) {
-  const m = state.metrics[id];
-  const d = m && m.ok ? depthScore(m.data, false) : 0;
-  alert("Depth for " + id + ": " + d + "/100\n\nFill: health, kpis, series, funnels, segments, offers, education, links, live data (not demo).\nSee schemas/product-metrics.v1.schema.json");
-};
-
-setTimeout(() => { const saved = localStorage.getItem("hq_search"); if (saved && state) { state.search = saved; } }, 200);
-
-/* 100-batch drag reorder stub */
-function enableDragForCards() {
-  const cards = document.querySelectorAll(".project-card");
-  cards.forEach(card => {
-    card.setAttribute("draggable", "true");
-    card.addEventListener("dragstart", e => { e.dataTransfer.setData("text", card.dataset.project || ""); });
-    card.addEventListener("dragover", e => e.preventDefault());
-    card.addEventListener("drop", e => {
-      e.preventDefault();
-      const from = e.dataTransfer.getData("text");
-      const to = card.dataset.project;
-      if (from && to && from !== to) {
-        // simple reorder in DOM only for demo
-        const parent = card.parentNode;
-        const fromEl = [...parent.children].find(c => c.dataset.project === from);
-        if (fromEl) parent.insertBefore(fromEl, card.nextSibling);
-      }
-    });
-  });
-}
-setTimeout(enableDragForCards, 800);
-
-window.filterKPIs = function(q) {
-  document.querySelectorAll(".kpi-cell").forEach(cell => {
-    const txt = cell.textContent.toLowerCase();
-    cell.style.display = txt.includes(q.toLowerCase()) ? "" : "none";
-  });
-};
-
-window.playAlertSound = () => { try { new AudioContext().createOscillator().start(); } catch(e){} } = function() {
-  try {
-    const a = new AudioContext();
-    const o = a.createOscillator();
-    o.type = "sine"; o.frequency.value = 880;
-    const g = a.createGain(); g.gain.value = 0.1;
-    o.connect(g); g.connect(a.destination);
-    o.start(); setTimeout(() => { o.stop(); a.close(); }, 200);
-  } catch(e){}
-};
-
-window.drawPortfolioPie = function() {
-  const tot = portfolioTotals /* total across all your project wallets */ ? portfolioTotals /* total across all your project wallets */() : {rows:[]};
-  console.log("Portfolio pie data ready for canvas:", tot);
-  // stub - can expand to real canvas later
-};
-
-// nav delegation
-document.addEventListener("click", function(e) {
-  const tabBtn = e.target.closest(".nav-tab[data-tab]");
-  if (tabBtn && tabBtn.dataset.tab) {
-    e.preventDefault();
-    setTab(tabBtn.dataset.tab);
-  }
-}, true);
-
-function renderManual() {
-  var el = document.getElementById("view-manual");
-  if (!el) {
-    el = document.createElement("div");
-    el.id = "view-manual";
-    el.className = "view";
-    const main = document.getElementById("main-content");
-    if (main) main.appendChild(el);
-  }
-  el.innerHTML = `<div class="panel" style="max-width:900px;margin:0 auto;padding:1.5rem">
-    <h2>HQ Dashboard - Simple Operations Manual (ELI16)</h2>
-    <p><strong>What this is:</strong> Your one screen for all Give A Bit projects. Live money (per wallet LNbits), metrics, status. Everything interactive. Hover for tips.</p>
-    
-    <h3>Basic Use (Mouseover Everything)</h3>
-    <ul>
-      <li><strong>Cards</strong>: Big overview. Click for drawer with money + metrics. Hover = explanations.</li>
-      <li><strong>Money</strong>: All sats + per-project wallets. New: wire specific wallet button, compare, pie visual, health rollup, timeline.</li>
-      <li><strong>Metrics</strong>: Depth + data. Click Calc for how to 100. Pipeline explained below.</li>
-      <li><strong>Vault</strong>: Add keys here ONLY. Steps inside. Browser-only. Security: never leaves your device, never in git.</li>
-      <li><strong>Manual tab / Help button</strong>: This! Full guide + new 31-50 features.</li>
-      <li><strong>Refresh</strong>: Pulls latest from all projects + your Vault keys.</li>
-    </ul>
-
-    <h3>How Metrics Are Captured (All Projects)</h3>
-    <p>Projects send public /metrics.json. When you add keys in Vault, dashboard pulls private LNbits per wallet (satohash, katoa, etc.). New: Umami hints (32), self-healing retries (40), per-account health (43), ecosystem links from money (46), pipeline visual (50). If 0/pending = project not wired yet. Hover cards for per-project flow.</p>
-
-    <h3>Security (Always #1)</h3>
-    <p>Keys = your browser localStorage only. Close tab or clear data = gone from memory. Never sent to any server. Use on trusted machine only. Vault now has step-by-step + big security box.</p>
-
-    <h3>New Features 31-50 (Easy)</h3>
-    <ul>
-      <li>31: Wire Vault button pre-fills for ONE wallet (in money/drawers)</li>
-      <li>32: Umami visitor hints on cards</li>
-      <li>33: Focus now shows low-balance + empty-vault too</li>
-      <li>34: ? key opens shortcuts cheat sheet</li>
-      <li>35: Export now includes deltas + depth</li>
-      <li>37: Balance chips have live delta hints</li>
-      <li>38: Compare two wallets (button ready)</li>
-      <li>39: Clearer errors for specific LNbits wallets</li>
-      <li>40: Auto-retry failed wallets (self-healing)</li>
-      <li>42: Wallet timeline button</li>
-      <li>43: Per-account health rollup in Money</li>
-      <li>45: Version banner now clears nav state on reload</li>
-      <li>46: Link from Money to ecosystem map</li>
-      <li>47: Sound test for alerts</li>
-      <li>48: Portfolio pie visual in Money</li>
-      <li>49: Focus enhanced with balance filters</li>
-      <li>50: Metrics Pipeline explained here + hints in UI</li>
-    </ul>
-
-    <p style="margin-top:1rem;opacity:0.8">Hover almost everything. All changes local. Use Help button anytime. Security first, ease of use always.</p>
-  </div>`;
-}
-window.showManual = function() {
-  const main = document.getElementById("main-content");
-  if (!main) return;
-  let m = document.getElementById("view-manual");
-  if (!m) { m = document.createElement("div"); m.id = "view-manual"; m.className = "view"; main.appendChild(m); }
-  renderManual();
-};
-
-setTimeout(() => {
-  const h = document.getElementById("btn-help");
-  if (h) h.addEventListener("click", () => { if (window.showManual) window.showManual(); });
-}, 1500);
-
-window.wireVaultFor = function(wid) {
-  if (!wid) return;
-  const v = state.vault || {}; v.keys = v.keys || {};
-  const val = prompt("Paste invoice key for " + wid + " (stays in your browser only):", v.keys[wid] || "");
-  if (val !== null) { v.keys[wid] = val.trim(); state.vault = v; localStorage.setItem("hq_vault_v1", JSON.stringify(v)); if (window.updateVaultChip) updateVaultChip(); if (window.showToast) showToast("Saved for " + wid); if (state.tab==="money") renderMoney(); }
-};
-
-window.showShortcutsCheat = () => alert("Shortcuts: / search | Esc close | ? this | Click Help for full manual. All local & secure.");
-document.addEventListener("keydown", e => { if(e.key==="?" && !e.target.matches("input,textarea")) {e.preventDefault(); window.showShortcutsCheat && window.showShortcutsCheat();}});
-
-window.compareWallets = function() {
-  const ids = prompt("Enter two wallet ids separated by comma (e.g. satohash,katoa):","satohash,katoa");
-  if (ids) alert("Compare view (stub): " + ids + ". In full version would show side-by-side balances + deltas.");
-};
-
-setInterval(() => {
-  if (state.wallets) {
-    Object.keys(state.wallets).forEach(wid => {
-      const b = state.wallets[wid];
-      if (b && !b.ok && Math.random() < 0.3) { delete state.wallets[wid]; if (window.showToast) showToast("Auto-retry " + wid); }
-    });
-    if (state.tab === "money" && typeof renderMoney === "function") renderMoney();
-  }
-}, 120000); // every 2 min light retry
-
-window.showWalletTimeline = function(wid) {
-  const pts = balHistoryPoints ? balHistoryPoints(wid) : [];
-  alert("Timeline for " + wid + " (last " + pts.length + " points):\n" + pts.slice(-5).map(p => p.t + ": " + p.v).join("\n") + "\n(Full chart in future)");
-};
-
-window.linkToEcosystem = (pid) => { setTab("ecosystem"); if (window.showToast) showToast("See " + pid + " in ecosystem map"); };

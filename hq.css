@@ -447,50 +447,116 @@ input:focus, textarea:focus, select:focus {
 }
 .ticker-item strong { color: var(--ink); font-weight: 600; }
 
-/* Nav tabs */
+/* Nav tabs — horizontal scroll; fast switch (no heavy dim that felt “stuck”) */
 .nav-wrap {
   position: relative;
+  z-index: 40;
   max-width: 1600px;
   margin: 0 auto;
   width: 100%;
-  padding: 0.55rem 1.1rem 0;
-  transition: opacity var(--dur) var(--ease-out);
+  padding: 0.4rem 1.1rem 0.55rem;
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--bg-0) 92%, var(--accent-theme) 6%) 0%,
+    color-mix(in srgb, var(--bg-0) 88%, transparent) 100%);
+  border-bottom: 1px solid var(--line);
+  transition: opacity 0.12s var(--ease-out);
 }
 .nav-wrap.switching {
-  opacity: 0.7;
+  opacity: 0.94; /* was 0.7 — long dim felt sticky / unresponsive */
 }
-/* Scroll gradient hints — fade tabs at nav-wrap edges when content overflows */
+.nav-chrome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+  flex-wrap: wrap;
+}
+.nav-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+.nav-group-chip {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+  color: var(--ink-dim);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.55rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+.nav-group-chip:hover {
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--accent-theme) 40%, var(--line));
+}
+.nav-group-chip.active {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--accent-theme) 18%, var(--surface));
+  border-color: color-mix(in srgb, var(--accent-theme) 45%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent-theme) 18%, transparent);
+}
+.nav-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex: none;
+}
+/* Scroll gradient hints — fade tabs at edges when content overflows */
+.nav-scroll {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-thumb) transparent;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scroll-behavior: smooth;
+  touch-action: pan-x;
+}
+.nav-scroll::-webkit-scrollbar { height: 6px; }
+.nav-scroll::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  border-radius: 999px;
+}
 .nav-wrap::before,
 .nav-wrap::after {
   content: '';
   position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 20px;
+  left: 0;
+  right: 0;
+  bottom: 0.55rem;
+  height: 2.4rem;
+  width: 28px;
   z-index: 2;
   pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.15s;
 }
 .nav-wrap::before {
-  left: 0;
+  left: 1.1rem;
+  right: auto;
   background: linear-gradient(to right, var(--bg-0), transparent);
 }
 .nav-wrap::after {
-  right: 0;
+  right: 1.1rem;
+  left: auto;
   background: linear-gradient(to left, var(--bg-0), transparent);
 }
-.nav-scroll {
-  overflow-x: auto;
-  white-space: nowrap;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  -webkit-overflow-scrolling: touch;
-}
-.nav-scroll::-webkit-scrollbar { display: none; }
+.nav-wrap.nav-at-start::before { opacity: 0; }
+.nav-wrap.nav-at-end::after { opacity: 0; }
 .nav-tabs {
   display: flex;
   flex-wrap: nowrap;
   gap: 0.3rem;
   padding: 0.3rem;
+  width: max-content;
+  min-width: 100%;
   border-radius: var(--r-md);
   background: var(--surface-grad);
   border: 1px solid var(--line);
@@ -498,6 +564,7 @@ input:focus, textarea:focus, select:focus {
 }
 .nav-tab {
   position: relative;
+  flex: none;
   border: 1px solid transparent;
   background: transparent;
   color: var(--ink-dim);
@@ -505,12 +572,18 @@ input:focus, textarea:focus, select:focus {
   font-weight: 600;
   padding: 0.5rem 0.85rem;
   border-radius: var(--r-sm);
-  transition: color var(--dur), background var(--dur), border-color var(--dur), transform var(--dur);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.12s, background 0.12s, border-color 0.12s, box-shadow 0.12s;
+  -webkit-tap-highlight-color: transparent;
 }
 .nav-tab:hover {
   color: var(--ink);
   background: color-mix(in srgb, var(--surface-hi) 70%, transparent);
   border-color: var(--line);
+}
+.nav-tab:active {
+  transform: translateY(1px);
 }
 .nav-tab.active {
   color: var(--ink);
@@ -522,12 +595,17 @@ input:focus, textarea:focus, select:focus {
 .nav-tab.active::after {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 0.4rem;
+  right: 0.4rem;
   bottom: 0;
   height: 2px;
+  border-radius: 2px 2px 0 0;
   background: var(--tab-accent, var(--accent-theme));
-  transition: all 0.2s;
+}
+@media (max-width: 720px) {
+  .nav-wrap { padding: 0.35rem 0.65rem 0.45rem; }
+  .nav-tab { font-size: 0.74rem; padding: 0.42rem 0.65rem; }
+  .nav-group-chip { font-size: 0.62rem; padding: 0.22rem 0.45rem; }
 }
 
 /* Main */

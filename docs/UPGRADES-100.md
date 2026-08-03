@@ -1,3 +1,4 @@
+**v3.27 SHIPPED (2026-08-03):** Navigation rebuild — clean tab registry, Jump search, group chips, Manual tab, fixed broken setTab after feature-merge corruption, Feature board **100** chips.  
 **v3.2 SHIPPED (2026-07-21):** Money pack — LNbits on cards/list/matrix/analytics, Money cockpit, history sparklines, mega drawer, 60s poll.  
 **v3.1 SHIPPED:** Depth pack — enriched envelopes, project MD packs, Analytics/Matrix/Coverage/Activity/Ecosystem.  
 **v3.0 SHIPPED:** Split SPA (`hq.css`/`hq.js`), 4 tinted themes (no B/W/grey), ink default.  

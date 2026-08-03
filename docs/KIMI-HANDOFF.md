@@ -1,5 +1,21 @@
 # KIMI — MASTER LIST (Cam + Grok) · 2026-08-03 (UPDATED FOR SESSION CLOSE)
 
+### 2026-08-03 — Grok · HQ v3.27.0 NAV + 100 features (pushed)
+
+**Root cause of sticky/broken menu:** feature-branch merge corrupted `hq.js` (missing `setTab`/`setTheme`, broken Manual HTML, syntax errors → script failed to load).
+
+**Shipped**
+- Restored clean engine from pre-corruption base + nav rebuild from `TAB_DISPLAY_NAMES`
+- Group chips (Overview/Money/Ops/Knowledge/Help) + Jump + Manual
+- Faster tab switch (no heavy dim), scroll active tab into view, edge fades
+- Feature board exactly **100** shipped chips
+- Broken Manual `<title>` HTML fixed
+
+Live after CF deploy: https://hq.giveabit.io **v3.27.0**
+
+---
+
+
 ### 2026-08-03 — Grok · suite currency pass (after merge)
 
 **Finished**
