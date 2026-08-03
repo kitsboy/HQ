@@ -1,25 +1,21 @@
 {
   "schema": "gab.handoff.v1",
-  "updatedAt": "2026-07-30T15:15:00.000Z",
+  "updatedAt": "2026-08-03T18:27:54.000Z",
   "agents": {
     "grok": {
-      "lastSeen": "2026-07-27T06:45:00.000Z",
-      "focus": "session closed — wait Kimi LNURL handback",
+      "lastSeen": "2026-08-03T18:27:54.000Z",
+      "focus": "suite currency \u2014 HQ v3.26.0 live; LNURL+agents shipped; channels open for Cam/Kimi",
+      "nextAction": "Cam/Kimi open first LN channels; Grok items 51+ on new feature branch if requested",
       "notes": [
         {
-          "t": "2026-07-27T06:45:00.000Z",
-          "summary": "GOODBYE. Mission+suite truth+Kimi MASTER LIST shipped. Next Grok: publish lud16 after Kimi handback. Summary: docs/SESSION-SUMMARY-2026-07-27-suite-truth.md"
-        },
-        {
-          "t": "2026-07-27T06:15:00.000Z",
-          "summary": "Full Kimi MASTER LIST in docs/KIMI-HANDOFF.md with Cam priorities, P0 LNURL, P1 bot, P2 crons, done-table, machines, handback format. Mission+Sherpa/Satohash already shipped."
+          "t": "2026-08-03T18:27:54.000Z",
+          "summary": "Merged feature/katoa-piping-ui-polish \u2192 main v3.26.0 live. Sherpa LNURL published. giveabit agents=9. All monitored repos pulled current. Lightning still 0 channels."
         }
-      ],
-      "nextAction": "After Kimi lud16 handback → publish sherpacarta wallets.json (public only). ALSO: 🔴 Fix katoa CI (npm run check) + 🟡 motopass weekly sync (git-auto-commit failure). See KIMI-GROK-HANDOFF.md."
+      ]
     },
     "kimi": {
       "lastSeen": "2026-07-30T15:15:00.000Z",
-      "focus": "P0 sherpacarta LNURL → Vault → public lud16 handback",
+      "focus": "P0 sherpacarta LNURL \u2192 Vault \u2192 public lud16 handback",
       "notes": [
         {
           "t": "2026-07-27T06:15:00.000Z",
@@ -53,7 +49,7 @@
       ]
     },
     "nova": {
-      "focus": "LNbits public harden — HTTPS/firewall for :5102",
+      "focus": "LNbits public harden \u2014 HTTPS/firewall for :5102",
       "nextAction": "TLS terminate + restrict public LNbits; keep giveabit-lnbits-proxy upstream reachable"
     }
   },
@@ -73,47 +69,44 @@
   },
   "blockers": [
     {
-      "id": "sherpacarta-lnurl",
-      "owner": "kimi",
-      "priority": "P0",
-      "detail": "Public LNURL/lud16 for wallet sherpacarta — LNbits + Vault; hand public values to Grok. Site still lud16:null."
-    },
-    {
       "id": "lnbits-public-harden",
       "owner": "nova",
       "priority": "P2",
-      "detail": "LNbits still HTTP :5102 on api.satohash.io — prefer HTTPS tunnel/firewall. Proxy Worker healthy (9 wallets)."
-    },
-    {
-      "id": "cam-hello-nip05",
-      "owner": "cam",
-      "priority": "P2",
-      "detail": "hello@giveabit.io not in live nostr.json — needs keypair from Cam"
-    },
-    {
-      "id": "katoa-ci-failure",
-      "owner": "grok",
-      "priority": "P1",
-      "detail": "npm run check failing on kitsboy/katoa main branch — lint/code issue. Needs Grok to pull and fix."
-    },
-    {
-      "id": "motopass-sync-failure",
-      "owner": "grok",
-      "priority": "P2",
-      "detail": "BTC Map weekly sync workflow fails — git-auto-commit-action@v5 error. Likely no data, needs clean-exit guard."
+      "detail": "LNbits still HTTP :5102 on api.satohash.io \u2014 prefer HTTPS tunnel/firewall. Proxy Worker healthy (9 wallets)."
     },
     {
       "id": "cam-vault-keys",
       "owner": "cam",
       "priority": "P1",
       "detail": "Confirm HQ Vault has invoice keys for Money tab (sherpacarta, tadbuy, suite)"
+    },
+    {
+      "id": "ln-channels",
+      "owner": "cam+kimi+nova",
+      "priority": "P0",
+      "detail": "LND 0 peers/channels \u00b7 ~7704 on-chain sats \u00b7 public LNURL live but inbound limited until channels"
     }
   ],
   "shipped": [
     {
+      "id": "giveabit-agents-9",
+      "at": "2026-08-03",
+      "detail": "/api/agents count 9 includes sherpa; NAMESPACE.md"
+    },
+    {
+      "id": "sherpa-lnurl-public",
+      "at": "2026-08-03",
+      "detail": "sherpacarta wallets.json lightning live + TEMP UI removed"
+    },
+    {
+      "id": "hq-v326-merge",
+      "at": "2026-08-03",
+      "detail": "feature/katoa-piping-ui-polish \u2192 main \u00b7 HQ v3.26.0 items 1-50 usability live"
+    },
+    {
       "id": "giveabit-mission-v440",
       "at": "2026-07-27",
-      "detail": "Mission NIP-05 identity + sherpa SPA registry — giveabit a545c40"
+      "detail": "Mission NIP-05 identity + sherpa SPA registry \u2014 giveabit a545c40"
     },
     {
       "id": "sherpa-metrics-live",
@@ -143,65 +136,40 @@
   ],
   "next": [
     {
-      "id": "sherpacarta-lnurl",
-      "owner": "kimi",
+      "id": "ln-channels",
+      "owner": "cam+kimi",
       "priority": "P0",
-      "title": "Public LNURL for sherpacarta via LNbits → Vault → lud16 handback"
+      "title": "Open first Lightning peers/channels on THOR"
     },
     {
-      "id": "sherpacarta-nostr-bot",
-      "owner": "kimi",
-      "priority": "P1",
-      "title": "Deploy Sherpa Nostr bot on THOR (approve mode first)"
-    },
-    {
-      "id": "cam-vault-verify",
-      "owner": "cam",
-      "priority": "P1",
-      "title": "Vault invoice keys on hq.giveabit.io — Money tab live"
-    },
-    {
-      "id": "lnbits-public-harden",
+      "id": "lnbits-harden",
       "owner": "nova",
       "priority": "P2",
-      "title": "HTTPS / firewall for LNbits upstream"
+      "title": "Harden LNbits public :5102"
     },
     {
-      "id": "cron-hygiene",
+      "id": "sherpa-bot",
       "owner": "kimi",
-      "priority": "P2",
-      "title": "Fix email digest path + vault stale-ref cron warns"
-    },
-    {
-      "id": "buzz-deploy",
-      "owner": "kimi",
-      "priority": "P2",
-      "title": "Deploy Buzz on THOR when v1 stable — watching"
-    },
-    {
-      "id": "tadbuy-metrics-backend",
-      "owner": "grok",
-      "priority": "later",
-      "title": "Metrics generator from Supabase not seed campaigns"
-    },
-    {
-      "id": "katoa-ci-failure",
-      "owner": "grok",
       "priority": "P1",
-      "title": "🔴 Fix katoa CI — npm run check failing on main"
+      "title": "Sherpa Nostr bot on THOR"
     },
     {
-      "id": "motopass-sync-failure",
+      "id": "hq-51-plus",
       "owner": "grok",
       "priority": "P2",
-      "title": "🟡 Fix motopass BTC Map weekly sync — git-auto-commit guard"
+      "title": "HQ items 51+ on new feature branch"
     }
   ],
   "history": [
     {
+      "at": "2026-08-03T18:27:54.000Z",
+      "agent": "grok",
+      "summary": "2026-08-03: HQ v3.26.0 merge live; suite pull current; Sherpa LNURL + agents 9 shipped; channels still open item"
+    },
+    {
       "at": "2026-07-27T06:15:00.000Z",
       "agent": "grok",
-      "summary": "Kimi MASTER LIST with full Cam details, P0–P2, done-table, machines, handback format. All handoffs synced."
+      "summary": "Kimi MASTER LIST with full Cam details, P0\u2013P2, done-table, machines, handback format. All handoffs synced."
     },
     {
       "at": "2026-07-27T05:30:00.000Z",
@@ -220,7 +188,9 @@
     "role": "Principal",
     "email": "hello@giveabit.io",
     "nip05Live": "cam@giveabit.io",
-    "nip05Planned": ["hello@giveabit.io"],
+    "nip05Planned": [
+      "hello@giveabit.io"
+    ],
     "hq": "https://hq.giveabit.io",
     "hub": "https://giveabit.io",
     "asksNow": [
