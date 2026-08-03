@@ -1,53 +1,53 @@
 {
-  "updatedAt": "2026-08-03T00:16:18.269Z",
+  "updatedAt": "2026-08-03T04:07:12.323Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 326,
+      "ms": 177,
       "url": "https://giveabit.io"
     },
     "satohash": {
       "ok": true,
       "status": 200,
-      "ms": 73,
+      "ms": 109,
       "url": "https://satohash.io"
     },
     "katoa": {
       "ok": true,
       "status": 200,
-      "ms": 241,
+      "ms": 274,
       "url": "https://katoa.org"
     },
     "stranded": {
       "ok": true,
       "status": 200,
-      "ms": 250,
+      "ms": 126,
       "url": "https://stranded.giveabit.io"
     },
     "tadbuy": {
       "ok": true,
       "status": 200,
-      "ms": 185,
+      "ms": 364,
       "url": "https://tadbuy.giveabit.io"
     },
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 96,
+      "ms": 376,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 248,
+      "ms": 260,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
       "ok": true,
       "status": 200,
-      "ms": 211,
+      "ms": 99,
       "url": "https://openstrata.giveabit.io"
     },
     "btcminiscript": {
@@ -67,23 +67,23 @@
     "satohashApi": {
       "ok": true,
       "status": 200,
-      "ms": 406,
+      "ms": 505,
       "healthUrl": "https://api.satohash.io/health"
     },
     "satohashMetrics": {
       "schema": "gab.product-metrics.v1",
       "productId": "satohash",
       "name": "Satohash",
-      "updatedAt": "2026-08-03T00:16:18.202Z",
+      "updatedAt": "2026-08-03T04:07:12.233Z",
       "window": {
         "label": "7d",
-        "from": "2026-07-27T00:16:18.202Z",
-        "to": "2026-08-03T00:16:18.202Z"
+        "from": "2026-07-27T04:07:12.233Z",
+        "to": "2026-08-03T04:07:12.233Z"
       },
       "health": {
         "status": "green",
         "message": "API healthy — live stamp aggregates for HQ",
-        "latencyMs": 1,
+        "latencyMs": 3,
         "uptimePct24h": null,
         "dependencies": [
           {
@@ -132,7 +132,7 @@
         {
           "key": "stamps_7d",
           "label": "Stamps 7d",
-          "value": 6,
+          "value": 3,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -141,7 +141,7 @@
         {
           "key": "monthly_capacity",
           "label": "Monthly capacity (est.)",
-          "value": 26,
+          "value": 13,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -168,7 +168,7 @@
         {
           "key": "confirmed_7d",
           "label": "Confirmed 7d",
-          "value": 6,
+          "value": 3,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -222,7 +222,7 @@
         {
           "key": "p50_ms",
           "label": "Metrics build p50",
-          "value": 1,
+          "value": 3,
           "unit": "ms",
           "format": "duration",
           "priority": 5,
@@ -247,7 +247,7 @@
           "points": [
             {
               "t": "2026-07-20T12:00:00.000Z",
-              "v": 3
+              "v": 0
             },
             {
               "t": "2026-07-21T12:00:00.000Z",
@@ -315,7 +315,7 @@
           "points": [
             {
               "t": "2026-07-20T12:00:00.000Z",
-              "v": 3
+              "v": 0
             },
             {
               "t": "2026-07-21T12:00:00.000Z",
@@ -853,7 +853,7 @@
         "seriesFromDb": true,
         "note": "Live metrics from satohash API DB",
         "version": "5.0.0-ELITE",
-        "uptimeSec": 434090,
+        "uptimeSec": 447944,
         "requireLightning": false,
         "familyFreeTier": true,
         "directory": {
@@ -989,10 +989,10 @@
         "counts": {
           "stampsTotal": 9,
           "stamps24h": 0,
-          "stamps7d": 6,
+          "stamps7d": 3,
           "pending": 0,
           "confirmed": 9,
-          "confirmed7d": 6,
+          "confirmed7d": 3,
           "failed": 0,
           "failed7d": 0,
           "familyFree": 0,
