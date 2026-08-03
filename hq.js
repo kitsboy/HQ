@@ -348,7 +348,7 @@
     const strip = document.getElementById("alerts-strip");
     if (strip && state.loadErrors && state.loadErrors.length) {
       strip.innerHTML = state.loadErrors.slice(0,5).map(e => `<div style="color:#f59e0b">⚠ ${e.error || "issue"}</div>`).join("") || "No recent alerts.";
-    } else if (strip) { strip.innerHTML = "<div style=\"color:#22c55e\">All clear ✓ (live from cron-health + diagnose)</div>"; }
+    } else if (strip) { strip.innerHTML = '<div style="color:#22c55e">All clear ✓ (live from cron-health + diagnose)</div>'; }
   }, 300);
 
       // re-open drawer if it was for this project
@@ -465,7 +465,7 @@
   function metricsAgeChip(m) {
     const info = metricsAgeInfo(m);
     const pulse = info.cls === "green" && info.kind === "live" ? " pulse" : "";
-    return `<span class="status-pill ${escAttr(info.cls)}${pulse}" style="font-size:0.58rem;padding:0.12rem 0.4rem;text-transform:none;letter-spacing:0.02em" data-tip="${escAttr(info.tip)}">${esc(info.label)}</span>`;
+    return `<span class="status-pill ${escAttr(info.cls)}${pulse}" style="font-size:0.58rem;padding:0.12rem 0.4rem;text-transform:none;letter-spacing:0.02em" title="Hover for more info" data-tip="${escAttr(info.tip)}">${esc(info.label)}</span>`;
   }
   function staleMetricsRows(maxAgeMs) {
     const limit = maxAgeMs != null ? maxAgeMs : 6 * 60 * 60 * 1000;
@@ -545,7 +545,7 @@
     return !!(k && String(k).trim());
   }
 
-  function portfolioTotals() {
+  function portfolioTotals /* total across all your project wallets */() {
     let sats = 0, ok = 0, err = 0, empty = 0, pending = 0;
     const rows = [];
     state.projects.forEach((p) => {
@@ -621,21 +621,23 @@
     opts = opts || {};
     const wid = walletIdFor(p);
     const color = accentFor(p.id);
-    if (!wid) return `<span class="balance-chip empty">no wallet</span>`;
+    if (!wid) return `<span class="balance-chip empty" title="Hover for more info" data-tip="No wallet mapped for this project">no wallet</span>`;
     if (!hasVaultKey(wid)) {
-      return `<span class="balance-chip empty" data-tip="Set invoice key in Vault for ${escAttr(wid)}" data-tip-title="LNbits">⚡ —</span>`;
+      return `<span class="balance-chip empty" title="Hover for more info" data-tip="Add invoice key in Vault for ${wid} (per-project LNbits)">⚡ —</span>`;
     }
     const bal = state.wallets[wid];
-    if (!bal) return `<span class="balance-chip pending pulse">⚡ …</span>`;
+    if (!bal) return `<span class="balance-chip pending pulse" title="Hover for more info" data-tip="Loading balance for ${wid}">⚡ …</span>`;
     if (!bal.ok) {
-      return `<span class="balance-chip err" data-tip="${escAttr(bal.error || "fail")} · ${escAttr(bal.path || "")}">⚡ err</span>`;
+      return `<span class="balance-chip err" title="Hover for more info" data-tip="Fetch failed for ${wid}">⚡ err</span>`;
     }
     const delta = balDelta(wid);
-    const dHtml = delta && delta.abs
-      ? `<span class="wallet-delta ${delta.abs >= 0 ? "up" : "down"}">${delta.abs >= 0 ? "▲" : "▼"}${delta.pct != null ? Math.abs(delta.pct).toFixed(1) + "%" : fmtNum(Math.abs(delta.abs))}</span>`
-      : "";
+    const dHtml = delta && delta.abs ? `<span class="wallet-delta ${delta.abs >= 0 ? "up" : "down"}">${delta.abs >= 0 ? "▲" : "▼"}${delta.pct != null ? Math.abs(delta.pct).toFixed(1) + "%" : fmtNum(Math.abs(delta.abs))}</span>` : "";
     const share = opts.total ? walletSharePct(bal.sats, opts.total) : null;
-    return `<span class="balance-chip ok" style="--chip-c:${escAttr(color)}" data-tip="${escAttr(wid)} · ${escAttr(bal.name || "")}${share != null ? " · " + share.toFixed(1) + "% portfolio" : ""}" data-tip-title="LNbits">
+    return `<span class="balance-chip ok" style="--chip-c:${escAttr(color)}" title="Hover for more info" data-tip="Wallet: ${wid} (LNbits per project)${share ? " · " + share.toFixed(1) + "%" : ""}">
+      <span class="status-dot green pulse"></span>
+      <span class="sats-ticker">${esc(fmtNum(bal.sats, "sats"))}</span>
+      ${dHtml}
+    </span>`; style="--chip-c:${escAttr(color)}" title="Hover for more info" data-tip="${escAttr(wid)} · ${escAttr(bal.name || "")}${share != null ? " · " + share.toFixed(1) + "% portfolio" : ""}" data-tip-title="LNbits">
       <span class="status-dot green pulse"></span>
       <span class="sats-ticker">${esc(fmtNum(bal.sats, "sats"))}</span>
       ${dHtml}
@@ -645,7 +647,7 @@
   function moneyBlockHTML(p) {
     const wid = walletIdFor(p);
     const color = accentFor(p.id);
-    const tot = portfolioTotals();
+    const tot = portfolioTotals /* total across all your project wallets */();
     if (!wid) return unavailableHTML("No wallet mapping", "projects.json → wallet");
     if (!hasVaultKey(wid)) {
       return `<div class="drawer-money-block panel">
@@ -702,12 +704,12 @@
 
   function allocationRibbonHTML() + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>` {
       <button class="btn btn-sm btn-ghost" onclick="if(window.refreshAllWallets) window.refreshAllWallets(); else alert('Bulk refresh wired via prior work')">⟳ Refresh All Wallets</button>
-    const tot = portfolioTotals();
-    if (!tot.sats) return `<div class="money-alloc"><div class="money-alloc-item" style="flex:1;background:color-mix(in srgb,var(--violet)25%,transparent)" data-tip="Add Vault keys to see allocation"></div></div>`;
+    const tot = portfolioTotals /* total across all your project wallets */();
+    if (!tot.sats) return `<div class="money-alloc"><div class="money-alloc-item" style="flex:1;background:color-mix(in srgb,var(--violet)25%,transparent)" title="Hover for more info" data-tip="Add Vault keys to see allocation"></div></div>`;
     const parts = tot.rows.filter((r) => r.status === "ok").sort((a, b) => b.sats - a.sats);
     return `<div class="money-alloc" role="img" aria-label="Portfolio allocation">${parts.map((r) => {
       const pct = walletSharePct(r.sats, tot.sats);
-      return `<div class="money-alloc-item" style="flex:${Math.max(pct, 1.5)};background:${escAttr(accentFor(r.p.id))}" data-tip="${escAttr(r.p.name)} · ${escAttr(fmtNum(r.sats, "sats"))} · ${pct.toFixed(1)}%" data-tip-title="Share"></div>`;
+      return `<div class="money-alloc-item" style="flex:${Math.max(pct, 1.5)};background:${escAttr(accentFor(r.p.id))}" title="Hover for more info" data-tip="${escAttr(r.p.name)} · ${escAttr(fmtNum(r.sats, "sats"))} · ${pct.toFixed(1)}%" data-tip-title="Share"></div>`;
     }).join("")}</div>`;
   }
 
@@ -736,7 +738,7 @@
     const p = Math.max(0, Math.min(100, Number(pct) || 0));
     const R = 30, C = 2 * Math.PI * R;
     const off = C * (1 - p / 100);
-    return `<div class="gauge" data-tip="${escAttr(sub || label)}">
+    return `<div class="gauge" title="Hover for more info" data-tip="${escAttr(sub || label)}">
       <svg viewBox="0 0 72 72" aria-hidden="true">
         <circle class="gauge-track" cx="36" cy="36" r="${R}"></circle>
         <circle class="gauge-arc" cx="36" cy="36" r="${R}" stroke="${escAttr(color)}"
@@ -752,7 +754,7 @@
     return rows.map((r) => {
       const pct = ((Number(r.value) || 0) / max) * 100;
       return `<div class="hbar-row">
-        <span class="name" data-tip="${escAttr(r.label)}">${esc(r.label)}</span>
+        <span class="name" title="Hover for more info" data-tip="${escAttr(r.label)}">${esc(r.label)}</span>
         <div class="metric-bar" style="--bar-c:${escAttr(color || r.color || "#38bdf8")}"><span style="width:${pct}%"></span></div>
         <span class="val">${esc(r.display != null ? r.display : fmtNum(r.value))}</span>
       </div>`;
@@ -865,7 +867,7 @@
       <div class="block-title" style="font-family:var(--font-display);font-weight:700;margin-bottom:0.55rem">${esc(funnel.label || funnel.id || "Funnel")}</div>
       ${funnel.steps.map((s) => {
         const pct = Math.max(8, ((Number(s.count) || 0) / max) * 100);
-        return `<div class="funnel-step" style="--funnel-c:${escAttr(c)}" data-tip="${escAttr(s.hint || s.label)}">
+        return `<div class="funnel-step" style="--funnel-c:${escAttr(c)}" title="Hover for more info" data-tip="${escAttr(s.hint || s.label)}">
           <div class="bar" style="width:${pct}%"></div>
           <div class="inner"><span>${esc(s.label || s.id)}</span><span class="count">${esc(fmtNum(s.count))}</span></div>
         </div>`;
@@ -877,7 +879,7 @@
     const delta = kpi.delta != null
       ? `<div class="delta ${Number(kpi.delta) >= 0 ? "up" : "down"}">${Number(kpi.delta) >= 0 ? "▲" : "▼"} ${esc(String(kpi.delta))}${esc(kpi.deltaUnit || "")}</div>`
       : "";
-    return `<div class="kpi-cell" data-tip="${escAttr(kpi.hint || kpi.label)}" data-tip-title="${escAttr(kpi.label)}">
+    return `<div class="kpi-cell" title="Hover for more info" data-tip="${escAttr(kpi.hint || kpi.label)}" data-tip-title="${escAttr(kpi.label)}">
       <div class="label">${esc(kpi.label || kpi.key)}</div>
       <div class="value">${esc(fmtNum(kpi.value, kpi.format))}${kpi.unit && kpi.format !== "sats" && kpi.format !== "percent" ? `<span class="unit">${esc(kpi.unit)}</span>` : ""}</div>
       ${delta}
@@ -976,69 +978,11 @@
     el.className = "toast " + (kind || "");
     el.textContent = msg;
     stack.appendChild(el);
-    setTimeout(() => { el.style.opacity = "0"; setTimeout(() => el.remove(), 300); }, 3200);
-  }
-  function setTheme(name) {
-    const t = ["ember", "porcelain", "stone", "slate", "ink", "aurora"].includes(name) ? name : "ember";
-    document.body.classList.add("theme-switching");
-    document.documentElement.setAttribute("data-theme", t);
-    state.theme = t;
-    try { localStorage.setItem(THEME_KEY, t); } catch {}
-    document.querySelectorAll(".theme-dot").forEach((d) => d.classList.toggle("active", d.dataset.themePick === t));
-    setTimeout(() => document.body.classList.remove("theme-switching"), 560);
-  }
-  let _switchingTimer = null;
-  function setTab(name) {
-    try {
-      if (!TAB_ACCENTS[name]) name = "cards";
-      closeDrawer();
-
-      // Clear any stale render timeouts for this tab — give it a fresh chance
-      if (state.renderTimeouts) delete state.renderTimeouts[name];
-
-      const navWrap = document.querySelector(".nav-wrap");
-      if (navWrap) {
-        if (_switchingTimer) clearTimeout(_switchingTimer);
-        navWrap.classList.add("switching");
-        _switchingTimer = setTimeout(() => {
-          navWrap.classList.remove("switching");
-          _switchingTimer = null;
-        }, 400);
-      }
-
-      // Guard: ensure #view-{name} element exists
-      let viewEl = document.getElementById("view-" + name);
-      if (!viewEl) {
-        viewEl = document.createElement("div");
-        viewEl.id = "view-" + name;
-        viewEl.className = "view";
-        const main = document.getElementById("main-content");
-        if (main) main.appendChild(viewEl);
-      } else {
-        const overlay = document.createElement("div");
-        overlay.className = "tab-loading-overlay";
-        overlay.id = "tab-loading-overlay";
-        viewEl.appendChild(overlay);
-      }
-
-      state.tab = name;
-      try { localStorage.setItem(TAB_KEY, name); } catch {}
-      document.querySelectorAll(".nav-tab").forEach((btn) => {
-        const on = btn.dataset.tab === name;
-        btn.classList.toggle("active", on);
-        if (on) {
-          btn.style.setProperty("--tab-accent", TAB_ACCENTS[name]);
-          btn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-        }
-      });
-      document.querySelectorAll(".view").forEach((v) => v.classList.toggle("active", v.id === "view-" + name));
-      renderActiveTab();
-  // #5 populate alerts if present
-  setTimeout(() => {
+    setTimeout(() => {
     const strip = document.getElementById("alerts-strip");
     if (strip && state.loadErrors && state.loadErrors.length) {
       strip.innerHTML = state.loadErrors.slice(0,5).map(e => `<div style="color:#f59e0b">⚠ ${e.error || "issue"}</div>`).join("") || "No recent alerts.";
-    } else if (strip) { strip.innerHTML = "<div style=\"color:#22c55e\">All clear ✓ (live from cron-health + diagnose)</div>"; }
+    } else if (strip) { strip.innerHTML = '<div style="color:#22c55e">All clear ✓ (live from cron-health + diagnose)</div>'; }
   }, 300);
 
       const overlayEl = document.getElementById("tab-loading-overlay");
@@ -1047,23 +991,10 @@
       const displayName = TAB_DISPLAY_NAMES[name] || name.charAt(0).toUpperCase() + name.slice(1);
       toast("\u2192 " + displayName, "");
       setTimeout(() => {
-        document.querySelectorAll(".toast").forEach((t) => {
-          if (t.textContent === "\u2192 " + displayName) {
-            t.style.opacity = "0";
-            setTimeout(() => t.remove(), 300);
-          }
-        });
-      }, 600);
-    } catch (e) {
-      console.error("setTab error, falling back to cards:", e);
-      state.tab = "cards";
-      renderActiveTab();
-  // #5 populate alerts if present
-  setTimeout(() => {
     const strip = document.getElementById("alerts-strip");
     if (strip && state.loadErrors && state.loadErrors.length) {
       strip.innerHTML = state.loadErrors.slice(0,5).map(e => `<div style="color:#f59e0b">⚠ ${e.error || "issue"}</div>`).join("") || "No recent alerts.";
-    } else if (strip) { strip.innerHTML = "<div style=\"color:#22c55e\">All clear ✓ (live from cron-health + diagnose)</div>"; }
+    } else if (strip) { strip.innerHTML = '<div style="color:#22c55e">All clear ✓ (live from cron-health + diagnose)</div>'; }
   }, 300);
     }
   }
@@ -1319,7 +1250,7 @@
     const strip = document.getElementById("alerts-strip");
     if (strip && state.loadErrors && state.loadErrors.length) {
       strip.innerHTML = state.loadErrors.slice(0,5).map(e => `<div style="color:#f59e0b">⚠ ${e.error || "issue"}</div>`).join("") || "No recent alerts.";
-    } else if (strip) { strip.innerHTML = "<div style=\"color:#22c55e\">All clear ✓ (live from cron-health + diagnose)</div>"; }
+    } else if (strip) { strip.innerHTML = '<div style="color:#22c55e">All clear ✓ (live from cron-health + diagnose)</div>'; }
   }, 300);
     toast("Live data refreshed", "ok");
   }
@@ -1448,7 +1379,7 @@
     const services = (node.services || []).filter(s => s.status === "green").length;
     const totalServices = (node.services || []).length;
     const uptimeDays = node.uptimeSec ? Math.round(node.uptimeSec / 86400) : null;
-    const tot = portfolioTotals();
+    const tot = portfolioTotals /* total across all your project wallets */();
     const avgDepth = state.projects.length
       ? Math.round(state.projects.reduce((a, p) => {
           const m = state.metrics[p.id];
@@ -1470,27 +1401,27 @@
     })();
 
     el.innerHTML = `
-      <div class="stat panel" data-tip="How many suite sites returned HTTP 200 in the last health check. Out of ${total} total sites, ${up} are responding." style="cursor:help">
+      <div class="stat panel" title="Hover for more info" data-tip="How many suite sites returned HTTP 200 in the last health check. Out of ${total} total sites, ${up} are responding." style="cursor:help">
         <div class="l">Suite live</div>
         <div class="v" style="color:var(--green)">${up}<span style="font-size:0.85rem;color:var(--ink-faint)">/${total}</span></div>
         <div class="stat-secondary">${avgMs != null ? esc(avgMs) + "ms avg" : ""} · ${esc(statusTime)}</div>
       </div>
-      <div class="stat panel" data-tip="Sites that are down, timing out, or have failing metrics. 0 = everything running smoothly." style="cursor:help">
+      <div class="stat panel" title="Hover for more info" data-tip="Sites that are down, timing out, or have failing metrics. 0 = everything running smoothly." style="cursor:help">
         <div class="l">Attention</div>
         <div class="v" style="color:${down ? "var(--red)" : "var(--ink-faint)"}">${down}</div>
         <div class="stat-secondary">${down ? esc(down) + " need review" : "all clear"}${down ? "" : " ✓"}</div>
       </div>
-      <div class="stat panel" data-tip="THOR VPS health: green = all services (Docker, Postgres, LNbits, LND, Umami) running and responding. amber = one or more degraded. red = unreachable." style="cursor:help">
+      <div class="stat panel" title="Hover for more info" data-tip="THOR VPS health: green = all services (Docker, Postgres, LNbits, LND, Umami) running and responding. amber = one or more degraded. red = unreachable." style="cursor:help">
         <div class="l">THOR</div>
         <div class="v" style="font-size:1.05rem">${statusPill(health, health)}</div>
         <div class="stat-secondary">${services}/${totalServices} svc · blk ${btc.blocks || "—"} · ${uptimeDays != null ? uptimeDays + "d up" : ""}${lnd.walletBalanceSats > 0 ? " · " + esc(fmtNum(lnd.walletBalanceSats, "sats")) + " on-chain" : ""}</div>
       </div>
-      <div class="stat panel" data-tip="How much data HQ has collected for each product (0-100). 100 = every product has live /metrics.json, wallet data, Umami analytics, AND CF Web Analytics feeding in. 0 = demo/empty." style="cursor:help">
+      <div class="stat panel" title="Hover for more info" data-tip="How much data HQ has collected for each product (0-100). 100 = every product has live /metrics.json, wallet data, Umami analytics, AND CF Web Analytics feeding in. 0 = demo/empty." style="cursor:help">
         <div class="l">Data depth</div>
         <div class="v" style="color:${escAttr(depthColor(avgDepth))}">${avgDepth}<span style="font-size:0.75rem;color:var(--ink-faint)">/100</span></div>
         <div class="stat-secondary">${depthBuckets.full} deep · ${depthBuckets.partial} partial · ${depthBuckets.none} empty</div>
       </div>
-      <div class="stat panel money-hero" style="cursor:pointer;min-width:200px" id="btn-goto-money" data-tip="Open money cockpit">
+      <div class="stat panel money-hero" style="cursor:pointer;min-width:200px" id="btn-goto-money" title="Hover for more info" data-tip="Open money cockpit">
         <div class="l">Portfolio · LNbits</div>
         <div class="money-hero-total" style="font-size:1.15rem">${tot.ok ? esc(fmtNum(tot.sats, "sats")) : "—"}</div>
         <div class="money-hero-usd">${esc(usd)} · ${tot.ok} wallets${state.btcUsd ? ` · <span class='fx-badge'>BTC $${esc(fmtNum(state.btcUsd))}</span>` : ""}</div>
@@ -1532,7 +1463,7 @@
     const sites = (state.status && state.status.sites) || {};
     const down = Object.values(sites).filter(s => s.ok === false).length;
     if (down > 0) {
-      bell.innerHTML = `<span class="status-pill red" style="cursor:pointer;font-size:0.65rem" data-tip="${down} site(s) need attention" id="attention-bell-btn"><i class="fa-solid fa-bell"></i> ${down}</span>`;
+      bell.innerHTML = `<span class="status-pill red" style="cursor:pointer;font-size:0.65rem" title="Hover for more info" data-tip="${down} site(s) need attention" id="attention-bell-btn"><i class="fa-solid fa-bell"></i> ${down}</span>`;
     } else {
       bell.innerHTML = `<span class="status-pill muted" style="font-size:0.65rem"><i class="fa-regular fa-bell"></i></span>`;
     }
@@ -1552,7 +1483,7 @@
       const health = projectHealth(p);
       const depth = m && m.ok ? depthScore(m.data, false) : 0;
       const lat = s && s.ms != null ? `${s.ms}ms` : "—";
-      items.push(`<span class="ticker-item" data-tip="${esc(p.name)}: ${status === 'green' ? 'responding normally' : status === 'amber' ? 'degraded' : 'down'} · latency ${lat} · data depth ${depth}/100 <button onclick="window.showDepthCalculator(state.selectedMetricsId || 'katoa')" class="btn btn-sm" style="font-size:0.6rem">Calc</button> <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span>">${statusDot(health)} <strong>${esc(p.name)}</strong> ${esc(lat)} · depth ${depth}</span>`);
+      items.push(`<span class="ticker-item" title="Hover for more info" data-tip="${esc(p.name)}: ${status === 'green' ? 'responding normally' : status === 'amber' ? 'degraded' : 'down'} · latency ${lat} · data depth ${depth}/100 <button onclick="window.showDepthCalculator(state.selectedMetricsId || 'katoa')" class="btn btn-sm" style="font-size:0.6rem">Calc</button> <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span>">${statusDot(health)} <strong>${esc(p.name)}</strong> ${esc(lat)} · depth ${depth}</span>`);
     });
     if (state.thor && state.thor.ok && state.thor.data) {
       const t = state.thor.data;
@@ -1639,7 +1570,7 @@
     const strip = document.getElementById("alerts-strip");
     if (strip && state.loadErrors && state.loadErrors.length) {
       strip.innerHTML = state.loadErrors.slice(0,5).map(e => `<div style="color:#f59e0b">⚠ ${e.error || "issue"}</div>`).join("") || "No recent alerts.";
-    } else if (strip) { strip.innerHTML = "<div style=\"color:#22c55e\">All clear ✓ (live from cron-health + diagnose)</div>"; }
+    } else if (strip) { strip.innerHTML = '<div style="color:#22c55e">All clear ✓ (live from cron-health + diagnose)</div>'; }
   }, 300);
         return;
       }
@@ -1680,41 +1611,37 @@
   /* ─── Vault tab: open modal + show key status ──────────────────── */
 
   function renderVaultTab() {
-    // Open the vault modal
     openVaultModal();
-
-    // Render a vault status view in the main content area
     var el = document.getElementById("view-vault");
     if (!el) return;
-
     var v = state.vault || {};
     var keys = v.keys || v.wallets || {};
     var keyCount = Object.keys(keys).filter(function (k) { return !!(keys[k] && String(keys[k]).trim()); }).length;
     var totalWallets = state.projects.filter(function (p) { return p.wallet || p.id; }).length;
     var configured = keyCount > 0;
-    var proxyConfigured = !!(v.proxyUrl || v.lnbitsProxyUrl);
-
     el.innerHTML = '' +
-      '<div class="panel" style="padding:1.5rem;max-width:600px;margin:0 auto">' +
+      '<div class="panel" style="padding:1.5rem;max-width:720px;margin:0 auto">' +
         '<div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">' +
           '<i class="fa-solid fa-vault" style="font-size:1.5rem;color:var(--vault, #a78bfa)"></i>' +
-          '<h3 style="margin:0">Vault</h3>' +
+          '<h3 style="margin:0">Vault — Private Keys (Browser Only)</h3>' +
+        '</div>' +
+        '<div style="background:rgba(255,255,255,0.06);padding:0.75rem;border-radius:6px;margin-bottom:1rem;font-size:0.85rem">' +
+          '<strong>Security (top priority):</strong> Keys live only in your browser. Never sent anywhere. Never in git. ' +
+          'The dashboard uses them only to fetch your private LNbits balances and to help capture all the metrics the projects send.' +
         '</div>' +
         '<div class="grid grid-2" style="gap:1rem">' +
-          '<div class="stat panel" style="cursor:default">' +
-            '<div class="l">Invoice keys configured</div>' +
+          '<div class="stat panel" title="Hover for more info" data-tip="How many of your project wallets have keys entered here.">' +
+            '<div class="l">Keys configured</div>' +
             '<div class="v" style="color:' + (configured ? 'var(--green)' : 'var(--red)') + '">' + (configured ? 'Yes (' + keyCount + '/' + totalWallets + ')' : 'No') + '</div>' +
           '</div>' +
-          '<div class="stat panel" style="cursor:default">' +
-            '<div class="l">Proxy URL</div>' +
-            '<div class="v" style="color:' + (proxyConfigured ? 'var(--green)' : 'var(--ink-faint)') + '">' + (proxyConfigured ? 'Set' : 'Not set') + '</div>' +
-          '</div>' +
         '</div>' +
+        '<div style="margin:0.75rem 0;font-size:0.8rem">Step-by-step: 1) Click Open Vault 2) Paste the invoice key for each project wallet 3) Save. ' +
+        'Now the dashboard can show real money and pull live metrics from every project.</div>' +
         '<button type="button" class="btn btn-primary mt-2" id="vault-open-modal-btn" style="width:100%">' +
           '<i class="fa-solid fa-key"></i> Open Vault Settings' +
         '</button>' +
+        '<div style="font-size:0.7rem;margin-top:0.5rem;opacity:0.7">Keys never leave this device. Close the browser = they stay local until you clear data.</div>' +
       '</div>';
-
     var openBtn = document.getElementById("vault-open-modal-btn");
     if (openBtn) openBtn.addEventListener("click", openVaultModal);
   }
@@ -1810,13 +1737,13 @@
   function toolbarHTML(showDepthFilter) {
     return `<div class="toolbar">
       <input type="search" id="hq-search" placeholder="Search projects…" value="${escAttr(state.search)}"/>
-      <button type="button" class="btn btn-sm ${state.filter === "all" ? "btn-primary" : "btn-ghost"}" data-filter="all" data-tip="Show all products regardless of health status">All</button>
-      <button type="button" class="btn btn-sm ${state.filter === "green" ? "btn-primary" : "btn-ghost"}" data-filter="green" data-tip="Only show products with green health (all endpoints responding)">Green</button>
-      <button type="button" class="btn btn-sm ${state.filter === "attention" ? "btn-primary" : "btn-ghost"}" data-filter="attention" data-tip="Only show products that need attention — down, timing out, or missing data">Attention</button>
-      ${showDepthFilter !== false ? `<button type="button" class="btn btn-sm ${state.filter === "deep" ? "btn-primary" : "btn-ghost"}" data-filter="deep" data-tip="Only show products with rich data">Deep data</button>
-      <button type="button" class="btn btn-sm btn-ghost" data-filter="pinned" data-tip="Only pinned favorites">📌 Pinned</button>` : ""}
-      <button type="button" class="btn btn-sm ${state.filter === "pending" ? "btn-primary" : "btn-ghost"}" data-filter="pending" data-tip="Focus on projects with pending/amber data or missing live metrics">Focus Pending</button>
-      <button type="button" class="btn btn-sm btn-ghost" id="btn-export-2"><i class="fa-solid fa-file-export"></i> Diligence</button>
+      <button type="button" class="btn btn-sm ${state.filter === "all" ? "btn-primary" : "btn-ghost"}" data-filter="all" title="Hover for more info" data-tip="Show all products regardless of health status">All</button>
+      <button type="button" class="btn btn-sm ${state.filter === "green" ? "btn-primary" : "btn-ghost"}" data-filter="green" title="Hover for more info" data-tip="Only show products with green health (all endpoints responding)">Green</button>
+      <button type="button" class="btn btn-sm ${state.filter === "attention" ? "btn-primary" : "btn-ghost"}" data-filter="attention" title="Hover for more info" data-tip="Only show products that need attention — down, timing out, or missing data">Attention</button>
+      ${showDepthFilter !== false ? `<button type="button" class="btn btn-sm ${state.filter === "deep" ? "btn-primary" : "btn-ghost"}" data-filter="deep" title="Hover for more info" data-tip="Only show products with rich data">Deep data</button>
+      <button type="button" class="btn btn-sm btn-ghost" data-filter="pinned" title="Hover for more info" data-tip="Only pinned favorites">📌 Pinned</button>` : ""}
+      <button type="button" class="btn btn-sm ${state.filter === "pending" ? "btn-primary" : "btn-ghost"}" data-filter="pending" title="Hover for more info" data-tip="Focus on projects with pending/amber data or missing live metrics">Focus Pending</button>
+      <button type="button" class="btn btn-sm btn-ghost" id="btn-export-2" data-tip="Download current view as JSON for records or sharing"><i class="fa-solid fa-file-export"></i> Diligence</button>
     </div>`;
   }
   function bindToolbar(reRender) {
@@ -1937,7 +1864,7 @@
           ${statusPill(health)}
         </div>
         <div class="card-meta-row">${p.planned ? `<span class="status-pill amber" style="font-size:0.58rem;padding:0.12rem 0.4rem">planned</span>` : metricsAgeChip(m)}</div>
-        <div class="card-money-row">${balanceChipHTML(p, { total: portfolioTotals().sats })}</div>
+        <div class="card-money-row">${balanceChipHTML(p, { total: portfolioTotals /* total across all your project wallets */().sats })}</div>
         ${p.planned ? `<div class="panel" style="margin:0.35rem 0;padding:0.5rem;font-size:0.75rem;color:var(--ink-dim);background:color-mix(in srgb,var(--surface-2)40%,transparent);border-radius:var(--radius,6px)">${esc(p.pitch || "Planned project — not yet deployed.")}</div>` : unavailableHTML("Metrics unavailable", m ? m.path : `/metrics/${p.id}.json`, m ? m.error : "")}
       </article>`;
     }
@@ -1950,13 +1877,13 @@
     const series = (data.series || []).slice(0, 2);
     const deps = (data.health && data.health.dependencies) || [];
     const kpiHtml = kpis.slice(0, 6).map((k) =>
-      `<div class="mini" data-tip="${escAttr(k.hint || k.label)}"><div class="l">${esc(k.label)}</div><div class="v">${esc(fmtNum(k.value, k.format))}</div></div>`
+      `<div class="mini" title="Hover for more info" data-tip="${escAttr(k.hint || k.label)}"><div class="l">${esc(k.label)}</div><div class="v">${esc(fmtNum(k.value, k.format))}</div></div>`
     ).join("");
     const sparks = series.map((ser) =>
       `<div class="spark-block"><div class="sl">${esc(ser.label || ser.key)}</div>${sparkline(seriesPoints(ser, 15), seriesColor(ser, p.id))}</div>`
     ).join("");
 
-    const _tot = portfolioTotals();
+    const _tot = portfolioTotals /* total across all your project wallets */();
     const _bal = state.wallets[walletIdFor(p)];
     const _share = _bal && _bal.ok ? walletSharePct(_bal.sats, _tot.sats) : 0;
     return `<article class="card card--polished" style="--card-accent:${escAttr(color)}" data-project="${escAttr(p.id)}">
@@ -1969,18 +1896,18 @@
         ${statusPill(health)}
       </div>
       <div class="card-meta-row">
-        <span class="depth-gauge" data-tip="Envelope depth ${depth}/100 <button onclick="window.showDepthCalculator(state.selectedMetricsId || 'katoa')" class="btn btn-sm" style="font-size:0.6rem">Calc</button> <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span> — how much of gab.product-metrics.v1 this product fills. Click for how to reach 100">${gaugeHTML(depth, depthColor(depth), "depth")}</span>
-        <span class="chip" data-tip="Product category — determines color and section placement on the board">${esc(p.category || "—")}</span>
-        ${s.ms != null ? `<span class="chip mono" data-tip="Response time for the last health check ping — lower is faster">${esc(fmtMs(s.ms))}</span>` : ""}
+        <span class="depth-gauge" title="Hover for more info" data-tip="Envelope depth ${depth}/100 <button onclick="window.showDepthCalculator(state.selectedMetricsId || 'katoa')" class="btn btn-sm" style="font-size:0.6rem">Calc</button> <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span> — how much of gab.product-metrics.v1 this product fills. Click for how to reach 100">${gaugeHTML(depth, depthColor(depth), "depth")}</span>
+        <span class="chip" title="Hover for more info" data-tip="Product category — determines color and section placement on the board">${esc(p.category || "—")}</span>
+        ${s.ms != null ? `<span class="chip mono" title="Hover for more info" data-tip="Response time for the last health check ping — lower is faster">${esc(fmtMs(s.ms))}</span>` : ""}
         ${metricsAgeChip(m)}
-        ${data.raw && data.raw.demo ? `<span class="chip" data-tip="This envelope contains demo/placeholder data — not real product metrics. Replaced when the product ships a live /metrics.json">demo</span>` : `<span class="chip chip-live" data-tip="Live envelope · raw.demo false">live</span>`}
-        ${(data.funnels || []).length ? `<span class="chip" data-tip="${data.funnels.length} conversion funnel(s) showing how users flow through stages (e.g. visit → create → fund)">${data.funnels.length} funnel</span>` : ""}
-        ${(data.series || []).length ? `<span class="chip" data-tip="${data.series.length} time-series dataset(s) for sparklines and charts (e.g. daily visitors, sats over time)">${data.series.length} series</span>` : ""}
-        ${state.analytics && state.analytics[p.id] ? `<span class="status-pill sky" style="font-size:0.58rem;padding:0.1rem 0.35rem" data-tip="Real-time analytics from Umami on THOR: ${esc(fmtNum(state.analytics[p.id].visitors))} visitors in last 7 days, ${state.analytics[p.id].bounceRate}% bounce rate">${esc(fmtNum(state.analytics[p.id].visitors))} vis · ${esc(state.analytics[p.id].bounceRate)}% bnc</span>` : ""}
+        ${data.raw && data.raw.demo ? `<span class="chip" title="Hover for more info" data-tip="This envelope contains demo/placeholder data — not real product metrics. Replaced when the product ships a live /metrics.json">demo</span>` : `<span class="chip chip-live" title="Hover for more info" data-tip="Live envelope · raw.demo false">live</span>`}
+        ${(data.funnels || []).length ? `<span class="chip" title="Hover for more info" data-tip="${data.funnels.length} conversion funnel(s) showing how users flow through stages (e.g. visit → create → fund)">${data.funnels.length} funnel</span>` : ""}
+        ${(data.series || []).length ? `<span class="chip" title="Hover for more info" data-tip="${data.series.length} time-series dataset(s) for sparklines and charts (e.g. daily visitors, sats over time)">${data.series.length} series</span>` : ""}
+        ${state.analytics && state.analytics[p.id] ? `<span class="status-pill sky" style="font-size:0.58rem;padding:0.1rem 0.35rem" title="Hover for more info" data-tip="Real-time analytics from Umami on THOR: ${esc(fmtNum(state.analytics[p.id].visitors))} visitors in last 7 days, ${state.analytics[p.id].bounceRate}% bounce rate">${esc(fmtNum(state.analytics[p.id].visitors))} vis · ${esc(state.analytics[p.id].bounceRate)}% bnc</span>` : ""}
       </div>
       <div class="card-money-row">
         ${balanceChipHTML(p, { total: _tot.sats })}
-        <span class="ln-badge" style="margin-left:auto;font-size:0.58rem" data-tip="Lightning wallet balance via LNbits proxy — shows sats in this product's wallet when Vault has the invoice key">LNbits</span>
+        <span class="ln-badge" style="margin-left:auto;font-size:0.58rem" title="Hover for more info" data-tip="Lightning wallet balance via LNbits proxy — shows sats in this product's wallet when Vault has the invoice key">LNbits</span>
       </div>
       <div class="card-share-filament" style="height:3px;border-radius:99px;margin:0.35rem 0 0.55rem;background:linear-gradient(90deg,${escAttr(color)} ${_share}%, color-mix(in srgb, var(--surface-2) 80%, transparent) 0)"></div>
       ${p.id === "satohash" && m && m.ok && /^https?:\/\//i.test(m.path) ? `<div class="card-hero-kpi" style="display:flex;align-items:center;gap:0.6rem;margin:0.35rem 0 0.4rem;padding:0.3rem 0.5rem;background:color-mix(in srgb,var(--surface-2)50%,transparent);border-radius:var(--r-sm)">
@@ -2008,7 +1935,7 @@
     const color = accentFor(p.id);
     const data = m.data;
     const depth = depthScore(data, false);
-    const _tot = portfolioTotals();
+    const _tot = portfolioTotals /* total across all your project wallets */();
     const _bal = state.wallets[walletIdFor(p)];
     const _share = _bal && _bal.ok ? walletSharePct(_bal.sats, _tot.sats) : 0;
     const signers = kpiVal(data, "signers_total", 0);
@@ -2037,7 +1964,7 @@
     ];
 
     const funnelHtml = funnel && funnel.steps
-      ? `<div class="sc-funnel" data-tip="Charter journey funnel from product envelope">
+      ? `<div class="sc-funnel" title="Hover for more info" data-tip="Charter journey funnel from product envelope">
           <div class="sc-funnel-label"><i class="fa-solid fa-route"></i> ${esc(funnel.label || "Journey")}</div>
           <div class="sc-funnel-steps">
             ${funnel.steps.map((st, i) => {
@@ -2089,17 +2016,17 @@
         ${statusPill(health)}
       </div>
       <div class="card-meta-row sc-meta">
-        <span class="depth-gauge" data-tip="Envelope depth ${depth}/100 <button onclick="window.showDepthCalculator(state.selectedMetricsId || 'katoa')" class="btn btn-sm" style="font-size:0.6rem">Calc</button> <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span>">${gaugeHTML(depth, depthColor(depth), "depth")}</span>
+        <span class="depth-gauge" title="Hover for more info" data-tip="Envelope depth ${depth}/100 <button onclick="window.showDepthCalculator(state.selectedMetricsId || 'katoa')" class="btn btn-sm" style="font-size:0.6rem">Calc</button> <span style="font-size:0.6rem">— <a href="javascript:void(0)" onclick="alert("Fill kpis + series + funnels + segments + offers + education + links + live health to hit 100. See schema.")">how to 100?</a></span>">${gaugeHTML(depth, depthColor(depth), "depth")}</span>
         <span class="chip">${esc(p.category || "Governance")}</span>
         ${s.ms != null ? `<span class="chip mono">${esc(fmtMs(s.ms))}</span>` : ""}
         ${metricsAgeChip(m)}
         ${!isDemo ? `<span class="chip chip-live">honest KPIs</span>` : `<span class="chip">demo</span>`}
         ${um ? `<span class="status-pill sky" style="font-size:0.58rem;padding:0.1rem 0.35rem">${esc(fmtNum(visitors))} vis · ${esc(bounce)}% bnc</span>` : `<span class="chip mono">umami…</span>`}
-        <span class="chip mono" data-tip="productId + LNbits wallet id">id · sherpacarta</span>
+        <span class="chip mono" title="Hover for more info" data-tip="productId + LNbits wallet id">id · sherpacarta</span>
       </div>
       <div class="sc-hero">
         ${heroPods.map((h) =>
-          `<div class="sc-hero-pod" data-tip="${escAttr(h.tip)}">
+          `<div class="sc-hero-pod" title="Hover for more info" data-tip="${escAttr(h.tip)}">
             <div class="sc-hero-label">${esc(h.label)}</div>
             <div class="sc-hero-value">${esc(h.value)}</div>
             <div class="sc-hero-sub">${esc(h.sub)}</div>
@@ -2132,7 +2059,7 @@
       </div>
       <div class="card-foot sc-foot">
         <span class="mono">${esc(fmtTime(data.updatedAt))}</span>
-        <span class="mono sc-foot-src" data-tip="${escAttr(m.path)}">${liveOrigin ? "origin · CF Function" : "static fallback"} · depth ${depth}</span>
+        <span class="mono sc-foot-src" title="Hover for more info" data-tip="${escAttr(m.path)}">${liveOrigin ? "origin · CF Function" : "static fallback"} · depth ${depth}</span>
       </div>
     </article>`;
   }
@@ -2156,11 +2083,11 @@
         <td>${esc(p.category || "—")}</td>
         <td>${statusPill(health)}</td>
         <td>${metricsAgeChip(m)}</td>
-        <td>${balanceChipHTML(p, { total: portfolioTotals().sats })}</td>
+        <td>${balanceChipHTML(p, { total: portfolioTotals /* total across all your project wallets */().sats })}</td>
         <td class="mono">${s.ms != null ? esc(fmtMs(s.ms)) : "—"}</td>
         <td><span class="depth-badge" style="--depth-c:${escAttr(depthColor(depth))}">${depth}</span></td>
         <td class="mono" style="font-size:0.72rem">${m && m.ok ? (m.data.kpis || []).length + " / " + (m.data.series || []).length + " / " + (m.data.funnels || []).length : "—"}</td>
-        <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" data-tip="${escAttr(kpiStr)}">${esc(kpiStr)}</td>
+        <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Hover for more info" data-tip="${escAttr(kpiStr)}">${esc(kpiStr)}</td>
         <td>${p.url ? `<a href="${escAttr(p.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${esc(p.url.replace(/^https?:\/\//, ""))}</a>` : "—"}</td>
       </tr>`;
     }).join("");
@@ -2614,14 +2541,14 @@
         <div class="analytics-panel panel span-12">
           <h3>LNbits portfolio · money</h3>
           <div class="money-hero panel" style="margin-bottom:0.75rem">
-            <div class="money-hero-total">${esc(fmtNum(portfolioTotals().sats, "sats"))}</div>
-            <div class="money-hero-usd">${esc(fmtUsd(satsToUsd(portfolioTotals().sats)))} · ${portfolioTotals().ok} wallets with balance</div>
+            <div class="money-hero-total">${esc(fmtNum(portfolioTotals /* total across all your project wallets */().sats, "sats"))}</div>
+            <div class="money-hero-usd">${esc(fmtUsd(satsToUsd(portfolioTotals /* total across all your project wallets */().sats)))} · ${portfolioTotals /* total across all your project wallets */().ok} wallets with balance</div>
             ${allocationRibbonHTML() + `<button class="btn btn-sm btn-ghost mt-1" onclick="refreshAllWallets()">⟳ Refresh all wallets</button>`}
       <button class="btn btn-sm btn-ghost" onclick="if(window.refreshAllWallets) window.refreshAllWallets(); else alert('Bulk refresh wired via prior work')">⟳ Refresh All Wallets</button>
           </div>
           <div class="money-grid">
-            ${hbarChart(portfolioTotals().rows.filter(r=>r.status==="ok").map(r=>({label:r.p.name,value:r.sats,display:fmtNum(r.sats,"sats"),color:accentFor(r.p.id)})), "#ff8c00")}
-            <div class="cards-grid">${state.projects.map(p=>`<div class="project-wealth-tile panel" style="border-left:3px solid ${escAttr(accentFor(p.id))}">${esc(p.name)}<div class="mt-1">${balanceChipHTML(p,{total:portfolioTotals().sats})}</div></div>`).join("")}</div>
+            ${hbarChart(portfolioTotals /* total across all your project wallets */().rows.filter(r=>r.status==="ok").map(r=>({label:r.p.name,value:r.sats,display:fmtNum(r.sats,"sats"),color:accentFor(r.p.id)})), "#ff8c00")}
+            <div class="cards-grid">${state.projects.map(p=>`<div class="project-wealth-tile panel" style="border-left:3px solid ${escAttr(accentFor(p.id))}">${esc(p.name)}<div class="mt-1">${balanceChipHTML(p,{total:portfolioTotals /* total across all your project wallets */().sats})}</div></div>`).join("")}</div>
           </div>
         </div>
         <div class="analytics-panel panel span-12">
@@ -2653,7 +2580,7 @@
       const cells = [
         statusPill(projectHealth(p)),
         metricsAgeChip(m),
-        balanceChipHTML(p, { total: portfolioTotals().sats }),
+        balanceChipHTML(p, { total: portfolioTotals /* total across all your project wallets */().sats }),
         s.status != null ? esc(String(s.status)) : "—",
         s.ms != null ? esc(fmtMs(s.ms)) : "—",
         p.deployed ? statusPill("green", "yes") : statusPill("amber", "no"),
@@ -3067,7 +2994,7 @@
           <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">envelope updatedAt &gt; 6h · or missing</span>
         </div>
         ${stale.length ? `<div class="flex flex-wrap gap-2">${stale.map(({ p, m, info }) =>
-          `<span class="chip" style="border-left:3px solid ${escAttr(accentFor(p.id))}" data-tip="${escAttr(info.tip)}">${esc(p.name)} · ${metricsAgeChip(m)}</span>`
+          `<span class="chip" style="border-left:3px solid ${escAttr(accentFor(p.id))}" title="Hover for more info" data-tip="${escAttr(info.tip)}">${esc(p.name)} · ${metricsAgeChip(m)}</span>`
         ).join("")}</div>` : `<p class="mono" style="margin:0;font-size:0.7rem;color:var(--ink-faint)">All product envelopes under 6 hours old.</p>`}
       </div>`;
     el.innerHTML = `
@@ -3088,7 +3015,7 @@
   function renderMoney() {
     const el = document.getElementById("view-money");
     if (!el) return;
-    const tot = portfolioTotals();
+    const tot = portfolioTotals /* total across all your project wallets */();
     const sorted = tot.rows.slice().sort((a, b) => (b.sats || 0) - (a.sats || 0));
     const donutSegs = sorted.filter((r) => r.status === "ok").map((r) => ({
       value: r.sats, color: accentFor(r.p.id), label: r.p.name,
@@ -3186,7 +3113,7 @@
   function renderPortfolioTimeSeries() {
     const el = document.getElementById("portfolio-timeseries");
     if (!el) return;
-    const sorted = portfolioTotals().rows.filter((r) => r.status === "ok");
+    const sorted = portfolioTotals /* total across all your project wallets */().rows.filter((r) => r.status === "ok");
     if (!sorted.length) { el.innerHTML = unavailableHTML("No wallet data", "wallet history"); return; }
     // Collect all wallet histories
     const wallets = sorted.map((r) => ({ wid: r.wid, label: r.p.name, color: accentFor(r.p.id), pts: balHistoryPoints(r.wid) }));
@@ -3238,7 +3165,7 @@
     const el = document.getElementById("view-wallets");
     if (!el) return;
     // Full money cockpit also lives on Money tab; Wallets is the classic grid + quick jump
-    const tot = portfolioTotals();
+    const tot = portfolioTotals /* total across all your project wallets */();
     const keys = vaultKeys();
     const list = [];
     const seen = new Set();
@@ -3522,7 +3449,7 @@
     viewer.innerHTML = `
       <div class="flex justify-between items-center mb-2 flex-wrap gap-2">
         <h2 class="display" style="margin:0;font-size:1.1rem">${esc(fn)}
-          ${ov ? `<span class="status-pill amber" data-tip="Edited locally — overrides the file from git" data-tip-title="Local override">edited</span>` : ""}
+          ${ov ? `<span class="status-pill amber" title="Hover for more info" data-tip="Edited locally — overrides the file from git" data-tip-title="Local override">edited</span>` : ""}
         </h2>
         <div class="flex items-center gap-2">
           <span class="mono" style="font-size:0.65rem;color:var(--ink-faint)">${esc(r.path)}${ov ? " · local " + esc(fmtTime(ov.savedAt)) : ""}</span>
@@ -3660,7 +3587,7 @@
 
   /* ── Budget runway: estimate from wallet history ── */
   function budgetRunwayHTML() {
-    const sorted = portfolioTotals().rows.filter((r) => r.status === "ok");
+    const sorted = portfolioTotals /* total across all your project wallets */().rows.filter((r) => r.status === "ok");
     if (!sorted.length) return `<p class="empty-state">Add wallet keys to estimate runway</p>`;
     const totalSats = sorted.reduce((s, r) => s + Number(r.sats), 0);
     // Compute daily burn from wallet history: net change over last 24h across all wallets
@@ -3772,7 +3699,7 @@
           <td><span class="chip">${esc(r.group)}</span></td>
           <td>${statusPill(r.status)}</td>
           <td class="mono">${r.ms != null ? esc(fmtMs(r.ms)) : "—"}</td>
-          <td><a href="${escAttr(r.url)}" target="_blank" rel="noopener" data-tip="${escAttr(r.tip)}">${esc(r.url)}</a></td>
+          <td><a href="${escAttr(r.url)}" target="_blank" rel="noopener" title="Hover for more info" data-tip="${escAttr(r.tip)}">${esc(r.url)}</a></td>
         </tr>`).join("")}</tbody>
       </table></div>`;
   }
@@ -4076,7 +4003,7 @@
       if (!m || !m.ok) { body.innerHTML = unavailableHTML("Metrics", m ? m.path : `/metrics/${p.id}.json`, m ? m.error : ""); return; }
       const d = m.data;
       body.innerHTML = `
-        <div class="card-money-row mb-2">${balanceChipHTML(p, { total: portfolioTotals().sats })}</div>
+        <div class="card-money-row mb-2">${balanceChipHTML(p, { total: portfolioTotals /* total across all your project wallets */().sats })}</div>
         <div class="kpi-grid">${topKpis(d, 8).map(k => kpiCell(k, isPendingMetrics(d))).join("")}</div>
         ${(d.series || []).slice(0, 3).map((ser) => `<div class="mt-2">${trendChart(ser, seriesColor(ser, p.id))}</div>`).join("")}
         ${(d.funnels || []).map((f) => funnelHTML(f, color)).join("")}
@@ -4134,7 +4061,7 @@
             if (!rp) return `<div class="chip">${esc(id)}</div>`;
             return `<div class="project-wealth-tile panel" style="border-left:4px solid ${escAttr(accentFor(id))};cursor:pointer" data-rel="${escAttr(id)}">
               <div class="flex items-center gap-2">${iconBadge(rp.icon, accentFor(id))}<strong>${esc(rp.name)}</strong></div>
-              <div class="mt-2">${balanceChipHTML(rp, { total: portfolioTotals().sats })}</div>
+              <div class="mt-2">${balanceChipHTML(rp, { total: portfolioTotals /* total across all your project wallets */().sats })}</div>
               <p style="font-size:0.75rem;color:var(--ink-faint);margin:0.35rem 0 0">${esc(rp.tagline || "")}</p>
             </div>`;
           }).join("") || `<p class="empty-state">No related links in projects.json</p>`}</div>
@@ -4905,7 +4832,56 @@ window.playAlertSound = function() {
 };
 
 window.drawPortfolioPie = function() {
-  const tot = portfolioTotals ? portfolioTotals() : {rows:[]};
+  const tot = portfolioTotals /* total across all your project wallets */ ? portfolioTotals /* total across all your project wallets */() : {rows:[]};
   console.log("Portfolio pie data ready for canvas:", tot);
   // stub - can expand to real canvas later
 };
+
+// nav delegation
+document.addEventListener("click", function(e) {
+  const tabBtn = e.target.closest(".nav-tab[data-tab]");
+  if (tabBtn && tabBtn.dataset.tab) {
+    e.preventDefault();
+    setTab(tabBtn.dataset.tab);
+  }
+}, true);
+
+function renderManual() {
+  var el = document.getElementById("view-manual");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "view-manual";
+    el.className = "view";
+    const main = document.getElementById("main-content");
+    if (main) main.appendChild(el);
+  }
+  el.innerHTML = `<div class="panel" style="max-width:900px;margin:0 auto;padding:1.5rem">
+    <h2>How to Use the HQ Dashboard (Simple Guide)</h2>
+    <p>This is your single screen to see everything happening across all Give A Bit projects. Live money, metrics, and status.</p>
+    <h3>Basic Use</h3>
+    <ul>
+      <li><strong>Cards</strong>: Overview of every project. Hover or click for more info.</li>
+      <li><strong>Money</strong>: All your sats in one place. Each project has its own wallet.</li>
+      <li><strong>Metrics</strong>: Deep numbers for any project. Look at the "depth" score.</li>
+      <li><strong>Vault</strong>: Put your secret keys here so the dashboard can see private balances. Everything stays in your browser.</li>
+      <li><strong>Refresh</strong>: Top right button pulls fresh data.</li>
+    </ul>
+    <h3>Metrics Capture</h3>
+    <p>Projects send data to public /metrics.json files. When you add keys in Vault the dashboard also pulls private LNbits numbers. If something shows 0 or pending, the project just hasn't finished wiring it yet.</p>
+    <h3>Security Notes</h3>
+    <p>Keys = only in this browser. Never on any server. Never in code. Never shared. If you leave the tab open on a shared computer, clear site data when you finish.</p>
+    <p>Hover almost anything for extra tips. Use the Help button anytime.</p>
+  </div>`;
+}
+window.showManual = function() {
+  const main = document.getElementById("main-content");
+  if (!main) return;
+  let m = document.getElementById("view-manual");
+  if (!m) { m = document.createElement("div"); m.id = "view-manual"; m.className = "view"; main.appendChild(m); }
+  renderManual();
+};
+
+setTimeout(() => {
+  const h = document.getElementById("btn-help");
+  if (h) h.addEventListener("click", () => { if (window.showManual) window.showManual(); });
+}, 1500);
