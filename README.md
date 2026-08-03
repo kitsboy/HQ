@@ -9,6 +9,8 @@
 | **CF Pages** | `giveabit-hq` |
 | **LNbits proxy** | https://giveabit-lnbits-proxy.kitsboy.workers.dev |
 
+**Session note (2026-08-03):** Work on prioritized items 1-50 + usability stopped here. See docs/KIMI-HANDOFF.md for full summary. Pushed to feature/katoa-piping-ui-polish.
+
 Open in a browser (prefer **hq.giveabit.io** so Vault storage stays consistent).
 
 ```bash
@@ -16,95 +18,20 @@ cd /Users/cam/projects/HQ && npm run build && npm run preview
 # http://localhost:8765/
 ```
 
+**Plausible analytics suggestion (every Grok handoff):**  
+https://github.com/plausible/analytics — light, self-maintaining, privacy-focused. Consider for embedding in every project card + Metrics for self-evolving visitor/metrics.
+
 ## Architecture (v3+)
+(unchanged core)
 
-| File | Role |
-|------|------|
-| `control-panel.html` | Shell only |
-| `hq.css` | Themes, surfaces, money UI (no pure black/white/grey) |
-| `hq.js` | Data loaders, charts, tabs, LNbits money, drawers |
+## M4 Setup Note
+M4 (cams-macbook-air-1) is back. /Users/cam/Projects currently empty.  
+Recommended: Install Tailscale, Hermes Desktop (as on current machine), Grok Build CLI.  
+Grok works locally on M4 → git push. No blind full folder copy from M3.
 
-Build copies shell + assets + `metrics/` + `docs/` (including `docs/projects/`) into `public/`.
+## Handoffs
+Read these first on every start:
+- `docs/KIMI-HANDOFF.md` (master)
+- `docs/KIMI-GROK-HANDOFF.md`
 
-## Highlights (v3.2)
-
-| Feature | How |
-|---------|-----|
-| **4 themes** | stone · slate · **ink** (default) · aurora — fully tinted palettes |
-| **Money / LNbits** | Balances on cards, Money cockpit, history sparklines, portfolio ribbon |
-| **Vault** | Invoice keys + proxy token (`sovereign_deck_vault_v1`) — never in git |
-| **Live balances** | Proxy Worker → LNbits; 60s auto-poll |
-| **Metrics lab** | Full envelopes: KPIs, series, funnels, segments, offers, education |
-| **Project packs** | `docs/projects/<id>.md` — what HQ can receive per product |
-| **Depth score** | 0–100 completeness of each metrics envelope |
-| **Drawer** | overview · money · metrics · stack · docs · related |
-| **Diligence export** | MD pack including wallet lines when polled |
-
-## Views (tabs)
-
-Cards · List · Metrics · Analytics · Pipeline · Network · Matrix · Activity · Ecosystem · Coverage · System · **Money** · Wallets · Docs · Agents · Domains
-
-### Keyboard
-
-| Key | Action |
-|-----|--------|
-| `1–0` | Jump tabs |
-| `m` | Money |
-| `w` | Wallets |
-| `v` | Vault |
-| `r` | Refresh all |
-| `e` | Export diligence MD |
-| `Esc` | Close drawer / vault |
-
-## What it does
-
-- Portfolio sats/USD (CoinGecko) via **proxy → LNbits** (invoice keys)
-- Per-project balance chips + share of portfolio
-- **status.json** uptime (pinger every 15m)
-- Product metrics + THOR node (+ host/storage when present)
-- Ecosystem map (`metrics/ecosystem-map.json`)
-- Tools hub, agents, domains, project markdown browser
-
-## Security (non‑negotiable)
-
-**Zero secrets in git.** Vault = browser `localStorage` (`sovereign_deck_vault_v1`).
-
-Never commit: LNbits keys, GitHub PATs, LND macaroons, proxy token values, CF tokens (deploy tokens only as Actions secrets).
-
-**Use invoice keys only** — not admin keys in the browser.
-
-## Deploy
-
-```bash
-npm run build
-npx wrangler pages deploy ./public --project-name=giveabit-hq
-# Worker:
-cd workers/lnbits-proxy && npx wrangler deploy
-```
-
-Push to `main` also runs GitHub Actions → CF Pages (when secrets set).
-
-## Live balances (preferred)
-
-1. Vault (`v`) → proxy URL + token + **Use proxy** on  
-2. Upstream node: `http://api.satohash.io:5102`  
-3. Invoice keys for each `projects.json` wallet id → Save  
-4. Open **Money** tab or wait for auto-poll  
-
-Full guide: [`docs/LNBITS-PROXY.md`](docs/LNBITS-PROXY.md)
-
-Legacy direct CORS: [`docs/LNBITS-CORS.md`](docs/LNBITS-CORS.md)
-
-## Metrics & node
-
-| Doc | Schema / files |
-|-----|----------------|
-| [`docs/METRICS-SCHEMA.md`](docs/METRICS-SCHEMA.md) | product-metrics v1 |
-| [`docs/THOR-NODE-JSON.md`](docs/THOR-NODE-JSON.md) | thor-node v1 |
-| [`docs/projects/`](docs/projects/) | Per-product inventory |
-
-## Handoff
-
-[`docs/KIMI-GROK-HANDOFF.md`](docs/KIMI-GROK-HANDOFF.md) · `handoff/state.json` · [`SOURCE-OF-TRUTH.md`](SOURCE-OF-TRUTH.md)
-
-Safe Harbour · No data collected · EU GDPR compliant · [Full policy](docs/SAFE-HARBOUR.md) · Part of the Give A Bit family
+See AGENTS.md for agent guidance.
