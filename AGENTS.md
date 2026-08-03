@@ -31,6 +31,8 @@ https://github.com/plausible/analytics — light, privacy-first, consider for pe
 
 **M4 (fresh):** cams-macbook-air-1 active again. /Users/cam/Projects empty on M4. Plan: Tailscale + Hermes Desktop + Grok Build CLI. Grok codes locally → git push.
 
+**Latest (2026-08-03):** Hermes install/structure fully optimized + uniform. Email digest richer (previews + color tags 🔴🟡🟢). Daily journals with mood summary to Obsidian. Full STRUCTURE-MAP + MASTER-BRAIN + all handoffs/READMEs updated. M4 clean empty slate documented.
+
 **Handoffs:** Always read `docs/KIMI-HANDOFF.md` (top) + `docs/KIMI-GROK-HANDOFF.md` first.
 
 ## Quick Start (for Grok)
