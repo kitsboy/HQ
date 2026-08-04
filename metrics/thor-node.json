@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-08-03T20:15:02Z",
+ "updatedAt": "2026-08-04T01:45:01Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -9,19 +9,24 @@
   "status": "green",
   "services": [
    {
+    "id": "lnd",
+    "status": "green",
+    "detail": "Up 23 minutes (healthy)"
+   },
+   {
     "id": "satohash-satohash-api-1",
     "status": "green",
-    "detail": "Up 5 days (healthy)"
+    "detail": "Up 6 days (healthy)"
    },
    {
     "id": "umami",
     "status": "green",
-    "detail": "Up 10 days"
+    "detail": "Up 11 days"
    },
    {
     "id": "lnbits",
     "status": "green",
-    "detail": "Up 12 days"
+    "detail": "Up 22 minutes"
    },
    {
     "id": "satohash-redis-1",
@@ -32,24 +37,19 @@
     "id": "lnbits-postgres",
     "status": "green",
     "detail": "Up 2 weeks (healthy)"
-   },
-   {
-    "id": "lnd",
-    "status": "green",
-    "detail": "Up 6 days (healthy)"
    }
   ],
-  "uptimeSec": 1545501
+  "uptimeSec": 1565301
  },
  "bitcoin": {
   "ok": true,
   "chain": "main",
-  "blocks": 960906,
-  "headers": 960906,
+  "blocks": 960947,
+  "headers": 960947,
   "verificationProgress": 1.0,
   "pruned": false,
   "sizeOnDiskGB": 0.34,
-  "connections": 0,
+  "connections": 3,
   "ibd": false,
   "hint": "LND Neutrino (no local bitcoind). Height + sync from lncli getinfo."
  },
@@ -58,7 +58,7 @@
   "implementation": "lnd",
   "syncedToChain": true,
   "syncedToGraph": true,
-  "numPeers": 0,
+  "numPeers": 3,
   "numActiveChannels": 0,
   "numInactiveChannels": 0,
   "numPendingChannels": 0,
@@ -66,11 +66,11 @@
   "totalRemoteBalanceSats": 0,
   "totalCapacitySats": 0,
   "aliasPublic": "THOR-GAB",
-  "pubkeyPrefix": "026bb3ac3932ca9d",
-  "identity_pubkey": "026bb3ac3932ca9d039d04014877de15d13d872066b79b19ef73abd5f3d7a5ebef",
+  "pubkeyPrefix": "03010b152bab0ec2",
+  "identity_pubkey": "03010b152bab0ec26b7e15d2824bc60aacf7c86f46664d671ec459b1e49a0ee880",
   "version": "0.18.3-beta",
-  "walletBalanceSats": 348,
-  "hint": "No open channels yet. On-chain wallet 348 sats (not channel liquidity). Neutrino light client \u2014 height from LND, not bitcoind RPC. Never expose macaroons to HQ HTML."
+  "walletBalanceSats": 0,
+  "hint": "No open channels yet. Neutrino light client \u2014 height from LND, not bitcoind RPC. Never expose macaroons to HQ HTML."
  },
  "lnbits": {
   "ok": true,
@@ -84,10 +84,6 @@
    "color": "#1f6b3a",
    "points": [
     {
-     "t": "2026-08-02T20:45:01Z",
-     "v": 0
-    },
-    {
      "t": "2026-08-02T21:00:01Z",
      "v": 0
     },
@@ -465,6 +461,10 @@
     },
     {
      "t": "2026-08-03T20:15:02Z",
+     "v": 0
+    },
+    {
+     "t": "2026-08-04T01:45:01Z",
      "v": 0
     }
    ]
@@ -476,10 +476,6 @@
    "color": "#c45f00",
    "points": [
     {
-     "t": "2026-08-02T20:45:01Z",
-     "v": 0
-    },
-    {
      "t": "2026-08-02T21:00:01Z",
      "v": 0
     },
@@ -858,6 +854,10 @@
     {
      "t": "2026-08-03T20:15:02Z",
      "v": 0
+    },
+    {
+     "t": "2026-08-04T01:45:01Z",
+     "v": 0
     }
    ]
   },
@@ -867,10 +867,6 @@
    "unit": "load",
    "color": "#38bdf8",
    "points": [
-    {
-     "t": "2026-08-02T20:45:01Z",
-     "v": 0.43
-    },
     {
      "t": "2026-08-02T21:00:01Z",
      "v": 0.25
@@ -1250,6 +1246,10 @@
     {
      "t": "2026-08-03T20:15:02Z",
      "v": 1.2
+    },
+    {
+     "t": "2026-08-04T01:45:01Z",
+     "v": 0.76
     }
    ]
   },
@@ -1259,10 +1259,6 @@
    "unit": "GB",
    "color": "#a78bfa",
    "points": [
-    {
-     "t": "2026-08-02T20:45:01Z",
-     "v": 2.4
-    },
     {
      "t": "2026-08-02T21:00:01Z",
      "v": 2.4
@@ -1642,6 +1638,10 @@
     {
      "t": "2026-08-03T20:15:02Z",
      "v": 2.8
+    },
+    {
+     "t": "2026-08-04T01:45:01Z",
+     "v": 3.1
     }
    ]
   },
@@ -1651,10 +1651,6 @@
    "unit": "blocks",
    "color": "#f7931a",
    "points": [
-    {
-     "t": "2026-08-02T20:45:01Z",
-     "v": 960768
-    },
     {
      "t": "2026-08-02T21:00:01Z",
      "v": 960771
@@ -2034,6 +2030,10 @@
     {
      "t": "2026-08-03T20:15:02Z",
      "v": 960906
+    },
+    {
+     "t": "2026-08-04T01:45:01Z",
+     "v": 960947
     }
    ]
   }
@@ -2061,22 +2061,22 @@
  "system": {
   "disk": {
    "totalGB": 387,
-   "usedGB": 44,
+   "usedGB": 45,
    "freeGB": 343,
    "usedPercent": 12,
    "mount": "/"
   },
   "memory": {
    "totalGB": 7.8,
-   "usedGB": 2.8,
-   "freeGB": 3.3,
-   "availableGB": 5.0
+   "usedGB": 3.1,
+   "freeGB": 0.2,
+   "availableGB": 4.7
   },
   "cpu": {
-   "loadAvg1m": 1.2,
-   "loadAvg5m": 1.14,
-   "loadAvg15m": 0.94,
-   "uptimeDays": 17.9
+   "loadAvg1m": 0.76,
+   "loadAvg5m": 0.98,
+   "loadAvg15m": 1.45,
+   "uptimeDays": 18.1
   },
   "docker": {
    "images": 8,
@@ -2086,24 +2086,24 @@
   },
   "breakdownGB": {
    "MASTER-BRAIN_vault": 0.691,
-   "Hermes_skills_config": 2.2,
+   "Hermes_skills_config": 2.3,
    "satohash_repo": 0.057,
-   "HQ_repo": 0.032,
+   "HQ_repo": 0.033,
    "LND_data": 0.345,
    "Docker_images": 3.911,
-   "Docker_volumes": 0.458,
-   "other_system": 36.3
+   "Docker_volumes": 0.547,
+   "other_system": 37.1
   }
  },
  "host": {
   "diskTotalGB": 387,
-  "diskUsedGB": 44,
+  "diskUsedGB": 45,
   "diskFreeGB": 343,
   "memTotalGB": 7.8,
-  "memUsedGB": 2.8,
-  "load1": 1.2,
-  "load5": 1.14,
-  "load15": 0.94,
+  "memUsedGB": 3.1,
+  "load1": 0.76,
+  "load5": 0.98,
+  "load15": 1.45,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
@@ -2111,7 +2111,7 @@
    {
     "id": "other_system",
     "label": "Other system",
-    "gb": 36.3
+    "gb": 37.1
    },
    {
     "id": "Docker_images",
@@ -2121,7 +2121,7 @@
    {
     "id": "Hermes_skills_config",
     "label": "Hermes",
-    "gb": 2.2
+    "gb": 2.3
    },
    {
     "id": "MASTER-BRAIN_vault",
@@ -2131,7 +2131,7 @@
    {
     "id": "Docker_volumes",
     "label": "Docker volumes",
-    "gb": 0.46
+    "gb": 0.55
    },
    {
     "id": "LND_data",
