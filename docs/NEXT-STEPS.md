@@ -103,3 +103,4 @@ HQ schema gate only accepts `gab.product-metrics.v1`. Prefer live origin `/metri
 ---
 
 *Updated 2026-08-03 by Grok — merge + suite sync + LNURL + agents.*
+LND seed 2026-08-04: see KIMI-HANDOFF + Obsidian + Kanban t_5ef9d3ed (manual seed required)

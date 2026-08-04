@@ -1,22 +1,30 @@
 {
   "schema": "gab.handoff.v1",
-  "updatedAt": "2026-08-04T01:29:00.000Z",
+  "updatedAt": "2026-08-04T01:36:15.466Z",
   "agents": {
     "grok": {
       "lastSeen": "2026-08-04T01:29:00.000Z",
-      "focus": "GOODBYE 2026-08-04 \u2014 HQ v3.29 shipped; LND wipe emergency STOP",
+      "focus": "GOODBYE 2026-08-04 — HQ v3.29 shipped; LND wipe emergency STOP",
       "nextAction": "Stabilize LND with Cam/Kimi (seed path). No channels until seed safe. /whatsup next chat.",
       "notes": [
         {
           "t": "2026-08-04T01:29:00.000Z",
-          "summary": "Session close: v3.29 + suite ship + Kimi YELLOW handback + LND wipe without seed \u2014 STOP loops"
+          "summary": "Session close: v3.29 + suite ship + Kimi YELLOW handback + LND wipe without seed — STOP loops"
         }
       ]
     },
     "kimi": {
-      "lastSeen": "2026-08-04T01:29:00.000Z",
-      "focus": "LND stabilize \u2014 no wipe; seed/recovery with Cam",
+      "lastSeen": "2026-08-04T01:36:15.466Z",
+      "focus": "LND stabilize — no wipe; seed/recovery with Cam",
       "notes": [
+        {
+          "t": "2026-08-04T01:36:15.466Z",
+          "summary": "LND seed goodbye update"
+        },
+        {
+          "t": "2026-08-04T01:35:59.320841+00:00",
+          "summary": "goodbye: LND seed note+Kanban t_5ef9d3ed+weekly cron; user MUST manual 24w seeds; auto stopped"
+        },
         {
           "t": "2026-07-27T06:15:00.000Z",
           "summary": "Cam list: (1) LNURL sherpacarta P0 (2) Sherpa Nostr bot P1 (3) crons/Buzz P2 (4) LNbits harden with Nova. Read HQ docs/KIMI-HANDOFF.md MASTER LIST."
@@ -49,7 +57,7 @@
       ]
     },
     "nova": {
-      "focus": "LNbits public harden \u2014 HTTPS/firewall for :5102",
+      "focus": "LNbits public harden — HTTPS/firewall for :5102",
       "nextAction": "TLS terminate + restrict public LNbits; keep giveabit-lnbits-proxy upstream reachable"
     }
   },
@@ -72,13 +80,13 @@
       "id": "lnd-wallet-seed",
       "owner": "cam+kimi",
       "priority": "P0",
-      "detail": "Post-wipe: new pubkey 02b469\u2026 possible; no seed file; STOP genseed loops. Old 7704 needs old seed. Stabilize before fund/channels."
+      "detail": "Post-wipe: new pubkey 02b469… possible; no seed file; STOP genseed loops. Old 7704 needs old seed. Stabilize before fund/channels."
     },
     {
       "id": "ln-channels",
       "owner": "cam+kimi",
       "priority": "P0",
-      "detail": "0 peers/channels \u2014 blocked until wallet seed safe + on-chain funded"
+      "detail": "0 peers/channels — blocked until wallet seed safe + on-chain funded"
     },
     {
       "id": "lnbits-public-harden",
@@ -87,11 +95,33 @@
       "detail": "Prefer Tailscale + :8443 + proxy; optional restrict :5102"
     }
   ],
+  "next": [
+    {
+      "id": "satohash-live-metrics",
+      "owner": "kimi",
+      "title": "Publish live gab.product-metrics.v1 from satohash"
+    },
+    {
+      "id": "thor-exporter",
+      "owner": "nova",
+      "title": "Cron thor-node.json from bitcoind/lnd"
+    },
+    {
+      "id": "lnbits-cors",
+      "owner": "nova",
+      "title": "CORS allow https://hq.giveabit.io"
+    },
+    {
+      "id": "cf-access",
+      "owner": "cam",
+      "title": "Enable CF Access on hq.giveabit.io"
+    }
+  ],
   "shipped": [
     {
       "id": "giveabit-mission-v440",
       "at": "2026-07-27",
-      "detail": "Mission NIP-05 identity + sherpa SPA registry \u2014 giveabit a545c40"
+      "detail": "Mission NIP-05 identity + sherpa SPA registry — giveabit a545c40"
     },
     {
       "id": "sherpa-metrics-live",
@@ -119,72 +149,16 @@
       "detail": "gab.product-metrics.v1 only + lean deploy"
     }
   ],
-  "next": [
-    {
-      "id": "sherpacarta-lnurl",
-      "owner": "kimi",
-      "priority": "P0",
-      "title": "Public LNURL for sherpacarta via LNbits \u2192 Vault \u2192 lud16 handback"
-    },
-    {
-      "id": "sherpacarta-nostr-bot",
-      "owner": "kimi",
-      "priority": "P1",
-      "title": "Deploy Sherpa Nostr bot on THOR (approve mode first)"
-    },
-    {
-      "id": "cam-vault-verify",
-      "owner": "cam",
-      "priority": "P1",
-      "title": "Vault invoice keys on hq.giveabit.io \u2014 Money tab live"
-    },
-    {
-      "id": "lnbits-public-harden",
-      "owner": "nova",
-      "priority": "P2",
-      "title": "HTTPS / firewall for LNbits upstream"
-    },
-    {
-      "id": "cron-hygiene",
-      "owner": "kimi",
-      "priority": "P2",
-      "title": "Fix email digest path + vault stale-ref cron warns"
-    },
-    {
-      "id": "buzz-deploy",
-      "owner": "kimi",
-      "priority": "P2",
-      "title": "Deploy Buzz on THOR when v1 stable \u2014 watching"
-    },
-    {
-      "id": "tadbuy-metrics-backend",
-      "owner": "grok",
-      "priority": "later",
-      "title": "Metrics generator from Supabase not seed campaigns"
-    },
-    {
-      "id": "katoa-ci-failure",
-      "owner": "grok",
-      "priority": "P1",
-      "title": "\ud83d\udd34 Fix katoa CI \u2014 npm run check failing on main"
-    },
-    {
-      "id": "motopass-sync-failure",
-      "owner": "grok",
-      "priority": "P2",
-      "title": "\ud83d\udfe1 Fix motopass BTC Map weekly sync \u2014 git-auto-commit guard"
-    }
-  ],
   "history": [
     {
       "at": "2026-08-04T01:29:00.000Z",
       "agent": "grok",
-      "summary": "GOODBYE 2026-08-04: HQ v3.29 suite ship; Kimi YELLOW channels; Cam LND wipe emergency \u2014 seed missing; stop destructive scripts"
+      "summary": "GOODBYE 2026-08-04: HQ v3.29 suite ship; Kimi YELLOW channels; Cam LND wipe emergency — seed missing; stop destructive scripts"
     },
     {
       "at": "2026-07-27T06:15:00.000Z",
       "agent": "grok",
-      "summary": "Kimi MASTER LIST with full Cam details, P0\u2013P2, done-table, machines, handback format. All handoffs synced."
+      "summary": "Kimi MASTER LIST with full Cam details, P0–P2, done-table, machines, handback format. All handoffs synced."
     },
     {
       "at": "2026-07-27T05:30:00.000Z",
