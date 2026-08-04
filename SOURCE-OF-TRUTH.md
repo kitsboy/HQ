@@ -1,6 +1,6 @@
 # HQ SOURCE OF TRUTH
 
-_Updated: 2026-08-03 — app v3.29.0 (stamp-version)
+_Updated 2026-08-04 goodbye (LND seed crisis P0). _Updated: 2026-08-03 — app v3.29.0 (stamp-version)
 
 ## Live
 

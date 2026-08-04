@@ -1,32 +1,28 @@
 {
   "schema": "gab.handoff.v1",
-  "updatedAt": "2026-08-03T19:06:22.932123+00:00",
+  "updatedAt": "2026-08-04T01:29:00.000Z",
   "agents": {
     "grok": {
-      "lastSeen": "2026-07-27T06:45:00.000Z",
-      "focus": "session closed \u2014 wait Kimi LNURL handback",
+      "lastSeen": "2026-08-04T01:29:00.000Z",
+      "focus": "GOODBYE 2026-08-04 \u2014 HQ v3.29 shipped; LND wipe emergency STOP",
+      "nextAction": "Stabilize LND with Cam/Kimi (seed path). No channels until seed safe. /whatsup next chat.",
       "notes": [
         {
-          "t": "2026-07-27T06:45:00.000Z",
-          "summary": "GOODBYE. Mission+suite truth+Kimi MASTER LIST shipped. Next Grok: publish lud16 after Kimi handback. Summary: docs/SESSION-SUMMARY-2026-07-27-suite-truth.md"
-        },
-        {
-          "t": "2026-07-27T06:15:00.000Z",
-          "summary": "Full Kimi MASTER LIST in docs/KIMI-HANDOFF.md with Cam priorities, P0 LNURL, P1 bot, P2 crons, done-table, machines, handback format. Mission+Sherpa/Satohash already shipped."
+          "t": "2026-08-04T01:29:00.000Z",
+          "summary": "Session close: v3.29 + suite ship + Kimi YELLOW handback + LND wipe without seed \u2014 STOP loops"
         }
-      ],
-      "nextAction": "After Kimi lud16 handback \u2192 publish sherpacarta wallets.json (public only). ALSO: \ud83d\udd34 Fix katoa CI (npm run check) + \ud83d\udfe1 motopass weekly sync (git-auto-commit failure). See KIMI-GROK-HANDOFF.md."
+      ]
     },
     "kimi": {
-      "lastSeen": "2026-07-30T15:15:00.000Z",
-      "focus": "P0 sherpacarta LNURL \u2192 Vault \u2192 public lud16 handback",
+      "lastSeen": "2026-08-04T01:29:00.000Z",
+      "focus": "LND stabilize \u2014 no wipe; seed/recovery with Cam",
       "notes": [
         {
           "t": "2026-07-27T06:15:00.000Z",
           "summary": "Cam list: (1) LNURL sherpacarta P0 (2) Sherpa Nostr bot P1 (3) crons/Buzz P2 (4) LNbits harden with Nova. Read HQ docs/KIMI-HANDOFF.md MASTER LIST."
         }
       ],
-      "nextAction": "Enable LNURL-pay/LUD-16 on LNbits wallet sherpacarta; Vault invoice key; hand public lud16 to Grok/Cam.",
+      "nextAction": "Help Cam inventory LND; do not open channels until seed confirmed; then channel open after fund",
       "priorityList": [
         "P0: public LNURL/lud16 for wallet sherpacarta",
         "P1: Sherpa Nostr bot on THOR (sherpa@ nsec only)",
@@ -71,20 +67,26 @@
     "sherpacarta-nostr-bot": "kimi-deploy / cam-nsec-offline",
     "giveabit-nip05-namespace": "grok-mission / cam-keys / kimi-ops"
   },
-  "blockers": {
-    "ln-channels": {
-      "status": "blocked",
-      "reason": "0 peers / 0 channels; on-chain 7704 sats confirmed insufficient for safe 1-2 small channels (Cam default: do not open if low; exact balance + address reported)",
-      "onchain_sats": 7704,
-      "funding_address": "bc1qnluralaft8x07rkrz2qedc3rc67pu7qpwpgw5j",
-      "next": "Fund >=100k sats to address; then open 1-2 small channels to reliable peer (e.g. ACINQ)"
+  "blockers": [
+    {
+      "id": "lnd-wallet-seed",
+      "owner": "cam+kimi",
+      "priority": "P0",
+      "detail": "Post-wipe: new pubkey 02b469\u2026 possible; no seed file; STOP genseed loops. Old 7704 needs old seed. Stabilize before fund/channels."
     },
-    "lnbits-public-harden": {
-      "status": "documented",
-      "details": "Proxy worker safe+working for HQ Money (9 wallets, server-keys+forward). Public :8443 for LNURL/sherpa OK via Caddy. :5102 public exposed (docker) but Tailscale preferred for admin. ufw active (allows 8443/5103 etc), no breakage to proxy path.",
-      "recommend": "Keep worker proxy for HQ; use Tailscale for direct LNbits :5102; optional further restrict public 5102 if desired"
+    {
+      "id": "ln-channels",
+      "owner": "cam+kimi",
+      "priority": "P0",
+      "detail": "0 peers/channels \u2014 blocked until wallet seed safe + on-chain funded"
+    },
+    {
+      "id": "lnbits-public-harden",
+      "owner": "nova",
+      "priority": "P2",
+      "detail": "Prefer Tailscale + :8443 + proxy; optional restrict :5102"
     }
-  },
+  ],
   "shipped": [
     {
       "id": "giveabit-mission-v440",
@@ -175,6 +177,11 @@
   ],
   "history": [
     {
+      "at": "2026-08-04T01:29:00.000Z",
+      "agent": "grok",
+      "summary": "GOODBYE 2026-08-04: HQ v3.29 suite ship; Kimi YELLOW channels; Cam LND wipe emergency \u2014 seed missing; stop destructive scripts"
+    },
+    {
       "at": "2026-07-27T06:15:00.000Z",
       "agent": "grok",
       "summary": "Kimi MASTER LIST with full Cam details, P0\u2013P2, done-table, machines, handback format. All handoffs synced."
@@ -190,7 +197,7 @@
       "summary": "NIP-05 namespace vision. Buzz research. Mission update needed from Grok."
     }
   ],
-  "lastAgent": "kimi",
+  "lastAgent": "grok",
   "cam": {
     "name": "Cam",
     "role": "Principal",

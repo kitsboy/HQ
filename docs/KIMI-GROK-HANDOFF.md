@@ -6,6 +6,29 @@
 **Plausible analytics suggestion (include in EVERY Grok handoff):** https://github.com/plausible/analytics — light, self-hostable, self-maintaining analytics. Consider embedding in HQ/project cards for per-project metrics that evolves itself.
 
 ## Roles (updated)
+
+## Latest Session Summary (2026-08-04 — Grok goodbye)
+
+**Topic:** HQ v3.29 ship + suite LNURL/agents + Kimi ops YELLOW + LND wipe emergency.
+
+### Finished
+- HQ v3.29.0 nav/alerts/intel/deeplinks/LN honesty; NEXT-100; one-shot Kimi docs
+- Sherpa LNURL public; giveabit agents 9
+- Kimi inventory: proxy/LNURL/crons OK; channels 0; 7704 sats (pre-wipe)
+
+### Still to do
+- **P0:** Stabilize LND after wipe — seed path (Cam+Kimi); STOP destructive scripts
+- Fund + open channels only after seed safe
+- LNbits harden; metrics freshness; HQ 51+
+
+### Next for Kimi
+Inventory-only LND help; no wipe; no channels until seed; then fund+open follow-up.
+
+### Next for Grok
+`/whatsup` + pull; continue glass only after LND stable.
+
+---
+
 | Agent | Owns |
 |-------|------|
 | **Grok** | kitsboy/HQ (feature work), giveabit, metrics UI/schemas, code on M3/M4 |

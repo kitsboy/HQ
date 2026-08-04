@@ -1,3 +1,31 @@
+### GOODBYE — Grok · 2026-08-04 (M3 session close)
+
+**Chat:** whatsup → HQ merge/nav v3.26–3.29 → suite LNURL/agents → Kimi one-shot → Cam LND wipe emergency.
+
+**Finished (Grok code):**
+- HQ **v3.29.0** live: nav rebuild, pin tabs, suite alerts, intel shell fix, deep links, Money/System LN honesty, NEXT-100, CAM-ELI16 + KIMI-ONESHOT docs
+- Sherpa public LNURL on site; giveabit agents=9; suite repos current on M3
+- Kimi THOR one-shot consumed (YELLOW: 0/0 channels, 7704 sats, proxy/LNURL/crons OK) — handback was at top pre-wipe
+
+**CRITICAL — LND (Cam on THOR, after Kimi handback):**
+- Destructive wipe of mainnet wallet data + genseed hammer loop **failed to capture seed**
+- Node reported **new** identity pubkey `02b4697a…` (old was `026bb3ac…`) — treat as new/unknown wallet until proven
+- `lnd-seed.txt` empty / parse fail — **no new seed on disk**
+- Old ~7704 sats **only** with offline old 24 words
+- **STOP** all wipe/genseed loops. Inventory only: state, getinfo, walletbalance. Path A=restore old seed · Path B=clean recreate once with seed offline first. Do not fund until address from **current** wallet.
+
+**Still open:** LND seed/recovery · fund+channels after stable wallet · LNbits :5102 harden · metrics freshness · HQ 51+ · M4 setup
+
+**Next for Kimi:** Do **not** open channels until Cam confirms seed path. Help stabilize LND (no wipe). After seed safe + funds: channel-open follow-up prompt. Append handback only public facts.
+
+**Next for Grok/Cam:** `/whatsup` + `git pull`. Session file: `SESSION-SUMMARY-2026-08-04.md`.
+
+**Plausible:** https://github.com/plausible/analytics
+
+**Recovery:** whatsup → KIMI-HANDOFF top + SESSION-SUMMARY-2026-08-04.md
+
+---
+
 ### 2026-08-03 — Kimi · THOR one-shot (channels / LNbits / crons)
 
 **Lightning:** peers=0 channels=0 on-chain=7704 sats | pending=0 | peers used=n/a (blocker: insufficient on-chain balance for safe channel open per defaults)
