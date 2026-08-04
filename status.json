@@ -1,53 +1,53 @@
 {
-  "updatedAt": "2026-08-04T02:02:26.198Z",
+  "updatedAt": "2026-08-04T02:30:38.465Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 228,
+      "ms": 381,
       "url": "https://giveabit.io"
     },
     "satohash": {
       "ok": true,
       "status": 200,
-      "ms": 424,
+      "ms": 106,
       "url": "https://satohash.io"
     },
     "katoa": {
       "ok": true,
       "status": 200,
-      "ms": 323,
+      "ms": 91,
       "url": "https://katoa.org"
     },
     "stranded": {
       "ok": true,
       "status": 200,
-      "ms": 147,
+      "ms": 153,
       "url": "https://stranded.giveabit.io"
     },
     "tadbuy": {
       "ok": true,
       "status": 200,
-      "ms": 67,
+      "ms": 91,
       "url": "https://tadbuy.giveabit.io"
     },
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 95,
+      "ms": 134,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 116,
+      "ms": 164,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
       "ok": true,
       "status": 200,
-      "ms": 204,
+      "ms": 423,
       "url": "https://openstrata.giveabit.io"
     },
     "btcminiscript": {
@@ -67,23 +67,23 @@
     "satohashApi": {
       "ok": true,
       "status": 200,
-      "ms": 288,
+      "ms": 214,
       "healthUrl": "https://api.satohash.io/health"
     },
     "satohashMetrics": {
       "schema": "gab.product-metrics.v1",
       "productId": "satohash",
       "name": "Satohash",
-      "updatedAt": "2026-08-04T02:02:26.099Z",
+      "updatedAt": "2026-08-04T02:30:38.368Z",
       "window": {
         "label": "7d",
-        "from": "2026-07-28T02:02:26.099Z",
-        "to": "2026-08-04T02:02:26.099Z"
+        "from": "2026-07-28T02:30:38.368Z",
+        "to": "2026-08-04T02:30:38.368Z"
       },
       "health": {
         "status": "green",
         "message": "API healthy — live stamp aggregates for HQ",
-        "latencyMs": 6,
+        "latencyMs": 1,
         "uptimePct24h": null,
         "dependencies": [
           {
@@ -93,8 +93,8 @@
           },
           {
             "id": "bitcoin-anchor",
-            "status": "green",
-            "detail": "No pending anchors"
+            "status": "amber",
+            "detail": "1 pending Bitcoin confirmation(s)"
           },
           {
             "id": "api.satohash.io",
@@ -104,7 +104,7 @@
           {
             "id": "client-attribution",
             "status": "green",
-            "detail": "3 distinct X-Satohash-Client id(s)"
+            "detail": "4 distinct X-Satohash-Client id(s)"
           }
         ]
       },
@@ -112,7 +112,7 @@
         {
           "key": "stamps_total",
           "label": "Stamps (all time)",
-          "value": 9,
+          "value": 10,
           "unit": "proofs",
           "format": "number",
           "priority": 1,
@@ -121,7 +121,7 @@
         {
           "key": "stamps_24h",
           "label": "Stamps 24h",
-          "value": 0,
+          "value": 1,
           "unit": "proofs",
           "delta": 0,
           "deltaUnit": "%",
@@ -132,7 +132,7 @@
         {
           "key": "stamps_7d",
           "label": "Stamps 7d",
-          "value": 3,
+          "value": 4,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -141,7 +141,7 @@
         {
           "key": "monthly_capacity",
           "label": "Monthly capacity (est.)",
-          "value": 13,
+          "value": 17,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -150,7 +150,7 @@
         {
           "key": "pending",
           "label": "Pending confirm",
-          "value": 0,
+          "value": 1,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -195,7 +195,7 @@
         {
           "key": "api_clients",
           "label": "Active API clients",
-          "value": 3,
+          "value": 4,
           "unit": "clients",
           "format": "number",
           "priority": 3,
@@ -222,7 +222,7 @@
         {
           "key": "p50_ms",
           "label": "Metrics build p50",
-          "value": 6,
+          "value": 1,
           "unit": "ms",
           "format": "duration",
           "priority": 5,
@@ -303,7 +303,7 @@
             },
             {
               "t": "2026-08-04T12:00:00.000Z",
-              "v": 0
+              "v": 1
             }
           ]
         },
@@ -439,7 +439,7 @@
             },
             {
               "t": "2026-08-04T12:00:00.000Z",
-              "v": 0
+              "v": 1
             }
           ]
         },
@@ -520,19 +520,19 @@
             {
               "id": "hash_local",
               "label": "Local hash",
-              "count": 9,
+              "count": 10,
               "hint": "File never leaves device"
             },
             {
               "id": "submit",
               "label": "Submit stamp",
-              "count": 9,
+              "count": 1,
               "hint": "API or SPA"
             },
             {
               "id": "calendar",
               "label": "Calendar attested",
-              "count": 9,
+              "count": 10,
               "hint": "OTS calendars accepted"
             },
             {
@@ -544,7 +544,7 @@
             {
               "id": "pending_queue",
               "label": "Still pending",
-              "count": 0,
+              "count": 1,
               "hint": "Upgrade daemon queue"
             }
           ]
@@ -569,6 +569,14 @@
               "value": 1,
               "meta": {
                 "offer": "direct web stamps"
+              }
+            },
+            {
+              "id": "mvp-smoke",
+              "label": "mvp-smoke",
+              "value": 1,
+              "meta": {
+                "offer": "attributed client"
               }
             },
             {
@@ -676,7 +684,7 @@
             {
               "id": "pending",
               "label": "Pending",
-              "value": 0,
+              "value": 1,
               "meta": {
                 "offer": "awaiting BTC"
               }
@@ -853,7 +861,7 @@
         "seriesFromDb": true,
         "note": "Live metrics from satohash API DB",
         "version": "5.0.0-ELITE",
-        "uptimeSec": 526858,
+        "uptimeSec": 528550,
         "requireLightning": false,
         "familyFreeTier": true,
         "directory": {
@@ -987,16 +995,16 @@
           ]
         },
         "counts": {
-          "stampsTotal": 9,
-          "stamps24h": 0,
-          "stamps7d": 3,
-          "pending": 0,
+          "stampsTotal": 10,
+          "stamps24h": 1,
+          "stamps7d": 4,
+          "pending": 1,
           "confirmed": 9,
           "confirmed7d": 3,
           "failed": 0,
           "failed7d": 0,
           "familyFree": 0,
-          "distinctClients": 3
+          "distinctClients": 4
         }
       }
     }
