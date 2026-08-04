@@ -1,53 +1,53 @@
 {
-  "updatedAt": "2026-08-04T20:00:45.757Z",
+  "updatedAt": "2026-08-04T20:30:51.891Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 665,
+      "ms": 774,
       "url": "https://giveabit.io"
     },
     "satohash": {
       "ok": true,
       "status": 200,
-      "ms": 226,
+      "ms": 157,
       "url": "https://satohash.io"
     },
     "katoa": {
       "ok": true,
       "status": 200,
-      "ms": 182,
+      "ms": 636,
       "url": "https://katoa.org"
     },
     "stranded": {
       "ok": true,
       "status": 200,
-      "ms": 237,
+      "ms": 149,
       "url": "https://stranded.giveabit.io"
     },
     "tadbuy": {
       "ok": true,
       "status": 200,
-      "ms": 217,
+      "ms": 215,
       "url": "https://tadbuy.giveabit.io"
     },
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 163,
+      "ms": 187,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 265,
+      "ms": 187,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
       "ok": true,
       "status": 200,
-      "ms": 766,
+      "ms": 179,
       "url": "https://openstrata.giveabit.io"
     },
     "btcminiscript": {
@@ -67,18 +67,18 @@
     "satohashApi": {
       "ok": true,
       "status": 200,
-      "ms": 346,
+      "ms": 232,
       "healthUrl": "https://api.satohash.io/health"
     },
     "satohashMetrics": {
       "schema": "gab.product-metrics.v1",
       "productId": "satohash",
       "name": "Satohash",
-      "updatedAt": "2026-08-04T20:00:45.661Z",
+      "updatedAt": "2026-08-04T20:30:51.872Z",
       "window": {
         "label": "7d",
-        "from": "2026-07-28T20:00:45.661Z",
-        "to": "2026-08-04T20:00:45.661Z"
+        "from": "2026-07-28T20:30:51.872Z",
+        "to": "2026-08-04T20:30:51.872Z"
       },
       "health": {
         "status": "green",
@@ -132,7 +132,7 @@
         {
           "key": "stamps_7d",
           "label": "Stamps 7d",
-          "value": 4,
+          "value": 3,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -141,7 +141,7 @@
         {
           "key": "monthly_capacity",
           "label": "Monthly capacity (est.)",
-          "value": 17,
+          "value": 13,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -168,7 +168,7 @@
         {
           "key": "confirmed_7d",
           "label": "Confirmed 7d",
-          "value": 4,
+          "value": 3,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -869,7 +869,7 @@
         "seriesFromDb": true,
         "note": "Live metrics from satohash API DB",
         "version": "5.0.0-ELITE",
-        "uptimeSec": 591557,
+        "uptimeSec": 593363,
         "requireLightning": false,
         "familyFreeTier": true,
         "directory": {
@@ -1005,10 +1005,10 @@
         "counts": {
           "stampsTotal": 11,
           "stamps24h": 2,
-          "stamps7d": 4,
+          "stamps7d": 3,
           "pending": 0,
           "confirmed": 11,
-          "confirmed7d": 4,
+          "confirmed7d": 3,
           "failed": 0,
           "failed7d": 0,
           "familyFree": 0,
