@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.29.0 — handoffs registry tab
+ * Give A Bit HQ v3.30.0 — handoffs registry tab
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.29.0";
+  const HQ_VERSION = "3.30.0";
   const BUILD_TS = new Date().toISOString();
   const METRICS_SCHEMA = "gab.product-metrics.v1";
   const THOR_SCHEMA = "gab.thor-node.v1";
@@ -329,15 +329,25 @@
     return !!(data && typeof data === "object" && data.schema === THOR_SCHEMA);
   }
 
+  /** Envelope age in ms from updatedAt (fall back to fetch time). */
+  function envelopeAgeMs(r) {
+    const u = r && r.data && r.data.updatedAt;
+    const t = u ? new Date(u).getTime() : (r && r.fetchedAt ? new Date(r.fetchedAt).getTime() : 0);
+    return Number.isNaN(t) ? 0 : t;
+  }
+
   /**
    * Walk candidate URLs; accept only gab.product-metrics.v1.
    * Prefer non-demo when multiple valid hits exist (e.g. live after static demo).
+   * Freshest envelope wins: a site's own stale copy must never shadow a fresher
+   * source (e.g. HQ's nightly-refreshed copy at /metrics/<slug>.json).
    * Skips /health and /status JSON that used to poison cards.
    */
   async function loadProductMetrics(candidates, opts = {}) {
     const expectId = opts.expectProductId || null;
     let lastFail = null;
     let bestDemo = null;
+    let bestLive = null;
     const seen = new Set();
     for (const p of candidates || []) {
       if (!p || seen.has(p)) continue;
@@ -374,8 +384,9 @@
         if (!bestDemo) bestDemo = r;
         continue;
       }
-      return r;
+      if (!bestLive || envelopeAgeMs(r) > envelopeAgeMs(bestLive)) bestLive = r;
     }
+    if (bestLive) return bestLive;
     if (bestDemo) return bestDemo;
     return (
       lastFail || {
@@ -1560,11 +1571,32 @@
     if (down.length) {
       bits.push(`<button type="button" class="suite-alert danger" data-alert="down"><i class="fa-solid fa-triangle-exclamation"></i> ${down.length} site${down.length>1?"s":""} down — ${esc(down.map(p=>p.name).slice(0,3).join(", "))}${down.length>3?"…":""}</button>`);
     }
+    const thorD = (state.thor && state.thor.ok && state.thor.data) || {};
+    const lndD = thorD.lightning || {};
+    const btcD = thorD.bitcoin || {};
     if (ch === 0 || peers === 0) {
-      bits.push(`<button type="button" class="suite-alert warn" data-alert="ln"><i class="fa-solid fa-bolt"></i> Lightning isolated — ${peers ?? 0} peers · ${ch ?? 0} channels · on-chain ${esc(fmtNum(lnd.walletBalanceSats || 0, "sats"))}</button>`);
+      const alias = lndD.aliasPublic || "THOR";
+      const ver = lndD.version || "";
+      const synced = lndD.syncedToChain ? "synced" : "syncing";
+      const height = btcD.blocks != null ? fmtNum(btcD.blocks) : "—";
+      const onChain = fmtNum(lndD.walletBalanceSats || 0, "sats");
+      const tip = [
+        `${alias} · LND ${ver} · ${synced} · chain height ${height}`,
+        `${peers ?? 0} peers · ${ch ?? 0} channels · on-chain ${onChain}`,
+        lndD.walletBalanceSats === 0 ? "Seed backup required before funding — see System tab" : "Click for System detail",
+      ].join(" · ");
+      bits.push(`<button type="button" class="suite-alert warn" data-alert="ln" title="${escAttr(tip)}"><i class="fa-solid fa-bolt"></i> ${esc(alias)} · LND ${esc(ver)} · ${esc(synced)} · h${esc(height)} · ${ch ?? 0} ch · ${esc(onChain)}</button>`);
     }
     if (stale.length >= 3) {
-      bits.push(`<button type="button" class="suite-alert muted" data-alert="stale"><i class="fa-solid fa-clock"></i> ${stale.length} product metrics stale (&gt;6h) or missing</button>`);
+      const names = stale.slice(0, 4).map((p) => {
+        const m = state.metrics[p.id];
+        const u = m && m.data && m.data.updatedAt;
+        const h = u ? (now - new Date(u).getTime()) / 3600000 : null;
+        const age = h == null ? "missing" : (h >= 24 ? Math.round(h / 24) + "d" : Math.round(h) + "h");
+        return `${p.name} ${age}`;
+      }).join(", ");
+      const more = stale.length > 4 ? ` +${stale.length - 4} more` : "";
+      bits.push(`<button type="button" class="suite-alert muted" data-alert="stale" title="${escAttr(names + more)}"><i class="fa-solid fa-clock"></i> ${stale.length} metrics stale — ${esc(names)}${esc(more)}</button>`);
     }
     const keys = (state.vault && (state.vault.keys || state.vault.wallets)) || {};
     const keyN = Object.keys(keys).filter((k) => keys[k] && String(keys[k]).trim()).length;
@@ -3265,15 +3297,21 @@
 
 
   function lnIsolationBannerHTML() {
-    const lnd = ((state.thor && state.thor.ok && state.thor.data && state.thor.data.lightning) || {});
+    const thorD = (state.thor && state.thor.ok && state.thor.data) || {};
+    const lnd = thorD.lightning || {};
+    const btcD = thorD.bitcoin || {};
     const ch = lnd.numActiveChannels;
     const peers = lnd.numPeers;
     if (ch != null && ch > 0) return "";
     const sats = lnd.walletBalanceSats != null ? fmtNum(lnd.walletBalanceSats, "sats") : "—";
+    const alias = lnd.aliasPublic || "THOR";
+    const ver = lnd.version || "?";
+    const synced = lnd.syncedToChain ? "synced to chain" : "syncing";
+    const height = btcD.blocks != null ? fmtNum(btcD.blocks) : "—";
     return `<div class="suite-alert warn ln-isolation-banner" style="margin-bottom:0.75rem;width:100%;justify-content:flex-start" role="status">
       <i class="fa-solid fa-bolt"></i>
-      <span><strong>Lightning is isolated</strong> — ${peers ?? 0} peers · ${ch ?? 0} channels · on-chain ${esc(sats)}.
-      Public LNURL may show, but inbound pay can fail until channels open (Cam capital + Kimi/THOR).
+      <span><strong>${esc(alias)} · LND ${esc(ver)} · ${esc(synced)} · height ${esc(height)}</strong> — ${peers ?? 0} peers · ${ch ?? 0} channels · on-chain ${esc(sats)}.
+      The wallet has <strong>no seed backup yet</strong> — do not fund until the 24-word seed is saved (Cam manual task, weekly reminder cron).
       <button type="button" class="btn btn-sm btn-ghost" data-goto-system style="margin-left:0.35rem">System detail</button></span>
     </div>`;
   }

@@ -1,8 +1,8 @@
 {
   "name": "giveabit-hq",
   "private": true,
-  "version": "3.29.0",
-  "description": "Give A Bit HQ \u2014 deep links, LN honesty, Kimi one-shot docs",
+  "version": "3.30.0",
+  "description": "Give A Bit HQ — rich THOR/Lightning card + freshest-metrics-wins + nightly suite metrics refresh",
   "scripts": {
     "stamp": "node scripts/stamp-version.mjs",
     "verify-version": "node scripts/stamp-version.mjs",
