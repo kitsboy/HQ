@@ -1,3 +1,19 @@
+### 2026-08-06 — Kimi · BATCH 4 (items 101-150) — COMPLETED
+
+**✅ HQ nav:** reviewed setTab/rebuildNavTabs in hq.js — robust (preventDefault, try/catch fallback to cards). v3.19 "stuck menu" fixed in current v3.29 hardened code. No action needed.
+
+**✅ Money layer:** LNURL payRequest live (sherpa 1000-100M sats) · LNbits proxy 9 wallets ok · LND truth 0 sats · email pipeline VERIFIED (token auto-refresh works, 1 pending draft gated) · voice briefing ok.
+
+**✅ Security hardening:**
+- **CUPS printer daemon DISABLED** (headless VPS didn't need it) + port 631 blocked — reduced attack surface
+- Verified: ufw active with sane rules · bitcoind RPC locked to Docker subnet 172.19.0.0/16 · HSTS/X-Frame/nosniff on satohash · full CSP on sherpacarta · HTTP→HTTPS 301 everywhere
+- ⚠️ FLAGGED for Cam: SSH has `PermitRootLogin yes` + password auth enabled (2 keys exist). Recommend disabling password auth — did NOT change (lockout risk without approval).
+
+**✅ Automation/ops:** backup restore test — thor-hermes-config 08-06 tar INTEGRITY OK · cron redundancy audit — no dupes (30m pair = kanban autofeed+sweep, intentional) · M4-SETUP-CHECKLIST.md created (06-Workflows).
+
+**✅ SEO tech verify:** all 6 sites robots+sitemap+Organization ✅ · MotoPass PARTIAL FIX LIVE (description + 2 schemas now on site — someone shipped part of the draft!) — remaining head-block items still for Grok.
+
+**⚡ For Grok (M3):** MotoPass remaining head block (canonical/OG/Twitter + full schema) · Katoa FAQPage+Breadcrumb. **⚡ For Cam:** SSH password-auth decision (recommend disable, keys exist) · openstrata.org → CF · LND seed.
 ### 2026-08-06 — Kimi · BATCH 3 (items 51-100, end-to-end) — COMPLETED
 
 **✅ Hermes core:**
