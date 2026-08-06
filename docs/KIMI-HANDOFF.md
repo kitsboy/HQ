@@ -1,3 +1,9 @@
+### 2026-08-07 — M4 Hermes Desktop replaced by installer shell (recovery in M4-SETUP-CHECKLIST.md)
+
+- **Root cause:** website `Hermes-Setup.dmg` is an INSTALLER shell (com.nousresearch.hermes.setup, v0.0.1), NOT the thin-client app. Dragging it into Applications replaces the real app → "Install Hermes" loop on launch.
+- **Fix on M4:** Cmd+Shift+G → `~/.hermes/hermes-agent/apps/desktop/release/mac-arm64` → drag `Hermes.app` back into /Applications (Replace). Fallback: run installer once (in-place update; chats live on THOR, safe).
+- **Lesson (memory + checklist updated):** NEVER give Cam the website DMG for updates. Desktop GUI version is cosmetic; the brain on THOR is what updates (`hermes update` there).
+
 ### 2026-08-06 — ✅ LND SEED CAPTURED + VERIFIED (the big one — see Obsidian 04-Decisions/LND-Seed-Keys-Required-2026-08-04.md)
 
 - 24-word AEZEED seed captured via PTY `lncli create` (compose `--noseedbackup` temporarily removed → LND waited at WalletUnlocker; no more race).
