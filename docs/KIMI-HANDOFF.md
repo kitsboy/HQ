@@ -1,3 +1,37 @@
+### 2026-08-06 — Kimi · BATCH 3 (items 51-100, end-to-end) — COMPLETED
+
+**✅ Hermes core:**
+- Hermes updated to latest (verified "Up to date") — version v0.20.0 current
+- **Secret redaction ENABLED** (security.redact_secrets=true) — tool output now masks secrets
+- **Approvals mode = smart** (auto-approves low-risk, prompts on high-risk)
+- Request dumps trimmed (50 → 5 recent)
+- Single gateway confirmed (systemd only)
+
+**✅ New watchdogs + automation (5 new crons → 43 total):**
+- `cron-failure-watchdog` (every 6h → TG) — alerts on failing crons
+- `disk-watchdog` (daily 03:00 → TG) — disk >85% or state.db >1GB
+- `suite-pulse-daily` (08:00 → TG) — daily site health
+- `learn-loop-sunday` (Sun 10:00 → TG) — self-improve scan
+- `ecosystem-map-nightly` (02:00) — regenerates + pushes HQ ecosystem-map
+
+**✅ Bug fixed: HQ ecosystem-map STALE since Jul 31** — generator had NO cron. Restored nightly + pushed fresh map; **LIVE now 08-06** (verified).
+
+**✅ Vault/knowledge built:**
+- `02-Agents/LEARNINGS.md` — the learn bank (LND race, cron drift, gateway dupe, session bloat, CF zones, SEO lessons)
+- `03-Projects/SUITE-SEO.md` — master keyword table across all 10 projects
+- `04-Decisions/DECISIONS-LOG.md` — decision index
+- INDEX.md boot order updated (SUITE-REPORT added)
+- Journal template enriched (suite pulse + learnings sections)
+- `01-Architecture/THOR-MACHINE-CARD.md` — one-page ops reference
+- `.ai_docs/current-status.md` created for all 10 projects (real statuses)
+- KIMI-HANDOFF pointers added (giveabit, btcminiscript)
+
+**✅ Hygiene verified:**
+- Secrets scan: all 3 repos clean (only truncated lnbc... example + prose false-positives)
+- google_token.json perms fixed (600)
+- Plausible link: 10/10 project READMEs
+
+**⚡ For Grok (M3):** SEO fixes MotoPass/Katoa (docs/SEO-FIXES-2026-08-06.md). **⚡ For Cam:** openstrata.org → Cloudflare (registrar); LND seed manual backup.
 ### 2026-08-06 — Kimi · BATCH 2 EXECUTED (items 27-50, end-to-end)
 
 **✅ All executed autonomously:**
