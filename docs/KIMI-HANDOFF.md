@@ -1,3 +1,14 @@
+### 2026-08-06 — HQ v3.30.0 LIVE: rich Lightning/stale cards · suite-metrics-nightly · proxy token ROTATED · GH Actions incident
+
+- **HQ v3.30.0 deployed (direct via wrangler — GH Actions down):**
+  - Lightning chip now rich: `THOR-GAB · LND 0.18.3-beta · synced · h961,340 · 0 ch · 0 sats` + tooltip (seed-backup note). System-tab banner updated with same + "no seed backup yet — do not fund".
+  - Stale chip lists product names + ages on hover.
+  - **loadProductMetrics = freshest envelope wins (by updatedAt)** — stale site copies (e.g. giveabit 2026-07-21) no longer shadow HQ's fresh copies.
+- **New cron `suite-metrics-nightly` (7ac4833020bb, daily 02:20)**: /root/.hermes/scripts/suite-metrics-refresh.py → refreshes all 8 deployed products' /root/hq/metrics/<slug>.json with HTTP probe + Umami visitors (24h/7d/30d) + fresh updatedAt → push HQ. Manual run: `python3 /root/.hermes/scripts/suite-metrics-refresh.py`.
+- **LNbits proxy token ROTATED 2026-08-06** (old token lost in old browser vault — Cam had no copy). New value: /root/proxy-token.txt + baked into hq-vault-import.json (complete: 9 wallet keys + proxy token + Umami + GitHub PAT). Verified: bad→401, good→200 (giveabit_main 7,704 sats).
+- **⚠️ GitHub Actions INCIDENT (external)**: githubstatus.com — Actions degraded since 15:22 UTC 08-06; jobs queued then timeout/cancel (our deploys 17:45→20:00 all cancelled; no runs after 20:00). NOT our code. Recovery in progress; gh-actions-retry.sh now includes `hq` repo. Direct-deploy fallback works from THOR: `cd /root/hq && npm run build && npx wrangler@4 pages deploy ./public --project-name=giveabit-hq --branch=main` (CLOUDFLARE_API_TOKEN in ~/.hermes/.env — no OAuth needed).
+- Umami API reachable via analytics.giveabit.io (login+websites+stats verified) — used by suite-metrics-refresh.py. Real traffic is tiny (giveabit 23 visitors/30d).
+
 ### 2026-08-06 — M4 Hermes Desktop → THOR tunnel installed (auto-healing LaunchAgent com.hermes.vps-tunnel + ~/bin/hermes-desktop-vps; installer /root/m4-setup.sh; verified working from M4).
 
 ### 2026-08-06 — Kimi · SESSION CLOSE (batches 1-4 complete: 150 improvements)
