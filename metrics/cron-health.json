@@ -1,143 +1,153 @@
 {
-  "checked_at": "2026-07-31T11:06:47Z",
+  "checked_at": "2026-08-06T21:00:05Z",
   "jobs": {
+    "e8ab4b685c10": {
+      "status": "completed",
+      "last_run": "2026-08-06T22:56:05.192398+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
     "c8ce19bb5571": {
       "status": "completed",
-      "last_run": "2026-07-31T13:05:58.915940+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "7768b5c5aa49": {
-      "status": "completed",
-      "last_run": "2026-07-31T13:02:28.601595+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "e8d5b97de501": {
-      "status": "failed",
-      "last_run": "2026-07-31T13:01:14.866197+02:00",
-      "consecutive_fails": 2,
-      "paused": false,
-      "error": "Script exited with code 1\nstderr:\nping giveabit https://giveabit.io \u2026 OK 200 221ms\nping satohash https://satohash.io \u2026 OK 200 126ms\nping katoa https://katoa.org \u2026 OK 200 120ms\nping stranded https://st",
-      "action": "warn"
-    },
-    "cb8398b3fa67": {
-      "status": "completed",
-      "last_run": "2026-07-31T13:00:56.642260+02:00",
+      "last_run": "2026-08-06T22:55:07.109806+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "2503e81d2fbb": {
       "status": "completed",
-      "last_run": "2026-07-31T12:59:59.605697+02:00",
+      "last_run": "2026-08-06T22:52:06.699781+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
-    "e8ab4b685c10": {
+    "6171ee6ae627": {
       "status": "completed",
-      "last_run": "2026-07-31T12:56:56.303022+02:00",
+      "last_run": "2026-08-06T22:32:10.152142+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
-    "bb5980d548fb": {
+    "0e4a04c97d17": {
       "status": "completed",
-      "last_run": "2026-07-31T12:19:03.493575+02:00",
+      "last_run": "2026-08-06T22:32:09.213377+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
-    "9bd2735e125e": {
+    "e8d5b97de501": {
       "status": "completed",
-      "last_run": "2026-07-31T12:00:57.466239+02:00",
+      "last_run": "2026-08-06T22:31:24.736039+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
-    "e4b5079b66ce": {
+    "cb8398b3fa67": {
       "status": "completed",
-      "last_run": "2026-07-31T12:00:56.686704+02:00",
+      "last_run": "2026-08-06T22:31:06.814337+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "009fd1669f16": {
       "status": "completed",
-      "last_run": "2026-07-31T11:51:54.222873+02:00",
+      "last_run": "2026-08-06T22:10:01.478689+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
-    "1b2c31d6ba98": {
+    "7768b5c5aa49": {
       "status": "completed",
-      "last_run": "2026-07-31T10:10:06.941028+02:00",
-      "consecutive_fails": 0,
-      "paused": true
-    },
-    "42cdc3e9bd97": {
-      "status": "completed",
-      "last_run": "2026-07-31T10:04:31.526394+02:00",
-      "consecutive_fails": 0,
-      "paused": true
-    },
-    "560e38829acf": {
-      "status": "completed",
-      "last_run": "2026-07-31T09:14:33.971886+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "30921a766dae": {
-      "status": "completed",
-      "last_run": "2026-07-31T09:00:40.814064+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "b6a4e3710d9d": {
-      "status": "completed",
-      "last_run": "2026-07-31T08:00:39.506740+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "71f476018b46": {
-      "status": "completed",
-      "last_run": "2026-07-31T07:32:22.974535+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "337c7ae0b619": {
-      "status": "completed",
-      "last_run": "2026-07-31T07:30:39.828593+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "311d146f45c3": {
-      "status": "completed",
-      "last_run": "2026-07-31T07:15:35.607981+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "5c6f78744d6e": {
-      "status": "completed",
-      "last_run": "2026-07-31T07:00:36.390099+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "bb6e71c68350": {
-      "status": "completed",
-      "last_run": "2026-07-31T02:00:47.925825+02:00",
+      "last_run": "2026-08-06T22:01:12.674518+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "12b477c661ae": {
       "status": "completed",
-      "last_run": "2026-07-30T22:00:23.321287+02:00",
+      "last_run": "2026-08-06T22:01:03.826275+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "bb5980d548fb": {
+      "status": "completed",
+      "last_run": "2026-08-06T22:00:56.859835+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "30921a766dae": {
+      "status": "completed",
+      "last_run": "2026-08-06T21:00:46.519163+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "e4b5079b66ce": {
+      "status": "completed",
+      "last_run": "2026-08-06T20:00:44.115601+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "81b4564d9aa1": {
+      "status": "completed",
+      "last_run": "2026-08-06T18:34:41.064943+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "1064f8a0f9cf": {
+      "status": "completed",
+      "last_run": "2026-08-06T18:00:43.768846+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "9bd2735e125e": {
+      "status": "completed",
+      "last_run": "2026-08-06T18:00:27.295470+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "0e6cfd248753": {
+      "status": "completed",
+      "last_run": "2026-08-06T08:10:50.991012+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "b6a4e3710d9d": {
+      "status": "completed",
+      "last_run": "2026-08-06T08:00:56.149255+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "71f476018b46": {
+      "status": "completed",
+      "last_run": "2026-08-06T07:33:26.130187+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "337c7ae0b619": {
+      "status": "completed",
+      "last_run": "2026-08-06T07:30:57.345196+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "311d146f45c3": {
+      "status": "completed",
+      "last_run": "2026-08-06T07:15:17.083237+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "5c6f78744d6e": {
+      "status": "completed",
+      "last_run": "2026-08-06T07:00:21.728276+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "bb6e71c68350": {
+      "status": "completed",
+      "last_run": "2026-08-06T02:01:37.530483+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "980226ec5716": {
       "status": "ok",
-      "last_run": "2026-07-27T05:08:55.489033+02:00",
+      "last_run": "2026-08-03T05:08:13.259127+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "2621be4bb5dd": {
       "status": "ok",
-      "last_run": "2026-07-27T08:07:27.284210+02:00",
+      "last_run": "2026-08-03T08:08:40.283148+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
@@ -148,34 +158,60 @@
       "paused": false
     },
     "59b3a68e3eb2": {
-      "status": "scheduled",
-      "last_run": null,
+      "status": "ok",
+      "last_run": "2026-08-01T09:07:07.660005+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "560e38829acf": {
+      "status": "ok",
+      "last_run": "2026-07-31T09:14:33.962281+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "019f2b72567e": {
-      "status": "ok",
-      "last_run": "2026-07-26T08:00:53.021296+02:00",
+      "status": "error",
+      "last_run": "2026-08-04T03:53:45.107490+02:00",
+      "error": "Gateway shutdown (final-cleanup) killed the job's tool subprocess before the run finished.",
+      "consecutive_fails": 1,
+      "paused": false,
+      "action": "warn"
+    },
+    "42cdc3e9bd97": {
+      "status": "paused",
+      "last_run": "2026-07-31T10:04:31.519928+02:00",
       "consecutive_fails": 0,
-      "paused": false
+      "paused": true
     },
     "b7b5c1bebfe7": {
-      "status": "ok",
-      "last_run": "2026-07-27T09:10:17.004171+02:00",
-      "consecutive_fails": 0,
-      "paused": false
+      "status": "error",
+      "last_run": "2026-08-03T09:00:29.908666+02:00",
+      "error": "RuntimeError: Skipped to prevent unintended spend: global inference config drifted since this job was created (provider 'nous' -> 'xai-oauth'; model 'deepseek/deepseek-v4-flash' -> 'grok-build-0.1'), ",
+      "consecutive_fails": 1,
+      "paused": false,
+      "action": "warn"
     },
     "eb7452b2189e": {
-      "status": "ok",
-      "last_run": "2026-07-26T09:02:36.949703+02:00",
+      "status": "error",
+      "last_run": "2026-08-04T03:53:45.323740+02:00",
+      "error": "Gateway shutdown (final-cleanup) killed the job's tool subprocess before the run finished.",
+      "consecutive_fails": 1,
+      "paused": false,
+      "action": "warn"
+    },
+    "1b2c31d6ba98": {
+      "status": "paused",
+      "last_run": "2026-07-31T10:10:06.890142+02:00",
       "consecutive_fails": 0,
-      "paused": false
+      "paused": true
     },
     "447ed87c7a57": {
-      "status": "ok",
-      "last_run": "2026-07-26T04:07:38.696960+02:00",
-      "consecutive_fails": 0,
-      "paused": false
+      "status": "error",
+      "last_run": "2026-08-02T04:09:06.938779+02:00",
+      "error": "disk I/O error",
+      "consecutive_fails": 1,
+      "paused": false,
+      "action": "warn"
     },
     "34c2181c2737": {
       "status": "paused",
@@ -185,7 +221,7 @@
     },
     "e19a3670752f": {
       "status": "ok",
-      "last_run": "2026-07-27T06:00:54.524868+02:00",
+      "last_run": "2026-08-03T06:00:28.566398+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
@@ -202,6 +238,50 @@
       "paused": false
     },
     "b0aa342f451f": {
+      "status": "error",
+      "last_run": "2026-08-04T03:53:45.120406+02:00",
+      "error": "Gateway shutdown (final-cleanup) killed the job's tool subprocess before the run finished.",
+      "consecutive_fails": 1,
+      "paused": false,
+      "action": "warn"
+    },
+    "7556c3ed30ee": {
+      "status": "scheduled",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "081554de8767": {
+      "status": "scheduled",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "5f9b4a5c010c": {
+      "status": "scheduled",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "53c040c96061": {
+      "status": "scheduled",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "e18ae919c08f": {
+      "status": "scheduled",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "0edfc923c739": {
+      "status": "scheduled",
+      "last_run": null,
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "a635e5301401": {
       "status": "scheduled",
       "last_run": null,
       "consecutive_fails": 0,
@@ -209,10 +289,10 @@
     }
   },
   "paused_count": 3,
-  "alert_count": 1,
+  "alert_count": 5,
   "paused_jobs": [
-    "42cdc3e9bd97",
     "1b2c31d6ba98",
+    "42cdc3e9bd97",
     "34c2181c2737"
   ],
   "orphaned_count": 0

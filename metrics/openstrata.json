@@ -1,49 +1,374 @@
 {
   "schema": "gab.product-metrics.v1",
-  "updatedAt": "2026-07-21T18:00:00Z",
+  "productId": "openstrata",
+  "name": "OpenStrata",
+  "updatedAt": "2026-08-06T21:51:43Z",
   "window": {
-    "label": "7d",
-    "from": "2026-07-14T18:00:00Z",
-    "to": "2026-07-21T18:00:00Z"
+    "label": "all",
+    "from": "2026-01-01T00:00:00Z",
+    "to": "2026-07-21T22:00:00Z"
   },
   "health": {
-    "status": "green",
-    "message": "Enriched demo envelope \u2014 replace with live /metrics.json when ready"
+    "status": "ok",
+    "message": "Static marketing site \u2014 KPIs from repo data (jurisdictions, SPA retention types, compliance score). No live entity DB yet.",
+    "latencyMs": null,
+    "uptimePct24h": null,
+    "dependencies": [
+      {
+        "id": "cloudflare-pages",
+        "status": "green",
+        "detail": "Static origin openstrata.giveabit.io"
+      },
+      {
+        "id": "satohash",
+        "status": "amber",
+        "detail": "OTS for meeting minutes planned \u2014 not wired on origin yet"
+      },
+      {
+        "id": "umami",
+        "status": "amber",
+        "detail": "Script wired (website b918844c-\u2026); visitors need public analytics host"
+      }
+    ],
+    "http": 200,
+    "ms": 94,
+    "probedAt": "2026-08-06T21:51:43Z"
   },
-  "productId": "openstrata",
-  "name": "Openstrata",
   "kpis": [
     {
       "key": "entities_total",
-      "label": "Entity types",
-      "value": 4,
+      "label": "Entities",
+      "value": 1,
+      "unit": "entities",
       "format": "number",
-      "priority": 1
+      "priority": 1,
+      "hint": "Demo strata corporation template in site data (unit matrix + wizard). Live registrations = 0 until app backend ships."
     },
     {
-      "key": "jurisdictions",
+      "key": "jurisdictions_supported",
       "label": "Jurisdictions",
-      "value": 3,
+      "value": 5,
+      "unit": "jurisdictions",
       "format": "number",
-      "priority": 1
+      "priority": 1,
+      "hint": "Config-seeded: BC (active), ON, AB, US-WA, EU \u2014 from src/lib/data.ts."
     },
     {
       "key": "compliance_score",
       "label": "Compliance score",
       "value": 85,
+      "unit": "%",
       "format": "percent",
-      "priority": 2
+      "priority": 1,
+      "hint": "Product readiness vs SPA/BCFSA module coverage (live + beta tools / total planned surface)."
     },
     {
       "key": "documents_filed",
-      "label": "Doc templates",
-      "value": 12,
+      "label": "Documents filed",
+      "value": 10,
+      "unit": "document types",
       "format": "number",
-      "priority": 3
+      "priority": 1,
+      "hint": "SPA s.35 retention schedule types modeled in compliance KB (src/lib/compliance.ts recordRetention)."
+    }
+  ],
+  "series": [],
+  "funnels": [
+    {
+      "id": "onboarding_journey",
+      "label": "Strata onboarding",
+      "steps": [
+        {
+          "id": "visit",
+          "label": "Visit site",
+          "count": 0,
+          "hint": "Umami pageviews once analytics host is public"
+        },
+        {
+          "id": "wizard",
+          "label": "Open building wizard",
+          "count": 0,
+          "hint": "Umami /tools/wizard"
+        },
+        {
+          "id": "export",
+          "label": "Export config JSON",
+          "count": 0,
+          "hint": "Client-side only today \u2014 not aggregated server-side"
+        },
+        {
+          "id": "live",
+          "label": "Entity live",
+          "count": 0,
+          "hint": "Requires backend + BCFSA ops plane"
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "id": "by_jurisdiction",
+      "label": "Jurisdictions",
+      "rows": [
+        {
+          "id": "BC",
+          "label": "British Columbia",
+          "value": 1,
+          "meta": {
+            "active": true,
+            "laws": [
+              "SPA",
+              "RTA",
+              "EPR 2026"
+            ]
+          }
+        },
+        {
+          "id": "ON",
+          "label": "Ontario",
+          "value": 0,
+          "meta": {
+            "active": false,
+            "laws": [
+              "Condo Act"
+            ]
+          }
+        },
+        {
+          "id": "AB",
+          "label": "Alberta",
+          "value": 0,
+          "meta": {
+            "active": false,
+            "laws": [
+              "Condo Act"
+            ]
+          }
+        },
+        {
+          "id": "US-WA",
+          "label": "Washington",
+          "value": 0,
+          "meta": {
+            "active": false,
+            "laws": [
+              "RCW 64.34"
+            ]
+          }
+        },
+        {
+          "id": "EU",
+          "label": "European Union",
+          "value": 0,
+          "meta": {
+            "active": false,
+            "laws": [
+              "Multi-lang"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "spa_retention_types",
+      "label": "SPA s.35 document types",
+      "rows": [
+        {
+          "id": "bylaws",
+          "label": "Registered bylaws",
+          "value": 1,
+          "meta": {
+            "retention": "Permanent"
+          }
+        },
+        {
+          "id": "rules",
+          "label": "Rules",
+          "value": 1,
+          "meta": {
+            "retention": "Permanent"
+          }
+        },
+        {
+          "id": "minutes",
+          "label": "Meeting minutes",
+          "value": 1,
+          "meta": {
+            "retention": "Permanent"
+          }
+        },
+        {
+          "id": "correspondence",
+          "label": "Correspondence",
+          "value": 1,
+          "meta": {
+            "retention": "2 years"
+          }
+        },
+        {
+          "id": "financial",
+          "label": "Financial records",
+          "value": 1,
+          "meta": {
+            "retention": "6 years"
+          }
+        },
+        {
+          "id": "tax",
+          "label": "Income tax records",
+          "value": 1,
+          "meta": {
+            "retention": "6 years"
+          }
+        },
+        {
+          "id": "contracts",
+          "label": "Contracts",
+          "value": 1,
+          "meta": {
+            "retention": "6 years after expiry"
+          }
+        },
+        {
+          "id": "depreciation",
+          "label": "Engineering / depreciation",
+          "value": 1,
+          "meta": {
+            "retention": "Permanent"
+          }
+        },
+        {
+          "id": "form_k",
+          "label": "Owner lists & Form K",
+          "value": 1,
+          "meta": {
+            "retention": "Permanent"
+          }
+        },
+        {
+          "id": "legal",
+          "label": "Legal opinions",
+          "value": 1,
+          "meta": {
+            "retention": "Permanent"
+          }
+        }
+      ]
+    }
+  ],
+  "offers": [
+    {
+      "id": "compliance_kb",
+      "title": "BC SPA / BCFSA compliance KB",
+      "for": [
+        "hq",
+        "giveabit"
+      ],
+      "status": "ga",
+      "endpoint": "https://openstrata.giveabit.io/compliance",
+      "hint": "Statutory workflows, Form B/F, bylaw engine, retention"
+    },
+    {
+      "id": "building_wizard",
+      "title": "Building template wizard",
+      "for": [
+        "*"
+      ],
+      "status": "beta",
+      "endpoint": "https://openstrata.giveabit.io/tools/wizard",
+      "hint": "Jurisdiction-aware 8-step strata setup"
+    },
+    {
+      "id": "metrics_v1",
+      "title": "Product metrics v1",
+      "for": [
+        "hq"
+      ],
+      "status": "live",
+      "endpoint": "GET /metrics.json",
+      "hint": "gab.product-metrics.v1 for HQ cards"
+    }
+  ],
+  "education": [
+    {
+      "id": "static_vs_live",
+      "title": "Static counts vs live entities",
+      "body": "entities_total is the demo template building in marketing data \u2014 not a production registry. jurisdictions_supported and documents_filed are ground truth from src/lib.",
+      "action": "Set entities_total from live DB when Hermes backend ships; flip raw.demo",
+      "opportunity": "plan"
+    },
+    {
+      "id": "mold_compliance",
+      "title": "85% compliance score",
+      "body": "Score reflects module surface readiness (live/beta tools vs full BCFSA ops map), not a statutory audit grade.",
+      "action": "Recompute from getToolStats() when modules change",
+      "opportunity": "info"
+    },
+    {
+      "id": "wire_umami",
+      "title": "Visitors need public Umami",
+      "body": "Tracking script is in app.html. Funnel visit counts stay 0 until analytics.giveabit.io \u2192 THOR:3002 is reachable.",
+      "action": "Point analytics.giveabit.io \u2192 THOR:3002 over HTTPS",
+      "opportunity": "plan"
+    }
+  ],
+  "links": [
+    {
+      "label": "OpenStrata",
+      "url": "https://openstrata.giveabit.io"
+    },
+    {
+      "label": "Compliance KB",
+      "url": "https://openstrata.giveabit.io/compliance"
+    },
+    {
+      "label": "Live metrics",
+      "url": "https://openstrata.giveabit.io/metrics.json"
+    },
+    {
+      "label": "Schema",
+      "url": "https://hq.giveabit.io/schemas/product-metrics.v1.schema.json"
+    },
+    {
+      "label": "All-site inventory",
+      "url": "https://hq.giveabit.io/docs/ALL-SITE-METRICS.md"
     }
   ],
   "raw": {
-    "demo": true,
-    "note": "Enriched with all known metrics \u2014 ready for live data"
+    "demo": false,
+    "source": "static-counts from src/lib/data.ts + src/lib/compliance.ts",
+    "entities_source": "1 demo template entity (unit matrix / wizard); no live registry",
+    "jurisdictions": [
+      "BC",
+      "ON",
+      "AB",
+      "US-WA",
+      "EU"
+    ],
+    "jurisdictions_active": [
+      "BC"
+    ],
+    "documents_source": "recordRetention length = 10 (SPA s.35)",
+    "compliance_score_basis": "product module readiness target 85%",
+    "umamiWebsiteId": "b918844c-2503-4dcd-bef2-66c103a0ee13",
+    "umamiPending": true,
+    "note": "SvelteKit static site. static/metrics.json deploys to origin /metrics.json. Regenerate when jurisdictions, retention types, or live entity counts change.",
+    "live": {
+      "probe": {
+        "ok": true,
+        "http": 200,
+        "ms": 94
+      },
+      "checkedAt": "2026-08-06T21:51:43Z",
+      "umami": {
+        "visitors24h": null,
+        "pageviews24h": 0,
+        "visits24h": 0,
+        "visitors7d": null,
+        "pageviews7d": 0,
+        "visitors30d": null,
+        "pageviews30d": 0
+      }
+    }
   }
 }

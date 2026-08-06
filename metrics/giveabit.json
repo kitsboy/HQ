@@ -1,69 +1,97 @@
 {
   "schema": "gab.product-metrics.v1",
-  "updatedAt": "2026-07-21T18:00:00Z",
+  "productId": "giveabit",
+  "name": "Give A Bit",
+  "updatedAt": "2026-08-06T21:51:43Z",
   "window": {
     "label": "7d",
-    "from": "2026-07-14T18:00:00Z",
-    "to": "2026-07-21T18:00:00Z"
+    "from": "2026-07-14T20:40:00Z",
+    "to": "2026-07-21T20:40:00Z"
   },
   "health": {
-    "status": "green",
-    "message": "Enriched demo envelope \u2014 replace with live /metrics.json when ready"
+    "status": "ok",
+    "message": "Static product metrics live on giveabit.io \u2014 Umami visitor KPIs fill once analytics host is public",
+    "latencyMs": null,
+    "uptimePct24h": null,
+    "dependencies": [
+      {
+        "id": "umami",
+        "status": "amber",
+        "detail": "Tracking script wired (website 5f12ff2d-\u2026); reverse proxy to THOR:3002 still required for live pageviews"
+      },
+      {
+        "id": "hq-status",
+        "status": "green",
+        "detail": "status.json pinger"
+      },
+      {
+        "id": "satohash",
+        "status": "green",
+        "detail": "OTS backbone available"
+      }
+    ],
+    "http": 200,
+    "ms": 70,
+    "probedAt": "2026-08-06T21:51:43Z"
   },
-  "productId": "giveabit",
-  "name": "Giveabit",
   "kpis": [
     {
       "key": "education_sessions",
       "label": "Education sessions",
-      "value": 420,
+      "value": 0,
       "format": "number",
-      "priority": 1
+      "priority": 1,
+      "unit": "sessions",
+      "hint": "Umami pageviews on education surfaces (/quiz, /guide, /blog) \u2014 0 until analytics host is public"
     },
     {
       "key": "suite_links",
       "label": "Suite products",
       "value": 9,
       "format": "number",
-      "priority": 1
+      "priority": 1,
+      "hint": "Compartmentalized apps under the Give A Bit family glass"
     },
     {
       "key": "nip05_agents",
       "label": "NIP-05 agents",
-      "value": 9,
+      "value": 8,
       "format": "number",
-      "priority": 2,
-      "hint": "Live names in giveabit.io/.well-known/nostr.json (includes sherpa@ product guide)"
+      "priority": 1,
+      "hint": "Registered @giveabit.io Nostr identities (namespace registry)"
     },
     {
       "key": "languages_served",
       "label": "Languages",
       "value": 8,
       "format": "number",
-      "priority": 2
+      "priority": 2,
+      "hint": "i18n locales: en, zh, es, hi, ar, fr, sw, pt"
     },
     {
       "key": "docs_views_7d",
       "label": "Docs views 7d",
-      "value": 1840,
+      "value": 0,
       "format": "number",
       "priority": 2,
-      "hint": "Umami analytics"
+      "hint": "Umami \u2014 education / docs plane traffic last 7 days"
     },
     {
       "key": "visitors_monthly",
       "label": "Monthly visitors",
-      "value": 3400,
+      "value": 0,
       "format": "number",
-      "priority": 3,
-      "hint": "Umami analytics"
+      "priority": 2,
+      "hint": "Umami unique visitors (30d)"
     },
     {
       "key": "bounce_rate",
       "label": "Bounce rate",
-      "value": 42,
+      "value": 0,
       "format": "percent",
-      "priority": 3
+      "unit": "%",
+      "priority": 3,
+      "hint": "Umami bounce rate"
     }
   ],
   "series": [
@@ -71,17 +99,197 @@
       "key": "visitors_daily",
       "label": "Daily visitors",
       "unit": "visitors",
+      "color": "#c45f00",
       "points": []
     },
     {
       "key": "pageviews_daily",
       "label": "Daily pageviews",
       "unit": "views",
+      "color": "#fb923c",
       "points": []
     }
   ],
+  "funnels": [
+    {
+      "id": "hub_journey",
+      "label": "Hub journey",
+      "steps": [
+        {
+          "id": "land",
+          "label": "Land giveabit.io",
+          "count": 0,
+          "hint": "Umami entry pageviews"
+        },
+        {
+          "id": "edu",
+          "label": "Open education",
+          "count": 0,
+          "hint": "Quiz / guide / blog"
+        },
+        {
+          "id": "suite",
+          "label": "Click suite product",
+          "count": 0,
+          "hint": "Cross-link to family apps"
+        },
+        {
+          "id": "nip",
+          "label": "Check NIP-05",
+          "count": 0,
+          "hint": "Namespace / Nostr identity plane"
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "id": "by_language",
+      "label": "Languages served",
+      "rows": [
+        {
+          "id": "en",
+          "label": "English",
+          "value": 1,
+          "meta": {}
+        },
+        {
+          "id": "zh",
+          "label": "Chinese",
+          "value": 1,
+          "meta": {}
+        },
+        {
+          "id": "es",
+          "label": "Spanish",
+          "value": 1,
+          "meta": {}
+        },
+        {
+          "id": "hi",
+          "label": "Hindi",
+          "value": 1,
+          "meta": {}
+        },
+        {
+          "id": "ar",
+          "label": "Arabic",
+          "value": 1,
+          "meta": {}
+        },
+        {
+          "id": "fr",
+          "label": "French",
+          "value": 1,
+          "meta": {}
+        },
+        {
+          "id": "sw",
+          "label": "Swahili",
+          "value": 1,
+          "meta": {}
+        },
+        {
+          "id": "pt",
+          "label": "Portuguese",
+          "value": 1,
+          "meta": {}
+        }
+      ]
+    }
+  ],
+  "offers": [
+    {
+      "id": "namespace",
+      "title": "Give A Bit namespace + NIP-05",
+      "for": [
+        "*"
+      ],
+      "status": "ga",
+      "hint": "Brand + agent identities"
+    },
+    {
+      "id": "education",
+      "title": "Bitcoin sovereignty education",
+      "for": [
+        "katoa",
+        "motopass",
+        "sherpacarta"
+      ],
+      "status": "ga",
+      "hint": "Shared onboarding copy"
+    },
+    {
+      "id": "metrics_v1",
+      "title": "Product metrics v1",
+      "for": [
+        "hq"
+      ],
+      "status": "live",
+      "endpoint": "GET /metrics.json",
+      "hint": "Published at giveabit.io origin"
+    }
+  ],
+  "education": [
+    {
+      "id": "static_vs_umami",
+      "title": "Static KPIs vs Umami",
+      "body": "suite_links, nip05_agents, and languages_served are ground truth from the repo. education_sessions, docs_views_7d, visitors_monthly, bounce_rate, and daily series need public Umami.",
+      "action": "Kimi: reverse-proxy THOR:3002 \u2192 analytics.giveabit.io",
+      "opportunity": "plan"
+    },
+    {
+      "id": "mold_suite",
+      "title": "Suite glass pitch",
+      "body": "9 products + 8 NIP-05 agents + 8 languages frames the family hub for diligence packs.",
+      "action": "Export from HQ Cards / Concert",
+      "opportunity": "opportunity"
+    }
+  ],
+  "links": [
+    {
+      "label": "Give A Bit",
+      "url": "https://giveabit.io"
+    },
+    {
+      "label": "Live metrics",
+      "url": "https://giveabit.io/metrics.json"
+    },
+    {
+      "label": "Schema",
+      "url": "https://hq.giveabit.io/schemas/product-metrics.v1.schema.json"
+    },
+    {
+      "label": "All-site inventory",
+      "url": "https://hq.giveabit.io/docs/ALL-SITE-METRICS.md"
+    }
+  ],
   "raw": {
-    "demo": true,
-    "note": "Enriched with all known metrics \u2014 ready for live data"
+    "demo": false,
+    "umamiWebsiteId": "5f12ff2d-f1c5-4eb3-be57-43fe317ee2d2",
+    "umamiPending": true,
+    "staticGroundTruth": {
+      "suite_links": 9,
+      "nip05_agents": 8,
+      "languages_served": 8
+    },
+    "note": "Origin /metrics.json for HQ. Visitor KPIs stay 0 until Umami is reachable from the public internet; series fill from Umami daily stats.",
+    "live": {
+      "probe": {
+        "ok": true,
+        "http": 200,
+        "ms": 70
+      },
+      "checkedAt": "2026-08-06T21:51:43Z",
+      "umami": {
+        "visitors24h": null,
+        "pageviews24h": 0,
+        "visits24h": 0,
+        "visitors7d": null,
+        "pageviews7d": 2,
+        "visitors30d": null,
+        "pageviews30d": 56
+      }
+    }
   }
 }

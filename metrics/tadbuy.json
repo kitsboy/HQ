@@ -1,184 +1,544 @@
 {
   "schema": "gab.product-metrics.v1",
-  "updatedAt": "2026-07-21T18:00:00Z",
-  "window": {
-    "label": "7d",
-    "from": "2026-07-14T18:00:00Z",
-    "to": "2026-07-21T18:00:00Z"
-  },
-  "health": {
-    "status": "green",
-    "message": "Enriched demo envelope \u2014 replace with live /metrics.json when ready"
-  },
   "productId": "tadbuy",
   "name": "Tadbuy",
+  "updatedAt": "2026-08-06T21:51:43Z",
+  "window": {
+    "label": "30d",
+    "from": "2026-06-21T21:30:26.777Z",
+    "to": "2026-07-21T21:30:26.777Z"
+  },
+  "health": {
+    "status": "ok",
+    "message": "Origin metrics.json generated from app campaign state (scripts/generate-metrics.ts)",
+    "latencyMs": 42,
+    "uptimePct24h": 99.2,
+    "dependencies": [
+      {
+        "id": "cloudflare-pages",
+        "status": "green",
+        "detail": "SPA origin tadbuy.giveabit.io"
+      },
+      {
+        "id": "app-state",
+        "status": "green",
+        "detail": "Aggregated 4 campaigns from src/data"
+      },
+      {
+        "id": "satohash",
+        "status": "green",
+        "detail": "OTS campaign receipts backbone"
+      },
+      {
+        "id": "lnbits",
+        "status": "amber",
+        "detail": "Wallet key in HQ Vault when Cam enters it"
+      }
+    ],
+    "http": 200,
+    "ms": 81,
+    "probedAt": "2026-08-06T21:51:43Z"
+  },
   "kpis": [
     {
       "key": "campaigns_total",
-      "label": "Total campaigns",
-      "value": 12847,
+      "label": "Campaigns total",
+      "value": 4,
+      "unit": "campaigns",
       "format": "number",
-      "priority": 1
+      "priority": 1,
+      "hint": "All campaigns in app state (draft + funded + live + completed)."
     },
     {
       "key": "campaigns_active",
-      "label": "Active campaigns",
-      "value": 43,
+      "label": "Campaigns active",
+      "value": 2,
+      "unit": "campaigns",
       "format": "number",
-      "priority": 1
+      "priority": 1,
+      "hint": "Status = live right now."
     },
     {
       "key": "sats_processed_total",
-      "label": "Sats processed",
-      "value": 4200000000,
-      "format": "number",
-      "priority": 1
+      "label": "Sats processed (all time)",
+      "value": 3630000,
+      "unit": "sats",
+      "format": "sats",
+      "priority": 1,
+      "hint": "Sum of campaign budgetSats in app state."
     },
     {
       "key": "sats_processed_30d",
-      "label": "Sats 30d",
-      "value": 85000000,
-      "format": "number",
-      "priority": 2
+      "label": "Sats processed 30d",
+      "value": 1350000,
+      "unit": "sats",
+      "format": "sats",
+      "priority": 1,
+      "hint": "Budget sats for campaigns created in the last 30 days."
     },
     {
       "key": "impressions_delivered",
-      "label": "Impressions",
-      "value": 12500000,
+      "label": "Impressions delivered",
+      "value": 1136224,
+      "unit": "impressions",
       "format": "number",
-      "priority": 2
+      "priority": 2,
+      "hint": "Sum of delivered impressions across campaigns."
     },
     {
       "key": "clicks_delivered",
-      "label": "Clicks",
-      "value": 150000,
+      "label": "Clicks delivered",
+      "value": 14820,
+      "unit": "clicks",
       "format": "number",
-      "priority": 2
+      "priority": 2,
+      "hint": "Sum of recorded clicks."
     },
     {
       "key": "ctr_pct",
       "label": "CTR",
-      "value": 1.2,
+      "value": 1.3,
+      "unit": "%",
       "format": "percent",
-      "priority": 3
+      "priority": 2,
+      "hint": "clicks_delivered / impressions_delivered \u00d7 100."
     },
     {
       "key": "active_publishers",
       "label": "Active publishers",
-      "value": 340,
+      "value": 9,
+      "unit": "publishers",
       "format": "number",
-      "priority": 2
+      "priority": 3,
+      "hint": "Unique marketplace publishers in app inventory."
     },
     {
       "key": "active_platforms",
-      "label": "Platforms",
-      "value": 8,
+      "label": "Active platforms",
+      "value": 6,
+      "unit": "platforms",
       "format": "number",
-      "priority": 3
+      "priority": 3,
+      "hint": "Ad networks with campaign activity (or catalog size if none)."
     },
     {
       "key": "avg_cpm_sats",
-      "label": "Avg CPM (sats)",
-      "value": 7420,
-      "format": "number",
-      "priority": 3
+      "label": "Avg CPM",
+      "value": 3195,
+      "unit": "sats",
+      "format": "sats",
+      "priority": 3,
+      "hint": "Average cost per mille impressions in sats (sats / impressions \u00d7 1000)."
     },
     {
       "key": "campaigns_completed",
-      "label": "Completed campaigns",
-      "value": 11200,
+      "label": "Campaigns completed",
+      "value": 0,
+      "unit": "campaigns",
       "format": "number",
-      "priority": 3
+      "priority": 2,
+      "hint": "Flights with status = completed."
     }
   ],
   "series": [
     {
       "key": "impressions_daily",
-      "label": "Daily impressions",
+      "label": "Impressions / day",
       "unit": "impressions",
-      "points": []
+      "color": "#ff9f1c",
+      "points": [
+        {
+          "t": "2026-07-07T12:00:00.000Z",
+          "v": 102500
+        },
+        {
+          "t": "2026-07-08T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-09T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-10T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-11T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-12T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-13T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-14T12:00:00.000Z",
+          "v": 46284
+        },
+        {
+          "t": "2026-07-15T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-16T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-17T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-18T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-19T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-20T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-21T12:00:00.000Z",
+          "v": 0
+        }
+      ]
     },
     {
       "key": "sats_daily",
-      "label": "Daily sats",
+      "label": "Sats / day",
       "unit": "sats",
-      "points": []
+      "color": "#f7931a",
+      "points": [
+        {
+          "t": "2026-07-07T12:00:00.000Z",
+          "v": 850000
+        },
+        {
+          "t": "2026-07-08T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-09T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-10T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-11T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-12T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-13T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-14T12:00:00.000Z",
+          "v": 500000
+        },
+        {
+          "t": "2026-07-15T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-16T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-17T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-18T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-19T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-20T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-21T12:00:00.000Z",
+          "v": 0
+        }
+      ]
     },
     {
       "key": "campaigns_daily",
-      "label": "Daily campaigns",
+      "label": "Campaigns created / day",
       "unit": "campaigns",
-      "points": []
+      "color": "#e879f9",
+      "points": [
+        {
+          "t": "2026-07-07T12:00:00.000Z",
+          "v": 1
+        },
+        {
+          "t": "2026-07-08T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-09T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-10T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-11T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-12T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-13T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-14T12:00:00.000Z",
+          "v": 1
+        },
+        {
+          "t": "2026-07-15T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-16T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-17T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-18T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-19T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-20T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-21T12:00:00.000Z",
+          "v": 0
+        }
+      ]
     }
   ],
   "funnels": [
     {
-      "key": "campaign_funnel",
-      "label": "Campaign pipeline",
-      "stages": [
+      "id": "campaign_funnel",
+      "label": "Campaign lifecycle",
+      "steps": [
         {
-          "key": "created",
+          "id": "created",
           "label": "Created",
-          "value": 100
+          "count": 4,
+          "hint": "Campaign brief in app state"
         },
         {
-          "key": "funded",
+          "id": "funded",
           "label": "Funded",
-          "value": 85
+          "count": 3,
+          "hint": "Not draft (paid or ready to run)"
         },
         {
-          "key": "running",
+          "id": "running",
           "label": "Running",
-          "value": 72
+          "count": 2,
+          "hint": "Live delivery"
         },
         {
-          "key": "completed",
+          "id": "completed",
           "label": "Completed",
-          "value": 68
+          "count": 0,
+          "hint": "Flight finished"
         }
       ]
     }
   ],
   "segments": [
     {
-      "key": "platform_breakdown",
-      "label": "By platform",
-      "groups": [
+      "id": "platform_breakdown",
+      "label": "Platform breakdown (sats)",
+      "rows": [
         {
-          "key": "twitter",
-          "label": "Twitter/X",
-          "value": 35,
-          "unit": "percent"
+          "id": "youtube",
+          "label": "YouTube",
+          "value": 2180000,
+          "meta": {
+            "impressions": 987440,
+            "ctr": 0.18,
+            "share_pct": 60
+          }
         },
         {
-          "key": "nostr",
+          "id": "nostr",
           "label": "Nostr",
-          "value": 22,
-          "unit": "percent"
+          "value": 425000,
+          "meta": {
+            "impressions": 51250,
+            "ctr": 8,
+            "share_pct": 12
+          }
         },
         {
-          "key": "facebook",
-          "label": "Facebook",
-          "value": 15,
-          "unit": "percent"
-        },
-        {
-          "key": "reddit",
+          "id": "reddit",
           "label": "Reddit",
-          "value": 10,
-          "unit": "percent"
+          "value": 425000,
+          "meta": {
+            "impressions": 51250,
+            "ctr": 8,
+            "share_pct": 12
+          }
         },
         {
-          "key": "others",
-          "label": "Others",
-          "value": 18,
-          "unit": "percent"
+          "id": "twitter",
+          "label": "Twitter/X",
+          "value": 250000,
+          "meta": {
+            "impressions": 23142,
+            "ctr": 10.4,
+            "share_pct": 7
+          }
+        },
+        {
+          "id": "facebook",
+          "label": "Facebook",
+          "value": 250000,
+          "meta": {
+            "impressions": 23142,
+            "ctr": 10.4,
+            "share_pct": 7
+          }
+        },
+        {
+          "id": "linkedin",
+          "label": "LinkedIn",
+          "value": 100000,
+          "meta": {
+            "impressions": 0,
+            "ctr": 0,
+            "share_pct": 3
+          }
         }
       ]
     }
   ],
+  "offers": [
+    {
+      "id": "btc_ads",
+      "title": "Bitcoin-native ad buys",
+      "for": [
+        "katoa",
+        "giveabit"
+      ],
+      "status": "beta",
+      "endpoint": "https://tadbuy.giveabit.io/buy",
+      "hint": "Lightning / BOLT12 / on-chain / Fedimint / Nostr zaps"
+    },
+    {
+      "id": "ots_receipt",
+      "title": "Campaign OTS receipts",
+      "for": [
+        "satohash"
+      ],
+      "status": "ga",
+      "hint": "Immutable spend proof via Satohash"
+    },
+    {
+      "id": "metrics_v1",
+      "title": "Product metrics v1",
+      "for": [
+        "hq"
+      ],
+      "status": "beta",
+      "endpoint": "GET /metrics.json",
+      "hint": "Generated from app state on build for HQ poll"
+    }
+  ],
+  "education": [
+    {
+      "id": "mold_gmv",
+      "title": "Sats processed is GMV",
+      "body": "App-state GMV is 3,630,000 sats across 4 campaigns.",
+      "action": "Track monthlyized GMV once LNbits wallet is in HQ Vault",
+      "opportunity": "opportunity"
+    },
+    {
+      "id": "mold_funnel",
+      "title": "Funded \u2192 running",
+      "body": "3 funded vs 2 running; 1 still draft.",
+      "action": "Prioritize flight validation and publisher inventory",
+      "opportunity": "plan"
+    },
+    {
+      "id": "mold_ctr",
+      "title": "CTR is product quality",
+      "body": "1.30% blended CTR from app campaign totals.",
+      "action": "Segment CTR in Analytics by platform",
+      "opportunity": "info"
+    }
+  ],
+  "links": [
+    {
+      "label": "Tadbuy",
+      "url": "https://tadbuy.giveabit.io"
+    },
+    {
+      "label": "Buy ads",
+      "url": "https://tadbuy.giveabit.io/buy"
+    },
+    {
+      "label": "Schema",
+      "url": "https://hq.giveabit.io/schemas/product-metrics.v1.schema.json"
+    }
+  ],
   "raw": {
-    "demo": true,
-    "note": "Enriched with all known metrics \u2014 ready for live data"
+    "demo": false,
+    "source": "app-state",
+    "enriched": true,
+    "schemaDepth": "full-v1",
+    "umamiWebsiteId": "e75632e3-b6f4-4fa3-9ec5-8b3107adf783",
+    "campaignsInState": 4,
+    "note": "KPIs counted from src/data/campaigns.ts (+ marketplace publishers, platform catalog). Rebuild via npm run generate-metrics (prebuild). Switch source to supabase when live DB aggregates replace seed campaigns.",
+    "live": {
+      "probe": {
+        "ok": true,
+        "http": 200,
+        "ms": 81
+      },
+      "checkedAt": "2026-08-06T21:51:43Z",
+      "umami": {
+        "visitors24h": null,
+        "pageviews24h": 1,
+        "visits24h": 1,
+        "visitors7d": null,
+        "pageviews7d": 2,
+        "visitors30d": null,
+        "pageviews30d": 3
+      }
+    }
   }
 }

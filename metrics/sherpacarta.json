@@ -2,34 +2,544 @@
   "schema": "gab.product-metrics.v1",
   "productId": "sherpacarta",
   "name": "SherpaCarta",
-  "updatedAt": "2026-07-27T00:00:00Z",
+  "updatedAt": "2026-08-06T21:51:43Z",
   "window": {
-    "label": "all",
-    "from": "2026-01-01T00:00:00Z",
-    "to": "2026-07-27T00:00:00Z"
+    "label": "7d",
+    "from": "2026-07-30T21:51:48.649Z",
+    "to": "2026-08-06T21:51:48.649Z"
   },
   "health": {
-    "status": "green",
-    "message": "Static fallback — live origin at sherpacarta.org/metrics.json preferred",
-    "latencyMs": null,
+    "status": "ok",
+    "message": "Live CF Function \u2014 mandate total=4 \u00b7 24h=0 \u00b7 store=kv. LN via HQ wallet sherpacarta.",
+    "latencyMs": 38,
     "uptimePct24h": null,
     "dependencies": [
-      { "id": "charter-data", "status": "green", "detail": "data/charter.json · 114 articles" },
-      { "id": "canada-stats", "status": "green", "detail": "GET /api/canada/stats (PETITION_KV)" },
-      { "id": "on-chain-treasury", "status": "green", "detail": "mempool.space address balance" },
-      { "id": "umami", "status": "amber", "detail": "Script wired; relies on analytics.giveabit.io proxy for HQ overlay" }
-    ]
+      {
+        "id": "charter-data",
+        "status": "green",
+        "detail": "charter \u00b7 114 articles"
+      },
+      {
+        "id": "canada-stats",
+        "status": "green",
+        "detail": "total=4 24h=0 7d=0 store=kv"
+      },
+      {
+        "id": "canada-activity",
+        "status": "green",
+        "detail": "activity=0 last=none"
+      },
+      {
+        "id": "on-chain-treasury",
+        "status": "green",
+        "detail": "12884 sats \u00b7 1 txs"
+      },
+      {
+        "id": "lightning",
+        "status": "amber",
+        "detail": "HQ LNbits wallet id \"sherpacarta\" (invoice key in Vault only)"
+      },
+      {
+        "id": "umami",
+        "status": "green",
+        "detail": "website 9b6f05bf-286e-4b21-9094-1d675f9b4442 \u00b7 sign events: canada_mandate_sign"
+      }
+    ],
+    "http": 200,
+    "ms": 82,
+    "probedAt": "2026-08-06T21:51:43Z"
   },
   "kpis": [
-    { "key": "articles_total", "label": "Articles", "value": 114, "unit": "articles", "format": "number", "priority": 1, "hint": "Living charter articles from data/charter.json" },
-    { "key": "signers_total", "label": "Signers", "value": 4, "unit": "signers", "format": "number", "priority": 1, "hint": "Canada campaign commitments from /api/canada/stats — not Parliamentary e-petition counts" },
-    { "key": "languages_served", "label": "Languages", "value": 8, "unit": "languages", "format": "number", "priority": 2, "hint": "UI locales: en, zh, es, ar, fr, de, pt, sw" },
-    { "key": "visitors_monthly", "label": "Visitors / month", "value": 0, "unit": "visitors", "format": "number", "priority": 2, "hint": "Umami website 9b6f05bf-286e-4b21-9094-1d675f9b4442. Zero here — HQ overlays Umami visitors server-side" },
-    { "key": "donations_btc", "label": "Donations (BTC)", "value": 0.00012884, "unit": "BTC", "format": "number", "priority": 1, "hint": "On-chain treasury balance (12,884 sats). Address in public/data/wallets.json" }
+    {
+      "key": "articles_total",
+      "label": "Articles",
+      "value": 114,
+      "unit": "articles",
+      "format": "number",
+      "priority": 1
+    },
+    {
+      "key": "signers_total",
+      "label": "Public mandate signers",
+      "value": 4,
+      "unit": "signers",
+      "format": "number",
+      "priority": 1,
+      "hint": "Canada public mandate \u2014 not Parliamentary e-petition counts"
+    },
+    {
+      "key": "signers_24h",
+      "label": "Signers 24h",
+      "value": 0,
+      "unit": "signers",
+      "format": "number",
+      "priority": 1,
+      "hint": "New public-mandate signs in last 24h (activity stream)"
+    },
+    {
+      "key": "signers_7d",
+      "label": "Signers 7d",
+      "value": 0,
+      "unit": "signers",
+      "format": "number",
+      "priority": 1,
+      "hint": "New public-mandate signs in last 7 days"
+    },
+    {
+      "key": "donations_btc",
+      "label": "Donations (BTC on-chain)",
+      "value": 0.00012884,
+      "unit": "BTC",
+      "format": "number",
+      "priority": 1
+    },
+    {
+      "key": "donations_sats",
+      "label": "Treasury sats (on-chain)",
+      "value": 12884,
+      "unit": "sats",
+      "format": "number",
+      "priority": 1
+    },
+    {
+      "key": "languages_served",
+      "label": "Languages",
+      "value": 8,
+      "unit": "languages",
+      "format": "number",
+      "priority": 2
+    },
+    {
+      "key": "visitors_monthly",
+      "label": "Visitors / month",
+      "value": 0,
+      "unit": "visitors",
+      "format": "number",
+      "priority": 2,
+      "hint": "Placeholder \u2014 HQ overlays Umami for productId sherpacarta"
+    },
+    {
+      "key": "shared_names",
+      "label": "Public wall names",
+      "value": 0,
+      "unit": "names",
+      "format": "number",
+      "priority": 3,
+      "hint": "Opt-in display names only"
+    },
+    {
+      "key": "paper_batches",
+      "label": "Paper batches",
+      "value": 0,
+      "unit": "batches",
+      "format": "number",
+      "priority": 3
+    },
+    {
+      "key": "paper_signers",
+      "label": "Paper signers",
+      "value": 0,
+      "unit": "signers",
+      "format": "number",
+      "priority": 3
+    },
+    {
+      "key": "treasury_txs",
+      "label": "Treasury txs",
+      "value": 1,
+      "unit": "txs",
+      "format": "number",
+      "priority": 3
+    },
+    {
+      "key": "minutes_since_last_sign",
+      "label": "Minutes since last sign",
+      "value": -1,
+      "unit": "min",
+      "format": "number",
+      "priority": 4,
+      "hint": "-1 means no sign recorded yet in activity-enriched stats"
+    }
+  ],
+  "series": [
+    {
+      "key": "signers_daily",
+      "label": "Mandate signs / day",
+      "unit": "signers",
+      "color": "#10b981",
+      "points": [
+        {
+          "t": "2026-07-24T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-25T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-26T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-27T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-28T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-29T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-30T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-07-31T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-08-01T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-08-02T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-08-03T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-08-04T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-08-05T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-08-06T12:00:00.000Z",
+          "v": 0
+        }
+      ]
+    },
+    {
+      "key": "signers_snapshot",
+      "label": "Signers (snapshot)",
+      "unit": "signers",
+      "color": "#c45f00",
+      "points": [
+        {
+          "t": "2026-08-06T00:00:00.000Z",
+          "v": 4
+        }
+      ]
+    },
+    {
+      "key": "treasury_sats_snapshot",
+      "label": "Treasury sats (snapshot)",
+      "unit": "sats",
+      "color": "#f7931a",
+      "points": [
+        {
+          "t": "2026-08-06T00:00:00.000Z",
+          "v": 12884
+        }
+      ]
+    }
+  ],
+  "funnels": [
+    {
+      "id": "canada_mandate_journey",
+      "label": "Canada mandate journey",
+      "steps": [
+        {
+          "id": "sign_page",
+          "label": "Sign page views",
+          "count": 0,
+          "hint": "Umami: sign_page_view / canada_sign_page"
+        },
+        {
+          "id": "sign",
+          "label": "Public mandate sign",
+          "count": 4,
+          "hint": "Synced via POST /api/canada/sign"
+        },
+        {
+          "id": "share_wall",
+          "label": "Opt-in public name",
+          "count": 0
+        },
+        {
+          "id": "paper",
+          "label": "Paper signers reported",
+          "count": 0,
+          "hint": "Organizer paper batches"
+        }
+      ]
+    },
+    {
+      "id": "charter_journey",
+      "label": "Charter journey",
+      "steps": [
+        {
+          "id": "read",
+          "label": "Read charter",
+          "count": 0,
+          "hint": "Umami via HQ"
+        },
+        {
+          "id": "sign",
+          "label": "Sign / commit",
+          "count": 4
+        },
+        {
+          "id": "share",
+          "label": "Share",
+          "count": 0,
+          "hint": "Umami share_click / canada_share"
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "id": "by_language",
+      "label": "Languages served",
+      "rows": [
+        {
+          "id": "en",
+          "label": "en",
+          "value": 1
+        },
+        {
+          "id": "zh",
+          "label": "zh",
+          "value": 1
+        },
+        {
+          "id": "es",
+          "label": "es",
+          "value": 1
+        },
+        {
+          "id": "ar",
+          "label": "ar",
+          "value": 1
+        },
+        {
+          "id": "fr",
+          "label": "fr",
+          "value": 1
+        },
+        {
+          "id": "de",
+          "label": "de",
+          "value": 1
+        },
+        {
+          "id": "pt",
+          "label": "pt",
+          "value": 1
+        },
+        {
+          "id": "sw",
+          "label": "sw",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "by_province",
+      "label": "Signers by province",
+      "rows": [
+        {
+          "id": "none",
+          "label": "No province data yet",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "by_method",
+      "label": "Signers by method",
+      "rows": [
+        {
+          "id": "none",
+          "label": "No method data yet",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "treasury_rails",
+      "label": "Treasury rails",
+      "rows": [
+        {
+          "id": "onchain",
+          "label": "On-chain BTC",
+          "value": 12884,
+          "meta": {
+            "unit": "sats",
+            "status": "live"
+          }
+        },
+        {
+          "id": "lightning",
+          "label": "Lightning",
+          "value": 0,
+          "meta": {
+            "status": "hq_vault",
+            "hqWalletId": "sherpacarta",
+            "note": "Balance on HQ Money \u2014 not origin"
+          }
+        }
+      ]
+    }
+  ],
+  "offers": [
+    {
+      "id": "metrics_v1",
+      "title": "Product metrics v1",
+      "for": [
+        "hq"
+      ],
+      "status": "live",
+      "endpoint": "GET /metrics.json",
+      "hint": "Live CF Function \u2014 poll for HQ cards"
+    },
+    {
+      "id": "canada_stats",
+      "title": "Canada mandate stats + activity",
+      "for": [
+        "hq"
+      ],
+      "status": "live",
+      "endpoint": "GET /api/canada/stats",
+      "hint": "Totals, daily series, activity stream, recent wall"
+    },
+    {
+      "id": "canada_sign",
+      "title": "Canada mandate sign intake",
+      "for": [
+        "hq"
+      ],
+      "status": "live",
+      "endpoint": "POST /api/canada/sign",
+      "hint": "Privacy-first; updates KV stats for this envelope"
+    }
+  ],
+  "education": [
+    {
+      "id": "mold_ln_hq",
+      "title": "Lightning on HQ",
+      "body": "Wallet id \"sherpacarta\" \u00b7 invoice key only in Vault/Worker",
+      "action": "Money tab filter productId sherpacarta",
+      "opportunity": "info"
+    },
+    {
+      "id": "mold_mandate_vs_parliament",
+      "title": "Mandate \u2260 Parliament",
+      "body": "signers_total is public mandate only. Never label as House of Commons e-petition count.",
+      "action": "Keep dual-track copy on HQ card tooltips",
+      "opportunity": "risk"
+    },
+    {
+      "id": "mold_activity",
+      "title": "Live sign feed",
+      "body": "raw.canada.activity lists recent signs (method + province, no private names).",
+      "action": "Surface last sign age + daily series on flagship card",
+      "opportunity": "plan"
+    }
+  ],
+  "links": [
+    {
+      "label": "SherpaCarta",
+      "url": "https://sherpacarta.org"
+    },
+    {
+      "label": "Sign mandate",
+      "url": "https://sherpacarta.org/canada/sign"
+    },
+    {
+      "label": "Canada stats",
+      "url": "https://sherpacarta.org/api/canada/stats"
+    },
+    {
+      "label": "Official e-petition path",
+      "url": "https://sherpacarta.org/canada/official"
+    },
+    {
+      "label": "Treasury",
+      "url": "https://sherpacarta.org/treasury"
+    },
+    {
+      "label": "Mempool",
+      "url": "https://mempool.space/address/bc1qhm5ndfjhqxdk3cx0pngyps4f5nnwdckulmge6c8keyf2pk0neqtshjn8ad"
+    },
+    {
+      "label": "HQ glass",
+      "url": "https://hq.giveabit.io"
+    }
   ],
   "raw": {
     "demo": false,
-    "source": "backup — live origin preferred at sherpacarta.org/metrics.json",
-    "note": "Static fallback copy of live origin data. Never inflated. HQ prefers live origin when reachable."
+    "source": "functions/metrics.json.js",
+    "productId": "sherpacarta",
+    "hqWalletId": "sherpacarta",
+    "donations_sats": 12884,
+    "donations_btc": 0.00012884,
+    "treasury_address": "bc1qhm5ndfjhqxdk3cx0pngyps4f5nnwdckulmge6c8keyf2pk0neqtshjn8ad",
+    "umami_website_id": "9b6f05bf-286e-4b21-9094-1d675f9b4442",
+    "note": "Secret-free live envelope. Prefer this over any HQ demo fallback when raw.demo===false.",
+    "canada": {
+      "track": "public_mandate",
+      "total": 4,
+      "signers24h": 0,
+      "signers7d": 0,
+      "sharedNames": 0,
+      "paperBatches": 0,
+      "paperCount": 0,
+      "byProvince": {},
+      "byMethod": {},
+      "lastSignAt": null,
+      "lastMethod": null,
+      "lastProvince": null,
+      "minutesSinceLastSign": null,
+      "daily": {},
+      "activity": [],
+      "recentPublicWall": [
+        {
+          "id": "c8f5f4de87d01a21",
+          "displayName": "TestCam",
+          "province": "BC",
+          "method": "moral",
+          "ts": 1783610781068
+        }
+      ],
+      "store": "kv",
+      "updated": 1730000000000,
+      "legalNote": "Public mandate only \u2014 not House of Commons e-petition signatures."
+    },
+    "live": {
+      "probe": {
+        "ok": true,
+        "http": 200,
+        "ms": 82
+      },
+      "checkedAt": "2026-08-06T21:51:43Z",
+      "umami": {
+        "visitors24h": null,
+        "pageviews24h": 0,
+        "visits24h": 0,
+        "visitors7d": null,
+        "pageviews7d": 1,
+        "visitors30d": null,
+        "pageviews30d": 7
+      }
+    }
   }
 }
