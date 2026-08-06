@@ -1,53 +1,53 @@
 {
-  "updatedAt": "2026-08-05T23:41:44.507Z",
+  "updatedAt": "2026-08-06T00:00:57.333Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 194,
+      "ms": 1400,
       "url": "https://giveabit.io"
     },
     "satohash": {
       "ok": true,
       "status": 200,
-      "ms": 257,
+      "ms": 193,
       "url": "https://satohash.io"
     },
     "katoa": {
       "ok": true,
       "status": 200,
-      "ms": 392,
+      "ms": 212,
       "url": "https://katoa.org"
     },
     "stranded": {
       "ok": true,
       "status": 200,
-      "ms": 281,
+      "ms": 218,
       "url": "https://stranded.giveabit.io"
     },
     "tadbuy": {
       "ok": true,
       "status": 200,
-      "ms": 307,
+      "ms": 279,
       "url": "https://tadbuy.giveabit.io"
     },
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 308,
+      "ms": 136,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 397,
+      "ms": 178,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
       "ok": true,
       "status": 200,
-      "ms": 190,
+      "ms": 133,
       "url": "https://openstrata.giveabit.io"
     },
     "btcminiscript": {
@@ -67,23 +67,23 @@
     "satohashApi": {
       "ok": true,
       "status": 200,
-      "ms": 512,
+      "ms": 618,
       "healthUrl": "https://api.satohash.io/health"
     },
     "satohashMetrics": {
       "schema": "gab.product-metrics.v1",
       "productId": "satohash",
       "name": "Satohash",
-      "updatedAt": "2026-08-05T23:41:44.360Z",
+      "updatedAt": "2026-08-06T00:00:57.263Z",
       "window": {
         "label": "7d",
-        "from": "2026-07-29T23:41:44.360Z",
-        "to": "2026-08-05T23:41:44.360Z"
+        "from": "2026-07-30T00:00:57.263Z",
+        "to": "2026-08-06T00:00:57.263Z"
       },
       "health": {
         "status": "green",
         "message": "API healthy — live stamp aggregates for HQ",
-        "latencyMs": 57,
+        "latencyMs": 29,
         "uptimePct24h": null,
         "dependencies": [
           {
@@ -121,7 +121,7 @@
         {
           "key": "stamps_24h",
           "label": "Stamps 24h",
-          "value": 1,
+          "value": 0,
           "unit": "proofs",
           "delta": 0,
           "deltaUnit": "%",
@@ -222,7 +222,7 @@
         {
           "key": "p50_ms",
           "label": "Metrics build p50",
-          "value": 57,
+          "value": 29,
           "unit": "ms",
           "format": "duration",
           "priority": 5,
@@ -246,10 +246,6 @@
           "color": "#8a5a00",
           "points": [
             {
-              "t": "2026-07-22T12:00:00.000Z",
-              "v": 0
-            },
-            {
               "t": "2026-07-23T12:00:00.000Z",
               "v": 0
             },
@@ -303,6 +299,10 @@
             },
             {
               "t": "2026-08-05T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-08-06T12:00:00.000Z",
               "v": 0
             }
           ]
@@ -314,10 +314,6 @@
           "color": "#1f6b3a",
           "points": [
             {
-              "t": "2026-07-22T12:00:00.000Z",
-              "v": 0
-            },
-            {
               "t": "2026-07-23T12:00:00.000Z",
               "v": 0
             },
@@ -371,6 +367,10 @@
             },
             {
               "t": "2026-08-05T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-08-06T12:00:00.000Z",
               "v": 0
             }
           ]
@@ -382,10 +382,6 @@
           "color": "#c45f00",
           "points": [
             {
-              "t": "2026-07-22T12:00:00.000Z",
-              "v": 0
-            },
-            {
               "t": "2026-07-23T12:00:00.000Z",
               "v": 0
             },
@@ -439,6 +435,10 @@
             },
             {
               "t": "2026-08-05T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-08-06T12:00:00.000Z",
               "v": 0
             }
           ]
@@ -450,10 +450,6 @@
           "color": "#1a5f7a",
           "points": [
             {
-              "t": "2026-07-22T12:00:00.000Z",
-              "v": 0
-            },
-            {
               "t": "2026-07-23T12:00:00.000Z",
               "v": 0
             },
@@ -507,6 +503,10 @@
             },
             {
               "t": "2026-08-05T12:00:00.000Z",
+              "v": 0
+            },
+            {
+              "t": "2026-08-06T12:00:00.000Z",
               "v": 0
             }
           ]
@@ -526,7 +526,7 @@
             {
               "id": "submit",
               "label": "Submit stamp",
-              "count": 1,
+              "count": 12,
               "hint": "API or SPA"
             },
             {
@@ -869,7 +869,7 @@
         "seriesFromDb": true,
         "note": "Live metrics from satohash API DB",
         "version": "5.0.0-ELITE",
-        "uptimeSec": 691216,
+        "uptimeSec": 692369,
         "requireLightning": false,
         "familyFreeTier": true,
         "directory": {
@@ -1004,7 +1004,7 @@
         },
         "counts": {
           "stampsTotal": 12,
-          "stamps24h": 1,
+          "stamps24h": 0,
           "stamps7d": 3,
           "pending": 0,
           "confirmed": 12,
