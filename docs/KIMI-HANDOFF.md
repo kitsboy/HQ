@@ -1,3 +1,11 @@
+### 2026-08-06 — ✅ LND SEED CAPTURED + VERIFIED (the big one — see Obsidian 04-Decisions/LND-Seed-Keys-Required-2026-08-04.md)
+
+- 24-word AEZEED seed captured via PTY `lncli create` (compose `--noseedbackup` temporarily removed → LND waited at WalletUnlocker; no more race).
+- **Verified**: words restored in throwaway container → identical pubkey (SEED MATCH True). Seed file (600): `/root/MASTER-BRAIN/secrets/lnd-seed-20260806.txt`. Cam MUST write on paper/metal.
+- New pubkey `0324ccff6c17c9e13acf22879f6006f59b9a05617c0f607e1d840b4053017cff5b` (old seedless `03010b15…` discarded, 0 sats — nothing lost). Wallet pw = lnd-password.txt hex, NO aezeed passphrase.
+- **Root cause fixed**: `--noseedbackup` conflicts with `wallet-unlock-password-file` (LND rejects both). Compose now `["lnd"]`; lnd.conf has `wallet-unlock-password-file=/root/.lnd/wallet-password.txt` → auto-unlock VERIFIED (container healthy). Clean wallet-create recipe = REST POST /v1/initwallet (base64 pw + AEZEED words) — in skill lnd-lnbits-ops.
+- Weekly reminder cron `lnd-seed-weekly-reminder` REMOVED (done). Kanban t_5ef9d3ed resolved. LNbits restarted (new macaroons). Balance 0 sats.
+
 ### 2026-08-06 — HQ v3.30.0 LIVE: rich Lightning/stale cards · suite-metrics-nightly · proxy token ROTATED · GH Actions incident
 
 - **HQ v3.30.0 deployed (direct via wrangler — GH Actions down):**
