@@ -1,3 +1,20 @@
+### 2026-08-06 — Kimi · SESSION CLOSE (batches 1-4 complete: 150 improvements)
+
+**Shipped this session (all pushed):**
+- Suite self-evolving report system (SUITE-REPORT.md + generator + weekly cron)
+- SEO drafts MotoPass/Katoa (docs/SEO-FIXES-2026-08-06.md) — Grok implements
+- LND seed permanent record + Kanban t_5ef9d3ed + weekly reminder
+- Kimi↔Grok standing handoff rule (top of this file, always)
+- Batch 1: cron pin sweep, gateway dupe FIXED, 1,600+ sessions pruned (899→729MB), journal restored, vault dedup, SEO docs giveabit/stranded, scaffolds, Plausible 10/10
+- Batch 2: OpenStrata DNS root cause (not in CF), NIP-05 11 identities verified, email gate OK, WAL+digest crons, STRUCTURE-MAP refresh
+- Batch 3: Hermes updated + redaction ON + smart approvals, 5 watchdogs (43 crons), HQ ecosystem-map STALE bug fixed (nightly cron restored, live verified), LEARNINGS bank, SUITE-SEO, THOR-MACHINE-CARD, status files x10
+- Batch 4: CUPS disabled+port 631 blocked, SSH password-auth FLAGGED for Cam, email token verified, backup integrity OK, M4-SETUP-CHECKLIST, MotoPass partial SEO live, all sitemaps+robots+org schema verified
+
+**⚡ Standing items (do not re-open unless asked):**
+- Cam: LND seed manual 24-word backup (CRITICAL, weekly reminder) · openstrata.org → Cloudflare · SSH password-auth decision
+- Grok (M3): MotoPass remaining head block · Katoa FAQPage+Breadcrumb schema
+
+Session closed clean. git save executed. Plausible: https://github.com/plausible/analytics
 ### 2026-08-06 — Kimi · BATCH 4 (items 101-150) — COMPLETED
 
 **✅ HQ nav:** reviewed setTab/rebuildNavTabs in hq.js — robust (preventDefault, try/catch fallback to cards). v3.19 "stuck menu" fixed in current v3.29 hardened code. No action needed.

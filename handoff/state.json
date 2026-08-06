@@ -1,6 +1,6 @@
 {
   "schema": "gab.handoff.v1",
-  "updatedAt": "2026-08-04T01:36:15.466Z",
+  "updatedAt": "2026-08-06T05:37:51.084Z",
   "agents": {
     "grok": {
       "lastSeen": "2026-08-04T01:29:00.000Z",
@@ -14,9 +14,13 @@
       ]
     },
     "kimi": {
-      "lastSeen": "2026-08-04T01:36:15.466Z",
+      "lastSeen": "2026-08-06T05:37:51.084Z",
       "focus": "LND stabilize — no wipe; seed/recovery with Cam",
       "notes": [
+        {
+          "t": "2026-08-06T05:37:51.084Z",
+          "summary": "SESSION CLOSE 08-06: 150 improvements across 4 batches (suite report, SEO drafts, cron pins, gateway fix, watchdogs x5, security hardening, docs). Standing: LND seed (Cam), openstrata CF (Cam), SSH decision (Cam), MotoPass/Katoa SEO (Grok). See KIMI-HANDOFF top."
+        },
         {
           "t": "2026-08-04T01:36:15.466Z",
           "summary": "LND seed goodbye update"
