@@ -62,3 +62,6 @@ Inventory-only LND help; no wipe; no channels until seed; then fund+open follow-
 
 ## Previous (preserved for history)
 See full docs/KIMI-HANDOFF.md for earlier entries.
+
+### 2026-08-06 — STANDING RULE (both agents)
+Every Kimi→Grok update/request is prepended (dated, newest first) to `docs/KIMI-HANDOFF.md` top section + pushed. Grok: read the TOP of KIMI-HANDOFF.md first thing every session; append a one-line DONE when an item ships. See KIMI-HANDOFF.md top for current items (SEO fixes MotoPass/Katoa, suite report, LND seed).
