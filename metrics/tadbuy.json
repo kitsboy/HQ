@@ -2,7 +2,7 @@
   "schema": "gab.product-metrics.v1",
   "productId": "tadbuy",
   "name": "Tadbuy",
-  "updatedAt": "2026-08-06T21:51:43Z",
+  "updatedAt": "2026-08-06T21:53:11Z",
   "window": {
     "label": "30d",
     "from": "2026-06-21T21:30:26.777Z",
@@ -36,10 +36,17 @@
       }
     ],
     "http": 200,
-    "ms": 81,
-    "probedAt": "2026-08-06T21:51:43Z"
+    "ms": 77,
+    "probedAt": "2026-08-06T21:53:11Z"
   },
   "kpis": [
+    {
+      "key": "visitors30d",
+      "label": "Visitors (30d)",
+      "value": 3,
+      "format": "int",
+      "unit": "visits"
+    },
     {
       "key": "campaigns_total",
       "label": "Campaigns total",
@@ -527,16 +534,16 @@
       "probe": {
         "ok": true,
         "http": 200,
-        "ms": 81
+        "ms": 77
       },
-      "checkedAt": "2026-08-06T21:51:43Z",
+      "checkedAt": "2026-08-06T21:53:11Z",
       "umami": {
-        "visitors24h": null,
+        "visitors24h": 1,
         "pageviews24h": 1,
         "visits24h": 1,
-        "visitors7d": null,
+        "visitors7d": 2,
         "pageviews7d": 2,
-        "visitors30d": null,
+        "visitors30d": 3,
         "pageviews30d": 3
       }
     }

@@ -2,16 +2,16 @@
   "schema": "gab.product-metrics.v1",
   "productId": "sherpacarta",
   "name": "SherpaCarta",
-  "updatedAt": "2026-08-06T21:51:43Z",
+  "updatedAt": "2026-08-06T21:53:11Z",
   "window": {
     "label": "7d",
-    "from": "2026-07-30T21:51:48.649Z",
-    "to": "2026-08-06T21:51:48.649Z"
+    "from": "2026-07-30T21:53:14.693Z",
+    "to": "2026-08-06T21:53:14.693Z"
   },
   "health": {
     "status": "ok",
     "message": "Live CF Function \u2014 mandate total=4 \u00b7 24h=0 \u00b7 store=kv. LN via HQ wallet sherpacarta.",
-    "latencyMs": 38,
+    "latencyMs": 46,
     "uptimePct24h": null,
     "dependencies": [
       {
@@ -46,10 +46,17 @@
       }
     ],
     "http": 200,
-    "ms": 82,
-    "probedAt": "2026-08-06T21:51:43Z"
+    "ms": 72,
+    "probedAt": "2026-08-06T21:53:11Z"
   },
   "kpis": [
+    {
+      "key": "visitors30d",
+      "label": "Visitors (30d)",
+      "value": 7,
+      "format": "int",
+      "unit": "visits"
+    },
     {
       "key": "articles_total",
       "label": "Articles",
@@ -528,16 +535,16 @@
       "probe": {
         "ok": true,
         "http": 200,
-        "ms": 82
+        "ms": 72
       },
-      "checkedAt": "2026-08-06T21:51:43Z",
+      "checkedAt": "2026-08-06T21:53:11Z",
       "umami": {
-        "visitors24h": null,
+        "visitors24h": 0,
         "pageviews24h": 0,
         "visits24h": 0,
-        "visitors7d": null,
+        "visitors7d": 1,
         "pageviews7d": 1,
-        "visitors30d": null,
+        "visitors30d": 7,
         "pageviews30d": 7
       }
     }

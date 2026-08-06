@@ -2,16 +2,16 @@
   "schema": "gab.product-metrics.v1",
   "productId": "satohash",
   "name": "Satohash",
-  "updatedAt": "2026-08-06T21:51:43Z",
+  "updatedAt": "2026-08-06T21:53:11Z",
   "window": {
     "label": "7d",
-    "from": "2026-07-30T21:51:45.241Z",
-    "to": "2026-08-06T21:51:45.241Z"
+    "from": "2026-07-30T21:53:12.270Z",
+    "to": "2026-08-06T21:53:12.270Z"
   },
   "health": {
     "status": "ok",
     "message": "API healthy \u2014 live stamp aggregates for HQ",
-    "latencyMs": 94,
+    "latencyMs": 8,
     "uptimePct24h": null,
     "dependencies": [
       {
@@ -36,10 +36,17 @@
       }
     ],
     "http": 200,
-    "ms": 81,
-    "probedAt": "2026-08-06T21:51:43Z"
+    "ms": 117,
+    "probedAt": "2026-08-06T21:53:11Z"
   },
   "kpis": [
+    {
+      "key": "visitors30d",
+      "label": "Visitors (30d)",
+      "value": 8,
+      "format": "int",
+      "unit": "visits"
+    },
     {
       "key": "stamps_total",
       "label": "Stamps (all time)",
@@ -153,7 +160,7 @@
     {
       "key": "p50_ms",
       "label": "Metrics build p50",
-      "value": 94,
+      "value": 8,
       "unit": "ms",
       "format": "duration",
       "priority": 5,
@@ -800,7 +807,7 @@
     "seriesFromDb": true,
     "note": "Live metrics from satohash API DB",
     "version": "5.0.0-ELITE",
-    "uptimeSec": 771017,
+    "uptimeSec": 771104,
     "requireLightning": false,
     "familyFreeTier": true,
     "directory": {
@@ -949,16 +956,16 @@
       "probe": {
         "ok": true,
         "http": 200,
-        "ms": 81
+        "ms": 117
       },
-      "checkedAt": "2026-08-06T21:51:43Z",
+      "checkedAt": "2026-08-06T21:53:11Z",
       "umami": {
-        "visitors24h": null,
+        "visitors24h": 0,
         "pageviews24h": 0,
         "visits24h": 0,
-        "visitors7d": null,
+        "visitors7d": 5,
         "pageviews7d": 7,
-        "visitors30d": null,
+        "visitors30d": 8,
         "pageviews30d": 10
       }
     }
