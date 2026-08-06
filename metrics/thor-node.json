@@ -1,18 +1,13 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-08-06T22:45:02Z",
+ "updatedAt": "2026-08-06T23:00:02Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
   "stack": "Docker \u00b7 LND Neutrino \u00b7 LNbits \u00b7 satohash-api \u00b7 Hermes",
   "region": "EU Contabo",
-  "status": "amber",
+  "status": "green",
   "services": [
-   {
-    "id": "lnd",
-    "status": "amber",
-    "detail": "Up 38 seconds (health: starting)"
-   },
    {
     "id": "satohash-satohash-api-1",
     "status": "green",
@@ -39,7 +34,7 @@
     "detail": "Up 2 weeks (healthy)"
    }
   ],
-  "uptimeSec": 1813701
+  "uptimeSec": 1814602
  },
  "bitcoin": {
   "ok": true,
@@ -56,7 +51,7 @@
  "lightning": {
   "ok": false,
   "implementation": "lnd",
-  "hint": "lncli getinfo failed: [lncli] rpc error: code = Unknown desc = waiting to start, RPC services not available"
+  "hint": "lncli getinfo failed: Error response from daemon: container 11f84bc9affd18842e56feac76fdabf2a4675abda74a08334453be58f108a8a8 is not running"
  },
  "lnbits": {
   "ok": true,
@@ -70,10 +65,6 @@
    "color": "#1f6b3a",
    "points": [
     {
-     "t": "2026-08-05T23:00:03Z",
-     "v": 0
-    },
-    {
      "t": "2026-08-05T23:15:02Z",
      "v": 0
     },
@@ -451,6 +442,10 @@
     },
     {
      "t": "2026-08-06T22:45:02Z",
+     "v": 0
+    },
+    {
+     "t": "2026-08-06T23:00:02Z",
      "v": 0
     }
    ]
@@ -462,10 +457,6 @@
    "color": "#c45f00",
    "points": [
     {
-     "t": "2026-08-05T23:00:03Z",
-     "v": 0
-    },
-    {
      "t": "2026-08-05T23:15:02Z",
      "v": 0
     },
@@ -844,6 +835,10 @@
     {
      "t": "2026-08-06T22:45:02Z",
      "v": 0
+    },
+    {
+     "t": "2026-08-06T23:00:02Z",
+     "v": 0
     }
    ]
   },
@@ -853,10 +848,6 @@
    "unit": "load",
    "color": "#38bdf8",
    "points": [
-    {
-     "t": "2026-08-05T23:00:03Z",
-     "v": 3.25
-    },
     {
      "t": "2026-08-05T23:15:02Z",
      "v": 2.4
@@ -1236,6 +1227,10 @@
     {
      "t": "2026-08-06T22:45:02Z",
      "v": 4.09
+    },
+    {
+     "t": "2026-08-06T23:00:02Z",
+     "v": 4.56
     }
    ]
   },
@@ -1245,10 +1240,6 @@
    "unit": "GB",
    "color": "#a78bfa",
    "points": [
-    {
-     "t": "2026-08-05T23:00:03Z",
-     "v": 1.8
-    },
     {
      "t": "2026-08-05T23:15:02Z",
      "v": 1.8
@@ -1628,6 +1619,10 @@
     {
      "t": "2026-08-06T22:45:02Z",
      "v": 1.6
+    },
+    {
+     "t": "2026-08-06T23:00:02Z",
+     "v": 2.0
     }
    ]
   },
@@ -1637,10 +1632,6 @@
    "unit": "blocks",
    "color": "#f7931a",
    "points": [
-    {
-     "t": "2026-08-05T23:00:03Z",
-     "v": 961218
-    },
     {
      "t": "2026-08-05T23:15:02Z",
      "v": 961220
@@ -2020,6 +2011,10 @@
     {
      "t": "2026-08-06T22:45:02Z",
      "v": 0
+    },
+    {
+     "t": "2026-08-06T23:00:02Z",
+     "v": 0
     }
    ]
   }
@@ -2047,25 +2042,25 @@
  "system": {
   "disk": {
    "totalGB": 387,
-   "usedGB": 47,
-   "freeGB": 340,
+   "usedGB": 49,
+   "freeGB": 339,
    "usedPercent": 13,
    "mount": "/"
   },
   "memory": {
    "totalGB": 7.8,
-   "usedGB": 1.6,
-   "freeGB": 0.2,
-   "availableGB": 6.1
+   "usedGB": 2.0,
+   "freeGB": 0.3,
+   "availableGB": 5.8
   },
   "cpu": {
-   "loadAvg1m": 4.09,
-   "loadAvg5m": 4.33,
-   "loadAvg15m": 3.75,
+   "loadAvg1m": 4.56,
+   "loadAvg5m": 3.89,
+   "loadAvg15m": 3.83,
    "uptimeDays": 21.0
   },
   "docker": {
-   "images": 8,
+   "images": 9,
    "containers": 6,
    "running": 6,
    "buildCacheGB": 0.833
@@ -2076,20 +2071,20 @@
    "satohash_repo": 0.059,
    "HQ_repo": 0.044,
    "LND_data": 0.347,
-   "Docker_images": 3.911,
-   "Docker_volumes": 0.552,
-   "other_system": 39.8
+   "Docker_images": 3.947,
+   "Docker_volumes": 0.549,
+   "other_system": 41.8
   }
  },
  "host": {
   "diskTotalGB": 387,
-  "diskUsedGB": 47,
-  "diskFreeGB": 340,
+  "diskUsedGB": 49,
+  "diskFreeGB": 339,
   "memTotalGB": 7.8,
-  "memUsedGB": 1.6,
-  "load1": 4.09,
-  "load5": 4.33,
-  "load15": 3.75,
+  "memUsedGB": 2.0,
+  "load1": 4.56,
+  "load5": 3.89,
+  "load15": 3.83,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
@@ -2097,12 +2092,12 @@
    {
     "id": "other_system",
     "label": "Other system",
-    "gb": 39.8
+    "gb": 41.8
    },
    {
     "id": "Docker_images",
     "label": "Docker images",
-    "gb": 3.91
+    "gb": 3.95
    },
    {
     "id": "Hermes_skills_config",
