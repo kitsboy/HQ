@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-08-06T05:00:04Z",
+ "updatedAt": "2026-08-06T05:15:02Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -39,13 +39,13 @@
     "detail": "Up 2 weeks (healthy)"
    }
   ],
-  "uptimeSec": 1749804
+  "uptimeSec": 1750702
  },
  "bitcoin": {
   "ok": true,
   "chain": "main",
-  "blocks": 961247,
-  "headers": 961247,
+  "blocks": 961249,
+  "headers": 961249,
   "verificationProgress": 1.0,
   "pruned": false,
   "sizeOnDiskGB": 0.35,
@@ -84,10 +84,6 @@
    "color": "#1f6b3a",
    "points": [
     {
-     "t": "2026-08-05T05:15:02Z",
-     "v": 0
-    },
-    {
      "t": "2026-08-05T05:30:03Z",
      "v": 0
     },
@@ -465,6 +461,10 @@
     },
     {
      "t": "2026-08-06T05:00:04Z",
+     "v": 0
+    },
+    {
+     "t": "2026-08-06T05:15:02Z",
      "v": 0
     }
    ]
@@ -476,10 +476,6 @@
    "color": "#c45f00",
    "points": [
     {
-     "t": "2026-08-05T05:15:02Z",
-     "v": 0
-    },
-    {
      "t": "2026-08-05T05:30:03Z",
      "v": 0
     },
@@ -858,6 +854,10 @@
     {
      "t": "2026-08-06T05:00:04Z",
      "v": 0
+    },
+    {
+     "t": "2026-08-06T05:15:02Z",
+     "v": 0
     }
    ]
   },
@@ -867,10 +867,6 @@
    "unit": "load",
    "color": "#38bdf8",
    "points": [
-    {
-     "t": "2026-08-05T05:15:02Z",
-     "v": 3.56
-    },
     {
      "t": "2026-08-05T05:30:03Z",
      "v": 3.49
@@ -1250,6 +1246,10 @@
     {
      "t": "2026-08-06T05:00:04Z",
      "v": 2.37
+    },
+    {
+     "t": "2026-08-06T05:15:02Z",
+     "v": 2.15
     }
    ]
   },
@@ -1259,10 +1259,6 @@
    "unit": "GB",
    "color": "#a78bfa",
    "points": [
-    {
-     "t": "2026-08-05T05:15:02Z",
-     "v": 2.1
-    },
     {
      "t": "2026-08-05T05:30:03Z",
      "v": 2.1
@@ -1642,6 +1638,10 @@
     {
      "t": "2026-08-06T05:00:04Z",
      "v": 2.0
+    },
+    {
+     "t": "2026-08-06T05:15:02Z",
+     "v": 1.9
     }
    ]
   },
@@ -1651,10 +1651,6 @@
    "unit": "blocks",
    "color": "#f7931a",
    "points": [
-    {
-     "t": "2026-08-05T05:15:02Z",
-     "v": 961116
-    },
     {
      "t": "2026-08-05T05:30:03Z",
      "v": 961117
@@ -2034,6 +2030,10 @@
     {
      "t": "2026-08-06T05:00:04Z",
      "v": 961247
+    },
+    {
+     "t": "2026-08-06T05:15:02Z",
+     "v": 961249
     }
    ]
   }
@@ -2061,21 +2061,21 @@
  "system": {
   "disk": {
    "totalGB": 387,
-   "usedGB": 50,
-   "freeGB": 338,
-   "usedPercent": 13,
+   "usedGB": 41,
+   "freeGB": 347,
+   "usedPercent": 11,
    "mount": "/"
   },
   "memory": {
    "totalGB": 7.8,
-   "usedGB": 2.0,
+   "usedGB": 1.9,
    "freeGB": 0.2,
-   "availableGB": 5.8
+   "availableGB": 5.9
   },
   "cpu": {
-   "loadAvg1m": 2.37,
-   "loadAvg5m": 2.87,
-   "loadAvg15m": 3.6,
+   "loadAvg1m": 2.15,
+   "loadAvg5m": 3.19,
+   "loadAvg15m": 3.67,
    "uptimeDays": 20.3
   },
   "docker": {
@@ -2085,25 +2085,25 @@
    "buildCacheGB": 0.833
   },
   "breakdownGB": {
-   "MASTER-BRAIN_vault": 0.691,
+   "MASTER-BRAIN_vault": 0.251,
    "Hermes_skills_config": 2.1,
    "satohash_repo": 0.059,
    "HQ_repo": 0.041,
    "LND_data": 0.346,
    "Docker_images": 3.911,
    "Docker_volumes": 0.548,
-   "other_system": 42.3
+   "other_system": 33.7
   }
  },
  "host": {
   "diskTotalGB": 387,
-  "diskUsedGB": 50,
-  "diskFreeGB": 338,
+  "diskUsedGB": 41,
+  "diskFreeGB": 347,
   "memTotalGB": 7.8,
-  "memUsedGB": 2.0,
-  "load1": 2.37,
-  "load5": 2.87,
-  "load15": 3.6,
+  "memUsedGB": 1.9,
+  "load1": 2.15,
+  "load5": 3.19,
+  "load15": 3.67,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
@@ -2111,7 +2111,7 @@
    {
     "id": "other_system",
     "label": "Other system",
-    "gb": 42.3
+    "gb": 33.7
    },
    {
     "id": "Docker_images",
@@ -2124,11 +2124,6 @@
     "gb": 2.1
    },
    {
-    "id": "MASTER-BRAIN_vault",
-    "label": "MASTER-BRAIN vault",
-    "gb": 0.69
-   },
-   {
     "id": "Docker_volumes",
     "label": "Docker volumes",
     "gb": 0.55
@@ -2137,6 +2132,11 @@
     "id": "LND_data",
     "label": "LND data (neutrino)",
     "gb": 0.35
+   },
+   {
+    "id": "MASTER-BRAIN_vault",
+    "label": "MASTER-BRAIN vault",
+    "gb": 0.25
    },
    {
     "id": "satohash_repo",
