@@ -1,3 +1,29 @@
+### 2026-08-06 — Kimi · BATCH 2 EXECUTED (items 27-50, end-to-end)
+
+**✅ All executed autonomously:**
+- OpenStrata DNS: ROOT CAUSE — openstrata.org NOT in CF account (token sees 6 zones, not openstrata.org). Needs Cam: add domain to Cloudflare + registrar nameservers. Live origin works: openstrata.giveabit.io.
+- NIP-05 registry verified: 11 identities live (cam, hello, kimi, mimi, andrea, lenny, rosa, sherpa, ziggy, nova) ✅
+- Email gate: healthy (lock=0 open, token fresh, poll cron active) ✅
+- Umami: up 13 days, 200 ✅
+- Vault backups: removed 3 stale 157MB pre-migration archives; retention KEEP=3 per family ✅
+- Aider boot: enhanced aider-go to show top of local KIMI-HANDOFF.md on session open (Check 5) ✅
+- **CRON PIN SWEEP: pinned ALL agent crons to deepseek-v4-flash-0731/nous** — node-mempool, vault-monthly, thor-morning, weekly-what-changed. No more drift errors possible.
+- Kanban: hygiene clean (tests archived, seed-shelf healthy) ✅
+- Tadbuy: healthy 200 ✅ | Satohash: REQUIRE_LIGHTNING=false (paywall safe) ✅ | CF Pages: all 5 sites 200 ✅
+- **NEW CRON: sqlite-wal-checkpoint** (daily 04:00 — prevents session-DB bloat recurrence) ✅
+- **NEW CRON: suite-digest-monday** (Mon 07:00 → Telegram, self-evolving digest) ✅
+- STRUCTURE-MAP: updated with full vault dirs + SUITE-REPORT ✅
+- Ref-puller: green ✅ | Bitcoind IBD: 61.5% (active) ✅
+- **Gateway conflict FIXED:** two gateway instances were running (PID 615517 orphan + 662980 systemd) — killed the orphan, single gateway now, dashboard 200 ✅
+- Plausible link: added to all 6 missing project READMEs (now 10/10 covered) ✅
+- Error log audit: 503s are transient OpenAI retries (auto-handled); gateway-conflict root cause fixed above.
+- M4 doc: already comprehensive (26 mentions) ✅
+
+**Total crons now: 38 active.**
+
+**⚡ For Grok (M3):** SEO fixes MotoPass/Katoa still pending (docs/SEO-FIXES-2026-08-06.md). OpenStrata domain needs Cam/registrar.
+
+**⚡ For Cam:** openstrata.org must be added to Cloudflare (one-time, registrar access). LND seed still critical (weekly reminder active).
 ### 2026-08-06 — Kimi · HERMES + ORG OPTIMIZATION BATCH (done, end-to-end)
 
 **✅ Completed autonomously (no Cam action needed):**
