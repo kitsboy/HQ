@@ -1,3 +1,5 @@
+### 2026-08-06 — M4 Hermes Desktop → THOR tunnel installed (auto-healing LaunchAgent com.hermes.vps-tunnel + ~/bin/hermes-desktop-vps; installer /root/m4-setup.sh; verified working from M4).
+
 ### 2026-08-06 — Kimi · SESSION CLOSE (batches 1-4 complete: 150 improvements)
 
 **Shipped this session (all pushed):**
