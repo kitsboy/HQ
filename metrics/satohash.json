@@ -2,16 +2,16 @@
   "schema": "gab.product-metrics.v1",
   "productId": "satohash",
   "name": "Satohash",
-  "updatedAt": "2026-08-06T21:53:11Z",
+  "updatedAt": "2026-08-07T00:20:54Z",
   "window": {
     "label": "7d",
-    "from": "2026-07-30T21:53:12.270Z",
-    "to": "2026-08-06T21:53:12.270Z"
+    "from": "2026-07-31T00:20:56.262Z",
+    "to": "2026-08-07T00:20:56.262Z"
   },
   "health": {
     "status": "ok",
     "message": "API healthy \u2014 live stamp aggregates for HQ",
-    "latencyMs": 8,
+    "latencyMs": 5,
     "uptimePct24h": null,
     "dependencies": [
       {
@@ -36,8 +36,8 @@
       }
     ],
     "http": 200,
-    "ms": 117,
-    "probedAt": "2026-08-06T21:53:11Z"
+    "ms": 113,
+    "probedAt": "2026-08-07T00:20:54Z"
   },
   "kpis": [
     {
@@ -160,7 +160,7 @@
     {
       "key": "p50_ms",
       "label": "Metrics build p50",
-      "value": 8,
+      "value": 5,
       "unit": "ms",
       "format": "duration",
       "priority": 5,
@@ -184,10 +184,6 @@
       "color": "#8a5a00",
       "points": [
         {
-          "t": "2026-07-23T12:00:00.000Z",
-          "v": 0
-        },
-        {
           "t": "2026-07-24T12:00:00.000Z",
           "v": 0
         },
@@ -241,6 +237,10 @@
         },
         {
           "t": "2026-08-06T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-08-07T12:00:00.000Z",
           "v": 0
         }
       ]
@@ -252,10 +252,6 @@
       "color": "#1f6b3a",
       "points": [
         {
-          "t": "2026-07-23T12:00:00.000Z",
-          "v": 0
-        },
-        {
           "t": "2026-07-24T12:00:00.000Z",
           "v": 0
         },
@@ -309,6 +305,10 @@
         },
         {
           "t": "2026-08-06T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-08-07T12:00:00.000Z",
           "v": 0
         }
       ]
@@ -320,10 +320,6 @@
       "color": "#c45f00",
       "points": [
         {
-          "t": "2026-07-23T12:00:00.000Z",
-          "v": 0
-        },
-        {
           "t": "2026-07-24T12:00:00.000Z",
           "v": 0
         },
@@ -377,6 +373,10 @@
         },
         {
           "t": "2026-08-06T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-08-07T12:00:00.000Z",
           "v": 0
         }
       ]
@@ -388,10 +388,6 @@
       "color": "#1a5f7a",
       "points": [
         {
-          "t": "2026-07-23T12:00:00.000Z",
-          "v": 0
-        },
-        {
           "t": "2026-07-24T12:00:00.000Z",
           "v": 0
         },
@@ -445,6 +441,10 @@
         },
         {
           "t": "2026-08-06T12:00:00.000Z",
+          "v": 0
+        },
+        {
+          "t": "2026-08-07T12:00:00.000Z",
           "v": 0
         }
       ]
@@ -807,7 +807,7 @@
     "seriesFromDb": true,
     "note": "Live metrics from satohash API DB",
     "version": "5.0.0-ELITE",
-    "uptimeSec": 771104,
+    "uptimeSec": 779968,
     "requireLightning": false,
     "familyFreeTier": true,
     "directory": {
@@ -956,9 +956,9 @@
       "probe": {
         "ok": true,
         "http": 200,
-        "ms": 117
+        "ms": 113
       },
-      "checkedAt": "2026-08-06T21:53:11Z",
+      "checkedAt": "2026-08-07T00:20:54Z",
       "umami": {
         "visitors24h": 0,
         "pageviews24h": 0,
