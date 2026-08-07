@@ -1,6 +1,6 @@
 {
   "schema": "gab.ecosystem-map.v1",
-  "updatedAt": "2026-08-06T07:26:22Z",
+  "updatedAt": "2026-08-07T02:01:16Z",
   "projects": [
     {
       "id": "satohash",
@@ -21,10 +21,10 @@
       "url": "hq.giveabit.io",
       "api": "",
       "github": "kitsboy/HQ",
-      "version": "3.29.0",
+      "version": "3.30.0",
       "status": "green",
       "health": "200",
-      "lastCommit": "600edc4 chore: thor auto-metrics 05:15 (live LND)",
+      "lastCommit": "a004cb3 chore: refresh status.json + thor-node [skip deploy]",
       "synced": "synced",
       "localOnThor": true
     },
@@ -140,13 +140,13 @@
       "role": "Orchestrator + Hermes + Master Brain",
       "host": "Contabo VPS 20",
       "status": "green",
-      "disk": "11% used",
-      "diskFree": "346G",
-      "mem": "2.1Gi used",
-      "memAvail": "5.6Gi",
-      "load": "5.49/4.66/4.17",
-      "uptime": "up 2 weeks, 6 days, 6 hours, 29 minutes",
-      "lastSeen": "2026-08-06"
+      "disk": "14% used",
+      "diskFree": "335G",
+      "mem": "2.4Gi used",
+      "memAvail": "5.4Gi",
+      "load": "6.63/3.99/3.29",
+      "uptime": "up 3 weeks, 1 hour, 4 minutes",
+      "lastSeen": "2026-08-07"
     },
     {
       "id": "m3",
@@ -264,31 +264,31 @@
   "skills": [
     {
       "name": "browser-harness",
-      "ageDays": 67,
+      "ageDays": 68,
       "status": "stale",
       "updated": "2026-05-30"
     },
     {
       "name": "current-tasks",
-      "ageDays": 20,
+      "ageDays": 21,
       "status": "fresh",
       "updated": "2026-07-16"
     },
     {
       "name": "deployment-workflow",
-      "ageDays": 23,
+      "ageDays": 24,
       "status": "fresh",
       "updated": "2026-07-13"
     },
     {
       "name": "dogfood",
-      "ageDays": 45,
+      "ageDays": 46,
       "status": "aging",
       "updated": "2026-06-21"
     },
     {
       "name": "github-sync",
-      "ageDays": 34,
+      "ageDays": 35,
       "status": "aging",
       "updated": "2026-07-02"
     },
@@ -300,7 +300,7 @@
     },
     {
       "name": "kanban-worker",
-      "ageDays": 67,
+      "ageDays": 68,
       "status": "stale",
       "updated": "2026-05-30"
     },
@@ -308,7 +308,7 @@
       "name": "lnd-lnbits-ops",
       "ageDays": 0,
       "status": "fresh",
-      "updated": "2026-08-06"
+      "updated": "2026-08-07"
     },
     {
       "name": "nova-product-management",
@@ -336,13 +336,13 @@
     },
     {
       "name": "satohash-orchestrator",
-      "ageDays": 20,
+      "ageDays": 21,
       "status": "fresh",
       "updated": "2026-07-17"
     },
     {
       "name": "yuanbao",
-      "ageDays": 20,
+      "ageDays": 21,
       "status": "fresh",
       "updated": "2026-07-17"
     }
@@ -361,7 +361,7 @@
       "name": "LND",
       "type": "Lightning Node (Neutrino)",
       "status": "green",
-      "detail": "Up 2 days (healthy)"
+      "detail": "Up About an hour (healthy)"
     },
     {
       "id": "satohash-api",
@@ -388,28 +388,28 @@
   "recentActivity": [
     {
       "repo": "hq",
-      "commit": "600edc4 chore: thor auto-metrics 05:15 (live LND)",
-      "timestamp": "2026-08-06"
+      "commit": "a004cb3 chore: refresh status.json + thor-node [skip deploy]",
+      "timestamp": "2026-08-07"
     },
     {
       "repo": "hq",
-      "commit": "57e7db2 docs: Kimi batch 2 (items 27-50) \u2014 cron pins, gatewa",
-      "timestamp": "2026-08-06"
+      "commit": "4a2fa48 chore: thor auto-metrics 00:00 (live LND)",
+      "timestamp": "2026-08-07"
     },
     {
       "repo": "hq",
-      "commit": "7d73365 chore: thor auto-metrics 05:01 (live LND)",
-      "timestamp": "2026-08-06"
+      "commit": "53a4c53 chore: thor auto-metrics 23:45 (live LND)",
+      "timestamp": "2026-08-07"
     },
     {
       "repo": "satohash",
       "commit": "c2708d6 docs: session closeout 2026-08-05 \u2014 10s watch teaser",
-      "timestamp": "2026-08-06"
+      "timestamp": "2026-08-07"
     },
     {
       "repo": "satohash",
       "commit": "af2268a fix(watch): cache-bust explainer MP4 URL and shorten",
-      "timestamp": "2026-08-06"
+      "timestamp": "2026-08-07"
     }
   ],
   "metadata": {
