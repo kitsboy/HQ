@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-08-07T01:00:25.991Z",
+  "updatedAt": "2026-08-07T01:30:28.938Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 462,
+      "ms": 330,
       "url": "https://giveabit.io"
     },
     "satohash": {
@@ -17,37 +17,37 @@
     "katoa": {
       "ok": true,
       "status": 200,
-      "ms": 117,
+      "ms": 99,
       "url": "https://katoa.org"
     },
     "stranded": {
       "ok": true,
       "status": 200,
-      "ms": 126,
+      "ms": 147,
       "url": "https://stranded.giveabit.io"
     },
     "tadbuy": {
       "ok": true,
       "status": 200,
-      "ms": 104,
+      "ms": 114,
       "url": "https://tadbuy.giveabit.io"
     },
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 115,
+      "ms": 127,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 143,
+      "ms": 94,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
       "ok": true,
       "status": 200,
-      "ms": 120,
+      "ms": 143,
       "url": "https://openstrata.giveabit.io"
     },
     "btcminiscript": {
@@ -67,23 +67,23 @@
     "satohashApi": {
       "ok": true,
       "status": 200,
-      "ms": 506,
+      "ms": 296,
       "healthUrl": "https://api.satohash.io/health"
     },
     "satohashMetrics": {
       "schema": "gab.product-metrics.v1",
       "productId": "satohash",
       "name": "Satohash",
-      "updatedAt": "2026-08-07T01:00:25.517Z",
+      "updatedAt": "2026-08-07T01:30:28.338Z",
       "window": {
         "label": "7d",
-        "from": "2026-07-31T01:00:25.517Z",
-        "to": "2026-08-07T01:00:25.517Z"
+        "from": "2026-07-31T01:30:28.338Z",
+        "to": "2026-08-07T01:30:28.338Z"
       },
       "health": {
         "status": "green",
         "message": "API healthy — live stamp aggregates for HQ",
-        "latencyMs": 176,
+        "latencyMs": 118,
         "uptimePct24h": null,
         "dependencies": [
           {
@@ -222,7 +222,7 @@
         {
           "key": "p50_ms",
           "label": "Metrics build p50",
-          "value": 176,
+          "value": 118,
           "unit": "ms",
           "format": "duration",
           "priority": 5,
@@ -869,7 +869,7 @@
         "seriesFromDb": true,
         "note": "Live metrics from satohash API DB",
         "version": "5.0.0-ELITE",
-        "uptimeSec": 782337,
+        "uptimeSec": 784140,
         "requireLightning": false,
         "familyFreeTier": true,
         "directory": {
