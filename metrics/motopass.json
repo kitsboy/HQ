@@ -2,7 +2,7 @@
   "schema": "gab.product-metrics.v1",
   "productId": "motopass",
   "name": "MotoPass",
-  "updatedAt": "2026-08-07T00:20:54Z",
+  "updatedAt": "2026-08-08T00:20:56Z",
   "window": {
     "label": "all",
     "from": "2026-01-01T00:00:00.000Z",
@@ -36,8 +36,8 @@
       }
     ],
     "http": 200,
-    "ms": 98,
-    "probedAt": "2026-08-07T00:20:54Z"
+    "ms": 140,
+    "probedAt": "2026-08-08T00:20:56Z"
   },
   "kpis": [
     {
@@ -283,15 +283,15 @@
       "probe": {
         "ok": true,
         "http": 200,
-        "ms": 98
+        "ms": 140
       },
-      "checkedAt": "2026-08-07T00:20:54Z",
+      "checkedAt": "2026-08-08T00:20:56Z",
       "umami": {
         "visitors24h": 0,
         "pageviews24h": 0,
         "visits24h": 0,
-        "visitors7d": 1,
-        "pageviews7d": 1,
+        "visitors7d": 0,
+        "pageviews7d": 0,
         "visitors30d": 3,
         "pageviews30d": 4
       }
