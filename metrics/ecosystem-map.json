@@ -1,6 +1,6 @@
 {
   "schema": "gab.ecosystem-map.v1",
-  "updatedAt": "2026-08-08T02:01:01Z",
+  "updatedAt": "2026-08-09T02:00:53Z",
   "projects": [
     {
       "id": "satohash",
@@ -24,8 +24,8 @@
       "version": "3.30.0",
       "status": "green",
       "health": "200",
-      "lastCommit": "b95a620f chore: refresh status.json + thor-node [skip deploy]",
-      "synced": "synced",
+      "lastCommit": "2393e7c0 chore: refresh status.json + thor-node [skip deploy]",
+      "synced": "ahead",
       "localOnThor": true
     },
     {
@@ -140,20 +140,20 @@
       "role": "Orchestrator + Hermes + Master Brain",
       "host": "Contabo VPS 20",
       "status": "green",
-      "disk": "13% used",
-      "diskFree": "337G",
-      "mem": "1.9Gi used",
-      "memAvail": "5.8Gi",
-      "load": "4.64/3.30/2.95",
-      "uptime": "up 3 weeks, 1 day, 1 hour, 4 minutes",
-      "lastSeen": "2026-08-08"
+      "disk": "14% used",
+      "diskFree": "334G",
+      "mem": "2.8Gi used",
+      "memAvail": "4.9Gi",
+      "load": "0.88/0.30/0.23",
+      "uptime": "up 3 weeks, 2 days, 1 hour, 4 minutes",
+      "lastSeen": "2026-08-09"
     },
     {
       "id": "m3",
       "name": "M3",
       "role": "Code + Grok (Mac)",
       "host": "Cams-Laptop",
-      "status": "green",
+      "status": "amber",
       "lastPush": "2026-08-05",
       "lastSeen": "2026-08-05"
     },
@@ -264,85 +264,85 @@
   "skills": [
     {
       "name": "browser-harness",
-      "ageDays": 69,
+      "ageDays": 70,
       "status": "stale",
       "updated": "2026-05-30"
     },
     {
       "name": "current-tasks",
-      "ageDays": 22,
+      "ageDays": 23,
       "status": "fresh",
       "updated": "2026-07-16"
     },
     {
       "name": "deployment-workflow",
-      "ageDays": 25,
+      "ageDays": 26,
       "status": "fresh",
       "updated": "2026-07-13"
     },
     {
       "name": "dogfood",
-      "ageDays": 47,
+      "ageDays": 48,
       "status": "aging",
       "updated": "2026-06-21"
     },
     {
       "name": "github-sync",
-      "ageDays": 36,
+      "ageDays": 37,
       "status": "aging",
       "updated": "2026-07-02"
     },
     {
       "name": "hermes-desktop-plugins",
-      "ageDays": 18,
+      "ageDays": 19,
       "status": "fresh",
       "updated": "2026-07-20"
     },
     {
       "name": "kanban-worker",
-      "ageDays": 69,
+      "ageDays": 70,
       "status": "stale",
       "updated": "2026-05-30"
     },
     {
       "name": "lnd-lnbits-ops",
-      "ageDays": 1,
+      "ageDays": 2,
       "status": "fresh",
       "updated": "2026-08-07"
     },
     {
       "name": "nova-product-management",
-      "ageDays": 24,
+      "ageDays": 25,
       "status": "fresh",
       "updated": "2026-07-14"
     },
     {
       "name": "project-brief",
-      "ageDays": 24,
+      "ageDays": 25,
       "status": "fresh",
       "updated": "2026-07-14"
     },
     {
       "name": "propagate-template",
-      "ageDays": 42,
+      "ageDays": 43,
       "status": "aging",
       "updated": "2026-06-26"
     },
     {
       "name": "quick-backup",
-      "ageDays": 42,
+      "ageDays": 43,
       "status": "aging",
       "updated": "2026-06-26"
     },
     {
       "name": "satohash-orchestrator",
-      "ageDays": 22,
+      "ageDays": 23,
       "status": "fresh",
       "updated": "2026-07-17"
     },
     {
       "name": "yuanbao",
-      "ageDays": 22,
+      "ageDays": 23,
       "status": "fresh",
       "updated": "2026-07-17"
     }
@@ -361,7 +361,7 @@
       "name": "LND",
       "type": "Lightning Node (Neutrino)",
       "status": "green",
-      "detail": "Up 25 hours (healthy)"
+      "detail": "Up 2 days (healthy)"
     },
     {
       "id": "satohash-api",
@@ -388,28 +388,28 @@
   "recentActivity": [
     {
       "repo": "hq",
-      "commit": "b95a620f chore: refresh status.json + thor-node [skip deploy",
-      "timestamp": "2026-08-08"
+      "commit": "2393e7c0 chore: refresh status.json + thor-node [skip deploy",
+      "timestamp": "2026-08-09"
     },
     {
       "repo": "hq",
-      "commit": "6714907c chore: thor auto-metrics 00:00 (live LND)",
-      "timestamp": "2026-08-08"
+      "commit": "1eafd05a chore: thor auto-metrics 00:00 (live LND)",
+      "timestamp": "2026-08-09"
     },
     {
       "repo": "hq",
-      "commit": "fc0f8ace chore: thor auto-metrics 23:45 (live LND)",
-      "timestamp": "2026-08-08"
+      "commit": "df1e2f39 chore: refresh status.json [skip deploy]",
+      "timestamp": "2026-08-09"
     },
     {
       "repo": "satohash",
       "commit": "c2708d6 docs: session closeout 2026-08-05 \u2014 10s watch teaser",
-      "timestamp": "2026-08-08"
+      "timestamp": "2026-08-09"
     },
     {
       "repo": "satohash",
       "commit": "af2268a fix(watch): cache-bust explainer MP4 URL and shorten",
-      "timestamp": "2026-08-08"
+      "timestamp": "2026-08-09"
     }
   ],
   "metadata": {
@@ -418,6 +418,6 @@
     "machineCount": 3,
     "activeCrons": 28,
     "skillCount": 14,
-    "vaultJournals": 126
+    "vaultJournals": 127
   }
 }
