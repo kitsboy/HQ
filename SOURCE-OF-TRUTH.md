@@ -1,6 +1,6 @@
 # HQ SOURCE OF TRUTH
 
-_Updated: 2026-08-06 — app v3.30.0 (stamp-version)
+_Updated: 2026-08-09 — app v3.30.0 (stamp-version)
 
 ## Live
 
