@@ -1,3 +1,9 @@
+### 2026-08-09 — HQ v3.31.1: OpenCode tile now LIVE self-updating (Kimi)
+
+- **OpenCode version on HQ tile is now live-probed, never stale**: `thor-auto-metrics.py` (15-min cron) probes `http://100.77.139.2:4096/global/health` → writes `metrics/opencode.json` (+public mirror) → commits+pushes → CF auto-deploys. Tile shows `● LIVE v1.18.15 · 24ms` pill.
+- Password for probe: `/root/MASTER-BRAIN/secrets/opencode-server-password.txt` (600, never in repo). Fallback to systemd state if HTTP probe fails.
+- Verified end-to-end live on hq.giveabit.io (edge opencode.json + pill render).
+
 ### 2026-08-09 — OpenCode on THOR live + HQ v3.31.0 tool tile (Kimi)
 
 - **New callable tool:** OpenCode AI coding agent server on THOR (v1.18.15). Desktop app connects over HTTP (NOT SSH): `http://100.77.139.2:4096` · user `opencode` · pw in THOR secrets · Tailscale only. systemd service `opencode-serve` auto-starts; runbook `docs/OPENCODE-THOR.md`.
