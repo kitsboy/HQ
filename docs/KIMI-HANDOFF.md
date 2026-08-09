@@ -1,3 +1,9 @@
+### 2026-08-09 — OpenCode on THOR live + HQ v3.31.0 tool tile (Kimi)
+
+- **New callable tool:** OpenCode AI coding agent server on THOR (v1.18.15). Desktop app connects over HTTP (NOT SSH): `http://100.77.139.2:4096` · user `opencode` · pw in THOR secrets · Tailscale only. systemd service `opencode-serve` auto-starts; runbook `docs/OPENCODE-THOR.md`.
+- **SSH side:** created user `opencode` (sudo+docker), password auth enabled ONLY for it (Match block; global sshd password auth OFF — root/ubuntu stay key-only), Mac keys copied to its authorized_keys.
+- **HQ v3.31.0 deployed:** OpenCode tile added to Handoffs-tab tools + AI & build quick links; verified live on edge (handoffs.json + tools.json + doc 200).
+
 ### 2026-08-07 — M4 Hermes Desktop replaced by installer shell (recovery in M4-SETUP-CHECKLIST.md)
 
 - **Root cause:** website `Hermes-Setup.dmg` is an INSTALLER shell (com.nousresearch.hermes.setup, v0.0.1), NOT the thin-client app. Dragging it into Applications replaces the real app → "Install Hermes" loop on launch.

@@ -1,6 +1,6 @@
 {
   "schema": "gab.handoffs.v1",
-  "updatedAt": "2026-07-27T02:15:00.000Z",
+  "updatedAt": "2026-08-09T11:00:00.000Z",
   "projects": [
     {
       "id": "satohash",
@@ -354,6 +354,15 @@
       "audience": "Kimi",
       "type": "tool",
       "tags": ["coding", "thor", "aider"]
+    },
+    {
+      "id": "opencode-thor",
+      "title": "🖥️ OpenCode (on THOR)",
+      "summary": "OpenCode AI coding agent server on THOR (v1.18.15). Connect from OpenCode Desktop: http://100.77.139.2:4096 · user opencode · pw in THOR secrets · Tailscale only. Full runbook: docs/OPENCODE-THOR.md.",
+      "url": "/docs/OPENCODE-THOR.md",
+      "audience": "Cam + Kimi",
+      "type": "tool",
+      "tags": ["coding", "thor", "opencode", "tailscale"]
     }
   ]
 }

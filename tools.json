@@ -229,6 +229,11 @@
       "tip": "Paste SuperGrok % into Vault \u2014 no public usage API.",
       "links": [
         {
+          "name": "OpenCode on THOR",
+          "url": "http://100.77.139.2:4096",
+          "tip": "AI coding agent server \u00b7 user opencode \u00b7 pw in THOR secrets \u00b7 Tailscale only"
+        },
+        {
           "name": "xAI / Grok",
           "url": "https://x.ai",
           "tip": "Account usage page"
