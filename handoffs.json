@@ -358,7 +358,7 @@
     {
       "id": "opencode-thor",
       "title": "🖥️ OpenCode (on THOR)",
-      "summary": "OpenCode AI coding agent server on THOR (v1.18.15). Connect from OpenCode Desktop: http://100.77.139.2:4096 · user opencode · pw in THOR secrets · Tailscale only. Full runbook: docs/OPENCODE-THOR.md.",
+      "summary": "OpenCode AI coding agent server on THOR (live version shown on tile). Connect from OpenCode Desktop: http://100.77.139.2:4096 · user opencode · pw in THOR secrets · Tailscale only. Full runbook: docs/OPENCODE-THOR.md.",
       "url": "/docs/OPENCODE-THOR.md",
       "audience": "Cam + Kimi",
       "type": "tool",

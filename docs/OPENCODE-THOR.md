@@ -1,7 +1,16 @@
 # OpenCode on THOR — Callable Tool
 
-**Status:** 🟢 Live since 2026-08-09 · server v1.18.15
+**Status:** 🟢 Live since 2026-08-09 · server version auto-probed every 15 min (see below)
 **What it is:** OpenCode (opencode.ai) is an AI coding agent. THOR runs a headless OpenCode **server**; the OpenCode Desktop app on Cam's Mac connects to it over the Tailscale network and drives it.
+
+## Live version (self-updating)
+
+The dashboard tile shows the **live** server version, refreshed automatically:
+
+- `thor-auto-metrics.py` probes `http://100.77.139.2:4096/global/health` every 15 min (Hermes cron) → writes `metrics/opencode.json` (+ public mirror) → commits + pushes → CF Pages auto-deploys.
+- Password for the probe is read from `/root/MASTER-BRAIN/secrets/opencode-server-password.txt` (chmod 600, never committed).
+- If the HTTP probe fails, the file falls back to systemd service state (`service: active|inactive`).
+- On-disk health file: `/root/hq/metrics/opencode.json`; live URL: `https://hq.giveabit.io/metrics/opencode.json`.
 
 ## How to connect (OpenCode Desktop)
 
