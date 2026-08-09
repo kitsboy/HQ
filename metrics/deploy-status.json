@@ -64,9 +64,9 @@
   },
   "HQ": {
     "workflow_name": "Deploy HQ to Cloudflare Pages",
-    "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/HQ/actions/runs/31285262327",
-    "updatedAt": "2026-08-09T00:01:27Z",
-    "status": "completed"
+    "latest_conclusion": null,
+    "html_url": "https://github.com/kitsboy/HQ/actions/runs/31304854993",
+    "updatedAt": "2026-08-09T09:00:09Z",
+    "status": "queued"
   }
 }

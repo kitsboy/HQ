@@ -1,6 +1,6 @@
 {
   "schema": "gab.ecosystem-map.v1",
-  "updatedAt": "2026-08-09T02:00:54Z",
+  "updatedAt": "2026-08-09T10:08:41Z",
   "projects": [
     {
       "id": "satohash",
@@ -24,8 +24,8 @@
       "version": "3.30.0",
       "status": "green",
       "health": "200",
-      "lastCommit": "2393e7c0 chore: refresh status.json + thor-node [skip deploy]",
-      "synced": "ahead",
+      "lastCommit": "d2263acd chore: refresh status.json + thor-node [skip deploy]",
+      "synced": "synced",
       "localOnThor": true
     },
     {
@@ -142,10 +142,10 @@
       "status": "green",
       "disk": "14% used",
       "diskFree": "334G",
-      "mem": "2.9Gi used",
-      "memAvail": "4.9Gi",
-      "load": "0.88/0.30/0.23",
-      "uptime": "up 3 weeks, 2 days, 1 hour, 4 minutes",
+      "mem": "3.1Gi used",
+      "memAvail": "4.6Gi",
+      "load": "0.35/0.39/0.36",
+      "uptime": "up 3 weeks, 2 days, 9 hours, 12 minutes",
       "lastSeen": "2026-08-09"
     },
     {
@@ -264,7 +264,7 @@
   "skills": [
     {
       "name": "browser-harness",
-      "ageDays": 70,
+      "ageDays": 71,
       "status": "stale",
       "updated": "2026-05-30"
     },
@@ -276,7 +276,7 @@
     },
     {
       "name": "deployment-workflow",
-      "ageDays": 26,
+      "ageDays": 27,
       "status": "fresh",
       "updated": "2026-07-13"
     },
@@ -294,13 +294,13 @@
     },
     {
       "name": "hermes-desktop-plugins",
-      "ageDays": 19,
+      "ageDays": 20,
       "status": "fresh",
       "updated": "2026-07-20"
     },
     {
       "name": "kanban-worker",
-      "ageDays": 70,
+      "ageDays": 71,
       "status": "stale",
       "updated": "2026-05-30"
     },
@@ -312,25 +312,25 @@
     },
     {
       "name": "nova-product-management",
-      "ageDays": 25,
+      "ageDays": 26,
       "status": "fresh",
       "updated": "2026-07-14"
     },
     {
       "name": "project-brief",
-      "ageDays": 25,
+      "ageDays": 26,
       "status": "fresh",
       "updated": "2026-07-14"
     },
     {
       "name": "propagate-template",
-      "ageDays": 43,
+      "ageDays": 44,
       "status": "aging",
       "updated": "2026-06-26"
     },
     {
       "name": "quick-backup",
-      "ageDays": 43,
+      "ageDays": 44,
       "status": "aging",
       "updated": "2026-06-26"
     },
@@ -382,23 +382,23 @@
       "name": "PostgreSQL",
       "type": "LNbits Database",
       "status": "green",
-      "detail": "Up 2 weeks (healthy)"
+      "detail": "Up 3 weeks (healthy)"
     }
   ],
   "recentActivity": [
     {
       "repo": "hq",
-      "commit": "3685bc79 chore: ecosystem-map nightly refresh",
+      "commit": "d2263acd chore: refresh status.json + thor-node [skip deploy",
       "timestamp": "2026-08-09"
     },
     {
       "repo": "hq",
-      "commit": "2393e7c0 chore: refresh status.json + thor-node [skip deploy",
+      "commit": "3e7900fd chore: thor auto-metrics 08:00 (live LND)",
       "timestamp": "2026-08-09"
     },
     {
       "repo": "hq",
-      "commit": "1eafd05a chore: thor auto-metrics 00:00 (live LND)",
+      "commit": "6c2f47ab chore: thor auto-metrics 07:45 (live LND)",
       "timestamp": "2026-08-09"
     },
     {
@@ -418,6 +418,6 @@
     "machineCount": 3,
     "activeCrons": 28,
     "skillCount": 14,
-    "vaultJournals": 127
+    "vaultJournals": 128
   }
 }
