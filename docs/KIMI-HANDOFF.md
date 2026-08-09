@@ -1,3 +1,9 @@
+### 2026-08-09 — Status pinger CI fixed: push-race root cause + Node 24 (Kimi)
+
+- **Emails stopped at the root:** Status pinger failed 8x in 10 days with `! [rejected] main -> main (fetch first)`. Cause: 15-min cron runs sit in the GitHub queue 30+ min; by push time a newer run already pushed status.json -> non-fast-forward rejection -> failure email every time.
+- **Fix (`.github/workflows/status-pinger.yml`):** commit step now `git pull --rebase -X ours origin main` before `git push` — bot-vs-bot conflicts resolve to the freshly-pinged status.json. Also bumped checkout@v4->@v5, setup-node@v4->@v5, node-version 20->24 (kills the Node 20 deprecation warning on every run). deploy.yml bumped the same way.
+- Verified: push-triggered pinger run 31326883878 all steps green; deploy run green; site live.
+
 ### 2026-08-09 — HQ v3.31.1: OpenCode tile now LIVE self-updating (Kimi)
 
 - **OpenCode version on HQ tile is now live-probed, never stale**: `thor-auto-metrics.py` (15-min cron) probes `http://100.77.139.2:4096/global/health` → writes `metrics/opencode.json` (+public mirror) → commits+pushes → CF auto-deploys. Tile shows `● LIVE v1.18.15 · 24ms` pill.
