@@ -18,6 +18,10 @@ from pathlib import Path
 HQ = Path("/root/hq")
 METRICS = HQ / "metrics" / "thor-node.json"
 PUBLIC_METRICS = HQ / "public" / "metrics" / "thor-node.json"
+OPCODE_METRICS = HQ / "metrics" / "opencode.json"
+PUBLIC_OPCODE = HQ / "public" / "metrics" / "opencode.json"
+OPCODE_PW_FILE = Path("/root/MASTER-BRAIN/secrets/opencode-server-password.txt")
+OPCODE_HEALTH = "http://100.77.139.2:4096/global/health"
 LOCK = Path("/tmp/thor-metrics.lock")
 SERIES_MAX = 96  # ~24h at 15m
 
@@ -378,6 +382,56 @@ def storage_consumers(breakdown):
     return consumers
 
 
+def collect_opencode():
+    """
+    Live OpenCode server probe → metrics/opencode.json.
+    Password read from THOR secrets file (never committed); health endpoint
+    returns {"healthy": true, "version": "x.y.z"}. Falls back to service
+    status via systemctl when the HTTP probe fails.
+    """
+    import urllib.request
+    import base64
+
+    now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    out = {
+        "schema": "gab.opencode.v1",
+        "updatedAt": now,
+        "healthy": False,
+        "version": None,
+        "latencyMs": None,
+        "service": None,
+        "hint": "",
+    }
+    try:
+        pw = OPCODE_PW_FILE.read_text().strip() if OPCODE_PW_FILE.exists() else ""
+        if not pw:
+            out["hint"] = "no password file at " + str(OPCODE_PW_FILE)
+            return out
+        token = base64.b64encode(f"opencode:{pw}".encode()).decode()
+        req = urllib.request.Request(
+            OPCODE_HEALTH, headers={"Authorization": f"Basic {token}"}
+        )
+        t0 = time.time()
+        with urllib.request.urlopen(req, timeout=8) as resp:
+            latency = round((time.time() - t0) * 1000)
+            body = json.loads(resp.read().decode())
+        out["healthy"] = bool(body.get("healthy"))
+        out["version"] = body.get("version")
+        out["latencyMs"] = latency
+        if not out["healthy"]:
+            out["hint"] = "health endpoint returned unhealthy"
+    except Exception as e:
+        out["hint"] = f"probe failed: {str(e)[:160]}"
+        # Fallback: systemd service state (still live info, no auth needed)
+        svc, _, _ = run("systemctl is-active opencode-serve 2>/dev/null")
+        if svc.strip() == "active":
+            out["service"] = "active"
+            out["hint"] = (out["hint"] + "; service active but HTTP probe failed").strip("; ")
+        else:
+            out["service"] = svc.strip() or "inactive"
+    return out
+
+
 def main():
     try:
         with open(METRICS) as f:
@@ -531,12 +585,24 @@ def main():
     )
     data["series"] = series
 
+    # --- OpenCode server live probe ---
+    opcode = collect_opencode()
+    data["opencode"] = opcode
+
     payload = json.dumps(data, indent=1)
     METRICS.parent.mkdir(parents=True, exist_ok=True)
     with open(METRICS, "w") as f:
         f.write(payload)
         f.write("\n")
     print(f"Wrote {METRICS} at {now}")
+
+    # Separate opencode.json (thin, dashboard reads it for live version)
+    opcode_payload = json.dumps(opcode, indent=1)
+    OPCODE_METRICS.parent.mkdir(parents=True, exist_ok=True)
+    with open(OPCODE_METRICS, "w") as f:
+        f.write(opcode_payload)
+        f.write("\n")
+    print(f"Wrote {OPCODE_METRICS} (healthy={opcode.get('healthy')}, v{opcode.get('version')})")
     print(
         f"  LND: peers={lightning.get('numPeers')} ch={lightning.get('numActiveChannels')} "
         f"local={lightning.get('totalLocalBalanceSats')} height={bitcoin.get('blocks')} "
@@ -549,18 +615,20 @@ def main():
             with open(PUBLIC_METRICS, "w") as f:
                 f.write(payload)
                 f.write("\n")
+        if PUBLIC_OPCODE.parent.is_dir():
+            with open(PUBLIC_OPCODE, "w") as f:
+                f.write(opcode_payload)
+                f.write("\n")
     except Exception as e:
         print(f"public mirror skip: {e}")
 
     # Git commit + push (Hermes/cron path)
     os.chdir(str(HQ))
-    status, _, _ = run("git status --short metrics/thor-node.json scripts/thor-auto-metrics.py")
+    status, _, _ = run("git status --short metrics/thor-node.json scripts/thor-auto-metrics.py metrics/opencode.json public/metrics/opencode.json")
     if status.strip():
-        run("git add metrics/thor-node.json scripts/thor-auto-metrics.py")
-        if PUBLIC_METRICS.exists():
-            run("git add public/metrics/thor-node.json 2>/dev/null")
+        run("git add metrics/thor-node.json scripts/thor-auto-metrics.py metrics/opencode.json public/metrics/opencode.json 2>/dev/null")
         msg_time = time.strftime("%H:%M", time.gmtime())
-        run(f'git commit -m "chore: thor auto-metrics {msg_time} (live LND)"')
+        run(f'git commit -m "chore: thor auto-metrics {msg_time} (live LND + opencode probe)"')
         out, err, code = run("git push origin main 2>&1", timeout=60)
         if code == 0:
             print("Pushed to GitHub")
