@@ -30,11 +30,11 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: "20"
+          node-version: "24"
 
       - name: Ping suite + satohash metrics
         run: node scripts/status-ping.mjs
@@ -50,7 +50,12 @@ jobs:
             echo "No status change"
           else
             git commit -m "chore: refresh status.json [skip deploy]"
-            git push
+            # Race-proof push: runs can sit in the queue for 30+ min while
+            # newer runs push status.json first -> non-fast-forward rejection.
+            # Rebase with "-X ours" so our freshly-pinged status.json always
+            # wins any bot-vs-bot conflict, then push.
+            git pull --rebase -X ours origin main
+            git push origin main
             echo "changed=true" >> "$GITHUB_OUTPUT"
             echo "Pushed status.json"
           fi
