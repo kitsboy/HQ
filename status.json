@@ -1,17 +1,17 @@
 {
-  "updatedAt": "2026-08-09T00:30:53.425Z",
+  "updatedAt": "2026-08-09T01:00:54.875Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 179,
+      "ms": 1397,
       "url": "https://giveabit.io"
     },
     "satohash": {
       "ok": true,
       "status": 200,
-      "ms": 99,
+      "ms": 95,
       "url": "https://satohash.io"
     },
     "katoa": {
@@ -23,7 +23,7 @@
     "stranded": {
       "ok": true,
       "status": 200,
-      "ms": 122,
+      "ms": 112,
       "url": "https://stranded.giveabit.io"
     },
     "tadbuy": {
@@ -35,19 +35,19 @@
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 128,
+      "ms": 87,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 97,
+      "ms": 76,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
       "ok": true,
       "status": 200,
-      "ms": 102,
+      "ms": 79,
       "url": "https://openstrata.giveabit.io"
     },
     "btcminiscript": {
@@ -67,18 +67,18 @@
     "satohashApi": {
       "ok": true,
       "status": 200,
-      "ms": 25,
+      "ms": 23,
       "healthUrl": "https://api.satohash.io/health"
     },
     "satohashMetrics": {
       "schema": "gab.product-metrics.v1",
       "productId": "satohash",
       "name": "Satohash",
-      "updatedAt": "2026-08-09T00:30:53.412Z",
+      "updatedAt": "2026-08-09T01:00:54.865Z",
       "window": {
         "label": "7d",
-        "from": "2026-08-02T00:30:53.412Z",
-        "to": "2026-08-09T00:30:53.412Z"
+        "from": "2026-08-02T01:00:54.865Z",
+        "to": "2026-08-09T01:00:54.865Z"
       },
       "health": {
         "status": "green",
@@ -869,7 +869,7 @@
         "seriesFromDb": true,
         "note": "Live metrics from satohash API DB",
         "version": "5.0.0-ELITE",
-        "uptimeSec": 953365,
+        "uptimeSec": 955166,
         "requireLightning": false,
         "familyFreeTier": true,
         "directory": {
