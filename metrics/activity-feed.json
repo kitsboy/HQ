@@ -1,191 +1,191 @@
 {
-  "generated_at": "2026-07-31T08:00:59Z",
+  "generated_at": "2026-08-09T22:01:10Z",
   "events": [
     {
-      "time": 1785484845.0,
+      "time": 1786312869.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "044] agent.turn_context: conversation turn: session=cron_776"
+      "text": "cf': delivered to telegram:155378281 via live adapter"
     },
     {
-      "time": 1785484845.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "044] run_agent: OpenAI client created (chat_completion_reque"
-    },
-    {
-      "time": 1785484844.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "or-metrics-export-hourly' (ID: 7768b5c5aa49)"
-    },
-    {
-      "time": 1785484844.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "ANT: You are running as a scheduled cron job. DELIVERY: Your"
-    },
-    {
-      "time": 1785484844.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "49': using workdir /root/hq"
-    },
-    {
-      "time": 1785484844.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "al pool: no available entries (all exhausted or empty)"
-    },
-    {
-      "time": 1785484844.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "or-auto-metrics' (ID: 42cdc3e9bd97)"
-    },
-    {
-      "time": 1785484844.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "ANT: You are running as a scheduled cron job. DELIVERY: Your"
-    },
-    {
-      "time": 1785484844.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
-    },
-    {
-      "time": 1785484844.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "49': loaded credential pool for provider nous with 1 entries"
-    },
-    {
-      "time": 1785484844.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "or-cron-health-hourly' (ID: bb5980d548fb)"
-    },
-    {
-      "time": 1785484844.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "ANT: You are running as a scheduled cron job. DELIVERY: Your"
-    },
-    {
-      "time": 1785484844.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "d (agent_init, shared=True) thread=cron-seq_0:12630509695558"
-    },
-    {
-      "time": 1785484709.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
-    },
-    {
-      "time": 1785484404.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
-    },
-    {
-      "time": 1785484375.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "inactive environment for task: default"
-    },
-    {
-      "time": 1785484306.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "16' (no_agent): empty stdout \u2014 silent run"
-    },
-    {
-      "time": 1785484306.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "16': agent returned [SILENT] \u2014 skipping delivery"
-    },
-    {
-      "time": 1785484096.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "auth: using NAS invoke JWT"
-    },
-    {
-      "time": 1785484027.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "543] run_agent: OpenAI client created (chat_completion_reque"
-    },
-    {
-      "time": 1785484027.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "543] run_agent: OpenAI client closed (request_complete, shar"
-    },
-    {
-      "time": 1785484027.0,
+      "time": 1786312868.0,
       "type": "cron_warn",
       "icon": "\u26a0\ufe0f",
-      "text": "094543] agent.conversation_loop: API call failed (attempt 3/"
+      "text": "(re)started 6 times in 120s \u2014 backing off 10s to break a res"
     },
     {
-      "time": 1785484027.0,
+      "time": 1786312867.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "543] agent.conversation_loop: Nous 429 looks like upstream c"
+      "text": "wser-browser-use' registered browser provider: browser-use"
     },
     {
-      "time": 1785484027.0,
-      "type": "cron_warn",
-      "icon": "\u26a0\ufe0f",
-      "text": "4543] agent.conversation_loop: API call failed after 3 retri"
-    },
-    {
-      "time": 1785484027.0,
-      "type": "cron_warn",
-      "icon": "\u26a0\ufe0f",
-      "text": "-metrics' failed: RuntimeError: HTTP 429: Hold up for a bit,"
-    },
-    {
-      "time": 1785484027.0,
+      "time": 1786312867.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "(agent_close, shared=True, tcp_force_closed=0) thread=cron-"
+      "text": "wser-browserbase' registered browser provider: browserbase"
     },
     {
-      "time": 1785484024.0,
+      "time": 1786312867.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "604] agent.conversation_loop: Nous 429 looks like upstream c"
+      "text": "wser-firecrawl' registered browser provider: firecrawl"
     },
     {
-      "time": 1785484024.0,
-      "type": "cron_warn",
-      "icon": "\u26a0\ufe0f",
-      "text": "4604] agent.conversation_loop: API call failed after 3 retri"
-    },
-    {
-      "time": 1785484024.0,
-      "type": "cron_warn",
-      "icon": "\u26a0\ufe0f",
-      "text": "ics-bundle-15m' failed: RuntimeError: HTTP 429: Hold up for"
-    },
-    {
-      "time": 1785484024.0,
+      "time": 1786312867.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "(agent_close, shared=True, tcp_force_closed=0) thread=cron-"
+      "text": "basic: dashboard-auth-basic: hashed env-supplied password in"
     },
     {
-      "time": 1785477616.0,
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "basic: dashboard-auth-basic: no 'secret' configured; generat"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "try: dashboard-auth: registered provider 'basic' (Username &"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "ic' registered dashboard-auth provider: basic (Username & Pa"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "basic: dashboard-auth-basic: registered password provider (u"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "pinfra' registered image_gen provider: deepinfra"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "' registered image_gen provider: fal"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "a' registered image_gen provider: krea"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "nai' registered image_gen provider: openai"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "nai-codex' registered image_gen provider: openai-codex"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "nrouter' registered image_gen provider: openrouter"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "nrouter' registered image_gen provider: nous"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "' registered image_gen provider: xai"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "pinfra' registered video_gen provider: deepinfra"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "' registered video_gen provider: fal"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "' registered video_gen provider: xai"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-brave-free' registered web provider: brave-free"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-ddgs' registered web provider: ddgs"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-exa' registered web provider: exa"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-firecrawl' registered web provider: firecrawl"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-parallel' registered web provider: parallel"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-searxng' registered web provider: searxng"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-tavily' registered web provider: tavily"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-xai' registered web provider: xai"
+    },
+    {
+      "time": 1786312867.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "overy complete: 55 found, 48 enabled"
+    },
+    {
+      "time": 1786305118.0,
       "type": "commit",
       "icon": "\ud83d\udd28",
-      "text": "HQ Dashboard: chore: thor auto-metrics 08:00 (live LND)",
+      "text": "HQ Dashboard: chore: refresh status.json [skip deploy]",
       "repo": "hq"
     }
   ]

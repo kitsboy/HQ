@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-07-31T08:00:45Z",
+  "checked_at": "2026-08-09T22:00:59Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -7,18 +7,18 @@
       "repo": "kitsboy/giveabit",
       "site_url": "https://giveabit.io",
       "last_commit": {
-        "sha": "c5209d2",
-        "message": "docs: point Kimi to HQ MASTER LIST with Cam details",
+        "sha": "2ce6908",
+        "message": "fix: add sherpa as 9th agent on /api/agents + NAMESPACE",
         "author": "Cam",
-        "date": "2026-07-27T05:17:05Z",
-        "url": "https://github.com/kitsboy/giveabit/commit/c5209d2aab9dd656655fa7e8b125d944cb1491de"
+        "date": "2026-08-03T18:20:10Z",
+        "url": "https://github.com/kitsboy/giveabit/commit/2ce6908aec4c641b2fdd54eb18593f9e6624ad51"
       },
       "recent_commits": [
-        "docs: point Kimi to HQ MASTER LIST with Cam details",
-        "feat: Mission NIP-05 identity + sherpa@ in SPA registry (v4.",
-        "feat: add sherpa NIP-05 identity (sherpa@giveabit.io) for Sh"
+        "fix: add sherpa as 9th agent on /api/agents + NAMESPACE",
+        "feat(nip05): register hello@giveabit.io \u2014 public-facing iden",
+        "fix(ci): always start vite preview via Playwright webServer "
       ],
-      "commits_7d": 3,
+      "commits_7d": 1,
       "health": "green",
       "cf_project": "giveabit",
       "open_issues": 0
@@ -29,18 +29,18 @@
       "repo": "kitsboy/satohash",
       "site_url": "https://satohash.io",
       "last_commit": {
-        "sha": "fb1a28a",
-        "message": "docs: update ref/GROK-BOOT + ref/AGENTS for v5.0.0-ELITE state",
-        "author": "Kimi (THOR)",
-        "date": "2026-07-29T05:02:24Z",
-        "url": "https://github.com/kitsboy/satohash/commit/fb1a28aacf0077c1d17e25942f807ba37a4731d5"
+        "sha": "c2708d6",
+        "message": "docs: session closeout 2026-08-05 \u2014 10s watch teaser handoffs",
+        "author": "Cam",
+        "date": "2026-08-05T18:52:24Z",
+        "url": "https://github.com/kitsboy/satohash/commit/c2708d693090d55be090bbc2f5fef83638a0e031"
       },
       "recent_commits": [
-        "docs: update ref/GROK-BOOT + ref/AGENTS for v5.0.0-ELITE sta",
-        "docs: explain video VO + script; bitcoind RPC fix; final hou",
-        "docs: sync architecture map after closeout"
+        "docs: session closeout 2026-08-05 \u2014 10s watch teaser handoff",
+        "fix(watch): cache-bust explainer MP4 URL and shorten media T",
+        "feat(watch): ship 10s Kimi teaser MP4 as primary /watch play"
       ],
-      "commits_7d": 64,
+      "commits_7d": 18,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "c220d0c",
-        "message": "chore: thor auto-metrics 08:00 (live LND)",
-        "author": "Cam (via Aider)",
-        "date": "2026-07-31T08:00:16Z",
-        "url": "https://github.com/kitsboy/HQ/commit/c220d0cf6c9fd9f43f2bf6ddfd231ad47838803c"
+        "sha": "881df0e",
+        "message": "chore: refresh status.json [skip deploy]",
+        "author": "hq-status-bot",
+        "date": "2026-08-09T21:51:58Z",
+        "url": "https://github.com/kitsboy/HQ/commit/881df0eb62857ccf1802c3c6d655c093d10187bc"
       },
       "recent_commits": [
-        "chore: thor auto-metrics 08:00 (live LND)",
-        "chore: thor auto-metrics 07:46 (live LND)",
-        "chore: thor auto-metrics 07:45 (live LND)"
+        "chore: refresh status.json [skip deploy]",
+        "chore: thor auto-metrics 21:45 (live LND + opencode probe)",
+        "chore: refresh status.json + thor-node [skip deploy]"
       ],
       "commits_7d": 100,
       "health": "green",
@@ -73,18 +73,18 @@
       "repo": "kitsboy/katoa",
       "site_url": "https://katoa.org",
       "last_commit": {
-        "sha": "eec2b76",
-        "message": "fix: prefix bare vite build with npx for Node 24 runner compat",
-        "author": "Cam (via Aider)",
-        "date": "2026-07-24T13:19:16Z",
-        "url": "https://github.com/kitsboy/katoa/commit/eec2b765c28ce8d54d16af39cee52a6f21f4bae3"
+        "sha": "3ab1989",
+        "message": "fix(ci): prebuild hook had a stray leading '&&' breaking npm run build (sh synta",
+        "author": "Kimi (THOR)",
+        "date": "2026-08-04T18:34:54Z",
+        "url": "https://github.com/kitsboy/katoa/commit/3ab19891325a3ffe38af1a26ae7b1fe09f9f8f77"
       },
       "recent_commits": [
-        "fix: prefix bare vite build with npx for Node 24 runner comp",
-        "chore: update .ai_docs/current-status.md per project templat",
-        "chore: update ROADMAP.md per project template"
+        "fix(ci): prebuild hook had a stray leading '&&' breaking npm",
+        "fix(ci): resolve eslint unused-var errors in generate-metric",
+        "fix: prefix bare vite build with npx for Node 24 runner comp"
       ],
-      "commits_7d": 1,
+      "commits_7d": 2,
       "health": "green",
       "cf_project": "katoa",
       "open_issues": 0
@@ -106,7 +106,7 @@
         "fix: prefix bare vite build with npx for Node 24 runner comp",
         "chore: update .ai_docs/current-status.md per project templat"
       ],
-      "commits_7d": 2,
+      "commits_7d": 0,
       "health": "green",
       "cf_project": "tadbuy",
       "open_issues": 1
@@ -117,18 +117,18 @@
       "repo": "kitsboy/stranded",
       "site_url": "https://stranded.giveabit.io",
       "last_commit": {
-        "sha": "d258a64",
-        "message": "fix: CI verify paths for trailingSlash + bump Node to 22 (stop Actions failures)",
-        "author": "Sherpa",
-        "date": "2026-07-24T19:31:30Z",
-        "url": "https://github.com/kitsboy/stranded/commit/d258a6420f2398005b6e8c2103fb295398cb81cb"
+        "sha": "bd23d26",
+        "message": "fix(ci): smoke test expects /dashboard/ \u2014 app uses trailingSlash for static expo",
+        "author": "Kimi (THOR)",
+        "date": "2026-08-04T18:31:22Z",
+        "url": "https://github.com/kitsboy/stranded/commit/bd23d26c83f9d36e3f66bf2708940603bbc60a8e"
       },
       "recent_commits": [
+        "fix(ci): smoke test expects /dashboard/ \u2014 app uses trailingS",
         "fix: CI verify paths for trailingSlash + bump Node to 22 (st",
-        "fix: deploy from ./dist not ./out (next.config.js sets distD",
-        "fix: prefix next build with npx for Node 24 compat"
+        "fix: deploy from ./dist not ./out (next.config.js sets distD"
       ],
-      "commits_7d": 4,
+      "commits_7d": 1,
       "health": "green",
       "cf_project": "strandedbuild",
       "open_issues": 0
@@ -139,16 +139,16 @@
       "repo": "kitsboy/motopass",
       "site_url": "https://motopass.giveabit.io",
       "last_commit": {
-        "sha": "28dba80",
-        "message": "fix: prefix bare vite build with npx for Node 24 runner compat",
-        "author": "Cam (via Aider)",
-        "date": "2026-07-24T13:20:04Z",
-        "url": "https://github.com/kitsboy/motopass/commit/28dba80b6840a99c668c05d3fc1449aad67eb980"
+        "sha": "76770a3",
+        "message": "fix(ci): standalone btcmap-sync workflow with contents:write \u2014 CI was disabled s",
+        "author": "Kimi (THOR)",
+        "date": "2026-08-04T18:33:01Z",
+        "url": "https://github.com/kitsboy/motopass/commit/76770a373a2c8a89c05a792b020e579ad13170cf"
       },
       "recent_commits": [
-        "fix: prefix bare vite build with npx for Node 24 runner comp",
-        "chore: update .ai_docs/current-status.md per project templat",
-        "chore: update ROADMAP.md per project template"
+        "fix(ci): standalone btcmap-sync workflow with contents:write",
+        "fix(ci): grant contents:write for scheduled btcmap sync; dro",
+        "fix: prefix bare vite build with npx for Node 24 runner comp"
       ],
       "commits_7d": 1,
       "health": "green",
@@ -161,18 +161,18 @@
       "repo": "kitsboy/sherpacarta",
       "site_url": "https://sherpacarta.org",
       "last_commit": {
-        "sha": "785b03e",
-        "message": "docs: Kimi list \u2014 Cam asks, P0 LNURL, pointer to HQ master",
-        "author": "Cam",
-        "date": "2026-07-27T05:17:07Z",
-        "url": "https://github.com/kitsboy/sherpacarta/commit/785b03ebde5499c798c41e3a8758c007c2bbb8b5"
+        "sha": "c02f414",
+        "message": "perf(metrics): KV-cache mempool treasury (10min TTL) \u2014 endpoint stays fast even ",
+        "author": "Kimi (THOR)",
+        "date": "2026-08-06T01:37:04Z",
+        "url": "https://github.com/kitsboy/sherpacarta/commit/c02f4148538845df793e9a59460e3ad86c627e35"
       },
       "recent_commits": [
-        "docs: Kimi list \u2014 Cam asks, P0 LNURL, pointer to HQ master",
-        "docs: suite truth \u2014 Mission/NIP-05 live; LNURL still Kimi",
-        "chore: LATEST-UPDATE tip c44d263"
+        "perf(metrics): KV-cache mempool treasury (10min TTL) \u2014 endpo",
+        "fix(metrics): add 4s timeout to mempool + origin fetches \u2014 e",
+        "feat: publish public Sherpa LNURL on site (remove TEMP Light"
       ],
-      "commits_7d": 42,
+      "commits_7d": 3,
       "health": "green",
       "cf_project": "sherpacarta",
       "open_issues": 0
