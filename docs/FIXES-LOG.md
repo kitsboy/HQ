@@ -12,7 +12,7 @@ after any autonomous repair so Cam can review "what got fixed" after the fact.
 - Accessibility 90 → 100: toast `role="region"`, safari `<ol>` li-only, footer social sr-only labels (Label-in-Name), carousel dots 6px → 28px hit targets, adoption-pulse accessible name fix.
 - Best Practices 96 → 100: CSP added (`script-src 'self' + analytics`, restricted connect/frame, `frame-ancestors 'none'`), first-party source maps enabled.
 - robots.txt trailing newline (Lighthouse 13 "unable to download" quirk; file was live & valid).
-- Verified: local Lighthouse a11y 100 / BP 100; live preflight OK. Site redeploy via GH push → CF Pages.
+- Verified: local Lighthouse a11y 100 / BP 100; live a11y 100, SEO 100, Perf 88 (LCP 2.7→1.9s), BP 96 — sole remaining BP flag is `errors-in-console`: wss://relay.damus.io 503 from the test datacenter IP (relay-side, environmental, varies per run; app multi-relay degrades gracefully). Site redeploy via GH push → CF Pages.
 
 ---
 
