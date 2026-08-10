@@ -5,6 +5,14 @@ after any autonomous repair so Cam can review "what got fixed" after the fact.
 
 ---
 
+### 2026-08-10 — satohash.io perf pass (eager bundle -42%)
+- Landing eager bundle 1.27 MB → 725 KB: recharts (~460 KB) extracted into lazy SummaryCharts.jsx — loads only on /docs/executive-summary.
+- ParticleStampCanvas rAF loop: throttled to 30fps + paused offscreen/hidden — the unthrottled loop was the dominant TBT driver (TBT 4.6s → 2.7–3.1s).
+- Google Fonts: CSS preloaded + display=swap → optional — hero H1 (LCP) painted at ~7.6s waiting for the webfont; now paints at FCP (~1.2s). LCP 4.9 → 3.2s.
+- 10 × `transition: all` scoped to transform/opacity/colors.
+- Commits: 1a8ac42 (recharts+transitions), 899a572 (canvas), f032b25 (fonts). All 111 vitest tests pass; BP 100 / SEO 100 / CLS 0 maintained.
+---
+
 ### 2026-08-10 — satohash.io + openstrata Lighthouse sweep (wave 2)
 - **satohash.io**: perf 37→42 (TBT 1540→990ms), BP 96→100, SEO 100, CLS 0. Killed 401 console error — Landing fetched /api/history (x-npub-gated) without auth; now reads public /metrics.json (raw.counts.stampsTotal). Avatar badge contrast (600/700 shades), footer legal links opacity-40→70, KimiContact label-in-name, sourcemaps on, llms.txt. Commits 555a5b2, 3ec529f.
 - **openstrata.giveabit.io**: perf 85→98, a11y 94→96, SEO 100, TBT 0ms, CLS 0. CTA bg-brand-600→700, /about link amber-700 on amber-50, deadline slate-400→600, footer h4→h3 heading order, llms.txt (SvelteKit static/ dir — public/ is NOT served). Commits 366dd7c, f7d2212.
