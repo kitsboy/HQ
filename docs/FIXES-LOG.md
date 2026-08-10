@@ -5,6 +5,16 @@ after any autonomous repair so Cam can review "what got fixed" after the fact.
 
 ---
 
+### 2026-08-10 — Family-site Lighthouse sweep: katoa, sherpacarta, stranded, tadbuy, motopass
+- **sherpacarta** (perf 93 → fixed): live `sc-bundle.js` threw `SyntaxError: Invalid left-hand side in assignment` on every load (assignment through `?.` — invalid JS) — killed the whole enhancements bundle. Fixed in `sc-enhancements-v5/v6.js` + `sc-upgrades-b3.js`, regenerated bundle, verified `node --check` + live. A11y: `cmp-row` cells → `role="gridcell"` (40), h4→h3 heading order, search button label-in-name, mailto underlines. sw.js v6.6.
+- **katoa** (perf 70, CLS 0.403): localized 45 Pexels CDN images → `/images/mock/` (self-hosted, kills third-party-cookies + inspector issues), sized hero img (CLS), `AuthContext` skips Supabase bootstrap when unconfigured (kills `placeholder.supabase.co` DNS console error), CSP now allows analytics.giveabit.io, contrast bumps, h3→p heading order, sw.js v14, sourcemaps.
+- **stranded** (perf 100): CSP now allows analytics (script+connect), a11y (logo/search/lang/GiveAbit label-in-name, footer link 24px targets, range aria-labels, contrast #FF8C00 + gray-500→400), sw.js v14, `productionBrowserSourceMaps`, llms.txt.
+- **tadbuy** (perf 94): Firebase init guarded on missing/placeholder key (kills `auth/invalid-api-key` crash + console storm), BTC chart API `blockchain.info` (no CORS) → CoinGecko, a11y (QR title+label, button names, kbd contrast, language/notifications labels, footer img sized), sw.js v5.0.22, sourcemaps, llms.txt.
+- **motopass** (a11y 100): BTC spot ticker label-in-name (sr-only hint), sourcemaps, llms.txt.
+- All 5: robots.txt trailing newline, `llms.txt` added, builds verified locally, pushed (`62513eb`, `caa9d96`, `d33f6ab`, `65fcd68`, `776a092`), deploys live-verified (sw.js versions, llms.txt 200, sherpacarta bundle syntax OK).
+
+---
+
 ### 2026-08-10 — giveabit.io Lighthouse sweep (v4.4.1, commit 7d0892c)
 - Fixed: sw.js `Uncaught (in promise) TypeError: Failed to execute 'put' on 'Cache': Partial response (status code 206)` — cache put on range-request streams. SW now caches only status-200, cache bumped to giveabit-v4.4.1.
 - Fixed: Umami beacons blocked by CORS preflight — analytics.giveabit.io worker (umami-proxy) now whitelists all `x-umami-*` headers (hostname, website-id, …). Deployed live, preflight verified 204.
