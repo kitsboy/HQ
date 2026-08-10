@@ -5,6 +5,14 @@ after any autonomous repair so Cam can review "what got fixed" after the fact.
 
 ---
 
+### 2026-08-10 — satohash.io + openstrata Lighthouse sweep (wave 2)
+- **satohash.io**: perf 37→42 (TBT 1540→990ms), BP 96→100, SEO 100, CLS 0. Killed 401 console error — Landing fetched /api/history (x-npub-gated) without auth; now reads public /metrics.json (raw.counts.stampsTotal). Avatar badge contrast (600/700 shades), footer legal links opacity-40→70, KimiContact label-in-name, sourcemaps on, llms.txt. Commits 555a5b2, 3ec529f.
+- **openstrata.giveabit.io**: perf 85→98, a11y 94→96, SEO 100, TBT 0ms, CLS 0. CTA bg-brand-600→700, /about link amber-700 on amber-50, deadline slate-400→600, footer h4→h3 heading order, llms.txt (SvelteKit static/ dir — public/ is NOT served). Commits 366dd7c, f7d2212.
+- **IMPORTANT FINDING**: openstrata.io apex serves a GoDaddy Website Builder site (wsimg.com assets, 46 MB payload, recaptcha) — the repo (Hermes Strata dashboard) only lives at openstrata.giveabit.io. If the apex should be the dashboard, DNS/hosting change required.
+- Remaining (external): relay.damus.io WS 503, CF challenge-script deprecations; satohash valid-source-maps flags the eager-inlined landing bundle (by design — /b prefix poison workaround).
+
+---
+
 ### 2026-08-10 — Family-site Lighthouse sweep COMPLETE (rounds 2–4) — all deployed + docs updated
 Final verified results (desktop, post-deploy):
 | Site | Perf | A11y | BP | SEO | CLS | Notes |
