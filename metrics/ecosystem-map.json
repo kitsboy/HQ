@@ -1,6 +1,6 @@
 {
   "schema": "gab.ecosystem-map.v1",
-  "updatedAt": "2026-08-10T02:00:16Z",
+  "updatedAt": "2026-08-11T02:01:01Z",
   "projects": [
     {
       "id": "satohash",
@@ -11,7 +11,7 @@
       "version": "5.0.0-ELITE",
       "status": "green",
       "health": "200",
-      "lastCommit": "c2708d6 docs: session closeout 2026-08-05 \u2014 10s watch teaser handoffs",
+      "lastCommit": "29ecf83 fix(a11y): legal strip color/bg theme-corrected (landing is light-themed; #94a3b8-on-white failed)",
       "synced": "synced",
       "localOnThor": true
     },
@@ -24,7 +24,7 @@
       "version": "3.31.1",
       "status": "green",
       "health": "200",
-      "lastCommit": "1c97c9af chore: refresh status.json [skip deploy]",
+      "lastCommit": "c511f16f chore: thor auto-metrics 00:00 (live LND + opencode probe)",
       "synced": "synced",
       "localOnThor": true
     },
@@ -37,7 +37,7 @@
       "version": "4.4.0",
       "status": "green",
       "health": "200",
-      "lastCommit": "2ce6908 fix: add sherpa as 9th agent on /api/agents + NAMESPACE",
+      "lastCommit": "4a6dca8 docs: changelog final live numbers",
       "synced": "synced",
       "localOnThor": true
     },
@@ -140,22 +140,22 @@
       "role": "Orchestrator + Hermes + Master Brain",
       "host": "Contabo VPS 20",
       "status": "green",
-      "disk": "14% used",
-      "diskFree": "333G",
-      "mem": "3.1Gi used",
-      "memAvail": "4.6Gi",
-      "load": "1.39/0.49/0.33",
-      "uptime": "up 3 weeks, 3 days, 1 hour, 3 minutes",
-      "lastSeen": "2026-08-10"
+      "disk": "16% used",
+      "diskFree": "328G",
+      "mem": "4.6Gi used",
+      "memAvail": "3.2Gi",
+      "load": "5.59/2.99/2.52",
+      "uptime": "up 3 weeks, 4 days, 1 hour, 4 minutes",
+      "lastSeen": "2026-08-11"
     },
     {
       "id": "m3",
       "name": "M3",
       "role": "Code + Grok (Mac)",
       "host": "Cams-Laptop",
-      "status": "amber",
-      "lastPush": "2026-08-05",
-      "lastSeen": "2026-08-05"
+      "status": "green",
+      "lastPush": "2026-08-10",
+      "lastSeen": "2026-08-10"
     },
     {
       "id": "m4",
@@ -264,85 +264,85 @@
   "skills": [
     {
       "name": "browser-harness",
-      "ageDays": 71,
+      "ageDays": 72,
       "status": "stale",
       "updated": "2026-05-30"
     },
     {
       "name": "current-tasks",
-      "ageDays": 24,
+      "ageDays": 25,
       "status": "fresh",
       "updated": "2026-07-16"
     },
     {
       "name": "deployment-workflow",
-      "ageDays": 27,
+      "ageDays": 28,
       "status": "fresh",
       "updated": "2026-07-13"
     },
     {
       "name": "dogfood",
-      "ageDays": 49,
+      "ageDays": 50,
       "status": "aging",
       "updated": "2026-06-21"
     },
     {
       "name": "github-sync",
-      "ageDays": 38,
+      "ageDays": 39,
       "status": "aging",
       "updated": "2026-07-02"
     },
     {
       "name": "hermes-desktop-plugins",
-      "ageDays": 20,
+      "ageDays": 21,
       "status": "fresh",
       "updated": "2026-07-20"
     },
     {
       "name": "kanban-worker",
-      "ageDays": 71,
+      "ageDays": 72,
       "status": "stale",
       "updated": "2026-05-30"
     },
     {
       "name": "lnd-lnbits-ops",
-      "ageDays": 3,
+      "ageDays": 4,
       "status": "fresh",
       "updated": "2026-08-07"
     },
     {
       "name": "nova-product-management",
-      "ageDays": 26,
+      "ageDays": 27,
       "status": "fresh",
       "updated": "2026-07-14"
     },
     {
       "name": "project-brief",
-      "ageDays": 26,
+      "ageDays": 27,
       "status": "fresh",
       "updated": "2026-07-14"
     },
     {
       "name": "propagate-template",
-      "ageDays": 44,
+      "ageDays": 45,
       "status": "aging",
       "updated": "2026-06-26"
     },
     {
       "name": "quick-backup",
-      "ageDays": 44,
+      "ageDays": 45,
       "status": "aging",
       "updated": "2026-06-26"
     },
     {
       "name": "satohash-orchestrator",
-      "ageDays": 24,
+      "ageDays": 25,
       "status": "fresh",
       "updated": "2026-07-17"
     },
     {
       "name": "yuanbao",
-      "ageDays": 24,
+      "ageDays": 25,
       "status": "fresh",
       "updated": "2026-07-17"
     }
@@ -361,7 +361,7 @@
       "name": "LND",
       "type": "Lightning Node (Neutrino)",
       "status": "green",
-      "detail": "Up 3 days (healthy)"
+      "detail": "Up 4 days (healthy)"
     },
     {
       "id": "satohash-api",
@@ -375,7 +375,7 @@
       "name": "Redis",
       "type": "Satohash Cache",
       "status": "green",
-      "detail": "Up 2 weeks"
+      "detail": "Up 3 weeks"
     },
     {
       "id": "postgres",
@@ -388,28 +388,28 @@
   "recentActivity": [
     {
       "repo": "hq",
-      "commit": "1c97c9af chore: refresh status.json [skip deploy]",
-      "timestamp": "2026-08-10"
+      "commit": "c511f16f chore: thor auto-metrics 00:00 (live LND + opencode",
+      "timestamp": "2026-08-11"
     },
     {
       "repo": "hq",
-      "commit": "27c20534 chore: thor auto-metrics 23:45 (live LND + opencode",
-      "timestamp": "2026-08-10"
+      "commit": "9b635ca2 chore: refresh status.json + thor-node [skip deploy",
+      "timestamp": "2026-08-11"
     },
     {
       "repo": "hq",
-      "commit": "222c01d9 chore: refresh status.json + thor-node [skip deploy",
-      "timestamp": "2026-08-10"
+      "commit": "f8130397 chore: thor auto-metrics 23:45 (live LND + opencode",
+      "timestamp": "2026-08-11"
     },
     {
       "repo": "satohash",
-      "commit": "c2708d6 docs: session closeout 2026-08-05 \u2014 10s watch teaser",
-      "timestamp": "2026-08-10"
+      "commit": "29ecf83 fix(a11y): legal strip color/bg theme-corrected (lan",
+      "timestamp": "2026-08-11"
     },
     {
       "repo": "satohash",
-      "commit": "af2268a fix(watch): cache-bust explainer MP4 URL and shorten",
-      "timestamp": "2026-08-10"
+      "commit": "c6076af docs: perf pass handoff (LATEST-UPDATE + handoff-log",
+      "timestamp": "2026-08-11"
     }
   ],
   "metadata": {
@@ -418,6 +418,6 @@
     "machineCount": 3,
     "activeCrons": 28,
     "skillCount": 14,
-    "vaultJournals": 128
+    "vaultJournals": 130
   }
 }
