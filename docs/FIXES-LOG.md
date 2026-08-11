@@ -10,7 +10,8 @@ after any autonomous repair so Cam can review "what got fixed" after the fact.
 - ParticleStampCanvas rAF loop: throttled to 30fps + paused offscreen/hidden — the unthrottled loop was the dominant TBT driver (TBT 4.6s → 2.7–3.1s).
 - Google Fonts: CSS preloaded + display=swap → optional — hero H1 (LCP) painted at ~7.6s waiting for the webfont; now paints at FCP (~1.2s). LCP 4.9 → 3.2s.
 - 10 × `transition: all` scoped to transform/opacity/colors.
-- Commits: 1a8ac42 (recharts+transitions), 899a572 (canvas), f032b25 (fonts). All 111 vitest tests pass; BP 100 / SEO 100 / CLS 0 maintained.
+- Commits: 1a8ac42 (recharts+transitions), 899a572 (canvas), f032b25 (fonts), 29ecf83 + 000d6d9 (a11y theme fix). All 111 vitest tests pass.
+- FINAL: a11y 96 → **100** (light theme `--text-muted` #9ca3af → #6b7280 — was failing contrast on white for the legal strip and all muted text). Verified live via computed-style probe (rgb(107,114,128) on #fcfcfc = 4.8:1). Only remaining flag: valid-source-maps (intentional eager-inline design).
 ---
 
 ### 2026-08-10 — satohash.io + openstrata Lighthouse sweep (wave 2)
