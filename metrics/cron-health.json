@@ -1,231 +1,209 @@
 {
-  "checked_at": "2026-08-10T00:00:04Z",
+  "checked_at": "2026-08-11T00:00:12Z",
   "jobs": {
     "2503e81d2fbb": {
       "status": "completed",
-      "last_run": "2026-08-10T01:57:07.528913+02:00",
+      "last_run": "2026-08-11T01:59:18.562296+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "e8ab4b685c10": {
       "status": "completed",
-      "last_run": "2026-08-10T01:57:05.437986+02:00",
+      "last_run": "2026-08-11T01:56:16.704790+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "c8ce19bb5571": {
       "status": "completed",
-      "last_run": "2026-08-10T01:55:07.042335+02:00",
+      "last_run": "2026-08-11T01:55:22.972147+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "6171ee6ae627": {
       "status": "completed",
-      "last_run": "2026-08-10T01:54:07.178080+02:00",
+      "last_run": "2026-08-11T01:34:59.705782+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "0e4a04c97d17": {
       "status": "completed",
-      "last_run": "2026-08-10T01:54:06.520437+02:00",
+      "last_run": "2026-08-11T01:34:03.341183+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "e8d5b97de501": {
       "status": "completed",
-      "last_run": "2026-08-10T01:30:27.221345+02:00",
+      "last_run": "2026-08-11T01:31:56.392315+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "cb8398b3fa67": {
       "status": "completed",
-      "last_run": "2026-08-10T01:30:06.271512+02:00",
+      "last_run": "2026-08-11T01:31:01.670953+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "7768b5c5aa49": {
       "status": "completed",
-      "last_run": "2026-08-10T01:00:07.631329+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "bb5980d548fb": {
-      "status": "completed",
-      "last_run": "2026-08-10T01:00:02.030037+02:00",
+      "last_run": "2026-08-11T01:01:04.712057+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "009fd1669f16": {
       "status": "completed",
-      "last_run": "2026-08-10T00:52:07.552647+02:00",
+      "last_run": "2026-08-11T01:00:52.748923+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "bb5980d548fb": {
+      "status": "completed",
+      "last_run": "2026-08-11T01:00:43.872813+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "0fc067ae59c1": {
       "status": "completed",
-      "last_run": "2026-08-10T00:11:24.074798+02:00",
+      "last_run": "2026-08-11T00:11:37.069648+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "1064f8a0f9cf": {
       "status": "completed",
-      "last_run": "2026-08-10T00:01:09.864997+02:00",
+      "last_run": "2026-08-11T00:01:20.315217+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "9bd2735e125e": {
       "status": "completed",
-      "last_run": "2026-08-10T00:01:04.771873+02:00",
+      "last_run": "2026-08-11T00:00:38.756823+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "e4b5079b66ce": {
       "status": "completed",
-      "last_run": "2026-08-10T00:01:03.884346+02:00",
+      "last_run": "2026-08-11T00:00:38.327526+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "12b477c661ae": {
       "status": "completed",
-      "last_run": "2026-08-09T22:00:57.125042+02:00",
+      "last_run": "2026-08-10T22:00:26.278498+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "30921a766dae": {
       "status": "completed",
-      "last_run": "2026-08-09T21:00:53.569660+02:00",
+      "last_run": "2026-08-10T21:01:02.861870+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "81b4564d9aa1": {
       "status": "completed",
-      "last_run": "2026-08-09T18:31:27.979680+02:00",
+      "last_run": "2026-08-10T18:34:54.032338+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
-    "0edfc923c739": {
+    "b7b5c1bebfe7": {
       "status": "completed",
-      "last_run": "2026-08-09T10:09:09.462976+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "b0aa342f451f": {
-      "status": "completed",
-      "last_run": "2026-08-09T09:30:05.574752+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "eb7452b2189e": {
-      "status": "completed",
-      "last_run": "2026-08-09T09:00:22.821142+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "0bf7cb48fc84": {
-      "status": "completed",
-      "last_run": "2026-08-09T09:00:03.967206+02:00",
+      "last_run": "2026-08-10T09:16:56.868771+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "0e6cfd248753": {
       "status": "completed",
-      "last_run": "2026-08-09T08:06:16.356534+02:00",
+      "last_run": "2026-08-10T08:12:57.928268+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
-    "019f2b72567e": {
+    "2621be4bb5dd": {
       "status": "completed",
-      "last_run": "2026-08-09T08:00:14.195950+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "25ec74bb8eef": {
-      "status": "completed",
-      "last_run": "2026-08-09T08:00:07.329013+02:00",
+      "last_run": "2026-08-10T08:01:14.049551+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "b6a4e3710d9d": {
       "status": "completed",
-      "last_run": "2026-08-09T08:00:04.109118+02:00",
+      "last_run": "2026-08-10T08:00:19.916403+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "71f476018b46": {
       "status": "completed",
-      "last_run": "2026-08-09T07:32:32.428906+02:00",
+      "last_run": "2026-08-10T07:31:53.385871+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "337c7ae0b619": {
       "status": "completed",
-      "last_run": "2026-08-09T07:30:06.729728+02:00",
+      "last_run": "2026-08-10T07:30:20.685712+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "311d146f45c3": {
       "status": "completed",
-      "last_run": "2026-08-09T07:15:00.451554+02:00",
+      "last_run": "2026-08-10T07:15:17.018362+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "53c040c96061": {
+      "status": "completed",
+      "last_run": "2026-08-10T07:06:03.218371+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "5c6f78744d6e": {
       "status": "completed",
-      "last_run": "2026-08-09T07:01:01.206468+02:00",
+      "last_run": "2026-08-10T07:00:17.877693+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
-    "560e38829acf": {
+    "081554de8767": {
+      "status": "failed",
+      "last_run": "2026-08-10T06:04:39.380912+02:00",
+      "consecutive_fails": 1,
+      "paused": false,
+      "error": "RuntimeError: HTTP 502: {\"type\":\"https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/error-502/\",\"title\":\"Error 502: Bad gateway\",\"status\":502,\"detail\":\"T",
+      "action": "warn"
+    },
+    "e19a3670752f": {
       "status": "completed",
-      "last_run": "2026-08-09T05:55:19.827021+02:00",
+      "last_run": "2026-08-10T06:00:23.679462+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "980226ec5716": {
+      "status": "completed",
+      "last_run": "2026-08-10T05:02:48.882093+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "5f9b4a5c010c": {
       "status": "completed",
-      "last_run": "2026-08-09T04:08:08.528455+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "447ed87c7a57": {
-      "status": "completed",
-      "last_run": "2026-08-09T04:00:51.863082+02:00",
+      "last_run": "2026-08-10T04:08:53.044855+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "e18ae919c08f": {
       "status": "completed",
-      "last_run": "2026-08-09T03:00:54.264119+02:00",
+      "last_run": "2026-08-10T03:00:11.495809+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "7ac4833020bb": {
       "status": "completed",
-      "last_run": "2026-08-09T02:21:07.659820+02:00",
+      "last_run": "2026-08-10T02:20:12.279417+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "a635e5301401": {
       "status": "completed",
-      "last_run": "2026-08-09T02:15:13.909840+02:00",
+      "last_run": "2026-08-10T02:19:44.462303+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "bb6e71c68350": {
       "status": "completed",
-      "last_run": "2026-08-09T02:01:11.661636+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "980226ec5716": {
-      "status": "ok",
-      "last_run": "2026-08-03T05:08:13.259127+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "2621be4bb5dd": {
-      "status": "ok",
-      "last_run": "2026-08-03T08:08:40.283148+02:00",
+      "last_run": "2026-08-10T02:00:35.116986+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
@@ -241,19 +219,29 @@
       "consecutive_fails": 0,
       "paused": false
     },
+    "560e38829acf": {
+      "status": "ok",
+      "last_run": "2026-08-09T05:55:19.821200+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "019f2b72567e": {
+      "status": "ok",
+      "last_run": "2026-08-09T08:00:14.189780+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
     "42cdc3e9bd97": {
       "status": "paused",
       "last_run": "2026-07-31T10:04:31.519928+02:00",
       "consecutive_fails": 0,
       "paused": true
     },
-    "b7b5c1bebfe7": {
-      "status": "error",
-      "last_run": "2026-08-03T09:00:29.908666+02:00",
-      "error": "RuntimeError: Skipped to prevent unintended spend: global inference config drifted since this job was created (provider 'nous' -> 'xai-oauth'; model 'deepseek/deepseek-v4-flash' -> 'grok-build-0.1'), ",
-      "consecutive_fails": 1,
-      "paused": false,
-      "action": "warn"
+    "eb7452b2189e": {
+      "status": "ok",
+      "last_run": "2026-08-09T09:00:22.813226+02:00",
+      "consecutive_fails": 0,
+      "paused": false
     },
     "1b2c31d6ba98": {
       "status": "paused",
@@ -261,27 +249,39 @@
       "consecutive_fails": 0,
       "paused": true
     },
+    "447ed87c7a57": {
+      "status": "ok",
+      "last_run": "2026-08-09T04:00:51.854981+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
     "34c2181c2737": {
       "status": "paused",
       "last_run": "2026-07-25T10:03:52.870915+02:00",
       "consecutive_fails": 0,
       "paused": true
     },
-    "e19a3670752f": {
+    "25ec74bb8eef": {
       "status": "ok",
-      "last_run": "2026-08-03T06:00:28.566398+02:00",
+      "last_run": "2026-08-09T08:00:07.314211+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
-    "081554de8767": {
-      "status": "scheduled",
-      "last_run": null,
+    "0bf7cb48fc84": {
+      "status": "ok",
+      "last_run": "2026-08-09T09:00:03.950649+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
-    "53c040c96061": {
-      "status": "scheduled",
-      "last_run": null,
+    "b0aa342f451f": {
+      "status": "ok",
+      "last_run": "2026-08-09T09:30:05.566380+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "0edfc923c739": {
+      "status": "ok",
+      "last_run": "2026-08-09T10:09:09.456478+02:00",
       "consecutive_fails": 0,
       "paused": false
     }
@@ -289,9 +289,9 @@
   "paused_count": 3,
   "alert_count": 1,
   "paused_jobs": [
-    "34c2181c2737",
+    "42cdc3e9bd97",
     "1b2c31d6ba98",
-    "42cdc3e9bd97"
+    "34c2181c2737"
   ],
   "orphaned_count": 0
 }

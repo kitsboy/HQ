@@ -1,6 +1,6 @@
 {
   "schema": "gab.ecosystem-map.v1",
-  "updatedAt": "2026-08-11T02:01:01Z",
+  "updatedAt": "2026-08-11T02:01:06Z",
   "projects": [
     {
       "id": "satohash",
@@ -143,8 +143,8 @@
       "disk": "16% used",
       "diskFree": "328G",
       "mem": "4.6Gi used",
-      "memAvail": "3.2Gi",
-      "load": "5.59/2.99/2.52",
+      "memAvail": "3.1Gi",
+      "load": "5.38/2.99/2.52",
       "uptime": "up 3 weeks, 4 days, 1 hour, 4 minutes",
       "lastSeen": "2026-08-11"
     },
@@ -388,17 +388,17 @@
   "recentActivity": [
     {
       "repo": "hq",
+      "commit": "8844c2f5 chore: ecosystem-map nightly refresh",
+      "timestamp": "2026-08-11"
+    },
+    {
+      "repo": "hq",
       "commit": "c511f16f chore: thor auto-metrics 00:00 (live LND + opencode",
       "timestamp": "2026-08-11"
     },
     {
       "repo": "hq",
       "commit": "9b635ca2 chore: refresh status.json + thor-node [skip deploy",
-      "timestamp": "2026-08-11"
-    },
-    {
-      "repo": "hq",
-      "commit": "f8130397 chore: thor auto-metrics 23:45 (live LND + opencode",
       "timestamp": "2026-08-11"
     },
     {

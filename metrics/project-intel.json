@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-08-09T22:00:59Z",
+  "checked_at": "2026-08-10T22:00:18Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -7,18 +7,18 @@
       "repo": "kitsboy/giveabit",
       "site_url": "https://giveabit.io",
       "last_commit": {
-        "sha": "2ce6908",
-        "message": "fix: add sherpa as 9th agent on /api/agents + NAMESPACE",
-        "author": "Cam",
-        "date": "2026-08-03T18:20:10Z",
-        "url": "https://github.com/kitsboy/giveabit/commit/2ce6908aec4c641b2fdd54eb18593f9e6624ad51"
+        "sha": "4a6dca8",
+        "message": "docs: changelog final live numbers",
+        "author": "Cam (via Aider)",
+        "date": "2026-08-10T03:33:11Z",
+        "url": "https://github.com/kitsboy/giveabit/commit/4a6dca800b8579595cc38e0b0ec9d78c98be3e40"
       },
       "recent_commits": [
-        "fix: add sherpa as 9th agent on /api/agents + NAMESPACE",
-        "feat(nip05): register hello@giveabit.io \u2014 public-facing iden",
-        "fix(ci): always start vite preview via Playwright webServer "
+        "docs: changelog final live numbers",
+        "fix(a11y): header currency switcher label-in-name + Nostr co",
+        "fix(lighthouse): a11y 90\u2192100, BP 96\u2192100 \u2014 sw.js 206 crash, u"
       ],
-      "commits_7d": 1,
+      "commits_7d": 3,
       "health": "green",
       "cf_project": "giveabit",
       "open_issues": 0
@@ -29,18 +29,18 @@
       "repo": "kitsboy/satohash",
       "site_url": "https://satohash.io",
       "last_commit": {
-        "sha": "c2708d6",
-        "message": "docs: session closeout 2026-08-05 \u2014 10s watch teaser handoffs",
-        "author": "Cam",
-        "date": "2026-08-05T18:52:24Z",
-        "url": "https://github.com/kitsboy/satohash/commit/c2708d693090d55be090bbc2f5fef83638a0e031"
+        "sha": "c6076af",
+        "message": "docs: perf pass handoff (LATEST-UPDATE + handoff-log) + build metadata",
+        "author": "Kimi (THOR)",
+        "date": "2026-08-10T21:49:35Z",
+        "url": "https://github.com/kitsboy/satohash/commit/c6076af590c4502c372692fa25d40c0cbca51295"
       },
       "recent_commits": [
-        "docs: session closeout 2026-08-05 \u2014 10s watch teaser handoff",
-        "fix(watch): cache-bust explainer MP4 URL and shorten media T",
-        "feat(watch): ship 10s Kimi teaser MP4 as primary /watch play"
+        "docs: perf pass handoff (LATEST-UPDATE + handoff-log) + buil",
+        "perf(lighthouse): preload Google Fonts CSS + display=optiona",
+        "perf(lighthouse): throttle ParticleStampCanvas to 30fps + pa"
       ],
-      "commits_7d": 18,
+      "commits_7d": 27,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,14 +51,14 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "881df0e",
-        "message": "chore: refresh status.json [skip deploy]",
-        "author": "hq-status-bot",
-        "date": "2026-08-09T21:51:58Z",
-        "url": "https://github.com/kitsboy/HQ/commit/881df0eb62857ccf1802c3c6d655c093d10187bc"
+        "sha": "6bb68f0",
+        "message": "docs: FIXES-LOG satohash perf pass",
+        "author": "Cam (via Aider)",
+        "date": "2026-08-10T21:50:31Z",
+        "url": "https://github.com/kitsboy/HQ/commit/6bb68f0a3e3dfab781b018430bfa45e13f84d636"
       },
       "recent_commits": [
-        "chore: refresh status.json [skip deploy]",
+        "docs: FIXES-LOG satohash perf pass",
         "chore: thor auto-metrics 21:45 (live LND + opencode probe)",
         "chore: refresh status.json + thor-node [skip deploy]"
       ],
@@ -73,18 +73,18 @@
       "repo": "kitsboy/katoa",
       "site_url": "https://katoa.org",
       "last_commit": {
-        "sha": "3ab1989",
-        "message": "fix(ci): prebuild hook had a stray leading '&&' breaking npm run build (sh synta",
-        "author": "Kimi (THOR)",
-        "date": "2026-08-04T18:34:54Z",
-        "url": "https://github.com/kitsboy/katoa/commit/3ab19891325a3ffe38af1a26ae7b1fe09f9f8f77"
+        "sha": "6104edc",
+        "message": "fix(lighthouse): supabase guard requires real JWT key (stale CF env project caus",
+        "author": "Cam (via Aider)",
+        "date": "2026-08-10T11:03:32Z",
+        "url": "https://github.com/kitsboy/katoa/commit/6104edcfcc604c199d958521d341763479aa99c3"
       },
       "recent_commits": [
-        "fix(ci): prebuild hook had a stray leading '&&' breaking npm",
-        "fix(ci): resolve eslint unused-var errors in generate-metric",
-        "fix: prefix bare vite build with npx for Node 24 runner comp"
+        "fix(lighthouse): supabase guard requires real JWT key (stale",
+        "fix(lighthouse) round 4: contrast bumps (bento/shot/fee/scor",
+        "docs: LATEST-UPDATE + KIMI-HANDOFF \u2014 2026-08-10 lighthouse s"
       ],
-      "commits_7d": 2,
+      "commits_7d": 9,
       "health": "green",
       "cf_project": "katoa",
       "open_issues": 0
@@ -95,18 +95,18 @@
       "repo": "kitsboy/tadbuy",
       "site_url": "https://tadbuy.giveabit.io",
       "last_commit": {
-        "sha": "18849e8",
-        "message": "docs: Option A done; point Kimi to HQ MASTER LIST",
-        "author": "Cam",
-        "date": "2026-07-27T05:17:15Z",
-        "url": "https://github.com/kitsboy/tadbuy/commit/18849e8ee4b53705d18c752bb307aa85b99892de"
+        "sha": "cffe198",
+        "message": "chore: auto-bump version to v5.0.53 [pre-push]",
+        "author": "Cam (via Aider)",
+        "date": "2026-08-10T11:03:34Z",
+        "url": "https://github.com/kitsboy/tadbuy/commit/cffe198617200abae59b39f4d91949fce3f8f705"
       },
       "recent_commits": [
-        "docs: Option A done; point Kimi to HQ MASTER LIST",
-        "fix: prefix bare vite build with npx for Node 24 runner comp",
-        "chore: update .ai_docs/current-status.md per project templat"
+        "chore: auto-bump version to v5.0.53 [pre-push]",
+        "fix(lighthouse): BTC chart via Coinbase candles API (coingec",
+        "chore: auto-bump version to v5.0.52 [pre-push]"
       ],
-      "commits_7d": 0,
+      "commits_7d": 19,
       "health": "green",
       "cf_project": "tadbuy",
       "open_issues": 1
@@ -117,18 +117,18 @@
       "repo": "kitsboy/stranded",
       "site_url": "https://stranded.giveabit.io",
       "last_commit": {
-        "sha": "bd23d26",
-        "message": "fix(ci): smoke test expects /dashboard/ \u2014 app uses trailingSlash for static expo",
-        "author": "Kimi (THOR)",
-        "date": "2026-08-04T18:31:22Z",
-        "url": "https://github.com/kitsboy/stranded/commit/bd23d26c83f9d36e3f66bf2708940603bbc60a8e"
+        "sha": "adedd77",
+        "message": "fix(lighthouse) round 4: contrast bumps (bento/shot/fee/score-elite), select ari",
+        "author": "Cam (via Aider)",
+        "date": "2026-08-10T10:57:03Z",
+        "url": "https://github.com/kitsboy/stranded/commit/adedd77ad7d13bf7eb29d78185e1f7d0bf71b6d1"
       },
       "recent_commits": [
-        "fix(ci): smoke test expects /dashboard/ \u2014 app uses trailingS",
-        "fix: CI verify paths for trailingSlash + bump Node to 22 (st",
-        "fix: deploy from ./dist not ./out (next.config.js sets distD"
+        "fix(lighthouse) round 4: contrast bumps (bento/shot/fee/scor",
+        "docs: LATEST-UPDATE + KIMI-HANDOFF \u2014 2026-08-10 lighthouse s",
+        "fix(lighthouse) round 3: supabase guard on HomePage, gray-40"
       ],
-      "commits_7d": 1,
+      "commits_7d": 6,
       "health": "green",
       "cf_project": "strandedbuild",
       "open_issues": 0
@@ -139,18 +139,18 @@
       "repo": "kitsboy/motopass",
       "site_url": "https://motopass.giveabit.io",
       "last_commit": {
-        "sha": "76770a3",
-        "message": "fix(ci): standalone btcmap-sync workflow with contents:write \u2014 CI was disabled s",
-        "author": "Kimi (THOR)",
-        "date": "2026-08-04T18:33:01Z",
-        "url": "https://github.com/kitsboy/motopass/commit/76770a373a2c8a89c05a792b020e579ad13170cf"
+        "sha": "964f6d2",
+        "message": "docs: LATEST-UPDATE + KIMI-HANDOFF \u2014 2026-08-10 lighthouse sweep handoff",
+        "author": "Cam (via Aider)",
+        "date": "2026-08-10T10:50:02Z",
+        "url": "https://github.com/kitsboy/motopass/commit/964f6d227f563e324099b1f7c48472ffca36b4d8"
       },
       "recent_commits": [
-        "fix(ci): standalone btcmap-sync workflow with contents:write",
-        "fix(ci): grant contents:write for scheduled btcmap sync; dro",
-        "fix: prefix bare vite build with npx for Node 24 runner comp"
+        "docs: LATEST-UPDATE + KIMI-HANDOFF \u2014 2026-08-10 lighthouse s",
+        "fix(lighthouse): btc ticker label-in-name + sr-only hint, so",
+        "chore: weekly btcmap density + cache sync"
       ],
-      "commits_7d": 1,
+      "commits_7d": 4,
       "health": "green",
       "cf_project": "motopass",
       "open_issues": 0
@@ -161,18 +161,18 @@
       "repo": "kitsboy/sherpacarta",
       "site_url": "https://sherpacarta.org",
       "last_commit": {
-        "sha": "c02f414",
-        "message": "perf(metrics): KV-cache mempool treasury (10min TTL) \u2014 endpoint stays fast even ",
-        "author": "Kimi (THOR)",
-        "date": "2026-08-06T01:37:04Z",
-        "url": "https://github.com/kitsboy/sherpacarta/commit/c02f4148538845df793e9a59460e3ad86c627e35"
+        "sha": "b4cc7bb",
+        "message": "fix(lighthouse) round 4: contrast bumps (bento/shot/fee/score-elite), select ari",
+        "author": "Cam (via Aider)",
+        "date": "2026-08-10T10:57:00Z",
+        "url": "https://github.com/kitsboy/sherpacarta/commit/b4cc7bb57f69e835e223399593527806a78d529c"
       },
       "recent_commits": [
-        "perf(metrics): KV-cache mempool treasury (10min TTL) \u2014 endpo",
-        "fix(metrics): add 4s timeout to mempool + origin fetches \u2014 e",
-        "feat: publish public Sherpa LNURL on site (remove TEMP Light"
+        "fix(lighthouse) round 4: contrast bumps (bento/shot/fee/scor",
+        "docs: LATEST-UPDATE + KIMI-HANDOFF \u2014 2026-08-10 lighthouse s",
+        "fix(lighthouse): BC_CRM selects/inputs aria-labels (Status/R"
       ],
-      "commits_7d": 3,
+      "commits_7d": 7,
       "health": "green",
       "cf_project": "sherpacarta",
       "open_issues": 0

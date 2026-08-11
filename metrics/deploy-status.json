@@ -2,50 +2,50 @@
   "giveabit": {
     "workflow_name": "Verify",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/giveabit/actions/runs/30840807614",
-    "updatedAt": "2026-08-03T18:23:30Z",
+    "html_url": "https://github.com/kitsboy/giveabit/actions/runs/31352902010",
+    "updatedAt": "2026-08-10T03:36:25Z",
     "status": "completed"
   },
   "satohash": {
     "workflow_name": "Deploy",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/satohash/actions/runs/31036800473",
-    "updatedAt": "2026-08-05T18:54:50Z",
+    "html_url": "https://github.com/kitsboy/satohash/actions/runs/31437464425",
+    "updatedAt": "2026-08-10T22:16:38Z",
     "status": "completed"
   },
   "katoa": {
     "workflow_name": "Deploy katoa to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/katoa/actions/runs/30939294687",
-    "updatedAt": "2026-08-04T18:35:48Z",
+    "html_url": "https://github.com/kitsboy/katoa/actions/runs/31381834097",
+    "updatedAt": "2026-08-10T11:04:20Z",
     "status": "completed"
   },
   "motopass": {
     "workflow_name": "Deploy motopass to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/motopass/actions/runs/30939142449",
-    "updatedAt": "2026-08-04T18:33:50Z",
+    "html_url": "https://github.com/kitsboy/motopass/actions/runs/31380850997",
+    "updatedAt": "2026-08-10T10:50:48Z",
     "status": "completed"
   },
   "sherpacarta": {
     "workflow_name": "Deploy sherpacarta to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/sherpacarta/actions/runs/31063255124",
-    "updatedAt": "2026-08-06T01:37:48Z",
+    "html_url": "https://github.com/kitsboy/sherpacarta/actions/runs/31381364700",
+    "updatedAt": "2026-08-10T10:57:43Z",
     "status": "completed"
   },
   "stranded": {
     "workflow_name": "Deploy stranded to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/stranded/actions/runs/30939016292",
-    "updatedAt": "2026-08-04T18:33:08Z",
+    "html_url": "https://github.com/kitsboy/stranded/actions/runs/31381367742",
+    "updatedAt": "2026-08-10T10:58:25Z",
     "status": "completed"
   },
   "tadbuy": {
     "workflow_name": "Deploy tadbuy to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/tadbuy/actions/runs/30239343114",
-    "updatedAt": "2026-07-27T05:18:28Z",
+    "html_url": "https://github.com/kitsboy/tadbuy/actions/runs/31381837034",
+    "updatedAt": "2026-08-10T11:04:41Z",
     "status": "completed"
   },
   "openstrata": {
@@ -63,10 +63,10 @@
     "status": "?"
   },
   "HQ": {
-    "workflow_name": "Status pinger",
+    "workflow_name": "Deploy HQ to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/HQ/actions/runs/31342831469",
-    "updatedAt": "2026-08-09T23:49:42Z",
+    "html_url": "https://github.com/kitsboy/HQ/actions/runs/31444532342",
+    "updatedAt": "2026-08-11T00:01:39Z",
     "status": "completed"
   }
 }
