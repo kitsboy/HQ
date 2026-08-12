@@ -2,7 +2,7 @@
   "schema": "gab.product-metrics.v1",
   "productId": "motopass",
   "name": "MotoPass",
-  "updatedAt": "2026-08-11T00:20:23Z",
+  "updatedAt": "2026-08-12T00:20:53Z",
   "window": {
     "label": "all",
     "from": "2026-01-01T00:00:00.000Z",
@@ -36,14 +36,14 @@
       }
     ],
     "http": 200,
-    "ms": 79,
-    "probedAt": "2026-08-11T00:20:23Z"
+    "ms": 111,
+    "probedAt": "2026-08-12T00:20:53Z"
   },
   "kpis": [
     {
       "key": "visitors30d",
       "label": "Visitors (30d)",
-      "value": 4,
+      "value": 8,
       "format": "int",
       "unit": "visits"
     },
@@ -283,17 +283,17 @@
       "probe": {
         "ok": true,
         "http": 200,
-        "ms": 79
+        "ms": 111
       },
-      "checkedAt": "2026-08-11T00:20:23Z",
+      "checkedAt": "2026-08-12T00:20:53Z",
       "umami": {
-        "visitors24h": 1,
-        "pageviews24h": 5,
-        "visits24h": 3,
-        "visitors7d": 1,
-        "pageviews7d": 5,
-        "visitors30d": 4,
-        "pageviews30d": 9
+        "visitors24h": 4,
+        "pageviews24h": 13,
+        "visits24h": 5,
+        "visitors7d": 5,
+        "pageviews7d": 18,
+        "visitors30d": 8,
+        "pageviews30d": 22
       }
     }
   }

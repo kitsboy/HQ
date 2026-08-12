@@ -9,36 +9,36 @@
   "satohash": {
     "workflow_name": "Deploy",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/satohash/actions/runs/31437464425",
-    "updatedAt": "2026-08-10T22:16:38Z",
+    "html_url": "https://github.com/kitsboy/satohash/actions/runs/31463195655",
+    "updatedAt": "2026-08-11T05:56:09Z",
     "status": "completed"
   },
   "katoa": {
-    "workflow_name": "Deploy katoa to Cloudflare Pages",
+    "workflow_name": "CI",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/katoa/actions/runs/31381834097",
-    "updatedAt": "2026-08-10T11:04:20Z",
+    "html_url": "https://github.com/kitsboy/katoa/actions/runs/31538329667",
+    "updatedAt": "2026-08-11T21:32:43Z",
     "status": "completed"
   },
   "motopass": {
     "workflow_name": "Deploy motopass to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/motopass/actions/runs/31380850997",
-    "updatedAt": "2026-08-10T10:50:48Z",
+    "html_url": "https://github.com/kitsboy/motopass/actions/runs/31463206178",
+    "updatedAt": "2026-08-11T05:55:06Z",
     "status": "completed"
   },
   "sherpacarta": {
     "workflow_name": "Deploy sherpacarta to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/sherpacarta/actions/runs/31381364700",
-    "updatedAt": "2026-08-10T10:57:43Z",
+    "html_url": "https://github.com/kitsboy/sherpacarta/actions/runs/31521127153",
+    "updatedAt": "2026-08-11T18:08:40Z",
     "status": "completed"
   },
   "stranded": {
     "workflow_name": "Deploy stranded to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/stranded/actions/runs/31381367742",
-    "updatedAt": "2026-08-10T10:58:25Z",
+    "html_url": "https://github.com/kitsboy/stranded/actions/runs/31522032740",
+    "updatedAt": "2026-08-11T18:19:57Z",
     "status": "completed"
   },
   "tadbuy": {
@@ -65,8 +65,8 @@
   "HQ": {
     "workflow_name": "Deploy HQ to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/HQ/actions/runs/31444532342",
-    "updatedAt": "2026-08-11T00:01:39Z",
+    "html_url": "https://github.com/kitsboy/HQ/actions/runs/31549546918",
+    "updatedAt": "2026-08-12T00:15:41Z",
     "status": "completed"
   }
 }
