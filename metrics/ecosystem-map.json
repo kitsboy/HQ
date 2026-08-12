@@ -1,6 +1,6 @@
 {
   "schema": "gab.ecosystem-map.v1",
-  "updatedAt": "2026-08-11T02:01:06Z",
+  "updatedAt": "2026-08-12T02:00:56Z",
   "projects": [
     {
       "id": "satohash",
@@ -11,7 +11,7 @@
       "version": "5.0.0-ELITE",
       "status": "green",
       "health": "200",
-      "lastCommit": "29ecf83 fix(a11y): legal strip color/bg theme-corrected (landing is light-themed; #94a3b8-on-white failed)",
+      "lastCommit": "3c80c67 chore: build metadata bump",
       "synced": "synced",
       "localOnThor": true
     },
@@ -24,7 +24,7 @@
       "version": "3.31.1",
       "status": "green",
       "health": "200",
-      "lastCommit": "c511f16f chore: thor auto-metrics 00:00 (live LND + opencode probe)",
+      "lastCommit": "a5e2e594 chore: refresh status.json + thor-node [skip deploy]",
       "synced": "synced",
       "localOnThor": true
     },
@@ -141,12 +141,12 @@
       "host": "Contabo VPS 20",
       "status": "green",
       "disk": "16% used",
-      "diskFree": "328G",
-      "mem": "4.6Gi used",
-      "memAvail": "3.1Gi",
-      "load": "5.38/2.99/2.52",
-      "uptime": "up 3 weeks, 4 days, 1 hour, 4 minutes",
-      "lastSeen": "2026-08-11"
+      "diskFree": "325G",
+      "mem": "3.7Gi used",
+      "memAvail": "4.1Gi",
+      "load": "2.38/1.22/0.97",
+      "uptime": "up 3 weeks, 5 days, 1 hour, 4 minutes",
+      "lastSeen": "2026-08-12"
     },
     {
       "id": "m3",
@@ -154,8 +154,8 @@
       "role": "Code + Grok (Mac)",
       "host": "Cams-Laptop",
       "status": "green",
-      "lastPush": "2026-08-10",
-      "lastSeen": "2026-08-10"
+      "lastPush": "2026-08-11",
+      "lastSeen": "2026-08-11"
     },
     {
       "id": "m4",
@@ -264,85 +264,133 @@
   "skills": [
     {
       "name": "browser-harness",
-      "ageDays": 72,
+      "ageDays": 73,
       "status": "stale",
       "updated": "2026-05-30"
     },
     {
       "name": "current-tasks",
-      "ageDays": 25,
+      "ageDays": 26,
       "status": "fresh",
       "updated": "2026-07-16"
     },
     {
       "name": "deployment-workflow",
-      "ageDays": 28,
+      "ageDays": 29,
       "status": "fresh",
       "updated": "2026-07-13"
     },
     {
       "name": "dogfood",
-      "ageDays": 50,
+      "ageDays": 51,
       "status": "aging",
       "updated": "2026-06-21"
     },
     {
       "name": "github-sync",
-      "ageDays": 39,
+      "ageDays": 40,
       "status": "aging",
       "updated": "2026-07-02"
     },
     {
       "name": "hermes-desktop-plugins",
-      "ageDays": 21,
+      "ageDays": 22,
       "status": "fresh",
       "updated": "2026-07-20"
     },
     {
+      "name": "hyperframes",
+      "ageDays": 0,
+      "status": "fresh",
+      "updated": "2026-08-11"
+    },
+    {
+      "name": "hyperframes-animation",
+      "ageDays": 0,
+      "status": "fresh",
+      "updated": "2026-08-11"
+    },
+    {
+      "name": "hyperframes-cli",
+      "ageDays": 0,
+      "status": "fresh",
+      "updated": "2026-08-11"
+    },
+    {
+      "name": "hyperframes-core",
+      "ageDays": 0,
+      "status": "fresh",
+      "updated": "2026-08-11"
+    },
+    {
+      "name": "hyperframes-creative",
+      "ageDays": 0,
+      "status": "fresh",
+      "updated": "2026-08-11"
+    },
+    {
+      "name": "hyperframes-keyframes",
+      "ageDays": 0,
+      "status": "fresh",
+      "updated": "2026-08-11"
+    },
+    {
+      "name": "hyperframes-registry",
+      "ageDays": 0,
+      "status": "fresh",
+      "updated": "2026-08-11"
+    },
+    {
       "name": "kanban-worker",
-      "ageDays": 72,
+      "ageDays": 73,
       "status": "stale",
       "updated": "2026-05-30"
     },
     {
       "name": "lnd-lnbits-ops",
-      "ageDays": 4,
+      "ageDays": 5,
       "status": "fresh",
       "updated": "2026-08-07"
     },
     {
+      "name": "media-use",
+      "ageDays": 0,
+      "status": "fresh",
+      "updated": "2026-08-11"
+    },
+    {
       "name": "nova-product-management",
-      "ageDays": 27,
+      "ageDays": 28,
       "status": "fresh",
       "updated": "2026-07-14"
     },
     {
       "name": "project-brief",
-      "ageDays": 27,
+      "ageDays": 28,
       "status": "fresh",
       "updated": "2026-07-14"
     },
     {
       "name": "propagate-template",
-      "ageDays": 45,
+      "ageDays": 46,
       "status": "aging",
       "updated": "2026-06-26"
     },
     {
       "name": "quick-backup",
-      "ageDays": 45,
+      "ageDays": 46,
       "status": "aging",
       "updated": "2026-06-26"
     },
     {
       "name": "satohash-orchestrator",
-      "ageDays": 25,
+      "ageDays": 26,
       "status": "fresh",
       "updated": "2026-07-17"
     },
     {
       "name": "yuanbao",
-      "ageDays": 25,
+      "ageDays": 26,
       "status": "fresh",
       "updated": "2026-07-17"
     }
@@ -361,7 +409,7 @@
       "name": "LND",
       "type": "Lightning Node (Neutrino)",
       "status": "green",
-      "detail": "Up 4 days (healthy)"
+      "detail": "Up 5 days (healthy)"
     },
     {
       "id": "satohash-api",
@@ -388,28 +436,28 @@
   "recentActivity": [
     {
       "repo": "hq",
-      "commit": "8844c2f5 chore: ecosystem-map nightly refresh",
-      "timestamp": "2026-08-11"
+      "commit": "a5e2e594 chore: refresh status.json + thor-node [skip deploy",
+      "timestamp": "2026-08-12"
     },
     {
       "repo": "hq",
-      "commit": "c511f16f chore: thor auto-metrics 00:00 (live LND + opencode",
-      "timestamp": "2026-08-11"
+      "commit": "60ed75ec chore: thor auto-metrics 00:00 (live LND + opencode",
+      "timestamp": "2026-08-12"
     },
     {
       "repo": "hq",
-      "commit": "9b635ca2 chore: refresh status.json + thor-node [skip deploy",
-      "timestamp": "2026-08-11"
+      "commit": "a3c5e4c9 chore: refresh status.json [skip deploy]",
+      "timestamp": "2026-08-12"
     },
     {
       "repo": "satohash",
-      "commit": "29ecf83 fix(a11y): legal strip color/bg theme-corrected (lan",
-      "timestamp": "2026-08-11"
+      "commit": "3c80c67 chore: build metadata bump",
+      "timestamp": "2026-08-12"
     },
     {
       "repo": "satohash",
-      "commit": "c6076af docs: perf pass handoff (LATEST-UPDATE + handoff-log",
-      "timestamp": "2026-08-11"
+      "commit": "ac96194 docs: LATEST-UPDATE final scores (a11y 100)",
+      "timestamp": "2026-08-12"
     }
   ],
   "metadata": {
@@ -417,7 +465,7 @@
     "agentCount": 7,
     "machineCount": 3,
     "activeCrons": 28,
-    "skillCount": 14,
-    "vaultJournals": 130
+    "skillCount": 22,
+    "vaultJournals": 131
   }
 }
