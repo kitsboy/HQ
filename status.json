@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-08-12T21:05:51.481Z",
+  "updatedAt": "2026-08-12T21:30:15.976Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 311,
+      "ms": 571,
       "url": "https://giveabit.io"
     },
     "satohash": {
@@ -17,37 +17,37 @@
     "katoa": {
       "ok": true,
       "status": 200,
-      "ms": 100,
+      "ms": 114,
       "url": "https://katoa.org"
     },
     "stranded": {
       "ok": true,
       "status": 200,
-      "ms": 173,
+      "ms": 101,
       "url": "https://stranded.giveabit.io"
     },
     "tadbuy": {
       "ok": true,
       "status": 200,
-      "ms": 143,
+      "ms": 114,
       "url": "https://tadbuy.giveabit.io"
     },
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 130,
+      "ms": 112,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 109,
+      "ms": 176,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
       "ok": true,
       "status": 200,
-      "ms": 271,
+      "ms": 179,
       "url": "https://openstrata.giveabit.io"
     },
     "btcminiscript": {
@@ -67,23 +67,23 @@
     "satohashApi": {
       "ok": true,
       "status": 200,
-      "ms": 665,
+      "ms": 44,
       "healthUrl": "https://api.satohash.io/health"
     },
     "satohashMetrics": {
       "schema": "gab.product-metrics.v1",
       "productId": "satohash",
       "name": "Satohash",
-      "updatedAt": "2026-08-12T21:05:51.385Z",
+      "updatedAt": "2026-08-12T21:30:15.953Z",
       "window": {
         "label": "7d",
-        "from": "2026-08-05T21:05:51.385Z",
-        "to": "2026-08-12T21:05:51.385Z"
+        "from": "2026-08-05T21:30:15.953Z",
+        "to": "2026-08-12T21:30:15.953Z"
       },
       "health": {
         "status": "green",
         "message": "API healthy — live stamp aggregates for HQ",
-        "latencyMs": 3,
+        "latencyMs": 1,
         "uptimePct24h": null,
         "dependencies": [
           {
@@ -121,7 +121,7 @@
         {
           "key": "stamps_24h",
           "label": "Stamps 24h",
-          "value": 1,
+          "value": 0,
           "unit": "proofs",
           "delta": 0,
           "deltaUnit": "%",
@@ -222,7 +222,7 @@
         {
           "key": "p50_ms",
           "label": "Metrics build p50",
-          "value": 3,
+          "value": 1,
           "unit": "ms",
           "format": "duration",
           "priority": 5,
@@ -526,7 +526,7 @@
             {
               "id": "submit",
               "label": "Submit stamp",
-              "count": 1,
+              "count": 13,
               "hint": "API or SPA"
             },
             {
@@ -869,7 +869,7 @@
         "seriesFromDb": true,
         "note": "Live metrics from satohash API DB",
         "version": "5.0.0-ELITE",
-        "uptimeSec": 1286663,
+        "uptimeSec": 1288127,
         "requireLightning": false,
         "familyFreeTier": true,
         "directory": {
@@ -1004,7 +1004,7 @@
         },
         "counts": {
           "stampsTotal": 13,
-          "stamps24h": 1,
+          "stamps24h": 0,
           "stamps7d": 1,
           "pending": 0,
           "confirmed": 13,
