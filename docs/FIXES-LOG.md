@@ -5,6 +5,15 @@ after any autonomous repair so Cam can review "what got fixed" after the fact.
 
 ---
 
+### 2026-08-12 — THOR daily journal writer: truncation + fence-leak root-cause fix
+- `thor-daily-journal.py` clipped LEARNINGS.md bullets at 90 chars mid-word → sentences cut at garbage points ("nous→xai-oau", "creates+unlocks") in every daily journal since at least 08-07.
+- Fixed: word-boundary clip at 420 chars + ellipsis; "Full record:" pointer (e.g. `04-Decisions/LND-Seed-Keys-Required-2026-08-04.md`) is now always preserved even when a long entry clips.
+- Pulse section leaked raw ``` fence markers from OPS-PULSE.md into the journal (broken markdown) → fence lines now filtered.
+- "Recent Git" third repo was `giveabit` (doesn't exist, always empty) → corrected to `nostr-repo` (actual NIP-05 registry repo).
+- Regenerated 2026-08-12 journal with fixed script; verified no truncation artifacts, no fence leak, pointer present.
+
+---
+
 ### 2026-08-10 — satohash.io perf pass (eager bundle -42%)
 - Landing eager bundle 1.27 MB → 725 KB: recharts (~460 KB) extracted into lazy SummaryCharts.jsx — loads only on /docs/executive-summary.
 - ParticleStampCanvas rAF loop: throttled to 30fps + paused offscreen/hidden — the unthrottled loop was the dominant TBT driver (TBT 4.6s → 2.7–3.1s).
