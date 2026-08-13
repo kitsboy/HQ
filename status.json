@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-08-13T19:00:28.954Z",
+  "updatedAt": "2026-08-13T19:30:33.784Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 243,
+      "ms": 587,
       "url": "https://giveabit.io"
     },
     "satohash": {
@@ -17,37 +17,37 @@
     "katoa": {
       "ok": true,
       "status": 200,
-      "ms": 137,
+      "ms": 135,
       "url": "https://katoa.org"
     },
     "stranded": {
       "ok": true,
       "status": 200,
-      "ms": 131,
+      "ms": 133,
       "url": "https://stranded.giveabit.io"
     },
     "tadbuy": {
       "ok": true,
       "status": 200,
-      "ms": 112,
+      "ms": 151,
       "url": "https://tadbuy.giveabit.io"
     },
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 156,
+      "ms": 157,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 121,
+      "ms": 348,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
       "ok": true,
       "status": 200,
-      "ms": 157,
+      "ms": 193,
       "url": "https://openstrata.giveabit.io"
     },
     "btcminiscript": {
@@ -67,18 +67,18 @@
     "satohashApi": {
       "ok": true,
       "status": 200,
-      "ms": 32,
+      "ms": 29,
       "healthUrl": "https://api.satohash.io/health"
     },
     "satohashMetrics": {
       "schema": "gab.product-metrics.v1",
       "productId": "satohash",
       "name": "Satohash",
-      "updatedAt": "2026-08-13T19:00:28.940Z",
+      "updatedAt": "2026-08-13T19:30:33.769Z",
       "window": {
         "label": "7d",
-        "from": "2026-08-06T19:00:28.940Z",
-        "to": "2026-08-13T19:00:28.940Z"
+        "from": "2026-08-06T19:30:33.769Z",
+        "to": "2026-08-13T19:30:33.769Z"
       },
       "health": {
         "status": "green",
@@ -869,7 +869,7 @@
         "seriesFromDb": true,
         "note": "Live metrics from satohash API DB",
         "version": "5.0.0-ELITE",
-        "uptimeSec": 1365540,
+        "uptimeSec": 1367345,
         "requireLightning": false,
         "familyFreeTier": true,
         "directory": {
