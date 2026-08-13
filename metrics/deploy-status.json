@@ -1,9 +1,9 @@
 {
   "giveabit": {
     "workflow_name": "Verify",
-    "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/giveabit/actions/runs/31352902010",
-    "updatedAt": "2026-08-10T03:36:25Z",
+    "latest_conclusion": "failure",
+    "html_url": "https://github.com/kitsboy/giveabit/actions/runs/31633366520",
+    "updatedAt": "2026-08-12T19:38:34Z",
     "status": "completed"
   },
   "satohash": {
@@ -65,8 +65,8 @@
   "HQ": {
     "workflow_name": "Deploy HQ to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/HQ/actions/runs/31549546918",
-    "updatedAt": "2026-08-12T00:15:41Z",
+    "html_url": "https://github.com/kitsboy/HQ/actions/runs/31652948631",
+    "updatedAt": "2026-08-13T00:01:13Z",
     "status": "completed"
   }
 }

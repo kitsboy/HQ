@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-08-11T22:00:28Z",
+  "checked_at": "2026-08-12T22:00:17Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -7,18 +7,18 @@
       "repo": "kitsboy/giveabit",
       "site_url": "https://giveabit.io",
       "last_commit": {
-        "sha": "4a6dca8",
-        "message": "docs: changelog final live numbers",
-        "author": "Cam (via Aider)",
-        "date": "2026-08-10T03:33:11Z",
-        "url": "https://github.com/kitsboy/giveabit/commit/4a6dca800b8579595cc38e0b0ec9d78c98be3e40"
+        "sha": "6e12854",
+        "message": "fix(theme): light footer canvas is stone, not charcoal",
+        "author": "Cam",
+        "date": "2026-08-12T19:35:03Z",
+        "url": "https://github.com/kitsboy/giveabit/commit/6e12854da96489b4cc0080b66d3af6ff3ef33c40"
       },
       "recent_commits": [
-        "docs: changelog final live numbers",
-        "fix(a11y): header currency switcher label-in-name + Nostr co",
-        "fix(lighthouse): a11y 90\u2192100, BP 96\u2192100 \u2014 sw.js 206 crash, u"
+        "fix(theme): light footer canvas is stone, not charcoal",
+        "fix(theme): light mode chips, cards, and inputs use ink",
+        "fix(theme): light mode footer, blog chips, and meta links us"
       ],
-      "commits_7d": 3,
+      "commits_7d": 20,
       "health": "green",
       "cf_project": "giveabit",
       "open_issues": 0
@@ -40,7 +40,7 @@
         "docs: session goodbye \u2014 Mobile Top 12 live + IBD standing",
         "feat(mobile): Top 12 stamp loop \u2014 sticky CTA, done route, sh"
       ],
-      "commits_7d": 22,
+      "commits_7d": 19,
       "health": "green",
       "cf_project": "satohash",
       "open_issues": 1
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "6742a84",
-        "message": "chore: refresh status.json [skip deploy]",
-        "author": "hq-status-bot",
-        "date": "2026-08-11T21:53:19Z",
-        "url": "https://github.com/kitsboy/HQ/commit/6742a84e227f325f1819eded8d7a3eb71deb3ba8"
+        "sha": "ace2f41",
+        "message": "chore: thor auto-metrics 21:45 (live LND + opencode probe)",
+        "author": "Cam (via Aider)",
+        "date": "2026-08-12T21:45:11Z",
+        "url": "https://github.com/kitsboy/HQ/commit/ace2f41cba6c05a148298d1f66f373ac11940631"
       },
       "recent_commits": [
-        "chore: refresh status.json [skip deploy]",
         "chore: thor auto-metrics 21:45 (live LND + opencode probe)",
-        "chore: refresh status.json + thor-node [skip deploy]"
+        "chore: refresh status.json + thor-node [skip deploy]",
+        "chore: thor auto-metrics 21:30 (live LND + opencode probe)"
       ],
       "commits_7d": 100,
       "health": "green",
