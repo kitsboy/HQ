@@ -5,6 +5,17 @@ after any autonomous repair so Cam can review "what got fixed" after the fact.
 
 ---
 
+### 2026-08-14 — Hermes setup optimization batch: cron cleanup + memory root-cause fix (Kimi)
+
+- **Dead crons removed (2):** `thor-auto-metrics` + `thor-metrics-bundle-15m` — both paused since 2026-07-31 and superseded by `thor-pulse-6h` (runs the same bundle every 6h). Removed to stop dead tiles on the board.
+- **buzz-watch delivery fixed:** was failing silently every Saturday ("Chat not found" → `telegram:-1002286292251`). Repointed delivery to live chat `telegram:155378281`. No more silent failures (zero-error rule).
+- **cron-failure-watchdog removed:** job fully covered by `kanban-autofeed` + `thor-cron-health-hourly` — deduped, no coverage lost.
+- **suite-pulse-daily → deliver=local:** no more separate 08:00 Telegram ping; the 07:30 morning voice brief is now the single morning ping (fewer chats).
+- **MEMORY ROOT-CAUSE FIX (the big one):** always-on memory was 86% full + user profile 91%, driven by duplicated project detail that was ALSO already in fact_store. Memory is injected every turn; fact_store is on-demand. Stripped duplicated detail → pointers only. **Result: memory 86% → 49%, profile 91% → 50%** — under 50% for the first time. Strategy rule baked into MEMORY.md so it never regresses; memory-health.py (Tue 05:00) keeps fact_store deduped.
+- Verified: no facts lost (all detail confirmed present in fact_store via probe before removal).
+
+---
+
 ### 2026-08-12 — THOR daily journal writer: truncation + fence-leak root-cause fix
 - `thor-daily-journal.py` clipped LEARNINGS.md bullets at 90 chars mid-word → sentences cut at garbage points ("nous→xai-oau", "creates+unlocks") in every daily journal since at least 08-07.
 - Fixed: word-boundary clip at 420 chars + ellipsis; "Full record:" pointer (e.g. `04-Decisions/LND-Seed-Keys-Required-2026-08-04.md`) is now always preserved even when a long entry clips.

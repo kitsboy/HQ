@@ -1,3 +1,14 @@
+### 2026-08-14 — Hermes optimization batch: cron cleanup + memory root-cause fix (Kimi)
+
+- **Dead crons removed (2):** `thor-auto-metrics`, `thor-metrics-bundle-15m` (paused since 07-31, superseded by `thor-pulse-6h`).
+- **buzz-watch delivery fixed:** was silently failing weekly ("Chat not found") → repointed to live `telegram:155378281`.
+- **cron-failure-watchdog removed:** covered by `kanban-autofeed` + `thor-cron-health-hourly`.
+- **suite-pulse-daily → deliver=local:** morning voice brief (07:30) is now the single morning ping.
+- **MEMORY ROOT-CAUSE FIX:** always-on memory 86%→49%, profile 91%→50%. Duplicated detail stripped to fact_store pointers (memory=injected every turn, fact_store=on-demand). Strategy baked into MEMORY.md; memory-health.py keeps it deduped.
+- Full detail in `docs/FIXES-LOG.md`.
+
+---
+
 ### 2026-08-09 — Status pinger CI fixed: push-race root cause + Node 24 (Kimi)
 
 - **Emails stopped at the root:** Status pinger failed 8x in 10 days with `! [rejected] main -> main (fetch first)`. Cause: 15-min cron runs sit in the GitHub queue 30+ min; by push time a newer run already pushed status.json -> non-fast-forward rejection -> failure email every time.
