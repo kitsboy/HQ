@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-08-13T22:00:41Z",
+  "checked_at": "2026-08-14T22:00:22Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -7,18 +7,18 @@
       "repo": "kitsboy/giveabit",
       "site_url": "https://giveabit.io",
       "last_commit": {
-        "sha": "6e12854",
-        "message": "fix(theme): light footer canvas is stone, not charcoal",
-        "author": "Cam",
-        "date": "2026-08-12T19:35:03Z",
-        "url": "https://github.com/kitsboy/giveabit/commit/6e12854da96489b4cc0080b66d3af6ff3ef33c40"
+        "sha": "0aefd60",
+        "message": "Fix theme-sensitive smoke contrast tests with real WCAG contrast ratio",
+        "author": "Cam (via Aider)",
+        "date": "2026-08-14T04:46:28Z",
+        "url": "https://github.com/kitsboy/giveabit/commit/0aefd608c4ea329f1ff803f49ed8f0c2f78ee0cd"
       },
       "recent_commits": [
-        "fix(theme): light footer canvas is stone, not charcoal",
-        "fix(theme): light mode chips, cards, and inputs use ink",
-        "fix(theme): light mode footer, blog chips, and meta links us"
+        "Fix theme-sensitive smoke contrast tests with real WCAG cont",
+        "Fix flaky smoke contrast tests (poll for settled color)",
+        "Add 'Make a Bitcoin Seed Phrase from Scratch (Using Dice)' b"
       ],
-      "commits_7d": 20,
+      "commits_7d": 23,
       "health": "green",
       "cf_project": "giveabit",
       "open_issues": 0
@@ -51,15 +51,15 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "adc33e8",
+        "sha": "6524d17",
         "message": "chore: refresh status.json [skip deploy]",
         "author": "hq-status-bot",
-        "date": "2026-08-13T21:51:31Z",
-        "url": "https://github.com/kitsboy/HQ/commit/adc33e84514c4e345077a279419f294ec78120aa"
+        "date": "2026-08-14T21:59:59Z",
+        "url": "https://github.com/kitsboy/HQ/commit/6524d17a4313e74e148fb4f5bf3e90abd5c1901a"
       },
       "recent_commits": [
         "chore: refresh status.json [skip deploy]",
-        "chore: thor auto-metrics 21:45 (live LND + opencode probe)",
+        "chore: refresh status.json [skip deploy]",
         "chore: refresh status.json + thor-node [skip deploy]"
       ],
       "commits_7d": 100,
