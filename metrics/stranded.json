@@ -2,7 +2,7 @@
   "schema": "gab.product-metrics.v1",
   "productId": "stranded",
   "name": "Stranded",
-  "updatedAt": "2026-08-13T00:20:27Z",
+  "updatedAt": "2026-08-14T00:20:50Z",
   "window": {
     "label": "all",
     "from": "2025-01-01T00:00:00Z",
@@ -36,8 +36,8 @@
       }
     ],
     "http": 200,
-    "ms": 82,
-    "probedAt": "2026-08-13T00:20:27Z"
+    "ms": 100,
+    "probedAt": "2026-08-14T00:20:50Z"
   },
   "kpis": [
     {
@@ -233,13 +233,13 @@
       "probe": {
         "ok": true,
         "http": 200,
-        "ms": 82
+        "ms": 100
       },
-      "checkedAt": "2026-08-13T00:20:27Z",
+      "checkedAt": "2026-08-14T00:20:50Z",
       "umami": {
-        "visitors24h": 2,
-        "pageviews24h": 2,
-        "visits24h": 2,
+        "visitors24h": 0,
+        "pageviews24h": 0,
+        "visits24h": 0,
         "visitors7d": 6,
         "pageviews7d": 39,
         "visitors30d": 6,

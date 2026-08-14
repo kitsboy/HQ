@@ -2,7 +2,7 @@
   "schema": "gab.product-metrics.v1",
   "productId": "katoa",
   "name": "Katoa",
-  "updatedAt": "2026-08-13T00:20:27Z",
+  "updatedAt": "2026-08-14T00:20:50Z",
   "window": {
     "label": "30d",
     "from": "2026-07-11T11:03:04.009Z",
@@ -26,8 +26,8 @@
       }
     ],
     "http": 200,
-    "ms": 205,
-    "probedAt": "2026-08-13T00:20:27Z"
+    "ms": 119,
+    "probedAt": "2026-08-14T00:20:50Z"
   },
   "kpis": [
     {
@@ -128,13 +128,13 @@
       "probe": {
         "ok": true,
         "http": 200,
-        "ms": 205
+        "ms": 119
       },
-      "checkedAt": "2026-08-13T00:20:27Z",
+      "checkedAt": "2026-08-14T00:20:50Z",
       "umami": {
-        "visitors24h": 1,
-        "pageviews24h": 1,
-        "visits24h": 1,
+        "visitors24h": 0,
+        "pageviews24h": 0,
+        "visits24h": 0,
         "visitors7d": 9,
         "pageviews7d": 99,
         "visitors30d": 9,

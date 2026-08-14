@@ -2,16 +2,16 @@
   "schema": "gab.product-metrics.v1",
   "productId": "sherpacarta",
   "name": "SherpaCarta",
-  "updatedAt": "2026-08-13T00:20:27Z",
+  "updatedAt": "2026-08-14T00:20:50Z",
   "window": {
     "label": "7d",
-    "from": "2026-08-06T00:20:33.136Z",
-    "to": "2026-08-13T00:20:33.136Z"
+    "from": "2026-08-07T00:20:56.526Z",
+    "to": "2026-08-14T00:20:56.526Z"
   },
   "health": {
     "status": "ok",
     "message": "Live CF Function \u2014 mandate total=4 \u00b7 24h=0 \u00b7 store=kv. LN via HQ wallet sherpacarta.",
-    "latencyMs": 183,
+    "latencyMs": 35,
     "uptimePct24h": null,
     "dependencies": [
       {
@@ -46,14 +46,14 @@
       }
     ],
     "http": 200,
-    "ms": 126,
-    "probedAt": "2026-08-13T00:20:27Z"
+    "ms": 147,
+    "probedAt": "2026-08-14T00:20:50Z"
   },
   "kpis": [
     {
       "key": "visitors30d",
       "label": "Visitors (30d)",
-      "value": 56,
+      "value": 59,
       "format": "int",
       "unit": "visits"
     },
@@ -176,10 +176,6 @@
       "color": "#10b981",
       "points": [
         {
-          "t": "2026-07-31T12:00:00.000Z",
-          "v": 0
-        },
-        {
           "t": "2026-08-01T12:00:00.000Z",
           "v": 0
         },
@@ -230,6 +226,10 @@
         {
           "t": "2026-08-13T12:00:00.000Z",
           "v": 0
+        },
+        {
+          "t": "2026-08-14T12:00:00.000Z",
+          "v": 0
         }
       ]
     },
@@ -240,7 +240,7 @@
       "color": "#c45f00",
       "points": [
         {
-          "t": "2026-08-13T00:00:00.000Z",
+          "t": "2026-08-14T00:00:00.000Z",
           "v": 4
         }
       ]
@@ -252,7 +252,7 @@
       "color": "#f7931a",
       "points": [
         {
-          "t": "2026-08-13T00:00:00.000Z",
+          "t": "2026-08-14T00:00:00.000Z",
           "v": 12884
         }
       ]
@@ -535,17 +535,17 @@
       "probe": {
         "ok": true,
         "http": 200,
-        "ms": 126
+        "ms": 147
       },
-      "checkedAt": "2026-08-13T00:20:27Z",
+      "checkedAt": "2026-08-14T00:20:50Z",
       "umami": {
-        "visitors24h": 0,
-        "pageviews24h": 0,
-        "visits24h": 0,
-        "visitors7d": 49,
-        "pageviews7d": 158,
-        "visitors30d": 56,
-        "pageviews30d": 165
+        "visitors24h": 3,
+        "pageviews24h": 3,
+        "visits24h": 3,
+        "visitors7d": 52,
+        "pageviews7d": 161,
+        "visitors30d": 59,
+        "pageviews30d": 168
       }
     }
   }

@@ -2,7 +2,7 @@
   "schema": "gab.product-metrics.v1",
   "productId": "tadbuy",
   "name": "Tadbuy",
-  "updatedAt": "2026-08-13T00:20:27Z",
+  "updatedAt": "2026-08-14T00:20:50Z",
   "window": {
     "label": "30d",
     "from": "2026-07-11T11:04:41.740Z",
@@ -36,8 +36,8 @@
       }
     ],
     "http": 200,
-    "ms": 92,
-    "probedAt": "2026-08-13T00:20:27Z"
+    "ms": 79,
+    "probedAt": "2026-08-14T00:20:50Z"
   },
   "kpis": [
     {
@@ -534,15 +534,15 @@
       "probe": {
         "ok": true,
         "http": 200,
-        "ms": 92
+        "ms": 79
       },
-      "checkedAt": "2026-08-13T00:20:27Z",
+      "checkedAt": "2026-08-14T00:20:50Z",
       "umami": {
         "visitors24h": 0,
         "pageviews24h": 0,
         "visits24h": 0,
-        "visitors7d": 4,
-        "pageviews7d": 9,
+        "visitors7d": 3,
+        "pageviews7d": 8,
         "visitors30d": 6,
         "pageviews30d": 11
       }

@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-08-12T22:00:17Z",
+  "checked_at": "2026-08-13T22:00:41Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -51,16 +51,16 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "ace2f41",
-        "message": "chore: thor auto-metrics 21:45 (live LND + opencode probe)",
-        "author": "Cam (via Aider)",
-        "date": "2026-08-12T21:45:11Z",
-        "url": "https://github.com/kitsboy/HQ/commit/ace2f41cba6c05a148298d1f66f373ac11940631"
+        "sha": "adc33e8",
+        "message": "chore: refresh status.json [skip deploy]",
+        "author": "hq-status-bot",
+        "date": "2026-08-13T21:51:31Z",
+        "url": "https://github.com/kitsboy/HQ/commit/adc33e84514c4e345077a279419f294ec78120aa"
       },
       "recent_commits": [
+        "chore: refresh status.json [skip deploy]",
         "chore: thor auto-metrics 21:45 (live LND + opencode probe)",
-        "chore: refresh status.json + thor-node [skip deploy]",
-        "chore: thor auto-metrics 21:30 (live LND + opencode probe)"
+        "chore: refresh status.json + thor-node [skip deploy]"
       ],
       "commits_7d": 100,
       "health": "green",
@@ -172,7 +172,7 @@
         "docs: goodbye tip SHA aligned",
         "docs: goodbye session close \u2014 BUILD 860 + Nostr + film"
       ],
-      "commits_7d": 43,
+      "commits_7d": 41,
       "health": "green",
       "cf_project": "sherpacarta",
       "open_issues": 0

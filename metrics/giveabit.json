@@ -2,7 +2,7 @@
   "schema": "gab.product-metrics.v1",
   "productId": "giveabit",
   "name": "Give A Bit",
-  "updatedAt": "2026-08-13T00:20:27Z",
+  "updatedAt": "2026-08-14T00:20:50Z",
   "window": {
     "label": "7d",
     "from": "2026-07-14T20:40:00Z",
@@ -31,14 +31,14 @@
       }
     ],
     "http": 200,
-    "ms": 155,
-    "probedAt": "2026-08-13T00:20:27Z"
+    "ms": 126,
+    "probedAt": "2026-08-14T00:20:50Z"
   },
   "kpis": [
     {
       "key": "visitors30d",
       "label": "Visitors (30d)",
-      "value": 93,
+      "value": 144,
       "format": "int",
       "unit": "visits"
     },
@@ -285,17 +285,17 @@
       "probe": {
         "ok": true,
         "http": 200,
-        "ms": 155
+        "ms": 126
       },
-      "checkedAt": "2026-08-13T00:20:27Z",
+      "checkedAt": "2026-08-14T00:20:50Z",
       "umami": {
-        "visitors24h": 29,
-        "pageviews24h": 780,
-        "visits24h": 32,
-        "visitors7d": 70,
-        "pageviews7d": 920,
-        "visitors30d": 93,
-        "pageviews30d": 976
+        "visitors24h": 51,
+        "pageviews24h": 56,
+        "visits24h": 52,
+        "visitors7d": 120,
+        "pageviews7d": 975,
+        "visitors30d": 144,
+        "pageviews30d": 1032
       }
     }
   }
