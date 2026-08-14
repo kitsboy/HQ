@@ -1,9 +1,9 @@
 {
  "schema": "gab.opencode.v1",
- "updatedAt": "2026-08-14T16:00:08Z",
+ "updatedAt": "2026-08-14T16:15:07Z",
  "healthy": true,
  "version": "1.18.15",
- "latencyMs": 56,
+ "latencyMs": 35,
  "service": null,
  "hint": ""
 }
