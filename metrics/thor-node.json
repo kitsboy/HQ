@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-08-14T00:45:02Z",
+ "updatedAt": "2026-08-14T01:00:02Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -39,13 +39,13 @@
     "detail": "Up 3 weeks (healthy)"
    }
   ],
-  "uptimeSec": 2425701
+  "uptimeSec": 2426602
  },
  "bitcoin": {
   "ok": true,
   "chain": "main",
-  "blocks": 962352,
-  "headers": 962352,
+  "blocks": 962353,
+  "headers": 962353,
   "verificationProgress": 1.0,
   "pruned": false,
   "sizeOnDiskGB": 0.35,
@@ -84,10 +84,6 @@
    "color": "#1f6b3a",
    "points": [
     {
-     "t": "2026-08-13T01:00:01Z",
-     "v": 0
-    },
-    {
      "t": "2026-08-13T01:15:01Z",
      "v": 0
     },
@@ -465,6 +461,10 @@
     },
     {
      "t": "2026-08-14T00:45:02Z",
+     "v": 0
+    },
+    {
+     "t": "2026-08-14T01:00:02Z",
      "v": 0
     }
    ]
@@ -476,10 +476,6 @@
    "color": "#c45f00",
    "points": [
     {
-     "t": "2026-08-13T01:00:01Z",
-     "v": 0
-    },
-    {
      "t": "2026-08-13T01:15:01Z",
      "v": 0
     },
@@ -858,6 +854,10 @@
     {
      "t": "2026-08-14T00:45:02Z",
      "v": 0
+    },
+    {
+     "t": "2026-08-14T01:00:02Z",
+     "v": 0
     }
    ]
   },
@@ -867,10 +867,6 @@
    "unit": "load",
    "color": "#38bdf8",
    "points": [
-    {
-     "t": "2026-08-13T01:00:01Z",
-     "v": 1.05
-    },
     {
      "t": "2026-08-13T01:15:01Z",
      "v": 0.83
@@ -1250,6 +1246,10 @@
     {
      "t": "2026-08-14T00:45:02Z",
      "v": 0.6
+    },
+    {
+     "t": "2026-08-14T01:00:02Z",
+     "v": 0.41
     }
    ]
   },
@@ -1259,10 +1259,6 @@
    "unit": "GB",
    "color": "#a78bfa",
    "points": [
-    {
-     "t": "2026-08-13T01:00:01Z",
-     "v": 3.7
-    },
     {
      "t": "2026-08-13T01:15:01Z",
      "v": 3.6
@@ -1642,6 +1638,10 @@
     {
      "t": "2026-08-14T00:45:02Z",
      "v": 3.0
+    },
+    {
+     "t": "2026-08-14T01:00:02Z",
+     "v": 3.0
     }
    ]
   },
@@ -1651,10 +1651,6 @@
    "unit": "blocks",
    "color": "#f7931a",
    "points": [
-    {
-     "t": "2026-08-13T01:00:01Z",
-     "v": 962209
-    },
     {
      "t": "2026-08-13T01:15:01Z",
      "v": 962211
@@ -2034,6 +2030,10 @@
     {
      "t": "2026-08-14T00:45:02Z",
      "v": 962352
+    },
+    {
+     "t": "2026-08-14T01:00:02Z",
+     "v": 962353
     }
    ]
   }
@@ -2069,13 +2069,13 @@
   "memory": {
    "totalGB": 7.8,
    "usedGB": 3.0,
-   "freeGB": 3.2,
+   "freeGB": 3.1,
    "availableGB": 4.7
   },
   "cpu": {
-   "loadAvg1m": 0.6,
-   "loadAvg5m": 0.57,
-   "loadAvg15m": 0.63,
+   "loadAvg1m": 0.41,
+   "loadAvg5m": 0.58,
+   "loadAvg15m": 0.62,
    "uptimeDays": 28.1
   },
   "docker": {
@@ -2101,9 +2101,9 @@
   "diskFreeGB": 325,
   "memTotalGB": 7.8,
   "memUsedGB": 3.0,
-  "load1": 0.6,
-  "load5": 0.57,
-  "load15": 0.63,
+  "load1": 0.41,
+  "load5": 0.58,
+  "load15": 0.62,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
@@ -2152,10 +2152,10 @@
  },
  "opencode": {
   "schema": "gab.opencode.v1",
-  "updatedAt": "2026-08-14T00:45:09Z",
+  "updatedAt": "2026-08-14T01:00:12Z",
   "healthy": true,
   "version": "1.18.15",
-  "latencyMs": 37,
+  "latencyMs": 85,
   "service": null,
   "hint": ""
  }
