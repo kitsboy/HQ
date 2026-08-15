@@ -1,6 +1,6 @@
 {
   "schema": "gab.ecosystem-map.v1",
-  "updatedAt": "2026-08-14T02:01:00Z",
+  "updatedAt": "2026-08-15T02:00:43Z",
   "projects": [
     {
       "id": "satohash",
@@ -24,8 +24,8 @@
       "version": "3.31.1",
       "status": "green",
       "health": "200",
-      "lastCommit": "8736202a chore: refresh status.json + thor-node [skip deploy]",
-      "synced": "synced",
+      "lastCommit": "4e062999 chore: refresh status.json + thor-node [skip deploy]",
+      "synced": "ahead",
       "localOnThor": true
     },
     {
@@ -34,10 +34,10 @@
       "url": "giveabit.io",
       "api": "",
       "github": "kitsboy/giveabit",
-      "version": "5.11.0",
+      "version": "5.12.6",
       "status": "green",
       "health": "200",
-      "lastCommit": "7cd4564 fix(home): enlarge Our Mission heading and body type",
+      "lastCommit": "0aefd60 Fix theme-sensitive smoke contrast tests with real WCAG contrast ratio",
       "synced": "synced",
       "localOnThor": true
     },
@@ -144,16 +144,16 @@
       "diskFree": "325G",
       "mem": "3.5Gi used",
       "memAvail": "4.3Gi",
-      "load": "2.05/0.98/0.74",
-      "uptime": "up 4 weeks, 1 hour, 4 minutes",
-      "lastSeen": "2026-08-14"
+      "load": "2.17/1.08/0.70",
+      "uptime": "up 4 weeks, 1 day, 1 hour, 4 minutes",
+      "lastSeen": "2026-08-15"
     },
     {
       "id": "m3",
       "name": "M3",
       "role": "Code + Grok (Mac)",
       "host": "Cams-Laptop",
-      "status": "green",
+      "status": "amber",
       "lastPush": "2026-08-11",
       "lastSeen": "2026-08-11"
     },
@@ -264,133 +264,133 @@
   "skills": [
     {
       "name": "browser-harness",
-      "ageDays": 75,
+      "ageDays": 76,
       "status": "stale",
       "updated": "2026-05-30"
     },
     {
       "name": "current-tasks",
-      "ageDays": 28,
+      "ageDays": 29,
       "status": "fresh",
       "updated": "2026-07-16"
     },
     {
       "name": "deployment-workflow",
-      "ageDays": 31,
+      "ageDays": 32,
       "status": "aging",
       "updated": "2026-07-13"
     },
     {
       "name": "dogfood",
-      "ageDays": 53,
+      "ageDays": 54,
       "status": "aging",
       "updated": "2026-06-21"
     },
     {
       "name": "github-sync",
-      "ageDays": 42,
+      "ageDays": 43,
       "status": "aging",
       "updated": "2026-07-02"
     },
     {
       "name": "hermes-desktop-plugins",
-      "ageDays": 24,
+      "ageDays": 25,
       "status": "fresh",
       "updated": "2026-07-20"
     },
     {
       "name": "hyperframes",
-      "ageDays": 2,
+      "ageDays": 3,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "hyperframes-animation",
-      "ageDays": 2,
+      "ageDays": 3,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "hyperframes-cli",
-      "ageDays": 2,
+      "ageDays": 3,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "hyperframes-core",
-      "ageDays": 2,
+      "ageDays": 3,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "hyperframes-creative",
-      "ageDays": 2,
+      "ageDays": 3,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "hyperframes-keyframes",
-      "ageDays": 2,
+      "ageDays": 3,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "hyperframes-registry",
-      "ageDays": 2,
+      "ageDays": 3,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "kanban-worker",
-      "ageDays": 75,
+      "ageDays": 76,
       "status": "stale",
       "updated": "2026-05-30"
     },
     {
       "name": "lnd-lnbits-ops",
-      "ageDays": 7,
+      "ageDays": 8,
       "status": "fresh",
       "updated": "2026-08-07"
     },
     {
       "name": "media-use",
-      "ageDays": 2,
+      "ageDays": 3,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "nova-product-management",
-      "ageDays": 30,
+      "ageDays": 31,
       "status": "aging",
       "updated": "2026-07-14"
     },
     {
       "name": "project-brief",
-      "ageDays": 30,
+      "ageDays": 31,
       "status": "aging",
       "updated": "2026-07-14"
     },
     {
       "name": "propagate-template",
-      "ageDays": 48,
+      "ageDays": 49,
       "status": "aging",
       "updated": "2026-06-26"
     },
     {
       "name": "quick-backup",
-      "ageDays": 48,
+      "ageDays": 49,
       "status": "aging",
       "updated": "2026-06-26"
     },
     {
       "name": "satohash-orchestrator",
-      "ageDays": 28,
+      "ageDays": 29,
       "status": "fresh",
       "updated": "2026-07-17"
     },
     {
       "name": "yuanbao",
-      "ageDays": 28,
+      "ageDays": 29,
       "status": "fresh",
       "updated": "2026-07-17"
     }
@@ -409,7 +409,7 @@
       "name": "LND",
       "type": "Lightning Node (Neutrino)",
       "status": "green",
-      "detail": "Up 7 days (healthy)"
+      "detail": "Up 8 days (healthy)"
     },
     {
       "id": "satohash-api",
@@ -436,28 +436,28 @@
   "recentActivity": [
     {
       "repo": "hq",
-      "commit": "8736202a chore: refresh status.json + thor-node [skip deploy",
-      "timestamp": "2026-08-14"
+      "commit": "4e062999 chore: refresh status.json + thor-node [skip deploy",
+      "timestamp": "2026-08-15"
     },
     {
       "repo": "hq",
-      "commit": "1f523273 chore: thor auto-metrics 00:00 (live LND + opencode",
-      "timestamp": "2026-08-14"
+      "commit": "d63a6039 chore: thor auto-metrics 00:00 (live LND + opencode",
+      "timestamp": "2026-08-15"
     },
     {
       "repo": "hq",
-      "commit": "5e503285 chore: refresh status.json [skip deploy]",
-      "timestamp": "2026-08-14"
+      "commit": "d7844739 chore: thor auto-metrics 23:45 (live LND + opencode",
+      "timestamp": "2026-08-15"
     },
     {
       "repo": "satohash",
       "commit": "3c80c67 chore: build metadata bump",
-      "timestamp": "2026-08-14"
+      "timestamp": "2026-08-15"
     },
     {
       "repo": "satohash",
       "commit": "ac96194 docs: LATEST-UPDATE final scores (a11y 100)",
-      "timestamp": "2026-08-14"
+      "timestamp": "2026-08-15"
     }
   ],
   "metadata": {
@@ -466,6 +466,6 @@
     "machineCount": 3,
     "activeCrons": 28,
     "skillCount": 22,
-    "vaultJournals": 133
+    "vaultJournals": 134
   }
 }
