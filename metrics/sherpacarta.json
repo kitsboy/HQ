@@ -2,16 +2,16 @@
   "schema": "gab.product-metrics.v1",
   "productId": "sherpacarta",
   "name": "SherpaCarta",
-  "updatedAt": "2026-08-15T00:20:34Z",
+  "updatedAt": "2026-08-16T00:20:04Z",
   "window": {
     "label": "7d",
-    "from": "2026-08-08T00:20:42.738Z",
-    "to": "2026-08-15T00:20:42.738Z"
+    "from": "2026-08-09T00:20:09.654Z",
+    "to": "2026-08-16T00:20:09.654Z"
   },
   "health": {
     "status": "ok",
-    "message": "Partial: stats=true mempool=false",
-    "latencyMs": 4027,
+    "message": "Live CF Function \u2014 mandate total=4 \u00b7 24h=0 \u00b7 store=kv. LN via HQ wallet sherpacarta.",
+    "latencyMs": 342,
     "uptimePct24h": null,
     "dependencies": [
       {
@@ -31,8 +31,8 @@
       },
       {
         "id": "on-chain-treasury",
-        "status": "red",
-        "detail": "mempool unavailable"
+        "status": "green",
+        "detail": "12884 sats \u00b7 1 txs"
       },
       {
         "id": "lightning",
@@ -46,14 +46,14 @@
       }
     ],
     "http": 200,
-    "ms": 77,
-    "probedAt": "2026-08-15T00:20:34Z"
+    "ms": 93,
+    "probedAt": "2026-08-16T00:20:04Z"
   },
   "kpis": [
     {
       "key": "visitors30d",
       "label": "Visitors (30d)",
-      "value": 60,
+      "value": 75,
       "format": "int",
       "unit": "visits"
     },
@@ -95,7 +95,7 @@
     {
       "key": "donations_btc",
       "label": "Donations (BTC on-chain)",
-      "value": 0,
+      "value": 0.00012884,
       "unit": "BTC",
       "format": "number",
       "priority": 1
@@ -103,7 +103,7 @@
     {
       "key": "donations_sats",
       "label": "Treasury sats (on-chain)",
-      "value": 0,
+      "value": 12884,
       "unit": "sats",
       "format": "number",
       "priority": 1
@@ -153,7 +153,7 @@
     {
       "key": "treasury_txs",
       "label": "Treasury txs",
-      "value": 0,
+      "value": 1,
       "unit": "txs",
       "format": "number",
       "priority": 3
@@ -175,10 +175,6 @@
       "unit": "signers",
       "color": "#10b981",
       "points": [
-        {
-          "t": "2026-08-02T12:00:00.000Z",
-          "v": 0
-        },
         {
           "t": "2026-08-03T12:00:00.000Z",
           "v": 0
@@ -230,6 +226,10 @@
         {
           "t": "2026-08-15T12:00:00.000Z",
           "v": 0
+        },
+        {
+          "t": "2026-08-16T12:00:00.000Z",
+          "v": 0
         }
       ]
     },
@@ -240,7 +240,7 @@
       "color": "#c45f00",
       "points": [
         {
-          "t": "2026-08-15T00:00:00.000Z",
+          "t": "2026-08-16T00:00:00.000Z",
           "v": 4
         }
       ]
@@ -252,8 +252,8 @@
       "color": "#f7931a",
       "points": [
         {
-          "t": "2026-08-15T00:00:00.000Z",
-          "v": 0
+          "t": "2026-08-16T00:00:00.000Z",
+          "v": 12884
         }
       ]
     }
@@ -388,7 +388,7 @@
         {
           "id": "onchain",
           "label": "On-chain BTC",
-          "value": 0,
+          "value": 12884,
           "meta": {
             "unit": "sats",
             "status": "live"
@@ -497,8 +497,8 @@
     "source": "functions/metrics.json.js",
     "productId": "sherpacarta",
     "hqWalletId": "sherpacarta",
-    "donations_sats": 0,
-    "donations_btc": 0,
+    "donations_sats": 12884,
+    "donations_btc": 0.00012884,
     "treasury_address": "bc1qhm5ndfjhqxdk3cx0pngyps4f5nnwdckulmge6c8keyf2pk0neqtshjn8ad",
     "umami_website_id": "9b6f05bf-286e-4b21-9094-1d675f9b4442",
     "note": "Secret-free live envelope. Prefer this over any HQ demo fallback when raw.demo===false.",
@@ -535,17 +535,17 @@
       "probe": {
         "ok": true,
         "http": 200,
-        "ms": 77
+        "ms": 93
       },
-      "checkedAt": "2026-08-15T00:20:34Z",
+      "checkedAt": "2026-08-16T00:20:04Z",
       "umami": {
-        "visitors24h": 1,
-        "pageviews24h": 1,
-        "visits24h": 1,
-        "visitors7d": 53,
-        "pageviews7d": 162,
-        "visitors30d": 60,
-        "pageviews30d": 169
+        "visitors24h": 15,
+        "pageviews24h": 17,
+        "visits24h": 15,
+        "visitors7d": 68,
+        "pageviews7d": 179,
+        "visitors30d": 75,
+        "pageviews30d": 186
       }
     }
   }
