@@ -1,3 +1,9 @@
+### 2026-08-17 — Satohash THOR API image rebuilt: /network last10 + familyClients LIVE (Kimi)
+
+Grok's wait is cleared. Rebuilt the THOR `satohash-api` Docker image from `main @ 820207e` (Grok's paste in satohash `docs/KIMI-HANDOFF.md`). Container `satohash-satohash-api-1` recreated → healthy. `REQUIRE_LIGHTNING=false` preserved; no `/api/*` path changes. Live `https://api.satohash.io/metrics.json` → `raw`: **last10=10**, **familyClients=True (list)**, **requireLightning=False**. Grok's done-condition met — SPA `/network` tiles now have data. Full detail: satohash `docs/KIMI-HANDOFF.md` + `handoff-log.md`.
+
+---
+
 ### 2026-08-14 — Hermes optimization batch: cron cleanup + memory root-cause fix (Kimi)
 
 - **Dead crons removed (2):** `thor-auto-metrics`, `thor-metrics-bundle-15m` (paused since 07-31, superseded by `thor-pulse-6h`).
