@@ -1,6 +1,6 @@
 {
   "schema": "gab.ecosystem-map.v1",
-  "updatedAt": "2026-08-16T02:00:19Z",
+  "updatedAt": "2026-08-17T02:00:25Z",
   "projects": [
     {
       "id": "satohash",
@@ -24,8 +24,8 @@
       "version": "3.31.1",
       "status": "green",
       "health": "200",
-      "lastCommit": "68e8f3d9 chore: thor auto-metrics 00:00 (live LND + opencode probe)",
-      "synced": "synced",
+      "lastCommit": "98329f76 chore: thor auto-metrics 00:00 (live LND + opencode probe)",
+      "synced": "ahead",
       "localOnThor": true
     },
     {
@@ -144,9 +144,9 @@
       "diskFree": "325G",
       "mem": "5.3Gi used",
       "memAvail": "2.5Gi",
-      "load": "2.33/0.80/0.51",
-      "uptime": "up 4 weeks, 2 days, 1 hour, 3 minutes",
-      "lastSeen": "2026-08-16"
+      "load": "2.75/1.46/1.00",
+      "uptime": "up 4 weeks, 3 days, 1 hour, 3 minutes",
+      "lastSeen": "2026-08-17"
     },
     {
       "id": "m3",
@@ -264,133 +264,133 @@
   "skills": [
     {
       "name": "browser-harness",
-      "ageDays": 77,
+      "ageDays": 78,
       "status": "stale",
       "updated": "2026-05-30"
     },
     {
       "name": "current-tasks",
-      "ageDays": 30,
+      "ageDays": 31,
       "status": "aging",
       "updated": "2026-07-16"
     },
     {
       "name": "deployment-workflow",
-      "ageDays": 33,
+      "ageDays": 34,
       "status": "aging",
       "updated": "2026-07-13"
     },
     {
       "name": "dogfood",
-      "ageDays": 55,
+      "ageDays": 56,
       "status": "aging",
       "updated": "2026-06-21"
     },
     {
       "name": "github-sync",
-      "ageDays": 44,
+      "ageDays": 45,
       "status": "aging",
       "updated": "2026-07-02"
     },
     {
       "name": "hermes-desktop-plugins",
-      "ageDays": 26,
+      "ageDays": 27,
       "status": "fresh",
       "updated": "2026-07-20"
     },
     {
       "name": "hyperframes",
-      "ageDays": 4,
+      "ageDays": 5,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "hyperframes-animation",
-      "ageDays": 4,
+      "ageDays": 5,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "hyperframes-cli",
-      "ageDays": 4,
+      "ageDays": 5,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "hyperframes-core",
-      "ageDays": 4,
+      "ageDays": 5,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "hyperframes-creative",
-      "ageDays": 4,
+      "ageDays": 5,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "hyperframes-keyframes",
-      "ageDays": 4,
+      "ageDays": 5,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "hyperframes-registry",
-      "ageDays": 4,
+      "ageDays": 5,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "kanban-worker",
-      "ageDays": 77,
+      "ageDays": 78,
       "status": "stale",
       "updated": "2026-05-30"
     },
     {
       "name": "lnd-lnbits-ops",
-      "ageDays": 9,
+      "ageDays": 10,
       "status": "fresh",
       "updated": "2026-08-07"
     },
     {
       "name": "media-use",
-      "ageDays": 4,
+      "ageDays": 5,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "nova-product-management",
-      "ageDays": 32,
+      "ageDays": 33,
       "status": "aging",
       "updated": "2026-07-14"
     },
     {
       "name": "project-brief",
-      "ageDays": 32,
+      "ageDays": 33,
       "status": "aging",
       "updated": "2026-07-14"
     },
     {
       "name": "propagate-template",
-      "ageDays": 50,
+      "ageDays": 51,
       "status": "aging",
       "updated": "2026-06-26"
     },
     {
       "name": "quick-backup",
-      "ageDays": 50,
+      "ageDays": 51,
       "status": "aging",
       "updated": "2026-06-26"
     },
     {
       "name": "satohash-orchestrator",
-      "ageDays": 30,
+      "ageDays": 31,
       "status": "aging",
       "updated": "2026-07-17"
     },
     {
       "name": "yuanbao",
-      "ageDays": 30,
+      "ageDays": 31,
       "status": "aging",
       "updated": "2026-07-17"
     }
@@ -409,7 +409,7 @@
       "name": "LND",
       "type": "Lightning Node (Neutrino)",
       "status": "green",
-      "detail": "Up 9 days (healthy)"
+      "detail": "Up 10 days (healthy)"
     },
     {
       "id": "satohash-api",
@@ -430,34 +430,34 @@
       "name": "PostgreSQL",
       "type": "LNbits Database",
       "status": "green",
-      "detail": "Up 3 weeks (healthy)"
+      "detail": "Up 4 weeks (healthy)"
     }
   ],
   "recentActivity": [
     {
       "repo": "hq",
-      "commit": "68e8f3d9 chore: thor auto-metrics 00:00 (live LND + opencode",
-      "timestamp": "2026-08-16"
+      "commit": "98329f76 chore: thor auto-metrics 00:00 (live LND + opencode",
+      "timestamp": "2026-08-17"
     },
     {
       "repo": "hq",
-      "commit": "9ee11155 chore: refresh status.json + thor-node [skip deploy",
-      "timestamp": "2026-08-16"
+      "commit": "233790ee chore: refresh status.json + thor-node [skip deploy",
+      "timestamp": "2026-08-17"
     },
     {
       "repo": "hq",
-      "commit": "9ecff1a4 chore: refresh status.json [skip deploy]",
-      "timestamp": "2026-08-16"
+      "commit": "1092792a chore: refresh status.json [skip deploy]",
+      "timestamp": "2026-08-17"
     },
     {
       "repo": "satohash",
       "commit": "3c80c67 chore: build metadata bump",
-      "timestamp": "2026-08-16"
+      "timestamp": "2026-08-17"
     },
     {
       "repo": "satohash",
       "commit": "ac96194 docs: LATEST-UPDATE final scores (a11y 100)",
-      "timestamp": "2026-08-16"
+      "timestamp": "2026-08-17"
     }
   ],
   "metadata": {
@@ -466,6 +466,6 @@
     "machineCount": 3,
     "activeCrons": 28,
     "skillCount": 22,
-    "vaultJournals": 135
+    "vaultJournals": 136
   }
 }
