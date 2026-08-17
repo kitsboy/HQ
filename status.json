@@ -1,53 +1,53 @@
 {
-  "updatedAt": "2026-08-17T17:00:59.901Z",
+  "updatedAt": "2026-08-17T17:31:03.898Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 392,
+      "ms": 492,
       "url": "https://giveabit.io"
     },
     "satohash": {
       "ok": true,
       "status": 200,
-      "ms": 264,
+      "ms": 190,
       "url": "https://satohash.io"
     },
     "katoa": {
       "ok": true,
       "status": 200,
-      "ms": 152,
+      "ms": 145,
       "url": "https://katoa.org"
     },
     "stranded": {
       "ok": true,
       "status": 200,
-      "ms": 167,
+      "ms": 325,
       "url": "https://stranded.giveabit.io"
     },
     "tadbuy": {
       "ok": true,
       "status": 200,
-      "ms": 233,
+      "ms": 232,
       "url": "https://tadbuy.giveabit.io"
     },
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 180,
+      "ms": 239,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 402,
+      "ms": 135,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
       "ok": true,
       "status": 200,
-      "ms": 134,
+      "ms": 376,
       "url": "https://openstrata.giveabit.io"
     },
     "btcminiscript": {
@@ -67,23 +67,23 @@
     "satohashApi": {
       "ok": true,
       "status": 200,
-      "ms": 77,
+      "ms": 543,
       "healthUrl": "https://api.satohash.io/health"
     },
     "satohashMetrics": {
       "schema": "gab.product-metrics.v1",
       "productId": "satohash",
       "name": "Satohash",
-      "updatedAt": "2026-08-17T17:00:59.881Z",
+      "updatedAt": "2026-08-17T17:31:03.844Z",
       "window": {
         "label": "7d",
-        "from": "2026-08-10T17:00:59.881Z",
-        "to": "2026-08-17T17:00:59.881Z"
+        "from": "2026-08-10T17:31:03.844Z",
+        "to": "2026-08-17T17:31:03.844Z"
       },
       "health": {
         "status": "green",
         "message": "API healthy — live stamp aggregates for HQ",
-        "latencyMs": 2,
+        "latencyMs": 1,
         "uptimePct24h": null,
         "dependencies": [
           {
@@ -94,7 +94,7 @@
           {
             "id": "bitcoin-anchor",
             "status": "amber",
-            "detail": "1 pending Bitcoin confirmation(s)"
+            "detail": "3 pending Bitcoin confirmation(s)"
           },
           {
             "id": "api.satohash.io",
@@ -112,7 +112,7 @@
         {
           "key": "stamps_total",
           "label": "Stamps (all time)",
-          "value": 16,
+          "value": 18,
           "unit": "proofs",
           "format": "number",
           "priority": 1,
@@ -121,7 +121,7 @@
         {
           "key": "stamps_24h",
           "label": "Stamps 24h",
-          "value": 3,
+          "value": 5,
           "unit": "proofs",
           "delta": 0,
           "deltaUnit": "%",
@@ -132,7 +132,7 @@
         {
           "key": "stamps_7d",
           "label": "Stamps 7d",
-          "value": 4,
+          "value": 6,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -141,7 +141,7 @@
         {
           "key": "monthly_capacity",
           "label": "Monthly capacity (est.)",
-          "value": 17,
+          "value": 26,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -150,7 +150,7 @@
         {
           "key": "pending",
           "label": "Pending confirm",
-          "value": 1,
+          "value": 3,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -222,7 +222,7 @@
         {
           "key": "p50_ms",
           "label": "Metrics build p50",
-          "value": 2,
+          "value": 1,
           "unit": "ms",
           "format": "duration",
           "priority": 5,
@@ -303,7 +303,7 @@
             },
             {
               "t": "2026-08-17T12:00:00.000Z",
-              "v": 3
+              "v": 5
             }
           ]
         },
@@ -439,7 +439,7 @@
             },
             {
               "t": "2026-08-17T12:00:00.000Z",
-              "v": 1
+              "v": 3
             }
           ]
         },
@@ -520,19 +520,19 @@
             {
               "id": "hash_local",
               "label": "Local hash",
-              "count": 16,
+              "count": 18,
               "hint": "File never leaves device"
             },
             {
               "id": "submit",
               "label": "Submit stamp",
-              "count": 3,
+              "count": 5,
               "hint": "API or SPA"
             },
             {
               "id": "calendar",
               "label": "Calendar attested",
-              "count": 16,
+              "count": 18,
               "hint": "OTS calendars accepted"
             },
             {
@@ -544,7 +544,7 @@
             {
               "id": "pending_queue",
               "label": "Still pending",
-              "count": 1,
+              "count": 3,
               "hint": "Upgrade daemon queue"
             }
           ]
@@ -556,6 +556,14 @@
           "label": "By suite client_id (X-Satohash-Client)",
           "rows": [
             {
+              "id": "spa",
+              "label": "Satohash SPA",
+              "value": 6,
+              "meta": {
+                "offer": "direct web stamps"
+              }
+            },
+            {
               "id": "public",
               "label": "Public / unattributed",
               "value": 6,
@@ -564,11 +572,11 @@
               }
             },
             {
-              "id": "spa",
-              "label": "Satohash SPA",
-              "value": 5,
+              "id": "e2e-live",
+              "label": "e2e-live",
+              "value": 2,
               "meta": {
-                "offer": "direct web stamps"
+                "offer": "attributed client"
               }
             },
             {
@@ -598,14 +606,6 @@
             {
               "id": "grok-closeout",
               "label": "grok-closeout",
-              "value": 1,
-              "meta": {
-                "offer": "attributed client"
-              }
-            },
-            {
-              "id": "e2e-live",
-              "label": "e2e-live",
               "value": 1,
               "meta": {
                 "offer": "attributed client"
@@ -700,7 +700,7 @@
             {
               "id": "pending",
               "label": "Pending",
-              "value": 1,
+              "value": 3,
               "meta": {
                 "offer": "awaiting BTC"
               }
@@ -877,7 +877,7 @@
         "seriesFromDb": true,
         "note": "Live metrics from satohash API DB",
         "version": "5.0.0-ELITE",
-        "uptimeSec": 8466,
+        "uptimeSec": 10270,
         "requireLightning": false,
         "familyFreeTier": true,
         "directory": {
@@ -1011,10 +1011,10 @@
           ]
         },
         "counts": {
-          "stampsTotal": 16,
-          "stamps24h": 3,
-          "stamps7d": 4,
-          "pending": 1,
+          "stampsTotal": 18,
+          "stamps24h": 5,
+          "stamps7d": 6,
+          "pending": 3,
           "confirmed": 15,
           "confirmed7d": 3,
           "failed": 0,
@@ -1024,6 +1024,22 @@
           "confirmRate": 100
         },
         "last10": [
+          {
+            "id": "8693297a-2b64-48e3-87aa-1da12b702427",
+            "hash": "7ee39ecc84fe99193a1b7d53678942efa6e88114ed5aedd3399c47f53ce9fec1",
+            "status": "pending",
+            "client_id": "spa",
+            "created_at": "2026-08-17 17:04:23",
+            "bitcoin_block_height": null
+          },
+          {
+            "id": "d5778c77-4500-4fd6-844d-8a1568c5b3bf",
+            "hash": "fdfe97d95a8585b98880345b878a17bd72613f07d4a9d74f13d73fb58572cee3",
+            "status": "pending",
+            "client_id": "e2e-live",
+            "created_at": "2026-08-17 17:01:57",
+            "bitcoin_block_height": null
+          },
           {
             "id": "97b80349-ac55-4ee4-927c-7f45b667a20b",
             "hash": "6ae3ca8bb9fa9713c016440794f6b31ff8d9d10548e92304f09e786d587a652a",
@@ -1087,25 +1103,17 @@
             "client_id": "spa",
             "created_at": "2026-07-28 23:01:56",
             "bitcoin_block_height": null
-          },
-          {
-            "id": "e7dee45e-bbd1-40c0-b130-8fd6c3499849",
-            "hash": "9c9662a567d0bed1d3df0ce55d1829e1a60507de3109c51544ad54b43d16ef14",
-            "status": "confirmed",
-            "client_id": "grok-closeout",
-            "created_at": "2026-07-28 20:21:49",
-            "bitcoin_block_height": null
-          },
-          {
-            "id": "04ca7170-3787-4a14-8644-fc77365b1444",
-            "hash": "5e5599a75170d2231f43c8a902a0ca63c8027ef6be7ae49bbe92ff50a045d804",
-            "status": "confirmed",
-            "client_id": "kimi-ops-smoke",
-            "created_at": "2026-07-28 15:39:33",
-            "bitcoin_block_height": null
           }
         ],
         "familyClients": [
+          {
+            "id": "spa",
+            "label": "Satohash SPA",
+            "value": 6,
+            "meta": {
+              "offer": "direct web stamps"
+            }
+          },
           {
             "id": "public",
             "label": "Public / unattributed",
@@ -1115,11 +1123,11 @@
             }
           },
           {
-            "id": "spa",
-            "label": "Satohash SPA",
-            "value": 5,
+            "id": "e2e-live",
+            "label": "e2e-live",
+            "value": 2,
             "meta": {
-              "offer": "direct web stamps"
+              "offer": "attributed client"
             }
           },
           {
@@ -1149,14 +1157,6 @@
           {
             "id": "grok-closeout",
             "label": "grok-closeout",
-            "value": 1,
-            "meta": {
-              "offer": "attributed client"
-            }
-          },
-          {
-            "id": "e2e-live",
-            "label": "e2e-live",
             "value": 1,
             "meta": {
               "offer": "attributed client"
