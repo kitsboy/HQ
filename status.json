@@ -1,53 +1,53 @@
 {
-  "updatedAt": "2026-08-17T14:32:20.441Z",
+  "updatedAt": "2026-08-17T15:00:49.033Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 252,
+      "ms": 201,
       "url": "https://giveabit.io"
     },
     "satohash": {
       "ok": true,
       "status": 200,
-      "ms": 319,
+      "ms": 138,
       "url": "https://satohash.io"
     },
     "katoa": {
       "ok": true,
       "status": 200,
-      "ms": 194,
+      "ms": 92,
       "url": "https://katoa.org"
     },
     "stranded": {
       "ok": true,
       "status": 200,
-      "ms": 228,
+      "ms": 117,
       "url": "https://stranded.giveabit.io"
     },
     "tadbuy": {
       "ok": true,
       "status": 200,
-      "ms": 170,
+      "ms": 236,
       "url": "https://tadbuy.giveabit.io"
     },
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 196,
+      "ms": 141,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 184,
+      "ms": 104,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
       "ok": true,
       "status": 200,
-      "ms": 201,
+      "ms": 162,
       "url": "https://openstrata.giveabit.io"
     },
     "btcminiscript": {
@@ -67,18 +67,18 @@
     "satohashApi": {
       "ok": true,
       "status": 200,
-      "ms": 624,
+      "ms": 46,
       "healthUrl": "https://api.satohash.io/health"
     },
     "satohashMetrics": {
       "schema": "gab.product-metrics.v1",
       "productId": "satohash",
       "name": "Satohash",
-      "updatedAt": "2026-08-17T14:32:20.345Z",
+      "updatedAt": "2026-08-17T15:00:49.004Z",
       "window": {
         "label": "7d",
-        "from": "2026-08-10T14:32:20.345Z",
-        "to": "2026-08-17T14:32:20.345Z"
+        "from": "2026-08-10T15:00:49.004Z",
+        "to": "2026-08-17T15:00:49.004Z"
       },
       "health": {
         "status": "green",
@@ -877,7 +877,7 @@
         "seriesFromDb": true,
         "note": "Live metrics from satohash API DB",
         "version": "5.0.0-ELITE",
-        "uptimeSec": 1695052,
+        "uptimeSec": 1255,
         "requireLightning": false,
         "familyFreeTier": true,
         "directory": {
@@ -1020,8 +1020,229 @@
           "failed": 0,
           "failed7d": 0,
           "familyFree": 0,
-          "distinctClients": 6
-        }
+          "distinctClients": 6,
+          "confirmRate": 100
+        },
+        "last10": [
+          {
+            "id": "69fa1449-d9f2-4ecf-a07d-909114fa538f",
+            "hash": "4f9ca88d978e4899b0dd0102cba242164812d6f3dd9072d05f9f384f0a3414ec",
+            "status": "confirmed",
+            "client_id": "spa",
+            "created_at": "2026-08-17 12:25:37",
+            "bitcoin_block_height": null
+          },
+          {
+            "id": "99cdec77-fc64-4107-a042-6edc9aac8f18",
+            "hash": "715d7bdb5c59b4a2ec721676a58d710a09c8fa061cb55109d366c0b9addd709b",
+            "status": "confirmed",
+            "client_id": "e2e-live",
+            "created_at": "2026-08-17 12:22:35",
+            "bitcoin_block_height": null
+          },
+          {
+            "id": "7ea01484-5ed0-4706-b754-dc5f9a68b611",
+            "hash": "66c0229c31a175019f54a0b155dce57dcdc0d9b6fbf7ae3dc2dffbee0de79205",
+            "status": "confirmed",
+            "client_id": "spa",
+            "created_at": "2026-08-11 21:07:21",
+            "bitcoin_block_height": null
+          },
+          {
+            "id": "611df565-0fa2-417d-822b-d1caa1e83c27",
+            "hash": "19ec5b516219dab66e40c414d8dd3ea1b0489b0ac1f6d409505f1c0dae00e2d0",
+            "status": "confirmed",
+            "client_id": "spa",
+            "created_at": "2026-08-04 23:53:55",
+            "bitcoin_block_height": null
+          },
+          {
+            "id": "4060e311-1940-4fb0-8345-4a0a54f5119d",
+            "hash": "2e16aab047029034a70c400e9057e8232968c978ef04fc1632e609fe50a86a96",
+            "status": "confirmed",
+            "client_id": "kimi-truth-sweep",
+            "created_at": "2026-08-04 02:30:57",
+            "bitcoin_block_height": null
+          },
+          {
+            "id": "5f2ac43d-0260-4946-b651-c271b4abe39c",
+            "hash": "45bca560b006c15dfe3f4d1fb6347643308c48f08d3c2f7ebfa1a9847ba3771d",
+            "status": "confirmed",
+            "client_id": "mvp-smoke",
+            "created_at": "2026-08-04 02:21:02",
+            "bitcoin_block_height": null
+          },
+          {
+            "id": "77f8eaf1-db36-4f5a-8035-f295a85a0453",
+            "hash": "ba304f194b7136ccfa9100ab43295a88546a8750ca2e5f72ac04b86655f0c5f3",
+            "status": "confirmed",
+            "client_id": "spa",
+            "created_at": "2026-07-28 23:01:56",
+            "bitcoin_block_height": null
+          },
+          {
+            "id": "e7dee45e-bbd1-40c0-b130-8fd6c3499849",
+            "hash": "9c9662a567d0bed1d3df0ce55d1829e1a60507de3109c51544ad54b43d16ef14",
+            "status": "confirmed",
+            "client_id": "grok-closeout",
+            "created_at": "2026-07-28 20:21:49",
+            "bitcoin_block_height": null
+          },
+          {
+            "id": "04ca7170-3787-4a14-8644-fc77365b1444",
+            "hash": "5e5599a75170d2231f43c8a902a0ca63c8027ef6be7ae49bbe92ff50a045d804",
+            "status": "confirmed",
+            "client_id": "kimi-ops-smoke",
+            "created_at": "2026-07-28 15:39:33",
+            "bitcoin_block_height": null
+          },
+          {
+            "id": "95706b22-9e5f-4381-8ab1-a950f546098f",
+            "hash": "9da88734e32d3d2f931c187016d18cfbb0f7404ca90479ed4d6718c49289ee1b",
+            "status": "confirmed",
+            "client_id": "spa",
+            "created_at": "2026-07-27 02:33:06",
+            "bitcoin_block_height": null
+          }
+        ],
+        "familyClients": [
+          {
+            "id": "public",
+            "label": "Public / unattributed",
+            "value": 6,
+            "meta": {
+              "offer": "open stamping or pre-attribution stamps"
+            }
+          },
+          {
+            "id": "spa",
+            "label": "Satohash SPA",
+            "value": 4,
+            "meta": {
+              "offer": "direct web stamps"
+            }
+          },
+          {
+            "id": "mvp-smoke",
+            "label": "mvp-smoke",
+            "value": 1,
+            "meta": {
+              "offer": "attributed client"
+            }
+          },
+          {
+            "id": "kimi-truth-sweep",
+            "label": "kimi-truth-sweep",
+            "value": 1,
+            "meta": {
+              "offer": "attributed client"
+            }
+          },
+          {
+            "id": "kimi-ops-smoke",
+            "label": "kimi-ops-smoke",
+            "value": 1,
+            "meta": {
+              "offer": "attributed client"
+            }
+          },
+          {
+            "id": "grok-closeout",
+            "label": "grok-closeout",
+            "value": 1,
+            "meta": {
+              "offer": "attributed client"
+            }
+          },
+          {
+            "id": "e2e-live",
+            "label": "e2e-live",
+            "value": 1,
+            "meta": {
+              "offer": "attributed client"
+            }
+          },
+          {
+            "id": "sherpacarta",
+            "label": "SherpaCarta",
+            "value": 0,
+            "meta": {
+              "offer": "governance docs / charter"
+            }
+          },
+          {
+            "id": "sherpacarta-canada",
+            "label": "SherpaCarta Canada",
+            "value": 0,
+            "meta": {
+              "offer": "campaign / referendum proofs"
+            }
+          },
+          {
+            "id": "motopass",
+            "label": "MotoPass",
+            "value": 0,
+            "meta": {
+              "offer": "passport/docs proofs"
+            }
+          },
+          {
+            "id": "katoa",
+            "label": "Katoa",
+            "value": 0,
+            "meta": {
+              "offer": "creator attestations"
+            }
+          },
+          {
+            "id": "giveabit",
+            "label": "Give A Bit",
+            "value": 0,
+            "meta": {
+              "offer": "education demos"
+            }
+          },
+          {
+            "id": "tadbuy",
+            "label": "TadBuy",
+            "value": 0,
+            "meta": {
+              "offer": "ad / campaign receipts"
+            }
+          },
+          {
+            "id": "stranded",
+            "label": "Stranded",
+            "value": 0,
+            "meta": {
+              "offer": "energy map attestations"
+            }
+          },
+          {
+            "id": "openstrata",
+            "label": "OpenStrata",
+            "value": 0,
+            "meta": {
+              "offer": "protocol docs"
+            }
+          },
+          {
+            "id": "cli",
+            "label": "CLI",
+            "value": 0,
+            "meta": {
+              "offer": "developer tooling"
+            }
+          },
+          {
+            "id": "hq",
+            "label": "HQ",
+            "value": 0,
+            "meta": {
+              "offer": "ops smoke / suite"
+            }
+          }
+        ]
       }
     }
   },
