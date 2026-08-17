@@ -1,23 +1,23 @@
 {
-  "updatedAt": "2026-08-17T13:54:23.103Z",
+  "updatedAt": "2026-08-17T14:00:35.430Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 245,
+      "ms": 236,
       "url": "https://giveabit.io"
     },
     "satohash": {
       "ok": true,
       "status": 200,
-      "ms": 258,
+      "ms": 150,
       "url": "https://satohash.io"
     },
     "katoa": {
       "ok": true,
       "status": 200,
-      "ms": 263,
+      "ms": 115,
       "url": "https://katoa.org"
     },
     "stranded": {
@@ -35,19 +35,19 @@
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 157,
+      "ms": 133,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 179,
+      "ms": 347,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
       "ok": true,
       "status": 200,
-      "ms": 158,
+      "ms": 135,
       "url": "https://openstrata.giveabit.io"
     },
     "btcminiscript": {
@@ -67,18 +67,18 @@
     "satohashApi": {
       "ok": true,
       "status": 200,
-      "ms": 458,
+      "ms": 20,
       "healthUrl": "https://api.satohash.io/health"
     },
     "satohashMetrics": {
       "schema": "gab.product-metrics.v1",
       "productId": "satohash",
       "name": "Satohash",
-      "updatedAt": "2026-08-17T13:54:23.019Z",
+      "updatedAt": "2026-08-17T14:00:35.403Z",
       "window": {
         "label": "7d",
-        "from": "2026-08-10T13:54:23.019Z",
-        "to": "2026-08-17T13:54:23.019Z"
+        "from": "2026-08-10T14:00:35.403Z",
+        "to": "2026-08-17T14:00:35.403Z"
       },
       "health": {
         "status": "green",
@@ -877,7 +877,7 @@
         "seriesFromDb": true,
         "note": "Live metrics from satohash API DB",
         "version": "5.0.0-ELITE",
-        "uptimeSec": 1692774,
+        "uptimeSec": 1693147,
         "requireLightning": false,
         "familyFreeTier": true,
         "directory": {
