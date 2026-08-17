@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-08-15T22:00:49Z",
+  "checked_at": "2026-08-16T22:00:38Z",
   "projects": [
     {
       "slug": "giveabit",
@@ -51,15 +51,15 @@
       "repo": "kitsboy/HQ",
       "site_url": "https://hq.giveabit.io",
       "last_commit": {
-        "sha": "6ada9b6",
+        "sha": "697023c",
         "message": "chore: refresh status.json [skip deploy]",
         "author": "hq-status-bot",
-        "date": "2026-08-15T21:57:33Z",
-        "url": "https://github.com/kitsboy/HQ/commit/6ada9b60a47cd5c68d0e16b9a9009eb15dfc7067"
+        "date": "2026-08-16T21:50:31Z",
+        "url": "https://github.com/kitsboy/HQ/commit/697023c19a5f0ee78126af8f0dc91129dde6a062"
       },
       "recent_commits": [
         "chore: refresh status.json [skip deploy]",
-        "chore: refresh status.json [skip deploy]",
+        "chore: thor auto-metrics 21:45 (live LND + opencode probe)",
         "chore: refresh status.json + thor-node [skip deploy]"
       ],
       "commits_7d": 100,
@@ -73,18 +73,18 @@
       "repo": "kitsboy/katoa",
       "site_url": "https://katoa.org",
       "last_commit": {
-        "sha": "56bf8bb",
-        "message": "docs: end-of-session handoff \u2014 map, 10-pack, agent docs (v1.1.7)",
+        "sha": "b53eac8",
+        "message": "docs: handoff subscription flow to next LLM (LND tie-in)",
         "author": "Cam",
-        "date": "2026-08-11T21:31:58Z",
-        "url": "https://github.com/kitsboy/katoa/commit/56bf8bb77ca37e67c669fe8208405f34a0121c86"
+        "date": "2026-08-16T21:47:47Z",
+        "url": "https://github.com/kitsboy/katoa/commit/b53eac87c7f6218764b5b9088429410b2b05a922"
       },
       "recent_commits": [
-        "docs: end-of-session handoff \u2014 map, 10-pack, agent docs (v1.",
-        "feat(map): richer BTC Map popups, category icons, search; al",
-        "fix(map): restore clean Explore basemap \u2014 drop logo tile mes"
+        "docs: handoff subscription flow to next LLM (LND tie-in)",
+        "feat(creator): subscription client seam + server handoff spe",
+        "docs: end-of-session handoff \u2014 OF-parity P1 post modal (v1.1"
       ],
-      "commits_7d": 26,
+      "commits_7d": 36,
       "health": "green",
       "cf_project": "katoa",
       "open_issues": 0

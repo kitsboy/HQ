@@ -16,8 +16,8 @@
   "katoa": {
     "workflow_name": "CI",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/katoa/actions/runs/31538329667",
-    "updatedAt": "2026-08-11T21:32:43Z",
+    "html_url": "https://github.com/kitsboy/katoa/actions/runs/31975999615",
+    "updatedAt": "2026-08-16T22:19:33Z",
     "status": "completed"
   },
   "motopass": {
@@ -65,8 +65,8 @@
   "HQ": {
     "workflow_name": "Deploy HQ to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/HQ/actions/runs/31916164433",
-    "updatedAt": "2026-08-16T00:00:50Z",
+    "html_url": "https://github.com/kitsboy/HQ/actions/runs/31981461058",
+    "updatedAt": "2026-08-17T00:15:38Z",
     "status": "completed"
   }
 }

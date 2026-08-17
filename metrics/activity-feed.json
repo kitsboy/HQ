@@ -1,192 +1,199 @@
 {
-  "generated_at": "2026-08-15T22:01:04Z",
+  "generated_at": "2026-08-16T22:00:52Z",
   "events": [
     {
-      "time": 1786831263.0,
-      "type": "cron_warn",
-      "icon": "\u26a0\ufe0f",
-      "text": "nstance is already running (PID 984448, HERMES_HOME=/root/.h"
-    },
-    {
-      "time": 1786831256.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "ce': delivered to telegram:155378281 via live adapter"
-    },
-    {
-      "time": 1786831256.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "5e': delivered to telegram:155378281 via live adapter"
-    },
-    {
-      "time": 1786831255.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "h-check' has deliver=origin but no origin; falling back to t"
-    },
-    {
-      "time": 1786831255.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "h-check' has deliver=origin but no origin; falling back to t"
-    },
-    {
-      "time": 1786831253.0,
+      "time": 1786917646.0,
       "type": "cron_warn",
       "icon": "\u26a0\ufe0f",
       "text": "(re)started 6 times in 120s \u2014 backing off 10s to break a res"
     },
     {
-      "time": 1786831252.0,
+      "time": 1786917645.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "pinfra' registered image_gen provider: deepinfra"
+      "text": "wser-browser-use' registered browser provider: browser-use"
     },
     {
-      "time": 1786831252.0,
+      "time": 1786917645.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "' registered image_gen provider: fal"
+      "text": "wser-browserbase' registered browser provider: browserbase"
     },
     {
-      "time": 1786831252.0,
+      "time": 1786917645.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "a' registered image_gen provider: krea"
+      "text": "wser-firecrawl' registered browser provider: firecrawl"
     },
     {
-      "time": 1786831252.0,
+      "time": 1786917645.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
-      "text": "nai' registered image_gen provider: openai"
+      "text": "basic: dashboard-auth-basic: hashed env-supplied password in"
     },
     {
-      "time": 1786831252.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "nai-codex' registered image_gen provider: openai-codex"
-    },
-    {
-      "time": 1786831252.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "nrouter' registered image_gen provider: openrouter"
-    },
-    {
-      "time": 1786831252.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "nrouter' registered image_gen provider: nous"
-    },
-    {
-      "time": 1786831252.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "' registered image_gen provider: xai"
-    },
-    {
-      "time": 1786831252.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "pinfra' registered video_gen provider: deepinfra"
-    },
-    {
-      "time": 1786831252.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "' registered video_gen provider: fal"
-    },
-    {
-      "time": 1786831252.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "' registered video_gen provider: xai"
-    },
-    {
-      "time": 1786831252.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "-brave-free' registered web provider: brave-free"
-    },
-    {
-      "time": 1786831252.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "-ddgs' registered web provider: ddgs"
-    },
-    {
-      "time": 1786831252.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "-exa' registered web provider: exa"
-    },
-    {
-      "time": 1786831252.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "-firecrawl' registered web provider: firecrawl"
-    },
-    {
-      "time": 1786831252.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "-parallel' registered web provider: parallel"
-    },
-    {
-      "time": 1786831252.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "-searxng' registered web provider: searxng"
-    },
-    {
-      "time": 1786831252.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "-tavily' registered web provider: tavily"
-    },
-    {
-      "time": 1786831252.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "-xai' registered web provider: xai"
-    },
-    {
-      "time": 1786831252.0,
-      "type": "cron_ok",
-      "icon": "\ud83d\udd04",
-      "text": "overy complete: 55 found, 48 enabled"
-    },
-    {
-      "time": 1786831251.0,
+      "time": 1786917645.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "basic: dashboard-auth-basic: no 'secret' configured; generat"
     },
     {
-      "time": 1786831251.0,
+      "time": 1786917645.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "try: dashboard-auth: registered provider 'basic' (Username &"
     },
     {
-      "time": 1786831251.0,
+      "time": 1786917645.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "ic' registered dashboard-auth provider: basic (Username & Pa"
     },
     {
-      "time": 1786831251.0,
+      "time": 1786917645.0,
       "type": "cron_ok",
       "icon": "\ud83d\udd04",
       "text": "basic: dashboard-auth-basic: registered password provider (u"
     },
     {
-      "time": 1786823853.0,
+      "time": 1786917645.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "pinfra' registered image_gen provider: deepinfra"
+    },
+    {
+      "time": 1786917645.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "' registered image_gen provider: fal"
+    },
+    {
+      "time": 1786917645.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "a' registered image_gen provider: krea"
+    },
+    {
+      "time": 1786917645.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "nai' registered image_gen provider: openai"
+    },
+    {
+      "time": 1786917645.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "nai-codex' registered image_gen provider: openai-codex"
+    },
+    {
+      "time": 1786917645.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "nrouter' registered image_gen provider: openrouter"
+    },
+    {
+      "time": 1786917645.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "nrouter' registered image_gen provider: nous"
+    },
+    {
+      "time": 1786917645.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "' registered image_gen provider: xai"
+    },
+    {
+      "time": 1786917645.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "pinfra' registered video_gen provider: deepinfra"
+    },
+    {
+      "time": 1786917645.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "' registered video_gen provider: fal"
+    },
+    {
+      "time": 1786917645.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "' registered video_gen provider: xai"
+    },
+    {
+      "time": 1786917645.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-brave-free' registered web provider: brave-free"
+    },
+    {
+      "time": 1786917645.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-ddgs' registered web provider: ddgs"
+    },
+    {
+      "time": 1786917645.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-exa' registered web provider: exa"
+    },
+    {
+      "time": 1786917645.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-firecrawl' registered web provider: firecrawl"
+    },
+    {
+      "time": 1786917645.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-parallel' registered web provider: parallel"
+    },
+    {
+      "time": 1786917645.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-searxng' registered web provider: searxng"
+    },
+    {
+      "time": 1786917645.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-tavily' registered web provider: tavily"
+    },
+    {
+      "time": 1786917645.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "-xai' registered web provider: xai"
+    },
+    {
+      "time": 1786917645.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "overy complete: 55 found, 48 enabled"
+    },
+    {
+      "time": 1786917644.0,
+      "type": "cron_ok",
+      "icon": "\ud83d\udd04",
+      "text": "5e': delivered to telegram:155378281 via live adapter"
+    },
+    {
+      "time": 1786909831.0,
       "type": "commit",
       "icon": "\ud83d\udd28",
       "text": "HQ Dashboard: chore: refresh status.json [skip deploy]",
       "repo": "hq"
+    },
+    {
+      "time": 1786909667.0,
+      "type": "commit",
+      "icon": "\ud83d\udd28",
+      "text": "Katoa: docs: handoff subscription flow to next LLM (LND tie-in)",
+      "repo": "katoa"
     }
   ]
 }
