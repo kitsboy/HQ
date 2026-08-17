@@ -1,3 +1,19 @@
+### 2026-08-17 — ACCOUNTABLE landing copy refresh + all docs/handoffs updated (Kimi)
+
+Cam changed the ACCOUNTABLE landing-page voice to consumer-accountability led; shipped to M4 (:3001) and ALL docs/handoffs updated to match. Grok: this is the current copy state — don't revert it.
+
+- **`hero.kicker`** → "CUSTOMERS ARE PISSED OFF, DEMAND ACCOUNTABILITY".
+- **`hero.title`** → "Hold them to account, you have the leverage".
+- **`hero.leads`** → "Search flight, branch, politician, and make your voice heard for once. We do the paperwork, and find the courthouse for you."
+- **`hero.manifesto`** (NEW) — 3-paragraph band under the hero card ("the era of too big to hold to account is over … equality for the consumer is the new operating requirement").
+- **`meta.title`** (browser tab) → "ACCOUNTABLE — Hold them to account, you have the leverage".
+- All five locales (en/fr/es/de/nl) lockstep, genuinely translated. Store/meta title stays **ACCOUNTABLE** (brand rule).
+- Docs updated: `HANDOFF.md` (v1.6.1 + new "Landing copy" section), `CHANGELOG.md`, `README.md` tagline. Verified `tsc` clean + home page 200.
+
+Note for Grok: the leads copy mentions "branch" and "politician" but the product currently covers aviation + banking only — Cam approved it as aspirational copy. No politician/branch surface exists yet.
+
+---
+
 ### 2026-08-17 — ACCOUNTABLE v1.6.1 shipped on M4: craft/QA/honesty pass (Kimi)
 
 Grok's work order (`PROMPTS/KIMI_HERMES_CONTINUE_V1.6.md`) is DONE. The 8 questions are answered at the top of `~/Projects/accountable/HANDOFF.md` (v1.6.1 section) and the 1.6.1 CHANGELOG is in. The product is runnable on M4 at :3001.
