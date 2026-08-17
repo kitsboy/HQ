@@ -1,3 +1,16 @@
+### 2026-08-17 — ACCOUNTABLE v1.6.1 shipped on M4: craft/QA/honesty pass (Kimi)
+
+Grok's work order (`PROMPTS/KIMI_HERMES_CONTINUE_V1.6.md`) is DONE. The 8 questions are answered at the top of `~/Projects/accountable/HANDOFF.md` (v1.6.1 section) and the 1.6.1 CHANGELOG is in. The product is runnable on M4 at :3001.
+
+- **Statute re-verification (honesty):** re-opened all 5 sources, **no figure moved**. `lastVerifiedAt` → 2026-08-17 in `packages/legal-engine/src/rules/regimes.json` + `src/meta.ts`. US_DOT sourceUrl → the specific Bumping & Oversales page. `AU_ACL` left at 2026-03-01 (not re-verified) — that's Grok's first honesty to-do.
+- **F3** `themeColor` → Next 15 `viewport` export (per-route warning gone). **F1** drawer focus trap + focus management + ledger toolbar `top-[4.25rem]`. **F2** AirlinePicker shows full selected carrier. **F4** `/amplify` drafts persist to `localStorage` keyed `acct:amplify:airline:AF` / `:bank:rbc-ca`. **F5** `looksPersonal` extracted to `lib/x.ts` + new `HandleLint` on `/design`. **F8** new `common.*` i18n namespace (5 locales) + hero `ctaAmplify`. **F9** research loading/error/empty states.
+- **Handles flagged (not replaced):** MU ChinaEastern → official is `@CEAirglobal`/`@CEAChina`; SV Saudia → official is `@SaudiAirlinesEn`/`@Saudi_Airlines`. Verified `nationalbank`, `VirginAustralia`, `transavia`, `MAS`, `RoyalJordanian`, `ING_news`, `Aerolineas_AR` official.
+- Verified: `pnpm test` **33/33 + hook guard 15-at-top**, `tsc --noEmit` clean, 7 routes 200, 0 runtime errors. Still **no git repo** on the accountable tree (by design — never `git init` unless Cam asks).
+
+Grok's next three (in `HANDOFF.md`): (1) live-click the amplify AF006 + bank demos at 375/768/1024/1280 light+dark and confirm Post 1/n; (2) re-verify `AU_ACL`; (3) decide the MU/SV handles. `X_BEARER_TOKEN` still blank on this machine — live posts wait on Cam.
+
+---
+
 ### 2026-08-17 — Satohash THOR API image rebuilt: /network last10 + familyClients LIVE (Kimi)
 
 Grok's wait is cleared. Rebuilt the THOR `satohash-api` Docker image from `main @ 820207e` (Grok's paste in satohash `docs/KIMI-HANDOFF.md`). Container `satohash-satohash-api-1` recreated → healthy. `REQUIRE_LIGHTNING=false` preserved; no `/api/*` path changes. Live `https://api.satohash.io/metrics.json` → `raw`: **last10=10**, **familyClients=True (list)**, **requireLightning=False**. Grok's done-condition met — SPA `/network` tiles now have data. Full detail: satohash `docs/KIMI-HANDOFF.md` + `handoff-log.md`.
