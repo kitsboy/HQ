@@ -7,24 +7,24 @@
     "status": "completed"
   },
   "satohash": {
-    "workflow_name": "Deploy",
+    "workflow_name": "CI/CD Pipeline",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/satohash/actions/runs/31463195655",
-    "updatedAt": "2026-08-11T05:56:09Z",
+    "html_url": "https://github.com/kitsboy/satohash/actions/runs/32048038612",
+    "updatedAt": "2026-08-17T17:04:27Z",
     "status": "completed"
   },
   "katoa": {
     "workflow_name": "CI",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/katoa/actions/runs/31975999615",
-    "updatedAt": "2026-08-16T22:19:33Z",
+    "html_url": "https://github.com/kitsboy/katoa/actions/runs/31993619159",
+    "updatedAt": "2026-08-17T04:12:43Z",
     "status": "completed"
   },
   "motopass": {
-    "workflow_name": "Deploy motopass to Cloudflare Pages",
+    "workflow_name": "BTC Map weekly sync",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/motopass/actions/runs/31463206178",
-    "updatedAt": "2026-08-11T05:55:06Z",
+    "html_url": "https://github.com/kitsboy/motopass/actions/runs/32003776801",
+    "updatedAt": "2026-08-17T06:59:00Z",
     "status": "completed"
   },
   "sherpacarta": {
@@ -65,8 +65,8 @@
   "HQ": {
     "workflow_name": "Deploy HQ to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/HQ/actions/runs/31981461058",
-    "updatedAt": "2026-08-17T00:15:38Z",
+    "html_url": "https://github.com/kitsboy/HQ/actions/runs/32082815877",
+    "updatedAt": "2026-08-18T00:01:14Z",
     "status": "completed"
   }
 }
