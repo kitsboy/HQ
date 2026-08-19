@@ -1,53 +1,53 @@
 {
-  "updatedAt": "2026-08-19T15:30:43.264Z",
+  "updatedAt": "2026-08-19T15:35:48.289Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 295,
+      "ms": 302,
       "url": "https://giveabit.io"
     },
     "satohash": {
       "ok": true,
       "status": 200,
-      "ms": 192,
+      "ms": 285,
       "url": "https://satohash.io"
     },
     "katoa": {
       "ok": true,
       "status": 200,
-      "ms": 260,
+      "ms": 173,
       "url": "https://katoa.org"
     },
     "stranded": {
       "ok": true,
       "status": 200,
-      "ms": 189,
+      "ms": 276,
       "url": "https://stranded.giveabit.io"
     },
     "tadbuy": {
       "ok": true,
       "status": 200,
-      "ms": 137,
+      "ms": 197,
       "url": "https://tadbuy.giveabit.io"
     },
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 181,
+      "ms": 237,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 245,
+      "ms": 217,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
       "ok": true,
       "status": 200,
-      "ms": 128,
+      "ms": 220,
       "url": "https://openstrata.giveabit.io"
     },
     "btcminiscript": {
@@ -67,18 +67,18 @@
     "satohashApi": {
       "ok": true,
       "status": 200,
-      "ms": 67,
+      "ms": 501,
       "healthUrl": "https://api.satohash.io/health"
     },
     "satohashMetrics": {
       "schema": "gab.product-metrics.v1",
       "productId": "satohash",
       "name": "Satohash",
-      "updatedAt": "2026-08-19T15:30:43.236Z",
+      "updatedAt": "2026-08-19T15:35:48.221Z",
       "window": {
         "label": "7d",
-        "from": "2026-08-12T15:30:43.236Z",
-        "to": "2026-08-19T15:30:43.236Z"
+        "from": "2026-08-12T15:35:48.221Z",
+        "to": "2026-08-19T15:35:48.221Z"
       },
       "health": {
         "status": "green",
@@ -877,7 +877,7 @@
         "seriesFromDb": true,
         "note": "Live metrics from satohash API DB",
         "version": "5.0.0-ELITE",
-        "uptimeSec": 175849,
+        "uptimeSec": 176154,
         "requireLightning": false,
         "familyFreeTier": true,
         "directory": {
