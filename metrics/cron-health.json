@@ -1,217 +1,179 @@
 {
-  "checked_at": "2026-08-18T00:00:31Z",
+  "checked_at": "2026-08-19T00:00:30Z",
   "jobs": {
-    "009fd1669f16": {
-      "status": "completed",
-      "last_run": "2026-08-18T01:58:36.100783+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "2503e81d2fbb": {
-      "status": "completed",
-      "last_run": "2026-08-18T01:58:33.256175+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "e8ab4b685c10": {
-      "status": "completed",
-      "last_run": "2026-08-18T01:57:32.336904+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "c8ce19bb5571": {
-      "status": "completed",
-      "last_run": "2026-08-18T01:55:35.599222+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
     "6171ee6ae627": {
       "status": "completed",
-      "last_run": "2026-08-18T01:48:30.746101+02:00",
+      "last_run": "2026-08-19T01:57:42.188095+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "0e4a04c97d17": {
       "status": "completed",
-      "last_run": "2026-08-18T01:48:29.943909+02:00",
+      "last_run": "2026-08-19T01:57:41.412087+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "c8ce19bb5571": {
+      "status": "completed",
+      "last_run": "2026-08-19T01:55:36.477244+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "e8ab4b685c10": {
+      "status": "completed",
+      "last_run": "2026-08-19T01:54:31.064928+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "2503e81d2fbb": {
+      "status": "completed",
+      "last_run": "2026-08-19T01:44:32.770906+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "e8d5b97de501": {
       "status": "completed",
-      "last_run": "2026-08-18T01:30:42.526423+02:00",
+      "last_run": "2026-08-19T01:30:50.097158+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "cb8398b3fa67": {
       "status": "completed",
-      "last_run": "2026-08-18T01:30:24.330075+02:00",
+      "last_run": "2026-08-19T01:30:29.787511+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "7768b5c5aa49": {
       "status": "completed",
-      "last_run": "2026-08-18T01:00:26.675006+02:00",
+      "last_run": "2026-08-19T01:00:33.673101+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "bb5980d548fb": {
       "status": "completed",
-      "last_run": "2026-08-18T01:00:21.015174+02:00",
+      "last_run": "2026-08-19T01:00:26.433772+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "009fd1669f16": {
+      "status": "completed",
+      "last_run": "2026-08-19T00:03:28.963723+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "9bd2735e125e": {
       "status": "completed",
-      "last_run": "2026-08-18T00:00:24.068137+02:00",
+      "last_run": "2026-08-19T00:00:28.963162+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "e4b5079b66ce": {
       "status": "completed",
-      "last_run": "2026-08-18T00:00:23.539316+02:00",
+      "last_run": "2026-08-19T00:00:27.652780+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "12b477c661ae": {
       "status": "completed",
-      "last_run": "2026-08-17T22:00:15.894915+02:00",
+      "last_run": "2026-08-18T22:00:15.657565+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "30921a766dae": {
       "status": "completed",
-      "last_run": "2026-08-17T21:00:06.908859+02:00",
+      "last_run": "2026-08-18T21:00:59.263052+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "81b4564d9aa1": {
       "status": "completed",
-      "last_run": "2026-08-17T18:31:59.950003+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "b7b5c1bebfe7": {
-      "status": "failed",
-      "last_run": "2026-08-17T09:01:01.021046+02:00",
-      "consecutive_fails": 1,
-      "paused": false,
-      "error": "RuntimeError: No access token found for Nous Portal login. Run `hermes model` to re-authenticate.",
-      "action": "warn"
-    },
-    "2621be4bb5dd": {
-      "status": "completed",
-      "last_run": "2026-08-17T08:02:03.214358+02:00",
+      "last_run": "2026-08-18T18:31:25.668273+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "0e6cfd248753": {
-      "status": "failed",
-      "last_run": "2026-08-17T08:02:01.908422+02:00",
-      "consecutive_fails": 1,
-      "paused": false,
-      "error": "RuntimeError: No access token found for Nous Portal login. Run `hermes model` to re-authenticate.",
-      "action": "warn"
+      "status": "completed",
+      "last_run": "2026-08-18T08:04:47.055872+02:00",
+      "consecutive_fails": 0,
+      "paused": false
     },
     "b6a4e3710d9d": {
       "status": "completed",
-      "last_run": "2026-08-17T08:00:57.629732+02:00",
+      "last_run": "2026-08-18T08:00:55.339917+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "71f476018b46": {
       "status": "completed",
-      "last_run": "2026-08-17T07:34:23.058518+02:00",
+      "last_run": "2026-08-18T07:32:54.234783+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "337c7ae0b619": {
       "status": "completed",
-      "last_run": "2026-08-17T07:30:58.004546+02:00",
+      "last_run": "2026-08-18T07:30:56.333175+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "311d146f45c3": {
       "status": "completed",
-      "last_run": "2026-08-17T07:15:42.426446+02:00",
+      "last_run": "2026-08-18T07:15:52.072652+02:00",
       "consecutive_fails": 0,
       "paused": false
-    },
-    "53c040c96061": {
-      "status": "failed",
-      "last_run": "2026-08-17T07:00:50.931946+02:00",
-      "consecutive_fails": 1,
-      "paused": false,
-      "error": "RuntimeError: No access token found for Nous Portal login. Run `hermes model` to re-authenticate.",
-      "action": "warn"
     },
     "5c6f78744d6e": {
       "status": "completed",
-      "last_run": "2026-08-17T07:00:40.270785+02:00",
+      "last_run": "2026-08-18T07:00:50.277191+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
-    "081554de8767": {
-      "status": "failed",
-      "last_run": "2026-08-17T06:00:44.499493+02:00",
-      "consecutive_fails": 1,
-      "paused": false,
-      "error": "RuntimeError: No access token found for Nous Portal login. Run `hermes model` to re-authenticate.",
-      "action": "warn"
-    },
-    "e19a3670752f": {
+    "b44ce39d61fe": {
       "status": "completed",
-      "last_run": "2026-08-17T06:00:35.958857+02:00",
-      "consecutive_fails": 0,
-      "paused": false
-    },
-    "980226ec5716": {
-      "status": "completed",
-      "last_run": "2026-08-17T05:03:11.824336+02:00",
+      "last_run": "2026-08-18T05:00:38.911211+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "5f9b4a5c010c": {
-      "status": "failed",
-      "last_run": "2026-08-17T04:00:21.822579+02:00",
-      "consecutive_fails": 1,
-      "paused": false,
-      "error": "RuntimeError: No access token found for Nous Portal login. Run `hermes model` to re-authenticate.",
-      "action": "warn"
+      "status": "completed",
+      "last_run": "2026-08-18T04:02:30.957018+02:00",
+      "consecutive_fails": 0,
+      "paused": false
     },
     "e18ae919c08f": {
       "status": "completed",
-      "last_run": "2026-08-17T03:00:20.022860+02:00",
+      "last_run": "2026-08-18T03:00:41.120581+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "7ac4833020bb": {
       "status": "completed",
-      "last_run": "2026-08-17T02:20:23.114291+02:00",
+      "last_run": "2026-08-18T02:20:40.135682+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "a635e5301401": {
+      "status": "completed",
+      "last_run": "2026-08-18T02:02:03.178933+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
     "bb6e71c68350": {
       "status": "completed",
-      "last_run": "2026-08-17T02:00:58.411373+02:00",
+      "last_run": "2026-08-18T02:01:08.166743+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
-    "a635e5301401": {
-      "status": "failed",
-      "last_run": "2026-08-17T02:00:32.697713+02:00",
-      "consecutive_fails": 1,
-      "paused": false,
-      "error": "RuntimeError: No access token found for Nous Portal login. Run `hermes model` to re-authenticate.",
-      "action": "warn"
+    "980226ec5716": {
+      "status": "ok",
+      "last_run": "2026-08-17T05:03:11.806944+02:00",
+      "consecutive_fails": 0,
+      "paused": false
     },
-    "0fc067ae59c1": {
-      "status": "failed",
-      "last_run": "2026-08-17T00:00:58.629875+02:00",
-      "consecutive_fails": 1,
-      "paused": true,
-      "error": "RuntimeError: No access token found for Nous Portal login. Run `hermes model` to re-authenticate.",
-      "action": "warn"
+    "2621be4bb5dd": {
+      "status": "ok",
+      "last_run": "2026-08-17T08:02:03.203111+02:00",
+      "consecutive_fails": 0,
+      "paused": false
     },
     "469f2cfb7ab8": {
       "status": "scheduled",
@@ -237,6 +199,14 @@
       "consecutive_fails": 0,
       "paused": false
     },
+    "b7b5c1bebfe7": {
+      "status": "error",
+      "last_run": "2026-08-17T09:01:00.985010+02:00",
+      "error": "RuntimeError: No access token found for Nous Portal login. Run `hermes model` to re-authenticate.",
+      "consecutive_fails": 1,
+      "paused": false,
+      "action": "warn"
+    },
     "eb7452b2189e": {
       "status": "ok",
       "last_run": "2026-08-16T09:00:56.851967+02:00",
@@ -252,6 +222,12 @@
     "34c2181c2737": {
       "status": "ok",
       "last_run": "2026-08-15T10:02:24.911554+02:00",
+      "consecutive_fails": 0,
+      "paused": false
+    },
+    "e19a3670752f": {
+      "status": "ok",
+      "last_run": "2026-08-17T06:00:35.909428+02:00",
       "consecutive_fails": 0,
       "paused": false
     },
@@ -273,6 +249,22 @@
       "consecutive_fails": 0,
       "paused": false
     },
+    "081554de8767": {
+      "status": "error",
+      "last_run": "2026-08-17T06:00:44.492982+02:00",
+      "error": "RuntimeError: No access token found for Nous Portal login. Run `hermes model` to re-authenticate.",
+      "consecutive_fails": 1,
+      "paused": false,
+      "action": "warn"
+    },
+    "53c040c96061": {
+      "status": "error",
+      "last_run": "2026-08-17T07:00:50.907992+02:00",
+      "error": "RuntimeError: No access token found for Nous Portal login. Run `hermes model` to re-authenticate.",
+      "consecutive_fails": 1,
+      "paused": false,
+      "action": "warn"
+    },
     "0edfc923c739": {
       "status": "error",
       "last_run": "2026-08-16T10:00:41.961837+02:00",
@@ -281,11 +273,11 @@
       "paused": false,
       "action": "warn"
     },
-    "b44ce39d61fe": {
-      "status": "scheduled",
-      "last_run": null,
+    "0fc067ae59c1": {
+      "status": "paused",
+      "last_run": "2026-08-17T00:00:58.613108+02:00",
       "consecutive_fails": 0,
-      "paused": false
+      "paused": true
     },
     "f3057bae6ce2": {
       "status": "scheduled",
@@ -295,7 +287,7 @@
     }
   },
   "paused_count": 1,
-  "alert_count": 8,
+  "alert_count": 4,
   "paused_jobs": [
     "0fc067ae59c1"
   ],
