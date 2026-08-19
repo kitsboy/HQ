@@ -1,3 +1,16 @@
+### 2026-08-19 — Standard Project Kit adopted + session debrief automation (Kimi)
+
+Cam approved adopting a senior-engineer's development runbook + session-debrief protocol as our default for **ALL projects** (skill `standard-project-kit`).
+
+- **Dev runbook loop:** investigate → bounded implement → verify the real system → milestone tag → handoff; two-actor (Kimi assistant + Grok/Aider coder). This is now the default build method on every repo.
+- **Session debrief:** runs **automatically at session end** (silent, machine-readable YAML) via `/goodbye`. Writes `docs/debriefs/session-YYYY-MM-DD-NNN.yaml` per project, keeps AD-/OQ- ID continuity, commit + push. This file is the master cross-project log — the debriefs for individual repos live in their own `docs/debriefs/`.
+- Rolled out + re-synced: SherpaCarta, MotoPass, Satohash, Katoa (each with first debrief + 2026-08-19 handoff entry, pushed).
+- **Next:** remaining family repos (giveabit, tadbuy, openstrata, stranded) on request.
+
+**Do not regress:** standard kit layers on top of existing workflow — nothing about how we already work (KIMI-HANDOFF.md, fact_store, Kanban) changes.
+
+---
+
 ### 2026-08-17 — ACCOUNTABLE landing copy refresh + all docs/handoffs updated (Kimi)
 
 Cam changed the ACCOUNTABLE landing-page voice to consumer-accountability led; shipped to M4 (:3001) and ALL docs/handoffs updated to match. Grok: this is the current copy state — don't revert it.
