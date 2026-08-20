@@ -7,31 +7,31 @@
     "status": "completed"
   },
   "satohash": {
-    "workflow_name": "CI/CD Pipeline",
+    "workflow_name": "Deploy",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/satohash/actions/runs/32048038612",
-    "updatedAt": "2026-08-17T17:04:27Z",
+    "html_url": "https://github.com/kitsboy/satohash/actions/runs/32310444974",
+    "updatedAt": "2026-08-19T22:50:37Z",
     "status": "completed"
   },
   "katoa": {
-    "workflow_name": "CI",
+    "workflow_name": "Deploy katoa to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/katoa/actions/runs/31993619159",
-    "updatedAt": "2026-08-17T04:12:43Z",
+    "html_url": "https://github.com/kitsboy/katoa/actions/runs/32310704894",
+    "updatedAt": "2026-08-19T22:52:53Z",
     "status": "completed"
   },
   "motopass": {
-    "workflow_name": "BTC Map weekly sync",
+    "workflow_name": "Deploy motopass to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/motopass/actions/runs/32003776801",
-    "updatedAt": "2026-08-17T06:59:00Z",
+    "html_url": "https://github.com/kitsboy/motopass/actions/runs/32310284941",
+    "updatedAt": "2026-08-19T22:46:21Z",
     "status": "completed"
   },
   "sherpacarta": {
     "workflow_name": "Deploy sherpacarta to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/sherpacarta/actions/runs/31521127153",
-    "updatedAt": "2026-08-11T18:08:40Z",
+    "html_url": "https://github.com/kitsboy/sherpacarta/actions/runs/32310156008",
+    "updatedAt": "2026-08-19T22:44:41Z",
     "status": "completed"
   },
   "stranded": {
@@ -65,8 +65,8 @@
   "HQ": {
     "workflow_name": "Deploy HQ to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/HQ/actions/runs/32200516079",
-    "updatedAt": "2026-08-19T00:15:36Z",
+    "html_url": "https://github.com/kitsboy/HQ/actions/runs/32316582129",
+    "updatedAt": "2026-08-20T00:15:37Z",
     "status": "completed"
   }
 }
