@@ -1,8 +1,8 @@
 {
   "name": "giveabit-hq",
   "private": true,
-  "version": "3.31.1",
-  "description": "Give A Bit HQ — OpenCode live-version tile + fresh metrics + nightly suite refresh",
+  "version": "3.32.0",
+  "description": "Give A Bit HQ \u2014 OpenCode live-version tile + fresh metrics + nightly suite refresh",
   "scripts": {
     "stamp": "node scripts/stamp-version.mjs",
     "verify-version": "node scripts/stamp-version.mjs",

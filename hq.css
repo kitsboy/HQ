@@ -3178,6 +3178,65 @@ table.data .name-cell {
   .money-hero { grid-template-columns: 1fr; }
 }
 
+/* ── Money Plane · per-site payment audit ── */
+
+.money-plane { position: relative; }
+
+.money-plane-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 0.85rem;
+  align-items: start;
+}
+
+.money-plane-card {
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.mp-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  padding: 0.3rem 0.45rem;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--card) 60%, transparent);
+  cursor: help;
+  border: 1px solid transparent;
+  transition: border-color 0.15s;
+}
+.mp-row:hover { border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
+
+.mp-k {
+  font-weight: 700;
+  min-width: 5.2rem;
+  color: var(--ink-dim);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.mp-v { color: var(--ink); font-family: var(--font-mono); font-size: 0.72rem; }
+.mp-sub { color: var(--ink-faint); font-size: 0.65rem; }
+.mp-a { margin-left: auto; font-size: 0.65rem; color: var(--accent); text-decoration: none; }
+.mp-a:hover { text-decoration: underline; }
+
+.mp-note {
+  margin: 0.4rem 0 0;
+  font-size: 0.68rem;
+  color: var(--ink-faint);
+  line-height: 1.4;
+  cursor: help;
+}
+
+@media (max-width: 720px) {
+  .money-plane-grid { grid-template-columns: 1fr; }
+  .mp-k { min-width: 4.4rem; }
+}
+
+
 /* ── Lightning badge ── */
 
 .ln-badge {

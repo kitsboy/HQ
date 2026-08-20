@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.31.1 — handoffs registry tab
+ * Give A Bit HQ v3.32.0 — handoffs registry tab
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.31.1";
+  const HQ_VERSION = "3.32.0";
   const BUILD_TS = new Date().toISOString();
   const METRICS_SCHEMA = "gab.product-metrics.v1";
   const THOR_SCHEMA = "gab.thor-node.v1";
@@ -3360,6 +3360,17 @@
           <button type="button" class="btn btn-ghost btn-sm" id="money-vault"><i class="fa-solid fa-key"></i> Vault</button>
         </div>
       </div>
+      <div class="money-plane panel" style="margin-bottom:1rem;padding:1rem">
+        <div class="flex items-center gap-2" style="margin-bottom:0.4rem">
+          <h3 class="display" style="margin:0;font-size:1rem"><i class="fa-solid fa-plane"></i> Money Plane · payment audit</h3>
+          <span class="status-pill green" data-tip="Live check every time you open this tab. Hover any row for an ELI16 explanation of how that payment rail works." data-tip-title="Live audit">live</span>
+        </div>
+        <p style="font-size:0.78rem;color:var(--ink-dim);margin:0 0 0.75rem">
+          One card per site: how visitors can pay you (on-chain · Lightning), where the sats land (LNbits), and whether the node rails are ready.
+          <span class="mono" style="color:var(--ink-faint)">Hover any row for how-it-works.</span>
+        </p>
+        <div id="money-plane-grid" class="money-plane-grid"></div>
+      </div>
       <div class="money-cockpit">
         <div class="money-hero panel yolo-glow">
           <div class="ln-badge">Portfolio totem</div>
@@ -3411,6 +3422,119 @@
     el.querySelectorAll("[data-project]").forEach((n) => n.addEventListener("click", () => openDrawer(n.dataset.project)));
     renderPortfolioTimeSeries();
     bindTooltips();
+    refreshMoneyPlane();
+  }
+
+  /* ═══════════════ MONEY PLANE — per-site payment audit ═══════════════ */
+  // Public receive-plane facts per project (addresses + LNURL discovery — no secrets).
+  // `lnurlPrefix` is the LNbits lightning-address prefix used on the HTTPS LNbits domain.
+  // `onchain` is the public published treasury/on-chain address (or null if none published).
+  const MONEY_PLANE = {
+    giveabit: { lnurlPrefix: null, onchain: null, note: "Hub site — no public receive address yet. LNbits wallet 'giveabit_main' exists." },
+    satohash: { lnurlPrefix: null, onchain: null, note: "Paywall flip-ready (REQUIRE_LIGHTNING=false). LNbits wallet 'satohash' at 0 sats. Add LNURL prefix to receive." },
+    katoa: { lnurlPrefix: null, onchain: null, note: "Zero-fee creator platform. LNbits wallet 'katoa' exists — LNURL not yet configured." },
+    stranded: { lnurlPrefix: null, onchain: null, note: "Energy project. LNbits wallet 'stranded' exists — LNURL not yet configured." },
+    tadbuy: { lnurlPrefix: null, onchain: null, note: "Ad platform. LNbits wallet 'tadbuy' exists — LNURL not yet configured." },
+    motopass: { lnurlPrefix: null, onchain: null, note: "Identity project. LNbits wallet 'motopass' exists — LNURL not yet configured." },
+    sherpacarta: {
+      lnurlPrefix: "sherpa",
+      onchain: "bc1qhm5ndfjhqxdk3cx0pngyps4f5nnwdckulmge6c8keyf2pk0neqtshjn8ad",
+      note: "Only project with LIVE public LNURL-pay (sherpa@api.satohash.io:8443) + on-chain treasury address published."
+    },
+    openstrata: { lnurlPrefix: null, onchain: null, note: "Corp dashboard. LNbits wallet 'openstrata' exists — LNURL not yet configured." },
+    btcminiscript: { lnurlPrefix: null, onchain: null, note: "R&D — no public receive surface." }
+  };
+  const LNURLS_DOMAIN = "https://api.satohash.io:8443";
+
+  function moneyPlaneCard(p) {
+    const cfg = MONEY_PLANE[p.id] || { lnurlPrefix: null, onchain: null, note: "" };
+    const wid = walletIdFor(p);
+    const color = accentFor(p.id);
+    const lnd = ((state.thor && state.thor.data && state.thor.data.lightning) || {});
+    const hasLndChannels = Number(lnd.numActiveChannels) > 0;
+
+    // LNURL reachable? (checked live in refreshMoneyPlane)
+    const lnurlOk = (state.moneyPlane && state.moneyPlane[p.id] && state.moneyPlane[p.id].lnurlOk) || false;
+
+    const rows = [];
+    // On-chain row
+    if (cfg.onchain) {
+      rows.push(`<div class="mp-row" data-tip="A normal Bitcoin address anyone can send to. It shows up publicly on the blockchain — anyone can see every payment ever sent to it. For donations this is fine; for privacy, a fresh address per payment is better." data-tip-title="On-chain address">
+        <span class="status-dot green pulse"></span><span class="mp-k">On-chain</span>
+        <span class="mp-v mono">${esc(cfg.onchain.slice(0, 12))}…${esc(cfg.onchain.slice(-8))}</span>
+        <a class="mp-a" href="https://mempool.space/address/${esc(cfg.onchain)}" target="_blank" rel="noopener">mempool ↗</a>
+      </div>`);
+    } else {
+      rows.push(`<div class="mp-row" data-tip="No public Bitcoin address published for this project yet. Visitors can't send on-chain sats to it. To enable: generate an address from LND (the THOR wallet you have the seed for) and publish it on the site's donate page." data-tip-title="On-chain address">
+        <span class="status-dot"></span><span class="mp-k">On-chain</span><span class="mp-v" style="color:var(--ink-faint)">not published</span>
+      </div>`);
+    }
+    // Lightning row
+    if (cfg.lnurlPrefix) {
+      rows.push(`<div class="mp-row" data-tip="Lightning = instant, near-zero-fee sats payments. LNURL-pay is like a payment button: the payer scans it and gets a fresh invoice each time. Works even while your node has 0 channels, but large payments may fail until channels open. This one is LIVE and tested." data-tip-title="Lightning (LNURL-pay)">
+        <span class="status-dot green pulse"></span><span class="mp-k">Lightning</span>
+        <span class="mp-v mono">${esc(cfg.lnurlPrefix)}@api.satohash.io:8443</span>
+      </div>`);
+    } else if (lnurlOk) {
+      rows.push(`<div class="mp-row" data-tip="Lightning receive is live (LNURL responds) even though it isn't in the site's published wallets.json yet." data-tip-title="Lightning (LNURL-pay)">
+        <span class="status-dot green pulse"></span><span class="mp-k">Lightning</span><span class="mp-v" style="color:var(--ink-dim)">LNURL live (unpublished)</span>
+      </div>`);
+    } else {
+      rows.push(`<div class="mp-row" data-tip="No Lightning receive set up yet. Lightning is the modern way to take small payments — instant and cheap. Setup: create an LNURL-pay link in LNbits for this wallet, then publish the prefix in the site's wallets.json." data-tip-title="Lightning (LNURL-pay)">
+        <span class="status-dot"></span><span class="mp-k">Lightning</span><span class="mp-v" style="color:var(--ink-faint)">not configured</span>
+      </div>`);
+    }
+    // LNbits wallet row
+    const bal = state.wallets && state.wallets[wid];
+    if (wid && bal && bal.ok) {
+      rows.push(`<div class="mp-row" data-tip="LNbits is the software wallet 'behind the curtain' that holds each site's sats. The invoice key (read-only) lives in HQ Vault — never on a server. Balance below is live from the LNbits proxy." data-tip-title="LNbits wallet">
+        <span class="status-dot green pulse"></span><span class="mp-k">LNbits</span>
+        <span class="mp-v">${esc(fmtNum(bal.sats, "sats"))} <span class="mp-sub">${esc(fmtUsd(satsToUsd(bal.sats)))}</span></span>
+      </div>`);
+    } else if (wid) {
+      rows.push(`<div class="mp-row" data-tip="Wallet '${esc(wid)}' exists in LNbits. Add its invoice key to HQ Vault (Money → Vault) to see the live balance here." data-tip-title="LNbits wallet">
+        <span class="status-dot"></span><span class="mp-k">LNbits</span><span class="mp-v" style="color:var(--ink-faint)">key in Vault →</span>
+      </div>`);
+    } else {
+      rows.push(`<div class="mp-row"><span class="status-dot"></span><span class="mp-k">LNbits</span><span class="mp-v" style="color:var(--ink-faint)">no wallet mapping</span></div>`);
+    }
+    // LND channels row (node-level fact shown per card)
+    rows.push(`<div class="mp-row" data-tip="Lightning channels are like payment routes between nodes. With 0 channels, the node can still RECEIVE small payments via LNURL (they route through the network), but can't send and large inbound may fail. Opening channels (needs a bit of sats + a peer) turns this green." data-tip-title="LND channels">
+      <span class="status-dot ${hasLndChannels ? "green pulse" : "amber"}"></span><span class="mp-k">Channels</span>
+      <span class="mp-v">${esc(String(lnd.numActiveChannels ?? "?"))} open · ${esc(String(lnd.numPeers ?? "?"))} peers</span>
+    </div>`);
+    // Paywall row
+    rows.push(`<div class="mp-row" data-tip="Currently FREE for everyone (REQUIRE_LIGHTNING=false). Satohash's paywall is flip-ready: set the env var to true and the stamp API charges sats. That's a business decision, not a technical blocker." data-tip-title="Paywall">
+      <span class="status-dot green pulse"></span><span class="mp-k">Paywall</span><span class="mp-v">free open (flip-ready)</span>
+    </div>`);
+
+    return `<div class="money-plane-card panel" style="border-left:4px solid ${escAttr(color)};--card-accent:${escAttr(color)}">
+      <div class="flex items-center gap-2" style="margin-bottom:0.5rem">${iconBadge(p.icon, color)}<div><strong>${esc(p.name)}</strong><div class="mono" style="font-size:0.6rem;color:var(--ink-faint)">${esc(p.url || p.id)}</div></div></div>
+      ${rows.join("")}
+      <p class="mp-note" data-tip="${escAttr(cfg.note)}" data-tip-title="Audit note">${esc(cfg.note)}</p>
+    </div>`;
+  }
+
+  async function refreshMoneyPlane() {
+    state.moneyPlane = state.moneyPlane || {};
+    await Promise.all(
+      Object.entries(MONEY_PLANE).map(async ([id, cfg]) => {
+        if (!cfg.lnurlPrefix) return;
+        try {
+          const r = await fetch(`${LNURLS_DOMAIN}/.well-known/lnurlp/${cfg.lnurlPrefix}`, { signal: AbortSignal.timeout(6000) });
+          const j = await r.json().catch(() => null);
+          state.moneyPlane[id] = { lnurlOk: !!(j && j.tag === "payRequest") };
+        } catch { state.moneyPlane[id] = { lnurlOk: false }; }
+      })
+    );
+    const el = document.getElementById("money-plane-grid");
+    if (el) {
+      el.innerHTML = state.projects
+        .filter((p) => MONEY_PLANE[p.id])
+        .map((p) => moneyPlaneCard(p))
+        .join("");
+      bindTooltips();
+    }
   }
 
   function renderPortfolioTimeSeries() {

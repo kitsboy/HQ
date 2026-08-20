@@ -1,6 +1,6 @@
 # Give A Bit HQ
 
-**Ops + pitch glass** for the Give A Bit suite (**v3.31.1**).
+**Ops + pitch glass** for the Give A Bit suite (**v3.32.0**).
 
 | | |
 |--|--|
