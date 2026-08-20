@@ -1,7 +1,7 @@
 {
   "schema": "hq.seo-audit.v1",
-  "updatedAt": "2026-08-20T23:00:44.037771+00:00",
-  "overallScore": 79,
+  "updatedAt": "2026-08-20T23:05:12.206321+00:00",
+  "overallScore": 85,
   "overallGrade": "B",
   "satohashDeep": {
     "localized_pages": 35,
@@ -609,8 +609,8 @@
       "id": "hq",
       "name": "HQ",
       "url": "https://hq.giveabit.io",
-      "score": 44,
-      "grade": "D",
+      "score": 100,
+      "grade": "A",
       "checks": {
         "http_status": {
           "ok": true,
@@ -623,28 +623,28 @@
           "plain": "Security headers protect visitors. CSP stops injected scripts; HSTS forces secure HTTPS."
         },
         "robots_txt": {
-          "ok": false,
-          "value": "\u2717",
+          "ok": true,
+          "value": "\u2713",
           "plain": "robots.txt tells search engines which pages to crawl. Present = good."
         },
         "sitemap": {
-          "ok": false,
-          "value": "\u2717",
+          "ok": true,
+          "value": "\u2713",
           "plain": "A sitemap lists every page for search engines \u2014 the fastest way to get indexed."
         },
         "llms_txt": {
-          "ok": false,
-          "value": "\u2717",
+          "ok": true,
+          "value": "\u2713",
           "plain": "llms.txt is the new standard that AI assistants (ChatGPT/Claude/Perplexity) read to learn about a site. Early adopter advantage."
         },
         "jsonld": {
-          "ok": false,
-          "value": "\u2717",
+          "ok": true,
+          "value": "\u2713",
           "plain": "Structured data (JSON-LD) helps search engines understand what the site is \u2014 and enables rich results in Google."
         },
         "hreflang": {
-          "ok": false,
-          "value": "\u2717",
+          "ok": true,
+          "value": "\u2713",
           "plain": "hreflang tags tell Google which language version of a page to show in each country."
         },
         "prerender": {
@@ -676,8 +676,8 @@
           ]
         }
       },
-      "plain": "HQ scores 44/100 on SEO-readiness. Several gaps \u2014 worth a focused pass."
+      "plain": "HQ scores 100/100 on SEO-readiness. Strong across the board."
     }
   ],
-  "plainEnglish": "Overall suite SEO-readiness: 79/100. Every site is checked nightly for: HTTP health, security headers, robots.txt, sitemap, llms.txt (AI map), structured data, hreflang (languages), static content for crawlers, and AI-crawler reachability. A green check means that signal is live; hover any row for a plain-English explanation."
+  "plainEnglish": "Overall suite SEO-readiness: 85/100. Every site is checked nightly for: HTTP health, security headers, robots.txt, sitemap, llms.txt (AI map), structured data, hreflang (languages), static content for crawlers, and AI-crawler reachability. A green check means that signal is live; hover any row for a plain-English explanation."
 }
