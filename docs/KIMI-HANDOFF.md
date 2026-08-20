@@ -1,3 +1,17 @@
+### 2026-08-20 — Money Plane v3.32.1 + all 9 LNURL addresses live (Kimi)
+
+Satohash/suite money rails connected end-to-end:
+
+- **HQ Money Plane** (Money tab, v3.32.1): per-site payment audit — on-chain / LNURL / LNbits / channels / paywall rows with ELI16 tooltips. Live at hq.giveabit.io.
+- **All 9 LNbits wallets** now have live LNURL-pay: giveabit, satohash, katoa, motopass, openstrata, stranded, tadbuy, kimi + sherpa (was already live). Verified PAYREQ + invoice generation on `api.satohash.io:8443` and via giveabit.io `.well-known/lnurlp/*` stubs (giveabit commit `3e3f7c7`).
+- **Family registry:** `giveabit.io/wallets.json` — canonical list of every project's receive rails (giveabit commit `09e20b2`).
+- **LNbits postgres backups:** daily 06:30 UTC cron added (`/root/scripts/backup-lnbits.sh`), 14-day retention — the 9 wallet keys are the DB, so this was the critical gap.
+- **LND seed** verified complete (paper + THOR). On-chain test: Cam sent 6,865 sats to `bc1qkrlg6…` (txid `718fc6d0…`) — was mempool-pending at close.
+
+**Still open (Kimi):** LN channels (Cam: soon); X-Satohash-Client attribution for sherpa/motopass/katoa; on-chain addresses published on other sites.
+
+---
+
 ### 2026-08-19 — Standard Project Kit adopted + session debrief automation (Kimi)
 
 Cam approved adopting a senior-engineer's development runbook + session-debrief protocol as our default for **ALL projects** (skill `standard-project-kit`).

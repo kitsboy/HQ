@@ -2,22 +2,22 @@
   "giveabit": {
     "workflow_name": "Verify",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/giveabit/actions/runs/31770909267",
-    "updatedAt": "2026-08-14T04:49:42Z",
+    "html_url": "https://github.com/kitsboy/giveabit/actions/runs/32402641931",
+    "updatedAt": "2026-08-20T18:23:34Z",
     "status": "completed"
   },
   "satohash": {
     "workflow_name": "Deploy",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/satohash/actions/runs/32397148437",
-    "updatedAt": "2026-08-20T17:24:07Z",
+    "html_url": "https://github.com/kitsboy/satohash/actions/runs/32419255835",
+    "updatedAt": "2026-08-20T21:26:27Z",
     "status": "completed"
   },
   "katoa": {
-    "workflow_name": "Deploy katoa to Cloudflare Pages",
+    "workflow_name": "CI",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/katoa/actions/runs/32310704894",
-    "updatedAt": "2026-08-19T22:52:53Z",
+    "html_url": "https://github.com/kitsboy/katoa/actions/runs/32417780191",
+    "updatedAt": "2026-08-20T21:08:30Z",
     "status": "completed"
   },
   "motopass": {
@@ -63,10 +63,10 @@
     "status": "?"
   },
   "HQ": {
-    "workflow_name": "Status pinger",
+    "workflow_name": "Deploy HQ to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/HQ/actions/runs/32401119307",
-    "updatedAt": "2026-08-20T18:04:29Z",
+    "html_url": "https://github.com/kitsboy/HQ/actions/runs/32419742949",
+    "updatedAt": "2026-08-20T21:30:54Z",
     "status": "completed"
   }
 }
