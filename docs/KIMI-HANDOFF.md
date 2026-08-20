@@ -12,7 +12,8 @@
 - stranded `07fbf33`: canonical + hreflang → 89 (deploy verifying)
 - HQ own: robots/sitemap/llms/JSON-LD/hreflang → 100
 
-**⚠️ NEEDS CAM (2 min/site, CF dashboard):** sherpacarta.org + katoa.org AI Crawl Control — unblock GPTBot/ClaudeBot/PerplexityBot/ChatGPT-User (same as satohash did). Then those two go 89 → 100.
+**✅ Cam did it — sherpacarta + katoa unblocked → 100.**
+**Stranded** `4f5a933` canonical in Next metadata → 100. **Final: 9/9 live sites at 100, suite 96/100 A** (Buzz planned not launched). Audit now accepts canonical as the correct single-language signal per Google guidance.
 
 **Protocol doc:** `docs/TIER3-4-PLAN.md` → "SEO Strategy & Uniformity Protocol" — every current + future site gets the same 9-signal treatment automatically.
 
