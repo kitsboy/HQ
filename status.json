@@ -1,53 +1,53 @@
 {
-  "updatedAt": "2026-08-20T21:30:16.522Z",
+  "updatedAt": "2026-08-20T21:44:40.475Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 415,
+      "ms": 321,
       "url": "https://giveabit.io"
     },
     "satohash": {
       "ok": true,
       "status": 200,
-      "ms": 152,
+      "ms": 234,
       "url": "https://satohash.io"
     },
     "katoa": {
       "ok": true,
       "status": 200,
-      "ms": 155,
+      "ms": 112,
       "url": "https://katoa.org"
     },
     "stranded": {
       "ok": true,
       "status": 200,
-      "ms": 229,
+      "ms": 159,
       "url": "https://stranded.giveabit.io"
     },
     "tadbuy": {
       "ok": true,
       "status": 200,
-      "ms": 141,
+      "ms": 115,
       "url": "https://tadbuy.giveabit.io"
     },
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 164,
+      "ms": 118,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 120,
+      "ms": 142,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
       "ok": true,
       "status": 200,
-      "ms": 115,
+      "ms": 318,
       "url": "https://openstrata.giveabit.io"
     },
     "btcminiscript": {
@@ -67,18 +67,18 @@
     "satohashApi": {
       "ok": true,
       "status": 200,
-      "ms": 54,
+      "ms": 500,
       "healthUrl": "https://api.satohash.io/health"
     },
     "satohashMetrics": {
       "schema": "gab.product-metrics.v1",
       "productId": "satohash",
       "name": "Satohash",
-      "updatedAt": "2026-08-20T21:30:16.502Z",
+      "updatedAt": "2026-08-20T21:44:40.377Z",
       "window": {
         "label": "7d",
-        "from": "2026-08-13T21:30:16.502Z",
-        "to": "2026-08-20T21:30:16.502Z"
+        "from": "2026-08-13T21:44:40.377Z",
+        "to": "2026-08-20T21:44:40.377Z"
       },
       "health": {
         "status": "green",
@@ -94,7 +94,7 @@
           {
             "id": "bitcoin-anchor",
             "status": "amber",
-            "detail": "1 pending Bitcoin confirmation(s)"
+            "detail": "2 pending Bitcoin confirmation(s)"
           },
           {
             "id": "api.satohash.io",
@@ -112,7 +112,7 @@
         {
           "key": "stamps_total",
           "label": "Stamps (all time)",
-          "value": 32,
+          "value": 33,
           "unit": "proofs",
           "format": "number",
           "priority": 1,
@@ -121,7 +121,7 @@
         {
           "key": "stamps_24h",
           "label": "Stamps 24h",
-          "value": 14,
+          "value": 15,
           "unit": "proofs",
           "delta": 0,
           "deltaUnit": "%",
@@ -132,7 +132,7 @@
         {
           "key": "stamps_7d",
           "label": "Stamps 7d",
-          "value": 19,
+          "value": 20,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -141,7 +141,7 @@
         {
           "key": "monthly_capacity",
           "label": "Monthly capacity (est.)",
-          "value": 81,
+          "value": 86,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -150,7 +150,7 @@
         {
           "key": "pending",
           "label": "Pending confirm",
-          "value": 1,
+          "value": 2,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -303,7 +303,7 @@
             },
             {
               "t": "2026-08-20T12:00:00.000Z",
-              "v": 13
+              "v": 14
             }
           ]
         },
@@ -439,7 +439,7 @@
             },
             {
               "t": "2026-08-20T12:00:00.000Z",
-              "v": 1
+              "v": 2
             }
           ]
         },
@@ -520,19 +520,19 @@
             {
               "id": "hash_local",
               "label": "Local hash",
-              "count": 32,
+              "count": 33,
               "hint": "File never leaves device"
             },
             {
               "id": "submit",
               "label": "Submit stamp",
-              "count": 14,
+              "count": 15,
               "hint": "API or SPA"
             },
             {
               "id": "calendar",
               "label": "Calendar attested",
-              "count": 32,
+              "count": 33,
               "hint": "OTS calendars accepted"
             },
             {
@@ -544,7 +544,7 @@
             {
               "id": "pending_queue",
               "label": "Still pending",
-              "count": 1,
+              "count": 2,
               "hint": "Upgrade daemon queue"
             }
           ]
@@ -558,7 +558,7 @@
             {
               "id": "spa",
               "label": "Satohash SPA",
-              "value": 11,
+              "value": 12,
               "meta": {
                 "offer": "direct web stamps"
               }
@@ -700,7 +700,7 @@
             {
               "id": "pending",
               "label": "Pending",
-              "value": 1,
+              "value": 2,
               "meta": {
                 "offer": "awaiting BTC"
               }
@@ -877,7 +877,7 @@
         "seriesFromDb": true,
         "note": "Live metrics from satohash API DB",
         "version": "5.0.0-ELITE",
-        "uptimeSec": 436,
+        "uptimeSec": 791,
         "requireLightning": false,
         "familyFreeTier": true,
         "directory": {
@@ -1011,10 +1011,10 @@
           ]
         },
         "counts": {
-          "stampsTotal": 32,
-          "stamps24h": 14,
-          "stamps7d": 19,
-          "pending": 1,
+          "stampsTotal": 33,
+          "stamps24h": 15,
+          "stamps7d": 20,
+          "pending": 2,
           "confirmed": 31,
           "confirmed7d": 18,
           "failed": 0,
@@ -1024,6 +1024,14 @@
           "confirmRate": 100
         },
         "last10": [
+          {
+            "id": "d8361b66-c66a-401b-b7f9-16b7c0ad73f7",
+            "hash": "09d23107e2e656e23192f586a52977cec07fb59b138036ea839340df0202c769",
+            "status": "pending",
+            "client_id": "spa",
+            "created_at": "2026-08-20 21:32:28",
+            "bitcoin_block_height": null
+          },
           {
             "id": "14a0f1a8-776b-4ed8-841e-c057ae5978bc",
             "hash": "84f5d3c5a25db84abff212e0f66a3c61a5c87c579df0ed4fafd110c761c1c55e",
@@ -1095,21 +1103,13 @@
             "client_id": "spa",
             "created_at": "2026-08-20 17:31:15",
             "bitcoin_block_height": null
-          },
-          {
-            "id": "adb86ecd-9ada-4c45-9cf8-3b5695fa96fa",
-            "hash": "00c1299fef5977a40d2a6b6efdfc338da86f53e65f2c857fd2d7fb88a0d5de77",
-            "status": "confirmed",
-            "client_id": "e2e-live",
-            "created_at": "2026-08-20 17:26:45",
-            "bitcoin_block_height": null
           }
         ],
         "familyClients": [
           {
             "id": "spa",
             "label": "Satohash SPA",
-            "value": 11,
+            "value": 12,
             "meta": {
               "offer": "direct web stamps"
             }
