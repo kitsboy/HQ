@@ -1,7 +1,7 @@
 {
   "schema": "hq.seo-audit.v1",
-  "updatedAt": "2026-08-20T23:14:16.460330+00:00",
-  "overallScore": 91,
+  "updatedAt": "2026-08-20T23:16:27.839825+00:00",
+  "overallScore": 92,
   "overallGrade": "A",
   "satohashDeep": {
     "localized_pages": 35,
@@ -98,8 +98,8 @@
       "id": "giveabit",
       "name": "Give A Bit",
       "url": "https://giveabit.io",
-      "score": 89,
-      "grade": "B",
+      "score": 100,
+      "grade": "A",
       "checks": {
         "http_status": {
           "ok": true,
@@ -137,8 +137,8 @@
           "plain": "hreflang tags tell Google which language version of a page to show in each country."
         },
         "prerender": {
-          "ok": false,
-          "value": "JS shell",
+          "ok": true,
+          "value": "static HTML",
           "plain": "Crawlers see real content (good) vs an empty JavaScript shell (bad \u2014 Google and AI bots may not render it)."
         },
         "ai_crawlers": {
@@ -165,7 +165,7 @@
           ]
         }
       },
-      "plain": "Give A Bit scores 89/100 on SEO-readiness. Mostly solid, a few gaps to close."
+      "plain": "Give A Bit scores 100/100 on SEO-readiness. Strong across the board."
     },
     {
       "id": "sherpacarta",
@@ -752,5 +752,5 @@
       "plain": "Buzz (planned) scores 56/100 on SEO-readiness. Several gaps \u2014 worth a focused pass."
     }
   ],
-  "plainEnglish": "Overall suite SEO-readiness: 91/100. Every site is checked nightly for: HTTP health, security headers, robots.txt, sitemap, llms.txt (AI map), structured data, hreflang (languages), static content for crawlers, and AI-crawler reachability. A green check means that signal is live; hover any row for a plain-English explanation."
+  "plainEnglish": "Overall suite SEO-readiness: 92/100. Every site is checked nightly for: HTTP health, security headers, robots.txt, sitemap, llms.txt (AI map), structured data, hreflang (languages), static content for crawlers, and AI-crawler reachability. A green check means that signal is live; hover any row for a plain-English explanation."
 }

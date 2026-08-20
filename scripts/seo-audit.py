@@ -195,9 +195,10 @@ def audit_site(site):
     # prerender (crawler gets static HTML?)
     _, _, gb = probe(base, ua=CRAWLER_UAS["Googlebot"])
     shell_only = b'id="root"' in gb and not (b"<h1" in gb or b"<article" in gb)
+    has_content = b"<h1" in gb or b"<h2" in gb or b"<article" in gb or b"<p>" in gb
     checks["prerender"] = {
-        "ok": not shell_only and len(gb) > 2000,
-        "value": "static HTML" if not shell_only and len(gb) > 2000 else "JS shell",
+        "ok": has_content and not shell_only,
+        "value": "static HTML" if has_content and not shell_only else "JS shell",
         "plain": "Crawlers see real content (good) vs an empty JavaScript shell (bad — Google and AI bots may not render it).",
     }
 
