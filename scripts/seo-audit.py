@@ -41,6 +41,69 @@ CRAWLER_UAS = {
     "Googlebot": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
 }
 
+# ── Self-healing: auto-discover sites from HQ projects.json ─────────────────
+# Any project with a url gets audited automatically — new sites join the
+# uniform SEO review with zero manual work. Missing fields fall back to id/url.
+PROJECTS_JSON = "/root/hq/projects.json"
+STATE_FILE = "/root/.hermes/state/seo-audit.state"
+FIXES_LOG = "/root/hq/docs/FIXES-LOG.md"
+
+
+def load_sites():
+    """Base list + any project from projects.json that has a url (dedup by url)."""
+    sites = {s["url"]: dict(s) for s in SITES}
+    try:
+        with open(PROJECTS_JSON) as f:
+            data = json.load(f)
+        for p in data.get("projects", []):
+            url = p.get("url") or p.get("site") or (p.get("domains") or [""])[0]
+            if not url or not url.startswith("http"):
+                continue
+            sites.setdefault(url, {
+                "id": p.get("id", url),
+                "url": url,
+                "name": p.get("name", url),
+            })
+    except Exception as e:
+        print(f"(projects.json discovery skipped: {e})")
+    return list(sites.values())
+
+
+def regression_check(results):
+    """Compare against last run; log NEW red flags + score drops to FIXES-LOG.
+    Returns list of alert strings (for Telegram)."""
+    alerts = []
+    try:
+        with open(STATE_FILE) as f:
+            prev = json.load(f)
+    except Exception:
+        prev = {}
+    current = {r["id"]: {"score": r["score"], "checks": {k: v["ok"] for k, v in r["checks"].items()}} for r in results}
+    with open(STATE_FILE, "w") as f:
+        json.dump(current, f, indent=2)
+
+    for r in results:
+        pid = r["id"]
+        prev_site = prev.get(pid)
+        if prev_site is None:
+            if r["score"] < 80:
+                alerts.append(f"{r['name']} joined at {r['score']}/100 (below 80)")
+            continue
+        # Score drop >= 15 points
+        if r["score"] <= prev_site["score"] - 15:
+            alerts.append(f"{r['name']} score dropped {prev_site['score']}→{r['score']}")
+        # New red check that was green before
+        for k, ok in r["checks"].items():
+            if not ok and prev_site["checks"].get(k) is True:
+                alerts.append(f"{r['name']}: {k} regressed")
+
+    if alerts:
+        with open(FIXES_LOG, "a") as f:
+            f.write(f"\n## {datetime.now(timezone.utc).isoformat()} (seo self-heal)\n")
+            for a in alerts:
+                f.write(f"- ⚠️ {a}\n")
+    return alerts
+
 SATOHASH_DEEP = {
     "localized_pages": 35,
     "languages": ["en", "es", "fr", "de", "pt", "sw", "zh"],
@@ -172,7 +235,9 @@ def audit_site(site):
 
 
 def main():
-    results = [audit_site(s) for s in SITES]
+    sites = load_sites()
+    results = [audit_site(s) for s in sites]
+    alerts = regression_check(results)
     overall = round(sum(r["score"] for r in results) / len(results))
     payload = {
         "schema": "hq.seo-audit.v1",
@@ -190,6 +255,8 @@ def main():
     with open(OUT, "w") as f:
         json.dump(payload, f, indent=2)
     print(f"seo-audit.json written ({len(results)} sites, overall {overall}/100)")
+    if alerts:
+        print("ALERTS:", "; ".join(alerts))
 
 
 if __name__ == "__main__":

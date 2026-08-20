@@ -1,8 +1,8 @@
 {
   "schema": "hq.seo-audit.v1",
-  "updatedAt": "2026-08-20T23:05:12.206321+00:00",
-  "overallScore": 85,
-  "overallGrade": "B",
+  "updatedAt": "2026-08-20T23:14:16.460330+00:00",
+  "overallScore": 91,
+  "overallGrade": "A",
   "satohashDeep": {
     "localized_pages": 35,
     "languages": [
@@ -98,8 +98,8 @@
       "id": "giveabit",
       "name": "Give A Bit",
       "url": "https://giveabit.io",
-      "score": 67,
-      "grade": "C",
+      "score": 89,
+      "grade": "B",
       "checks": {
         "http_status": {
           "ok": true,
@@ -122,8 +122,8 @@
           "plain": "A sitemap lists every page for search engines \u2014 the fastest way to get indexed."
         },
         "llms_txt": {
-          "ok": false,
-          "value": "\u2717",
+          "ok": true,
+          "value": "\u2713",
           "plain": "llms.txt is the new standard that AI assistants (ChatGPT/Claude/Perplexity) read to learn about a site. Early adopter advantage."
         },
         "jsonld": {
@@ -132,8 +132,8 @@
           "plain": "Structured data (JSON-LD) helps search engines understand what the site is \u2014 and enables rich results in Google."
         },
         "hreflang": {
-          "ok": false,
-          "value": "\u2717",
+          "ok": true,
+          "value": "\u2713",
           "plain": "hreflang tags tell Google which language version of a page to show in each country."
         },
         "prerender": {
@@ -165,7 +165,7 @@
           ]
         }
       },
-      "plain": "Give A Bit scores 67/100 on SEO-readiness. Several gaps \u2014 worth a focused pass."
+      "plain": "Give A Bit scores 89/100 on SEO-readiness. Mostly solid, a few gaps to close."
     },
     {
       "id": "sherpacarta",
@@ -390,8 +390,8 @@
       "id": "tadbuy",
       "name": "Tadbuy",
       "url": "https://tadbuy.giveabit.io",
-      "score": 78,
-      "grade": "B",
+      "score": 100,
+      "grade": "A",
       "checks": {
         "http_status": {
           "ok": true,
@@ -424,13 +424,13 @@
           "plain": "Structured data (JSON-LD) helps search engines understand what the site is \u2014 and enables rich results in Google."
         },
         "hreflang": {
-          "ok": false,
-          "value": "\u2717",
+          "ok": true,
+          "value": "\u2713",
           "plain": "hreflang tags tell Google which language version of a page to show in each country."
         },
         "prerender": {
-          "ok": false,
-          "value": "JS shell",
+          "ok": true,
+          "value": "static HTML",
           "plain": "Crawlers see real content (good) vs an empty JavaScript shell (bad \u2014 Google and AI bots may not render it)."
         },
         "ai_crawlers": {
@@ -457,7 +457,7 @@
           ]
         }
       },
-      "plain": "Tadbuy scores 78/100 on SEO-readiness. Mostly solid, a few gaps to close."
+      "plain": "Tadbuy scores 100/100 on SEO-readiness. Strong across the board."
     },
     {
       "id": "stranded",
@@ -536,8 +536,8 @@
       "id": "openstrata",
       "name": "OpenStrata",
       "url": "https://openstrata.giveabit.io",
-      "score": 56,
-      "grade": "C",
+      "score": 100,
+      "grade": "A",
       "checks": {
         "http_status": {
           "ok": true,
@@ -550,13 +550,13 @@
           "plain": "Security headers protect visitors. CSP stops injected scripts; HSTS forces secure HTTPS."
         },
         "robots_txt": {
-          "ok": false,
-          "value": "\u2717",
+          "ok": true,
+          "value": "\u2713",
           "plain": "robots.txt tells search engines which pages to crawl. Present = good."
         },
         "sitemap": {
-          "ok": false,
-          "value": "\u2717",
+          "ok": true,
+          "value": "\u2713",
           "plain": "A sitemap lists every page for search engines \u2014 the fastest way to get indexed."
         },
         "llms_txt": {
@@ -565,13 +565,13 @@
           "plain": "llms.txt is the new standard that AI assistants (ChatGPT/Claude/Perplexity) read to learn about a site. Early adopter advantage."
         },
         "jsonld": {
-          "ok": false,
-          "value": "\u2717",
+          "ok": true,
+          "value": "\u2713",
           "plain": "Structured data (JSON-LD) helps search engines understand what the site is \u2014 and enables rich results in Google."
         },
         "hreflang": {
-          "ok": false,
-          "value": "\u2717",
+          "ok": true,
+          "value": "\u2713",
           "plain": "hreflang tags tell Google which language version of a page to show in each country."
         },
         "prerender": {
@@ -603,7 +603,7 @@
           ]
         }
       },
-      "plain": "OpenStrata scores 56/100 on SEO-readiness. Several gaps \u2014 worth a focused pass."
+      "plain": "OpenStrata scores 100/100 on SEO-readiness. Strong across the board."
     },
     {
       "id": "hq",
@@ -677,7 +677,80 @@
         }
       },
       "plain": "HQ scores 100/100 on SEO-readiness. Strong across the board."
+    },
+    {
+      "id": "buzz",
+      "name": "Buzz (planned)",
+      "url": "https://github.com/block/buzz",
+      "score": 56,
+      "grade": "C",
+      "checks": {
+        "http_status": {
+          "ok": true,
+          "value": "200",
+          "plain": "Site responds normally."
+        },
+        "security_headers": {
+          "ok": true,
+          "value": "CSP \u2713 \u00b7 HSTS \u2713",
+          "plain": "Security headers protect visitors. CSP stops injected scripts; HSTS forces secure HTTPS."
+        },
+        "robots_txt": {
+          "ok": false,
+          "value": "\u2717",
+          "plain": "robots.txt tells search engines which pages to crawl. Present = good."
+        },
+        "sitemap": {
+          "ok": false,
+          "value": "\u2717",
+          "plain": "A sitemap lists every page for search engines \u2014 the fastest way to get indexed."
+        },
+        "llms_txt": {
+          "ok": false,
+          "value": "\u2717",
+          "plain": "llms.txt is the new standard that AI assistants (ChatGPT/Claude/Perplexity) read to learn about a site. Early adopter advantage."
+        },
+        "jsonld": {
+          "ok": true,
+          "value": "\u2717",
+          "plain": "Structured data (JSON-LD) helps search engines understand what the site is \u2014 and enables rich results in Google."
+        },
+        "hreflang": {
+          "ok": false,
+          "value": "\u2717",
+          "plain": "hreflang tags tell Google which language version of a page to show in each country."
+        },
+        "prerender": {
+          "ok": true,
+          "value": "static HTML",
+          "plain": "Crawlers see real content (good) vs an empty JavaScript shell (bad \u2014 Google and AI bots may not render it)."
+        },
+        "ai_crawlers": {
+          "ok": true,
+          "value": "4 reachable \u00b7 0 blocked",
+          "plain": "AI assistants (ChatGPT, Claude, Perplexity) crawl with their own bots. If blocked, they can't learn about the site at all.",
+          "detail": [
+            {
+              "bot": "GPTBot",
+              "status": 200
+            },
+            {
+              "bot": "ClaudeBot",
+              "status": 200
+            },
+            {
+              "bot": "PerplexityBot",
+              "status": 200
+            },
+            {
+              "bot": "Googlebot",
+              "status": 200
+            }
+          ]
+        }
+      },
+      "plain": "Buzz (planned) scores 56/100 on SEO-readiness. Several gaps \u2014 worth a focused pass."
     }
   ],
-  "plainEnglish": "Overall suite SEO-readiness: 85/100. Every site is checked nightly for: HTTP health, security headers, robots.txt, sitemap, llms.txt (AI map), structured data, hreflang (languages), static content for crawlers, and AI-crawler reachability. A green check means that signal is live; hover any row for a plain-English explanation."
+  "plainEnglish": "Overall suite SEO-readiness: 91/100. Every site is checked nightly for: HTTP health, security headers, robots.txt, sitemap, llms.txt (AI map), structured data, hreflang (languages), static content for crawlers, and AI-crawler reachability. A green check means that signal is live; hover any row for a plain-English explanation."
 }
