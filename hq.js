@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.32.0 — handoffs registry tab
+ * Give A Bit HQ v3.32.1 — handoffs registry tab
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.32.0";
+  const HQ_VERSION = "3.32.1";
   const BUILD_TS = new Date().toISOString();
   const METRICS_SCHEMA = "gab.product-metrics.v1";
   const THOR_SCHEMA = "gab.thor-node.v1";
@@ -3430,18 +3430,18 @@
   // `lnurlPrefix` is the LNbits lightning-address prefix used on the HTTPS LNbits domain.
   // `onchain` is the public published treasury/on-chain address (or null if none published).
   const MONEY_PLANE = {
-    giveabit: { lnurlPrefix: null, onchain: null, note: "Hub site — no public receive address yet. LNbits wallet 'giveabit_main' exists." },
-    satohash: { lnurlPrefix: null, onchain: null, note: "Paywall flip-ready (REQUIRE_LIGHTNING=false). LNbits wallet 'satohash' at 0 sats. Add LNURL prefix to receive." },
-    katoa: { lnurlPrefix: null, onchain: null, note: "Zero-fee creator platform. LNbits wallet 'katoa' exists — LNURL not yet configured." },
-    stranded: { lnurlPrefix: null, onchain: null, note: "Energy project. LNbits wallet 'stranded' exists — LNURL not yet configured." },
-    tadbuy: { lnurlPrefix: null, onchain: null, note: "Ad platform. LNbits wallet 'tadbuy' exists — LNURL not yet configured." },
-    motopass: { lnurlPrefix: null, onchain: null, note: "Identity project. LNbits wallet 'motopass' exists — LNURL not yet configured." },
+    giveabit: { lnurlPrefix: "giveabit", onchain: null, note: "LNURL-pay live (giveabit@api.satohash.io:8443). No on-chain address published yet." },
+    satohash: { lnurlPrefix: "satohash", onchain: null, note: "LNURL-pay live (satohash@api.satohash.io:8443). Paywall flip-ready — REQUIRE_LIGHTNING=false today." },
+    katoa: { lnurlPrefix: "katoa", onchain: null, note: "LNURL-pay live (katoa@api.satohash.io:8443). Zero-fee creator platform." },
+    stranded: { lnurlPrefix: "stranded", onchain: null, note: "LNURL-pay live (stranded@api.satohash.io:8443)." },
+    tadbuy: { lnurlPrefix: "tadbuy", onchain: null, note: "LNURL-pay live (tadbuy@api.satohash.io:8443)." },
+    motopass: { lnurlPrefix: "motopass", onchain: null, note: "LNURL-pay live (motopass@api.satohash.io:8443)." },
     sherpacarta: {
       lnurlPrefix: "sherpa",
       onchain: "bc1qhm5ndfjhqxdk3cx0pngyps4f5nnwdckulmge6c8keyf2pk0neqtshjn8ad",
-      note: "Only project with LIVE public LNURL-pay (sherpa@api.satohash.io:8443) + on-chain treasury address published."
+      note: "First project live: on-chain treasury + LNURL-pay (sherpa@). Others wired 2026-08-20."
     },
-    openstrata: { lnurlPrefix: null, onchain: null, note: "Corp dashboard. LNbits wallet 'openstrata' exists — LNURL not yet configured." },
+    openstrata: { lnurlPrefix: "openstrata", onchain: null, note: "LNURL-pay live (openstrata@api.satohash.io:8443)." },
     btcminiscript: { lnurlPrefix: null, onchain: null, note: "R&D — no public receive surface." }
   };
   const LNURLS_DOMAIN = "https://api.satohash.io:8443";

@@ -9,8 +9,8 @@
   "satohash": {
     "workflow_name": "Deploy",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/satohash/actions/runs/32310444974",
-    "updatedAt": "2026-08-19T22:50:37Z",
+    "html_url": "https://github.com/kitsboy/satohash/actions/runs/32397148437",
+    "updatedAt": "2026-08-20T17:24:07Z",
     "status": "completed"
   },
   "katoa": {
@@ -63,10 +63,10 @@
     "status": "?"
   },
   "HQ": {
-    "workflow_name": "Deploy HQ to Cloudflare Pages",
+    "workflow_name": "Status pinger",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/HQ/actions/runs/32316582129",
-    "updatedAt": "2026-08-20T00:15:37Z",
+    "html_url": "https://github.com/kitsboy/HQ/actions/runs/32401119307",
+    "updatedAt": "2026-08-20T18:04:29Z",
     "status": "completed"
   }
 }

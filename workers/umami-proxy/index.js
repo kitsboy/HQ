@@ -6,7 +6,10 @@ const UMAMI_ORIGIN = "http://api.satohash.io:3002";
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept",
+  // Umami's tracker sends x-umami-* headers on /api/send; the preflight
+  // must whitelist them or the browser blocks the beacon (CORS).
+  "Access-Control-Allow-Headers":
+    "Content-Type, Authorization, Accept, x-umami-cache, x-umami-hostname, x-umami-language, x-umami-referrer, x-umami-screen, x-umami-title, x-umami-url, x-umami-website-id, x-umami-event, x-umami-data, x-umami-views, x-umami-seen, x-umami-timezone, x-umami-ua, x-umami-country, x-umami-device, x-umami-os, x-umami-browser",
   "Access-Control-Max-Age": "86400",
 };
 
