@@ -185,11 +185,13 @@ def audit_site(site):
         "plain": "Structured data (JSON-LD) helps search engines understand what the site is — and enables rich results in Google.",
     }
 
-    # hreflang
+    # hreflang (or canonical for single-language sites)
+    has_hreflang = has(body, ["hreflang"])
+    has_canonical = has(body, ["rel=\"canonical\"", "rel='canonical'"])
     checks["hreflang"] = {
-        "ok": has(body, ["hreflang"]),
-        "value": "✓" if has(body, ["hreflang"]) else "✗",
-        "plain": "hreflang tags tell Google which language version of a page to show in each country.",
+        "ok": has_hreflang or has_canonical,
+        "value": "✓ hreflang" if has_hreflang else "✓ canonical" if has_canonical else "✗",
+        "plain": "hreflang tags tell Google which localized page to show per country (multi-language). For single-language sites, a canonical URL is the correct equivalent — Google's official guidance says hreflang is only needed for 2+ languages.",
     }
 
     # prerender (crawler gets static HTML?)

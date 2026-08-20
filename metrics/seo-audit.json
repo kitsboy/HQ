@@ -1,7 +1,7 @@
 {
   "schema": "hq.seo-audit.v1",
-  "updatedAt": "2026-08-20T23:16:27.839825+00:00",
-  "overallScore": 92,
+  "updatedAt": "2026-08-20T23:39:16.730557+00:00",
+  "overallScore": 96,
   "overallGrade": "A",
   "satohashDeep": {
     "localized_pages": 35,
@@ -60,8 +60,8 @@
         },
         "hreflang": {
           "ok": true,
-          "value": "\u2713",
-          "plain": "hreflang tags tell Google which language version of a page to show in each country."
+          "value": "\u2713 hreflang",
+          "plain": "hreflang tags tell Google which localized page to show per country (multi-language). For single-language sites, a canonical URL is the correct equivalent \u2014 Google's official guidance says hreflang is only needed for 2+ languages."
         },
         "prerender": {
           "ok": true,
@@ -133,8 +133,8 @@
         },
         "hreflang": {
           "ok": true,
-          "value": "\u2713",
-          "plain": "hreflang tags tell Google which language version of a page to show in each country."
+          "value": "\u2713 hreflang",
+          "plain": "hreflang tags tell Google which localized page to show per country (multi-language). For single-language sites, a canonical URL is the correct equivalent \u2014 Google's official guidance says hreflang is only needed for 2+ languages."
         },
         "prerender": {
           "ok": true,
@@ -171,8 +171,8 @@
       "id": "sherpacarta",
       "name": "SherpaCarta",
       "url": "https://sherpacarta.org",
-      "score": 89,
-      "grade": "B",
+      "score": 100,
+      "grade": "A",
       "checks": {
         "http_status": {
           "ok": true,
@@ -206,8 +206,8 @@
         },
         "hreflang": {
           "ok": true,
-          "value": "\u2713",
-          "plain": "hreflang tags tell Google which language version of a page to show in each country."
+          "value": "\u2713 hreflang",
+          "plain": "hreflang tags tell Google which localized page to show per country (multi-language). For single-language sites, a canonical URL is the correct equivalent \u2014 Google's official guidance says hreflang is only needed for 2+ languages."
         },
         "prerender": {
           "ok": true,
@@ -215,21 +215,21 @@
           "plain": "Crawlers see real content (good) vs an empty JavaScript shell (bad \u2014 Google and AI bots may not render it)."
         },
         "ai_crawlers": {
-          "ok": false,
-          "value": "1 reachable \u00b7 3 blocked",
+          "ok": true,
+          "value": "4 reachable \u00b7 0 blocked",
           "plain": "AI assistants (ChatGPT, Claude, Perplexity) crawl with their own bots. If blocked, they can't learn about the site at all.",
           "detail": [
             {
               "bot": "GPTBot",
-              "status": 403
+              "status": 200
             },
             {
               "bot": "ClaudeBot",
-              "status": 403
+              "status": 200
             },
             {
               "bot": "PerplexityBot",
-              "status": 403
+              "status": 200
             },
             {
               "bot": "Googlebot",
@@ -238,14 +238,14 @@
           ]
         }
       },
-      "plain": "SherpaCarta scores 89/100 on SEO-readiness. Mostly solid, a few gaps to close."
+      "plain": "SherpaCarta scores 100/100 on SEO-readiness. Strong across the board."
     },
     {
       "id": "katoa",
       "name": "Katoa",
       "url": "https://katoa.org",
-      "score": 89,
-      "grade": "B",
+      "score": 100,
+      "grade": "A",
       "checks": {
         "http_status": {
           "ok": true,
@@ -279,8 +279,8 @@
         },
         "hreflang": {
           "ok": true,
-          "value": "\u2713",
-          "plain": "hreflang tags tell Google which language version of a page to show in each country."
+          "value": "\u2713 hreflang",
+          "plain": "hreflang tags tell Google which localized page to show per country (multi-language). For single-language sites, a canonical URL is the correct equivalent \u2014 Google's official guidance says hreflang is only needed for 2+ languages."
         },
         "prerender": {
           "ok": true,
@@ -288,21 +288,21 @@
           "plain": "Crawlers see real content (good) vs an empty JavaScript shell (bad \u2014 Google and AI bots may not render it)."
         },
         "ai_crawlers": {
-          "ok": false,
-          "value": "1 reachable \u00b7 3 blocked",
+          "ok": true,
+          "value": "4 reachable \u00b7 0 blocked",
           "plain": "AI assistants (ChatGPT, Claude, Perplexity) crawl with their own bots. If blocked, they can't learn about the site at all.",
           "detail": [
             {
               "bot": "GPTBot",
-              "status": 403
+              "status": 200
             },
             {
               "bot": "ClaudeBot",
-              "status": 403
+              "status": 200
             },
             {
               "bot": "PerplexityBot",
-              "status": 403
+              "status": 200
             },
             {
               "bot": "Googlebot",
@@ -311,7 +311,7 @@
           ]
         }
       },
-      "plain": "Katoa scores 89/100 on SEO-readiness. Mostly solid, a few gaps to close."
+      "plain": "Katoa scores 100/100 on SEO-readiness. Strong across the board."
     },
     {
       "id": "motopass",
@@ -352,8 +352,8 @@
         },
         "hreflang": {
           "ok": true,
-          "value": "\u2713",
-          "plain": "hreflang tags tell Google which language version of a page to show in each country."
+          "value": "\u2713 hreflang",
+          "plain": "hreflang tags tell Google which localized page to show per country (multi-language). For single-language sites, a canonical URL is the correct equivalent \u2014 Google's official guidance says hreflang is only needed for 2+ languages."
         },
         "prerender": {
           "ok": true,
@@ -425,8 +425,8 @@
         },
         "hreflang": {
           "ok": true,
-          "value": "\u2713",
-          "plain": "hreflang tags tell Google which language version of a page to show in each country."
+          "value": "\u2713 hreflang",
+          "plain": "hreflang tags tell Google which localized page to show per country (multi-language). For single-language sites, a canonical URL is the correct equivalent \u2014 Google's official guidance says hreflang is only needed for 2+ languages."
         },
         "prerender": {
           "ok": true,
@@ -463,8 +463,8 @@
       "id": "stranded",
       "name": "Stranded",
       "url": "https://stranded.giveabit.io",
-      "score": 89,
-      "grade": "B",
+      "score": 100,
+      "grade": "A",
       "checks": {
         "http_status": {
           "ok": true,
@@ -497,9 +497,9 @@
           "plain": "Structured data (JSON-LD) helps search engines understand what the site is \u2014 and enables rich results in Google."
         },
         "hreflang": {
-          "ok": false,
-          "value": "\u2717",
-          "plain": "hreflang tags tell Google which language version of a page to show in each country."
+          "ok": true,
+          "value": "\u2713 hreflang",
+          "plain": "hreflang tags tell Google which localized page to show per country (multi-language). For single-language sites, a canonical URL is the correct equivalent \u2014 Google's official guidance says hreflang is only needed for 2+ languages."
         },
         "prerender": {
           "ok": true,
@@ -530,7 +530,7 @@
           ]
         }
       },
-      "plain": "Stranded scores 89/100 on SEO-readiness. Mostly solid, a few gaps to close."
+      "plain": "Stranded scores 100/100 on SEO-readiness. Strong across the board."
     },
     {
       "id": "openstrata",
@@ -571,8 +571,8 @@
         },
         "hreflang": {
           "ok": true,
-          "value": "\u2713",
-          "plain": "hreflang tags tell Google which language version of a page to show in each country."
+          "value": "\u2713 hreflang",
+          "plain": "hreflang tags tell Google which localized page to show per country (multi-language). For single-language sites, a canonical URL is the correct equivalent \u2014 Google's official guidance says hreflang is only needed for 2+ languages."
         },
         "prerender": {
           "ok": true,
@@ -644,8 +644,8 @@
         },
         "hreflang": {
           "ok": true,
-          "value": "\u2713",
-          "plain": "hreflang tags tell Google which language version of a page to show in each country."
+          "value": "\u2713 hreflang",
+          "plain": "hreflang tags tell Google which localized page to show per country (multi-language). For single-language sites, a canonical URL is the correct equivalent \u2014 Google's official guidance says hreflang is only needed for 2+ languages."
         },
         "prerender": {
           "ok": true,
@@ -718,7 +718,7 @@
         "hreflang": {
           "ok": false,
           "value": "\u2717",
-          "plain": "hreflang tags tell Google which language version of a page to show in each country."
+          "plain": "hreflang tags tell Google which localized page to show per country (multi-language). For single-language sites, a canonical URL is the correct equivalent \u2014 Google's official guidance says hreflang is only needed for 2+ languages."
         },
         "prerender": {
           "ok": true,
@@ -752,5 +752,5 @@
       "plain": "Buzz (planned) scores 56/100 on SEO-readiness. Several gaps \u2014 worth a focused pass."
     }
   ],
-  "plainEnglish": "Overall suite SEO-readiness: 92/100. Every site is checked nightly for: HTTP health, security headers, robots.txt, sitemap, llms.txt (AI map), structured data, hreflang (languages), static content for crawlers, and AI-crawler reachability. A green check means that signal is live; hover any row for a plain-English explanation."
+  "plainEnglish": "Overall suite SEO-readiness: 96/100. Every site is checked nightly for: HTTP health, security headers, robots.txt, sitemap, llms.txt (AI map), structured data, hreflang (languages), static content for crawlers, and AI-crawler reachability. A green check means that signal is live; hover any row for a plain-English explanation."
 }
