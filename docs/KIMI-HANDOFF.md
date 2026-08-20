@@ -1,3 +1,21 @@
+### 2026-08-21 — SEO Plane + uniformity sweep + self-healing (Kimi)
+
+**HQ SEO Plane (v3.32.2+) LIVE** at hq.giveabit.io → Money → SEO tab:
+- Nightly `seo-audit.py` probes 9 signals × 10 sites → `metrics/seo-audit.json`
+- Per-site score/grade + plain-English tooltips + Satohash deep dive
+- **Self-healing**: auto-discovers new sites from projects.json (Buzz appeared automatically), regression detection (score drop ≥15 or green→red) → FIXES-LOG + alert
+
+**Uniformity sweep — suite 79 → 92/100 A (6 sites at 100):**
+- giveabit `269c93d`: static hreflang + llms.txt + crawler prerendered landing → 100
+- tadbuy `66dba65`: static hreflang + prerender script/middleware → 100
+- openstrata `85a6532`: robots + sitemap + JSON-LD + hreflang → 100
+- stranded `07fbf33`: canonical + hreflang → 89 (deploy verifying)
+- HQ own: robots/sitemap/llms/JSON-LD/hreflang → 100
+
+**⚠️ NEEDS CAM (2 min/site, CF dashboard):** sherpacarta.org + katoa.org AI Crawl Control — unblock GPTBot/ClaudeBot/PerplexityBot/ChatGPT-User (same as satohash did). Then those two go 89 → 100.
+
+**Protocol doc:** `docs/TIER3-4-PLAN.md` → "SEO Strategy & Uniformity Protocol" — every current + future site gets the same 9-signal treatment automatically.
+
 ### 2026-08-20 — Money Plane v3.32.1 + all 9 LNURL addresses live (Kimi)
 
 Satohash/suite money rails connected end-to-end:
