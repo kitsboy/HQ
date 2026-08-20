@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.32.2 — handoffs registry tab
+ * Give A Bit HQ v3.32.3 — handoffs registry tab
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.32.2";
+  const HQ_VERSION = "3.32.3";
   const BUILD_TS = new Date().toISOString();
   const METRICS_SCHEMA = "gab.product-metrics.v1";
   const THOR_SCHEMA = "gab.thor-node.v1";
@@ -1620,7 +1620,11 @@
 
   function renderLoadingShell() {
     const main = document.getElementById("main-content");
-    if (main) main.innerHTML = `<div class="loading-state"><div class="spinner"></div><div>Loading registry, metrics, project docs…</div></div>`;
+    if (main) main.innerHTML = `<div class="loading-state">
+      <div class="spinner"></div>
+      <div class="boot-mark"><span class="dot"></span>HQ</div>
+      <div class="boot-hint">Loading registry · metrics · project docs…</div>
+    </div>`;
   }
 
   function renderChrome() {
@@ -1814,19 +1818,23 @@
       return;
     }
 
-    // Previously timed out — don't keep trying until next full refresh
-    if (state.renderTimeouts && state.renderTimeouts[tab]) {
+    // Previously timed out — one retry per refresh (self-healing, not permanent)
+    if (state.renderTimeouts && state.renderTimeouts[tab] && state.renderTimeouts[tab] === "fired") {
+      // Allow exactly one retry after a timeout; further failures stay until refresh
+      state.renderTimeouts[tab] = "retried";
+    } else if (state.renderTimeouts && state.renderTimeouts[tab] === "retried") {
       el.innerHTML = renderTimeoutHTML(tab);
       return;
     }
 
-    // Setup 3-second timeout
+    // Setup 10-second timeout
     var timer = setTimeout(function () {
       if (!state.renderTimeouts) state.renderTimeouts = {};
-      state.renderTimeouts[tab] = true;
+      if (state.renderTimeouts[tab] === "retried") return; // already retried once
+      state.renderTimeouts[tab] = "fired";
       var el2 = document.getElementById("view-" + tab);
       if (el2) el2.innerHTML = renderTimeoutHTML(tab);
-      console.error("[HQ] Render timeout: \"" + tab + "\" exceeded 10s");
+      console.error("[HQ] Render timeout: \"" + tab + "\" exceeded 10s (retry available)");
     }, 10000);
 
     // Execute render with try/catch
@@ -4047,7 +4055,8 @@
   function renderAgents() {
     const el = document.getElementById("view-agents");
     if (!el) return;
-    if (!state.agents.length) { el.innerHTML = unavailableHTML("Agents", "/agents.json"); return; }
+    const agents = Array.isArray(state.agents) ? state.agents : [];
+    if (!agents.length) { el.innerHTML = unavailableHTML("Agents", "/agents.json"); return; }
     const fallbackIcon = {
       Andrea: "fa-solid fa-clipboard-check",
       Kimi: "fa-solid fa-crown",
@@ -4057,7 +4066,7 @@
       Rosa: "fa-solid fa-comments",
       Ziggy: "fa-solid fa-bullhorn",
     };
-    const cards = state.agents.map((a) => {
+    const cards = agents.map((a) => {
       let c = a.color || "#a78bfa";
       if (isNearGrey(c)) c = "#a78bfa";
       const icon = a.icon || fallbackIcon[a.name] || "fa-solid fa-user-astronaut";
@@ -4076,12 +4085,13 @@
         <div class="mono mt-1" style="font-size:0.65rem;color:var(--ink-faint)">${esc(a.file || "")}</div>
       </article>`;
     }).join("");
-    const ns = state.agents[0] && (state.agents.find(a => a.nip05) || state.agents[0]).nip05 ? state.agents[0].nip05.split("@")[1] || "giveabit.io" : "giveabit.io";
-    const leadCount = state.agents.filter(a => a.lead).length;
-    const roles = [...new Set(state.agents.map(a => a.role || "Unspecified").filter(Boolean))];
+    const nsAgent = agents.find(a => a && a.nip05) || agents[0];
+    const ns = (nsAgent && nsAgent.nip05 && nsAgent.nip05.split("@")[1]) || "giveabit.io";
+    const leadCount = agents.filter(a => a && a.lead).length;
+    const roles = [...new Set(agents.map(a => (a && a.role) || "Unspecified").filter(Boolean))];
     el.innerHTML = `
       <h2 class="section-title">Agents <span class="accent-rule"></span></h2>
-      <p class="section-sub">From agents.json · ${state.agents.length} registered · ${leadCount} lead · ${roles.length} roles</p>
+      <p class="section-sub">From agents.json · ${agents.length} registered · ${leadCount} lead · ${roles.length} roles</p>
       <div class="namespace-banner panel" style="border-left:4px solid #ff8c00;padding:0.75rem 1rem;margin-bottom:1rem;border-radius:var(--radius,8px);display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap">
         <i class="fa-solid fa-globe" style="font-size:1.2rem;color:#ff8c00;flex-shrink:0"></i>
         <div style="flex:1;min-width:200px">
@@ -4910,6 +4920,19 @@
   }
 
   /* ═══════════════ INIT ═══════════════ */
+
+  // Global error trap — never leave a blank screen; surface a friendly recovery.
+  window.addEventListener("error", function (ev) {
+    console.error("[HQ] Uncaught error:", ev.error || ev.message);
+    const main = document.getElementById("main-content");
+    if (main && main.querySelector(".view") === null && state.loading) {
+      main.innerHTML = unavailableHTML("Something went wrong", "app boot",
+        "An unexpected error occurred while loading. Press Refresh (r) or reload the page.", "fa-triangle-exclamation");
+    }
+  });
+  window.addEventListener("unhandledrejection", function (ev) {
+    console.warn("[HQ] Unhandled rejection:", ev.reason);
+  });
 
   function init() {
     state.vault = loadVault();
