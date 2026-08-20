@@ -89,3 +89,9 @@ Commits: giveabit 7d0892c/9ced482/4a6dca8; katoa 48ab223/2233dc2/458b947/e4f2753
 - Created user `opencode` (sudo+docker), installed OpenCode server 1.18.15 as systemd
   service `opencode-serve` (auto-start, Tailscale-bound :4096, basic auth).
 - SSH hardened: password auth globally OFF, enabled only for `opencode` via Match block.
+
+## 2026-08-20 — 23:47 (log watchdog)
+- Error class `http-500` appeared 263x in last 6h of container logs.
+
+## 2026-08-20 — 23:47 (log watchdog)
+- Error class `http-500` appeared 207x in last 6h of container logs.

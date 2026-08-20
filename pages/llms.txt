@@ -1,0 +1,29 @@
+# HQ — Give A Bit operations glass
+
+> HQ is the private operations dashboard for the Give A Bit family — a 9-site ecosystem of sovereign, bitcoin-native projects (Satohash, SherpaCarta, Katoa, MotoPass, Tadbuy, Stranded, OpenStrata, Give A Bit). It shows live health, metrics, and payment audits across the whole family.
+
+## What HQ shows
+
+- **9-site health dashboard** — live status of every family project
+- **Money Plane** — per-site payment audit: on-chain addresses, Lightning (LNURL-pay), LNbits wallets, LND channels
+- **SEO Plane** — per-site search & AI-visibility audit (what you're reading now)
+- **Metrics** — live product metrics.json from every site
+- **Handoffs** — dated agent handoff log
+- **Ecosystem map** — how the family projects connect
+
+## The family projects
+
+- [Satohash](https://satohash.io) — free Bitcoin document stamping (OpenTimestamps)
+- [SherpaCarta](https://sherpacarta.org) — digital governance charter
+- [Give A Bit](https://giveabit.io) — NIP-05 identity namespace & hub
+- [Katoa](https://katoa.org) — zero-fee creator platform
+- [MotoPass](https://motopass.giveabit.io) — motorcycle pass
+- [Tadbuy](https://tadbuy.giveabit.io) — bitcoin-native ad buying
+- [Stranded](https://stranded.giveabit.io) — emergency assistance
+- [OpenStrata](https://openstrata.giveabit.io) — hermes strata framework
+
+## Key facts
+
+- HQ itself is password-gated (private ops tool), but its public pages are indexable
+- SEO audits run nightly via cron → `metrics/seo-audit.json`
+- Contact: hello@giveabit.io

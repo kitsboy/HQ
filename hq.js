@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.32.1 — handoffs registry tab
+ * Give A Bit HQ v3.32.2 — handoffs registry tab
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.32.1";
+  const HQ_VERSION = "3.32.2";
   const BUILD_TS = new Date().toISOString();
   const METRICS_SCHEMA = "gab.product-metrics.v1";
   const THOR_SCHEMA = "gab.thor-node.v1";
@@ -94,6 +94,7 @@
     system: "#2dd4bf",
     wallets: "#f59e0b",
     money: "#ff8c00",
+    seo: "#22c55e",
     docs: "#e879f9",
     agents: "#fb923c",
     domains: "#c084fc",
@@ -110,7 +111,7 @@
     cards: "Cards", list: "List", metrics: "Metrics", analytics: "Analytics",
     pipeline: "Pipeline", network: "Network", matrix: "Matrix", activity: "Activity",
     ecosystem: "Ecosystem", concert: "Concert", coverage: "Coverage", system: "System",
-    wallets: "Wallets", money: "Money", docs: "Docs", agents: "Agents",
+    wallets: "Wallets", money: "Money", seo: "SEO", docs: "Docs", agents: "Agents",
     domains: "Domains", vault: "Vault", intel: "Intel", feed: "Feed",
     charts: "Charts", chat: "Chat", handoffs: "Handoffs", manual: "Manual",
   };
@@ -1207,12 +1208,13 @@
     state.loadErrors = [];
     renderLoadingShell();
 
-    const [projectsR, agentsR, toolsR, statusR, ecoR] = await Promise.all([
+    const [projectsR, agentsR, toolsR, statusR, ecoR, seoR] = await Promise.all([
       loadData("/projects.json"),
       loadData("/agents.json"),
       loadData("/tools.json"),
       loadData("/status.json"),
       loadData("/metrics/ecosystem-map.json"),
+      loadData("/metrics/seo-audit.json"),
     ]);
     const roadmapR = await loadData("/metrics/roadmap.json");
 
@@ -1228,6 +1230,7 @@
     if (toolsR.ok) state.tools = toolsR.data; else { state.tools = null; state.loadErrors.push(toolsR); }
     if (statusR.ok) state.status = statusR.data; else { state.status = null; state.loadErrors.push(statusR); }
     if (ecoR.ok) state.ecosystem = ecoR.data; else { state.ecosystem = null; /* optional */ }
+    if (seoR.ok) state.seoAudit = seoR.data; else { state.seoAudit = null; /* optional */ }
     if (roadmapR.ok) state.roadmap = roadmapR.data; else { state.roadmap = null; }
 
     const metricsJobs = state.projects.map(async (p) => {
@@ -1948,7 +1951,7 @@
       cards: renderCards, list: renderList, metrics: renderMetrics, analytics: renderAnalytics,
       pipeline: renderPipeline, network: renderNetwork, matrix: renderMatrix, activity: renderActivity,
       ecosystem: renderEcosystem, concert: renderConcert, coverage: renderCoverage, system: renderSystem,
-      wallets: renderWallets, money: renderMoney, docs: renderDocs, agents: renderAgents, domains: renderDomains,
+      wallets: renderWallets, money: renderMoney, seo: renderSeo, docs: renderDocs, agents: renderAgents, domains: renderDomains,
       vault: renderVaultTab,
       handoffs: renderHandoffs,
       manual: renderManual,
@@ -4128,6 +4131,97 @@
           <td><a href="${escAttr(r.url)}" target="_blank" rel="noopener" data-tip="${escAttr(r.tip)}">${esc(r.url)}</a></td>
         </tr>`).join("")}</tbody>
       </table></div>`;
+  }
+
+  /* ═══════════════ SEO PLANE — per-site search & AI audit ═══════════════ */
+
+  // Plain-English legend for every SEO signal (hover tooltips).
+  const SEO_SIGNAL_TIPS = {
+    http_status: ["Site is up", "A normal visitor can load the site. If red, search engines can't reach it either."],
+    security_headers: ["Security headers", "CSP stops injected scripts; HSTS forces encrypted HTTPS. Missing = visitors and crawlers are less protected."],
+    robots_txt: ["robots.txt", "Tells search engines which pages to crawl. Missing = engines may waste budget or mis-crawl."],
+    sitemap: ["Sitemap", "A machine-readable list of every page. Missing = slower, less complete indexing."],
+    llms_txt: ["llms.txt", "The new file AI assistants (ChatGPT, Claude, Perplexity) read to learn about a site. We were early — big advantage."],
+    jsonld: ["Structured data", "Schema markup that helps search engines understand the site and unlocks rich results (stars, FAQ boxes)."],
+    hreflang: ["hreflang", "Language tags telling Google which localized page to show in each country. Missing = wrong-language results."],
+    prerender: ["Crawler content", "Does a search bot see real text (good) or an empty JavaScript shell (bad)? Static HTML = fast, reliable indexing."],
+    ai_crawlers: ["AI crawler access", "Can ChatGPT/Claude/Perplexity actually fetch the site? If blocked, AI answers never mention it."],
+  };
+
+  function seoSignalRow(key, check) {
+    const [title, tip] = SEO_SIGNAL_TIPS[key] || [key, ""];
+    const dot = check.ok ? '<span class="status-dot green pulse"></span>' : '<span class="status-dot amber"></span>';
+    return `<div class="mp-row" data-tip="${escAttr(tip)}" data-tip-title="${escAttr(title)}">
+      ${dot}<span class="mp-k">${esc(title)}</span><span class="mp-v" style="${check.ok ? "" : "color:var(--ink-faint)"}">${esc(check.value)}</span>
+    </div>`;
+  }
+
+  function seoPlaneCard(site) {
+    const color = accentFor(site.id) || "#8b9dc3";
+    const gradeColor = site.grade === "A" ? "var(--ok,#22c55e)" : site.grade === "B" ? "#f59e0b" : site.grade === "C" ? "#f97316" : "#ef4444";
+    const rows = Object.entries(site.checks || {}).map(([k, v]) => seoSignalRow(k, v)).join("");
+    return `<div class="money-plane-card panel" style="border-left:4px solid ${escAttr(color)};--card-accent:${escAttr(color)}">
+      <div class="flex items-center gap-2" style="margin-bottom:0.5rem">
+        ${iconBadge(site.id, color)}
+        <div><strong>${esc(site.name)}</strong><div class="mono" style="font-size:0.6rem;color:var(--ink-faint)">${esc(site.url)}</div></div>
+        <div style="margin-left:auto;text-align:right">
+          <div class="mono" style="font-size:1.2rem;font-weight:900;color:${gradeColor}">${esc(site.score)}<span style="font-size:0.7rem;color:var(--ink-faint)">/100</span></div>
+          <div class="mono" style="font-size:0.65rem;color:${gradeColor}">grade ${esc(site.grade)}</div>
+        </div>
+      </div>
+      ${rows}
+      <p class="mp-note" style="font-size:0.72rem;color:var(--ink-dim);margin-top:0.5rem">${esc(site.plain)}</p>
+    </div>`;
+  }
+
+  function renderSeo() {
+    const el = document.getElementById("view-seo");
+    if (!el) return;
+    const audit = state.seoAudit;
+    if (!audit || !Array.isArray(audit.sites)) {
+      el.innerHTML = unavailableHTML("SEO Plane", "metrics/seo-audit.json", "Run /root/hq/scripts/seo-audit.py (nightly cron) to generate the audit");
+      return;
+    }
+    const deep = audit.satohashDeep || {};
+    const sorted = [...audit.sites].sort((a, b) => b.score - a.score);
+    const gradeColor = audit.overallGrade === "A" ? "#22c55e" : audit.overallGrade === "B" ? "#f59e0b" : audit.overallGrade === "C" ? "#f97316" : "#ef4444";
+
+    const deepRows = deep.localized_pages
+      ? `<div class="panel" style="padding:1rem;margin-bottom:1rem">
+          <h3 class="display" style="margin:0 0 0.5rem;font-size:0.95rem"><i class="fa-solid fa-earth-europe" style="color:var(--accent)"></i> Satohash deep dive</h3>
+          <div class="seo-deep-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:0.5rem">
+            ${[["Localized pages", deep.localized_pages], ["Languages", (deep.languages || []).join(" · ")], ["Learn articles", deep.learn_articles], ["Prerendered pages", deep.prerendered_pages], ["Sitemap URLs", deep.sitemap_urls], ["llms.txt", deep.llms_txt ? "✓ live" : "✗"]].map(([k, v]) => `<div style="border:1px solid var(--border);border-radius:8px;padding:0.5rem"><div style="font-size:0.62rem;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.05em">${esc(k)}</div><div style="font-weight:700;font-size:0.95rem">${esc(String(v))}</div></div>`).join("")}
+          </div>
+          <p style="font-size:0.72rem;color:var(--ink-dim);margin:0.5rem 0 0">${esc(deep.notes || "")}</p>
+        </div>`
+      : "";
+
+    el.innerHTML = `
+      <div class="flex justify-between items-center flex-wrap gap-2 mb-3">
+        <h2 class="section-title" style="margin:0">SEO Plane <span class="accent-rule"></span></h2>
+        <span class="status-pill green" data-tip="Refreshed nightly by /root/hq/scripts/seo-audit.py. Hover any row for a plain-English explanation of what the signal means and why it matters." data-tip-title="Live audit">nightly · ${esc((audit.updatedAt || "").slice(0, 16).replace("T", " "))}</span>
+      </div>
+      <div class="panel yolo-glow" style="padding:1rem;margin-bottom:1rem">
+        <div class="flex items-center gap-3 flex-wrap">
+          <div class="mono" style="font-size:2rem;font-weight:900;color:${gradeColor}">${esc(audit.overallScore)}<span style="font-size:1rem;color:var(--ink-faint)">/100</span></div>
+          <div style="flex:1;min-width:220px">
+            <div style="font-weight:700;margin-bottom:0.25rem">Suite SEO-readiness · grade ${esc(audit.overallGrade)}</div>
+            <p style="font-size:0.78rem;color:var(--ink-dim);margin:0">${esc(audit.plainEnglish || "")}</p>
+          </div>
+        </div>
+      </div>
+      ${deepRows}
+      <div class="money-plane-grid">${sorted.map((s) => seoPlaneCard(s)).join("")}</div>
+      <div class="panel" style="padding:1rem;margin-top:1rem">
+        <h3 class="display" style="margin:0 0 0.5rem;font-size:0.9rem"><i class="fa-solid fa-circle-question" style="color:var(--accent)"></i> What do these signals mean?</h3>
+        <p style="font-size:0.75rem;color:var(--ink-dim);margin:0;line-height:1.6">
+          <strong>Indexability</strong> — can search engines read the site? (robots, sitemap, crawler content).<br>
+          <strong>AI visibility</strong> — can ChatGPT/Claude/Perplexity read it? (llms.txt + AI crawler access) — this is where Satohash leads the family.<br>
+          <strong>Structure</strong> — does the site tell engines what it is? (structured data, hreflang, security headers).<br>
+          <strong>Reality check</strong> — a 100 here means "ready to be found", not "ranked #1". Rankings also need authority (backlinks, mentions) and time. The plan: keep every site green, then grow authority.
+        </p>
+      </div>`;
+    bindTooltips();
   }
 
   /* ═══════════════ HANDOFFS ═══════════════ */

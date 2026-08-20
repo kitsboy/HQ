@@ -1,0 +1,21 @@
+# HQ — Give A Bit operations glass
+
+User-agent: *
+Allow: /
+Disallow: /vault
+Disallow: /metrics/
+
+# AI crawlers — welcome
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+Sitemap: https://hq.giveabit.io/sitemap.xml

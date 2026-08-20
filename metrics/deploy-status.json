@@ -7,10 +7,10 @@
     "status": "completed"
   },
   "satohash": {
-    "workflow_name": "Deploy",
+    "workflow_name": "CI/CD Pipeline",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/satohash/actions/runs/32419255835",
-    "updatedAt": "2026-08-20T21:26:27Z",
+    "html_url": "https://github.com/kitsboy/satohash/actions/runs/32425105276",
+    "updatedAt": "2026-08-20T22:44:37Z",
     "status": "completed"
   },
   "katoa": {
@@ -23,29 +23,29 @@
   "motopass": {
     "workflow_name": "Deploy motopass to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/motopass/actions/runs/32310284941",
-    "updatedAt": "2026-08-19T22:46:21Z",
+    "html_url": "https://github.com/kitsboy/motopass/actions/runs/32422762904",
+    "updatedAt": "2026-08-20T22:07:50Z",
     "status": "completed"
   },
   "sherpacarta": {
     "workflow_name": "Deploy sherpacarta to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/sherpacarta/actions/runs/32310156008",
-    "updatedAt": "2026-08-19T22:44:41Z",
+    "html_url": "https://github.com/kitsboy/sherpacarta/actions/runs/32422759049",
+    "updatedAt": "2026-08-20T22:07:42Z",
     "status": "completed"
   },
   "stranded": {
     "workflow_name": "Deploy stranded to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/stranded/actions/runs/31522032740",
-    "updatedAt": "2026-08-11T18:19:57Z",
+    "html_url": "https://github.com/kitsboy/stranded/actions/runs/32422776557",
+    "updatedAt": "2026-08-20T22:08:49Z",
     "status": "completed"
   },
   "tadbuy": {
     "workflow_name": "Deploy tadbuy to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/tadbuy/actions/runs/31381837034",
-    "updatedAt": "2026-08-10T11:04:41Z",
+    "html_url": "https://github.com/kitsboy/tadbuy/actions/runs/32422774035",
+    "updatedAt": "2026-08-20T22:08:16Z",
     "status": "completed"
   },
   "openstrata": {
@@ -63,10 +63,10 @@
     "status": "?"
   },
   "HQ": {
-    "workflow_name": "Deploy HQ to Cloudflare Pages",
+    "workflow_name": "Status pinger",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/HQ/actions/runs/32419742949",
-    "updatedAt": "2026-08-20T21:30:54Z",
+    "html_url": "https://github.com/kitsboy/HQ/actions/runs/32425730836",
+    "updatedAt": "2026-08-20T22:46:32Z",
     "status": "completed"
   }
 }

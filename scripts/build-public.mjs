@@ -107,6 +107,9 @@ cp("status.example.json", "status.example.json");
 cp("manifest.webmanifest", "manifest.webmanifest");
 cp("pages/_headers", "_headers");
 cp("pages/_redirects", "_redirects");
+cp("pages/robots.txt", "robots.txt");
+cp("pages/sitemap.xml", "sitemap.xml");
+cp("pages/llms.txt", "llms.txt");
 
 copyMetricsJsonOnly();
 cp("schemas", "schemas");
