@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.32.6 — handoffs registry tab
+ * Give A Bit HQ v3.32.7 — handoffs registry tab
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.32.6";
+  const HQ_VERSION = "3.32.7";
   const BUILD_TS = new Date().toISOString();
   const METRICS_SCHEMA = "gab.product-metrics.v1";
   const THOR_SCHEMA = "gab.thor-node.v1";
@@ -1591,11 +1591,26 @@
       const height = btcD.blocks != null ? fmtNum(btcD.blocks) : "—";
       const onChain = fmtNum(lndD.walletBalanceSats || 0, "sats");
       const tip = [
-        `${alias} · LND ${ver} · ${synced} · chain height ${height}`,
+        `${alias} — Lightning node on THOR (the VPS).`,
+        `Status: ${synced} · chain height ${height}`,
         `${peers ?? 0} peers · ${ch ?? 0} channels · on-chain ${onChain}`,
-        lndD.walletBalanceSats === 0 ? "Seed backup required before funding — see System tab" : "Click for System detail",
+        `Channels are the "roads" Lightning payments travel on. 0 channels = can receive small payments but not send. Click for System detail.`,
       ].join(" · ");
-      bits.push(`<button type="button" class="suite-alert warn" data-alert="ln" title="${escAttr(tip)}"><i class="fa-solid fa-bolt"></i> ${esc(alias)} · LND ${esc(ver)} · ${esc(synced)} · h${esc(height)} · ${ch ?? 0} ch · ${esc(onChain)}</button>`);
+      const statusDot = synced === "synced" ? "green pulse" : "amber";
+      bits.push(`<button type="button" class="suite-alert ln-chip" data-alert="ln" title="${escAttr(tip)}">
+        <span class="status-dot ${statusDot}"></span>
+        <i class="fa-solid fa-bolt ln-bolt"></i>
+        <span class="ln-main">
+          <strong>${esc(alias)}</strong>
+          <span class="ln-sub">Lightning node · ${esc(synced)}</span>
+        </span>
+        <span class="ln-stats">
+          <span class="ln-stat"><b>${esc(onChain)}</b><small>on-chain</small></span>
+          <span class="ln-stat"><b>${ch ?? 0}</b><small>channels</small></span>
+          <span class="ln-stat"><b>h${esc(height)}</b><small>block</small></span>
+        </span>
+        <span class="ln-go"><i class="fa-solid fa-chevron-right"></i></span>
+      </button>`);
     }
     if (stale.length >= 3) {
       const names = stale.slice(0, 4).map((p) => {
