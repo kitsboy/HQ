@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.32.3 — handoffs registry tab
+ * Give A Bit HQ v3.32.4 — handoffs registry tab
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.32.3";
+  const HQ_VERSION = "3.32.4";
   const BUILD_TS = new Date().toISOString();
   const METRICS_SCHEMA = "gab.product-metrics.v1";
   const THOR_SCHEMA = "gab.thor-node.v1";
@@ -1637,6 +1637,50 @@
     `;
     renderPortfolioStrip();
     updateVaultChip();
+    maybeRenderWelcome();
+  }
+
+  // ── First-visit welcome strip (dismissible; teaches the 3 core tabs) ──
+  const WELCOME_KEY = "hq_welcome_dismissed_v1";
+  function maybeRenderWelcome() {
+    let dismissed = false;
+    try { dismissed = localStorage.getItem(WELCOME_KEY) === "1"; } catch {}
+    if (dismissed) return;
+    const strip = document.getElementById("portfolio-strip");
+    if (!strip) return;
+    const c = (id, icon, label, desc) => `<button type="button" class="welcome-chip" data-welcome-go="${escAttr(id)}" title="${escAttr(desc)}">
+      <i class="${escAttr(icon)}"></i><span><strong>${esc(label)}</strong><small>${esc(desc)}</small></span>
+    </button>`;
+    const wrap = document.createElement("div");
+    wrap.className = "welcome-strip";
+    wrap.innerHTML = `
+      <div class="welcome-inner">
+        <div class="welcome-text">
+          <strong class="welcome-title"><i class="fa-solid fa-wand-magic-sparkles"></i> Welcome to HQ</strong>
+          <span class="welcome-sub">Your whole Give A Bit family in one glass. Start here:</span>
+        </div>
+        <div class="welcome-chips">
+          ${c("cards", "fa-solid fa-table-cells-large", "Overview", "9-site health at a glance")}
+          ${c("money", "fa-solid fa-sack-dollar", "Money", "Wallets · payments · audits")}
+          ${c("seo", "fa-solid fa-magnifying-glass-chart", "SEO", "Search & AI readiness scores")}
+          ${c("handoffs", "fa-solid fa-scroll", "Handoffs", "What the agents did lately")}
+        </div>
+        <button type="button" class="welcome-dismiss" id="welcome-dismiss" title="Dismiss — you can reopen from Help">
+          <i class="fa-solid fa-xmark"></i> Got it
+        </button>
+      </div>`;
+    strip.prepend(wrap);
+    const dismiss = wrap.querySelector("#welcome-dismiss");
+    dismiss?.addEventListener("click", () => {
+      try { localStorage.setItem(WELCOME_KEY, "1"); } catch {}
+      wrap.remove();
+      toast("Welcome hidden — press / anytime to jump", "ok");
+    });
+    wrap.querySelectorAll("[data-welcome-go]").forEach(b => b.addEventListener("click", () => {
+      setTab(b.dataset.welcomeGo);
+      try { localStorage.setItem(WELCOME_KEY, "1"); } catch {}
+      wrap.remove();
+    }));
   }
 
   function renderPortfolioStrip() {
@@ -5138,26 +5182,54 @@
       document.body.appendChild(m);
     }
     const tabList = Object.entries(TAB_DISPLAY_NAMES).map(([id, label]) => ({ id, label, search: label.toLowerCase() }));
-    m.innerHTML = `<div class="modal-card" style="max-width:360px">
-      <div class="mh"><h2>Jump to tab</h2></div>
+    m.innerHTML = `<div class="modal-card" style="max-width:380px">
+      <div class="mh"><h2><i class="fa-solid fa-magnifying-glass" style="font-size:0.85em;margin-right:0.4rem"></i>Jump to tab</h2></div>
       <div class="mb" style="padding:0.5rem">
-        <input id="tab-search-input" type="text" placeholder="Type tab name…" autofocus style="width:100%;padding:0.4rem 0.6rem;background:var(--surface-2);border:1px solid var(--surface-3);border-radius:6px;color:var(--ink);font-size:0.9rem" />
-        <div id="tab-search-results" style="margin-top:0.5rem;max-height:300px;overflow-y:auto"></div>
+        <input id="tab-search-input" type="text" placeholder="Type tab name…" autofocus style="width:100%;padding:0.45rem 0.65rem;background:var(--surface-2);border:1px solid var(--surface-3);border-radius:8px;color:var(--ink);font-size:0.9rem;outline:none" />
+        <div id="tab-search-results" style="margin-top:0.5rem;max-height:320px;overflow-y:auto"></div>
+        <div class="mono" style="font-size:0.62rem;color:var(--ink-faint);margin-top:0.5rem;padding-top:0.4rem;border-top:1px solid var(--line);display:flex;gap:0.9rem;flex-wrap:wrap">
+          <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+          <span><kbd>↵</kbd> open</span>
+          <span><kbd>Esc</kbd> close</span>
+        </div>
       </div>
     </div>`;
     m.classList.add("open");
     const input = document.getElementById("tab-search-input");
     if (input) {
       input.focus();
-      input.addEventListener("input", () => {
-        const q = input.value.toLowerCase().trim();
+      let activeIdx = -1;
+      const render = (q) => {
         const results = document.getElementById("tab-search-results");
-        if (!q) { results.innerHTML = tabList.map(t => `<button type="button" class="doc-item" data-tab-jump="${escAttr(t.id)}" style="width:100%;text-align:left;font-size:0.8rem">${esc(t.label)}</button>`).join(""); return; }
-        const matches = tabList.filter(t => t.search.includes(q)).slice(0, 12);
-        results.innerHTML = matches.length ? matches.map(t => `<button type="button" class="doc-item" data-tab-jump="${escAttr(t.id)}" style="width:100%;text-align:left;font-size:0.8rem">${esc(t.label)}</button>`).join("") : `<div class="mono" style="font-size:0.75rem;color:var(--ink-faint);padding:0.5rem">No matches</div>`;
+        if (!results) return;
+        const query = q.toLowerCase().trim();
+        // fuzzy-ish: word-prefix match then includes
+        const matches = query
+          ? tabList
+              .filter(t => {
+                const words = query.split(/\s+/).filter(Boolean);
+                return words.every(w => t.search.includes(w) || t.label.toLowerCase().split(/[\s-]+/).some(part => part.startsWith(w)));
+              })
+              .slice(0, 12)
+          : tabList;
+        if (!matches.length) { results.innerHTML = `<div class="mono" style="font-size:0.75rem;color:var(--ink-faint);padding:0.5rem">No matches for “${esc(q)}”</div>`; activeIdx = -1; return; }
+        activeIdx = activeIdx >= matches.length ? matches.length - 1 : activeIdx < 0 ? 0 : activeIdx;
+        results.innerHTML = matches
+          .map((t, i) => `<button type="button" class="doc-item" data-tab-jump="${escAttr(t.id)}" style="width:100%;text-align:left;font-size:0.8rem;${i === activeIdx ? "background:color-mix(in srgb, var(--accent-theme) 18%, transparent);border-color:color-mix(in srgb, var(--accent-theme) 45%, transparent)" : ""}">${esc(t.label)}</button>`)
+          .join("");
+        results.querySelectorAll("[data-tab-jump]")[activeIdx]?.scrollIntoView({ block: "nearest" });
+      };
+      const openActive = () => {
+        const btn = document.querySelectorAll("#tab-search-results [data-tab-jump]")[activeIdx];
+        if (btn) { setTab(btn.dataset.tabJump); m.classList.remove("open"); }
+      };
+      input.addEventListener("input", () => { activeIdx = 0; render(input.value); });
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowDown") { e.preventDefault(); activeIdx++; render(input.value); }
+        else if (e.key === "ArrowUp") { e.preventDefault(); activeIdx--; render(input.value); }
+        else if (e.key === "Enter") { e.preventDefault(); openActive(); }
       });
-      m.querySelectorAll("[data-tab-jump]").forEach(b => b.addEventListener("click", () => { setTab(b.dataset.tabJump); m.classList.remove("open"); }));
-      // Delegate clicks from dynamically created items
+      render("");
       document.getElementById("tab-search-results")?.addEventListener("click", (e) => {
         const btn = e.target.closest("[data-tab-jump]");
         if (btn) { setTab(btn.dataset.tabJump); m.classList.remove("open"); }
