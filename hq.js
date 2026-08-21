@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.32.4 — handoffs registry tab
+ * Give A Bit HQ v3.32.5 — handoffs registry tab
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.32.4";
+  const HQ_VERSION = "3.32.5";
   const BUILD_TS = new Date().toISOString();
   const METRICS_SCHEMA = "gab.product-metrics.v1";
   const THOR_SCHEMA = "gab.thor-node.v1";
@@ -5002,6 +5002,12 @@
     document.getElementById("btn-refresh")?.addEventListener("click", () => { toast("Refreshing…", "ok"); bootstrap(); });
     document.getElementById("btn-vault")?.addEventListener("click", openVaultModal);
     document.getElementById("vault-save")?.addEventListener("click", saveVaultFromModal);
+    // Status chips are actionable: vault → open vault · live → refresh now · umami → open analytics
+    document.getElementById("vault-status")?.addEventListener("click", openVaultModal);
+    document.getElementById("live-poll-chip")?.addEventListener("click", () => { toast("Refreshing…", "ok"); bootstrap(); });
+    document.getElementById("umami-status")?.addEventListener("click", () => {
+      try { window.open(umamiBaseUrl(), "_blank", "noopener"); } catch { toast("Umami base not configured", "err"); }
+    });
     document.getElementById("vault-cancel")?.addEventListener("click", () => {
       document.getElementById("vault-modal")?.classList.remove("open");
     });

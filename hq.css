@@ -2033,6 +2033,18 @@ kbd {
   margin: 0 0.08rem;
 }
 
+/* Topbar status chips are clickable */
+#vault-status, #live-poll-chip, #umami-status {
+  cursor: pointer;
+  transition: border-color var(--dur), box-shadow var(--dur), transform var(--dur) var(--ease-out);
+}
+#vault-status:hover, #live-poll-chip:hover, #umami-status:hover {
+  border-color: color-mix(in srgb, var(--accent-theme) 55%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent-theme) 22%, transparent);
+  transform: translateY(-1px);
+}
+#vault-status:active, #live-poll-chip:active, #umami-status:active { transform: translateY(0); }
+
 .empty-state {
   text-align: center;
   padding: 2.5rem 1rem;
