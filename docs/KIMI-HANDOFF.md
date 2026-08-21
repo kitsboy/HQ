@@ -1,3 +1,16 @@
+### 2026-08-21 — HQ v3.32.5 CSP fix + clickable chips (Kimi)
+
+**BUG FIX (regression from security sweep):** the CSP added in `pages/_headers` was too strict and **broke HQ functionality**:
+- Font Awesome CDN blocked → all icons invisible (vault button looked dead)
+- marked.min.js blocked → markdown/docs broken
+- family `metrics.json` hosts blocked → tiles empty, umami off
+
+**Fix:** CSP now allows cdnjs.cloudflare.com + cdn.jsdelivr.net (style/script/font) and **all 9 family hosts** (satohash.io, giveabit.io, sherpacarta.org, katoa.org, hq/motopass/tadbuy/stranded/openstrata.giveabit.io) in connect-src.
+
+**Also:** topbar status chips (`vault empty` / `live` / `umami`) are now **clickable buttons** — vault opens the modal, live refreshes, umami opens analytics.giveabit.io. Hover affordance added.
+
+**Verified live (Playwright):** icons render, zero CSP console errors, vault/live/umami chips work, 10 cards render with family metrics.
+
 ### 2026-08-21 — HQ v3.32.4 welcome strip + palette polish (Kimi)
 
 - **First-visit welcome strip** — glassy banner above the portfolio strip teaching 4 core tabs (Overview / Money / SEO / Handoffs). One-click chip jumps to the tab + dismisses; "Got it" dismisses forever (localStorage). Reopens from Help if ever needed.
