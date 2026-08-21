@@ -1,3 +1,9 @@
+### 2026-08-21 — HQ v3.32.4 welcome strip + palette polish (Kimi)
+
+- **First-visit welcome strip** — glassy banner above the portfolio strip teaching 4 core tabs (Overview / Money / SEO / Handoffs). One-click chip jumps to the tab + dismisses; "Got it" dismisses forever (localStorage). Reopens from Help if ever needed.
+- **Tab palette polish** (`/` or Cmd+K): **keyboard navigation** (↑/↓ move, ↵ open, Esc close), word-prefix fuzzy matching, active-row highlight + scroll-into-view, kbd hint footer.
+- Verified live: v3.32.4 deployed (welcome + palette code confirmed in bundle).
+
 ### 2026-08-21 — HQ v3.32.3 polish + hardening (Kimi)
 
 **Modernize / polish:**
