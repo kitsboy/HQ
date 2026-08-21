@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.32.5 — handoffs registry tab
+ * Give A Bit HQ v3.32.6 — handoffs registry tab
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.32.5";
+  const HQ_VERSION = "3.32.6";
   const BUILD_TS = new Date().toISOString();
   const METRICS_SCHEMA = "gab.product-metrics.v1";
   const THOR_SCHEMA = "gab.thor-node.v1";
@@ -1481,10 +1481,17 @@
     state.wallets = {};
     const v = state.vault || {};
     const keys = v.keys || v.wallets || {};
-    const proxyUrl = (v.proxyUrl || v.lnbitsProxyUrl || (state.feeds && state.feeds.lnbitsProxyUrl) || "").replace(/\/$/, "");
+    // Guard: never use Tailscale/private IPs from the browser — they only work
+    // from inside the tailnet. Fall back to public defaults (proxy worker / api host).
+    const PRIVATE_IP_RE = /(^https?:\/\/)?(100\.(6[4-9]|[7-9]\d|1[01]\d|12[0-7])\.|10\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.|127\.0\.0\.1|localhost)/i;
+    const PUBLIC_PROXY = "https://giveabit-lnbits-proxy.kitsboy.workers.dev";
+    const PUBLIC_NODE = "http://api.satohash.io:5102";
+    let proxyUrl = (v.proxyUrl || v.lnbitsProxyUrl || (state.feeds && state.feeds.lnbitsProxyUrl) || "").replace(/\/$/, "");
+    let nodeUrl = (v.nodeUrl || v.lnbitsUrl || "").replace(/\/$/, "");
+    if (proxyUrl && PRIVATE_IP_RE.test(proxyUrl)) { console.warn("[HQ] LNbits proxy URL is a private IP — falling back to public proxy", proxyUrl); proxyUrl = PUBLIC_PROXY; }
+    if (nodeUrl && PRIVATE_IP_RE.test(nodeUrl)) { console.warn("[HQ] LNbits node URL is a private IP — falling back to public node", nodeUrl); nodeUrl = PUBLIC_NODE; }
     const proxyToken = v.proxyToken || "";
     const useProxy = v.useProxy !== false && proxyUrl;
-    const nodeUrl = (v.nodeUrl || v.lnbitsUrl || "").replace(/\/$/, "");
     const entries = Object.entries(keys).filter(([, k]) => k && String(k).trim());
 
     await Promise.all(entries.map(async ([walletId, apiKey]) => {
@@ -4504,9 +4511,13 @@
           pane.innerHTML = '<div class="loading-state"><div class="spinner"></div>Loading invoices…</div>';
           pane.style.display = "";
           const v = state.vault || {};
-          const proxyUrl = (v.proxyUrl || v.lnbitsProxyUrl || (state.feeds && state.feeds.lnbitsProxyUrl) || "").replace(/\/$/, "");
+          // Private-IP guard (same as wallet polling): browser can't reach tailnet IPs.
+          const PRIVATE_IP_RE2 = /(^https?:\/\/)?(100\.(6[4-9]|[7-9]\d|1[01]\d|12[0-7])\.|10\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.|127\.0\.0\.1|localhost)/i;
+          let proxyUrl = (v.proxyUrl || v.lnbitsProxyUrl || (state.feeds && state.feeds.lnbitsProxyUrl) || "").replace(/\/$/, "");
+          let nodeUrl = (v.nodeUrl || v.lnbitsUrl || "").replace(/\/$/, "");
+          if (proxyUrl && PRIVATE_IP_RE2.test(proxyUrl)) proxyUrl = "https://giveabit-lnbits-proxy.kitsboy.workers.dev";
+          if (nodeUrl && PRIVATE_IP_RE2.test(nodeUrl)) nodeUrl = "http://api.satohash.io:5102";
           const proxyToken = v.proxyToken || "";
-          const nodeUrl = (v.nodeUrl || v.lnbitsUrl || "").replace(/\/$/, "");
           const apiKey = (v.keys || v.wallets || {})[wid];
           if (!proxyUrl || !apiKey) {
             pane.innerHTML = '<p class="empty-state">Configure proxy URL + wallet key in Vault</p>';
