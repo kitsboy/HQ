@@ -4904,12 +4904,28 @@
       b.addEventListener("click", () => { state.vaultTab = b.dataset.vtab; openVaultModal(); });
     });
     modal.querySelector("#vault-export")?.addEventListener("click", () => {
-      const blob = new Blob([JSON.stringify(state.vault || {}, null, 2)], { type: "application/json" });
+      const v = state.vault || {};
+      // Self-describing, human-readable backup that HQ can re-import.
+      const doc = {
+        _hq_vault_backup: 1,
+        app: "Give A Bit HQ — Vault backup",
+        exported_at: new Date().toISOString(),
+        note: "This file is a full backup of your HQ Vault. It is human-readable below and can be re-imported any time via Vault → Extra → Import (it merges, it never replaces).",
+        sections: {
+          "keys": v.keys || v.wallets || {},
+          "nostr": v.nostr || {},
+          "feeds": v.feeds || {},
+          "github": { pat: v.ghPat || "", repo: v.ghRepo || "kitsboy/HQ", branch: v.ghBranch || "main" },
+          "extra": { proxyUrl: v.proxyUrl || "", proxyToken: v.proxyToken || "", nodeUrl: v.nodeUrl || "", useProxy: v.useProxy !== false, umamiUrl: v.umamiUrl || "", umamiUser: v.umamiUser || "admin", umamiPass: v.umamiPass || "", notes: v.notes || "" }
+        }
+      };
+      const blob = new Blob([JSON.stringify(doc, null, 2)], { type: "application/json" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
-      a.download = "hq-vault-export.json";
+      a.download = "hq-vault-backup-" + new Date().toISOString().slice(0, 10) + ".json";
       a.click();
       setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+      toast("Vault backup exported — keep it safe.", "ok");
     });
     modal.querySelector("#vault-import-btn")?.addEventListener("click", () => modal.querySelector("#vault-import-file")?.click());
     modal.querySelector("#vault-import-file")?.addEventListener("change", (e) => {
@@ -4918,17 +4934,39 @@
       f.text().then((txt) => {
         try {
           const parsed = JSON.parse(txt);
-          // Merge into the existing vault instead of replacing it, so
-          // importing a partial file never wipes invoice keys etc.
+          // Accept either the self-describing backup format (with .sections)
+          // or a raw vault object (legacy/plain JSON). Then MERGE into the
+          // existing vault instead of replacing it, so a partial file never
+          // wipes invoice keys etc.
+          const payload = (parsed && parsed._hq_vault_backup && parsed.sections) ? parsed.sections : parsed;
           const cur = state.vault || {};
-          const merged = { ...cur, ...parsed };
-          for (const k of ["keys", "wallets", "nostr", "feeds"]) {
-            if (parsed[k] && typeof parsed[k] === "object") {
-              merged[k] = { ...(cur[k] || {}), ...parsed[k] };
+          const merged = { ...cur };
+          const sectionMap = {
+            keys: "keys", wallets: "keys", nostr: "nostr", feeds: "feeds",
+            github: "github", extra: "extra"
+          };
+          for (const [src, dst] of Object.entries(sectionMap)) {
+            if (payload[src] && typeof payload[src] === "object") {
+              merged[dst] = { ...(cur[dst] || {}), ...payload[src] };
             }
           }
+          // Unwrap the github + extra backup sections back into flat vault fields.
+          if (payload.github && typeof payload.github === "object") {
+            if (payload.github.pat !== undefined) merged.ghPat = payload.github.pat;
+            if (payload.github.repo !== undefined) merged.ghRepo = payload.github.repo;
+            if (payload.github.branch !== undefined) merged.ghBranch = payload.github.branch;
+          }
+          if (payload.extra && typeof payload.extra === "object") {
+            for (const k of ["proxyUrl", "proxyToken", "nodeUrl", "useProxy", "umamiUrl", "umamiUser", "umamiPass", "notes"]) {
+              if (payload.extra[k] !== undefined) merged[k] = payload.extra[k];
+            }
+          }
+          // Carry over any flat top-level fields the legacy format stored.
+          for (const k of ["proxyUrl", "proxyToken", "nodeUrl", "useProxy", "ghPat", "ghRepo", "ghBranch", "umamiUrl", "umamiUser", "umamiPass", "notes"]) {
+            if (payload[k] !== undefined) merged[k] = payload[k];
+          }
           saveVault(merged);
-          toast("Vault imported", "ok");
+          toast("Vault backup imported — keys merged in.", "ok");
           openVaultModal();
         } catch (err) { toast("Import failed: " + err.message, "err"); }
       });
