@@ -4918,7 +4918,16 @@
       f.text().then((txt) => {
         try {
           const parsed = JSON.parse(txt);
-          saveVault(parsed);
+          // Merge into the existing vault instead of replacing it, so
+          // importing a partial file never wipes invoice keys etc.
+          const cur = state.vault || {};
+          const merged = { ...cur, ...parsed };
+          for (const k of ["keys", "wallets", "nostr", "feeds"]) {
+            if (parsed[k] && typeof parsed[k] === "object") {
+              merged[k] = { ...(cur[k] || {}), ...parsed[k] };
+            }
+          }
+          saveVault(merged);
           toast("Vault imported", "ok");
           openVaultModal();
         } catch (err) { toast("Import failed: " + err.message, "err"); }
