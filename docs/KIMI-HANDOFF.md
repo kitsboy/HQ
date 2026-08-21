@@ -1,3 +1,17 @@
+### 2026-08-21 — HQ v3.32.3 polish + hardening (Kimi)
+
+**Modernize / polish:**
+- Surface system refined: subtle top sheen + accent-tinted lift on hover for all panels/cards
+- Sleeker boot screen: HQ mark + pulsing dot + hint line (replaces plain spinner text)
+- View-in motion refined (blur + scale fade) for tab switches
+
+**Harden (no blank screens, no stuck tabs):**
+- Render timeout now **auto-retries once** per refresh instead of permanently blocking a tab
+- **Global error trap** (window error + unhandledrejection) — boot failures surface a friendly recovery card instead of a white page
+- Agents tab null-safety: guards on `state.agents` shape (was one crash away from a blank Agents tab)
+
+**Verified:** node --check clean · build passes · v3.32.3 live (boot-mark CSS + error trap confirmed in deployed bundle).
+
 ### 2026-08-21 — SEO Plane + uniformity sweep + self-healing (Kimi)
 
 **HQ SEO Plane (v3.32.2+) LIVE** at hq.giveabit.io → Money → SEO tab:
