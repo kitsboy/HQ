@@ -1,53 +1,53 @@
 {
-  "updatedAt": "2026-08-21T01:37:56.549Z",
+  "updatedAt": "2026-08-21T02:00:35.625Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 625,
+      "ms": 247,
       "url": "https://giveabit.io"
     },
     "satohash": {
       "ok": true,
       "status": 200,
-      "ms": 78,
+      "ms": 136,
       "url": "https://satohash.io"
     },
     "katoa": {
       "ok": true,
       "status": 200,
-      "ms": 82,
+      "ms": 99,
       "url": "https://katoa.org"
     },
     "stranded": {
       "ok": true,
       "status": 200,
-      "ms": 97,
+      "ms": 122,
       "url": "https://stranded.giveabit.io"
     },
     "tadbuy": {
       "ok": true,
       "status": 200,
-      "ms": 225,
+      "ms": 287,
       "url": "https://tadbuy.giveabit.io"
     },
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 168,
+      "ms": 101,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 197,
+      "ms": 100,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
       "ok": true,
       "status": 200,
-      "ms": 217,
+      "ms": 115,
       "url": "https://openstrata.giveabit.io"
     },
     "btcminiscript": {
@@ -67,22 +67,22 @@
     "satohashApi": {
       "ok": true,
       "status": 200,
-      "ms": 422,
+      "ms": 30,
       "healthUrl": "https://api.satohash.io/health"
     },
     "satohashMetrics": {
       "schema": "gab.product-metrics.v1",
       "productId": "satohash",
       "name": "Satohash",
-      "updatedAt": "2026-08-21T01:37:56.473Z",
+      "updatedAt": "2026-08-21T02:00:35.606Z",
       "window": {
         "label": "7d",
-        "from": "2026-08-14T01:37:56.473Z",
-        "to": "2026-08-21T01:37:56.473Z"
+        "from": "2026-08-14T02:00:35.606Z",
+        "to": "2026-08-21T02:00:35.606Z"
       },
       "health": {
-        "status": "amber",
-        "message": "Elevated pending queue — OTS upgrade may be lagging",
+        "status": "green",
+        "message": "API healthy — live stamp aggregates for HQ",
         "latencyMs": 2,
         "uptimePct24h": null,
         "dependencies": [
@@ -94,7 +94,7 @@
           {
             "id": "bitcoin-anchor",
             "status": "amber",
-            "detail": "80 pending Bitcoin confirmation(s)"
+            "detail": "60 pending Bitcoin confirmation(s)"
           },
           {
             "id": "api.satohash.io",
@@ -150,7 +150,7 @@
         {
           "key": "pending",
           "label": "Pending confirm",
-          "value": 80,
+          "value": 60,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -159,7 +159,7 @@
         {
           "key": "confirmed",
           "label": "Confirmed (all time)",
-          "value": 62,
+          "value": 82,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -168,7 +168,7 @@
         {
           "key": "confirmed_7d",
           "label": "Confirmed 7d",
-          "value": 49,
+          "value": 69,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -371,7 +371,7 @@
             },
             {
               "t": "2026-08-21T12:00:00.000Z",
-              "v": 0
+              "v": 20
             }
           ]
         },
@@ -439,7 +439,7 @@
             },
             {
               "t": "2026-08-21T12:00:00.000Z",
-              "v": 80
+              "v": 60
             }
           ]
         },
@@ -538,13 +538,13 @@
             {
               "id": "bitcoin",
               "label": "Bitcoin confirmed",
-              "count": 62,
+              "count": 82,
               "hint": "On-chain anchor"
             },
             {
               "id": "pending_queue",
               "label": "Still pending",
-              "count": 80,
+              "count": 60,
               "hint": "Upgrade daemon queue"
             }
           ]
@@ -716,7 +716,7 @@
             {
               "id": "pending",
               "label": "Pending",
-              "value": 80,
+              "value": 60,
               "meta": {
                 "offer": "awaiting BTC"
               }
@@ -724,7 +724,7 @@
             {
               "id": "confirmed",
               "label": "Confirmed",
-              "value": 62,
+              "value": 82,
               "meta": {
                 "offer": "Bitcoin anchored"
               }
@@ -893,7 +893,7 @@
         "seriesFromDb": true,
         "note": "Live metrics from satohash API DB",
         "version": "5.0.0-ELITE",
-        "uptimeSec": 13782,
+        "uptimeSec": 15141,
         "requireLightning": false,
         "familyFreeTier": true,
         "directory": {
@@ -1030,9 +1030,9 @@
           "stampsTotal": 142,
           "stamps24h": 123,
           "stamps7d": 129,
-          "pending": 80,
-          "confirmed": 62,
-          "confirmed7d": 49,
+          "pending": 60,
+          "confirmed": 82,
+          "confirmed7d": 69,
           "failed": 0,
           "failed7d": 0,
           "familyFree": 0,
