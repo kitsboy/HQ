@@ -4835,7 +4835,7 @@
     if (!modal) return;
     const v = state.vault || {};
     const keys = v.keys || v.wallets || {};
-    const tabNames = [["keys", "Keys"], ["feeds", "Feeds & pipes"], ["github", "GitHub"], ["extra", "Extra"]];
+    const tabNames = [["keys", "Keys"], ["nostr", "Nostr agents"], ["feeds", "Feeds & pipes"], ["github", "GitHub"], ["extra", "Extra"]];
     if (!state.vaultTab) state.vaultTab = "keys";
     const walletFields = state.projects.map((p) => {
       const wid = p.wallet || p.id;
@@ -4854,6 +4854,23 @@
           <input id="vault-node-url" value="${escAttr(v.nodeUrl || "http://api.satohash.io:5102")}"/></div>
         <div class="field"><label><input type="checkbox" id="vault-use-proxy" ${v.useProxy !== false ? "checked" : ""}/> Use proxy</label></div>
         <h3 class="display" style="font-size:0.95rem;margin:1rem 0 0.5rem">Invoice keys (per wallet)</h3>${walletFields}`,
+      nostr: `
+        <p style="font-size:0.8rem;color:var(--ink-faint);margin:0 0 0.75rem">Each @giveabit.io agent signs with its own Nostr key. Paste its <span class="mono">nsec</span> here — it stays in this browser only, never in git. Hover any agent for what it's for.</p>
+        <div class="field"><label>Kimi · Orchestrator <span style="cursor:help" data-tip="Kimi is the central coordinator — ops, research and docs across the family. This key signs kimi@giveabit.io." data-tip-title="Kimi">ⓘ</span></label>
+          <input type="password" data-nostr-key="kimi" value="${escAttr((v.nostr||{}).kimi || "")}" placeholder="nsec1…" autocomplete="off"/></div>
+        <div class="field"><label>Rosa · Chief Researcher <span style="cursor:help" data-tip="Rosa is the research arm — verifies and cites before the family decides. Signs rosa@giveabit.io." data-tip-title="Rosa">ⓘ</span></label>
+          <input type="password" data-nostr-key="rosa" value="${escAttr((v.nostr||{}).rosa || "")}" placeholder="nsec1…" autocomplete="off"/></div>
+        <div class="field"><label>Lenny · Legal & Compliance <span style="cursor:help" data-tip="Lenny is the compliance conscience — flags legal & privacy risk in plain language. Signs lenny@giveabit.io." data-tip-title="Lenny">ⓘ</span></label>
+          <input type="password" data-nostr-key="lenny" value="${escAttr((v.nostr||{}).lenny || "")}" placeholder="nsec1…" autocomplete="off"/></div>
+        <div class="field"><label>Ziggy · DevOps Engineer <span style="cursor:help" data-tip="Ziggy owns infrastructure & uptime — fixes root causes, keeps the family online. Signs ziggy@giveabit.io." data-tip-title="Ziggy">ⓘ</span></label>
+          <input type="password" data-nostr-key="ziggy" value="${escAttr((v.nostr||{}).ziggy || "")}" placeholder="nsec1…" autocomplete="off"/></div>
+        <div class="field"><label>Nova · Product Management <span style="cursor:help" data-tip="Nova steers roadmap & product direction for the ecosystem. Signs nova@giveabit.io." data-tip-title="Nova">ⓘ</span></label>
+          <input type="password" data-nostr-key="nova" value="${escAttr((v.nostr||{}).nova || "")}" placeholder="nsec1…" autocomplete="off"/></div>
+        <div class="field"><label>Mimi · Creative Director <span style="cursor:help" data-tip="Mimi owns the visual voice & creative direction — warm, giving, sovereign design. Signs mimi@giveabit.io." data-tip-title="Mimi">ⓘ</span></label>
+          <input type="password" data-nostr-key="mimi" value="${escAttr((v.nostr||{}).mimi || "")}" placeholder="nsec1…" autocomplete="off"/></div>
+        <div class="field"><label>Andrea · Bitcoin Knowledge <span style="cursor:help" data-tip="Andrea teaches Bitcoin & self-custody in plain, accurate language (ELI20). Signs andrea@giveabit.io." data-tip-title="Andrea">ⓘ</span></label>
+          <input type="password" data-nostr-key="andrea" value="${escAttr((v.nostr||{}).andrea || "")}" placeholder="nsec1…" autocomplete="off"/></div>
+        <p style="font-size:0.72rem;color:var(--ink-faint);margin-top:0.5rem">⚠️ A <span class="mono">nsec</span> is a private key — anyone with it can sign as that agent. Keep it here and in THOR's vault-keys only. Sherpa's key was issued separately by Grok; it is not listed here.</p>`,
       feeds: `
         <p style="font-size:0.8rem;color:var(--ink-faint)">Override metric/status feeds. Leave blank to use projects.json defaults.</p>
         <div class="field"><label>status.json URL</label><input id="vault-feed-status" value="${escAttr((v.feeds || {}).statusJsonUrl || "")}" placeholder="/status.json"/></div>
@@ -4908,6 +4925,7 @@
       });
     });
     modal.classList.add("open");
+    bindTooltips();
   }
 
   function saveVaultFromModal() {
@@ -4918,6 +4936,11 @@
     modal.querySelectorAll("[data-wallet-key]").forEach((inp) => {
       const k = inp.value.trim();
       if (k) keys[inp.dataset.walletKey] = k; else delete keys[inp.dataset.walletKey];
+    });
+    const nostr = { ...(v.nostr || {}) };
+    modal.querySelectorAll("[data-nostr-key]").forEach((inp) => {
+      const k = inp.value.trim();
+      if (k) nostr[inp.dataset.nostrKey] = k; else delete nostr[inp.dataset.nostrKey];
     });
     const feeds = { ...(v.feeds || {}) };
     const feedMap = { statusJsonUrl: "vault-feed-status", thorNodeUrl: "vault-feed-thor", satohashMetricsUrl: "vault-feed-sato", fxUrl: "vault-feed-fx" };
@@ -4934,6 +4957,7 @@
     saveVault({
       ...v,
       keys,
+      nostr,
       proxyUrl: document.getElementById("vault-proxy-url")?.value.trim() ?? (v.proxyUrl || ""),
       proxyToken: document.getElementById("vault-proxy-token")?.value.trim() ?? (v.proxyToken || ""),
       nodeUrl: document.getElementById("vault-node-url")?.value.trim() ?? (v.nodeUrl || ""),
