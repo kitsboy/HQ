@@ -22,10 +22,10 @@
   },
   "motopass": {
     "workflow_name": "Deploy motopass to Cloudflare Pages",
-    "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/motopass/actions/runs/32433658545",
-    "updatedAt": "2026-08-21T00:43:11Z",
-    "status": "completed"
+    "latest_conclusion": null,
+    "html_url": "https://github.com/kitsboy/motopass/actions/runs/32435938627",
+    "updatedAt": "2026-08-21T01:20:26Z",
+    "status": "in_progress"
   },
   "sherpacarta": {
     "workflow_name": "Deploy sherpacarta to Cloudflare Pages",
@@ -65,8 +65,8 @@
   "HQ": {
     "workflow_name": "Deploy HQ to Cloudflare Pages",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/HQ/actions/runs/32433832677",
-    "updatedAt": "2026-08-21T00:45:33Z",
+    "html_url": "https://github.com/kitsboy/HQ/actions/runs/32435645336",
+    "updatedAt": "2026-08-21T01:15:37Z",
     "status": "completed"
   }
 }

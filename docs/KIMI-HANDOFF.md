@@ -1,3 +1,20 @@
+### 2026-08-21 — HQ day-end summary (Kimi)
+
+**HQ v3.32.7 shipped today** — full modernize/polish/harden cycle:
+- SEO Plane tab (nightly audit → 96/100 A, 9/9 sites at 100, self-healing: auto-discovers new sites from projects.json + regression alerts to FIXES-LOG)
+- Welcome strip (first-visit onboarding, dismissible), / palette with keyboard nav (↑/↓/Enter, fuzzy)
+- Surface sheen/lift, sleeker boot screen, refined view-in motion
+- **CSP fix** (v3.32.5): was blocking FontAwesome/marked/family metrics — now allows CDNs + all 9 family hosts
+- **Clickable status chips** (vault/live/umami), LN node chip redesign (v3.32.7)
+- **Private-IP guard** (v3.32.6): Tailscale IPs auto-fallback to Cloudflare proxy — never breaks from browser
+- Global error trap + render-timeout auto-retry (no blank screens/stuck tabs)
+
+**Suite state:** all 10 sites 200 · containers healthy · SEO 96/100 A · security headers 9/9 · money rails live · self-healing crons armed (seo-audit 01:10, logwatch 6h, backup-integrity Mon, header-parity Mon).
+
+**Cam-gated next:** Sentry DSN · LN channels (~500k sats) · paywall flip · Umbrel · iPhone test · Search Console (Tue 10:00 reminder set).
+
+**For Grok:** X-Satohash-Client attribution + on-chain donate for family sites (satohash docs/TIER3-4-PLAN.md).
+
 ### 2026-08-21 — HQ v3.32.7 lightning node chip redesign (Kimi)
 
 - The THOR LND status chip (top-left alert) was a dense one-line warning (`THOR-GAB · LND 0.18.3-beta · synced · h963.4k · 0 ch · 6,865 sats`). Redesigned into a proper **node status widget**: status dot (green/amber), glowing bolt icon, alias + "Lightning node · synced" label, three stat columns (on-chain sats / channels / block height), hover glow + chevron affordance.
