@@ -1,53 +1,53 @@
 {
-  "updatedAt": "2026-08-21T18:04:14.151Z",
+  "updatedAt": "2026-08-21T18:30:59.712Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 877,
+      "ms": 458,
       "url": "https://giveabit.io"
     },
     "satohash": {
       "ok": true,
       "status": 200,
-      "ms": 326,
+      "ms": 180,
       "url": "https://satohash.io"
     },
     "katoa": {
       "ok": true,
       "status": 200,
-      "ms": 156,
+      "ms": 165,
       "url": "https://katoa.org"
     },
     "stranded": {
       "ok": true,
       "status": 200,
-      "ms": 352,
+      "ms": 168,
       "url": "https://stranded.giveabit.io"
     },
     "tadbuy": {
       "ok": true,
       "status": 200,
-      "ms": 212,
+      "ms": 323,
       "url": "https://tadbuy.giveabit.io"
     },
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 372,
+      "ms": 146,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 336,
+      "ms": 169,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
       "ok": true,
       "status": 200,
-      "ms": 281,
+      "ms": 189,
       "url": "https://openstrata.giveabit.io"
     },
     "btcminiscript": {
@@ -67,23 +67,23 @@
     "satohashApi": {
       "ok": true,
       "status": 200,
-      "ms": 489,
+      "ms": 76,
       "healthUrl": "https://api.satohash.io/health"
     },
     "satohashMetrics": {
       "schema": "gab.product-metrics.v1",
       "productId": "satohash",
       "name": "Satohash",
-      "updatedAt": "2026-08-21T18:04:14.035Z",
+      "updatedAt": "2026-08-21T18:30:59.682Z",
       "window": {
         "label": "7d",
-        "from": "2026-08-14T18:04:14.035Z",
-        "to": "2026-08-21T18:04:14.035Z"
+        "from": "2026-08-14T18:30:59.682Z",
+        "to": "2026-08-21T18:30:59.682Z"
       },
       "health": {
         "status": "green",
         "message": "API healthy — live stamp aggregates for HQ",
-        "latencyMs": 13,
+        "latencyMs": 5,
         "uptimePct24h": null,
         "dependencies": [
           {
@@ -121,7 +121,7 @@
         {
           "key": "stamps_24h",
           "label": "Stamps 24h",
-          "value": 120,
+          "value": 118,
           "unit": "proofs",
           "delta": 0,
           "deltaUnit": "%",
@@ -222,7 +222,7 @@
         {
           "key": "p50_ms",
           "label": "Metrics build p50",
-          "value": 13,
+          "value": 5,
           "unit": "ms",
           "format": "duration",
           "priority": 5,
@@ -526,7 +526,7 @@
             {
               "id": "submit",
               "label": "Submit stamp",
-              "count": 120,
+              "count": 118,
               "hint": "API or SPA"
             },
             {
@@ -893,7 +893,7 @@
         "seriesFromDb": true,
         "note": "Live metrics from satohash API DB",
         "version": "5.0.0-ELITE",
-        "uptimeSec": 72959,
+        "uptimeSec": 74565,
         "requireLightning": false,
         "familyFreeTier": true,
         "directory": {
@@ -1028,7 +1028,7 @@
         },
         "counts": {
           "stampsTotal": 144,
-          "stamps24h": 120,
+          "stamps24h": 118,
           "stamps7d": 131,
           "pending": 0,
           "confirmed": 144,
