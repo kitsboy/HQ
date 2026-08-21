@@ -1,4 +1,10 @@
-### 2026-08-21 — HQ v3.32.5 CSP fix + clickable chips (Kimi)
+### 2026-08-21 — HQ v3.32.7 lightning node chip redesign (Kimi)
+
+- The THOR LND status chip (top-left alert) was a dense one-line warning (`THOR-GAB · LND 0.18.3-beta · synced · h963.4k · 0 ch · 6,865 sats`). Redesigned into a proper **node status widget**: status dot (green/amber), glowing bolt icon, alias + "Lightning node · synced" label, three stat columns (on-chain sats / channels / block height), hover glow + chevron affordance.
+- Hover tooltip now explains in plain English what the node is and why 0 channels matters.
+- Verified live (Playwright): chip renders with all stats, v3.32.7 deployed.
+
+### 2026-08-21 — HQ v3.32.6 LNbits proxy private-IP guard (Kimi)
 
 **BUG FIX (regression from security sweep):** the CSP added in `pages/_headers` was too strict and **broke HQ functionality**:
 - Font Awesome CDN blocked → all icons invisible (vault button looked dead)
