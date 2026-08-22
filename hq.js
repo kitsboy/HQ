@@ -2210,6 +2210,9 @@
     const health = projectHealth(p);
     const sites = (state.status && state.status.sites) || {};
     const s = sites[p.id] || {};
+    // Per-site money from ecosystem-map (gross/net sats from MoneyFlow ledgers)
+    const ecoMoney = (state.ecosystem && state.ecosystem.projects || []).find((ep) => ep.id === p.id && ep.money);
+    const moneyChip = ecoMoney ? `<span class="chip mono" style="color:var(--accent)" data-tip="Gross sats through ${esc(p.name)} MoneyFlow ledger (timestamps + Lightning + payments). 0 = no real inflows yet — paywall still off.">${esc(fmtNum(ecoMoney.money.grossSats))} sats</span>` : "";
     if (!m || !m.ok) {
       return `<article class="card" style="--card-accent:${escAttr(color)};${p.planned ? "opacity:0.85" : ""}" data-project="${escAttr(p.id)}">
         <div class="card-head">${iconBadge(p.icon, color)}
@@ -2217,7 +2220,7 @@
           ${statusPill(health)}
         </div>
         <div class="card-meta-row">${p.planned ? `<span class="status-pill amber" style="font-size:0.58rem;padding:0.12rem 0.4rem">planned</span>` : metricsAgeChip(m)}</div>
-        <div class="card-money-row">${balanceChipHTML(p, { total: portfolioTotals().sats })}</div>
+        <div class="card-money-row">${moneyChip}${balanceChipHTML(p, { total: portfolioTotals().sats })}</div>
         ${p.planned ? `<div class="panel" style="margin:0.35rem 0;padding:0.5rem;font-size:0.75rem;color:var(--ink-dim);background:color-mix(in srgb,var(--surface-2)40%,transparent);border-radius:var(--radius,6px)">${esc(p.pitch || "Planned project — not yet deployed.")}</div>` : unavailableHTML("Metrics unavailable", m ? m.path : `/metrics/${p.id}.json`, m ? m.error : "")}
       </article>`;
     }
@@ -2259,6 +2262,7 @@
         ${state.analytics && state.analytics[p.id] ? `<span class="status-pill sky" style="font-size:0.58rem;padding:0.1rem 0.35rem" data-tip="Real-time analytics from Umami on THOR: ${esc(fmtNum(state.analytics[p.id].visitors))} visitors in last 7 days, ${state.analytics[p.id].bounceRate}% bounce rate">${esc(fmtNum(state.analytics[p.id].visitors))} vis · ${esc(state.analytics[p.id].bounceRate)}% bnc</span>` : ""}
       </div>
       <div class="card-money-row">
+        ${moneyChip}
         ${balanceChipHTML(p, { total: _tot.sats })}
         <span class="ln-badge" style="margin-left:auto;font-size:0.58rem" data-tip="Lightning wallet balance via LNbits proxy — shows sats in this product's wallet when Vault has the invoice key">LNbits</span>
       </div>
