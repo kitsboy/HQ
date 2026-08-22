@@ -1,0 +1,18 @@
+# Give A Bit — Report scheduling config
+# Edit these values to control report cadence. The cron jobs read this file.
+# Values: daily / weekly / monthly
+
+# Full suite (all sites + consolidated PDF/XLSX/DOCX + Drive upload + archive)
+suite_cadence: daily
+
+# HTML email report to cam@giveabit.io (attaches consolidated PDF+Word+Excel)
+email_cadence: weekly
+
+# How many recent per-site reports to keep in each Drive folder before pruning
+keep_per_site: 5
+
+# Keep reports in the local archive for N months before pruning
+archive_months: 12
+
+# Recipient for the email report
+email_recipient: cam@giveabit.io
