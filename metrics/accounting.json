@@ -1,10 +1,10 @@
 {
   "schema": "gab.accounting.v1",
-  "generated": "2026-08-22T17:00:08Z",
+  "generated": "2026-08-22T18:00:32Z",
   "sites": [
     {
       "site": "motopass",
-      "stamps": 106,
+      "stamps": 116,
       "sats": 500,
       "last_report": "giveabit-motopass-report-20260822-0600.pdf"
     },
@@ -40,7 +40,7 @@
     }
   ],
   "totals": {
-    "stamps": 118,
+    "stamps": 128,
     "sats": 13000
   },
   "pricing": {
