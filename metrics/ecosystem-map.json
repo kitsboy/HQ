@@ -1,6 +1,6 @@
 {
   "schema": "gab.ecosystem-map.v1",
-  "updatedAt": "2026-08-21T02:00:35Z",
+  "updatedAt": "2026-08-22T02:00:14Z",
   "projects": [
     {
       "id": "satohash",
@@ -11,7 +11,7 @@
       "version": "5.0.0-ELITE",
       "status": "green",
       "health": "200",
-      "lastCommit": "4850cdc docs: SEO uniformity protocol + self-healing loop",
+      "lastCommit": "ae81299 docs: 2026-08-21 day-end handoff + LATEST-UPDATE",
       "synced": "synced",
       "localOnThor": true
     },
@@ -21,11 +21,11 @@
       "url": "hq.giveabit.io",
       "api": "",
       "github": "kitsboy/HQ",
-      "version": "3.32.3",
+      "version": "3.32.7",
       "status": "green",
       "health": "200",
-      "lastCommit": "d6e01686 chore: refresh status.json + thor-node [skip deploy]",
-      "synced": "synced",
+      "lastCommit": "4996d60c chore: thor auto-metrics 00:00 (live LND + opencode probe)",
+      "synced": "ahead",
       "localOnThor": true
     },
     {
@@ -37,7 +37,7 @@
       "version": "5.12.6",
       "status": "green",
       "health": "200",
-      "lastCommit": "3e3f7c7 feat(lnurlp): family lightning addresses on giveabit.io \u2014 every site@giveabit.io resolves to LNbits",
+      "lastCommit": "38c82ad fix(nip05): agentStatus treats 'live' signing as live",
       "synced": "synced",
       "localOnThor": true
     },
@@ -140,13 +140,13 @@
       "role": "Orchestrator + Hermes + Master Brain",
       "host": "Contabo VPS 20",
       "status": "green",
-      "disk": "17% used",
-      "diskFree": "322G",
-      "mem": "3.6Gi used",
-      "memAvail": "4.1Gi",
-      "load": "2.26/0.96/0.84",
-      "uptime": "up 5 weeks, 1 hour, 3 minutes",
-      "lastSeen": "2026-08-21"
+      "disk": "18% used",
+      "diskFree": "320G",
+      "mem": "3.4Gi used",
+      "memAvail": "4.4Gi",
+      "load": "1.26/0.40/0.21",
+      "uptime": "up 5 weeks, 1 day, 1 hour, 3 minutes",
+      "lastSeen": "2026-08-22"
     },
     {
       "id": "m3",
@@ -154,8 +154,8 @@
       "role": "Code + Grok (Mac)",
       "host": "Cams-Laptop",
       "status": "green",
-      "lastPush": "2026-08-20",
-      "lastSeen": "2026-08-20"
+      "lastPush": "2026-08-21",
+      "lastSeen": "2026-08-21"
     },
     {
       "id": "m4",
@@ -264,133 +264,139 @@
   "skills": [
     {
       "name": "browser-harness",
-      "ageDays": 82,
+      "ageDays": 83,
       "status": "stale",
       "updated": "2026-05-30"
     },
     {
       "name": "current-tasks",
-      "ageDays": 35,
+      "ageDays": 36,
       "status": "aging",
       "updated": "2026-07-16"
     },
     {
       "name": "deployment-workflow",
-      "ageDays": 38,
+      "ageDays": 39,
       "status": "aging",
       "updated": "2026-07-13"
     },
     {
       "name": "dogfood",
-      "ageDays": 60,
+      "ageDays": 61,
       "status": "stale",
       "updated": "2026-06-21"
     },
     {
       "name": "github-sync",
-      "ageDays": 49,
+      "ageDays": 50,
       "status": "aging",
       "updated": "2026-07-02"
     },
     {
+      "name": "here-now",
+      "ageDays": 0,
+      "status": "fresh",
+      "updated": "2026-08-21"
+    },
+    {
       "name": "hermes-desktop-plugins",
-      "ageDays": 31,
+      "ageDays": 32,
       "status": "aging",
       "updated": "2026-07-20"
     },
     {
       "name": "hyperframes",
-      "ageDays": 9,
+      "ageDays": 10,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "hyperframes-animation",
-      "ageDays": 9,
+      "ageDays": 10,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "hyperframes-cli",
-      "ageDays": 9,
+      "ageDays": 10,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "hyperframes-core",
-      "ageDays": 9,
+      "ageDays": 10,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "hyperframes-creative",
-      "ageDays": 9,
+      "ageDays": 10,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "hyperframes-keyframes",
-      "ageDays": 9,
+      "ageDays": 10,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "hyperframes-registry",
-      "ageDays": 9,
+      "ageDays": 10,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "kanban-worker",
-      "ageDays": 82,
+      "ageDays": 83,
       "status": "stale",
       "updated": "2026-05-30"
     },
     {
       "name": "lnd-lnbits-ops",
-      "ageDays": 0,
+      "ageDays": 1,
       "status": "fresh",
       "updated": "2026-08-20"
     },
     {
       "name": "media-use",
-      "ageDays": 9,
+      "ageDays": 10,
       "status": "fresh",
       "updated": "2026-08-11"
     },
     {
       "name": "nova-product-management",
-      "ageDays": 37,
+      "ageDays": 38,
       "status": "aging",
       "updated": "2026-07-14"
     },
     {
       "name": "project-brief",
-      "ageDays": 37,
+      "ageDays": 38,
       "status": "aging",
       "updated": "2026-07-14"
     },
     {
       "name": "propagate-template",
-      "ageDays": 55,
+      "ageDays": 56,
       "status": "aging",
       "updated": "2026-06-26"
     },
     {
       "name": "quick-backup",
-      "ageDays": 55,
+      "ageDays": 56,
       "status": "aging",
       "updated": "2026-06-26"
     },
     {
       "name": "satohash-orchestrator",
-      "ageDays": 35,
+      "ageDays": 36,
       "status": "aging",
       "updated": "2026-07-17"
     },
     {
       "name": "yuanbao",
-      "ageDays": 35,
+      "ageDays": 36,
       "status": "aging",
       "updated": "2026-07-17"
     }
@@ -436,28 +442,28 @@
   "recentActivity": [
     {
       "repo": "hq",
-      "commit": "d6e01686 chore: refresh status.json + thor-node [skip deploy",
-      "timestamp": "2026-08-21"
+      "commit": "a1ed8f79 chore: refresh status.json + thor-node [skip deploy",
+      "timestamp": "2026-08-22"
     },
     {
       "repo": "hq",
-      "commit": "68ad95c6 chore: thor auto-metrics 00:00 (live LND + opencode",
-      "timestamp": "2026-08-21"
+      "commit": "4996d60c chore: thor auto-metrics 00:00 (live LND + opencode",
+      "timestamp": "2026-08-22"
     },
     {
       "repo": "hq",
-      "commit": "692161ff polish(hq): modernized surfaces (sheen/lift), sleek",
-      "timestamp": "2026-08-21"
+      "commit": "629394a6 chore: thor auto-metrics 23:45 (live LND + opencode",
+      "timestamp": "2026-08-22"
+    },
+    {
+      "repo": "satohash",
+      "commit": "ae81299 docs: 2026-08-21 day-end handoff + LATEST-UPDATE",
+      "timestamp": "2026-08-22"
     },
     {
       "repo": "satohash",
       "commit": "4850cdc docs: SEO uniformity protocol + self-healing loop",
-      "timestamp": "2026-08-21"
-    },
-    {
-      "repo": "satohash",
-      "commit": "db21e08 docs: SEO prerender + AI crawler handoff",
-      "timestamp": "2026-08-21"
+      "timestamp": "2026-08-22"
     }
   ],
   "metadata": {
@@ -465,7 +471,7 @@
     "agentCount": 7,
     "machineCount": 3,
     "activeCrons": 28,
-    "skillCount": 22,
-    "vaultJournals": 141
+    "skillCount": 23,
+    "vaultJournals": 142
   }
 }
