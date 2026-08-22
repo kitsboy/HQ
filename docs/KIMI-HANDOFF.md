@@ -1,3 +1,17 @@
+### 2026-08-22 — Accounting/reporting system + agents page (Kimi)
+
+**Built the Give A Bit accounting & reporting system end-to-end:**
+- **Google Drive/Sheets connected** (OAuth with drive+sheets+gmail scopes). Built **MASTER-LEDGER** (Ledger 144 stamps / CostModel / Payments / Comms / Accounting / Report Registry tabs) + **6 per-site MoneyFlow ledgers** (motopass, satohash, katoa, tadbuy, sherpacarta, stranded), each in its Drive folder.
+- **Auto-sync cron** (`243fecda4004`, every 30 min): pulls Satohash /api/stamps → rewrites all 3 ledger tabs. Honest accounting: current 144 stamps cost 0 sats (family free tier).
+- **Branded report suite** (`make_site_reports.py`): consolidated + 6 per-site PDF/XLSX/DOCX with executive summary, trend chart, all-sites comparison, anomaly flags, live BTC price, Report Scope. Auto-uploads to Drive + logs to Report Registry. `run-report-suite.sh` daily 6am = integrity gate → BTC → generate → upload → archive.
+- **Weekly HTML email** to cam@giveabit.io (Mon 7am, `5f27e32bbf53`): branded inline summary + PDF/Word/Excel attachments. **Monthly** report (`5692d7d3525f`, 1st of month).
+- **Paywall go-live kit** (`/root/satohash/paywall-kit.sh`): status/set/on/off, price via STAMP_PRICE_SATS.
+- **Fixed 4 erroring crons** (suite-report-weekly, suite-digest-monday, learn-loop-sunday, weekly-what-changed): real root cause = **TERMINAL_CWD write-lock contention** from unnecessary workdirs. Removed workdirs from all 4 → **all confirmed ok**. Also fixed wrong skill ref (`github`→`github-workflow`).
+- **Moved venv /tmp/avvenv → /root/avvenv** (persistent) so report/ledger crons survive reboot.
+- **agents.giveabit.io modernized**: black giveabit logo, orange favicon, NIP-05 handles click-to-copy, clickable full npubs, per-agent color schemes, dark mode, search/filter, vibrant gradient hero with network/bars background. Agent avatars assigned (Andrea/Lenny/Rosa/Ziggy/Nova from Cam's uploads; Cam/Kimi/Mimi untouched). Published via here.now slug `silken-citrus-m8c7`; hourly cron (`b82cd3ead614`) refreshes family-stats.json.
+
+**Cam-gated next:** paywall price decision (CostModel default 5 sats) · roll avatars to giveabit.io + HQ · Sherpa avatar · real LN channels.
+
 ### 2026-08-21 — HQ day-end summary (Kimi)
 
 **HQ v3.32.7 shipped today** — full modernize/polish/harden cycle:
