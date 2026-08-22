@@ -1,0 +1,147 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "gab.trust-state.v1",
+  "title": "gab.trust-state.v1 — per-offering OTS trust envelope",
+  "description": "One static, secret-free, versioned file per offering at public/metrics/<offering>/trust-state.json, produced by the OTS engine (Satohash spine) on each pipeline run and consumed by HQ Trust Glass. HQ renders it verbatim — it never computes or invents trust at render time. Missing fields render a neutral '—'; a missing or >45d-old file renders the offering chip as 'no live trust state' (doctrine 7: the Glass lies by being obviously empty, never by inventing).",
+  "type": "object",
+  "required": [
+    "schema", "productId", "name", "generatedAt",
+    "freshness", "confidence", "proofs", "sources",
+    "recent_drifts", "conflicts", "pipeline", "gate"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "const": "gab.trust-state.v1" },
+    "productId": { "type": "string", "description": "Canonical offering id (lowercase slug), matches projects.json id." },
+    "name": { "type": "string", "description": "Human-readable offering name." },
+    "generatedAt": { "type": "string", "format": "date-time", "description": "When this envelope was generated (UTC ISO-8601)." },
+
+    "freshness": {
+      "type": "object",
+      "required": ["status"],
+      "additionalProperties": false,
+      "properties": {
+        "status": { "enum": ["fresh", "stale", "unverified"] },
+        "days_stale": { "type": ["integer", "null"], "minimum": 0 },
+        "verifiedAt": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+
+    "confidence": {
+      "type": "object",
+      "required": ["tiers"],
+      "additionalProperties": false,
+      "properties": {
+        "tiers": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "verified_primary": { "type": "integer", "minimum": 0 },
+            "verified_secondary_x2": { "type": "integer", "minimum": 0 },
+            "unverified_candidate": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+
+    "proofs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claim", "status"],
+        "additionalProperties": false,
+        "properties": {
+          "claim": { "type": "string" },
+          "status": { "enum": ["confirmed", "pending"] },
+          "bitcoin_block": { "type": "integer", "minimum": 0 },
+          "block_time_utc": { "type": "string", "format": "date-time" },
+          "sha256_slice": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "ots_file": { "type": "string", "description": "Path to the detached .ots proof (served)." },
+          "verify": { "type": "string", "description": "One-line ots verify command an outsider can run." }
+        }
+      }
+    },
+
+    "sources": {
+      "type": "object",
+      "required": ["count"],
+      "additionalProperties": false,
+      "properties": {
+        "count": { "type": "integer", "minimum": 0 },
+        "avg_score": { "type": ["number", "null"] },
+        "min_score": { "type": ["number", "null"] },
+        "tiers": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "primary_official": { "type": "integer", "minimum": 0 },
+            "secondary_trusted": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+
+    "recent_drifts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["field", "state"],
+        "additionalProperties": false,
+        "properties": {
+          "field": { "type": "string" },
+          "changed_at": { "type": "string", "format": "date-time" },
+          "old_hash": { "type": "string" },
+          "new_hash": { "type": "string" },
+          "state": { "enum": ["re-stamped", "review"] }
+        }
+      }
+    },
+
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["field", "status"],
+        "additionalProperties": false,
+        "properties": {
+          "field": { "type": "string" },
+          "sources": { "type": "array", "items": { "type": "string" } },
+          "values": { "type": "object" },
+          "status": { "enum": ["review"] }
+        }
+      }
+    },
+
+    "pipeline": {
+      "type": "object",
+      "required": ["last_run", "status"],
+      "additionalProperties": false,
+      "properties": {
+        "last_run": { "type": "string", "format": "date-time" },
+        "status": { "enum": ["ok", "warn", "failed"] },
+        "summary": { "type": "string" },
+        "steps": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "upgrade_pending": { "type": "object", "properties": { "ok": { "type": "boolean" }, "upgraded": { "type": "integer" } } },
+            "probe_drift":     { "type": "object", "properties": { "ok": { "type": "boolean" }, "drifted": { "type": "integer" } } },
+            "re_extract":      { "type": "object", "properties": { "ok": { "type": "boolean" }, "fields": { "type": "integer" } } },
+            "re_verify":       { "type": "object", "properties": { "ok": { "type": "boolean" }, "verified": { "type": "integer" } } },
+            "cap_check":       { "type": "object", "properties": { "ok": { "type": "boolean" }, "cap_hit": { "type": "boolean" } } }
+          }
+        }
+      }
+    },
+
+    "gate": {
+      "type": "object",
+      "required": ["automation_ready", "blockers"],
+      "additionalProperties": false,
+      "properties": {
+        "automation_ready": { "type": "boolean" },
+        "blockers": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "schema": "gab.trust-state.v1",
+  "productId": "giveabit",
+  "name": "Give A Bit Identity",
+  "generatedAt": "2026-08-22T16:11:43.832Z",
+  "freshness": {
+    "status": "unverified",
+    "days_stale": null,
+    "verifiedAt": null
+  },
+  "confidence": {
+    "tiers": {
+      "verified_primary": 0,
+      "verified_secondary_x2": 0,
+      "unverified_candidate": 0
+    }
+  },
+  "proofs": [],
+  "sources": {
+    "count": 0,
+    "avg_score": null,
+    "min_score": null,
+    "tiers": {
+      "primary_official": 0,
+      "secondary_trusted": 0
+    }
+  },
+  "recent_drifts": [],
+  "conflicts": [],
+  "pipeline": {
+    "last_run": "2026-08-22T16:11:43.832Z",
+    "status": "failed",
+    "summary": "Phase 0 — no live trust state yet. Offering's OTS spine not producing proofs.",
+    "steps": {
+      "upgrade_pending": {
+        "ok": false,
+        "upgraded": 0
+      },
+      "probe_drift": {
+        "ok": false,
+        "drifted": 0
+      },
+      "re_extract": {
+        "ok": false,
+        "fields": 0
+      },
+      "re_verify": {
+        "ok": false,
+        "verified": 0
+      },
+      "cap_check": {
+        "ok": false,
+        "cap_hit": true
+      }
+    }
+  },
+  "gate": {
+    "automation_ready": false,
+    "blockers": [
+      "OTS spine not yet producing live proofs for this offering (Phase 0)"
+    ]
+  }
+}

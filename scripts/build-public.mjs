@@ -17,6 +17,7 @@ import {
   readdirSync,
   statSync,
   unlinkSync,
+  rmSync,
 } from "fs";
 import { resolve, dirname, join } from "path";
 import { fileURLToPath } from "url";
@@ -73,6 +74,22 @@ function copyMetricsJsonOnly() {
     n++;
   }
 
+  // Copy per-offering trust-state subdirs (metrics/<offering>/trust-state.json)
+  // so HQ Trust Glass can render each offering's envelope verbatim.
+  const sourceSubdirs = new Set();
+  for (const name of readdirSync(src)) {
+    const full = join(src, name);
+    try {
+      if (!statSync(full).isDirectory()) continue;
+    } catch {
+      continue;
+    }
+    if (!existsSync(join(full, "trust-state.json"))) continue;
+    cpSync(full, join(dest, name), { recursive: true });
+    sourceSubdirs.add(name);
+    n++;
+  }
+
   for (const name of readdirSync(dest)) {
     const full = join(dest, name);
     try {
@@ -84,8 +101,20 @@ function copyMetricsJsonOnly() {
       /* ignore */
     }
   }
+  // Prune stale trust-state subdirs no longer produced
+  for (const name of readdirSync(dest)) {
+    const full = join(dest, name);
+    try {
+      if (!statSync(full).isDirectory()) continue;
+    } catch {
+      continue;
+    }
+    if (!sourceSubdirs.has(name)) {
+      rmSync(full, { recursive: true, force: true });
+    }
+  }
 
-  console.log(`build-public: metrics ${n} json feeds (pulse .md excluded from edge)`);
+  console.log(`build-public: metrics ${n} json feeds + trust-state envelopes (pulse .md excluded from edge)`);
 }
 
 ensureDir("metrics");

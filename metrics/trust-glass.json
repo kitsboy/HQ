@@ -1,0 +1,81 @@
+{
+  "schema": "gab.trust-glass.v1",
+  "generatedAt": "2026-08-22T16:11:43.833Z",
+  "underProofCount": 0,
+  "totalOfferings": 9,
+  "summary": "0 of 9 offerings under proof · 0 claims verified · 0 stale · 0 conflicts · 0 proofs pending (Phase 0)",
+  "offerings": [
+    {
+      "productId": "motopass",
+      "name": "MotoPass",
+      "chip": "EMPTY",
+      "freshness": "unverified",
+      "proofs": 0,
+      "automationReady": false
+    },
+    {
+      "productId": "satohash",
+      "name": "Satohash",
+      "chip": "EMPTY",
+      "freshness": "unverified",
+      "proofs": 0,
+      "automationReady": false
+    },
+    {
+      "productId": "hq",
+      "name": "HQ Trust Glass",
+      "chip": "EMPTY",
+      "freshness": "unverified",
+      "proofs": 0,
+      "automationReady": false
+    },
+    {
+      "productId": "giveabit",
+      "name": "Give A Bit Identity",
+      "chip": "EMPTY",
+      "freshness": "unverified",
+      "proofs": 0,
+      "automationReady": false
+    },
+    {
+      "productId": "sherpacarta",
+      "name": "SherpaCarta",
+      "chip": "EMPTY",
+      "freshness": "unverified",
+      "proofs": 0,
+      "automationReady": false
+    },
+    {
+      "productId": "katoa",
+      "name": "Katoa",
+      "chip": "EMPTY",
+      "freshness": "unverified",
+      "proofs": 0,
+      "automationReady": false
+    },
+    {
+      "productId": "openstrata",
+      "name": "OpenStrata",
+      "chip": "EMPTY",
+      "freshness": "unverified",
+      "proofs": 0,
+      "automationReady": false
+    },
+    {
+      "productId": "stranded",
+      "name": "Stranded",
+      "chip": "EMPTY",
+      "freshness": "unverified",
+      "proofs": 0,
+      "automationReady": false
+    },
+    {
+      "productId": "tadbuy",
+      "name": "Tadbuy",
+      "chip": "EMPTY",
+      "freshness": "unverified",
+      "proofs": 0,
+      "automationReady": false
+    }
+  ]
+}
