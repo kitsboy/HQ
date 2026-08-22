@@ -1,3 +1,18 @@
+### 2026-08-22 — Agent family "ninja" build-out + avatar consistency (Kimi)
+
+**Turned the @giveabit.io agent family into a self-aware team + consistent everywhere:**
+- **FAMILY-CAST.md** (single source of truth) — full roster: who each agent is, superpower, delegation cheat-sheet ("design→Mimi · bitcoin→Andrea · compliance→Lenny · research→Rosa · SherpaCarta→Sherpa · deploy→Ziggy · roadmap→Nova · orchestrate→Kimi · launch→Cam · outreach→hello"). Copy lives in every profile + `/root/.hermes/profiles/FAMILY-CAST.md`.
+- **Ninja SOUL.md for all 8 bots** (rosa/lenny/kimi/mimi/andrea/ziggy/nova/sherpa): expanded persona + embedded FULL family roster + delegation cheat-sheet + standards ("verify real system", "never fabricate", "sovereignty first"). Each now knows every sibling's strength.
+- **AGENT.md per profile** — operational lane (what I do) + pointer to FAMILY-CAST + shared standards.
+- **Avatars rolled for consistency** (canonical host = giveabit.io/images/giveabit/agents/):
+  - **giveabit main site + /api/agents**: andrea/lenny/rosa/ziggy/nova/sherpa/hello → real PNGs (pushed `2d6bb3f..fa092a0`). Cam stays null (human), Kimi/mimi keep jpg. Live API verified serving new avatars.
+  - **HQ dashboard**: agents.json canonical roster (roles/colors) + hotlink avatars from giveabit.io; hq.js renders image avatars (falls back to FA icon+initials). Pushed `83abd68a`.
+  - **Hermes Desktop Bots tab**: all 8 profiles get real avatar.png + correct ui_meta title/description (`/root/.hermes/profiles/<name>/`).
+  - agents.giveabit.io already had them.
+- Verified: giveabit.io/images/giveabit/agents/{andrea,lenny,rosa,ziggy,nova,sherpa}.png all HTTP 200; /api/agents serves them.
+
+**Canonical family roster (roles):** Cam=Founder · Kimi=Lead Orchestrator · Mimi=Creative Director · Andrea=Bitcoin Knowledge · Lenny=Legal & Compliance · Rosa=Chief Researcher · Sherpa=Product Guide SherpaCarta · Ziggy=DevOps/Infra · Nova=Product Management · hello=Public Front Door.
+
 ### 2026-08-22 — Accounting/reporting system + agents page (Kimi)
 
 **Built the Give A Bit accounting & reporting system end-to-end:**
