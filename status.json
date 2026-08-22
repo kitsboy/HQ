@@ -11,7 +11,7 @@
     "satohash": {
       "ok": true,
       "status": 200,
-      "ms": 105,
+      "ms": 275,
       "url": "https://satohash.io"
     },
     "katoa": {
