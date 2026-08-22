@@ -1,5 +1,5 @@
 /**
- * Give A Bit HQ v3.32.7 — handoffs registry tab
+ * Give A Bit HQ v3.33.0 — handoffs registry tab
  * Renders every field products publish (kpis, series, funnels, segments, offers,
  * education, links, host/storage on THOR, ecosystem-map). Zero hardcoded KPI values.
  * Hard rule: no black/white/grey pixels (see hq.css).
@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  const HQ_VERSION = "3.32.7";
+  const HQ_VERSION = "3.33.0";
   const BUILD_TS = new Date().toISOString();
   const METRICS_SCHEMA = "gab.product-metrics.v1";
   const THOR_SCHEMA = "gab.thor-node.v1";
@@ -104,6 +104,7 @@
     charts: "#f59e0b",
     chat: "#22c55e",
     handoffs: "#ff8c00",
+    trustglass: "#22c55e",
     manual: "#a78bfa",
   };
 
@@ -113,7 +114,7 @@
     ecosystem: "Ecosystem", concert: "Concert", coverage: "Coverage", system: "System",
     wallets: "Wallets", money: "Money", seo: "SEO", docs: "Docs", agents: "Agents",
     domains: "Domains", vault: "Vault", intel: "Intel", feed: "Feed",
-    charts: "Charts", chat: "Chat", handoffs: "Handoffs", manual: "Manual",
+    charts: "Charts", chat: "Chat", handoffs: "Handoffs", trustglass: "Trust Glass", manual: "Manual",
   };
 
   const DOCS_HQ = [
@@ -1002,6 +1003,8 @@
     sortBy: "name",
     search: "",
     feeds: {},
+    trust: {}, // per-offering gab.trust-state.v1 envelopes
+    trustLoaded: false,
     renderFailures: {},
     renderTimeouts: {},
   };
@@ -1285,6 +1288,29 @@
         const r = await loadData("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd", { timeout: 8000 });
         if (r.ok && r.data && r.data.bitcoin) state.btcUsd = r.data.bitcoin.usd;
       } catch { /* ignore */ }
+    })();
+
+    // Trust Glass: load per-offering gab.trust-state.v1 envelopes (honest — missing → empty).
+    // Non-blocking + parallel: other tabs never wait on trust fetches.
+    const trustJob = (async () => {
+      state.trust = {};
+      await Promise.all((state.projects || []).map(async (p) => {
+        const key = p.id;
+        const candidates = [];
+        if (p.url) { try { candidates.push(new URL(p.url).origin + "/trust-state.json"); } catch (_) {} }
+        candidates.push(`/metrics/${key}/trust-state.json`);
+        let r = null;
+        for (const c of candidates) {
+          const attempt = await loadData(c, { timeout: 5000 });
+          if (attempt.ok && attempt.data && attempt.data.schema === "gab.trust-state.v1") { r = attempt; break; }
+          if (!r && attempt.ok && attempt.data && attempt.data.productId) r = attempt;
+        }
+        state.trust[key] = (r && r.ok && r.data && r.data.schema === "gab.trust-state.v1")
+          ? r.data
+          : null; // absent → renders EMPTY honestly, never fabricated
+      }));
+      state.trustLoaded = true;
+      if (state.tab === "trustglass") renderTrustGlass();
     })();
 
     // preload project docs (non-blocking isolation)
@@ -2029,6 +2055,7 @@
       wallets: renderWallets, money: renderMoney, seo: renderSeo, docs: renderDocs, agents: renderAgents, domains: renderDomains,
       vault: renderVaultTab,
       handoffs: renderHandoffs,
+      trustglass: renderTrustGlass,
       manual: renderManual,
       intel: renderIntelTab, feed: renderFeedTab, charts: renderChartsTab, chat: renderChatTab,
     };
@@ -4213,6 +4240,268 @@
         </div>
       </div>
       <div class="agents-grid">${cards}</div>`;
+  }
+
+  /* ═══════════════ TRUST GLASS ═══════════════ */
+
+  // The 9 trust-bearing offerings the Glass reports on (ecosystem trust map).
+  // state.trust[id] holds the gab.trust-state.v1 envelope; missing envelope → honest EMPTY.
+  function trustGlassOfferings() {
+    const byId = {};
+    (state.projects || []).forEach((p) => { byId[p.id] = p; });
+    const def = [
+      { id: "motopass",    name: "MotoPass" },
+      { id: "satohash",    name: "Satohash" },
+      { id: "sherpacarta", name: "SherpaCarta" },
+      { id: "katoa",       name: "Katoa" },
+      { id: "openstrata",  name: "OpenStrata" },
+      { id: "stranded",    name: "Stranded" },
+      { id: "tadbuy",      name: "Tadbuy" },
+      { id: "giveabit",    name: "Give A Bit" },
+    ];
+    const out = def.map((d) => {
+      const p = byId[d.id] || {};
+      return { id: d.id, name: d.name, url: p.url || null, color: p.color || "#888", project: p };
+    });
+    // Identity namespace is the 9th offering, reported via agents.json
+    out.push({ id: "identity", name: "Identity", url: "https://giveabit.io/.well-known/nostr.json", color: "#ff8c00", project: {} });
+    return out;
+  }
+
+  // Derive the offering chip state from its live envelope (or absence). Never fabricate green.
+  function trustChipState(off) {
+    const env = state.trust[off.id];
+    if (off.id === "identity") {
+      // Identity is event-driven: proven when the agent's slice carries .ots; pending otherwise.
+      const proven = (state.agents || []).filter((a) => a && a.ots || (a && a.proof && a.proof.ots)).length;
+      if (proven > 0) return { key: "PROVEN", label: "PROVEN", cls: "green", n: proven };
+      return { key: "PENDING", label: "PENDING", cls: "amber", n: (state.agents || []).length };
+    }
+    if (!env || env.schema !== "gab.trust-state.v1") return { key: "EMPTY", label: "EMPTY", cls: "muted", n: 0 };
+    const f = env.freshness || {};
+    const conflicts = (env.conflicts || []).filter((c) => c.status === "review");
+    const pipedown = env.pipeline && env.pipeline.status === "failed";
+    const proofMissing = (env.proofs || []).some((p) => p.status === "pending");
+    if (conflicts.length || pipedown || proofMissing) return { key: "ACTION", label: "ACTION", cls: "red", n: conflicts.length };
+    if (f.status === "stale") return { key: "STALE", label: "STALE", cls: "amber", n: f.days_stale || 0 };
+    if (f.status === "fresh") return { key: "PROVEN", label: "PROVEN", cls: "green", n: (env.proofs || []).filter((p) => p.status === "confirmed").length };
+    return { key: "EMPTY", label: "EMPTY", cls: "muted", n: 0 };
+  }
+
+  // ELI16 one-line "why you can trust this row" (spec §3.3)
+  function trustELI16(off) {
+    const env = state.trust[off.id];
+    if (off.id === "identity") {
+      const proven = (state.agents || []).filter((a) => a && a.ots).length;
+      if (proven > 0) return `This handle has been cryptographically linked to its key, sealed into Bitcoin. ${proven} of ${(state.agents || []).length} agents proven.`;
+      return "Every @giveabit.io handle is registered, but none are Bitcoin-sealed yet. They'll go green the moment each one is stamped.";
+    }
+    if (!env || env.schema !== "gab.trust-state.v1") {
+      return "This offering isn't wired into the trust spine yet — nothing is claimed until a live proof envelope exists.";
+    }
+    const nConf = (env.conflicts || []).filter((c) => c.status === "review").length;
+    const staleN = (env.freshness || {}).days_stale;
+    if (nConf) return "Two sources disagree on something. We show both and flag it for a human — we never guess.";
+    if ((env.freshness || {}).status === "stale") return `Probably still true, but not re-checked in ${staleN} days. We call it stale so you're never over-trusting old info.`;
+    if ((env.freshness || {}).status === "fresh") return `${(env.proofs || []).filter((p) => p.status === "confirmed").length} facts stamped into Bitcoin and confirmed. Nothing stale, no disputes.`;
+    return "Proof is still being sealed. It's green only once confirmed in a Bitcoin block.";
+  }
+
+  // Automation-readiness gate (spec §7) — single go/no-go switch per offering.
+  function trustGate(off) {
+    const env = state.trust[off.id];
+    if (off.id === "identity") {
+      const proven = (state.agents || []).filter((a) => a && a.ots).length;
+      return proven > 0
+        ? { ready: true, blocker: null }
+        : { ready: false, blocker: "Identity not yet OTS-anchored — no silent re-point protection until pubkeys are sealed." };
+    }
+    if (!env || env.schema !== "gab.trust-state.v1")
+      return { ready: false, blocker: "No live trust-state envelope — automation can't run unattended without one." };
+    if (env.gate && env.gate.automation_ready === true && (!env.gate.blockers || !env.gate.blockers.length))
+      return { ready: true, blocker: null };
+    const blocker = (env.gate && env.gate.blockers && env.gate.blockers[0]) || "gate.automation_ready not satisfied.";
+    return { ready: false, blocker };
+  }
+
+  function trustProofCell(env) {
+    if (!env || env.schema !== "gab.trust-state.v1") return { txt: "none", cls: "muted" };
+    const p = (env.proofs || [])[0];
+    if (!p) return { txt: "none", cls: "muted" };
+    if (p.status === "confirmed" && p.bitcoin_block)
+      return { txt: `confirmed@block ${p.bitcoin_block.toLocaleString()}`, cls: "green" };
+    if (p.status === "pending") return { txt: "pending", cls: "amber" };
+    return { txt: "none", cls: "muted" };
+  }
+
+  function renderTrustDrawer(off) {
+    const env = state.trust[off.id];
+    const open = (state._trustOpen === off.id);
+    const gate = trustGate(off);
+    const proof = trustProofCell(env);
+    // MotoPass OTS KPI (deliverable 4): surface ots / ots_daily from the live product-metrics
+    // envelope as a trust-model health signal — the recognition table feeds this count.
+    let otsKpi = "";
+    const pm = state.metrics && state.metrics[off.id];
+    const pmKpis = (pm && pm.ok && pm.data && Array.isArray(pm.data.kpis)) ? pm.data.kpis : [];
+    const otsK = pmKpis.find((k) => k && (k.key === "ots" || k.id === "ots"));
+    const otsD = pmKpis.find((k) => k && (k.key === "ots_daily" || k.id === "ots_daily"));
+    if (otsK || otsD) {
+      const ov = otsK ? (otsK.value ?? otsK.current ?? "—") : null;
+      const dv = otsD ? (otsD.value ?? otsD.current ?? null) : null;
+      otsKpi = `<div class="tg-ots-kpi panel" style="margin-bottom:0.7rem;padding:0.55rem 0.7rem;border-left:4px solid var(--green)">
+        <div style="display:flex;gap:1.2rem;align-items:center;flex-wrap:wrap">
+          <div><span style="font-size:0.62rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--ink-faint)">OTS health signal</span>
+            <div style="font-size:0.85rem;color:var(--ink)"><i class="fa-solid fa-stamp" style="margin-right:0.35rem;color:var(--green)"></i>
+              ${otsK ? `<strong>${fmtNum(ov)}</strong> claims stamped` : "claims stamped"}</div>
+          </div>
+          ${otsD ? `<div><span style="font-size:0.62rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--ink-faint)">today</span>
+            <div style="font-size:0.85rem;color:var(--ink)"><strong>${fmtNum(dv)}</strong> re-verified</div></div>` : ""}
+          <div style="font-size:0.68rem;color:var(--ink-faint);flex:1;min-width:160px">Recognition table feeds the proof count — stamps are the measurable health signal behind this offering's trust.</div>
+        </div>
+      </div>`;
+    }
+    // proof ledger rows
+    let ledger = "";
+    let sources = "";
+    let drifts = "";
+    if (env && env.schema === "gab.trust-state.v1") {
+      const proofs = env.proofs || [];
+      ledger = proofs.length ? proofs.map((p) => {
+        const st = p.status === "confirmed" ? `<span class="status-pill green" style="font-size:0.58rem">confirmed@block ${p.bitcoin_block ? p.bitcoin_block.toLocaleString() : "?"}</span>`
+          : p.status === "pending" ? `<span class="status-pill amber" style="font-size:0.58rem">pending</span>`
+          : `<span class="status-pill muted" style="font-size:0.58rem">none</span>`;
+        return `<div class="tg-ledger-row">
+          <div class="tg-claim">${esc(p.claim || "—")}</div>
+          <div style="display:flex;gap:0.4rem;align-items:center;flex-wrap:wrap;font-size:0.7rem;color:var(--ink-dim)">
+            <span class="mono" style="font-size:0.65rem">sha256:${esc(p.sha256_slice || "…")}</span>
+            ${p.verify ? `<span class="mono" style="font-size:0.62rem;color:var(--ink-faint)">verify: ${esc(p.verify)}</span>` : ""}
+            ${p.ots_file ? `<a href="${escAttr(p.ots_file)}" download class="link-btn" style="font-size:0.62rem"><i class="fa-solid fa-file"></i> .ots</a>` : ""}
+          </div>
+          ${st}
+        </div>`;
+      }).join("") : `<div class="tg-empty">No claims sealed yet.</div>`;
+      const sc = env.sources || {};
+      sources = `<div class="tg-mini">${sc.count ?? 0} sources · avg ${sc.avg_score ?? "—"}/5 · min ${sc.min_score ?? "—"}/5</div>`;
+      drifts = (env.recent_drifts || []).length
+        ? env.recent_drifts.map((d) => `<div class="tg-drift">${esc(d.field)} · ${esc(d.state)} · ${esc(d.changed_at || "")}</div>`).join("")
+        : `<div class="tg-empty">No recent changes.</div>`;
+    } else {
+      ledger = `<div class="tg-empty">No live trust-state envelope yet. Nothing is claimed until one exists.</div>`;
+      sources = `<div class="tg-mini">—</div>`;
+      drifts = `<div class="tg-empty">—</div>`;
+    }
+    return `<div class="tg-row" data-tg-id="${escAttr(off.id)}">
+      <div class="tg-row-main" style="cursor:pointer">
+        <div class="tg-off"><span class="tg-dot ${off.id === "identity" ? "amber" : (state.trust[off.id] ? "green" : "muted")}"></span>
+          <strong>${esc(off.name)}</strong>
+          ${off.id === "identity" ? `<span class="status-pill sky" style="font-size:0.58rem">namespace</span>` : ""}
+        </div>
+        <div class="tg-fresh">${off.id === "identity" ? "event-driven" : (env && env.freshness ? (env.freshness.status === "stale" ? `stale ${env.freshness.days_stale}d` : esc(env.freshness.status)) : "—")}</div>
+        <div class="tg-conf">${env && env.confidence ? `${env.confidence.tiers.verified_primary ?? 0} v · ${env.confidence.tiers.verified_secondary_x2 ?? 0} 2nd` : "—"}</div>
+        <div class="tg-proof"><span class="status-pill ${proof.cls}" style="font-size:0.58rem">${esc(proof.txt)}</span></div>
+        <div class="tg-src">${env && env.sources ? (env.sources.avg_score ? env.sources.avg_score + "/5" : "—") : "—"}</div>
+        <div class="tg-drift-c">${env && (env.recent_drifts || []).length ? `${env.recent_drifts.length} drifted` : "0 in 7d"}</div>
+        <div class="tg-run">${env && env.pipeline ? `<span class="status-pill ${env.pipeline.status === "ok" ? "green" : env.pipeline.status === "warn" ? "amber" : "red"}" style="font-size:0.58rem">${esc(env.pipeline.status)}</span> ${esc((env.pipeline.last_run || "").slice(5, 16))}` : "—"}
+          <i class="fa-solid fa-chevron-${open ? "up" : "down"}" style="font-size:0.6rem;opacity:0.6;margin-left:0.35rem"></i>
+        </div>
+      </div>
+      ${open ? `<div class="tg-drawer">
+        ${otsKpi}
+        <div class="tg-drawer-top">
+          <p class="tg-eli16">${esc(trustELI16(off))}</p>
+          <div class="tg-gate ${gate.ready ? "tg-gate-ok" : "tg-gate-no"}">
+            <span class="status-pill ${gate.ready ? "green" : "muted"}" style="font-size:0.62rem">${gate.ready ? "AUTOMATION: READY (go)" : "AUTOMATION: NOT READY"}</span>
+            ${gate.blocker ? `<span class="tg-blocker">${esc(gate.blocker)}</span>` : ""}
+          </div>
+        </div>
+        <div class="tg-drawer-grid">
+          <div class="tg-drawer-col"><div class="tg-col-title"><i class="fa-solid fa-scroll"></i> Proof ledger</div>${ledger}</div>
+          <div class="tg-drawer-col"><div class="tg-col-title"><i class="fa-solid fa-database"></i> Source scores</div>${sources}</div>
+          <div class="tg-drawer-col"><div class="tg-col-title"><i class="fa-solid fa-arrows-rotate"></i> Drift history</div>${drifts}</div>
+        </div>
+      </div>` : ""}
+    </div>`;
+  }
+
+  function renderTrustGlass() {
+    const el = document.getElementById("view-trustglass");
+    if (!el) return;
+    const offs = trustGlassOfferings();
+    const chips = offs.map((o) => {
+      const s = trustChipState(o);
+      const emoji = { PROVEN: "🟢", STALE: "🟡", ACTION: "🔴", EMPTY: "⚪", PENDING: "🟡" }[s.key] || "⚪";
+      return `<button type="button" class="tg-chip" data-tg-open="${escAttr(o.id)}" title="${escAttr(trustELI16(o))}">
+        <span class="tg-emoji">${emoji}</span><strong>${esc(o.name)}</strong>
+        <span class="tg-chip-state ${s.cls}">${esc(s.label)}</span>
+      </button>`;
+    }).join("");
+    const states = offs.map((o) => trustChipState(o).key);
+    const provenN = states.filter((k) => k === "PROVEN").length;
+    const actionN = states.filter((k) => k === "ACTION").length;
+    const rows = offs.map((o) => renderTrustDrawer(o)).join("");
+
+    // Identity block (spec §4.2)
+    const agents = Array.isArray(state.agents) ? state.agents : [];
+    const idProven = agents.filter((a) => a && (a.ots || (a.proof && a.proof.ots)));
+    const idPend = agents.filter((a) => !(a.ots || (a.proof && a.proof.ots)));
+    const idShields = agents.map((a) => {
+      const proven = !!(a.ots || (a.proof && a.proof.ots));
+      return `<span class="status-pill ${proven ? "green" : "amber"}" style="font-size:0.6rem" title="${escAttr((a.name || "") + ": " + (proven ? "sealed into Bitcoin" : "registered, awaiting OTS seal"))}">${esc(a.name || "?")} ${proven ? "🟢" : "🟡"}</span>`;
+    }).join(" ");
+
+    el.innerHTML = `
+      <h2 class="section-title">Trust Glass <span class="accent-rule"></span></h2>
+      <p class="section-sub">Proof before claim · every green below is sealed into Bitcoin — never an opinion. Missing envelopes render honestly empty.</p>
+
+      <div class="tg-header panel">
+        <div class="tg-chips">${chips}</div>
+        <div class="tg-stats">
+          <span><strong>${provenN}</strong> of ${offs.length} under proof</span>
+          <span class="tg-divider">·</span>
+          <span>${actionN ? `<strong class="red-text">${actionN} need a human</strong>` : "no disputes · all clear"}</span>
+        </div>
+      </div>
+
+      <div class="tg-identity panel">
+        <div class="tg-identity-head">
+          <i class="fa-solid fa-shield-halved" style="color:#ff8c00"></i>
+          <div>
+            <strong>@giveabit.io Identity namespace</strong>
+            <p style="margin:0.15rem 0 0;font-size:0.76rem;color:var(--ink-faint)">${idProven.length} proven · ${idPend.length} pending · re-verifies only when the registry changes (pubkeys rarely do — that's the point of OTS).</p>
+          </div>
+          <div style="display:flex;gap:0.4rem;flex-wrap:wrap;align-items:center">${idShields}</div>
+        </div>
+      </div>
+
+      <div class="tg-table panel">
+        <div class="tg-cols">
+          <div class="tg-colh tg-off">Offering</div>
+          <div class="tg-colh tg-fresh">Freshness</div>
+          <div class="tg-colh tg-conf">Confidence</div>
+          <div class="tg-colh tg-proof">Proof state</div>
+          <div class="tg-colh tg-src">Source score</div>
+          <div class="tg-colh tg-drift-c">Drift</div>
+          <div class="tg-colh tg-run">Run</div>
+        </div>
+        ${rows}
+      </div>
+      <p class="tg-foot">Click any row to open the trust drawer — full proof ledger, source scores, drift history. Safe Harbour · Proof before claim · no-KYC · self-custody · sovereignty first.</p>`;
+
+    // bind chips → open row
+    el.querySelectorAll("[data-tg-open]").forEach((b) => {
+      b.addEventListener("click", () => {
+        state._trustOpen = state._trustOpen === b.dataset.tgOpen ? null : b.dataset.tgOpen;
+        renderTrustGlass();
+      });
+    });
+    el.querySelectorAll("[data-tg-id]").forEach((r) => {
+      r.querySelector(".tg-row-main")?.addEventListener("click", () => {
+        const id = r.dataset.tgId;
+        state._trustOpen = state._trustOpen === id ? null : id;
+        renderTrustGlass();
+      });
+    });
   }
 
   function renderDomains() {

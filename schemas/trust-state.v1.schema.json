@@ -1,0 +1,109 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "gab.trust-state.v1",
+  "title": "gab.trust-state.v1 — per-offering trust envelope",
+  "description": "Secret-free trust-state envelope produced by Ziggy's OTS engine and consumed verbatim by HQ Trust Glass. HQ renders exactly what is here and never computes or invents trust (doctrine 7). Missing fields render a neutral '—'; a missing file renders EMPTY.",
+  "type": "object",
+  "required": ["schema", "productId", "name", "generatedAt", "freshness", "gate"],
+  "properties": {
+    "schema": { "const": "gab.trust-state.v1" },
+    "productId": { "type": "string" },
+    "name": { "type": "string" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "freshness": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": { "enum": ["fresh", "stale", "unverified"] },
+        "days_stale": { "type": "integer", "minimum": 0 },
+        "verifiedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "confidence": {
+      "type": "object",
+      "properties": {
+        "tiers": {
+          "type": "object",
+          "properties": {
+            "verified_primary": { "type": "integer" },
+            "verified_secondary_x2": { "type": "integer" },
+            "unverified_candidate": { "type": "integer" }
+          }
+        }
+      }
+    },
+    "proofs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claim", "status"],
+        "properties": {
+          "claim": { "type": "string" },
+          "status": { "enum": ["confirmed", "pending"] },
+          "bitcoin_block": { "type": "integer" },
+          "block_time_utc": { "type": "string", "format": "date-time" },
+          "sha256_slice": { "type": "string" },
+          "ots_file": { "type": "string" },
+          "verify": { "type": "string" }
+        }
+      }
+    },
+    "sources": {
+      "type": "object",
+      "properties": {
+        "count": { "type": "integer" },
+        "avg_score": { "type": "number" },
+        "min_score": { "type": "number" },
+        "tiers": {
+          "type": "object",
+          "properties": {
+            "primary_official": { "type": "integer" },
+            "secondary_trusted": { "type": "integer" }
+          }
+        }
+      }
+    },
+    "recent_drifts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "field": { "type": "string" },
+          "changed_at": { "type": "string" },
+          "old_hash": { "type": "string" },
+          "new_hash": { "type": "string" },
+          "state": { "enum": ["re-stamped", "review"] }
+        }
+      }
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "field": { "type": "string" },
+          "sources": { "type": "array", "items": { "type": "string" } },
+          "values": { "type": "object" },
+          "status": { "enum": ["review"] }
+        }
+      }
+    },
+    "pipeline": {
+      "type": "object",
+      "properties": {
+        "last_run": { "type": "string" },
+        "status": { "enum": ["ok", "warn", "failed"] },
+        "summary": { "type": "string" },
+        "steps": { "type": "object" }
+      }
+    },
+    "gate": {
+      "type": "object",
+      "required": ["automation_ready"],
+      "properties": {
+        "automation_ready": { "type": "boolean" },
+        "blockers": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}
