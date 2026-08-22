@@ -1214,6 +1214,7 @@
       loadData("/tools.json"),
       loadData("/status.json"),
       loadData("/metrics/ecosystem-map.json"),
+      loadData("/metrics/accounting.json").then((a) => { state.accounting = a.data; }).catch(() => { state.accounting = null; }),
       loadData("/metrics/seo-audit.json"),
     ]);
     const roadmapR = await loadData("/metrics/roadmap.json");
@@ -3396,6 +3397,42 @@
       <button type="button" class="btn btn-sm btn-ghost" data-goto-system style="margin-left:0.35rem">System detail</button></span>
     </div>`;
   }
+  function renderAccountingSection() {
+    const a = state.accounting;
+    if (!a || !Array.isArray(a.sites)) return `<p class="mono mt-2" style="font-size:0.68rem;color:var(--ink-faint)">Accounting feed not loaded</p>`;
+    const totalStamps = a.totals?.stamps ?? 0;
+    const totalSats = a.totals?.sats ?? 0;
+    const p = a.pricing || {};
+    const siteRows = a.sites.map((s) => {
+      const c = s.site && accentFor(s.site) || "#B8893A";
+      const maxStamps = Math.max(1, ...a.sites.map((x) => x.stamps || 0));
+      const stampShare = totalStamps ? Math.round(((s.stamps || 0) / totalStamps) * 100) : 0;
+      return `<div class="panel" style="padding:0.9rem;border-left:4px solid ${escAttr(c)}">
+        <div class="flex items-center gap-2"><strong style="font-size:0.88rem">${esc(s.site || "?")}</strong>
+          <span class="mono" style="font-size:0.68rem;color:var(--ink-faint);margin-left:auto">${esc(s.last_report || "no report")}</span>
+        </div>
+        <div class="flex justify-between mono mt-1" style="font-size:0.72rem;color:var(--ink-2)">
+          <span>${esc(fmtNum(s.stamps || 0, "stamps"))}</span><span>${esc(fmtNum(s.sats || 0, "sats"))}</span>
+        </div>
+        ${metricBar(stampShare, `${stampShare}% of stamps`, `--bar-c:${escAttr(c)}`)}
+      </div>`;
+    }).join("");
+    const priceHtml = p.effective != null
+      ? `<span class="panel" style="padding:0.6rem 1rem;text-align:center"><div class="mono" style="font-size:0.7rem;color:var(--ink-faint)">base ${p.base_price} sats · rate ${p.rate_adj}% · effective</div><strong class="display" style="font-size:1.3rem;color:var(--accent-theme,var(--accent))">${esc(fmtNum(p.effective))} sats</strong><div class="mono" style="font-size:0.68rem;color:var(--ink-faint)">${p.btc_usd ? "BTC $" + esc(fmtNum(p.btc_usd)) : "BTC —"} per stamp</div></span>`
+      : "";
+    return `<div class="mt-3 panel" style="padding:1rem">
+      <h3 class="display" style="margin:0 0 0.5rem;font-size:0.95rem"><i class="fa-solid fa-chart-column" style="color:var(--accent-theme,var(--accent))"></i> Accounting · stamps & payments</h3>
+      <p style="font-size:0.76rem;color:var(--ink-dim);margin:0 0 0.75rem">Per-site OTS stamps + sats from the Google Sheets MASTER-LEDGER (live). <span class="mono">Hover a bar for share.</span></p>
+      <div class="flex flex-wrap gap-2" style="margin-bottom:0.75rem">
+        <span class="panel" style="padding:0.6rem 1rem;text-align:center"><div class="mono" style="font-size:0.7rem;color:var(--ink-faint)">Total stamps</div><strong class="display" style="font-size:1.3rem">${esc(fmtNum(totalStamps))}</strong></span>
+        <span class="panel" style="padding:0.6rem 1rem;text-align:center"><div class="mono" style="font-size:0.7rem;color:var(--ink-faint)">Total sats received</div><strong class="display" style="font-size:1.3rem;color:#B8893A">${esc(fmtNum(totalSats))}</strong></span>
+        ${priceHtml}
+      </div>
+      <div class="money-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem">${siteRows}</div>
+      ${a.notes ? `<p class="mono mt-2" style="font-size:0.66rem;color:var(--ink-faint)">${esc(a.notes)}</p>` : ""}
+    </div>`;
+  }
+
   function renderMoney() {
     const el = document.getElementById("view-money");
     if (!el) return;
@@ -3490,7 +3527,8 @@
             </div>`;
           }).join("")}</div>
         </div>
-      </div>`;
+      </div>
+      ${renderAccountingSection()}`;
     document.getElementById("money-refresh")?.addEventListener("click", async () => {
       toast("Polling LNbits…", "ok");
       await refreshWallets();

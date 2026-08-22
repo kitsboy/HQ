@@ -26,8 +26,8 @@ fi
 "$PY" /root/hq/update-btc-price.py || echo "WARN: BTC refresh failed"
 # 3) Generate all reports
 "$PY" /root/hq/make_site_reports.py --master --all-sites
-# 4) Upload to Drive + registry
+# 4) Refresh HQ accounting feed + upload to Drive + archive
+"$PY" /root/hq/gen-accounting.py
 "$PY" /root/hq/upload-reports-drive.py
-# 5) Archive
 "$PY" /root/hq/archive-reports.py
 echo "REPORT SUITE DONE"

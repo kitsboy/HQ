@@ -1,0 +1,54 @@
+{
+  "schema": "gab.accounting.v1",
+  "generated": "2026-08-22T16:22:33Z",
+  "sites": [
+    {
+      "site": "motopass",
+      "stamps": 106,
+      "sats": 500,
+      "last_report": "giveabit-motopass-report-20260822-0600.pdf"
+    },
+    {
+      "site": "satohash",
+      "stamps": 11,
+      "sats": 2500,
+      "last_report": "giveabit-satohash-report-20260822-0600.pdf"
+    },
+    {
+      "site": "katoa",
+      "stamps": 0,
+      "sats": 10000,
+      "last_report": "giveabit-katoa-report-20260822-0600.pdf"
+    },
+    {
+      "site": "tadbuy",
+      "stamps": 0,
+      "sats": 0,
+      "last_report": "giveabit-tadbuy-report-20260822-0600.pdf"
+    },
+    {
+      "site": "sherpacarta",
+      "stamps": 1,
+      "sats": 0,
+      "last_report": "giveabit-sherpacarta-report-20260822-0600.pdf"
+    },
+    {
+      "site": "stranded",
+      "stamps": 0,
+      "sats": 0,
+      "last_report": "giveabit-stranded-report-20260822-0600.pdf"
+    }
+  ],
+  "totals": {
+    "stamps": 118,
+    "sats": 13000
+  },
+  "pricing": {
+    "base_price": 5,
+    "rate_adj": 0,
+    "effective": 5,
+    "btc_usd": 78468.0,
+    "sats_per_btc": 100000000
+  },
+  "notes": "Live from Google Sheets MASTER-LEDGER + Satohash API. sats are as-recorded Lightning inflows (free tier currently = 0 charged for stamps)."
+}
