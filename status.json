@@ -1,53 +1,53 @@
 {
-  "updatedAt": "2026-08-22T14:31:32.683Z",
+  "updatedAt": "2026-08-22T14:59:29.040Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 751,
+      "ms": 895,
       "url": "https://giveabit.io"
     },
     "satohash": {
       "ok": true,
       "status": 200,
-      "ms": 209,
+      "ms": 372,
       "url": "https://satohash.io"
     },
     "katoa": {
       "ok": true,
       "status": 200,
-      "ms": 187,
+      "ms": 138,
       "url": "https://katoa.org"
     },
     "stranded": {
       "ok": true,
       "status": 200,
-      "ms": 264,
+      "ms": 207,
       "url": "https://stranded.giveabit.io"
     },
     "tadbuy": {
       "ok": true,
       "status": 200,
-      "ms": 232,
+      "ms": 201,
       "url": "https://tadbuy.giveabit.io"
     },
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 169,
+      "ms": 283,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 288,
+      "ms": 156,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
       "ok": true,
       "status": 200,
-      "ms": 191,
+      "ms": 145,
       "url": "https://openstrata.giveabit.io"
     },
     "btcminiscript": {
@@ -67,23 +67,23 @@
     "satohashApi": {
       "ok": true,
       "status": 200,
-      "ms": 471,
+      "ms": 490,
       "healthUrl": "https://api.satohash.io/health"
     },
     "satohashMetrics": {
       "schema": "gab.product-metrics.v1",
       "productId": "satohash",
       "name": "Satohash",
-      "updatedAt": "2026-08-22T14:31:32.608Z",
+      "updatedAt": "2026-08-22T14:59:28.961Z",
       "window": {
         "label": "7d",
-        "from": "2026-08-15T14:31:32.608Z",
-        "to": "2026-08-22T14:31:32.608Z"
+        "from": "2026-08-15T14:59:28.961Z",
+        "to": "2026-08-22T14:59:28.961Z"
       },
       "health": {
         "status": "green",
         "message": "API healthy — live stamp aggregates for HQ",
-        "latencyMs": 1,
+        "latencyMs": 2,
         "uptimePct24h": null,
         "dependencies": [
           {
@@ -93,8 +93,8 @@
           },
           {
             "id": "bitcoin-anchor",
-            "status": "green",
-            "detail": "No pending anchors"
+            "status": "amber",
+            "detail": "10 pending Bitcoin confirmation(s)"
           },
           {
             "id": "api.satohash.io",
@@ -112,7 +112,7 @@
         {
           "key": "stamps_total",
           "label": "Stamps (all time)",
-          "value": 148,
+          "value": 158,
           "unit": "proofs",
           "format": "number",
           "priority": 1,
@@ -121,7 +121,7 @@
         {
           "key": "stamps_24h",
           "label": "Stamps 24h",
-          "value": 4,
+          "value": 14,
           "unit": "proofs",
           "delta": 0,
           "deltaUnit": "%",
@@ -132,7 +132,7 @@
         {
           "key": "stamps_7d",
           "label": "Stamps 7d",
-          "value": 135,
+          "value": 145,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -141,7 +141,7 @@
         {
           "key": "monthly_capacity",
           "label": "Monthly capacity (est.)",
-          "value": 579,
+          "value": 621,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -150,7 +150,7 @@
         {
           "key": "pending",
           "label": "Pending confirm",
-          "value": 0,
+          "value": 10,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -222,7 +222,7 @@
         {
           "key": "p50_ms",
           "label": "Metrics build p50",
-          "value": 1,
+          "value": 2,
           "unit": "ms",
           "format": "duration",
           "priority": 5,
@@ -303,7 +303,7 @@
             },
             {
               "t": "2026-08-22T12:00:00.000Z",
-              "v": 4
+              "v": 14
             }
           ]
         },
@@ -439,7 +439,7 @@
             },
             {
               "t": "2026-08-22T12:00:00.000Z",
-              "v": 0
+              "v": 10
             }
           ]
         },
@@ -520,19 +520,19 @@
             {
               "id": "hash_local",
               "label": "Local hash",
-              "count": 148,
+              "count": 158,
               "hint": "File never leaves device"
             },
             {
               "id": "submit",
               "label": "Submit stamp",
-              "count": 4,
+              "count": 14,
               "hint": "API or SPA"
             },
             {
               "id": "calendar",
               "label": "Calendar attested",
-              "count": 148,
+              "count": 158,
               "hint": "OTS calendars accepted"
             },
             {
@@ -544,7 +544,7 @@
             {
               "id": "pending_queue",
               "label": "Still pending",
-              "count": 0,
+              "count": 10,
               "hint": "Upgrade daemon queue"
             }
           ]
@@ -558,7 +558,7 @@
             {
               "id": "motopass-intel",
               "label": "motopass-intel",
-              "value": 104,
+              "value": 114,
               "meta": {
                 "offer": "attributed client"
               }
@@ -716,7 +716,7 @@
             {
               "id": "pending",
               "label": "Pending",
-              "value": 0,
+              "value": 10,
               "meta": {
                 "offer": "awaiting BTC"
               }
@@ -893,7 +893,7 @@
         "seriesFromDb": true,
         "note": "Live metrics from satohash API DB",
         "version": "5.0.0-ELITE",
-        "uptimeSec": 146598,
+        "uptimeSec": 148274,
         "requireLightning": false,
         "familyFreeTier": true,
         "directory": {
@@ -1027,10 +1027,10 @@
           ]
         },
         "counts": {
-          "stampsTotal": 148,
-          "stamps24h": 4,
-          "stamps7d": 135,
-          "pending": 0,
+          "stampsTotal": 158,
+          "stamps24h": 14,
+          "stamps7d": 145,
+          "pending": 10,
           "confirmed": 148,
           "confirmed7d": 135,
           "failed": 0,
@@ -1041,83 +1041,83 @@
         },
         "last10": [
           {
-            "id": "5a7a3d48-2f48-44e8-89dc-91a71d272571",
-            "hash": "b61f29cc0ee1e51ddf0ed4dac00ec5c736fd50bb340e647ef7d0401b4a578c01",
-            "status": "confirmed",
+            "id": "c5d17f09-dbc2-4a58-b94f-83ebac8cf285",
+            "hash": "33606bf60e75ee2cb67e270119106b849af00b98e227ceb93d8916de0fe7eba9",
+            "status": "pending",
             "client_id": "motopass-intel",
-            "created_at": "2026-08-22 06:21:26",
+            "created_at": "2026-08-22 14:57:31",
             "bitcoin_block_height": null
           },
           {
-            "id": "b2c92368-b0f7-4f3b-984c-7ad775333123",
-            "hash": "3012b5f3857415cc40dea6352aa55da91f9caa085dbbfedbf6847a77aee9ca34",
-            "status": "confirmed",
+            "id": "760db661-c1a7-42a4-801e-5c83da431718",
+            "hash": "2a1287a7ea1c1d472a7aafc368ad3e010d7d1a4ac349a98306d7084a2272a151",
+            "status": "pending",
             "client_id": "motopass-intel",
-            "created_at": "2026-08-22 06:21:22",
+            "created_at": "2026-08-22 14:57:28",
             "bitcoin_block_height": null
           },
           {
-            "id": "ded8e251-5e52-4424-bd3d-3e8d9ed49378",
-            "hash": "0fbde9af40b0c5ef82a40cd614383fd22abf337e85b8cde8c41641f10cef587b",
-            "status": "confirmed",
+            "id": "63145a39-1f6b-433c-9b01-bef9da543348",
+            "hash": "d742ba3e4c25028abe900ccbf34d3181c0fcfadcca95a679f7f0dc1a99aa3ac2",
+            "status": "pending",
             "client_id": "motopass-intel",
-            "created_at": "2026-08-22 06:21:18",
+            "created_at": "2026-08-22 14:57:25",
             "bitcoin_block_height": null
           },
           {
-            "id": "489b5e57-38bf-492b-b2a8-3f3ff655a538",
-            "hash": "cb49ebf77a8b646af06753b503045a58cbb53d2babbcd6e60591c13452c95fd7",
-            "status": "confirmed",
+            "id": "dc5dc26a-0ccc-44dc-b1a7-c81645392428",
+            "hash": "9098fd4e4d1a73f2efbb667c8bc3bb04ebebfdd2bc99ed0e5d0eaad548bae55c",
+            "status": "pending",
             "client_id": "motopass-intel",
-            "created_at": "2026-08-22 06:21:14",
+            "created_at": "2026-08-22 14:57:21",
             "bitcoin_block_height": null
           },
           {
-            "id": "e1e7d322-1c3f-4b4b-b8fe-75ecaa8da584",
-            "hash": "66da679de4006f6a22bd2133b8836388ab1c67bea53caf0234a91e484e274b4b",
-            "status": "confirmed",
+            "id": "932a0976-606b-46aa-adeb-0f5d23bed0cb",
+            "hash": "aa4c45f7a554951b0ed8cc35001171fe770cf3a8d05090446997abfe4381d60e",
+            "status": "pending",
             "client_id": "motopass-intel",
-            "created_at": "2026-08-21 06:26:51",
+            "created_at": "2026-08-22 14:57:18",
             "bitcoin_block_height": null
           },
           {
-            "id": "3c67a3b8-857d-4175-b69c-befb4e399b85",
-            "hash": "d653997903ce569a71337871bb4fc60a82340101f32d28cc8b1e4ed01d300c90",
-            "status": "confirmed",
+            "id": "41f66fcd-c033-49d5-8879-229136db8125",
+            "hash": "f2209308668869dc2de1b2e5b67478405a4920d2a3802943b04e6d8c2c0cd248",
+            "status": "pending",
             "client_id": "motopass-intel",
-            "created_at": "2026-08-21 06:26:46",
+            "created_at": "2026-08-22 14:57:14",
             "bitcoin_block_height": null
           },
           {
-            "id": "178fdd6a-e3cf-4a06-af74-0c32dade0c36",
-            "hash": "47d5ed48f3162342b5f83b8642aad648ede48ec0b947157c1e30b58fbc65de05",
-            "status": "confirmed",
-            "client_id": "e2e-live",
-            "created_at": "2026-08-21 01:29:07",
+            "id": "1706033e-780d-4aa8-bfc7-2b2e9bc53bb6",
+            "hash": "c1a4ea09d99674bbc1fce88bf400c10f6bc1c36b73296654a2bcdbf6006d9306",
+            "status": "pending",
+            "client_id": "motopass-intel",
+            "created_at": "2026-08-22 14:57:11",
             "bitcoin_block_height": null
           },
           {
-            "id": "ee8c068f-b37e-4da7-9f1a-ffbf0fcb1cfe",
-            "hash": "809717f2ae22b731264b94164e349de614329ca5ceacb54fe3d3982334a030d5",
-            "status": "confirmed",
+            "id": "e0350760-c535-4b9a-a132-8a6501f96e00",
+            "hash": "1e9993bb823a6b8fbc470f26aa8b546d0c25283b029de54dee0cfa25feb9cdc4",
+            "status": "pending",
             "client_id": "motopass-intel",
-            "created_at": "2026-08-21 00:22:55",
+            "created_at": "2026-08-22 14:57:07",
             "bitcoin_block_height": null
           },
           {
-            "id": "6f8a6aa5-671a-43b7-9912-49d30be13eed",
-            "hash": "4ba210f53d038befe6541c8f247fc7d6b1752a079bf3b2f299abfa2139fff378",
-            "status": "confirmed",
+            "id": "fa6db16a-37e1-4304-adf8-f035e0ca071d",
+            "hash": "b5ff369da5887cf7ecf57eabf9bdc2d91647068faf0c7cf24ab11e645984cb1a",
+            "status": "pending",
             "client_id": "motopass-intel",
-            "created_at": "2026-08-21 00:22:50",
+            "created_at": "2026-08-22 14:57:04",
             "bitcoin_block_height": null
           },
           {
-            "id": "8e24dbb5-71c0-4405-8316-8570b1e2e5bd",
-            "hash": "abbaabdd8d4320d60f850ebed095c30f8b1c248d87d9d836cc03b9259fba9d79",
-            "status": "confirmed",
+            "id": "a25cef33-2c75-4f6e-9dcd-9ed1cc979953",
+            "hash": "279fb4c4cd5d2d697abb746e242115ab77f452b7d01976c40b3c175a9ce20e50",
+            "status": "pending",
             "client_id": "motopass-intel",
-            "created_at": "2026-08-21 00:22:46",
+            "created_at": "2026-08-22 14:57:00",
             "bitcoin_block_height": null
           }
         ],
@@ -1125,7 +1125,7 @@
           {
             "id": "motopass-intel",
             "label": "motopass-intel",
-            "value": 104,
+            "value": 114,
             "meta": {
               "offer": "attributed client"
             }
