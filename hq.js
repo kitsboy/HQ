@@ -4142,12 +4142,12 @@
       const icon = a.icon || fallbackIcon[a.name] || "fa-solid fa-user-astronaut";
       const initials = (a.name || "?").slice(0, 2).toUpperCase();
       const nip05Link = a.nip05 ? `<a href="https://giveabit.io/namespace" target="_blank" rel="noopener" class="mono" style="font-size:0.72rem;color:${escAttr(c)};text-decoration:none">${esc(a.nip05)} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.55rem"></i></a>` : `<span class="mono" style="font-size:0.72rem;color:var(--ink-faint)">no NIP-05</span>`;
+      const avatarHtml = a.avatar
+        ? `<div class="agent-avatar" title="${escAttr(a.name || "")}"><img src="${escAttr(a.avatar)}" alt="${escAttr(a.name || "")}" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>`
+        : `<div class="agent-avatar" title="${escAttr(a.name || "")}" aria-hidden="true"><i class="${escAttr(icon)}"></i><span class="agent-initials">${esc(initials)}</span></div>`;
       return `<article class="agent-card panel" style="--agent-c:${escAttr(c)};border-left:4px solid ${escAttr(c)}" data-agent="${escAttr(a.name || "")}">
         ${a.lead ? `<div class="lead-badge"><span class="status-pill violet">lead</span></div>` : ""}
-        <div class="agent-avatar" title="${escAttr(a.name || "")}" aria-hidden="true">
-          <i class="${escAttr(icon)}"></i>
-          <span class="agent-initials">${esc(initials)}</span>
-        </div>
+        ${avatarHtml}
         <h3>${esc(a.name)}</h3>
         <div class="role"><i class="${escAttr(icon)}" style="margin-right:0.35rem;opacity:0.85"></i>${esc(a.role || "")}</div>
         <p class="motto">“${esc(a.motto || "")}”</p>
