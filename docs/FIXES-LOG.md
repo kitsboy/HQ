@@ -5,6 +5,17 @@ after any autonomous repair so Cam can review "what got fixed" after the fact.
 
 ---
 
+### 2026-08-22 — OTS trust-state Phase 0 envelope plumbing (Ziggy, t_352a5d29)
+- **`gab.trust-state.v1` per-offering envelopes live** for all 9 offerings at `metrics/<offering>/trust-state.json` + aggregate `metrics/trust-glass.json` — honest Phase 0 empties (unverified, proofs=[], automation_ready=false, blocker spelled out). Doctrine 7: the Glass lies by being obviously empty, never by inventing green.
+- **Builder `scripts/build-trust-state.mjs`** + schema `schemas/gab.trust-state.v1.schema.json` + `scripts/validate-trust-state.py`; `build-public.mjs` now copies trust-state subdirs + prunes stale.
+- **Verified live:** builder regenerates 9 envelopes + aggregate; jsonschema validates all 9 + aggregate; static JSON serves on hq.giveabit.io.
+- **Satohash regression test added:** `tests/regression-verify-confirmed.mjs` — asserts known-confirmed fixture `confirmed-0.ots` verifies `verified:true` against own node + live `/api/verify(.ots)`. PASSED live @block 963545. Guards F3.
+- **F3 root-cause documented:** `/Bitcoin block (\d+)/` regex returns NULL on current OTS `info()` format ("BitcoinBlockHeaderAttestation(963545)") → block height never parsed (bitcoin_block_height=null on confirmed stamps). Fix routed to Grok/M3 (needs Cam go): parse `/BlockHeaderAttestation\((\d+)\)/`.
+- **Trust-pipeline KPI hook:** `server/metrics-payload.js` `buildTrustByClient` → `pending_stamp_vs_attested` + `attested_rate` KPIs + `trust_pipeline` segment (Lenny's pending_stamp vs attested). `server/trust-pipeline.test.mjs` PASSED.
+- **2026-07-27 OTS health-check confirmed in repo:** `server/routes/health.js` committed (calendar check present in HEAD, worktree clean) — survives rebuild.
+
+---
+
 ### 2026-08-14 — Hermes setup optimization batch: cron cleanup + memory root-cause fix (Kimi)
 
 - **Dead crons removed (2):** `thor-auto-metrics` + `thor-metrics-bundle-15m` — both paused since 2026-07-31 and superseded by `thor-pulse-6h` (runs the same bundle every 6h). Removed to stop dead tiles on the board.
@@ -99,3 +110,6 @@ Commits: giveabit 7d0892c/9ced482/4a6dca8; katoa 48ab223/2233dc2/458b947/e4f2753
 ## 2026-08-20T23:12:25.157689+00:00 (seo self-heal)
 - ⚠️ OpenStrata joined at 56/100 (below 80)
 - ⚠️ Buzz (planned) joined at 56/100 (below 80)
+
+## 2026-08-22 — 12:00 (log watchdog)
+- Error class `nostr-publish` appeared 3x in last 6h of container logs.
