@@ -1,6 +1,6 @@
 {
  "schema": "gab.thor-node.v1",
- "updatedAt": "2026-08-22T15:45:01Z",
+ "updatedAt": "2026-08-22T16:00:01Z",
  "node": {
   "id": "THOR",
   "hostLabel": "THOR Contabo VPS 20",
@@ -39,13 +39,13 @@
     "detail": "Up 4 weeks (healthy)"
    }
   ],
-  "uptimeSec": 3170900
+  "uptimeSec": 3171800
  },
  "bitcoin": {
   "ok": true,
   "chain": "main",
-  "blocks": 963600,
-  "headers": 963600,
+  "blocks": 963602,
+  "headers": 963602,
   "verificationProgress": 1.0,
   "pruned": false,
   "sizeOnDiskGB": 0.34,
@@ -84,10 +84,6 @@
    "color": "#1f6b3a",
    "points": [
     {
-     "t": "2026-08-21T16:00:01Z",
-     "v": 0
-    },
-    {
      "t": "2026-08-21T16:15:01Z",
      "v": 0
     },
@@ -465,6 +461,10 @@
     },
     {
      "t": "2026-08-22T15:45:01Z",
+     "v": 0
+    },
+    {
+     "t": "2026-08-22T16:00:01Z",
      "v": 0
     }
    ]
@@ -476,10 +476,6 @@
    "color": "#c45f00",
    "points": [
     {
-     "t": "2026-08-21T16:00:01Z",
-     "v": 0
-    },
-    {
      "t": "2026-08-21T16:15:01Z",
      "v": 0
     },
@@ -858,6 +854,10 @@
     {
      "t": "2026-08-22T15:45:01Z",
      "v": 0
+    },
+    {
+     "t": "2026-08-22T16:00:01Z",
+     "v": 0
     }
    ]
   },
@@ -867,10 +867,6 @@
    "unit": "load",
    "color": "#38bdf8",
    "points": [
-    {
-     "t": "2026-08-21T16:00:01Z",
-     "v": 0.59
-    },
     {
      "t": "2026-08-21T16:15:01Z",
      "v": 0.69
@@ -1250,6 +1246,10 @@
     {
      "t": "2026-08-22T15:45:01Z",
      "v": 1.08
+    },
+    {
+     "t": "2026-08-22T16:00:01Z",
+     "v": 0.28
     }
    ]
   },
@@ -1259,10 +1259,6 @@
    "unit": "GB",
    "color": "#a78bfa",
    "points": [
-    {
-     "t": "2026-08-21T16:00:01Z",
-     "v": 3.0
-    },
     {
      "t": "2026-08-21T16:15:01Z",
      "v": 3.0
@@ -1642,6 +1638,10 @@
     {
      "t": "2026-08-22T15:45:01Z",
      "v": 3.7
+    },
+    {
+     "t": "2026-08-22T16:00:01Z",
+     "v": 3.7
     }
    ]
   },
@@ -1651,10 +1651,6 @@
    "unit": "blocks",
    "color": "#f7931a",
    "points": [
-    {
-     "t": "2026-08-21T16:00:01Z",
-     "v": 963461
-    },
     {
      "t": "2026-08-21T16:15:01Z",
      "v": 963463
@@ -2034,6 +2030,10 @@
     {
      "t": "2026-08-22T15:45:01Z",
      "v": 963600
+    },
+    {
+     "t": "2026-08-22T16:00:01Z",
+     "v": 963602
     }
    ]
   }
@@ -2062,20 +2062,20 @@
   "disk": {
    "totalGB": 387,
    "usedGB": 68,
-   "freeGB": 320,
+   "freeGB": 319,
    "usedPercent": 18,
    "mount": "/"
   },
   "memory": {
    "totalGB": 7.8,
    "usedGB": 3.7,
-   "freeGB": 2.0,
+   "freeGB": 0.4,
    "availableGB": 4.1
   },
   "cpu": {
-   "loadAvg1m": 1.08,
-   "loadAvg5m": 0.93,
-   "loadAvg15m": 0.75,
+   "loadAvg1m": 0.28,
+   "loadAvg5m": 0.55,
+   "loadAvg15m": 0.68,
    "uptimeDays": 36.7
   },
   "docker": {
@@ -2086,24 +2086,24 @@
   },
   "breakdownGB": {
    "MASTER-BRAIN_vault": 0.234,
-   "Hermes_skills_config": 1.8,
+   "Hermes_skills_config": 1.9,
    "satohash_repo": 0.129,
-   "HQ_repo": 0.033,
+   "HQ_repo": 0.034,
    "LND_data": 0.344,
    "Docker_images": 4.014,
    "Docker_volumes": 0.562,
-   "other_system": 60.9
+   "other_system": 60.8
   }
  },
  "host": {
   "diskTotalGB": 387,
   "diskUsedGB": 68,
-  "diskFreeGB": 320,
+  "diskFreeGB": 319,
   "memTotalGB": 7.8,
   "memUsedGB": 3.7,
-  "load1": 1.08,
-  "load5": 0.93,
-  "load15": 0.75,
+  "load1": 0.28,
+  "load5": 0.55,
+  "load15": 0.68,
   "note": "Live host from thor-auto-metrics.py (df/free/loadavg)"
  },
  "storage": {
@@ -2111,7 +2111,7 @@
    {
     "id": "other_system",
     "label": "Other system",
-    "gb": 60.9
+    "gb": 60.8
    },
    {
     "id": "Docker_images",
@@ -2121,7 +2121,7 @@
    {
     "id": "Hermes_skills_config",
     "label": "Hermes",
-    "gb": 1.8
+    "gb": 1.9
    },
    {
     "id": "Docker_volumes",
@@ -2152,10 +2152,10 @@
  },
  "opencode": {
   "schema": "gab.opencode.v1",
-  "updatedAt": "2026-08-22T15:45:06Z",
+  "updatedAt": "2026-08-22T16:00:09Z",
   "healthy": true,
   "version": "1.18.15",
-  "latencyMs": 50,
+  "latencyMs": 52,
   "service": null,
   "hint": ""
  }
