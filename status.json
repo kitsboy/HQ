@@ -1,53 +1,53 @@
 {
-  "updatedAt": "2026-08-22T07:00:37.327Z",
+  "updatedAt": "2026-08-22T07:30:42.986Z",
   "source": "kitsboy/HQ status-pinger",
   "sites": {
     "giveabit": {
       "ok": true,
       "status": 200,
-      "ms": 169,
+      "ms": 220,
       "url": "https://giveabit.io"
     },
     "satohash": {
       "ok": true,
       "status": 200,
-      "ms": 275,
+      "ms": 145,
       "url": "https://satohash.io"
     },
     "katoa": {
       "ok": true,
       "status": 200,
-      "ms": 86,
+      "ms": 110,
       "url": "https://katoa.org"
     },
     "stranded": {
       "ok": true,
       "status": 200,
-      "ms": 108,
+      "ms": 118,
       "url": "https://stranded.giveabit.io"
     },
     "tadbuy": {
       "ok": true,
       "status": 200,
-      "ms": 120,
+      "ms": 116,
       "url": "https://tadbuy.giveabit.io"
     },
     "motopass": {
       "ok": true,
       "status": 200,
-      "ms": 87,
+      "ms": 93,
       "url": "https://motopass.giveabit.io"
     },
     "sherpacarta": {
       "ok": true,
       "status": 200,
-      "ms": 95,
+      "ms": 155,
       "url": "https://sherpacarta.org"
     },
     "openstrata": {
       "ok": true,
       "status": 200,
-      "ms": 96,
+      "ms": 116,
       "url": "https://openstrata.giveabit.io"
     },
     "btcminiscript": {
@@ -67,23 +67,23 @@
     "satohashApi": {
       "ok": true,
       "status": 200,
-      "ms": 67,
+      "ms": 28,
       "healthUrl": "https://api.satohash.io/health"
     },
     "satohashMetrics": {
       "schema": "gab.product-metrics.v1",
       "productId": "satohash",
       "name": "Satohash",
-      "updatedAt": "2026-08-22T07:00:37.306Z",
+      "updatedAt": "2026-08-22T07:30:42.977Z",
       "window": {
         "label": "7d",
-        "from": "2026-08-15T07:00:37.306Z",
-        "to": "2026-08-22T07:00:37.306Z"
+        "from": "2026-08-15T07:30:42.977Z",
+        "to": "2026-08-22T07:30:42.977Z"
       },
       "health": {
         "status": "green",
         "message": "API healthy — live stamp aggregates for HQ",
-        "latencyMs": 2,
+        "latencyMs": 1,
         "uptimePct24h": null,
         "dependencies": [
           {
@@ -93,8 +93,8 @@
           },
           {
             "id": "bitcoin-anchor",
-            "status": "amber",
-            "detail": "4 pending Bitcoin confirmation(s)"
+            "status": "green",
+            "detail": "No pending anchors"
           },
           {
             "id": "api.satohash.io",
@@ -150,7 +150,7 @@
         {
           "key": "pending",
           "label": "Pending confirm",
-          "value": 4,
+          "value": 0,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -159,7 +159,7 @@
         {
           "key": "confirmed",
           "label": "Confirmed (all time)",
-          "value": 144,
+          "value": 148,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -168,7 +168,7 @@
         {
           "key": "confirmed_7d",
           "label": "Confirmed 7d",
-          "value": 131,
+          "value": 135,
           "unit": "proofs",
           "format": "number",
           "priority": 2,
@@ -222,7 +222,7 @@
         {
           "key": "p50_ms",
           "label": "Metrics build p50",
-          "value": 2,
+          "value": 1,
           "unit": "ms",
           "format": "duration",
           "priority": 5,
@@ -371,7 +371,7 @@
             },
             {
               "t": "2026-08-22T12:00:00.000Z",
-              "v": 0
+              "v": 4
             }
           ]
         },
@@ -439,7 +439,7 @@
             },
             {
               "t": "2026-08-22T12:00:00.000Z",
-              "v": 4
+              "v": 0
             }
           ]
         },
@@ -538,13 +538,13 @@
             {
               "id": "bitcoin",
               "label": "Bitcoin confirmed",
-              "count": 144,
+              "count": 148,
               "hint": "On-chain anchor"
             },
             {
               "id": "pending_queue",
               "label": "Still pending",
-              "count": 4,
+              "count": 0,
               "hint": "Upgrade daemon queue"
             }
           ]
@@ -716,7 +716,7 @@
             {
               "id": "pending",
               "label": "Pending",
-              "value": 4,
+              "value": 0,
               "meta": {
                 "offer": "awaiting BTC"
               }
@@ -724,7 +724,7 @@
             {
               "id": "confirmed",
               "label": "Confirmed",
-              "value": 144,
+              "value": 148,
               "meta": {
                 "offer": "Bitcoin anchored"
               }
@@ -893,7 +893,7 @@
         "seriesFromDb": true,
         "note": "Live metrics from satohash API DB",
         "version": "5.0.0-ELITE",
-        "uptimeSec": 119542,
+        "uptimeSec": 121348,
         "requireLightning": false,
         "familyFreeTier": true,
         "directory": {
@@ -1030,9 +1030,9 @@
           "stampsTotal": 148,
           "stamps24h": 4,
           "stamps7d": 135,
-          "pending": 4,
-          "confirmed": 144,
-          "confirmed7d": 131,
+          "pending": 0,
+          "confirmed": 148,
+          "confirmed7d": 135,
           "failed": 0,
           "failed7d": 0,
           "familyFree": 0,
@@ -1043,7 +1043,7 @@
           {
             "id": "5a7a3d48-2f48-44e8-89dc-91a71d272571",
             "hash": "b61f29cc0ee1e51ddf0ed4dac00ec5c736fd50bb340e647ef7d0401b4a578c01",
-            "status": "pending",
+            "status": "confirmed",
             "client_id": "motopass-intel",
             "created_at": "2026-08-22 06:21:26",
             "bitcoin_block_height": null
@@ -1051,7 +1051,7 @@
           {
             "id": "b2c92368-b0f7-4f3b-984c-7ad775333123",
             "hash": "3012b5f3857415cc40dea6352aa55da91f9caa085dbbfedbf6847a77aee9ca34",
-            "status": "pending",
+            "status": "confirmed",
             "client_id": "motopass-intel",
             "created_at": "2026-08-22 06:21:22",
             "bitcoin_block_height": null
@@ -1059,7 +1059,7 @@
           {
             "id": "ded8e251-5e52-4424-bd3d-3e8d9ed49378",
             "hash": "0fbde9af40b0c5ef82a40cd614383fd22abf337e85b8cde8c41641f10cef587b",
-            "status": "pending",
+            "status": "confirmed",
             "client_id": "motopass-intel",
             "created_at": "2026-08-22 06:21:18",
             "bitcoin_block_height": null
@@ -1067,7 +1067,7 @@
           {
             "id": "489b5e57-38bf-492b-b2a8-3f3ff655a538",
             "hash": "cb49ebf77a8b646af06753b503045a58cbb53d2babbcd6e60591c13452c95fd7",
-            "status": "pending",
+            "status": "confirmed",
             "client_id": "motopass-intel",
             "created_at": "2026-08-22 06:21:14",
             "bitcoin_block_height": null
