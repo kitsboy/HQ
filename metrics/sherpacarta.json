@@ -2,16 +2,16 @@
   "schema": "gab.product-metrics.v1",
   "productId": "sherpacarta",
   "name": "SherpaCarta",
-  "updatedAt": "2026-08-21T00:20:26Z",
+  "updatedAt": "2026-08-22T00:20:10Z",
   "window": {
     "label": "7d",
-    "from": "2026-08-14T00:20:31.975Z",
-    "to": "2026-08-21T00:20:31.975Z"
+    "from": "2026-08-15T00:20:13.909Z",
+    "to": "2026-08-22T00:20:13.909Z"
   },
   "health": {
     "status": "ok",
     "message": "Live CF Function \u2014 mandate total=4 \u00b7 24h=0 \u00b7 store=kv. LN via HQ wallet sherpacarta.",
-    "latencyMs": 104,
+    "latencyMs": 301,
     "uptimePct24h": null,
     "dependencies": [
       {
@@ -46,8 +46,8 @@
       }
     ],
     "http": 200,
-    "ms": 110,
-    "probedAt": "2026-08-21T00:20:26Z"
+    "ms": 67,
+    "probedAt": "2026-08-22T00:20:10Z"
   },
   "kpis": [
     {
@@ -176,10 +176,6 @@
       "color": "#10b981",
       "points": [
         {
-          "t": "2026-08-08T12:00:00.000Z",
-          "v": 0
-        },
-        {
           "t": "2026-08-09T12:00:00.000Z",
           "v": 0
         },
@@ -230,6 +226,10 @@
         {
           "t": "2026-08-21T12:00:00.000Z",
           "v": 0
+        },
+        {
+          "t": "2026-08-22T12:00:00.000Z",
+          "v": 0
         }
       ]
     },
@@ -240,7 +240,7 @@
       "color": "#c45f00",
       "points": [
         {
-          "t": "2026-08-21T00:00:00.000Z",
+          "t": "2026-08-22T00:00:00.000Z",
           "v": 4
         }
       ]
@@ -252,7 +252,7 @@
       "color": "#f7931a",
       "points": [
         {
-          "t": "2026-08-21T00:00:00.000Z",
+          "t": "2026-08-22T00:00:00.000Z",
           "v": 12884
         }
       ]
@@ -535,15 +535,15 @@
       "probe": {
         "ok": true,
         "http": 200,
-        "ms": 110
+        "ms": 67
       },
-      "checkedAt": "2026-08-21T00:20:26Z",
+      "checkedAt": "2026-08-22T00:20:10Z",
       "umami": {
-        "visitors24h": 2,
-        "pageviews24h": 4,
-        "visits24h": 2,
-        "visitors7d": 33,
-        "pageviews7d": 49,
+        "visitors24h": 0,
+        "pageviews24h": 0,
+        "visits24h": 0,
+        "visitors7d": 32,
+        "pageviews7d": 48,
         "visitors30d": 92,
         "pageviews30d": 217
       }

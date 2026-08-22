@@ -2,7 +2,7 @@
   "schema": "gab.product-metrics.v1",
   "productId": "openstrata",
   "name": "OpenStrata",
-  "updatedAt": "2026-08-21T00:20:26Z",
+  "updatedAt": "2026-08-22T00:20:10Z",
   "window": {
     "label": "all",
     "from": "2026-01-01T00:00:00Z",
@@ -31,14 +31,14 @@
       }
     ],
     "http": 200,
-    "ms": 100,
-    "probedAt": "2026-08-21T00:20:26Z"
+    "ms": 102,
+    "probedAt": "2026-08-22T00:20:10Z"
   },
   "kpis": [
     {
       "key": "visitors30d",
       "label": "Visitors (30d)",
-      "value": 2,
+      "value": 3,
       "format": "int",
       "unit": "visits"
     },
@@ -364,17 +364,17 @@
       "probe": {
         "ok": true,
         "http": 200,
-        "ms": 100
+        "ms": 102
       },
-      "checkedAt": "2026-08-21T00:20:26Z",
+      "checkedAt": "2026-08-22T00:20:10Z",
       "umami": {
-        "visitors24h": 0,
-        "pageviews24h": 0,
-        "visits24h": 0,
-        "visitors7d": 1,
-        "pageviews7d": 1,
-        "visitors30d": 2,
-        "pageviews30d": 3
+        "visitors24h": 1,
+        "pageviews24h": 1,
+        "visits24h": 1,
+        "visitors7d": 2,
+        "pageviews7d": 2,
+        "visitors30d": 3,
+        "pageviews30d": 4
       }
     }
   }

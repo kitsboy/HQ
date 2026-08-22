@@ -2,15 +2,15 @@
   "giveabit": {
     "workflow_name": "Verify",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/giveabit/actions/runs/32427490984",
-    "updatedAt": "2026-08-20T23:13:12Z",
+    "html_url": "https://github.com/kitsboy/giveabit/actions/runs/32527401087",
+    "updatedAt": "2026-08-21T21:15:31Z",
     "status": "completed"
   },
   "satohash": {
     "workflow_name": "Deploy",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/satohash/actions/runs/32428041699",
-    "updatedAt": "2026-08-20T23:19:36Z",
+    "html_url": "https://github.com/kitsboy/satohash/actions/runs/32436189557",
+    "updatedAt": "2026-08-21T01:26:27Z",
     "status": "completed"
   },
   "katoa": {
@@ -22,10 +22,10 @@
   },
   "motopass": {
     "workflow_name": "Deploy motopass to Cloudflare Pages",
-    "latest_conclusion": null,
-    "html_url": "https://github.com/kitsboy/motopass/actions/runs/32435938627",
-    "updatedAt": "2026-08-21T01:20:26Z",
-    "status": "in_progress"
+    "latest_conclusion": "success",
+    "html_url": "https://github.com/kitsboy/motopass/actions/runs/32532953208",
+    "updatedAt": "2026-08-21T22:27:01Z",
+    "status": "completed"
   },
   "sherpacarta": {
     "workflow_name": "Deploy sherpacarta to Cloudflare Pages",
@@ -63,10 +63,10 @@
     "status": "?"
   },
   "HQ": {
-    "workflow_name": "Deploy HQ to Cloudflare Pages",
+    "workflow_name": "Status pinger",
     "latest_conclusion": "success",
-    "html_url": "https://github.com/kitsboy/HQ/actions/runs/32435645336",
-    "updatedAt": "2026-08-21T01:15:37Z",
+    "html_url": "https://github.com/kitsboy/HQ/actions/runs/32538902475",
+    "updatedAt": "2026-08-22T00:01:09Z",
     "status": "completed"
   }
 }
